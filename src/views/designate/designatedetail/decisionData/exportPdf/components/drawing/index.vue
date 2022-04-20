@@ -4,10 +4,10 @@
  * @Description: 
 -->
 <template>
-<div class="pageCard-main rsPdfCard">
-  <slot></slot>
+<div class="pageCard-main rsPdfCard" ref="drawing">
+  <slot name="tabTitle"></slot>
   <iCard class="drawing" title="Drawing">
-    <div class="content">
+    <div class="content" :style="{'height': cntentHeight + 'px'}">
       <div v-if="files.length">
         <div class="wrapper" v-for="(file, $index) in files" :key="$index">
           <div class="file">
@@ -21,6 +21,16 @@
         </div>
       </div>
     </div>
+    <div class="page-logo">
+      <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+      <div>
+        <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+      </div>
+      <div>
+        <p>{{ userName }}</p>
+        <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+      </div>
+    </div>
   </iCard>
 </div>
 </template>
@@ -28,16 +38,37 @@
 <script>
 import {iCard} from "rise"
 import {getdDecisiondataList} from "@/api/designate/decisiondata/attach"
-
+import filters from "@/utils/filters"
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
+  },
   components: {iCard},
   data() {
     return {
-      files: []
+      files: [],
+      cntentHeight:0
     }
   },
   created() {
     this.getdDecisiondataList()
+  },
+  mounted(){
+    this.width = this.$refs.drawing.clientWidth
+    let headerHeight = 84 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+    console.log(this.cntentHeight);
   },
   methods: {
     getdDecisiondataList: function () {
@@ -59,6 +90,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .drawing {
   .content {
     .wrapper {
@@ -93,6 +136,13 @@ export default {
       text-align: center;
       line-height: 200px; /*no*/
     }
+  }
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>

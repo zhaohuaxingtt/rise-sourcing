@@ -7,7 +7,7 @@
   <div ref="partList">
     <template>
       <div class="pageCard-main rsPdfCard">
-        <slot></slot>
+        <slot name="tabTitle"></slot>
         <iCard class="partList pageCard rsPdfCard" title="Part List">
           <tableList
               :style="{'height': cntentHeight + 'px'}"
@@ -58,6 +58,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
   },
   components: {
     iCard,
@@ -80,7 +83,7 @@ export default {
     this.width = this.$refs.partList.clientWidth
     let headerHeight = 84 // Title 区域高度
     let pageLogo = 52     // logo 区域高度
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo; // 内容区域对应的高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 内容区域对应的高度
     console.log(this.cntentHeight);
   },
   methods: {

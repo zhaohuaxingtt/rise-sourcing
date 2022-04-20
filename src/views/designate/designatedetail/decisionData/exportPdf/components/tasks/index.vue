@@ -1,13 +1,14 @@
 <template>
-  <div class="tasks pageCard-main rsPdfCard">
-    <slot></slot>
+  <div class="tasks pageCard-main rsPdfCard" ref="tasks">
+    <slot name="tabTitle"></slot>
     <iCard title="Background & Objective" class="bo">
-      <div class="content">
+      <div class="content" ref="bo">
         <div v-html="content"></div>
       </div>
     </iCard>
     <iCard title="Tasks" class="task">
       <tableList
+          :style="{'height': cntentHeight + 'px'}"
           :selection="false"
           :tableTitle="tableTitle"
           :tableData="tableListData">
@@ -19,6 +20,16 @@
           <icon v-else class="iconxianshi" name="iconxianshi"/>
         </template>
       </tableList>
+      <div class="page-logo">
+        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+        <div>
+          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+        </div>
+      </div>
     </iCard>
   </div>
 </template>
@@ -28,14 +39,29 @@ import {iCard, icon} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import {getBackgroundAndObjectiveInfo, getNominateTaskList} from "@/api/designate/decisiondata/tasks"
 import {getTaskStatusDesc, tasksTitle} from "@/views/designate/designatedetail/tasks/components/data"
+import filters from "@/utils/filters"
 
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
+  },
   components: {iCard, icon, tableList},
   data() {
     return {
       content: "",
       tableTitle: _.cloneDeep(tasksTitle),
-      tableListData: []
+      tableListData: [],
+      cntentHeight:0
     }
   },
   created() {
@@ -47,6 +73,13 @@ export default {
     this.getBackgroundAndObjectiveInfo()
     this.getNominateTaskList()
   },
+  mounted(){
+  this.width = this.$refs.tasks.clientWidth
+  let boHeight = this.$refs.bo.clientHeight + 84
+  let headerHeight = 84 // Title 区域高度
+  let pageLogo = 52     // logo 区域高度
+  this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - boHeight - this.hasTitle // 内容区域对应的高度
+},
   methods: {
     getBackgroundAndObjectiveInfo: function () {
       getBackgroundAndObjectiveInfo({
@@ -77,6 +110,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .tasks {
   .bo {
     .content {
@@ -99,6 +144,13 @@ export default {
     .iconxianshi {
       color: rgb(22, 96, 241);
     }
+  }
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>

@@ -134,7 +134,7 @@ module.exports = {
   //本地server配置
   devServer: {
     open: true,
-    host: 'localhost',
+    // host: 'localhost',
     port: 8080,
     https: false,
     hot: true,
@@ -172,16 +172,16 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/sourcing/web',
-        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/sourcing/web',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/web',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
         },
       },
       '/usercenterApi': {
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/usercenter',
-        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/usercenter',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
         changeOrigin: true,
         logLevel: 'info',
         pathRewrite: {

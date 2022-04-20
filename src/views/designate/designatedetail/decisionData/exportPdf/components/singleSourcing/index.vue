@@ -1,27 +1,41 @@
 <template>
-<div class="pageCard-main rsPdfCard">
-  <slot></slot>
+<div class="pageCard-main rsPdfCard" ref="single">
+  <slot name="tabTitle"></slot>
   <iCard class="singleSourcing" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
     <div class="content">
-      <iFormGroup class="info" inline row="1">
-        <iFormItem label="项⽬名称 Project:">
-          <iText>{{ projectName }}</iText>
-        </iFormItem>
-        <iFormItem label="定点申请单号 Project No.:">
-          <iText>{{ nominateId }}</iText>
-        </iFormItem>
-      </iFormGroup>
-      <tableList
-        :selection="false"
-        :tableTitle="tableTitle"
-        :tableData="tableListData">
-        <template #singleReason="scope">
-          <div>
-            <p>{{ scope.row.singleReason }}</p>
-            <p>{{ scope.row.singleReasonEng }}</p>
-          </div>
-        </template>
-      </tableList>
+      <div ref="form">
+        <iFormGroup class="info" inline row="1">
+          <iFormItem label="项⽬名称 Project:">
+            <iText>{{ projectName }}</iText>
+          </iFormItem>
+          <iFormItem label="定点申请单号 Project No.:">
+            <iText>{{ nominateId }}</iText>
+          </iFormItem>
+        </iFormGroup>
+      </div>
+      <div :style="{'height': cntentHeight + 'px'}">
+        <tableList
+          :selection="false"
+          :tableTitle="tableTitle"
+          :tableData="tableListData">
+          <template #singleReason="scope">
+            <div>
+              <p>{{ scope.row.singleReason }}</p>
+              <p>{{ scope.row.singleReasonEng }}</p>
+            </div>
+          </template>
+        </tableList>
+      </div>
+      <div class="page-logo">
+        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+        <div>
+          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+        </div>
+      </div>
     </div>
   </iCard>
 </div>
@@ -32,15 +46,29 @@ import { iCard, iFormGroup, iFormItem, iText } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "@/views/designate/designatedetail/decisionData/singleSourcing/data"
 import { getSingleSourcing } from "@/api/designate/decisiondata/singleSourcing"
-
+import filters from "@/utils/filters"
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
+  },
   components: { iCard, iFormGroup, iFormItem, iText, tableList },
   data() {
     return {
       projectName: "",
       nominateId: "",
       tableTitle: _.cloneDeep(tableTitle),
-      tableListData: []
+      tableListData: [],
+      cntentHeight:0
     }
   },
   created() {
@@ -55,6 +83,15 @@ export default {
     }))
 
     this.getSingleSourcing()
+  },
+  mounted(){
+    this.width = this.$refs.single.clientWidth
+    let formHeight = this.$refs.form.clientHeight
+    console.log(formHeight);
+    let headerHeight = 84 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - formHeight - this.hasTitle // 内容区域对应的高度
+    console.log(this.cntentHeight);
   },
   methods: {
     getSingleSourcing:function () {
@@ -81,11 +118,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .singleSourcing {
   .info {
     ::v-deep .el-form-item__label {
       width: 280px; /*no*/
     }
+  }
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>

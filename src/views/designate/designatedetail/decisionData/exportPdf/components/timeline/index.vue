@@ -1,8 +1,8 @@
 <template>
-  <div class="timeline pageCard-main rsPdfCard">
-    <slot></slot>
+  <div class="timeline pageCard-main rsPdfCard" ref="timeline">
+    <slot name="tabTitle"></slot>
     <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
-      <div class="content">
+      <div class="content" :style="{'height': cntentHeight + 'px'}">
         <div>
           <div v-for="(node, $nodeIndex) in (Array.isArray(data.nomiTimeAxisGroup) ? data.nomiTimeAxisGroup : [])"
                :key="$nodeIndex">
@@ -45,6 +45,17 @@
           </div>
         </div>
       </div>
+      
+      <div class="page-logo">
+        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+        <div>
+          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+        </div>
+      </div>
     </iCard>
   </div>
 </template>
@@ -57,17 +68,39 @@ import supplierLine from "@/views/designate/designatedetail/decisionData/timeLin
 import todayIcon from "@/views/designate/designatedetail/decisionData/timeLine/components/todayIcon"
 import {getTimeaxis} from "@/api/designate/decisiondata/timeLine"
 import {stepList} from "@/views/designate/designatedetail/decisionData/timeLine/components/data"
-
+import filters from "@/utils/filters"
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
+  },
   components: {iCard, icon, groupStep, supplierStep, supplierLine, todayIcon},
   data() {
     return {
       dataGroup: [],
-      stepList
+      stepList,
+      cntentHeight:0
     }
   },
   created() {
     this.getTimeaxis()
+  },
+  mounted(){
+    this.width = this.$refs.timeline.clientWidth
+    console.log('this.width=>',this.width);
+    let headerHeight = 86 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+    console.log(this.cntentHeight);
   },
   methods: {
     getTimeaxis: function () {
@@ -83,6 +116,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .timeline {
   .timelineCard {
     & + & {
@@ -141,6 +186,14 @@ export default {
         }
       }
     }
+  }
+  
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>

@@ -16,7 +16,9 @@
         <!-- title -->
         <div id="html2canvasTitle">
           <rsTitle class="module">
-            <headerTab value="/designate/decisiondata/title"/>
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/title"/>
+            </template>
           </rsTitle>
          </div>
         <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
@@ -36,57 +38,73 @@
         <!-- PartList -->
         <div id="html2canvasPartList">
           <partList class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/partlist"/>
+            </template>
           </partList>
         </div>
 
         <!-- Tasks -->
         <div id="html2canvasTasks">
           <tasks class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/tasks"/>
+            </template>
           </tasks>
         </div>
 
         <!-- drawing -->
         <div id="html2canvasDrawing">
           <drawing class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/drawing"/>
+            </template>
           </drawing>
         </div>
 
         <!-- bdl -->
         <div id="html2canvasBDl">
           <bdl isExportPdf class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/bdl"/>
+            </template>
           </bdl>
         </div>
 
         <!-- singleSourcing -->
         <div id="html2canvasSingleSourcing">
           <singleSourcing class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/singlesourcing"/>
+            </template>
           </singleSourcing>
         </div>
 
         <!-- abprice -->
         <div id="html2canvasAbprice">
           <abPrice class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/abprice"/>
+            </template>
           </abPrice>
         </div>
 
         <!-- timeline -->
         <div id="html2canvasTimeline">
           <timeline class="module">
+            <template #tabTitle>
             <headerTab value="/designate/decisiondata/timeline"/>
+            </template>
           </timeline>
         </div>
         <!-- awardingScenario -->
         <div id="html2canvasAwardingScenario">
           <awardingScenario class="module">
+            <template #tabTitle>
             <div class="tab-list">
               <headerTab value="/designate/decisiondata/awardingscenario"/>
             </div>
+            </template>
           </awardingScenario>
         </div>
         
@@ -282,11 +300,12 @@ export default {
       const filter = transferDom.filter((item)=>item.imageUrl);
       if(filter.length == transferDom.length){ // 上传完毕
         const list = transferDom.map((item)=>item.imageUrl);
-        await decisionDownloadPdf(list).then((res)=>{
-          this.$emit('changeStatus','exportLoading',false)
-        }).catch((err)=>{
-          this.$emit('changeStatus','exportLoading',false)
-        })
+        console.log(list);
+        // await decisionDownloadPdf(list).then((res)=>{
+        //   this.$emit('changeStatus','exportLoading',false)
+        // }).catch((err)=>{
+        //   this.$emit('changeStatus','exportLoading',false)
+        // })
       }
     },
 
@@ -323,13 +342,30 @@ export default {
     // ================================================================================================
     // ================================================================================================
     
+    // webWorker: 创建线程函数
+    webWorker(f){
+      let vm = this
+      if(window.Worker){
+        const worker = new Worker('/locale/Worker.js')
+        worker.onmessage = (event)=> {
+          console.log('TESTETST=>',event)
+          vm.exportPDF2()
+        }
+        worker.onerror = (error)=>{
+          console.log('error=>',error)
+        }
+      }
+    },
     // 导出pdf
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-    
+      let elList = document.getElementsByClassName('pageCard-main')
+      console.log(elList);
+      return
       setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard-main')
+      // this.webWorker(this.exportPDF2)
+      // this.exportPDF2()
         if(!elList.length){
           iMessage.warn('请稍等')
           this.loading = false
@@ -535,5 +571,10 @@ export default {
 }
 ::v-deep .pageCard-main{
   border: rgba(0,38,98,.15) 1px solid;
+}
+#allMoudles{
+  &>div+div{
+    margin-top: 20px;
+  }
 }
 </style>

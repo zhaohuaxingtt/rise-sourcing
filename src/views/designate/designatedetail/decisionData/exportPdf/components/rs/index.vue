@@ -1,6 +1,6 @@
 <template>
 <div class="pageCard-main rsPdfCard">
-  <slot></slot>
+  <slot name="tabTitle"></slot>
   <div class="rs">
     <cRsPdf v-if="isCirculation" />
     <mRsPdf

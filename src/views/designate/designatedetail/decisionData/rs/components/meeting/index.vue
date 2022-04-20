@@ -737,6 +737,9 @@ export default {
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
     }
   },
   created(){
@@ -763,7 +766,7 @@ export default {
           height += el[i].offsetHeight;
         }
         // 第一页
-        this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
+        this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         // 第二页
         // this.otherTableHeight = this.pageHeight - pageLogo - 21
         let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
@@ -809,7 +812,7 @@ export default {
         let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
         // this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
-        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5
+        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5 - this.hasTitle
         let arr = []
         let heightSum = 0
         let PrototypeList = []

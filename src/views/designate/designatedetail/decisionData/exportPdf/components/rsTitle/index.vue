@@ -1,7 +1,7 @@
 <template>
   <div class="content" ref="reTitle">
     <div class="pageCard-main rsPdfCard">
-      <slot></slot>
+      <slot name="tabTitle"></slot>
       <iCard class="rsTitle pageCard rsPdfCard" title="Title">
         <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
           <div class="col">
@@ -43,6 +43,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
   },
   components: {
     iCard,
@@ -63,8 +66,8 @@ export default {
     this.width = this.$refs.reTitle.clientWidth
     let headerHeight = 84 // Title 区域高度
     let pageLogo = 52     // logo 区域高度
-    console.log(this.width);
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo; // 横版A4一页对应的高度
+    console.log('this.hasTitle=>',this.hasTitle);
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
     console.log(this.cntentHeight);
   },
   methods: {
