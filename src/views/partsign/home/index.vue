@@ -428,14 +428,18 @@ export default {
       });
     },
     openPage(val) {
-      console.log(val);
-      local.set(
-        "tpPartInfoVO",
-        JSON.stringify(this.translateDataForDetail(val))
-      );
-      this.$router.push({
+      // local.set(
+      //   "tpPartInfoVO",
+      //   JSON.stringify(this.translateDataForDetail(val))
+      // );
+
+      const routeData = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsign/editordetail",
-      });
+        query: {
+          tpPartID: val.tpPartID
+        }
+      })
+      window.open(routeData.href, '_blank')
     },
     translateDataToRender(data) {
       let newMap = [];
