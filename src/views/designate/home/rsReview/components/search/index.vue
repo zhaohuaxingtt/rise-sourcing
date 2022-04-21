@@ -175,9 +175,9 @@
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="language(items.key, items.name)"
-            v-for="(items, index) in selStatus"
+            :value="items.value"
+            :label="$i18n.locale === 'zh' ? items.label : items.labelEN"
+            v-for="(items, index) in (selectOptions.selStatus || [])"
             :key="index"
           ></el-option>
         </iSelect>
@@ -279,12 +279,12 @@ import { applyType } from '@/layout/nomination/components/data'
 import { form } from '../data'
 import {
   RSReviewApplicationStatus,
-  selStatus,
   signSheetStatus,
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
 import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 import { getDictByCode } from '@/api/dictionary'
+import { selectDictByKeys } from "@/api/dictionary"
 import {
   iSearch,
   iInput,
@@ -300,7 +300,6 @@ export default {
       form,
       ptocessType: applyType,
       applicationStatus: RSReviewApplicationStatus,
-      selStatus,
       signSheetStatus,
       priceConsistentStatus,
       selectOptions: {}
@@ -337,22 +336,53 @@ export default {
       this.form.endRecheckDueDate = data[1]
     },
     getOptions() {
-      this.getDictionary('signStatus', 'signStatus')
-      this.getDictionary('selStatus', 'selStatus')
-      this.getDictionary('applicationStatus', 'applicationStatus')
-      // 获取单一原因部门
-      this.getDictionary('dept', 'score_dept')
-      // 获取单一原因数据字典
-      this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
+      this.getDictionary()
       // 获取车型项目
       this.getCarTypeSop()
     },
     // 获取数据字典
-    getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
-      getDictByCode(optionType).then(res => {
-        if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
-            return { value: item.code, label: item.name, labelEN: item.nameEn }
+    getDictionary() {
+      selectDictByKeys(
+        [
+          { keys: "score_dept" },
+          { keys: "SINGLE_SOURCING_REASON" },
+          { keys: "NOMINATE_SEL_STATUS" }
+        ]
+      )
+      .then(res => {
+        if (res.code == 200) {
+          Object.keys(res.data).forEach(key => {
+            switch(key) {
+              case "score_dept":
+                this.selectOptions.dept = res.data["score_dept"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  label: item.name,
+                  labelEN: item.nameEn,
+                }))
+                break
+              case "SINGLE_SOURCING_REASON":
+                this.selectOptions.reason = res.data["SINGLE_SOURCING_REASON"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  label: item.name,
+                  labelEN: item.nameEn,
+                }))
+                break
+              case "NOMINATE_SEL_STATUS":
+                this.selectOptions.selStatus = res.data["NOMINATE_SEL_STATUS"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  label: item.name,
+                  labelEN: item.nameEn,
+                }))
+                break
+              default:
+            }
+            
           })
         }
       })
