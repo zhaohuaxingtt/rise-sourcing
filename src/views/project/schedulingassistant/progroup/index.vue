@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 12:00:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 14:54:04
  * @Description: 产品组排程页面
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -28,7 +28,7 @@
         </div>
         <div class="floatright">
           <!--------------------算法配置按钮----------------------------------->
-          <logicSettingBtn ref="productLogic" logicType="1" :carProject="carProject" :disabled="isSop || isNodeView" :logicList="productLogicList" @handleUse="handleUseLogic" />
+          <logicSettingBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SUANFAPEIZHI_BUTTON|产品组排程-算法配置-按钮" ref="productLogic" logicType="1" :carProject="carProject" :disabled="isSop || isNodeView" :logicList="productLogicList" @handleUse="handleUseLogic" />
         </div>
       </div>
       <div class="projectCard-content">

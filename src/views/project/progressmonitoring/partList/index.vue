@@ -211,15 +211,15 @@ export default {
           width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }

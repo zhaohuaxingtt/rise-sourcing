@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:36:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-13 11:15:25
  * @Description: 延误原因汇总
 -->
 
@@ -31,17 +31,17 @@
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
-        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
-        <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_ZAICIFASONG_BUTTON|延误原因汇总再次发送按钮" v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_DAOCHU_BUTTON|延误原因汇总导出按钮" v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
-          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
+          <transferBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_TRANSFER_BUTTON|延误原因确认转派按钮" class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
           <!--------------------退回按钮----------------------------------->
-          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
+          <backBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_BACK_BUTTON|延误原因确认退回按钮" class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
           <!--------------------保存按钮----------------------------------->
-          <saveBtn v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+          <saveBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_SAVE_BUTTON|延误原因确认保存按钮" v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
-          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
+          <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
@@ -171,6 +171,7 @@ export default {
       const params = {
         ids: this.selectTableData.map(item => item.id),
         identityTag: this.isFS ? '2' : '1',
+        ...this.searchParams,
       }
       await exportDelayReasonConfirm(params)
       this.exportLoading = false
@@ -190,13 +191,13 @@ export default {
       })
     },
     querySearch(queryString, cb) { 
-      var restaurants = [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
+      var restaurants = [4,5,6,7,8].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据 
       cb(results); 
     },
     createFilter(queryString) { 
-      return (restaurant= [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
+      return (restaurant= [4,5,6,7,8].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
       }; 
     },  
