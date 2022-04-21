@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-29 23:35:25
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:05:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-29 17:44:09
  * @Description: 选择车型项目弹窗
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\index.vue
 -->
@@ -34,7 +34,7 @@
     </iSearch>
     <div class="tableBox padding-bottom40">
       <div class="tableBox-btn">
-        <iButton @click="handleSave" v-permission="CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="handleSave" v-permission="PROJECTMGT_CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN">{{language('BAOCUN', '保存')}}</iButton>
       </div>
       <tableList ref="table" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
     </div>
@@ -159,13 +159,13 @@ export default {
      * @return {*}
      */    
     getCarProjectOptions() {
-      getCarTypePro().then(res => {
+      getSelectCarType().then(res => {
         if (res?.result) {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProName
+              label: item.cartypeProjectZh
             }
           })
         } else {
