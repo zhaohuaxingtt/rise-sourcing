@@ -182,7 +182,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect key="carTypeProjectNum" ref="carTypeProjectNum" v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
+							<iSelect key="carTypeProjectNum" ref="carTypeProjectNum" v-model="detailData.carTypeProjectNum" filterable v-if="!disabled && detailData.partProjectSource != 1" @change="handleChangeByCarTypeProject">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -201,7 +201,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='(procureFactoryCanselect() || detailData.partProjectSource == 5) && isBlankProcureFactory' @change="handleChangeByProcureFactory" v-if="!disabled">
+							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='(procureFactoryCanselect() || detailData.partProjectSource == 5 || detailData.partProjectSource == 1) && isBlankProcureFactory' @change="handleChangeByProcureFactory" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
@@ -646,7 +646,8 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
-				sourceProcureFactory: ''
+				sourceProcureFactory: '',
+				cacheCarTypeProject: {}
 			};
 		},
 		created() {
@@ -738,7 +739,7 @@
 			// },
 			// 判断采购项目来源，查看是否能选择采购工厂
 			procureFactoryCanselect() {
-				return this.detailData.partProjectSource == 1 || this.detailData.partProjectSource == 4
+				return this.detailData.partProjectSource == 4
 			},
 			splitPurchFn() {
 				this.splitPurch.splitPurchBoolean = true;
@@ -898,6 +899,14 @@
 				this.$set(this.detailData, "carTypeProjectNum", "")
 				this.$set(this.detailData, "carTypeProjectId", "")
 				this.$set(this.detailData, "carTypeProjectZh", "")
+			},
+			// 缓存车型项目
+			updateCacheCarTypeProject(data) {
+				this.cacheCarTypeProject = {
+					carTypeProjectNum: data.carTypeProjectNum,
+					carTypeProjectId: data.carTypeProjectId,
+					carTypeProjectZh: data.carTypeProjectZh
+				}
 			},
 			// 修改采购工厂
 			handleChangeByProcureFactory(code) {
@@ -1071,7 +1080,6 @@
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				this.clearCarTypeProject()
 				this.$set(this.detailData, "carTypeModel", [])
 				this.$nextTick(() => {
 					if (this.$refs.carTypeModelSelect) this.$refs.carTypeModelSelect.$el.querySelector("input").value = ""
@@ -1083,6 +1091,20 @@
 
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
+
+				if (this.isGs(data)) {
+					this.updateCacheCarTypeProject({
+						carTypeProjectNum: this.detailData.carTypeProjectNum || this.cacheCarTypeProject.carTypeProjectNum,
+						carTypeProjectId: this.detailData.carTypeProjectId || this.cacheCarTypeProject.carTypeProjectId,
+						carTypeProjectZh: this.detailData.carTypeProjectZh || this.cacheCarTypeProject.carTypeProjectZh
+					})
+					this.clearCarTypeProject()
+				} else {
+					this.$set(this.detailData, "carTypeProjectNum", this.detailData.carTypeProjectNum || this.cacheCarTypeProject.carTypeProjectNum)
+					this.$set(this.detailData, "carTypeProjectId", this.detailData.carTypeProjectId || this.cacheCarTypeProject.carTypeProjectId)
+					this.$set(this.detailData, "carTypeProjectZh", this.detailData.carTypeProjectZh || this.cacheCarTypeProject.carTypeProjectZh)
+					this.cacheCarTypeProject = {}
+				}
 
 				// GS => 非GS, 非GS => GS, 清空零件每车用量
 				if ((this.isGs(this.sourcePartProjectType) && this.isGs(data)) || (!this.isGs(this.sourcePartProjectType) && !this.isGs(data))) {
