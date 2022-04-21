@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-29 10:07:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-02 15:34:46
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -38,7 +38,7 @@
               <div slot="content">{{language('TIPSBIAOCONTENTDESC','本数字为匹配异常至EM&OTS已完成八个模块与CKD/HT零件的零件个数汇总')}}</div>
               <span class="tipsSum">{{tipsSum}}</span>
             </el-tooltip>
-            <el-switch v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
+            <el-switch v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPSBIAO_SWITCH|项目进度监控-TIPS表-按钮开关" v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
         </div>
@@ -65,19 +65,19 @@
          <iFormGroup row="4" class="form">
             <iFormItem class="largeFromItem">
               <span slot="label">{{language('WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG', '未进TIPS表(询价资料已释放)')}}:</span>
-              <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
+              <span class="cursor" @click="toPartList(1,'PROJECTMGT_PROGRESSMONITORING_WEIJINTIPSBIAO_LINK')"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('CKDHTZSBLINGJIANEN', 'CKD/HT/ZSB零件')}}:</span>
-              <span class="cursor" @click="toPartList(2)"><iText>{{showTips ? ckdconfirm : 0}}</iText></span>
+              <span class="cursor" @click="toPartList(2,'PROJECTMGT_PROGRESSMONITORING_CKDHTZSBLINGJIANEN_LINK')"><iText>{{showTips ? ckdconfirm : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('EMOTSYIWANCHENG', 'EM&OTS已完成')}}:</span>
-              <span class="cursor" @click="toPartList(3)"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
+              <span class="cursor" @click="toPartList(3,'PROJECTMGT_PROGRESSMONITORING_EMOTSYIWANCHENG_LINK')"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
             </iFormItem>
             <iFormItem class="smallFromItem">
               <span slot="label" >1999:</span>
-              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
+              <span class="cursor" @click="toPartList(4,'PROJECTMGT_PROGRESSMONITORING_SMALLFROM_LINK')"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -118,6 +118,12 @@ export default {
       csfFgBemerkung: 0
     }
   },
+  computed: {
+      //eslint-disable-next-line no-undef
+      ...Vuex.mapState({
+          permission: state => state.permission
+      }),
+  },
   mounted() {
     this.init()
   },
@@ -138,8 +144,10 @@ export default {
      * @param {*} type （1/2）
      * @return {*}
      */    
-    toPartList(type) {
+    toPartList(type,permissionKey) {
       if (!this.showTips) return
+      // 权限跳转控制
+      if(!this.permission.whiteBtnList[permissionKey]) return;
       this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
         carProjectId: this.carProject,
         carProjectName: this.carProjectName,
@@ -166,8 +174,12 @@ export default {
       // 匹配异常
       const patchStatus = this.patchStatus.find(o => o.name === params.name) || {}
 
+
+      // !!this.permission.whiteBtnList["PROJECTMGT_PROGRESSMONITORING_PIPEIYICHANG_LINK"];
       // 匹配异常跳转
       if (targetIndex === 0 && !(target && target.disabled)) {
+        // 权限跳转控制
+        if(!this.permission.whiteBtnList["PROJECTMGT_PROGRESSMONITORING_PIPEIYICHANG_LINK"]) return;
         this.$router.push({name: 'progressmonitoring-parts-taskList', query: {
           cartypeProId: this.carProject,
           carProjectName: this.carProjectName,
@@ -185,6 +197,8 @@ export default {
           projectDone: projectDone.code || ''
         }
         console.log('onSeriesBarClick', query, params)
+        // 权限跳转控制
+        if(!this.permission.whiteBtnList["PROJECTMGT_PROGRESSMONITORING_OTHERS_LINK"]) return;
         this.$router.push({name: 'progressmonitoring-detail', query
         })
       }
@@ -206,6 +220,10 @@ export default {
       }
       updateAutoData(params).then(res => {
         if (res.code === '200') {
+          // 当打开时提示一下
+          if(this.showTips){
+            iMessage.success('后台数据正在同步,请稍后查看')
+          }
           typeof cb === 'function' && (cb())
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
