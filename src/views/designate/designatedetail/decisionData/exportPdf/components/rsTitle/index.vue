@@ -1,28 +1,41 @@
 <template>
   <div class="content" ref="reTitle">
-    <div class="pageCard-main rsPdfCard">
-      <slot name="tabTitle"></slot>
-      <iCard class="rsTitle pageCard rsPdfCard" title="Title">
-        <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
-          <div class="col">
-            <template v-for="(item, index) in items">
-              <iFormItem v-if="!item.hidden" :key="index" :label="`${ item.label }:`">
-                <iText>{{ data[item.key] }}</iText>
-              </iFormItem>
-            </template>
-          </div>
-        </iFormGroup>
-        <div class="page-logo">
-          <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-          <div>
-            <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
-          </div>
-          <div>
-            <p>{{ userName }}</p>
-            <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-          </div>
+    <iCard class="rsTitle pageCard rsPdfCard" title="Title">
+      <iFormGroup row="1">
+        <div class="col">
+          <template v-for="(item, index) in items">
+            <iFormItem v-if="!item.hidden" :key="index" :label="`${ item.label }:`">
+              <iText>{{ data[item.key] }}</iText>
+            </iFormItem>
+          </template>
         </div>
-      </iCard>
+      </iFormGroup>
+    </iCard>
+    <div class="pdf-item">
+      <div class="pageCard-main rsPdfCard">
+        <slot name="tabTitle"></slot>
+        <iCard class="rsTitle pageCard rsPdfCard" title="Title">
+          <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
+            <div class="col">
+              <template v-for="(item, index) in items">
+                <iFormItem v-if="!item.hidden" :key="index" :label="`${ item.label }:`">
+                  <iText>{{ data[item.key] }}</iText>
+                </iFormItem>
+              </template>
+            </div>
+          </iFormGroup>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p class="pageNum"></p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </iCard>
+      </div>
     </div>
   </div>
 </template>
@@ -66,9 +79,7 @@ export default {
     this.width = this.$refs.reTitle.clientWidth
     let headerHeight = 84 // Title 区域高度
     let pageLogo = 52     // logo 区域高度
-    console.log('this.hasTitle=>',this.hasTitle);
     this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
-    console.log(this.cntentHeight);
   },
   methods: {
     findLayoutTitleInfo: function () {

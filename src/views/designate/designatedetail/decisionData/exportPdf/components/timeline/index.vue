@@ -1,8 +1,7 @@
 <template>
-  <div class="timeline pageCard-main rsPdfCard" ref="timeline">
-    <slot name="tabTitle"></slot>
-    <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
-      <div class="content" :style="{'height': cntentHeight + 'px'}">
+  <div class="timeline" ref="timeline">
+    <iCard class="timelineCard rsPdfCard table-row" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
+      <div class="content">
         <div>
           <div v-for="(node, $nodeIndex) in (Array.isArray(data.nomiTimeAxisGroup) ? data.nomiTimeAxisGroup : [])"
                :key="$nodeIndex">
@@ -45,18 +44,71 @@
           </div>
         </div>
       </div>
-      
-      <div class="page-logo">
-        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-        <div>
-          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
-        </div>
-        <div>
-          <p>{{ userName }}</p>
-          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-        </div>
-      </div>
     </iCard>
+    <div class="pdf-item">
+      <template v-for="(dataGroup,i) in tableList">
+        <div class="pageCard-main rsPdfCard" :key="i">
+          <slot name="tabTitle"></slot>
+          <div :style="{'height': cntentHeight + 'px'}">
+          <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
+            <div class="content">
+              <div>
+                <div v-for="(node, $nodeIndex) in (Array.isArray(data.nomiTimeAxisGroup) ? data.nomiTimeAxisGroup : [])"
+                    :key="$nodeIndex">
+                  <groupStep
+                      v-if="node.isVisible"
+                      :stepList="stepList"
+                      :groupNode="node.nomiTimeAxisLine"
+                      :symbol="false"
+                      :key="`groupNode_${ $nodeIndex }`">
+                    <template slot="myStep">
+                      <todayIcon size="40"/>
+                      <p>Today</p>
+                    </template>
+                  </groupStep>
+                </div>
+              </div>
+              <div>
+                <div class="supplierWrapper"
+                    v-for="(supplier, $supplierIndex) in (Array.isArray(data.nomiTimeAxisSupplierResultVOList) ? data.nomiTimeAxisSupplierResultVOList : [])"
+                    :key="$supplierIndex">
+                  <div class="title">
+                    <div class="name">{{ supplier.supplierName }}</div>
+                    <div class="step">
+                      <supplierStep :symbol="false" :supplierData="supplier.nomiTimeAxisSuppliers"/>
+                    </div>
+                  </div>
+                  <div class="supplierContent">
+                    <ul class="supplier-item-list">
+                      <li class="flex-between-center"
+                          v-for="(exp, $expIndex) in (Array.isArray(supplier.nomiTimeAxisSupplierExps) ? supplier.nomiTimeAxisSupplierExps : [])"
+                          :key="$expIndex">
+                        <span class="supplier-item-name">{{ exp.durationName }}</span>
+                        <div class="supplier-item-line">
+                          <supplierLine :allList="supplier.nomiTimeAxisSupplierExps" :supplierIndex="$expIndex"
+                                        :cardIndex="$index"/>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </iCard>
+        </div>
+        <div class="page-logo">
+          <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+          <div>
+            <p class="pageNum"></p>
+          </div>
+          <div>
+            <p>{{ userName }}</p>
+            <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+          </div>
+        </div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -88,7 +140,8 @@ export default {
     return {
       dataGroup: [],
       stepList,
-      cntentHeight:0
+      cntentHeight:0,
+      tableList:[]
     }
   },
   created() {
@@ -96,18 +149,41 @@ export default {
   },
   mounted(){
     this.width = this.$refs.timeline.clientWidth
-    console.log('this.width=>',this.width);
     let headerHeight = 86 // Title 区域高度
     let pageLogo = 52     // logo 区域高度
     this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
-    console.log(this.cntentHeight);
   },
   methods: {
+    getHeight(){
+      if(!this.$refs.timeline) return
+      this.width = this.$refs.timeline.clientWidth
+      let pageLogo = 52     // logo 区域高度
+      this.cntentHeight = (this.width / 841.89) * 595.28 - pageLogo - this.hasTitle // 内容区域对应的高度
+      let rowList = this.$refs.timeline.getElementsByClassName('table-row')
+      let heightSum = 0
+      let tableList = []
+      let arr = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(heightSum<this.cntentHeight){
+          arr.push(this.dataGroup[i])
+        }else{
+          tableList.push(JSON.parse(JSON.stringify(arr)))
+          heightSum=item.offsetHeight
+          arr = [this.dataGroup[i]]
+        }
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+      return
+    },
     getTimeaxis: function () {
       getTimeaxis(this.$route.query.desinateId).then(res => {
         if (res.code == 200) {
           this.dataGroup = Array.isArray(res.data) ? res.data : []
-          console.log(res.data)
+          this.$nextTick(()=>{
+            this.getHeight()
+          })
         }
       })
     }

@@ -38,7 +38,7 @@
                 <iButton v-if="!nominationDisabled && !rsDisabled && !submitDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
                 <!-- <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton> -->
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
-                <iButton v-if="isDecision && showDecision" :loading="exportLoading" @click="exportPdf">{{language('DAOCHUPDF','导出PDF')}}</iButton>
+                <iButton v-if="isDecision && showDecision" :loading="exportLoading" @click="exportPdf">{{language('DAOCHUPDF','导出PDF')}}22</iButton>
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
                 <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
@@ -96,8 +96,7 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
-
-        <div v-if="showExportPdf" style="width: 0; height: 0; overflow: hidden">
+        <div style="width: 0; height: 0; overflow: hidden">
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>
@@ -129,7 +128,8 @@ import {
     checkNomiMeetingSubmit4,
     updateNominate,
     rsAttachExport,
-    fittingNomi
+    fittingNomi,
+    decisionDownloadPdfLogo
 } from '@/api/designate'
 import { 
     approvalSync
@@ -142,7 +142,7 @@ import { cloneDeep } from "lodash"
 
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
-
+import { uploadUdFile } from '@/api/file/upload'
 export default {
     name:'designateStep',
     components:{
@@ -222,8 +222,9 @@ export default {
     },
     watch: {
         pendingRequestNum(val){
-            if(val == 0 && this.exportLoading && this.showExportPdf){
-                this.$refs['exportPdf'].exportPdf();
+            console.log(val);
+            if(val == 0 && !this.exportLoading && this.showExportPdf){
+                // this.$refs['exportPdf'].exportPdf();
             }
         }
     },
@@ -243,6 +244,99 @@ export default {
         }
     },
     methods:{
+        
+    // 导出pdf
+    async handleExportPdf() {
+      console.time('Time')
+      console.log('0-0');
+      this.fileList = []
+      this.loading = true
+      let elList = document.getElementsByClassName('pageCard-main')
+      console.log(elList);
+      setTimeout(async () => {
+        if(!elList.length){
+          iMessage.warn('请稍等')
+          this.loading = false
+          return
+        }
+        for (let i = 0; i < elList.length; i++) {
+          const el = elList[i];
+          if(el.getElementsByClassName('pageNum')[0])
+          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
+          await this.getPdfImage({
+            dom: el,
+            index: i
+          })
+        }
+        this.uploadUdFile();
+      }, 0)
+      // this.createEl()
+      
+      // this.getPdfImage({
+      //   dom: this.$refs.rsPdf.$el,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+      //   exportPdf: true,
+      //   waterMark: true
+      // })
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    async getPdfImage({
+      //html横向导出pdf
+      dom,
+      index
+    }) {
+      await html2canvas(dom, {
+        allowTaint:true,
+        dpi: 96, //分辨率
+        scale: 2, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then(async (canvas) => {
+          await this.getPdfFile(canvas,index)
+      });
+    },
+
+    async getPdfFile(copyCanvas,num){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile, index: num });
+          r(num)
+        });
+      })
+    },
+    // 下载 pdf 文件
+    async DownloadPdf(){
+      let arr = this.fileList.filter(item=>!item.imageUrl)
+      // console.log(this.fileList);
+      if(arr.length) return
+      const list = this.fileList.map((item)=>item.imageUrl);
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
+      this.loading = false
+      this.$emit('changeStatus','exportLoading',false)
+      console.timeEnd('Time')
+    },
+
+    // 上传图片
+    async uploadUdFile(){
+      this.fileList.map((item)=>{
+        uploadUdFile({
+        multifile: item.file
+        }).then(res=>{
+          if(res.code == 200){
+            item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
+            this.DownloadPdf();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        });
+      })
+    },
         async updateNominate(data) {
             if (this.desinateId) {
                 this.$confirm(this.language('NINGQUEDINGYAOGENGGAIDINGDIANSHENQING','您确定要更改定点申请类型吗？')).then(confirmInfo => {
@@ -762,13 +856,16 @@ export default {
         },
 
         exportPdf(){
-            if(this.showExportPdf){
+                // this.handleExportPdf()
+
+            // if(this.showExportPdf){
                 this.exportLoading = true;
                 this.$refs['exportPdf'].exportPdf();
-            }else{
-                this.showExportPdf = true;
-                this.exportLoading = true;
-            }
+                // this.handleExportPdf()
+            // }else{
+            //     this.showExportPdf = true;
+            //     this.exportLoading = true;
+            // }
         },
 
         changeStatus(type,status){

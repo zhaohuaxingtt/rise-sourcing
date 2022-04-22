@@ -325,6 +325,7 @@ export default {
         console.log('option', option)
         vm.clear()
         vm.setOption(option);
+        self.$store.dispatch('updatePdfPage')
       })
     },
     genSeries() {

@@ -452,7 +452,6 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
-        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
@@ -788,9 +787,6 @@ export default {
     hasTitle(){
       return this.$slots.tabTitle && 116 || 0
     }
-  },
-  mounted(){
-    console.log(this.hasTitle)
   },
   methods: {
     remarkProcess,

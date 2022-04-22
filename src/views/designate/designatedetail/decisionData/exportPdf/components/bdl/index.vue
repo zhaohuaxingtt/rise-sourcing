@@ -56,7 +56,7 @@
         <div class="page-logo">
           <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
           <div>
-            <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+            <p class="pageNum"></p>
           </div>
           <div>
             <p>{{ userName }}</p>
@@ -110,7 +110,6 @@ export default {
     let headerHeight = 86 // Title 区域高度
     let pageLogo = 52     // logo 区域高度
     this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo // 内容区域对应的高度
-    console.log(this.cntentHeight);
   },
   methods: {
     readQuotation: function () {

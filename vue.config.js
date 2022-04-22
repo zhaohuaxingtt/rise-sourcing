@@ -277,6 +277,7 @@ module.exports = {
       },
       '/fileApi': {
         target: 'http://10.122.17.38:8034',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/fileud/',
         changeOrigin: true,
         pathRewrite: {
           '^/fileApi': '',

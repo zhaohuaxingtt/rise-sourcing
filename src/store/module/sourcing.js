@@ -565,6 +565,7 @@ const state = {
   ],
   configscoredeptThirdMenu: [],
   pendingRequestNum:0,
+  update:false
 }
 
 const mutations = {
@@ -579,6 +580,9 @@ const mutations = {
   },
   SET_PENDINGREQUESTNUM(state,data){
     state.pendingRequestNum = data
+  },
+  SET_UPDATE(state){
+    state.update = !state.update
   }
 }
 
@@ -640,12 +644,17 @@ const actions = {
   },
   updatePendingRequestNum({commit},requestNum=0){
     commit('SET_PENDINGREQUESTNUM', requestNum)
+  },
+  updatePdfPage({ commit }) {
+    console.log('0-0-0');
+    commit('SET_UPDATE')
   }
 }
 
 const getters = {
   navList: (state) => state.navList,
   pendingRequestNum: (state) => state.pendingRequestNum,
+  update: (state) => state.update
 }
 
 export default {

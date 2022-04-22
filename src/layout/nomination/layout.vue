@@ -13,8 +13,10 @@
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading">
-      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
-      <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
+      <keep-alive>
+        <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+        <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
+      </keep-alive>
     </div>
   </div>
 </iPage>
@@ -170,4 +172,30 @@ export default {
     line-height: calc(100vh - 360px);
   }
 }
+
+  ::v-deep .pdf-item{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    .rsPdfCard{
+      box-shadow: none;
+      & + .rsCard {
+        margin-top: 20px; /*no*/
+      }
+      .cardHeader{
+        padding: 30px 0px;
+      }
+      .cardBody{
+        padding: 0px;
+      }
+    }
+  }
+  ::v-deep .pageCard-main{
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  ::v-deep .max-content{
+    width: max-content;
+    min-width: 1860px;
+  }
 </style>

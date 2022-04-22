@@ -178,7 +178,7 @@
             <div class="page-logo">
               <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
               <div>
-                <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
+                <p class="pageNum">{{'page '+(index+1)+' of '+tableList.length}}</p>
               </div>
               <div>
                 <p>{{ userName }}</p>

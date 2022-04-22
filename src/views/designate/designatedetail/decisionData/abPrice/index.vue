@@ -7,8 +7,8 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
 -->
 <template>
-<div class="pageCard rsPdfCard">
-  <slot></slot>
+<div class="pageCard-main rsPdfCard">
+  <slot name="tabTitle"></slot>
   <iCard v-permission.auto="SOURCING_NOMINATION_ATTATCH_ABPRICE|决策资料-abprice">
       <fsandsupplier preview></fsandsupplier>
   </iCard>
