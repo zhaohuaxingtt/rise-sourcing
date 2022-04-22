@@ -267,7 +267,7 @@ export default {
           coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
-          type:''
+          assignStatus:''
         },
         selectOptions:{
           'brand':[],
@@ -279,13 +279,13 @@ export default {
           typeList: [
             {
               desc: '科室未分派',
-              code: '1'
+              code: 1
             },{
               desc: 'Linie未分派',
-              code: '2'
+              code: 2
             },{
               desc: '已分派',
-              code: '3'
+              code: 3
             },
           ],
         },
@@ -298,13 +298,14 @@ export default {
           'buyerName':[],
           typeList: [
             {
-              label: '未分派',
-              key: 'WEIFENPEI',
-              value: '0'
+              desc: '科室未分派',
+              code: 1
             },{
-              label: '已分派',
-              key: 'YIFENPEI',
-              value: '1'
+              desc: 'Linie未分派',
+              code: 2
+            },{
+              desc: '已分派',
+              code: 3
             },
           ],
         },

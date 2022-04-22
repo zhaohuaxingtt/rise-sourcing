@@ -24,7 +24,7 @@
       <iButton v-if="isTobeStated" @click="resetCover">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
-      <iFormGroup :key="basicInfo.isReference" :model="basicInfo" ref="ruleForm" :rules="rules" row='4' class="basic-form" :validate-on-rule-change="false">
+      <iFormGroup :key="basicInfo.isReference" :model="basicInfo" ref="ruleForm" :rules="rules" row='4' class="basic-form" :validate-on-rule-change="false" :show-message="false">
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
@@ -238,10 +238,13 @@ export default {
         deep:true,
         immediate: true,
         handler(val){
-          this.basicTitle = BaicFrom(val?true:false)
-          this.rules = fromRules(this,val?true:false)
+          // this.basicTitle = BaicFrom(val?true:false)
+          // this.rules = fromRules(this,val?true:false)
+          this.basicTitle = BaicFrom()
+          this.rules = fromRules(this)
           this.tableTitle.forEach(item=>{
-            item.require = val?true:false
+            // item.require = val?true:false
+            item.require = true
           })
         }
       },
@@ -341,7 +344,7 @@ export default {
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
-          fsId:basicInfo.fsName,
+          fsId:basicInfo.fsName.join(','),
           fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
           getFsName:undefined,

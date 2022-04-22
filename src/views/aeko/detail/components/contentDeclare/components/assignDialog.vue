@@ -49,7 +49,7 @@
 <script>
 import { iDialog, iSelect, iButton, iMessage } from "rise";
 import { searchLinie } from "@/api/aeko/manage";
-import { assignLinie } from "@/api/aeko/detail/partsList.js";
+import { assignContent } from "@/api/aeko/detail/partsList.js";
 import { user as configUser } from "@/config";
 export default {
   name: "assignDialog",
@@ -109,16 +109,16 @@ export default {
       const depArr = linieSelectOptions.filter(
         (item) => item.id == refferenceSmtNum
       );
-      selectItems.map((item) => {
-        data.push({
-          requirementAekoId: item.requirementAekoId,
-          aekoPartId: item.objectAekoPartId,
-          buyerId: refferenceSmtNum,
-          buyerName: depArr.length ? depArr[0].nameZh : "",
-        });
-      });
+      let params = {
+          requirementAekoId: this.selectItems[0].requirementAekoId,
+          objectAekoPartIds: this.selectItems.map(item=> item.objectAekoPartId),
+          userId:this.userInfo.id,
+          userName: this.userInfo.nameZh,
+          targetUserId: refferenceSmtNum,
+          targetUserName: depArr.length ? depArr[0].nameZh : "",
+        };
       this.isLoading = true;
-      await assignLinie(data)
+      await assignContent(params)
         .then((res) => {
           this.isLoading = false;
           const { code } = res;
@@ -126,12 +126,6 @@ export default {
             iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
             this.clearDialog();
             this.$emit("getList");
-            // 提示XXX（Linie中文名）没有当前零件(XXX）所属材料组权限，请及时申请，以免影响后续操作
-            this.$message.warning({
-              message: this.$i18n.locale === "zh" ? res.desZh : res.desEn,
-              duration: 15000,
-              showClose: true,
-            });
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -149,12 +143,18 @@ export default {
       await searchLinie({ tagId: configUser.LINLIE, deptId }).then((res) => {
         const { code, data } = res;
         if (code == 200) {
-          data.map((item) => {
-            item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            item.value = item.id + "";
+          let selectData = []
+          data.forEach((item) => {
+            if(item.id!=userInfo.id){
+              item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.value = item.id + "";
+              selectData.push(item)
+            }
           });
-          this.linieSelectOptions = data;
-          this.linieSelectCopyOptions = data;
+          console.log(selectData);
+          this.linieSelectOptions = selectData;
+          this.linieSelectCopyOptions = selectData;
+          console.log(data);
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
