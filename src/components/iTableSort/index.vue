@@ -85,7 +85,7 @@
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
         :show-overflow-tooltip='items.tooltip'
-        :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))"
+        :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))"
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''"
         :sortable="items.sortable||false"
