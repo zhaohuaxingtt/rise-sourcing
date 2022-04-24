@@ -21,8 +21,8 @@ export const onlyselfProject = {
   GANGCAIYICIXINGCAIGOU: '1000030',
   // DB仅零件号更改（PT03）
   DBJINLINGJIANHAOGENGAI: '50003000',
-  // 仅零件号更改（PT08）
-  JINLINGJIANHAOGENGGAI: '1000005',
+  // // 仅零件号更改（PT08）
+  // JINLINGJIANHAOGENGGAI: '1000005',
   // AEKO零件（PT02）
   AEKOLINGJIAN: '1000006',
   // 钢材批量采购（PT12）
@@ -34,6 +34,8 @@ export const onlyselfProject = {
 
 }
 export const allitemsList = {
+  // 仅零件号更改（PT08）
+  JINLINGJIANHAOGENGGAI: '1000005',
   // GS Common Sourcing（PT10）
   GSCOMMONSOURCING: '50002001',
   // 扩产能（PT15）
