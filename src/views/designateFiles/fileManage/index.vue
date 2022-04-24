@@ -151,12 +151,13 @@ import {partProjTypes} from '@/config'
 import headerNav from '@/components/headerNav'
 import moment from 'moment'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import iLoger from 'rise/web/components/iLoger'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger},
   data() {
     return {
       // 零件项目类型

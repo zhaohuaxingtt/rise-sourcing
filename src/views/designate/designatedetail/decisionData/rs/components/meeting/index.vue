@@ -1465,7 +1465,8 @@ export default {
           })
           this.tableData = data
           this.projectType = this.basicData.partProjectType || ""
-			this.searchRsPageExchangeRate()
+
+          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []
