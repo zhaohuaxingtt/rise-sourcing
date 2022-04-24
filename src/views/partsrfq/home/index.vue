@@ -120,7 +120,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
-                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission.auto="PARTSRFQ_ACTIVATERFQ|激活RFQ">
                   {{ language('LK_JIHUORFQS','激活RFQ') }}

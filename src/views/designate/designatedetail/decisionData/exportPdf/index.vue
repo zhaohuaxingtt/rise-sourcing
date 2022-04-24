@@ -1,5 +1,5 @@
 <template> <!-- 导出RS单决策资料 -->
-  <div class="exportPdf">
+  <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
@@ -15,8 +15,11 @@
       <div class="content" id="allMoudles">
         <!-- title -->
         <div id="html2canvasTitle">
-          <headerTab value="/designate/decisiondata/title"/>
-          <rsTitle class="module"/>
+          <rsTitle class="module">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/title"/>
+            </template>
+          </rsTitle>
          </div>
         <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
         { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
@@ -34,57 +37,82 @@
                { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
         <!-- PartList -->
         <div id="html2canvasPartList">
-          <headerTab value="/designate/decisiondata/partlist"/>
-          <partList class="module"/>
+          <partList class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/partlist"/>
+            </template>
+          </partList>
         </div>
 
         <!-- Tasks -->
         <div id="html2canvasTasks">
-          <headerTab value="/designate/decisiondata/tasks"/>
-          <tasks class="module"/>
+          <tasks class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/tasks"/>
+            </template>
+          </tasks>
         </div>
 
         <!-- drawing -->
         <div id="html2canvasDrawing">
-          <headerTab value="/designate/decisiondata/drawing"/>
-          <drawing class="module"/>
+          <drawing class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/drawing"/>
+            </template>
+          </drawing>
         </div>
 
         <!-- bdl -->
         <div id="html2canvasBDl">
-          <headerTab value="/designate/decisiondata/bdl"/>
-          <bdl isExportPdf class="module"/>
+          <bdl isExportPdf class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/bdl"/>
+            </template>
+          </bdl>
         </div>
 
         <!-- singleSourcing -->
         <div id="html2canvasSingleSourcing">
-          <headerTab value="/designate/decisiondata/singlesourcing"/>
-          <singleSourcing class="module"/>
+          <singleSourcing class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/singlesourcing"/>
+            </template>
+          </singleSourcing>
         </div>
 
         <!-- abprice -->
-        <div id="html2canvasAbprice">
-          <headerTab value="/designate/decisiondata/abprice"/>
-          <abPrice class="module"/>
-        </div>
+        <!-- <div id="html2canvasAbprice">
+          <abPrice class="module pageCard-main rsPdfCard">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/abprice"/>
+            </template>
+          </abPrice>
+        </div> -->
 
         <!-- timeline -->
         <div id="html2canvasTimeline">
-          <headerTab value="/designate/decisiondata/timeline"/>
-          <timeline class="module"/>
+          <timeline class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/timeline"/>
+            </template>
+          </timeline>
         </div>
         <!-- awardingScenario -->
         <div id="html2canvasAwardingScenario">
-          <div  class="tab-list">
-            <headerTab value="/designate/decisiondata/awardingscenario"/>
-          </div>
-          <awardingScenario class="module" />
+          <awardingScenario class="module">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/awardingscenario"/>
+            </template>
+          </awardingScenario>
         </div>
         
 
         <div id="html2canvasRs">
-            <headerTab value="/designate/decisiondata/rs"/>
-          <rs class="module" :nomiData="nomiData"/>
+          <rs class="module" :nomiData="nomiData">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/rs"/>
+            </template>
+          </rs>
         </div>
       </div>
     </div>
@@ -95,9 +123,10 @@
 </template>
 
 <script>
-import { iButton, iTabsList } from "rise"
-import {nominateAppSDetail,decisionDownloadPdf} from "@/api/designate"
-import rsTitle from "./components/rsTitle"
+import { iButton, iTabsList, iMessage } from "rise"
+import {nominateAppSDetail,decisionDownloadPdf, decisionDownloadPdfLogo} from "@/api/designate"
+// import rsTitle from "./components/rsTitle"
+import rsTitle from "../title"
 import partList from "./components/partList"
 import tasks from "./components/tasks"
 import drawing from "./components/drawing"
@@ -108,7 +137,7 @@ import timeline from "./components/timeline"
 import awardingScenario from '../../awardingscenario'
 import abPrice from '../abPrice'
 import bdl from "../bdl"
-import rs from "../rs"
+import rs from "../rs/home"
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
@@ -133,6 +162,18 @@ export default {
     headerTab,
     abPrice,
   },
+  computed:{
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+        update: state => state.sourcing.update,
+    }),
+  },
+    watch: {
+      update(val){
+        console.log(val);
+        this.$forceUpdate()
+      }
+    },
   created() {
     this.nominateAppId = this.$route.query.desinateId
     if (!this.nominateAppId) return
@@ -173,11 +214,12 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           this.nomiData = res.data || {}
-          console.log("nmsl", this.nomiData)
         }
       })
     },
     exportPdf() {
+      this.handleExportPdf()
+      return
       // this.exportLoading = true
       // transverseDownloadPDF({
       //   dom: this.$refs.contentPage,
@@ -280,16 +322,13 @@ export default {
     async checkAllFilesDone(){
       const { transferDom=[] } = this;
       const filter = transferDom.filter((item)=>item.pdfFile);
-      console.log(this.transferDom,'transferDom','1',filter.length,transferDom.length);
        if(filter.length == transferDom.length){ // 生成完毕
         //将转换为formData的canvas图片 上传到服务器
-        console.log(this.transferDom,'transferDom','2');
         transferDom.map((item)=>{
           uploadUdFile({
           multifile: item.pdfFile
         }).then((res=>{
           if(res.code == 200){
-            console.log(res.data,'res.data.pathres.data.pathres.data.path')
             item['imageUrl'] = res.data[0].path || '';
             this.checkAllImageUpload();
           }else{
@@ -299,6 +338,119 @@ export default {
         })
         
        }
+    },
+
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    
+    // webWorker: 创建线程函数
+    webWorker(f){
+      let vm = this
+      if(window.Worker){
+        const worker = new Worker('/locale/Worker.js')
+        worker.onmessage = (event)=> {
+          // vm.exportPDF2()
+        }
+        worker.onerror = (error)=>{
+        }
+      }
+    },
+    // 导出pdf
+    async handleExportPdf() {
+      console.time('Time')
+      this.fileList = []
+      this.loading = true
+      let elList = this.$refs.exportPdf.getElementsByClassName('pageCard-main')
+      console.log(elList);
+      setTimeout(async () => {
+      // this.webWorker(this.exportPDF2)
+      // this.exportPDF2()
+        if(!elList.length){
+          iMessage.warn('请稍等')
+          this.loading = false
+          return
+        }
+        for (let i = 0; i < elList.length; i++) {
+          const el = elList[i];
+          if(el.getElementsByClassName('pageNum')[0])
+          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
+          await this.getPdfImage({
+            dom: el,
+            index: i
+          })
+        }
+        this.uploadUdFile();
+      }, 0)
+      // this.createEl()
+      
+      // this.getPdfImage({
+      //   dom: this.$refs.rsPdf.$el,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+      //   exportPdf: true,
+      //   waterMark: true
+      // })
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    async getPdfImage({
+      //html横向导出pdf
+      dom,
+      index
+    }) {
+      await html2canvas(dom, {
+        allowTaint:true,
+        dpi: 96, //分辨率
+        scale: 2, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then(async (canvas) => {
+          await this.getPdfFile(canvas,index)
+      });
+    },
+
+    async getPdfFile(copyCanvas,num){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile, index: num });
+          r(num)
+        });
+      })
+    },
+    // 下载 pdf 文件
+    async DownloadPdf(){
+      let arr = this.fileList.filter(item=>!item.imageUrl)
+      if(arr.length) return
+      const list = this.fileList.map((item)=>item.imageUrl);
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
+      this.loading = false
+      this.$emit('changeStatus','exportLoading',false)
+      console.timeEnd('Time')
+    },
+
+    // 上传图片
+    async uploadUdFile(){
+      this.fileList.map((item)=>{
+        uploadUdFile({
+        multifile: item.file
+        }).then(res=>{
+          if(res.code == 200){
+            item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
+            this.DownloadPdf();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        });
+      })
     },
   }
 }
@@ -316,7 +468,8 @@ export default {
   }
 
   .btnControl {
-    width: 1920px; /*no*/
+    // width: 1920px; /*no*/
+    width: 100%;
     text-align: right;
     position: absolute;
     height: 30px; /*no*/
@@ -328,7 +481,8 @@ export default {
   }
 
   .main {
-    width: 1920px; /*no*/
+    // width: 1920px; /*no*/
+    width: 100%;
     padding: 30px 0; /*no*/
     margin: 0 auto;
     box-sizing: content-box;
@@ -341,7 +495,7 @@ export default {
       white-space: nowrap;
       height: 30px; /*no*/
       line-height: 30px; /*no*/
-      padding: 0 20px;
+      // padding: 0 20px;
 
       .mtz {
         .num {
@@ -369,7 +523,7 @@ export default {
 
       ::v-deep .card {
         box-shadow: none;
-        border: 1px solid #999;
+        // border: 1px solid #999;
       }
 
       .module {
@@ -393,7 +547,7 @@ export default {
         }
         ::v-deep.rsPdf{
           width:100%;
-          max-width: 1920px;
+          // max-width: 1920px;
         }
       }
     }
@@ -422,5 +576,40 @@ export default {
       }
     }
   }
+}
+::v-deep .pageCard-main{
+  background: #FFF;
+}
+#allMoudles{
+  &>div+div{
+    margin-top: 20px;
+  }
+  
+  ::v-deep .pdf-item{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+  }
+  ::v-deep .pageCard-main{
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  ::v-deep .max-content{
+    width: max-content;
+    min-width: 1860px;
+  }
+  
+::v-deep .rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  .cardHeader{
+    padding: 30px 0px;
+  }
+  .cardBody{
+    padding: 0px;
+  }
+}
 }
 </style>

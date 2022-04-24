@@ -14,7 +14,6 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader('rfqTable')"></buttonTableSetting>
           <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 margin-left20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
@@ -67,7 +66,6 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader('partTable')"></buttonTableSetting>
           <iButton 
             v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"

@@ -4,23 +4,62 @@
  * @Description: 
 -->
 <template>
-  <iCard class="partList" title="Part List">
-    <tableList
-        showName
-        :selection="false"
-        :tableTitle="tableTitle"
-        :tableData="tableListData">
-      <template #mtz="scope">
-        <span>{{ mtzFormat(scope.row.mtz) }}</span>
+  <div ref="partList">
+    <iCard class="partList rsPdfCard" title="Part List">
+      <tableList
+          showName
+          :selection="false"
+          row-class-name="table-row"
+          :tableTitle="tableTitle"
+          :tableData="tableListData">
+        <template #mtz="scope">
+          <span>{{ mtzFormat(scope.row.mtz) }}</span>
+        </template>
+        <template #ebrCalculatedValue="scope">
+          <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
+        </template>
+        <template #ebrConfirmValue="scope">
+          <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
+        </template>
+      </tableList>
+    </iCard>
+    <div class="pdf-item">
+      <template v-for="(tableData,index) in tableList">
+      <div :key="index" class="pageCard-main rsPdfCard">
+        <slot name="tabTitle"></slot>
+        <iCard class="partList pageCard rsPdfCard" title="Part List">
+          <div :style="{'height': cntentHeight + 'px'}">
+            <tableList
+                showName
+                :selection="false"
+                :tableTitle="tableTitle"
+                :tableData="tableData">
+              <template #mtz="scope">
+                <span>{{ mtzFormat(scope.row.mtz) }}</span>
+              </template>
+              <template #ebrCalculatedValue="scope">
+                <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
+              </template>
+              <template #ebrConfirmValue="scope">
+                <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
+              </template>
+            </tableList>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p class="pageNum"></p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </iCard>
+      </div>
       </template>
-      <template #ebrCalculatedValue="scope">
-        <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
-      </template>
-      <template #ebrConfirmValue="scope">
-        <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
-      </template>
-    </tableList>
-  </iCard>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -28,8 +67,22 @@ import {iCard} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import {tableTitle} from "@/views/designate/designatedetail/decisionData/partList/data"
 import {getPartList} from "@/api/designate/designatedetail/decisionData/partlist"
+import filters from "@/utils/filters"
 
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    },
+  },
   components: {
     iCard,
     tableList
@@ -37,17 +90,44 @@ export default {
   data() {
     return {
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      tableList:[]
     }
   },
   created() {
     this.tableTitle = _.cloneDeep(tableTitle)
     this.$set(this.tableTitle[9], "minWidth", "90")
     this.$set(this.tableTitle[10], "minWidth", "90")
+    this.tableTitle.unshift({ props: 'index', name: '序号', key: '', width: 80 })
 
     this.getPartList()
   },
   methods: {
+    getHeight(){
+      if(!this.$refs.partList) return
+      this.width = this.$refs.partList.clientWidth
+      let headerHeight = 84 // Title 区域高度
+      let pageLogo = 52     // logo 区域高度
+      let tableHeader = 41  // 表头高度
+      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+      let rowList = this.$refs.partList.getElementsByClassName('table-row')
+      let heightSum = 0
+      let tableList = []
+      let arr = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(heightSum<this.cntentHeight - tableHeader){
+          arr.push(this.tableListData[i])
+        }else{
+          tableList.push(JSON.parse(JSON.stringify(arr)))
+          heightSum=item.offsetHeight
+          arr = [this.tableListData[i]]
+        }
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+      return
+    },
     getPartList: function () {
       getPartList({
         nominateId: this.$route.query.desinateId,
@@ -57,6 +137,14 @@ export default {
           .then(res => {
             if (res.code == 200 && res.data) {
               this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
+              this.tableListData = [...this.tableListData,...this.tableListData,]
+              this.tableListData = JSON.parse(JSON.stringify(this.tableListData)).map((item,i)=>{
+                item.index = 1+i
+                return item
+              })
+              this.$nextTick(()=>{
+                this.getHeight()
+              })
             }
           })
     },
@@ -71,7 +159,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .partList {
-
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 }
 </style>
