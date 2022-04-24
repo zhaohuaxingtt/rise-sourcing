@@ -37,7 +37,7 @@ export const form = {
   partNameZh:"",//零件中文名称
   partNum:'',//零件号
   projectCarType:'',//车型项目
-  status:'NOTACCEPTED',//信息单状态，默认查询 解决bug
+  status: ['NOTACCEPTED', 'NOT_COMPLETE'], //信息单状态，默认查询 解决bug 未签收、未完整
   tpInfoType:'',//信息单分类
   userId:store.state.permission.userInfo?.id,
   showSelf: true
