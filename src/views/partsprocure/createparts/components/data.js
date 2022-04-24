@@ -40,7 +40,3 @@ export const navList = [
     permissionName: '工厂迁移'
   }
 ]
-
-export const noOnlineText = lang => {
-  return `<span style="color: red; font-size: 13px; font-weight: 400">（${ lang === 'zh' ? '暂未上线，敬请期待' : 'Not yet online, stay tuned' }）<span>`
-}

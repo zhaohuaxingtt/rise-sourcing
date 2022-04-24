@@ -323,6 +323,12 @@ export default [
             name: "createPartsFactoryRelocate",
             meta: { title: "工厂迁移", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/partsprocure/createparts/components/factoryrelocate"),
+        },
+        {
+            path: "createparts/batchDetail",
+            name: "createPartsBatchDetail",
+            meta: { title: "批次详情", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'] },
+            component: () => import("@/views/partsprocure/createparts/components/factoryrelocate/components/detail"),
         }
       ]
     }

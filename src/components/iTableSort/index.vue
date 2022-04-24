@@ -38,7 +38,7 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))" :sortable="items.sortable||false" :sort-method="items.sortMethod">
+      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" :align="items.align || 'center'" :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))" :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
@@ -80,7 +80,7 @@
       <!----------------------普通表格展示---------------------------------------->
       <el-table-column
         v-else
-        align='center'
+        :align="items.align || 'center'"
         :key="`${items.props}_${index}`"
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
