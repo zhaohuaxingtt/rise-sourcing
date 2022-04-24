@@ -187,7 +187,7 @@ export default {
                   props: `ltc_${year}`,
                   name: `LTC ${year}`,
                   key: `LTC ${year}`,
-                  width: 200,
+                  width: 70,
                   tooltip: false
                 })
               })

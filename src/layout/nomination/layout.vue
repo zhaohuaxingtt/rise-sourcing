@@ -8,7 +8,7 @@
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
-      <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
+      <designateStep v-if="isPreview=='0'" :showDecision="showDecision" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>

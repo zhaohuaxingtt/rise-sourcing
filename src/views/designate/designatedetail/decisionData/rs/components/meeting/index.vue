@@ -1691,11 +1691,9 @@ export default {
 	display: none;
 }
 .meeting {
-	height: 100vh;
-	overflow-y: auto;
-	.rsCard {
-		::v-deep .cardHeader {
-			flex-wrap: wrap;
+  .rsCard {
+    ::v-deep .cardHeader {
+      flex-wrap: wrap;
 
 			.btnWrapper {
 				width: 100%;

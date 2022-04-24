@@ -160,14 +160,14 @@ export const signsheetViewTableTitle = [
     name: 'Year CW',
     key: 'YEARCW',
     tooltip: true,
-    minWidth: '120'
+    minWidth: '90'
   },
   {
     props: 'nominateId',
     name: 'Nomination No.',
     key: 'NOMINATIONNO.',
     tooltip: true,
-    minWidth: '140'
+    minWidth: '114'
   },
   {
     props: 'partNameCn',
@@ -208,13 +208,15 @@ export const signsheetViewTableTitle = [
     props: 'share',
     name: 'Share',
     key: 'SHARE',
-    tooltip: true
+    tooltip: true,
+    minWidth: '60'
   },
   {
     props: 'tto',
     name: 'TTO',
     key: 'TTO',
-    tooltip: true
+    tooltip: true,
+    minWidth: '110'
   },
   {
     props: 'rsRemark',
