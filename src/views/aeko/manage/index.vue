@@ -68,7 +68,7 @@
                   :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
                   v-model="searchParams[item.props]"
                 ></iMultiLineInput>
-                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iDatePicker :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
@@ -267,6 +267,7 @@ export default {
           coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
+          assignStatus:''
         },
         selectOptions:{
           'brand':[],
@@ -275,6 +276,18 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              desc: '科室未分派',
+              code: 1
+            },{
+              desc: 'Linie未分派',
+              code: 2
+            },{
+              desc: '已分派',
+              code: 3
+            },
+          ],
         },
         selectOptionsCopy:{
           'brand':[],
@@ -283,6 +296,18 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              desc: '科室未分派',
+              code: 1
+            },{
+              desc: 'Linie未分派',
+              code: 2
+            },{
+              desc: '已分派',
+              code: 3
+            },
+          ],
         },
         tableListData:[],
         tableTitle:tableTitle,

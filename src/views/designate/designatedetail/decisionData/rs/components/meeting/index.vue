@@ -1,213 +1,351 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 13:48:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-13 11:28:03
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
 
 <template>
-  <div class="meeting" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
-      <iCard class="rsCard">
-        <template #header>
-          <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
-          </div>
-          <div class="title">
-            <p>CSC定点推荐 - {{ cardTitle }}</p>
-            <p>{{ cardTitleEn }}</p>
-          </div>
-          <div>
-            <div class="control">
-              <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
-              <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
-            </div>
-          </div>
-        </template>
-        <div class="rsTop page-top">
-          <div class="rsTop-left">
-            <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-              <div class="rsTop-left-item-title">
-                <p>{{ item.name }}</p><p>{{ item.enName }}</p>
-              </div>
-              <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
-            </div>
-          </div>
-          <div class="rsTop-right">
-            <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
-              <template v-if="Array.isArray(item)">
-                <div class="rsTop-right-item-title">
-                  <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
-                </div>
-                <div class="rsTop-right-item-value">
-                  <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                    {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
-                </div>
-              </template>
-              <template v-else>
-                <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
-                  <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
-                    <div v-for="(item,index) in basicData[item.props]" :key="index">
-                        <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
-                          <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
-                          <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
-                        </el-tooltip>
-                    </div>
-                  </div>
-                  <div class="rsTop-right-item-value" v-else >
-                    <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
-                    <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
-                    <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
-                  </div>
-              </template>
-            </div>
-          </div>
-        </div>
-        <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
-          <template #fsnrGsnrNum="scope">
-            <div>
-              <p>{{ scope.row.fsnrGsnrNum }}</p>
-              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-            </div>
-          </template>
-          
-          <!-- 年降 -->
-          <template #ltc="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-          </template>
+	<div class="meeting" :class="isPreview && 'isPreview'">
+		<div class="demo" :style="{ width: pageWidth + 80 + 'px' }">
+			<iCard class="rsCard">
+				<template #header>
+					<div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+						<iButton @click="handleExportPdf" :loading="loading">{{
+							language('DAOCHURSDAN', '导出RS单')
+						}}</iButton>
+					</div>
+					<div class="title">
+						<p>CSC定点推荐 - {{ cardTitle }}</p>
+						<p>{{ cardTitleEn }}</p>
+					</div>
+					<div>
+						<div class="control">
+							<div class="nomiId" :class="isSingle ? 'margin-right20' : ''">
+								定点申请单号：{{
+									$route.query.desinateId ? $route.query.desinateId : nominateId
+								}}
+							</div>
+							<div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+						</div>
+					</div>
+				</template>
+				<div class="rsTop page-top">
+					<div class="rsTop-left">
+						<div
+							class="rsTop-left-item"
+							v-for="(item, index) in leftTitle"
+							:key="index"
+						>
+							<div class="rsTop-left-item-title">
+								<p>{{ item.name }}</p>
+								<p>{{ item.enName }}</p>
+							</div>
+							<div class="rsTop-left-item-value">
+								{{ basicData[item.props] }}
+							</div>
+						</div>
+					</div>
+					<div class="rsTop-right">
+						<div
+							v-for="(item, index) in rightTitle"
+							:key="index"
+							class="rsTop-right-item"
+						>
+							<template v-if="Array.isArray(item)">
+								<div class="rsTop-right-item-title">
+									<div v-for="(subItem, subIndex) in item" :key="subIndex">
+										{{ subItem.name }} {{ subItem.enName }}
+										<br v-if="subIndex < item.length - 1" />
+									</div>
+								</div>
+								<div class="rsTop-right-item-value">
+									<div v-for="(subItem, subIndex) in item" :key="subIndex">
+										{{
+											subItem.props === 'currency'
+												? basicData.currencyMap &&
+												  basicData.currencyMap[basicData.currency]
+													? basicData.currencyMap[basicData.currency].code
+													: basicData.currency
+												: basicData[subItem.props]
+										}}<br v-if="subIndex < item.length - 1" />
+									</div>
+								</div>
+							</template>
+							<template v-else>
+								<div class="rsTop-right-item-title">
+									{{ item.name }}<br />{{ item.enName }}
+								</div>
+								<div
+									class="rsTop-right-item-value"
+									v-if="item.props == 'suppliersNow'"
+								>
+									<div
+										v-for="(item, index) in basicData[item.props]"
+										:key="index"
+									>
+										<el-tooltip
+											:content="`${item.shortNameZh}/${item.shortNameEn}`"
+											placement="top"
+											effect="light"
+										>
+											<div
+												style="
+													overflow: hidden;
+													text-overflow: ellipsis;
+													width: 100%;
+												"
+											>
+												<span style="white-space: nowrap"
+													>{{ item.shortNameZh }}/</span
+												>
+												<span style="white-space: nowrap">{{
+													item.shortNameEn
+												}}</span
+												><br />
+											</div>
+										</el-tooltip>
+									</div>
+								</div>
+								<div class="rsTop-right-item-value" v-else>
+									<span
+										v-if="item.props == 'mtz' || item.props == 'isApportion'"
+										style="word-wrap: break-word"
+										>{{ basicData[item.props] | booleanFilter }}</span
+									>
+									<span
+										v-else-if="
+											item.props == 'plannedInvest' || item.props == 'setPrice'
+										"
+										style="word-wrap: break-word"
+										>{{ basicData[item.props] | toThousands(true) }}</span
+									>
+									<span
+										v-else
+										v-html="basicData[item.props]"
+										style="word-wrap: break-word"
+									></span>
+								</div>
+							</template>
+						</div>
+					</div>
+				</div>
+				<tableList
+					v-update
+					:selection="false"
+					:tableLoading="tableLoading"
+					:tableTitle="tableTitle"
+					:tableData="tableData"
+					class="rsTable mainTable"
+					tableRowClassName="table-row"
+					border
+				>
+					<template #fsnrGsnrNum="scope">
+						<div>
+							<p>{{ scope.row.fsnrGsnrNum }}</p>
+							<p>
+								{{
+									scope.row.purchasingFactoryShortName
+										? `(${scope.row.purchasingFactoryShortName})`
+										: ''
+								}}
+							</p>
+						</div>
+					</template>
 
-          <!-- 年降开始时间 -->
-          <template #beginYearReduce="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
-          
-          <template #status="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>SKD</p>
-              <p>LC</p>
-            </div>
-            <span v-else>{{ scope.row.status }}</span>
-          </template>
+					<!-- 年降 -->
+					<template #ltc="scope">
+						<span>{{ resetLtcData(scope.row.ltcs, 'ltc') }}</span>
+					</template>
 
-          <template #svwCode="scope">
-            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-          </template>
-          <!-- <template #demand="scope">
+					<!-- 年降开始时间 -->
+					<template #beginYearReduce="scope">
+						<span>{{ resetLtcData(scope.row.ltcs, 'beginYearReduce') }}</span>
+					</template>
+
+					<template #status="scope">
+						<div v-if="scope.row.status === 'SKDLC'">
+							<p>SKD</p>
+							<p>LC</p>
+						</div>
+						<span v-else>{{ scope.row.status }}</span>
+					</template>
+
+					<template #svwCode="scope">
+						<span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+					</template>
+					<!-- <template #demand="scope">
             <span>{{ scope.row.demand | kFilter }}</span>
           </template>
           <template #output="scope">
             <span>{{ scope.row.output | kFilter }}</span>
           </template> -->
-          <template #presentPrice="scope">
-            <span>{{ scope.row.presentPrice | toThousands }}</span>
-          </template>
-          <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-          </template>
-          <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-          </template>
-          <template #aprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdAPrice | toThousands }}</p>
-              <p>{{ scope.row.aprice | toThousands }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-            <span v-else>{{ scope.row.aprice | toThousands }}</span>
-          </template>
-          <template #bprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdBPrice | toThousands }}</p>
-              <p>{{ scope.row.bprice | toThousands }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-            <span v-else>{{ scope.row.bprice | toThousands }}</span>
-          </template>
+					<template #presentPrice="scope">
+						<span>{{ scope.row.presentPrice | toThousands }}</span>
+					</template>
+					<template #cfTargetAPrice="scope">
+						<span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+					</template>
+					<template #cfTargetBPrice="scope">
+						<span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+					</template>
+					<template #aprice="scope">
+						<div v-if="scope.row.status === 'SKDLC'">
+							<p>{{ scope.row.skdAPrice | toThousands }}</p>
+							<p>{{ scope.row.aprice | toThousands }}</p>
+						</div>
+						<span v-else-if="scope.row.status === 'SKD'">{{
+							scope.row.skdAPrice | toThousands
+						}}</span>
+						<span v-else>{{ scope.row.aprice | toThousands }}</span>
+					</template>
+					<template #bprice="scope">
+						<div v-if="scope.row.status === 'SKDLC'">
+							<p>{{ scope.row.skdBPrice | toThousands }}</p>
+							<p>{{ scope.row.bprice | toThousands }}</p>
+						</div>
+						<span v-else-if="scope.row.status === 'SKD'">{{
+							scope.row.skdBPrice | toThousands
+						}}</span>
+						<span v-else>{{ scope.row.bprice | toThousands }}</span>
+					</template>
 
-          <template #investFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
+					<template #investFee="scope">
+						<div v-if="scope.row.status === 'SKDLC'">
+							<el-popover
+								placement="top-start"
+								width="200"
+								trigger="hover"
+								:disabled="!scope.row.investFeeIsShared"
+							>
+								<div>
+									<div>
+										{{ language('FENTANJINE', '分摊金额') }}：{{
+											scope.row.moldApportionPrice || '0.00'
+										}}
+									</div>
+									<div>
+										{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+											scope.row.unShareInvestPrice || '0.00'
+										}}
+									</div>
+								</div>
+								<div slot="reference">
+									<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+									<p>
+										<span v-if="scope.row.investFeeIsShared" style="color: red"
+											>*</span
+										>
+										<span>{{ scope.row.investFee | toThousands(true) }}</span>
+									</p>
+								</div>
+							</el-popover>
+						</div>
+						<span v-else-if="scope.row.status === 'SKD'">
+							<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+						</span>
+						<span v-else>
+							<el-popover
+								placement="top-start"
+								width="200"
+								trigger="hover"
+								:disabled="!scope.row.investFeeIsShared"
+							>
+								<div>
+									<div>
+										{{ language('FENTANJINE', '分摊金额') }}：{{
+											scope.row.moldApportionPrice || '0.00'
+										}}
+									</div>
+									<div>
+										{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+											scope.row.unShareInvestPrice || '0.00'
+										}}
+									</div>
+								</div>
+								<div slot="reference">
+									<span v-if="scope.row.investFeeIsShared" style="color: red"
+										>*</span
+									>
+									<span>{{ scope.row.investFee | toThousands(true) }}</span>
+								</div>
+							</el-popover>
+						</span>
+					</template>
 
-          <template #devFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.devFeeIsShared">
-                <div>
-                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdDevFee | toThousands }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.devFeeIsShared">
-                <div>
-                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
-          <template #addFee="scope">
-            <span>{{ scope.row.addFee | toThousands }}</span>
-          </template>
-          <template #savingFee="scope">
-            <span>{{ scope.row.savingFee | toThousands }}</span>
-          </template>
-          <template #turnover="scope">
-            <span>{{ scope.row.turnover | toThousands }}</span>
-          </template>
+					<template #devFee="scope">
+						<div v-if="scope.row.status === 'SKDLC'">
+							<el-popover
+								placement="top-start"
+								width="200"
+								trigger="hover"
+								:disabled="!scope.row.devFeeIsShared"
+							>
+								<div>
+									<div>
+										{{ language('FENTANJINE', '分摊金额') }}：{{
+											scope.row.developApportionPrice || '0.00'
+										}}
+									</div>
+									<div>
+										{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+											scope.row.unShareDevPrice || '0.00'
+										}}
+									</div>
+								</div>
+								<div slot="reference">
+									<p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+									<p>
+										<span v-if="scope.row.investFeeIsShared" style="color: red"
+											>*</span
+										>
+										<span>{{ scope.row.devFee | toThousands(true) }}</span>
+									</p>
+								</div>
+							</el-popover>
+						</div>
+						<span v-else-if="scope.row.status === 'SKD'">
+							<p>{{ scope.row.skdDevFee | toThousands }}</p>
+						</span>
+						<span v-else>
+							<el-popover
+								placement="top-start"
+								width="200"
+								trigger="hover"
+								:disabled="!scope.row.devFeeIsShared"
+							>
+								<div>
+									<div>
+										{{ language('FENTANJINE', '分摊金额') }}：{{
+											scope.row.developApportionPrice || '0.00'
+										}}
+									</div>
+									<div>
+										{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+											scope.row.unShareDevPrice || '0.00'
+										}}
+									</div>
+								</div>
+								<div slot="reference">
+									<span v-if="scope.row.devFeeIsShared" style="color: red"
+										>*</span
+									>
+									<span>{{ scope.row.devFee | toThousands(true) }}</span>
+								</div>
+							</el-popover>
+						</span>
+					</template>
+					<template #addFee="scope">
+						<span>{{ scope.row.addFee | toThousands }}</span>
+					</template>
+					<template #savingFee="scope">
+						<span>{{ scope.row.savingFee | toThousands }}</span>
+					</template>
+					<template #turnover="scope">
+						<span>{{ scope.row.turnover | toThousands }}</span>
+					</template>
 
           <template #share="scope">
             <span>{{ +scope.row.share || 0 }}</span>
@@ -375,136 +513,197 @@
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
         </template>
 
-        <!-- 年降开始时间 -->
-        <template #beginYearReduce="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-        </template>
-        
-        <template #status="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>SKD</p>
-            <p>LC</p>
-          </div>
-          <span v-else>{{ scope.row.status }}</span>
-        </template>
+				<!-- 年降 -->
+				<template #ltc="scope">
+					<span>{{ resetLtcData(scope.row.ltcs, 'ltc') }}</span>
+				</template>
 
-        <template #svwCode="scope">
-          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-        </template>
-        <!-- <template #demand="scope">
+				<!-- 年降开始时间 -->
+				<template #beginYearReduce="scope">
+					<span>{{ resetLtcData(scope.row.ltcs, 'beginYearReduce') }}</span>
+				</template>
+
+				<template #status="scope">
+					<div v-if="scope.row.status === 'SKDLC'">
+						<p>SKD</p>
+						<p>LC</p>
+					</div>
+					<span v-else>{{ scope.row.status }}</span>
+				</template>
+
+				<template #svwCode="scope">
+					<span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+				</template>
+				<!-- <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
         </template>
         <template #output="scope">
           <span>{{ scope.row.output | kFilter }}</span>
         </template> -->
-        <template #presentPrice="scope">
-          <span>{{ scope.row.presentPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetAPrice="scope">
-          <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetBPrice="scope">
-          <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-        </template>
-        <template #aprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands }}</p>
-            <p>{{ scope.row.aprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands }}</span>
-        </template>
-        <template #bprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands }}</p>
-            <p>{{ scope.row.bprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands }}</span>
-        </template>
+				<template #presentPrice="scope">
+					<span>{{ scope.row.presentPrice | toThousands }}</span>
+				</template>
+				<template #cfTargetAPrice="scope">
+					<span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+				</template>
+				<template #cfTargetBPrice="scope">
+					<span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+				</template>
+				<template #aprice="scope">
+					<div v-if="scope.row.status === 'SKDLC'">
+						<p>{{ scope.row.skdAPrice | toThousands }}</p>
+						<p>{{ scope.row.aprice | toThousands }}</p>
+					</div>
+					<span v-else-if="scope.row.status === 'SKD'">{{
+						scope.row.skdAPrice | toThousands
+					}}</span>
+					<span v-else>{{ scope.row.aprice | toThousands }}</span>
+				</template>
+				<template #bprice="scope">
+					<div v-if="scope.row.status === 'SKDLC'">
+						<p>{{ scope.row.skdBPrice | toThousands }}</p>
+						<p>{{ scope.row.bprice | toThousands }}</p>
+					</div>
+					<span v-else-if="scope.row.status === 'SKD'">{{
+						scope.row.skdBPrice | toThousands
+					}}</span>
+					<span v-else>{{ scope.row.bprice | toThousands }}</span>
+				</template>
 
-        <template #investFee="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.investFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-              </div>
-            </el-popover>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-          </span>
-          <span v-else>
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.investFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-              </div>
-            </el-popover>
-          </span>
-        </template>
+				<template #investFee="scope">
+					<div v-if="scope.row.status === 'SKDLC'">
+						<el-popover
+							placement="top-start"
+							width="200"
+							trigger="hover"
+							:disabled="!scope.row.investFeeIsShared"
+						>
+							<div>
+								<div>
+									{{ language('FENTANJINE', '分摊金额') }}：{{
+										scope.row.moldApportionPrice || '0.00'
+									}}
+								</div>
+								<div>
+									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+										scope.row.unShareInvestPrice || '0.00'
+									}}
+								</div>
+							</div>
+							<div slot="reference">
+								<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+								<p>
+									<span v-if="scope.row.investFeeIsShared" style="color: red"
+										>*</span
+									>
+									<span>{{ scope.row.investFee | toThousands(true) }}</span>
+								</p>
+							</div>
+						</el-popover>
+					</div>
+					<span v-else-if="scope.row.status === 'SKD'">
+						<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+					</span>
+					<span v-else>
+						<el-popover
+							placement="top-start"
+							width="200"
+							trigger="hover"
+							:disabled="!scope.row.investFeeIsShared"
+						>
+							<div>
+								<div>
+									{{ language('FENTANJINE', '分摊金额') }}：{{
+										scope.row.moldApportionPrice || '0.00'
+									}}
+								</div>
+								<div>
+									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+										scope.row.unShareInvestPrice || '0.00'
+									}}
+								</div>
+							</div>
+							<div slot="reference">
+								<span v-if="scope.row.investFeeIsShared" style="color: red"
+									>*</span
+								>
+								<span>{{ scope.row.investFee | toThousands(true) }}</span>
+							</div>
+						</el-popover>
+					</span>
+				</template>
 
-        <template #devFee="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.devFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
-                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
-              </div>
-            </el-popover>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
-          </span>
-          <span v-else>
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.devFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
-              </div>
-            </el-popover>
-          </span>
-        </template>
-        <template #addFee="scope">
-          <span>{{ scope.row.addFee | toThousands }}</span>
-        </template>
-        <template #savingFee="scope">
-          <span>{{ scope.row.savingFee | toThousands }}</span>
-        </template>
-        <template #turnover="scope">
-          <span>{{ scope.row.turnover | toThousands }}</span>
-        </template>
+				<template #devFee="scope">
+					<div v-if="scope.row.status === 'SKDLC'">
+						<el-popover
+							placement="top-start"
+							width="200"
+							trigger="hover"
+							:disabled="!scope.row.devFeeIsShared"
+						>
+							<div>
+								<div>
+									{{ language('FENTANJINE', '分摊金额') }}：{{
+										scope.row.developApportionPrice || '0.00'
+									}}
+								</div>
+								<div>
+									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+										scope.row.unShareDevPrice || '0.00'
+									}}
+								</div>
+							</div>
+							<div slot="reference">
+								<p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+								<p>
+									<span v-if="scope.row.investFeeIsShared" style="color: red"
+										>*</span
+									>
+									<span>{{ scope.row.devFee | toThousands(true) }}</span>
+								</p>
+							</div>
+						</el-popover>
+					</div>
+					<span v-else-if="scope.row.status === 'SKD'">
+						<p>{{ scope.row.skdDevFee | toThousands }}</p>
+					</span>
+					<span v-else>
+						<el-popover
+							placement="top-start"
+							width="200"
+							trigger="hover"
+							:disabled="!scope.row.devFeeIsShared"
+						>
+							<div>
+								<div>
+									{{ language('FENTANJINE', '分摊金额') }}：{{
+										scope.row.developApportionPrice || '0.00'
+									}}
+								</div>
+								<div>
+									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+										scope.row.unShareDevPrice || '0.00'
+									}}
+								</div>
+							</div>
+							<div slot="reference">
+								<span v-if="scope.row.devFeeIsShared" style="color: red"
+									>*</span
+								>
+								<span>{{ scope.row.devFee | toThousands(true) }}</span>
+							</div>
+						</el-popover>
+					</span>
+				</template>
+				<template #addFee="scope">
+					<span>{{ scope.row.addFee | toThousands }}</span>
+				</template>
+				<template #savingFee="scope">
+					<span>{{ scope.row.savingFee | toThousands }}</span>
+				</template>
+				<template #turnover="scope">
+					<span>{{ scope.row.turnover | toThousands }}</span>
+				</template>
 
         <template #share="scope">
           <span>{{ +scope.row.share || 0 }}</span>
@@ -583,107 +782,251 @@
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData, remarkProcess } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
-import {partProjTypes} from '@/config'
-import { findFrontPageSeat, decisionDownloadPdfLogo } from '@/api/designate'
-import { toThousands } from "@/utils"
-import { transverseDownloadPDF } from "@/utils/pdf"
-import rsPdf from "./rsPdf"
 import {
-    uploadUdFile
-} from '@/api/file/upload'
-import { dateFilter } from "../circulation/data"
+	getList,
+	getRemark,
+	updateRemark,
+	getPrototypeList,
+	getDepartApproval,
+	searchRsPageExchangeRate,
+	reviewListRs,
+} from '@/api/designate/decisiondata/rs'
+import { partProjTypes } from '@/config'
+import { findFrontPageSeat, decisionDownloadPdfLogo } from '@/api/designate'
+import { toThousands } from '@/utils'
+import { transverseDownloadPDF } from '@/utils/pdf'
+import rsPdf from './rsPdf'
+import { uploadUdFile } from '@/api/file/upload'
+import { dateFilter } from '../circulation/data'
 
 export default {
-  props: {
-    isPreview: {type:Boolean, default:false},
-    nominateId: {type:String},
-    // projectType: {type:String},
-    showSignatureForm: {type:Boolean, default:false}
-  },
-  components: { iCard, tableList, iButton, iInput, icon, rsPdf },
-  data() {
-    return {
-      loading: false,
-      // 零件项目类型
-      partProjTypes,
-      remarks: {},
-      // leftTitle: nomalDetailTitle,
-      // rightTitle: nomalDetailTitleBlue,
-      // tableTitle: nomalTableTitle,
-      tableData: [],
-      basicData: {},
-      remarkItem: [],
-      checkList: checkList,
-      resetRemarkType: '',
-      saveLoading: false,
-      PrototypeList:[],
-      prototypeTitleList:prototypeTitleList,
-      processApplyDate: '',
-      projectType: '',
-      isSingle: false,
-      suppliers: '',
-      exchangeRates: [],
-      isAuth: false,
-      pdfData: {},
-      firstCount: 0,
-      count: 0,
-      fileList:[],
-      tableLoading: false,
-      // otherTableHeight:0,
-      prototypeListPageHeight:0,
-      tableHeight:0,
-      tableList:[],
-      prototypeTableList:[],
-    }
-  },
-  filters: {
-    toThousands,
-    booleanFilter(val) {
-      const obj = {
-        true: "Y",
-        false: "N"
-      }
+	props: {
+		isPreview: { type: Boolean, default: false },
+		nominateId: { type: String },
+		// projectType: {type:String},
+		showSignatureForm: { type: Boolean, default: false },
+	},
+	components: { iCard, tableList, iButton, iInput, icon, rsPdf },
+	data() {
+		return {
+			loading: false,
+			// 零件项目类型
+			partProjTypes,
+			remarks: {},
+			// leftTitle: nomalDetailTitle,
+			// rightTitle: nomalDetailTitleBlue,
+			// tableTitle: nomalTableTitle,
+			tableData: [],
+			basicData: {},
+			remarkItem: [],
+			checkList: checkList,
+			resetRemarkType: '',
+			saveLoading: false,
+			PrototypeList: [],
+			prototypeTitleList: prototypeTitleList,
+			processApplyDate: '',
+			projectType: '',
+			isSingle: false,
+			suppliers: '',
+			exchangeRates: [],
+			isAuth: false,
+			pdfData: {},
+			firstCount: 0,
+			count: 0,
+			fileList: [],
+			tableLoading: false,
+			// otherTableHeight:0,
+			prototypeListPageHeight: 0,
+			tableHeight: 0,
+			tableList: [],
+			prototypeTableList: [],
+		}
+	},
+	filters: {
+		toThousands,
+		booleanFilter(val) {
+			const obj = {
+				true: 'Y',
+				false: 'N',
+			}
 
-      return obj[val] || val
-    },
-    // kFilter(val) {
-    //   if (val) return math.divide(math.bignumber(val), 1000).toString()
-    //   return val
-    // }
-  },
-  computed: {
-    exchangeRageCurrency() {
-      if (this.basicData.currencyRateMap) {
-        const exchangeRageCurrency = []
-        for (var key in this.basicData.currencyRateMap) {
-          if (key) {
-            exchangeRageCurrency.push(key)
-          }
-        }
-        return exchangeRageCurrency
-      }
-      return []
-    },
-    leftTitle() {
-      // GS
-      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
-        return nomalDetailTitleGS
-      }
-      // 配附件
-      if ([partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
-        return nomalDetailTitlePF
-      }
-      // 其他
-      return nomalDetailTitle
-    },
-    rightTitle() {
-      // GS
-      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
-        return nomalDetailTitleBlue
-      }
-      // 其他
-      return gsDetailTitleBlue
+			return obj[val] || val
+		},
+		// kFilter(val) {
+		//   if (val) return math.divide(math.bignumber(val), 1000).toString()
+		//   return val
+		// }
+	},
+	computed: {
+		exchangeRageCurrency() {
+			if (this.basicData.currencyRateMap) {
+				const exchangeRageCurrency = []
+				for (var key in this.basicData.currencyRateMap) {
+					if (key) {
+						exchangeRageCurrency.push(key)
+					}
+				}
+				return exchangeRageCurrency
+			}
+			return []
+		},
+		leftTitle() {
+			// GS
+			if (
+				[partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
+					this.projectType
+				)
+			) {
+				return nomalDetailTitleGS
+			}
+			// 配附件
+			if (
+				[partProjTypes.PEIJIAN, partProjTypes.FUJIAN].includes(this.projectType)
+			) {
+				return nomalDetailTitlePF
+			}
+			// 其他
+			return nomalDetailTitle
+		},
+		rightTitle() {
+			// GS
+			if (
+				[partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
+					this.projectType
+				)
+			) {
+				return nomalDetailTitleBlue
+			}
+			// 其他
+			return gsDetailTitleBlue
+		},
+		tableTitle() {
+			if (this.projectType === partProjTypes.PEIJIAN) {
+				return sparePartTableTitle
+			} else if (this.projectType === partProjTypes.FUJIAN) {
+				return accessoryTableTitle
+			} else if (
+				this.projectType === partProjTypes.GSLINGJIAN ||
+				this.projectType === partProjTypes.GSCOMMONSOURCING
+			) {
+				//GS零件
+				return gsTableTitle
+			} else if (
+				this.projectType === partProjTypes.DBLINGJIAN ||
+				this.projectType === partProjTypes.DBYICHIXINGCAIGOU
+			) {
+				//DB零件,DB一次性采购
+				return dbTableTitle
+			}
+			return nomalTableTitle
+		},
+		pageWidth() {
+			if (this.projectType === partProjTypes.PEIJIAN) {
+				return 1441
+			} else if (this.projectType === partProjTypes.FUJIAN) {
+				return 1351
+			} else if (
+				this.projectType === partProjTypes.GSLINGJIAN ||
+				this.projectType === partProjTypes.GSCOMMONSOURCING
+			) {
+				//GS零件
+				return 1892
+			} else if (
+				this.projectType === partProjTypes.DBLINGJIAN ||
+				this.projectType === partProjTypes.DBYICHIXINGCAIGOU
+			) {
+				//DB零件,DB一次性采购
+				return 1768
+			}
+			return 1544
+		},
+		cardTitle() {
+			if (this.projectType === partProjTypes.PEIJIAN) {
+				return '配件采购'
+			} else if (this.projectType === partProjTypes.FUJIAN) {
+				return '附件采购'
+			}
+			return '生产采购'
+		},
+		cardTitleEn() {
+			if (this.projectType === partProjTypes.PEIJIAN) {
+				return 'CSC Nomination Recommendation - Spare Part Purchasing'
+			} else if (this.projectType === partProjTypes.FUJIAN) {
+				return 'CSC Nomination Recommendation – Accessory Purchasing'
+			}
+			return 'CSC Nomination Recommendation - Production Purchasing'
+		},
+		getRemarkAll() {
+			return this.remarkItem.map((item) => item.value).join('\n')
+		},
+		isRoutePreview() {
+			return this.$route.query.isPreview == 1
+		},
+		isApproval() {
+			return this.$route.query.isApproval === 'true'
+		},
+	},
+	created() {
+		this.isAuth = this.$route.query.type === 'auth'
+		// this.getPrototypeList()
+	},
+	mounted() {},
+	methods: {
+		dateFilter,
+		getHeight() {
+			setTimeout(() => {
+				let dom = this.$refs.rsPdf.$el
+				this.width = dom.offsetWidth
+				this.pageHeight = (this.width / 841.89) * 595.28 // 横版A4一页对应的高度
+				let tableHeader = 57 // 表头高度
+				let headerHeight = 106 // 顶部标题高度
+				let pageLogo = 52 // logo 区域高度
+				let pageTop = document
+					.getElementsByClassName('demo')[0]
+					.getElementsByClassName('page-top')[0].offsetHeight // 顶部内容高度
+				let el = document
+					.getElementsByClassName('demo')[0]
+					.getElementsByClassName('Application')[0].offsetHeight // 审批备注
+				let outEl = document
+					.getElementsByClassName('demo')[0]
+					.getElementsByClassName('out-compute')[0].offsetHeight // 备注
+				for (let i = 0; i < el.length; i++) {
+					height += el[i].offsetHeight
+				}
+				// 第一页
+				this.tableHeight =
+					this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
+				// 第二页
+				// this.otherTableHeight = this.pageHeight - pageLogo - 21
+				let rowList = document
+					.getElementsByClassName('demo')[0]
+					.getElementsByClassName('mainTable')[0]
+					.getElementsByClassName('el-table__body-wrapper')[0]
+					.getElementsByClassName('table-row')
+				let arr = []
+				let heightSum = 0
+				let tableList = []
+				rowList.forEach((item, i) => {
+					heightSum += item.offsetHeight
+					// if(tableList.length==0){
+					if (heightSum < this.tableHeight - tableHeader - outEl - el) {
+						arr.push(this.tableData[i])
+					} else {
+						tableList.push(JSON.parse(JSON.stringify(arr)))
+						heightSum = item.offsetHeight
+						arr = [this.tableData[i]]
+					}
+					// }else{
+					//   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
+					//     arr.push(this.tableData[i])
+					//   }else{
+					//     tableList.push(JSON.parse(JSON.stringify(arr)))
+					//     heightSum=item.offsetHeight
+					//     arr = [this.tableData[i]]
+					//   }
+					// }
+				})
+			})
 
     },
     tableTitle() {
@@ -806,275 +1149,281 @@ export default {
         if(!document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0]) return
         let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
-        // this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
-        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5
-        let arr = []
-        let heightSum = 0
-        let PrototypeList = []
-        rowList.forEach((item,i)=>{
-          heightSum+=item.offsetHeight
-          // if(PrototypeList.length==0){
-            if(heightSum<=this.prototypeListPageHeight - tableHeader){
-              arr.push(this.PrototypeList[i])
-            }else{
-              PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-              heightSum=item.offsetHeight
-              arr = [this.PrototypeList[i]]
-            }
-          // }else{
-          //   if(heightSum<this.prototypeListPageHeight - tableHeader){
-          //     arr.push(this.PrototypeList[i])
-          //   }else{
-          //     PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-          //     heightSum=item.offsetHeight
-          //     arr = [this.PrototypeList[i]]
-          //   }
-          // }
-        })
-          
-        PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-        this.prototypeTableList = PrototypeList
-      }, 1000);
-    },
-    getIsSingle() {
-      findFrontPageSeat({nominateId:this.nominateId}).then(res => {
-        if (res.result) {
-          this.isSingle = res.data.isSingle
-        } else {
-          this.isSingle = false
-        }
-      })
-    },
-    /**
-     * @Description: 获取部门审批记录
-     * @Author: Luoshuang
-     * @param n*o
-     * @return n*o
-     */    
-    getDepartApproval() {
-      getDepartApproval(this.nominateId).then(res => {
-        if (res?.result) {
-          this.checkList = res.data.nomiApprovalProcessNodeVOList
-          this.processApplyDate = res.data.processApplyDate || ''
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
-    /**
-     * @description: US 描述当大于5条的时候则需要显示这个card 不管任何零件采购项目。任何linie
-     * @param {*}
-     * @return {*}
-     */
-    getPrototypeList(){
-      getPrototypeList(this.nominateId).then(res=>{
-          this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
-          // 获取上会备注
-          if(res.data && res.code==200){
-            this.remarkItem = meetingRemark.map(item => {
-                this.remarks[item.type] = res.data[item.remarkType] || ''
-                return {...item, value: res.data[item.remarkType] || ''}
-            })
-          }
-      }).catch(err=>{
-        console.warn(err)
-      }).finally(()=>{
-        this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getPrototypeListHeight()
-          },1000)
-        })
-      })
-    },
-    /**
-     * @Description: 保存备注
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    handleSaveRemarks() {
-      this.saveLoading = true
-      const params = {
-        meetRemark: this.remarks[this.resetRemarkType],
-        nominateAppId: this.nominateId,
-        remarkType: this.resetRemarkType
-      }
-      updateRemark(params).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getRemark()
-          this.getPrototypeList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.saveLoading = false
-      })
-    },
-    /**
-     * @Description: 备注变化时保存当前修改的备注类型
-     * @Author: Luoshuang
-     * @param {*} val
-     * @param {*} type
-     * @return {*}
-     */    
-    handleInput(val, type) {
-      this.remarkItem = this.remarkItem.map(item => {
-        return {
-          ...item,
-          value: item.type === type ? val : item.value
-        }
-      })
-      this.remarks[type] = val
-      this.resetRemarkType = type
-    },
-    /**
-     * @Description: 页面初始化
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    init() {
-      // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
-      if (this.isAuth || this.isApproval) {
-        this.reviewListRs()
-      } else {
-        this.getTopList()
-      }
-      this.getRemark()
-      this.getDepartApproval()
-      this.getPrototypeList()
-      this.getIsSingle()
-    },
-    /**
-     * @Description: 获取表格初始数据
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getTopList() {
-      this.tableLoading = true
+				// this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
+				this.prototypeListPageHeight =
+					this.pageHeight - headerHeight - pageLogo - 0.5
+				let arr = []
+				let heightSum = 0
+				let PrototypeList = []
+				rowList.forEach((item, i) => {
+					heightSum += item.offsetHeight
+					// if(PrototypeList.length==0){
+					if (heightSum <= this.prototypeListPageHeight - tableHeader) {
+						arr.push(this.PrototypeList[i])
+					} else {
+						PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+						heightSum = item.offsetHeight
+						arr = [this.PrototypeList[i]]
+					}
+					// }else{
+					//   if(heightSum<this.prototypeListPageHeight - tableHeader){
+					//     arr.push(this.PrototypeList[i])
+					//   }else{
+					//     PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+					//     heightSum=item.offsetHeight
+					//     arr = [this.PrototypeList[i]]
+					//   }
+					// }
+				})
 
-      getList(this.nominateId).then(res => {
-        if (res?.result) {
-          let temdata = res.data || {}
-          temdata.suppliersNow = temdata.supplierVoList
-          if(temdata.partNameDe){
-            temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
-          }
-          this.basicData = temdata
-          let data = Array.isArray(res.data.lines) ? res.data.lines : []
-          data.forEach((val,index) => {
-            let suppliersNowCn =[]
-            let suppliersNowEn =[]
+				PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+				this.prototypeTableList = PrototypeList
+			}, 1000)
+		},
+		getIsSingle() {
+			findFrontPageSeat({ nominateId: this.nominateId }).then((res) => {
+				if (res.result) {
+					this.isSingle = res.data.isSingle
+				} else {
+					this.isSingle = false
+				}
+			})
+		},
+		/**
+		 * @Description: 获取部门审批记录
+		 * @Author: Luoshuang
+		 * @param n*o
+		 * @return n*o
+		 */
+		getDepartApproval() {
+			getDepartApproval(this.nominateId).then((res) => {
+				if (res?.result) {
+					this.checkList = res.data.nomiApprovalProcessNodeVOList
+					this.processApplyDate = res.data.processApplyDate || ''
+				} else {
+					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+				}
+			})
+		},
+		/**
+		 * @description: US 描述当大于5条的时候则需要显示这个card 不管任何零件采购项目。任何linie
+		 * @param {*}
+		 * @return {*}
+		 */
+		getPrototypeList() {
+			getPrototypeList(this.nominateId)
+				.then((res) => {
+					this.PrototypeList =
+						res.data.list || res.data.getQuotationSampleVOList || []
+					// 获取上会备注
+					if (res.data && res.code == 200) {
+						this.remarkItem = meetingRemark.map((item) => {
+							this.remarks[item.type] = res.data[item.remarkType] || ''
+							return { ...item, value: res.data[item.remarkType] || '' }
+						})
+					}
+				})
+				.catch((err) => {
+					console.warn(err)
+				})
+				.finally(() => {
+					this.$nextTick(() => {
+						setTimeout(() => {
+							this.getPrototypeListHeight()
+						}, 1000)
+					})
+				})
+		},
+		/**
+		 * @Description: 保存备注
+		 * @Author: Luoshuang
+		 * @param {*}
+		 * @return {*}
+		 */
+		handleSaveRemarks() {
+			this.saveLoading = true
+			const params = {
+				meetRemark: this.remarks[this.resetRemarkType],
+				nominateAppId: this.nominateId,
+				remarkType: this.resetRemarkType,
+			}
+			updateRemark(params)
+				.then((res) => {
+					if (res?.result) {
+						iMessage.success(
+							this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn
+						)
+						this.getRemark()
+						this.getPrototypeList()
+					} else {
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+					}
+				})
+				.finally(() => {
+					this.saveLoading = false
+				})
+		},
+		/**
+		 * @Description: 备注变化时保存当前修改的备注类型
+		 * @Author: Luoshuang
+		 * @param {*} val
+		 * @param {*} type
+		 * @return {*}
+		 */
+		handleInput(val, type) {
+			this.remarkItem = this.remarkItem.map((item) => {
+				return {
+					...item,
+					value: item.type === type ? val : item.value,
+				}
+			})
+			this.remarks[type] = val
+			this.resetRemarkType = type
+		},
+		/**
+		 * @Description: 页面初始化
+		 * @Author: Luoshuang
+		 * @param {*}
+		 * @return {*}
+		 */
+		init() {
+			// 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
+			if (this.isAuth || this.isApproval) {
+				this.reviewListRs()
+			} else {
+				this.getTopList()
+			}
+			this.getRemark()
+			this.getDepartApproval()
+			this.getPrototypeList()
+			this.getIsSingle()
+		},
+		/**
+		 * @Description: 获取表格初始数据
+		 * @Author: Luoshuang
+		 * @param {*}
+		 * @return {*}
+		 */
+		getTopList() {
+			this.tableLoading = true
+			getList(this.nominateId)
+				.then((res) => {
+					if (res?.result) {
+						let temdata = res.data || {}
+						temdata.suppliersNow = temdata.supplierVoList
+						if (temdata.partNameDe) {
+							temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
+						}
+						this.basicData = temdata
+						let data = res.data?.lines ?? []
+						data.forEach((val, index) => {
+							let suppliersNowCn = []
+							let suppliersNowEn = []
+							val.supplierVoList.forEach((val) => {
+								suppliersNowCn.push(val.shortNameZh)
+								suppliersNowEn.push(val.shortNameEn)
+							})
+							let supplierData = []
+							for (let i = 0; i < suppliersNowCn.length; i++) {
+								let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
+								supplierData.push(dataSuper)
+							}
+							supplierData = supplierData.length ? supplierData.join('\n') : '-'
+							val.suppliersNow = supplierData.replace(/\n/g, '<br/>')
+							if (val.supplierNameEn)
+								val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+							if (val.partNameDe)
+								// val.partName = `${val.partName}/${val.partNameDe}`
+								val.partName = val.partNameDe
+						})
+						this.tableData = data
+						this.projectType = res.data.partProjectType || ''
 
-            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+						this.searchRsPageExchangeRate()
+					} else {
+						this.basicData = {}
+						this.tableData = []
+						this.projectType = ''
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+					}
+				})
+				.finally(() => {
+					this.tableLoading = false
+					this.$nextTick(() => {
+						setTimeout(() => {
+							this.getHeight()
+						}, 1000)
+					})
+				})
+		},
+		/**
+		 * @Description: 获取备注
+		 * @Author: Luoshuang
+		 * @param {*}
+		 * @return {*}
+		 */
+		getRemark() {
+			getRemark(this.nominateId).then((res) => {
+				if (res?.result) {
+					const data = Array.isArray(res.data) ? res.data : []
+					data.forEach((element) => {
+						this.remarks[element.remarkType] = element.remark || ''
+						this.remarkItem = meetingRemark.map((item) => {
+							return { ...item, value: this.remarks[item.remarkType] }
+						})
+					})
+				} else {
+					this.remarks = {}
+					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+				}
+			})
+		},
 
-            supplierVoList.forEach(val =>{
-              suppliersNowCn.push(val.shortNameZh)
-              suppliersNowEn.push(val.shortNameEn)
-            })
-            let supplierData=[]
-            for(let i = 0 ;i <suppliersNowCn.length;i++) {
-              let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
-              supplierData.push(dataSuper)
-            }
-            supplierData = supplierData.length ? supplierData.join('\n') : '-'
-            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
-            if(val.supplierNameEn)
-            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
-              if(val.partNameDe)
-            // val.partName = `${val.partName}/${val.partNameDe}`
-            val.partName = val.partNameDe
-          })
-          this.tableData = data
-          this.projectType = this.basicData.partProjectType || ''
+		resetLtcData,
 
-          this.searchRsPageExchangeRate()
-        } else {
-          this.basicData = {}
-          this.tableData = []
-          this.projectType = ''
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-      .finally(() => {
-        this.tableLoading = false
-        this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
-        })
-      })
-    },
-    /**
-     * @Description: 获取备注
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getRemark() {
-      getRemark(this.nominateId).then(res => {
-        if (res?.result) {
-          const data = Array.isArray(res.data) ? res.data : []
-          data.forEach(element => {
-            this.remarks[element.remarkType] = element.remark || ''
-            this.remarkItem = meetingRemark.map(item => {
-              return {...item, value: this.remarks[item.remarkType]}
-            })
-          })
-        } else {
-          this.remarks = {}
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
+		// 获取汇率
+		searchRsPageExchangeRate() {
+		let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+		searchRsPageExchangeRate(id)
+		.then(res => {
+			if (res.code == 200) {
+			if (this.basicData.currency) {
+				const sourceData = Array.isArray(res.data) ? res.data : []
 
-    resetLtcData,
+				this.exchangeRates = sourceData
+				.filter(item => !item.isCurrentVersion)
+				.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
 
-    // 获取汇率
-    searchRsPageExchangeRate() {
-      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
-      searchRsPageExchangeRate(id)
-      .then(res => {
-        if (res.code == 200) {
-          if (this.basicData.currency) {
-            const sourceData = Array.isArray(res.data) ? res.data : []
+				this.exchangeRates = this.exchangeRates.map(item => {
+				const result = { version: item.exchangeRateVos[0].version }
+				
+				result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
 
-            this.exchangeRates = sourceData
-              .filter(item => !item.isCurrentVersion)
-              .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+				if (this.exchangeRates.length > 1) {
+					result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+				} else {
+					result.fsNumsStr = ""
+				}
 
-            this.exchangeRates = this.exchangeRates.map(item => {
-              const result = { version: item.exchangeRateVos[0].version }
-              
-              result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+				return result
+				})
+			} else {
+				
+			}
+			} else {
+			iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+			}
+		})
+		},
 
-              if (this.exchangeRates.length > 1) {
-                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
-              } else {
-                result.fsNumsStr = ""
-              }
-
-              return result
-            })
-          } else {
-            
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-    },
-    // 汇率显示处理
-    exchangeRateProcess(row) {
-      return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
-    },
-
-    // 权限获取数据
-    reviewListRs() {
-      this.tableLoading = true
-
+		// 汇率显示处理
+		exchangeRateProcess(row) {
+		return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
+		},
+		// 权限获取数据
+		reviewListRs() {
+			this.tableLoading = true
+		
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -1126,7 +1475,9 @@ export default {
         }
       })
       .finally(() => this.tableLoading = false)
-    },
+
+	},
+		
 
     // 导出pdf
     async handleExportPdf() {
@@ -1180,186 +1531,256 @@ export default {
         // var leftHeight = contentHeight; //
         // var ctx = canvas.getContext("2d");
 
-        // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
-        // copyCanvas.width = contentWidth;
-        // copyCanvas.height = pageHeight;
-        // var ctxs = copyCanvas.getContext("2d");
-          await this.getPdfFile(canvas)
+						this.searchRsPageExchangeRate()
+					// } else {
+						this.basicData = {}
+						this.tableData = []
+						this.projectType = ''
+						iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+					// }
+				})
+				.finally(() => (this.tableLoading = false))
+		},
 
-        // ctxs.fillStyle = '#FFF'
-        // // 保存每一页的画布, 然后清空canvas
-        // if (leftHeight <= pageHeight) {
-        //   ctxs.fillRect(0,0,contentWidth,pageHeight)
-        //   //   console.log(pageData);
-        //   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
-        //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
-        //   // 截图画布转为file
-        //   await this.getPdfFile(copyCanvas,index)
-        // } else {
-        //   // 分页
-        //   var num = 1;
-        //   while (leftHeight > 0) {
-        //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
-        //     ctxs.fillRect(0,0,contentWidth,pageHeight)
-        //     if(leftHeight <= pageHeight){
-        //       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
-        //     }else{
-        //       var imgData = ctx.getImageData(
-        //         0,
-        //         (num - 1) * pageHeight,
-        //         contentWidth,
-        //         pageHeight
-        //       ); // 截取主画布当前页
-        //     }
-        //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
-        //     // 截图画布转为file
-        //     await this.getPdfFile(copyCanvas,index)
-        //     leftHeight -= pageHeight;
-        //     // //避免添加空白页
-        //     if (leftHeight > 0) {
-        //       num++;
-        //     }
-          // }
-        // }
-      });
-    },
+		// 导出pdf
+		async handleExportPdf() {
+			this.fileList = []
+			this.loading = true
 
-    async getPdfFile(copyCanvas,num){
-      return new Promise((r,j)=>{
-        copyCanvas.toBlob((blob) => {
-          //以时间戳作为文件名 实时区分不同文件
-          let filename = `${new Date().getTime()}.png`;
-          let pdfFile = new File([blob], filename, { type: "image/png" });
-          this.fileList.push({ file: pdfFile, index: num });
-          r(num)
-        });
-      })
-    },
-    // 下载 pdf 文件
-    async DownloadPdf(){
-      let arr = this.fileList.filter(item=>!item.imageUrl)
-      if(arr.length) return
-      const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
-      this.loading = false
-    },
+			setTimeout(async () => {
+				let elList = document.getElementsByClassName('pageCard')
+				if (!elList.length) {
+					iMessage.warn('请稍等')
+					this.loading = false
+					return
+				}
+				for (let i = 0; i < elList.length; i++) {
+					const el = elList[i]
+					await this.getPdfImage({
+						dom: el,
+						index: i,
+					})
+				}
+				this.uploadUdFile()
+			}, 100)
+			// this.createEl()
 
-    // 上传图片
-    async uploadUdFile(){
-      this.fileList.map((item)=>{
-        uploadUdFile({
-        multifile: item.file
-        }).then(res=>{
-          if(res.code == 200){
-            item['imageUrl'] = res.data[0].path
-            console.log(res.data[0].objectUrl);
-            this.DownloadPdf();
-          }else{
-            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        });
-      })
-    },
-  }
+			// this.getPdfImage({
+			//   dom: this.$refs.rsPdf.$el,
+			//   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+			//   exportPdf: true,
+			//   waterMark: true
+			// })
+		},
+		// 截取页面,存入pdf
+		// 截取页面,转图片, 上传服务器
+		async getPdfImage({
+			//html横向导出pdf
+			dom,
+			index,
+		}) {
+			await html2canvas(dom, {
+				dpi: 96, //分辨率
+				scale: 1, //设置缩放
+				useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+				bgcolor: '#ffffff', //应该这样写
+				logging: false, //打印日志用的 可以不加默认为false
+			}).then(async (canvas) => {
+				// var contentWidth = canvas.width; //
+				// var contentHeight = canvas.height; //
+				//一页pdf显示html页面生成的canvas高度;
+				// var pageHeight = (contentWidth / 841.89) * 595.28; //
+				//未生成pdf的html页面高度
+				// var leftHeight = contentHeight; //
+				// var ctx = canvas.getContext("2d");
+
+				// var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+				// copyCanvas.width = contentWidth;
+				// copyCanvas.height = pageHeight;
+				// var ctxs = copyCanvas.getContext("2d");
+				await this.getPdfFile(canvas)
+
+				// ctxs.fillStyle = '#FFF'
+				// // 保存每一页的画布, 然后清空canvas
+				// if (leftHeight <= pageHeight) {
+				//   ctxs.fillRect(0,0,contentWidth,pageHeight)
+				//   //   console.log(pageData);
+				//   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
+				//   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+				//   // 截图画布转为file
+				//   await this.getPdfFile(copyCanvas,index)
+				// } else {
+				//   // 分页
+				//   var num = 1;
+				//   while (leftHeight > 0) {
+				//     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+				//     ctxs.fillRect(0,0,contentWidth,pageHeight)
+				//     if(leftHeight <= pageHeight){
+				//       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
+				//     }else{
+				//       var imgData = ctx.getImageData(
+				//         0,
+				//         (num - 1) * pageHeight,
+				//         contentWidth,
+				//         pageHeight
+				//       ); // 截取主画布当前页
+				//     }
+				//     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+				//     // 截图画布转为file
+				//     await this.getPdfFile(copyCanvas,index)
+				//     leftHeight -= pageHeight;
+				//     // //避免添加空白页
+				//     if (leftHeight > 0) {
+				//       num++;
+				//     }
+				// }
+				// }
+			})
+		},
+
+		async getPdfFile(copyCanvas, num) {
+			return new Promise((r, j) => {
+				copyCanvas.toBlob((blob) => {
+					//以时间戳作为文件名 实时区分不同文件
+					let filename = `${new Date().getTime()}.png`
+					let pdfFile = new File([blob], filename, { type: 'image/png' })
+					this.fileList.push({ file: pdfFile, index: num })
+					r(num)
+				})
+			})
+		},
+		// 下载 pdf 文件
+		async DownloadPdf() {
+			let arr = this.fileList.filter((item) => !item.imageUrl)
+			if (arr.length) return
+			const list = this.fileList.map((item) => item.imageUrl)
+			await decisionDownloadPdfLogo({
+				filePaths: list,
+				needLogo: false,
+				needSplit: false,
+				width: this.width,
+				height: this.pageHeight,
+			}) // 1.2 预留 页脚位置
+			this.loading = false
+		},
+
+		// 上传图片
+		async uploadUdFile() {
+			this.fileList.map((item) => {
+				uploadUdFile({
+					multifile: item.file,
+				}).then((res) => {
+					if (res.code == 200) {
+						item['imageUrl'] = res.data[0].path
+						console.log(res.data[0].objectUrl)
+						this.DownloadPdf()
+					} else {
+						this.$message.error(
+							this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+						)
+					}
+				})
+			})
+		},
+	},
 }
 </script>
 
 <style lang="scss" scoped>
-#myCanvas{
-  display: none;
+#myCanvas {
+	display: none;
 }
 .meeting {
   .rsCard {
     ::v-deep .cardHeader {
       flex-wrap: wrap;
 
-      .btnWrapper {
-        width: 100%;
-        text-align: right;
-        margin-bottom: 20px;
-      }
-    }
-  
+			.btnWrapper {
+				width: 100%;
+				text-align: right;
+				margin-bottom: 20px;
+			}
+		}
 
-    .control {
-      display: flex !important;
-      align-items: center !important;
+		.control {
+			display: flex !important;
+			align-items: center !important;
 
-      .nomiId {
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-  }
-  .rsPdfCard{
-    box-shadow: none;
-    & + .rsCard {
-      margin-top: 20px; /*no*/
-    }
-    ::v-deep .cardHeader{
-      padding: 30px 0px;
-    }
-    ::v-deep .cardBody{
-      padding: 0px;
-    }
-  }
+			.nomiId {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+	}
+	.rsPdfCard {
+		box-shadow: none;
+		& + .rsCard {
+			margin-top: 20px; /*no*/
+		}
+		::v-deep .cardHeader {
+			padding: 30px 0px;
+		}
+		::v-deep .cardBody {
+			padding: 0px;
+		}
+	}
 }
 
 .exchangeRageCurrency + .exchangeRageCurrency {
-  margin-left: 20px;
+	margin-left: 20px;
 }
 .singleSourcing {
-  padding: 8px 12px;
-  font-size: 15px;
-  font-weight: 400;
-  color: rgba(22, 96, 241, 1);
-  border: 1px dashed #1660F1;
+	padding: 8px 12px;
+	font-size: 15px;
+	font-weight: 400;
+	color: rgba(22, 96, 241, 1);
+	border: 1px dashed #1660f1;
 }
 .rsTable {
-  font-size: 8px;
-  &::before {
-    height: 0;
-  }
-  ::v-deep thead th {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    & > .cell {
-      padding-left: 3px;
-      padding-right: 3px;
-      line-height: 14px;
-      span {
-        // zoom: 0.85;
-      }
+	font-size: 8px;
+	&::before {
+		height: 0;
+	}
+	::v-deep thead th {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		& > .cell {
+			padding-left: 3px;
+			padding-right: 3px;
+			line-height: 14px;
+			span {
+				// zoom: 0.85;
+			}
 
-      // span span {
-      //   // font-size: 8px;
-      // }
-      p {
-        min-height: 16px;
-      }
+			// span span {
+			//   // font-size: 8px;
+			// }
+			p {
+				min-height: 16px;
+			}
 
-      p + p {
-        margin-top: 8px;
-      }
-    }
-  }
+			p + p {
+				margin-top: 8px;
+			}
+		}
+	}
 
-  ::v-deep tr {
-    &:nth-child(even) {
-        background-color: #f7f7ff;
-    }
-  }
+	::v-deep tr {
+		&:nth-child(even) {
+			background-color: #f7f7ff;
+		}
+	}
 
-  ::v-deep .el-table__row td {
-    .cell {
-      padding-left: 3px;
-      padding-right: 3px;
+	::v-deep .el-table__row td {
+		.cell {
+			padding-left: 3px;
+			padding-right: 3px;
 
-      span {
-        // zoom: 0.88;
-      }
-    }
-  }
+			span {
+				// zoom: 0.88;
+			}
+		}
+	}
 }
 .prototypeList{
   ::v-deep tr {
@@ -1376,166 +1797,168 @@ export default {
   }
 }
 .rsTop {
-  display: flex;
-    .rsTop-left-item-title{
-      white-space: pre-line;
-    }
-  &-left {
-    width: 65%;
-    display: flex;
-    flex-wrap: wrap;
-    &-item {
-      width: 50%;
-      font-size: 12px;
-      display: flex;
-      height: 17px;
-      margin-bottom: 12px;
-      &:last-of-type {
-        margin-bottom: 26px;
-      }
-      &-title {
-        font-weight: bold;
-        width: 40%;
-      }
-      &:nth-of-type(odd) {
-        .rsTop-left-item-title {
-          width: 33%;
-        }
-      }
-      &-value {
-        font-weight: 400;
-        width: 60%;
-      }
-    }
-  }
-  &-right {
-    width: 40%;
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid rgba(197, 204, 214, 0.42);
-    border-radius: 5px 5px 0 0;
-    &-item {
-      width: 45%;
-      display: flex;
-      border-bottom: 1px solid rgba(197, 204, 214, 0.42);;
-      &:nth-of-type(odd) {
-        width: 55%;
-        border-right: 1px solid rgba(197, 204, 214, 0.42);
-      }
-      &-title {
-        background-color: rgba(22, 96, 241, 0.06);
-        border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 6px 24px;
-        width: 60%;
-        font-weight: bold;
-        // line-height: 29px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      &-value {
-        width: 40%;
-        padding: 6px 24px;
-        // line-height: 29px;
-        background-color: #fff;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      &:nth-of-type(even) {
-        .rsTop-right-item-title {
-          width: 65%;
-        }
-        .rsTop-right-item-value {
-          width: 35%;
-        }
-      }
-    }
-  }
+	display: flex;
+	.rsTop-left-item-title {
+		white-space: pre-line;
+	}
+	&-left {
+		width: 65%;
+		display: flex;
+		flex-wrap: wrap;
+		&-item {
+			width: 50%;
+			font-size: 12px;
+			display: flex;
+			height: 17px;
+			margin-bottom: 12px;
+			&:last-of-type {
+				margin-bottom: 26px;
+			}
+			&-title {
+				font-weight: bold;
+				width: 40%;
+			}
+			&:nth-of-type(odd) {
+				.rsTop-left-item-title {
+					width: 33%;
+				}
+			}
+			&-value {
+				font-weight: 400;
+				width: 60%;
+			}
+		}
+	}
+	&-right {
+		width: 40%;
+		display: flex;
+		flex-wrap: wrap;
+		border: 1px solid rgba(197, 204, 214, 0.42);
+		border-radius: 5px 5px 0 0;
+		&-item {
+			width: 45%;
+			display: flex;
+			border-bottom: 1px solid rgba(197, 204, 214, 0.42);
+			&:nth-of-type(odd) {
+				width: 55%;
+				border-right: 1px solid rgba(197, 204, 214, 0.42);
+			}
+			&-title {
+				background-color: rgba(22, 96, 241, 0.06);
+				border-right: 1px solid rgba(197, 204, 214, 0.42);
+				padding: 6px 24px;
+				width: 60%;
+				font-weight: bold;
+				// line-height: 29px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			&-value {
+				width: 40%;
+				padding: 6px 24px;
+				// line-height: 29px;
+				background-color: #fff;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			&:nth-of-type(even) {
+				.rsTop-right-item-title {
+					width: 65%;
+				}
+				.rsTop-right-item-value {
+					width: 35%;
+				}
+			}
+		}
+	}
 }
 .beizhu {
-  background-color: rgba(22, 96, 241, 0.03);
-  // height: 40px;
-  padding: 12px 14px;
-  font-weight: bold;
-  display: flex;
-  &-value {
-    font-weight: 400;
-    margin-left: 20px;
-  }
+	background-color: rgba(22, 96, 241, 0.03);
+	// height: 40px;
+	padding: 12px 14px;
+	font-weight: bold;
+	display: flex;
+	&-value {
+		font-weight: 400;
+		margin-left: 20px;
+	}
 }
 .meetingRemark {
-  display: flex;
+	display: flex;
 
-  &-item {
-    flex: 1;
-    & + & {
-      margin-left: 24px;
-    }
-    &-title {
-      font-size: 16px;
-      color: rgba(44, 46, 51, 1);
-      font-weight: 400;
-    }
-  }
+	&-item {
+		flex: 1;
+		& + & {
+			margin-left: 24px;
+		}
+		&-title {
+			font-size: 16px;
+			color: rgba(44, 46, 51, 1);
+			font-weight: 400;
+		}
+	}
 }
 .checkList {
-  display: flex;
-  overflow: auto;
-  &-item {
-    flex-shrink: 0;
-    width: 224px;
-    height: 125px;
-    max-width: 224px;
-    border-radius: 15px;
-    background-color: rgba(205, 212, 226, 0.12);
-    margin-right: 19px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px 22px;
-    font-size: 16px;
-    color: rgba(65, 67, 74, 1);
-    &-info {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      &-depart {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-  }
+	display: flex;
+	overflow: auto;
+	&-item {
+		flex-shrink: 0;
+		width: 224px;
+		height: 125px;
+		max-width: 224px;
+		border-radius: 15px;
+		background-color: rgba(205, 212, 226, 0.12);
+		margin-right: 19px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30px 22px;
+		font-size: 16px;
+		color: rgba(65, 67, 74, 1);
+		&-info {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			&-depart {
+				font-size: 18px;
+				font-weight: bold;
+			}
+		}
+	}
 }
 .checkDate {
-  ::v-deep .card .cardHeader .title {
-    // font-size: 16px;
-    font-weight: 400;
-    color: rgba(75, 75, 76, 1);
-  }
+	::v-deep .card .cardHeader .title {
+		// font-size: 16px;
+		font-weight: 400;
+		color: rgba(75, 75, 76, 1);
+	}
 }
 
 .Application {
-    ::v-deep .cardHeader {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      .title .title_content {
-        font-size: 14px !important;
-      }
-    }
-  }
+	::v-deep .cardHeader {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		.title .title_content {
+			font-size: 14px !important;
+		}
+	}
+}
 .isPreview {
-  .card {
-    box-shadow: none;
-  }
+	.card {
+		box-shadow: none;
+	}
 }
 
-.rsPdfWrapper, .demo { // 放在顶部, 便于计算高度
-  width: 100%;
-  height: 0;
-  overflow: hidden;
-  position: relative;
-  top: 0;
+.rsPdfWrapper,
+.demo {
+	// 放在顶部, 便于计算高度
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+	position: relative;
+	top: 0;
 }
 </style>

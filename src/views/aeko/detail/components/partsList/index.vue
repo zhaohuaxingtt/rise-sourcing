@@ -67,6 +67,7 @@
       <iCard class="margin-top20">
         <!-- 按钮区域 -->
         <div v-if="!isLinie && queryFrom != 'check'" class="floatright margin-bottom20">
+                <iButton :disabled="btnDisabled" @click="changeModelProject"> {{isAeA?'车型变更':'车型项目变更'}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
@@ -144,6 +145,7 @@
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
       <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
+      <changeModelProjectDialog v-if="changeModelProjectVisible" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible" :isAeA='isAeA'/>
   </div>
 </template>
 
@@ -166,6 +168,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import departBackDialog from './components/departBackDialog'
 import addPartsDialog from './components/addPartsDialog'
+import changeModelProjectDialog from './components/changeModelProjectDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
 import iDicoptions from 'rise/web/components/iDicoptions' 
@@ -205,6 +208,7 @@ export default {
         departBackDialog,
         aekoSelect,
         addPartsDialog,
+        changeModelProjectDialog,
         iDicoptions,
         iMultiLineInput
     },
@@ -222,6 +226,9 @@ export default {
             const {aekoInfo={}} = this;
             const {aekoStatus='',sourse=''} = aekoInfo;
             return  sourse!=='TCM' && aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
+        },
+        isAeA(){
+            return this.aekoInfo.aekoType == 'AeA'
         }
     },
     props:{
@@ -345,12 +352,13 @@ export default {
             isCommodityCoordinator: false,
             isLinie: false,
             addPartskVisible:false,
+            changeModelProjectVisible: false,
             queryFrom:null,
         }
     },
     methods:{
         sure() {
-            // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+            // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
             if(this.searchParams.partNum && this.searchParams.partNum.trim().length < 3){
                 this.loading = false;
                 return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
@@ -832,6 +840,10 @@ export default {
         }
       },
 
+    // 变更车型项目
+    changeModelProject(){
+        this.changeModelProjectVisible = true;
+    },
       // 新增零件
       addParts(){
         this.addPartskVisible = true;
