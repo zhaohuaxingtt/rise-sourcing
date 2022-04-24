@@ -30,7 +30,7 @@ export default {
   },
   computed:{
     hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
+      return this.$slots.tabTitle && true || false
     }
   }
 }

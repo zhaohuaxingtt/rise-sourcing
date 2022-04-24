@@ -18,6 +18,7 @@
       default-expand-all
       v-loading='tableLoading'
       @selection-change="handleSelectionChange"
+      v-bind="$attrs"
       :span-method="spanMethod"
       :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       ref="monitorTable">
@@ -154,6 +155,7 @@ import _ from 'lodash'
 export default {
   mixins: [ filters ],
    props:{
+    key:{type: String},
     tableData:{type:Array},
     tableLoading:{type:Boolean,default:false},
     selection:{type:Boolean,default:true},
@@ -181,7 +183,10 @@ export default {
   watch: {
     tableData() {
       this.init()
-    }
+    },
+  },
+  created(){
+    this.init()
   },
   methods: {
     thousandsFilter(value) {
@@ -674,7 +679,6 @@ export default {
 
     .el-table__fixed,
     .el-table__fixed-right {
-      height: auto !important;
       bottom: 10px !important;
     }
   }

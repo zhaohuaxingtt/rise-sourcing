@@ -13,10 +13,8 @@
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading">
-      <keep-alive>
-        <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
-        <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
-      </keep-alive>
+      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+      <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
 </iPage>

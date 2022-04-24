@@ -81,13 +81,13 @@
         </div>
 
         <!-- abprice -->
-        <div id="html2canvasAbprice">
+        <!-- <div id="html2canvasAbprice">
           <abPrice class="module pageCard-main rsPdfCard">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/abprice"/>
             </template>
           </abPrice>
-        </div>
+        </div> -->
 
         <!-- timeline -->
         <div id="html2canvasTimeline">
@@ -99,11 +99,9 @@
         </div>
         <!-- awardingScenario -->
         <div id="html2canvasAwardingScenario">
-          <awardingScenario class="module pageCard-main">
+          <awardingScenario class="module">
             <template #tabTitle>
-            <div class="tab-list">
               <headerTab value="/designate/decisiondata/awardingscenario"/>
-            </div>
             </template>
           </awardingScenario>
         </div>
@@ -367,7 +365,7 @@ export default {
       console.time('Time')
       this.fileList = []
       this.loading = true
-      let elList = document.getElementsByClassName('pageCard-main')
+      let elList = this.$refs.exportPdf.getElementsByClassName('pageCard-main')
       console.log(elList);
       setTimeout(async () => {
       // this.webWorker(this.exportPDF2)
@@ -430,7 +428,6 @@ export default {
     // 下载 pdf 文件
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>!item.imageUrl)
-      // console.log(this.fileList);
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
@@ -601,5 +598,18 @@ export default {
     width: max-content;
     min-width: 1860px;
   }
+  
+::v-deep .rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  .cardHeader{
+    padding: 30px 0px;
+  }
+  .cardBody{
+    padding: 0px;
+  }
+}
 }
 </style>

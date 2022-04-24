@@ -6,62 +6,101 @@
 -->
 
 <template>
-  <iCard class="buMonitor" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
-    <template #tabTitle>
-      <slot name="tabTitle"></slot>
-    </template>
-    <el-row :gutter="24">
+  <div ref="scenario">
+  <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 供应商表格 -->
-      <el-col :span="24">
-        <div class="supplierTable">
-          <div class="margin-bottom20 clearFloat">
-            <div>
-              <span class="font18 font-weight">
-                {{ title }}
-              </span>
-            </div>
+      <div class="supplierTable">
+        <div class="margin-bottom20 clearFloat">
+          <div>
+            <span class="font18 font-weight">
+              {{ title }}
+            </span>
+          </div>
 
-            <!-- 表格 -->
-            <div class="clearfix"></div>
-            <div class="margin-top20">
-              <monitorTableList
-                @updateCharts="updateCharts"
-                @unSaveWarning="setUnSaveWarning"
-                :selection="tableSelection"
-                :tableData="tableListData"
-                :supplier="supplierList"
-                :supplierEN="supplierListEN"
-                :batchEdit="multiEditControl"
-                v-loading="tableLoading"
-                ref="monitorTable" />
-            </div>
-            <div class="page-logo">
-              <img src="../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-              <div>
-                <p class="pageNum"></p>
-              </div>
-              <div>
-                <p>{{ userName }}</p>
-                <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-              </div>
-            </div>
+          <!-- 表格 -->
+          <div class="clearfix"></div>
+          <div class="margin-top20">
+            <monitorTableList
+              @updateCharts="updateCharts"
+              row-class-name="table-row"
+              @unSaveWarning="setUnSaveWarning"
+              :selection="tableSelection"
+              :tableData="tableListData"
+              :supplier="supplierList"
+              :supplierEN="supplierListEN"
+              :batchEdit="multiEditControl"
+              v-loading="tableLoading"
+              ref="monitorTable" />
           </div>
         </div>
-      </el-col>
+      </div>
+  </iCard>
+      <!-- <div class="pdf-item"> -->
+    <template v-for="(tableData,i) in tableList">
+    <div class="pageCard-main" :key="i">
+      <slot name="tabTitle"></slot>
+      <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
+        <!-- 供应商表格 -->
+        <div>
+            <div class="supplierTable">
+              <div class="clearFloat">
+                <div>
+                  <span class="font18 font-weight">
+                    {{ title }}
+                  </span>
+                </div>
+
+                <!-- 表格 -->
+                <div class="clearfix"></div>
+                <div class="margin-top20" :style="{'height': cntentHeight + 'px'}">
+                  <monitorTableList
+                    :key="'tableData'+i"
+                    :selection="tableSelection"
+                    :tableData="tableData"
+                    :supplier="supplierList"
+                    :supplierEN="supplierListEN"
+                    :batchEdit="multiEditControl"
+                    v-loading="tableLoading" />
+                </div>
+                <div class="page-logo">
+                  <img src="../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+                  <div>
+                    <p class="pageNum"></p>
+                  </div>
+                  <div>
+                    <p>{{ userName }}</p>
+                    <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </iCard>
+    </div>
+    </template>
+    <div class="pageCard-main">
+      <slot name="tabTitle"></slot>
+      <iCard class="buMonitor rsPdfCard" :key="i" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 图标模拟 -->
-      <el-col :span="16" offset="4">
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-        <div class="buMonitor-charts">
+        <div class="buMonitor-charts" :style="{'height': chartsHeight + 'px'}">
           <buMonitorCharts
             :supplier="supplierList"
             :data="chartData"
           />
         </div>
-      </el-col>
-    </el-row>
-  </iCard>
+        <div class="page-logo">
+          <img src="../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+          <div>
+            <p class="pageNum"></p>
+          </div>
+          <div>
+            <p>{{ userName }}</p>
+            <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+          </div>
+        </div>
+      </iCard>
+    </div>
+  </div>
 </template>
 <script>
 import { iInput, iCard, iButton, iMessage } from 'rise'
@@ -144,6 +183,7 @@ export default {
       rfqId: this.$route.query.desinateId || '',
       multiEditControl: false,
       tableListData: [],
+      tableList:[],
       chartData: [],
       supplierList: [], // 供应商列表
       supplierListEN: [], // 供应商列表
@@ -151,13 +191,41 @@ export default {
       // 更新时间
       updateTime: '',
       params: {},
-      unSaveWarning: false
+      unSaveWarning: false,
+      cntentHeight:0,
+      chartsHeight:0
     }
   },
   created() {
-    this.init()      
+    this.init()
   },
   methods: {
+    getHeight(){
+      if(!this.$refs.scenario) return
+      this.width = this.$refs.scenario.clientWidth
+      let headerHeight = 42 // Title 区域高度
+      let pageLogo = 52     // logo 区域高度
+      let tableHeader = 71  // 表头高度
+      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+      this.chartsHeight = (this.width / 841.89) * 595.28 - pageLogo - this.hasTitle // 绘图区域对应的高度
+      let rowList = this.$refs.scenario.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      let heightSum = 0
+      let tableList = []
+      let arr = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(heightSum<this.cntentHeight - tableHeader){
+          arr.push(this.tableListData[i])
+        }else{
+          tableList.push(JSON.parse(JSON.stringify(arr)))
+          heightSum=item.offsetHeight
+          arr = [this.tableListData[i]]
+        }
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+      return
+    },
     async init() {
       this.getFetchData()
     },
@@ -240,7 +308,9 @@ export default {
           this.tableListData = newTableList
           this.updateTime = res.data.refreshTime || ''
           this.updateTime = this.updateTime ? window.moment(this.updateTime).format('YYYY-MM-DD HH:mm:ss') : ''
-          console.log('tableListData', newTableList)
+          this.$nextTick(()=>{
+            this.getHeight()
+          })
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

@@ -761,12 +761,12 @@ export default {
         },
 
         exportPdf(){
-            if(this.showExportPdf && !this.exportLoading){
+            if(!this.exportLoading){
                 this.exportLoading = true;
                 this.$refs['exportPdf'].exportPdf();
             }else{
-                this.showExportPdf = true;
-                this.exportLoading = true;
+                // this.showExportPdf = true;
+                // this.exportLoading = true;
             }
         },
 
