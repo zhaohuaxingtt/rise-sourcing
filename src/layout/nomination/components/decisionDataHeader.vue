@@ -11,7 +11,7 @@
             <iButton class="export-btn" v-if="!isRoutePreview && !isApproval"  :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
         </div>
         <div  class="tab-list">
-            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
+            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick" :before-leave="beforeLeave">
                 <template  v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
