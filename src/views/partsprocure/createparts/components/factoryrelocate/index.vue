@@ -19,7 +19,6 @@
     </div>
     <iCard class="margin-top40">
       <div class="textalineright margin-bottom20">
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <iButton v-permission.auto="FACTORYRELOCATE_DOWNLOAD|工厂迁移-下载模板">{{language('DUNLOADTEMPATE','下载模板')}}</iButton>
         <iButton v-permission.auto="FACTORYRELOCATE_UPLOAD|工厂迁移-上传文件">{{language('UPLOADFILE','上传文件')}}</iButton>
         <button-table-setting @click="edittableHeader" />

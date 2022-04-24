@@ -40,9 +40,6 @@ export default {
             default:false,
         }
     },
-    created(){
-        console.log(this.BlackList,'BlackList');
-    },
     data(){
         return{
 

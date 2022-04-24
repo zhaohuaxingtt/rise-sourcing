@@ -1,76 +1,65 @@
 <template>
-	<div class="rsPdf">
-		<template v-for="(tableData, index) in tableList">
-			<iCard :key="index" class="rsCard pageCard">
-				<template #header>
-					<div class="title">
-						<p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
-					</div>
-				</template>
-				<div class="pdf-item">
-					<div class="infos">
-						<div
-							class="infoWrapper"
-							v-for="(info, $index) in infos"
-							:key="$index"
-						>
-							<div class="info">
-								<span class="label">{{ info.name }}：</span>
-								<span
-									v-if="info.props === 'exchange'"
-									v-html="exchangeRate"
-								></span>
-								<!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
-								<div v-else>{{ basicData[info.props] }}</div>
-							</div>
-						</div>
-					</div>
-					<!-- 第一页比其它页面多一个头部 -->
-					<div :style="{ height: tableHeight + 'px' }">
-						<tableList
-							:selection="false"
-							:tableTitle="tableTitle"
-							:tableData="tableData"
-							class="rsTable"
-							:tableRowClassName="tableRowClassName"
-							border
-						>
-							<template #fsnrGsnrNum="scope">
-								<div>
-									<p>{{ scope.row.fsnrGsnrNum }}</p>
-									<p>
-										{{
-											scope.row.purchasingFactoryShortName
-												? `(${scope.row.purchasingFactoryShortName})`
-												: ''
-										}}
-									</p>
-								</div>
-							</template>
-							<template #oldAPrice="scope">
-								<span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-							</template>
-							<template #cfTargetAPrice="scope">
-								<span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-							</template>
-							<template #cfTargetBPrice="scope">
-								<span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-							</template>
-							<template #rw="scope">
-								<span>{{ scope.row.rw | toThousands(true) }}</span>
-							</template>
-							<template #packPrice="scope">
-								<span>{{ scope.row.packPrice | toThousands(true) }}</span>
-							</template>
-							<template #transportPrice="scope">
-								<span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-							</template>
-							<template #operatePrice="scope">
-								<span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-							</template>
-							<template #turnover="scope">
-								<span>{{ scope.row.turnover | toThousands(true) }}</span>
-							</template>
+  <div class="rsPdf">
+    <template v-for="(tableData,index) in tableList">
+      <div :key="index" class="pageCard-main">
+      <slot name="tabTitle"></slot>
+      <iCard :key="index" class="rsCard pageCard">
+        <template #header>
+          <div class="title">
+            <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
+          </div>
+        </template>
+          <div class="pdf-item">
+            <div class="infos">
+              <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+                <div class="info">
+                  <span class="label">{{ info.name }}：</span>
+                  <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+                  <!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
+                  <div v-else>{{ basicData[info.props] }}</div>
+                </div>
+              </div>
+            </div>
+            <!-- 第一页比其它页面多一个头部 -->
+            <div :style="{'height':tableHeight + 'px'}">
+              <tableList
+                :selection="false"
+                :tableTitle="tableTitle"
+                :tableData="tableData"
+                class="rsTable"
+                :tableRowClassName="tableRowClassName"
+                border
+              >
+              <template #fsnrGsnrNum="scope">
+                  <div>
+                    <p>{{ scope.row.fsnrGsnrNum }}</p>
+                    <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                  </div>
+                </template>
+                <template #oldAPrice="scope">
+                  <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
+                </template>
+                <template #cfTargetAPrice="scope">
+                  <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+                </template>
+                <template #cfTargetBPrice="scope">
+                  <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+                </template>
+                <template #rw="scope">
+                  <span>{{ scope.row.rw | toThousands(true) }}</span>
+                </template>
+                <template #packPrice="scope">
+                  <span>{{ scope.row.packPrice | toThousands(true) }}</span>
+                </template>
+                <template #transportPrice="scope">
+                  <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
+                </template>
+                <template #operatePrice="scope">
+                  <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
+                </template>
+                <template #turnover="scope">
+                  <span>{{ scope.row.turnover | toThousands(true) }}</span>
+                </template>
 
 							<!-- 年降 -->
 							<template #ltc="scope">
@@ -222,7 +211,7 @@
             <div class="page-logo">
               <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
               <div>
-                <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
+                <p class="pageNum">{{'page '+(index+1)+' of '+tableList.length}}</p>
               </div>
               <div>
                 <p>{{ userName }}</p>
@@ -231,6 +220,7 @@
             </div>
           </div>
       </iCard>
+  </div>
     </template>
   </div>
 </template>
