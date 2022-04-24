@@ -14,13 +14,13 @@
       </div>
       <div class="content" id="allMoudles">
         <!-- title -->
-        <!-- <div id="html2canvasTitle">
+        <div id="html2canvasTitle">
           <rsTitle class="module">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/title"/>
             </template>
           </rsTitle>
-         </div> -->
+         </div>
         <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
         { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
          { "key": "Tasks", "name": "Tasks", "path": "/designate/decisiondata/tasks" },
@@ -36,53 +36,53 @@
                { "key": "MTZ", "name": "MTZ", "path": "/designate/decisiondata/mtz", "isMtz": true }, 
                { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
         <!-- PartList -->
-        <!-- <div id="html2canvasPartList">
+        <div id="html2canvasPartList">
           <partList class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/partlist"/>
             </template>
           </partList>
-        </div> -->
+        </div>
 
         <!-- Tasks -->
-        <!-- <div id="html2canvasTasks">
+        <div id="html2canvasTasks">
           <tasks class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/tasks"/>
             </template>
           </tasks>
-        </div> -->
+        </div>
 
         <!-- drawing -->
-        <!-- <div id="html2canvasDrawing">
+        <div id="html2canvasDrawing">
           <drawing class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/drawing"/>
             </template>
           </drawing>
-        </div> -->
+        </div>
 
         <!-- bdl -->
-        <!-- <div id="html2canvasBDl">
+        <div id="html2canvasBDl">
           <bdl isExportPdf class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/bdl"/>
             </template>
           </bdl>
-        </div> -->
+        </div>
 
         <!-- singleSourcing -->
-        <!-- <div id="html2canvasSingleSourcing">
+        <div id="html2canvasSingleSourcing">
           <singleSourcing class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/singlesourcing"/>
             </template>
           </singleSourcing>
-        </div> -->
+        </div>
 
         <!-- abprice -->
         <div id="html2canvasAbprice">
-          <abPrice class="module max-content">
+          <abPrice class="module pageCard-main rsPdfCard">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/abprice"/>
             </template>
@@ -90,13 +90,13 @@
         </div>
 
         <!-- timeline -->
-        <!-- <div id="html2canvasTimeline">
+        <div id="html2canvasTimeline">
           <timeline class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/timeline"/>
             </template>
           </timeline>
-        </div> -->
+        </div>
         <!-- awardingScenario -->
         <div id="html2canvasAwardingScenario">
           <awardingScenario class="module pageCard-main">
@@ -109,13 +109,13 @@
         </div>
         
 
-        <!-- <div id="html2canvasRs">
+        <div id="html2canvasRs">
           <rs class="module" :nomiData="nomiData">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/rs"/>
             </template>
           </rs>
-        </div> -->
+        </div>
       </div>
     </div>
 
@@ -173,10 +173,10 @@ export default {
     watch: {
       update(val){
         console.log(val);
-        this.$refs.exportPdf.$forceUpdate()
+        this.$forceUpdate()
       }
     },
-  created() {console.log(this.update);
+  created() {
     this.nominateAppId = this.$route.query.desinateId
     if (!this.nominateAppId) return
 

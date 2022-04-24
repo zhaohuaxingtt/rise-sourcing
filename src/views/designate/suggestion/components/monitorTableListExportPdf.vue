@@ -12,7 +12,6 @@
       fit
       border
       tooltip-effect='light'
-      :height="height"
       :data='data'
       :cell-class-name="getCellClass"
       width="100%"
@@ -652,7 +651,7 @@ export default {
 <style lang="scss" scoped>
 .monitorTable {
   ::v-deep .el-table {
-    height: 450px;
+    // height: 450px;
     .el-table__header {
       background-color: #e8efff;
     }

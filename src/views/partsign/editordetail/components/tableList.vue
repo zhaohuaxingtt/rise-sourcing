@@ -88,9 +88,6 @@ export default {
   components:{
     iInput
   },
-  created() {
-    console.log(this.$slots)
-  },
   methods: {
     handleSelectionChange(list) {
       if (this.singleSelect) return
