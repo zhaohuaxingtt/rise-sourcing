@@ -59,8 +59,8 @@
 			// 获取财报iframeurl
 			powerBiUrl() {
 				let params = {
-					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
-					reportId: '6087b0b2-cdd2-40c5-9290-40a7fd2eba36' 
+					workspaceId: process.env.NODE_ENV == 'production' ? 'c272ae69-a6b4-4407-bd0e-f67953de36ce' : '876776a9-f959-442e-a011-b4bade0dd862', 
+					reportId: process.env.NODE_ENV == 'production' ? '63648f3c-772a-49a0-9d86-94ad472b5b1b' : '6087b0b2-cdd2-40c5-9290-40a7fd2eba36' 
 				}
 				statement(params).then(res => {
 					console.log(res);

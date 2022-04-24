@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:15:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-06 15:37:27
  * @Description: 产品组
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -17,14 +17,14 @@
         <span class="font18 font-weight">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_NIHEJINDU_BUTTON|历史进度数据库-拟合进度-按钮" @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
-          <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PEIZHIXIANSHIZIDUAN_BUTTON|历史进度数据库-配置显示字段-按钮" @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_DAOCHU_BUTTON|历史进度数据库-导出-按钮" @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
+      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular" :selectionFixed="false">
       </tableList> 
     </template>
     <!---------------------------------------------------------------------->
@@ -67,6 +67,7 @@ import logicSettingDialog from '@/views/project/components/logicSettingBtn/compo
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { getExperience, getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
+import { cloneDeep } from "lodash"
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -198,11 +199,17 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
         return
       }
+
+      // 勾选项需要排下序
+      let selectRowRegular = cloneDeep(this.selectRowRegular);
+       selectRowRegular.sort((a,b)=>{
+        return (a.id - b.id)
+      })
       this.downloadLoading = true
       try {
         const params = {
           cartypeProId: '3',
-          experienceVOList: this.selectRowRegular,
+          experienceVOList: selectRowRegular,
           fields: this.partTableTitle.map(item => {
             return {
               gridFieldZh: item.name,
@@ -463,6 +470,7 @@ export default {
     min-height: 120px;
     max-height: 120px;
     overflow-x: hidden;
+    overflow-y: scroll;
   }
   &::before {
     height: 0;

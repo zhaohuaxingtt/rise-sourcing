@@ -18,6 +18,7 @@
           <iButton
             :loading="batchUploading"
             @click="batchDownload"
+             v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_DOWNLOAD_BUTTON|排程版本查询-下载-按钮"
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>

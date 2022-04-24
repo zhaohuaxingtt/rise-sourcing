@@ -13,7 +13,7 @@
       <div class="control">
         <iButton v-if="!disabled" @click="jump" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_ALL|每车用量查看全部版本">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
         <iButton v-if="!disabled" @click="download" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT|每车用量导出">{{ language('LK_DAOCHU','导出') }}</iButton>
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+        <button-table-setting @click="edittableHeader" />
       </div>
     </div>
     <div class="body margin-top27">

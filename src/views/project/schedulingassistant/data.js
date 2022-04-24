@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:17:08
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-29 14:44:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 10:26:52
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\data.js
  */
@@ -78,16 +78,16 @@ export const MENU = [
     permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANTPORTAL_RISKANDALARMCONFIG',
     permissionName: '项目管理-排程助手-风险预警配置'
   },
-  {
-    value: 8,
-    name: '进度确认',
-    message: 0,
-    url: '/projectmgt/projectscheassistant/proconfirm',
-    activePath: 'proconfirm',
-    key: 'JINDUQUEREN',
-    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PAGE',
-    permissionName: '项目管理-排程助手-进度确认汇总页面'
-  },
+  // {
+  //   value: 8,
+  //   name: '进度确认',
+  //   message: 0,
+  //   url: '/projectmgt/projectscheassistant/proconfirm',
+  //   activePath: 'proconfirm',
+  //   key: 'JINDUQUEREN',
+  //   permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PAGE',
+  //   permissionName: '项目管理-排程助手-进度确认汇总页面'
+  // },
   // {
   //   value: 2,
   //   name: '延误原因确认',
