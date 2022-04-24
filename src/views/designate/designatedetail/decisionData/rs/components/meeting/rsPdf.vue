@@ -411,6 +411,7 @@ export default {
     dateFilter,
     resetLtcData
   }
+  }
 }
 </script>
 
