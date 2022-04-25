@@ -25,15 +25,15 @@
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
-      <tableList indexKey
+      <tableList
+                permissionKey="PROJECT_SCHEDULINGASSISTANT_SCHEDULEVERSION"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
                  :tableData="tableData"
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #versionName="scope">
          <span class="flexRow-link">

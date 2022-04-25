@@ -27,6 +27,7 @@
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_RFQTABLE"
         :activeItems='"id"'
         selection
         indexKey
@@ -40,8 +41,6 @@
         ref="rfqTable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #kmAnalysis="scope">
           <el-popover
@@ -91,6 +90,7 @@
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_PARTTABLE"
         class="partsTable"
         :activeItems='"fsnrGsnrNum"'
         selection
@@ -107,8 +107,6 @@
         :selectable="partsSelectable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #selected="scope">
           <span>{{ selectedFormat(scope.row.selected) }}</span>

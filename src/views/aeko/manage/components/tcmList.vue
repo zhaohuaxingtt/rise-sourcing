@@ -41,6 +41,7 @@
       </p>
       <!-- 表单区域 -->
       <tableList
+          permissionKey="AEKO_MANAGE_COMPONENTS_TCMLIST"
           class="table"
           ref="tableList"
           index
@@ -50,8 +51,6 @@
           :tableLoading="loading"
           :selection="true"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         ></tableList>
         <!-- 分页 -->
           <iPagination

@@ -17,7 +17,8 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList 
+      <tableList
+        permissionKey="PARTSIGN_EDITORDETAIL_COMPONENTS_VOLUME_VOLUME"
         index 
         class="table" 
         :tableData="tableListData" 
@@ -26,8 +27,6 @@
         v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_TABLE|每车用量-表格"
         ref="tableList"
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
        />
       <iPagination v-update
         class="pagination"

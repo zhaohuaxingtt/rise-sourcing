@@ -76,10 +76,9 @@
                 </div>
             </div>
             <tableList
+            permissionKey="DESIGNATEFILES_FILEMANAGE"
             ref="tableList"
             :lang="true"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight">
               <template #fujian="scope">
                 <el-popover
