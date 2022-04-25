@@ -39,7 +39,9 @@
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
-      <tableList indexKey
+      <tableList 
+                permissionKey="PROJECT_PROGRESSMONITORING_PARTSTASKLIST"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
@@ -48,8 +50,6 @@
                  :tableLoading="tableLoading"
                  @handleSelectChange="handleSelectChange"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #partNum="scope">
           <span style="white-space:pre;">{{scope.row.partNum}}</span>

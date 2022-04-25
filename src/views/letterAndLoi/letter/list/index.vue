@@ -41,6 +41,7 @@
         </div>
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LETTER_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -49,8 +50,6 @@
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LETTER_LIST_TABLE|定点信-表格"
             ref="tableList"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">

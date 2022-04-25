@@ -74,6 +74,7 @@
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
+                permissionKey="AEKO_CHECK"
                 class="table"
                 ref="tableList"
                 index
@@ -83,8 +84,6 @@
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
-                :handleSaveSetting="handleSaveSetting"
-                :handleResetSetting="handleResetSetting"
                 >
                   <!-- AEKO号 -->
                   <template #aekoCode="scope">

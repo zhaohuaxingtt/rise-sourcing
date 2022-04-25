@@ -25,6 +25,7 @@
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME_RECORD_DETAIL"
         lang
         class="aotoTableHeight"
         :tableTitle="tableDetailTitle"
@@ -35,8 +36,6 @@
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         >
 
         <template #supplierId="scope">

@@ -144,9 +144,10 @@
 </template>
 <script>
 import {cloneDeep} from 'lodash'
-import {icon} from "rise"
+import {icon, iMessage} from "rise"
 import iTableHeaderSorter from './iTableHeaderSort'
 // import {iTableHeaderSorter} from "rise"
+import { getUserListMemory, configUserListMemory } from '@/api/tableSort'
 export default{
   props:{
     /**
@@ -237,6 +238,7 @@ export default{
     enabletableHeadersetting: {type: Boolean, default: true},
     showTitleName:{type:Boolean,default:false}, // 直接展示name字段
     indexFixed:{type:Boolean,default:false}, // 序列号是否固定
+    permissionKey: { type: String }
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
@@ -245,11 +247,16 @@ export default{
       settingVisible: false,
       header: cloneDeep(this.tableTitle),
       // header: cloneDeep(this.tableTitle).filter(i=> !i.isHidden),
-      tableSettingColumns: []
+      tableSettingColumns: [],
+      tableColumns: [],
+      settingId: ''
     }
   },
   created() {
     this.initTableSettingColumns()
+    if (this.permissionKey) {
+      this.querySetting()
+    }
   },
   methods:{
     /**
@@ -335,21 +342,75 @@ export default{
         i18n: o.i18n || o.key
       }))
     },
-    handleSaveSetting(data) {
-      // console.log('handleSaveSetting',data)
-      if (this.$attrs.handleSaveSetting && typeof this.$attrs.handleSaveSetting === 'function') {
-        this.tableSettingColumns = data
-        this.$attrs.handleSaveSetting({data, done: this.renewTableHeader})
-      }
+    getCookie(name) {
+			const strCookie = document.cookie //获取cookie字符串
+			const arrCookie = strCookie.split('; ') //分割
+			//遍历匹配
+			for (let i = 0; i < arrCookie.length; i++) {
+				if (arrCookie[i].indexOf(`${name}=`) === 0) {
+					return arrCookie[i].replace(`${name}=`, '')
+				}
+			}
+			return ''
+		},
+    handleSaveSetting(val = []) {
+      configUserListMemory({
+        accountId: this.$store.state.permission.userInfo.accountId,
+        listConfig: JSON.stringify(val),
+        permissionKey: this.permissionKey
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+
+          try {
+            const tableTitle = JSON.parse(res.data.listConfig)
+            this.renewTableHeader(tableTitle)
+            this.tableSettingColumns = tableTitle
+            this.settingId = res.data.id
+          } catch {}
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
     },
     handleResetSetting() {
-      if (this.$attrs.handleResetSetting && typeof this.$attrs.handleResetSetting === 'function') {
-        this.initTableSettingColumns()
-        this.$attrs.handleResetSetting({data: cloneDeep(this.tableTitle), done: this.renewTableHeader})
-      }
+      this.initTableSettingColumns()
+      this.handleSaveSetting(this.tableSettingColumns)
     },
     getHeader(){
       return cloneDeep(this.header);
+    },
+    querySetting() {
+      getUserListMemory({
+        permissionKey: this.permissionKey
+      })
+      .then(res => {
+        if (res.code == 200 && res.data[0] && res.data[0].listConfig) {
+          try {
+            const tableTitle = JSON.parse(res.data[0].listConfig)
+            this.renewTableHeader(tableTitle)
+            this.tableSettingColumns = tableTitle
+            this.settingId = res.data[0].id
+          } catch {
+            this.header = []
+            this.tableSettingColumns = []
+          }
+        } else {
+          if (!res.data.length) {
+            this.initTableSettingColumns()
+            this.renewTableHeader(this.tableSettingColumns)
+            return
+          }
+
+          this.header = []
+          this.tableSettingColumns = []
+        }
+      })
+      .catch(() => {
+        this.header = []
+        this.tableSettingColumns = [] 
+      })
     }
   }
 }

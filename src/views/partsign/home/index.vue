@@ -198,6 +198,7 @@
               </div>
             </div>
             <tablelist
+              permissionKey="PARTSIGN_HOME"
               class="aotoTableHeight"
               ref="tableList"
               :lang="true"
@@ -208,8 +209,6 @@
               @openPage="openPage"
               :activeItems="'partNum'"
               v-permission.auto="PARTSIGN_TABLE|表格"
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
             >
               <template #status="scope">
                 <p :class="{ incomplete: scope.row.status === '未完整' }">{{ scope.row.status }}<icon v-if="scope.row.status === '未完整'" class="tips" name="iconzhongyaoxinxitishi" /></p>
