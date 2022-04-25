@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:29:45
+ * @LastEditTime: 2022-03-23 19:29:12
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -57,9 +57,8 @@
             </div>
             <tableList
               ref="tableList"
+              permissionKey="ACCESSORYPART_SIGNFORPARTSDEMAND"
               :lang="true" 
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
             :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>

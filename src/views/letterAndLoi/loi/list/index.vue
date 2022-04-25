@@ -41,6 +41,7 @@
         <!-- </template> -->
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LOI_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -48,8 +49,6 @@
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LOI_LIST_TABLE|LOI-表格"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             ref="tableList"
         >
             <!-- 定点申请单号 -->

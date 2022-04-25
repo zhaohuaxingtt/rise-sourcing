@@ -20,13 +20,13 @@
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_SELALLOCATIONSHEET|定点信息-SEL分摊单" @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         
+        <button-table-setting @click="edittableHeader" />
       </div>
     </div>
-    <tableList 
+    <tableList
+      permissionKey="PARTSPROCURE_EDITORDETAIL_COMPONENTS_DESIGNATEINFO"
       ref="tableList"
       :lang="true"
-      :handleSaveSetting="handleSaveSetting"
-      :handleResetSetting="handleResetSetting"
       v-permission.auto="PARTSPROCURE_DESIGNATEINFO_TABLE|定点信息-表格"  :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->

@@ -6360,7 +6360,9 @@
 		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: '不能包含评分未完成的数据',
 		PINGFENRENWURECALLTIPS: '评分任务将撤回至待评分状态，是否确认撤回',
 		FENTANJINE: '分摊金额',
-		WEIFENTANJINE: '未分摊金额'
+		WEIFENTANJINE: '未分摊金额',
+		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: '不能包含评分未完成的数据',
+		PINGFENRENWURECALLTIPS: '评分任务将撤回至待评分状态，是否确认撤回'
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })

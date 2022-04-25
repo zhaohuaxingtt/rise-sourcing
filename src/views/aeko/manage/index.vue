@@ -28,7 +28,7 @@
               v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic.auto="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey || true"
               >
               <template  v-if="item.type === 'select'" >
                   <aeko-select 
@@ -68,7 +68,7 @@
                   :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
                   v-model="searchParams[item.props]"
                 ></iMultiLineInput>
-                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iDatePicker :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
@@ -114,6 +114,7 @@
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
+          permissionKey="AEKO_MANAGE"
           class="table"
           ref="tableList"
           index
@@ -123,8 +124,6 @@
           :tableLoading="loading"
           :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号 -->
         <template #aekoCode="scope">
@@ -267,6 +266,7 @@ export default {
           coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
+          assignStatus:1
         },
         selectOptions:{
           'brand':[],
@@ -275,6 +275,18 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              desc: '科室未分派',
+              code: 1
+            },{
+              desc: 'Linie未分派',
+              code: 2
+            },{
+              desc: '已分派',
+              code: 3
+            },
+          ],
         },
         selectOptionsCopy:{
           'brand':[],
@@ -283,6 +295,18 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              desc: '科室未分派',
+              code: 1
+            },{
+              desc: 'Linie未分派',
+              code: 2
+            },{
+              desc: '已分派',
+              code: 3
+            },
+          ],
         },
         tableListData:[],
         tableTitle:tableTitle,
@@ -338,8 +362,14 @@ export default {
       setLogMenu('')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-      this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+      this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
+      if(this.isAekoManager){
+        this.searchParams.assignStatus = 1  // 科室未分派
+      }
+      if(this.isCommodityCoordinator){
+        this.searchParams.assignStatus = 2  // Linie 未分派
+      }
 
       this.leftTab = getLeftTab(0);
     },

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:29:54
+ * @LastEditTime: 2022-03-23 19:29:07
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -61,10 +61,9 @@
                 </div>
             </div>
             <tableList
+              permissionKey="ACCESSORYPART_INTEGRATEDMANAGE"
               ref="tableList"
               :lang="true" 
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
               :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>

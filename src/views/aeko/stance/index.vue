@@ -76,6 +76,7 @@
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
+          permissionKey="AEKO_STANCE"
           class="table"
           ref="tableList"
           index
@@ -85,8 +86,6 @@
           :tableLoading="loading"
           :selection="false"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号  -->
         <template #aekoCode="scope">

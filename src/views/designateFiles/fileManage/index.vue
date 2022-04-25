@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:50:17
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-01 14:45:37
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -12,7 +12,9 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
 
-        <headerNav />
+          <headerNav>
+            <iLoger ref="log" :config="{module_obj_ae: '附件需求',  queryParams:[]}" :credentials="true" isPage :isUser="true" class="font-24 margin-left25" />
+          </headerNav>
 
 
           <!-- <div class="margin-bottom33">
@@ -62,6 +64,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                   <!--------------------分配LINIE/CSS----------------------------------->
                   <iButton @click="handleSendLinie" v-permission.auto="ACCESSORY_MANAGEMENT_SENDLINIE|附件-附件管理-分配LINIE/CSS">{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
@@ -76,10 +79,9 @@
                 </div>
             </div>
             <tableList
+            permissionKey="DESIGNATEFILES_FILEMANAGE"
             ref="tableList"
             :lang="true"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight">
               <template #fujian="scope">
                 <el-popover
@@ -148,12 +150,13 @@ import {partProjTypes} from '@/config'
 import headerNav from '@/components/headerNav'
 import moment from 'moment'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import iLoger from 'rise/web/components/iLoger'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger},
   data() {
     return {
       // 零件项目类型
@@ -306,11 +309,11 @@ export default {
         iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
-      // const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
-      // if (selectLINIE.length > 1 || selectLINIE[0]) {
-      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEILINIEDEFUJIAN','请选择未分配LINIE的附件'))
-      //   return
-      // }
+      const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      if (selectLINIE.length > 1 || selectLINIE[0]) {
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEILINIEDEFUJIAN','请选择未分配LINIE的附件'))
+        return
+      }
       this.changeLinieDialogVisible(true)
     },
     /**
