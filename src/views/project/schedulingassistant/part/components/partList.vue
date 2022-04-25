@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 16:27:06
+ * @LastEditTime: 2022-04-25 17:33:54
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -441,7 +441,7 @@ export default {
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
           const targetList = [item.zerosTarget, item.vffTarget] 
-          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
+          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3 || item.fsConfirmStatus	== 4) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
           iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
