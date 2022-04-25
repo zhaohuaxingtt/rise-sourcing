@@ -202,13 +202,13 @@
           </iButton>
           <iButton @click="transfer">
             {{ language("ZHUANPAI", "转派") }}
-          <el-tooltip 
-            effect="light" 
-            popper-class="custom-card-tooltip"
-            :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
-            placement="top">
-            <i class="el-icon-warning-outline tipsIcon"></i>
-          </el-tooltip>
+            <el-tooltip 
+              effect="light" 
+              popper-class="custom-card-tooltip"
+              :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
+              placement="top">
+              <i class="el-icon-warning-outline tipsIcon"></i>
+            </el-tooltip>
           </iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
@@ -502,10 +502,7 @@ export default {
     floatFixNum,
     // 转派
     transfer(){
-      console.log(this.multipleSelection);
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDELINGJIAN", "请选择需要转派的零件"))
-      let msg = this.multipleSelection.some(item=> !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
-      if(msg) return  iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       this.transferVisible = true
     },
     searchCartypeProject() {

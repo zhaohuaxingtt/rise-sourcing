@@ -28,7 +28,7 @@
               v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic.auto="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey || true"
               >
               <template  v-if="item.type === 'select'" >
                   <aeko-select 
