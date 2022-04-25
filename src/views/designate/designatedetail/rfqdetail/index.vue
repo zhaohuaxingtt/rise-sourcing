@@ -396,7 +396,18 @@ export default {
      * @return {*}
      */    
     openRfqPage(row){
-      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
+      const router =  this.$router.resolve({
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail`,
+        query: {
+          id: row.id,
+          round: row.currentRounds,
+          carTypeNames: row.carTypeNames,
+          rfqName: row.rfqName,
+          businessKey: row.partProjectType
+        }
+      })
+
+      // const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
       window.open(router.href,'_blank')
     },
     /**
