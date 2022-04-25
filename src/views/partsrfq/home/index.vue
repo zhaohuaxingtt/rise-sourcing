@@ -159,6 +159,7 @@
               </div>
             </div>
             <tablelist
+                permissionKey="PARTSRFQ_HOME"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
                 :tableLoading="tableLoading"
@@ -170,8 +171,6 @@
                 icon-props="recordId"
                 :lang="true"
                 class="aotoTableHeight"
-                :handleSaveSetting="handleSaveSetting"
-                :handleResetSetting="handleResetSetting"
                 ref="tableList"
             >
               <template #recordId="scope">

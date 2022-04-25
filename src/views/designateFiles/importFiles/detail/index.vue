@@ -30,6 +30,7 @@
                 </div>
                 <!-- 表格区域 -->
                 <tableList
+                    permissionKey="DESIGNATEFILES_IMPORTFILES_DETAIL"
                     class="table"
                     index
                     :lang="true"
@@ -38,8 +39,6 @@
                     :tableLoading="loading"
                     @handleSelectionChange="handleSelectionChange"
                     ref="tableList"
-                    :handleSaveSetting="handleSaveSetting"
-                    :handleResetSetting="handleResetSetting"
                 >
                     <!-- RFQ编号 -->
                     <template #rfqId="scope">

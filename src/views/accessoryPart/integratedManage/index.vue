@@ -61,10 +61,9 @@
                 </div>
             </div>
             <tableList
+              permissionKey="ACCESSORYPART_INTEGRATEDMANAGE"
               ref="tableList"
               :lang="true" 
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
               :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>

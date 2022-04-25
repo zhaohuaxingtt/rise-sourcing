@@ -49,6 +49,7 @@
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_SUPPLIER_COMPONENTS_SINGLETABLE"
         index
         :tableData="singleListData"
         :tableTitle="singleSupplierTitle"
@@ -58,8 +59,6 @@
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_TABLE|单一供应商表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>

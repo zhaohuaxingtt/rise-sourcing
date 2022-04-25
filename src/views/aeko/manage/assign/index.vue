@@ -28,6 +28,7 @@
         </span>
       </div>
       <tableList
+          permissionKey="AEKO_MANAGE_ASSIGN"
           index
           ref="tableList"
           :selection="true"
@@ -49,8 +50,6 @@
           v-loading="tableLoading"
           v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_TABLE|表格"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
       >
         <template #isTop="scope">
           <div>
