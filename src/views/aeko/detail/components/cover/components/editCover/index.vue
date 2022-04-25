@@ -279,11 +279,11 @@ export default {
 
               
             })
-            
+
             this.basicInfo = {
               ...data,
               coverCostsWithCarType:costData,
-              fsName:fsId.split(','),
+              fsName:fsId&&fsId.split(','),
               getFsName:fsName,
             };
 
