@@ -20,7 +20,8 @@
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
-      lang
+        permissionKey="DESIGNATE_HOME_RECORD"
+        lang
         class="aotoTableHeight"
         :tableTitle="tableTitle"
         :tableData="tableListData"
@@ -30,8 +31,6 @@
         @handleSelectionChange="handleSelectionChange"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">

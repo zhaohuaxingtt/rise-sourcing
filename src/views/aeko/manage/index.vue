@@ -114,6 +114,7 @@
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
+          permissionKey="AEKO_MANAGE"
           class="table"
           ref="tableList"
           index
@@ -123,8 +124,6 @@
           :tableLoading="loading"
           :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号 -->
         <template #aekoCode="scope">

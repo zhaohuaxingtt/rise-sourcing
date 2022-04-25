@@ -24,7 +24,9 @@
       </div> 
     </template> 
     <div class="tableWrapper" > 
-      <tableList indexKey
+      <tableList 
+                  permissionKey="PROJECT_PROGRESSMONITORING_MONITORDETAIL_COMPONENTS_DELAYRESON"
+                  indexKey
                  index
                  ref="tableList"
                  :lang="true"
@@ -34,8 +36,6 @@
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
                  @handleSelectChange="handleSelectChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
       <template #fsId="scope">
           <iSelect v-model="scope.row['fsId']" @change="val => handleSelectChange(val, scope.row)">
