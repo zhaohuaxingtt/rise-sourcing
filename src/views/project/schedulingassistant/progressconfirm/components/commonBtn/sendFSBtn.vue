@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-31 17:49:58
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 12:44:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-25 15:53:03
  * @Description: 发送FS按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\sendFSBtn.vue
 -->
@@ -77,11 +77,11 @@ export default {
       }
     },
     async handleOpenSendDialog() {
-      this.sendLoading = true
       if (this.sendData.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
         return
       }
+      this.sendLoading = true
       const sendData = this.sendData.filter(item => item.riskLevel !== 1)
       if (sendData.length < 1) {
         iMessage.warn(this.language('MEIYOUXUYAOFASONGDESHUJU', '没有需要发送的数据'))
@@ -92,18 +92,25 @@ export default {
       const tableListNomi = []
       const tableListKickoff = []
       sendData.forEach((item) => {
-        const options = fsOptions ? fsOptions[item.partNum]?.map(item => {
-          return {
-            ...item,
-            value: item.userId,
-            label: item.userName
-          }
-        }) : []
+        // const options = fsOptions ? fsOptions[item.partNum]?.map(item => {
+        //   return {
+        //     ...item,
+        //     value: item.userId,
+        //     label: item.userName
+        //   }
+        // }) : []
+        const {userInfoVOList=[]} = fsOptions;
+        userInfoVOList.map((userItem)=>{
+          userItem.value = userItem.userId;
+          userItem.label = userItem.userName;
+        })
+
         const tableItem = {
           ...item,
           carTypeProject: item.cartypeProject,
           carTypeProId: item.cartypeProId,
-          selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions
+          // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions
+          selectOption:userInfoVOList || [],
         }
         if (item.partPeriod == 2) {
           tableListNomi.push(tableItem)
