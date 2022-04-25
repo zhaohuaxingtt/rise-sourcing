@@ -416,7 +416,7 @@
 		<!---------------------------------------------------------------->
 		<!----------------------------现供供应商维护模块--------------------->
 		<!---------------------------------------------------------------->
-		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
+		<currentSupplier :dialogVisible='curentSupplierDialog' :detailData="detailData"></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
     <!---------------------- 采购申请弹框 -------------------------------->
