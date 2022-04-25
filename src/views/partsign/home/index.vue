@@ -98,7 +98,10 @@
                 <iSelect
                   clearable
                   v-model="form.status"
+                  multiple
+                  collapse-tags
                   :placeholder="language('LK_QINGXUANZHEXINXIDANZHUANGTAI','请选择信息单状态')"
+                  @change="handleChangeByStatus"
                 >
                   <el-option
                     value=""
@@ -209,7 +212,7 @@
               :handleResetSetting="handleResetSetting"
             >
               <template #status="scope">
-                <p :class="{ incomplete: scope.row.status === '未完整' }">{{ scope.row.status }}</p>
+                <p :class="{ incomplete: scope.row.status === '未完整' }">{{ scope.row.status }}<icon v-if="scope.row.status === '未完整'" class="tips" name="iconzhongyaoxinxitishi" /></p>
               </template>
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -254,6 +257,7 @@ import {
   iSearch,
   iInput,
   iSelect,
+  icon
 } from 'rise';
 // import tablelist from "./components/tableList";
 import tablelist from "@/components/iTableSort";
@@ -290,6 +294,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    icon,
     headerNav,
     buttonTableSetting
   },
@@ -409,6 +414,10 @@ export default {
       for (let i in this.form) {
         if (i !== "userId") {
           this.form[i] = "";
+
+          if (i === "status") {
+            this.$set(this.form, "status", ["NOTACCEPTED", "NOT_COMPLETE"])
+          }
         }
       }
 
@@ -428,14 +437,18 @@ export default {
       });
     },
     openPage(val) {
-      console.log(val);
-      local.set(
-        "tpPartInfoVO",
-        JSON.stringify(this.translateDataForDetail(val))
-      );
-      this.$router.push({
+      // local.set(
+      //   "tpPartInfoVO",
+      //   JSON.stringify(this.translateDataForDetail(val))
+      // );
+
+      const routeData = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsign/editordetail",
-      });
+        query: {
+          tpPartID: val.tpPartID
+        }
+      })
+      window.open(routeData.href, '_blank')
     },
     translateDataToRender(data) {
       let newMap = [];
@@ -461,6 +474,7 @@ export default {
       const params = {
         ...this.form,
         ...this.page,
+        status: this.form.status || []
       }
       getTabelData(params)
         .then((res) => {
@@ -541,6 +555,18 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    handleChangeByStatus(val) {
+      if (Array.isArray(val)) {
+        if (val.length) {
+          const filterItems = val.filter(item => item !== '')
+          this.$set(this.form, 'status', filterItems.length ? (val[val.length - 1] === '' ? [''] : filterItems) : [''])
+        } else {
+          this.$set(this.form, 'status', [''])
+        }
+      } else {
+        this.$set(this.form, 'status', [''])
+      }
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.form = cloneDeep(form)
@@ -604,6 +630,11 @@ export default {
 
   .incomplete {
     color: #ff8b00;
+  }
+
+  .tips {
+    font-size: 12px;
+    margin-left: 4px;
   }
 }
 </style>

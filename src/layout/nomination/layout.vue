@@ -8,7 +8,7 @@
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
-      <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
+      <designateStep v-if="isPreview=='0'" :showDecision="showDecision" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
@@ -170,4 +170,30 @@ export default {
     line-height: calc(100vh - 360px);
   }
 }
+
+  ::v-deep .pdf-item{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    .rsPdfCard{
+      box-shadow: none;
+      & + .rsCard {
+        margin-top: 20px; /*no*/
+      }
+      .cardHeader{
+        padding: 30px 0px;
+      }
+      .cardBody{
+        padding: 0px;
+      }
+    }
+  }
+  ::v-deep .pageCard-main{
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  ::v-deep .max-content{
+    width: max-content;
+    min-width: 1860px;
+  }
 </style>

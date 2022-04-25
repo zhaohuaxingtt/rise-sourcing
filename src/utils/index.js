@@ -317,9 +317,12 @@ function _permissionKeySendToService(router) {
  * @param {*} currentProjectType   当前的零件采购项目。
  * @return {*}
  *********************************************************************************************************************************************/
-export function filterProjectList(oldProjectList, currentProjectType) {
+export function filterProjectList(oldProjectList, currentProjectType, forceRelease) {
   try {
     let newProjectLists = []
+
+    if (forceRelease) return oldProjectList
+
     const onlyselfList = Object.keys(
       JSON.parse(JSON.stringify(onlyselfProject))
     ).map((i) => onlyselfProject[i])
