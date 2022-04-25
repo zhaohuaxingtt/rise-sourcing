@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 10:52:34
+ * @LastEditTime: 2022-04-25 15:21:33
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -338,30 +338,42 @@ export default {
         if (res?.result) {
           let tableList = res.data || []
           const fsOptions = await this.getFsUserList(tableList)
+          const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
           tableList = tableList.reduce((accu, item) => {
             if (item.procStatus != 1 && item.procStatus != 3) {
               return accu
             }
-            const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-            const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-            const options = fsOptions && fsOptions[item.partNum] ? fsOptions[item.partNum].reduce((accu, item) => { 
-              if (item.userId) { 
-                return [...accu, { 
-                  ...item, 
-                  value: item.userId, 
-                  label: item.userName 
-                }] 
-              } else { 
-                return accu 
-              } 
-            },[]) : []  
+            // const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+            // const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+            // const options = fsOptions && fsOptions[item.partNum] ? fsOptions[item.partNum].reduce((accu, item) => { 
+            //   if (item.userId) { 
+            //     return [...accu, { 
+            //       ...item, 
+            //       value: item.userId, 
+            //       label: item.userName 
+            //     }] 
+            //   } else { 
+            //     return accu 
+            //   } 
+            // },[]) : []  
+            let fs = '';
+            const fsId = buyerUserMap[item.partNum] ? buyerUserMap[item.partNum]+'' : '';
+            userInfoVOList.map((userItem)=>{
+              userItem.value = userItem.userId;
+              userItem.label = userItem.userName;
+              if(fsId && userItem.userId == fsId){
+                fs = userItem.userName
+              }
+            })
+ 
             return [...accu, {  
               ...item, 
               cartypeProId: this.cartypeProId, 
               cartypeProject: this.carProjectName, 
               projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
               projectPurchaserId: this.$store.state.permission.userInfo.id, 
-              selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              selectOption:userInfoVOList || [],
               fs, 
               fsId,
               confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'), 

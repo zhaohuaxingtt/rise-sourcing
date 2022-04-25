@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 11:09:15
+ * @LastEditTime: 2022-04-25 15:34:35
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -173,27 +173,33 @@ export default {
     async getTableList() {
       this.tableLoading = true
       const fsOptions = await this.getFsUserList(this.delayList || [])
+      const { userInfoVOList=[] } = fsOptions;
       this.tableList = this.delayList.map(item => {
         const fs = item.fs
         const fsId = item.fsId + ''
-        const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
-          if (item.userId) { 
-            return [...accu, { 
-              ...item, 
-              value: item.userId, 
-              label: item.userName 
-            }] 
-          } else { 
-            return accu 
-          } 
-        },[]) : []  
+        // const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+        //   if (item.userId) { 
+        //     return [...accu, { 
+        //       ...item, 
+        //       value: item.userId, 
+        //       label: item.userName 
+        //     }] 
+        //   } else { 
+        //     return accu 
+        //   } 
+        // },[]) : []  
+        userInfoVOList.map((userItem)=>{
+          userItem.value = userItem.userId;
+          userItem.label = userItem.userName;
+        })
         return {  
           ...item, 
           // cartypeProId: this.cartypeProId, 
           // cartypeProject: this.carProjectName, 
           // projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
           // projectPurchaserId: this.$store.state.permission.userInfo.id, 
-          selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+          // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+          selectOption:userInfoVOList || [],
           fs, 
           fsId
         } 
@@ -237,27 +243,39 @@ export default {
     async getConfirmListOptions(tableList){
       try{
         const fsOptions = await this.getFsUserList(tableList) 
+        const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
         this.tableList = tableList.map(item => {
-          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
-              if (item.userId) { 
-                return [...accu, { 
-                  ...item, 
-                  value: item.userId, 
-                  label: item.userName 
-                }] 
-              } else { 
-                return accu 
-              } 
-            },[]) : []  
+          // const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          // const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          // const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+          //     if (item.userId) { 
+          //       return [...accu, { 
+          //         ...item, 
+          //         value: item.userId, 
+          //         label: item.userName 
+          //       }] 
+          //     } else { 
+          //       return accu 
+          //     } 
+          //   },[]) : []  
+          
+            let fs = '';
+            const fsId = buyerUserMap[item.partNum] ? buyerUserMap[item.partNum]+'' : '';
+            userInfoVOList.map((userItem)=>{
+              userItem.value = userItem.userId;
+              userItem.label = userItem.userName;
+              if(fsId && userItem.userId == fsId){
+                fs = userItem.userName
+              }
+            })
             return {  
             ...item, 
             cartypeProId: this.cartypeProId, 
             cartypeProject: this.carProjectName, 
             projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
             projectPurchaserId: this.$store.state.permission.userInfo.id, 
-            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            selectOption:userInfoVOList || [],
             fs, 
             fsId,
             planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' ? this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw : this.partStatus == '7' ? item.emTimeKw : this.partStatus == '8' ? item.otsTimeKw :'',
