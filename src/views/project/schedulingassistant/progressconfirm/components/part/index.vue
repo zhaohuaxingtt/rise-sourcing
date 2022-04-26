@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:55:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 11:01:50
+ * @LastEditTime: 2022-04-26 14:37:31
  * @Description: 零件
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\index.vue
 -->
@@ -75,7 +75,7 @@ export default {
       tableTitleKickoff,
       tableDataNomi: [],
       tableDataKickoff: [],
-      searchList:searchList.filter((item)=>!item.hidden),
+      // searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       selectOptions: {}
     }
@@ -83,6 +83,13 @@ export default {
   computed: {
     isFS() {
       return this.$route.path.includes('proconfirm')
+    },
+    searchList(){
+      if (this.isFS) {
+        return searchList.filter((item)=>!item.hidden)
+      }else{
+        return searchList
+      }
     }
   },
   created() {
@@ -97,17 +104,20 @@ export default {
     // CSXTGLY    CS系统管理员
     // QQCGKZ_WF    前期采购科长_外方
     // CGBZ_WF      采购部长_外方
-    const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
-    const roleList = this.roleList;
-    let isIncludes = false;
-    roleList.map((item)=>{
-      if(list.includes(item)) isIncludes = true;
-    })
-    if(isIncludes){
-      this.searchList.map((item)=>{
-        if(item.value == 'fsId') item.hidden = false
+    if(this.$route.path.includes('proconfirm')){
+      const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+      const roleList = this.roleList;
+      let isIncludes = false;
+      roleList.map((item)=>{
+        if(list.includes(item)) isIncludes = true;
       })
+      if(isIncludes){
+        this.searchList.map((item)=>{
+          if(item.value == 'fsId') item.hidden = false
+        })
+      }
     }
+
   },
   methods: {
     initSearchParams() {
