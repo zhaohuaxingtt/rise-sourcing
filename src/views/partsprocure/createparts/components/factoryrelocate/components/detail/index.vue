@@ -1,6 +1,6 @@
 <template>
   <iPage class="createPartsBatchDetail">
-    <iCard :title="`${ language('PICI', '批次') }：${ 'XXXXXXXXXX' }`">
+    <iCard :title="`${ language('PICI', '批次') }：${ id }`">
       <template #header-control>
         <iButton class="executeBtn"><span><i class="executeIcon"></i>{{ language('ZHIXING', '执行') }}</span></iButton>
       </template>
@@ -39,7 +39,7 @@
         </el-form>
       </iSearch>
       <i class="cut"></i>
-      <iCard class="mainCard" :title="language('MINGXIXIANG', '明细项')">
+      <!-- <iCard class="mainCard" :title="language('MINGXIXIANG', '明细项')">
         <template #header-control>
           <iButton>{{ language('MINGXIXIANGDAOCHU', '明细项导出') }}</iButton>
           <iButton>{{ language('CHONGXINDAORU', '重新导入') }}</iButton>
@@ -87,18 +87,19 @@
           :layout="page.layout"
           :total="page.totalCount"
           v-update />
-      </iCard>
+      </iCard> -->
     </iCard>
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iButton, iSearch, iMultiLineInput, iInput, iSelect, iPagination } from 'rise'
+import { iPage, iCard, iButton, iSearch, iMultiLineInput, iInput, iSelect, iPagination, iMessage } from 'rise'
 import buttonTableSetting from '@/components/buttonTableSetting'
 import tablelist from '@/components/iTableSort'
 import { tableSortMixins } from '@/components/iTableSort/tableSortMixins'
 import { detailTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
+import { getFactoryImportRecordsImport } from '@/api/partsprocure/editordetail'
 
 export default {
   name: 'createPartsBatchDetail',
@@ -106,10 +107,32 @@ export default {
   mixins:[ pageMixins, tableSortMixins ],
   data() {
     return {
+      id: "",
       form: {},
       tablaLoading: false,
       tableTitle,
       tableData: [],
+    }
+  },
+  created() {
+    this.id = this.$route.query.id
+  },
+  methods: {
+    getFactoryImportRecordsImport() {
+      this.tablaLoading = true
+
+      getFactoryImportRecordsImport({
+        id: this.id
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tableData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.data.total
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.tablaLoading = false)
     }
   }
 }

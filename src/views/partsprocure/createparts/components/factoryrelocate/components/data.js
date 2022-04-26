@@ -7,10 +7,10 @@
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\factoryrelocate\components\data.js
  */
 export const tableTitle = [
-  { props: 'a', name: '导入批次', key: 'DAORUPICI', tooltip: true, minWidth: '320px', align: 'left' },
-  { props: 'b', name: '导入用户', key: 'DAORUYONGHU', tooltip: true },
-  { props: 'c', name: '状态', key: 'ZHUANGTAI', tooltip: true },
-  { props: 'd', name: '导入时间', key: 'DAORUSHIJIAN', tooltip: true }
+  { props: 'id', name: '导入批次', key: 'DAORUPICI', tooltip: true, minWidth: '320px', align: 'left' },
+  { props: 'createByName', name: '导入用户', key: 'DAORUYONGHU', tooltip: true },
+  { props: 'status', name: '状态', key: 'ZHUANGTAI', tooltip: true },
+  { props: 'createDate', name: '导入时间', key: 'DAORUSHIJIAN', tooltip: true }
 ]
 
 export const detailTableTitle = [
