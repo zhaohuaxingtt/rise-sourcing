@@ -29,6 +29,7 @@
         </template>
       </el-table>  -->
       <tablelist
+        permissionKey="PARTSPROCURE_CREATEPARTS_COMPONENTS_FACTORYRELOCATE"
         v-permission.auto="FACTORYRELOCATE_TABLE|工厂迁移-表格"
         ref="tableList"
         lang
@@ -36,8 +37,6 @@
         :tableData="tableData"
         :tableTitle="tableFileTitle"
         :tableLoading="tablaLoading"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       /> 
       <iPagination
         class="pagination margin-top30"

@@ -27,6 +27,7 @@
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_RFQTABLE"
         :activeItems='"id"'
         selection
         indexKey
@@ -40,8 +41,6 @@
         ref="rfqTable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #kmAnalysis="scope">
           <el-popover
@@ -91,6 +90,7 @@
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_PARTTABLE"
         class="partsTable"
         :activeItems='"fsnrGsnrNum"'
         selection
@@ -107,8 +107,6 @@
         :selectable="partsSelectable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #selected="scope">
           <span>{{ selectedFormat(scope.row.selected) }}</span>
@@ -396,7 +394,18 @@ export default {
      * @return {*}
      */    
     openRfqPage(row){
-      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
+      const router =  this.$router.resolve({
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail`,
+        query: {
+          id: row.id,
+          round: row.currentRounds,
+          carTypeNames: row.carTypeNames,
+          rfqName: row.rfqName,
+          businessKey: row.partProjectType
+        }
+      })
+
+      // const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
       window.open(router.href,'_blank')
     },
     /**

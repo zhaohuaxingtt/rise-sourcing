@@ -53,6 +53,7 @@
       </template>
       <div class="body">
         <tableList
+          permissionKey="SCORECONFIG_CONFIGSCOREDEPT_DEMO"
           class="table"
           ref="tableList"
           index
@@ -61,8 +62,6 @@
           :tableLoading="loading"
           height="100%"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
           <!-- 评分人 -->
           <template #raterList="scope">

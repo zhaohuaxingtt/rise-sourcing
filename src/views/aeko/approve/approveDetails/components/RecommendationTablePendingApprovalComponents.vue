@@ -14,12 +14,11 @@
       </div>
       
       <tableList
+        permissionKey="AEKO_APPROVE_APPROVEDETAILS_COMPONENTS_RECOMMENDATIONTABLEPENDINGAPPROVALCOMPONENTS"
         class="margin-top24"
         ref="tableList"
         :tableTitle="recommendationFormPendingApprovalTitle"
         :tableData="recommendationFormPendingApprovalList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         :titlePopover="false"
       >
         <template #supplier="scope">

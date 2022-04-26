@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 16:55:33
+ * @LastEditTime: 2022-04-25 17:28:42
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -11,7 +11,7 @@
   <div class="partListView" v-loading="loading"> 
     <div class="partListView-title"> 
       <div class="partListView-title-span"> 
-        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox> 
+        <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox>  -->
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span> 
       </div> 
       <div v-if="!isSop && parts.length > 0"> 
@@ -42,16 +42,18 @@
       <div v-for="pro in showParts" :key="pro.label" class="productItem" ref="partSchedulPartListViewItem"> 
         <div class="productItem-top"> 
           <div class="checkBox-wrapper">
-            <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+            <!-- <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">  -->
               <el-popover
                 v-if="pro.zp && pro.zp === 'ZP5'"
                 :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
                 placement="top-start"
                 trigger="hover">
-                <span slot="reference" >*</span>
+                <!-- <span slot="reference" >*</span> -->
+                <span slot="reference" class="checkBox-wrapper-text">*</span>
               </el-popover>
-            </el-checkbox> 
-            <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
+            <!-- </el-checkbox>  -->
+            <!-- <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span> -->
+            <span class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
           </div>
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
@@ -439,7 +441,7 @@ export default {
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
           const targetList = [item.zerosTarget, item.vffTarget] 
-          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
+          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3 || item.fsConfirmStatus	== 4) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
           iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
