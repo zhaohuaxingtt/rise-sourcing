@@ -41,7 +41,7 @@
 					<!-------------------------------------------------------------------------------->
 					<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 					<!---出现此按钮。------------------------------------------------------------------->
-					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
+					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="openCurentSupplierDialog">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 					<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
 						v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 					<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATEPARTSFSNRNUMBER|生成零件采购项目号"></creatFsGsNr>
@@ -1160,6 +1160,14 @@
 					inputDom.blur()
 					showDom.style.height = "auto"
 				}
+			},
+			openCurentSupplierDialog() {
+				if (this.sopDate !== this.detailData.sopDate) {
+					iMessage.warn(this.language("SOPRIQICUNZAIGAIDONG", "SOP日期存在改动，请保存后再试"))
+					return
+				}
+
+				this.curentSupplierDialog.show = true
 			}
 		}
 }

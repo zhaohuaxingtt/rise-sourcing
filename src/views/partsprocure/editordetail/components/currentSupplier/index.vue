@@ -279,7 +279,7 @@ export default{
      */
     supplierCurentBottom(){
       this.loadingBottom = true
-      supplierCurentBottom({...this.searchForm,...this.page, partSopDate: this.sopDate ? moment(this.sopDate).format('YYYY-MM-DD') : '' }).then(res=>{
+      supplierCurentBottom({...this.searchForm,...this.page, partSopDate: this.sopDate ? moment(this.sopDate).format('YYYY-MM-DD HH:mm:ss') : '' }).then(res=>{
         if(res.code == 200 && res.data){
           this.loadingBottom = false
           res.data.forEach((items,index)=>items['deleteFlag'] = 'b'+index)
