@@ -41,10 +41,9 @@
         </div>
       </div>
       <tablePart
+        permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}

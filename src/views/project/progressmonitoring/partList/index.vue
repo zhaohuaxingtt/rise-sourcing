@@ -20,6 +20,7 @@
         </div>
         <div class="cardview-body padding-top30">
           <tableList
+            permissionKey="PROJECT_PROGRESSMONITORING_PARTLIST"
             height="450"
             index
             ref="tableList"
@@ -30,8 +31,6 @@
             :tableLoading="tableLoading"
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
           >
           <template #cartypeProject="">
             <span>{{carProjectName}}</span>
