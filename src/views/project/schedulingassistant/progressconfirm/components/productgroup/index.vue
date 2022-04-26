@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 16:09:16
+ * @LastEditTime: 2022-04-26 11:02:30
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -86,12 +86,13 @@ import fsSelect from '@/views/project/components/commonSelect/fsSelect'
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 import iDicoptions from 'rise/web/components/iDicoptions'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,roleMixins],
   components: { iSearch, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, iInput, iButton, iCard, tableList, iPagination, fsConfirmDialog, confirmBtn, saveBtn, backBtn, transferBtn },
   data() {
     return {
-      searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {
         confirmStatus: 'TO_BE_CONFIRMED'
       },
@@ -122,6 +123,27 @@ export default {
     this.initSearchParams()
     this.getFSOPtions()
     this.getTableList()
+
+    // 判断一下是否包含以下角色 若包含则展示询价采购员搜索框
+    // ADMIN      超级管理员
+    // QQCGKZ     前期采购科长
+    // QQCGGZ     前期采购股长
+    // CGBZ       采购部长
+    // CIXTGLY    CI系统管理员
+    // CSXTGLY    CS系统管理员
+    // QQCGKZ_WF    前期采购科长_外方
+    // CGBZ_WF      采购部长_外方
+    const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+    const roleList = this.roleList;
+    let isIncludes = false;
+    roleList.map((item)=>{
+      if(list.includes(item)) isIncludes = true;
+    })
+    if(isIncludes){
+      this.searchList.map((item)=>{
+        if(item.value == 'fsId') item.hidden = false
+      })
+    }
   },
   methods: {
     initSearchParams() {
