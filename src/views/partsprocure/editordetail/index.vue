@@ -416,7 +416,7 @@
 		<!---------------------------------------------------------------->
 		<!----------------------------现供供应商维护模块--------------------->
 		<!---------------------------------------------------------------->
-		<currentSupplier :dialogVisible='curentSupplierDialog' :detailData="detailData"></currentSupplier>
+		<currentSupplier :dialogVisible='curentSupplierDialog' :sopDate="sopDate"></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
     <!---------------------- 采购申请弹框 -------------------------------->
@@ -646,7 +646,9 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
-				sourceProcureFactory: ''
+				sourceProcureFactory: '',
+				cacheCarTypeProject: {},
+				sopDate: ""
 			};
 		},
 		created() {
@@ -750,6 +752,7 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data || {};
+					this.sopDate = res.data.sopDate || ""
 					this.sourceProcureFactory = res.data.procureFactory
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
