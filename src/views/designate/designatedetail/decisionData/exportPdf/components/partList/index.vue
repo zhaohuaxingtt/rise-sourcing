@@ -137,7 +137,6 @@ export default {
           .then(res => {
             if (res.code == 200 && res.data) {
               this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
-              this.tableListData = [...this.tableListData,...this.tableListData,]
               this.tableListData = JSON.parse(JSON.stringify(this.tableListData)).map((item,i)=>{
                 item.index = 1+i
                 return item

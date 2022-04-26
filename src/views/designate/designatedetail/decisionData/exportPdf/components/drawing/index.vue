@@ -98,20 +98,28 @@ export default {
       let heightSum = 0
       let filesList = []
       let arr = []
-      rowList.forEach((item,i)=>{
-        heightSum+=item.offsetHeight
-        if(heightSum<this.cntentHeight){
-          arr.push(this.files[i])
-        }else{
-          filesList.push(JSON.parse(JSON.stringify(arr)))
-          heightSum=item.offsetHeight
-          arr = [this.files[i]]
-        }
+      let list = []
+      rowList.forEach(item=>{
+        list.push(new Promise((r,j)=>{
+          const img = item.getElementsByClassName('img')[0];
+          img.onload = () => r(item)
+          img.onerror = () => r(item)
+        }))
       })
-      filesList.push(JSON.parse(JSON.stringify(arr)))
-      this.filesList = filesList
-      console.log(filesList);
-      return
+      Promise.all(list).then(res=>{
+        res.forEach((item,i)=>{
+          heightSum+=item.offsetHeight
+          if(heightSum<this.cntentHeight){
+            arr.push(this.files[i])
+          }else{
+            filesList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.files[i]]
+          }
+        })
+        filesList.push(JSON.parse(JSON.stringify(arr)))
+        this.filesList = filesList
+      })
     },
     getdDecisiondataList: function () {
       getdDecisiondataList({

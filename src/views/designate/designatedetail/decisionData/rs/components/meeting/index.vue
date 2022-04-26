@@ -837,6 +837,9 @@ export default {
 		isApproval() {
 			return this.$route.query.isApproval === 'true'
 		},
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
+    }
 	},
 	created() {
 		this.isAuth = this.$route.query.type === 'auth'
@@ -844,124 +847,6 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		dateFilter,
-		getHeight() {
-			setTimeout(() => {
-				let dom = this.$refs.rsPdf.$el
-				this.width = dom.offsetWidth
-				this.pageHeight = (this.width / 841.89) * 595.28 // 横版A4一页对应的高度
-				let tableHeader = 57 // 表头高度
-				let headerHeight = 106 // 顶部标题高度
-				let pageLogo = 52 // logo 区域高度
-				let pageTop = document
-					.getElementsByClassName('demo')[0]
-					.getElementsByClassName('page-top')[0].offsetHeight // 顶部内容高度
-				let el = document
-					.getElementsByClassName('demo')[0]
-					.getElementsByClassName('Application')[0].offsetHeight // 审批备注
-				let outEl = document
-					.getElementsByClassName('demo')[0]
-					.getElementsByClassName('out-compute')[0].offsetHeight // 备注
-				for (let i = 0; i < el.length; i++) {
-					height += el[i].offsetHeight
-				}
-				// 第一页
-				this.tableHeight =
-					this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
-				// 第二页
-				// this.otherTableHeight = this.pageHeight - pageLogo - 21
-				let rowList = document
-					.getElementsByClassName('demo')[0]
-					.getElementsByClassName('mainTable')[0]
-					.getElementsByClassName('el-table__body-wrapper')[0]
-					.getElementsByClassName('table-row')
-				let arr = []
-				let heightSum = 0
-				let tableList = []
-				rowList.forEach((item, i) => {
-					heightSum += item.offsetHeight
-					// if(tableList.length==0){
-					if (heightSum < this.tableHeight - tableHeader - outEl - el) {
-						arr.push(this.tableData[i])
-					} else {
-						tableList.push(JSON.parse(JSON.stringify(arr)))
-						heightSum = item.offsetHeight
-						arr = [this.tableData[i]]
-					}
-					// }else{
-					//   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-					//     arr.push(this.tableData[i])
-					//   }else{
-					//     tableList.push(JSON.parse(JSON.stringify(arr)))
-					//     heightSum=item.offsetHeight
-					//     arr = [this.tableData[i]]
-					//   }
-					// }
-				})
-			})
-
-    },
-    tableTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return sparePartTableTitle
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return accessoryTableTitle
-      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
-        return gsTableTitle
-      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
-        return dbTableTitle
-      }
-      return nomalTableTitle
-    },
-    pageWidth(){
-      // 多加2px 避免出现滚动条
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return 1443
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return 1353
-      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
-        return 1893
-      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
-        return 1770
-      }
-      return 1545
-    },
-    cardTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return '配件采购'
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return '附件采购'
-      }
-      return '生产采购'
-    },
-    cardTitleEn() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return 'CSC Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return 'CSC Nomination Recommendation – Accessory Purchasing'
-      }
-      return 'CSC Nomination Recommendation - Production Purchasing'
-    },
-    getRemarkAll() {
-      return this.remarkItem.map(item => item.value).join('\n')
-    },
-    isRoutePreview() {
-      return this.$route.query.isPreview == 1
-    },
-    isApproval() {
-      return this.$route.query.isApproval === "true"
-    },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
-  },
-  created(){
-    this.isAuth = this.$route.query.type === "auth"
-    // this.getPrototypeList()
-  },
-  mounted(){
-  },
-  methods: {
     remarkProcess,
     dateFilter,
     getHeight(){
@@ -1536,7 +1421,7 @@ export default {
 				}).then((res) => {
 					if (res.code == 200) {
 						item['imageUrl'] = res.data[0].path
-						console.log(res.data[0].objectUrl)
+						// console.log(res.data[0].objectUrl)
 						this.DownloadPdf()
 					} else {
 						this.$message.error(
