@@ -218,6 +218,7 @@ export default {
                       this.$emit('getBbasicInfo');
                       this.getLinie()
                     }
+                    this.basicInfo.fsName = Array.from(new Set(data.fsName.split(','))).join(',');
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
