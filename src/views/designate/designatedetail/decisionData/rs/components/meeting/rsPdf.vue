@@ -395,6 +395,7 @@ export default {
         true: "Y",
         false: "N"
       }
+    }
   },
   data() {
     return {
@@ -410,7 +411,6 @@ export default {
     remarkProcess,
     dateFilter,
     resetLtcData
-  }
   }
 }
 </script>
@@ -451,111 +451,6 @@ export default {
 		font-weight: 400; /*no*/
 		color: rgba(22, 96, 241, 1);
 		border: 1px dashed #1660f1; /*no*/
-	}
-
-	.rsTop {
-		display: flex;
-		.rsTop-left-item-title {
-			white-space: pre-line;
-		}
-		&-left {
-			width: 65%;
-			display: flex;
-			flex-wrap: wrap;
-			&-item {
-				width: 50%;
-				font-size: 12px;
-				display: flex;
-				height: 17px;
-				margin-bottom: 12px;
-				&:last-of-type {
-					margin-bottom: 26px;
-				}
-				&-title {
-					font-weight: bold;
-					width: 40%;
-				}
-				&:nth-of-type(odd) {
-					.rsTop-left-item-title {
-						width: 33%;
-					}
-				}
-				&-value {
-					font-weight: 400;
-					width: 60%;
-				}
-			}
-		}
-		&-right {
-			width: 40%;
-			display: flex;
-			flex-wrap: wrap;
-			border: 1px solid rgba(197, 204, 214, 0.42);
-			border-radius: 5px 5px 0 0; /*no*/
-			&-item {
-				width: 45%;
-				display: flex;
-				border-bottom: 1px solid rgba(197, 204, 214, 0.42);
-				&:nth-of-type(odd) {
-					width: 55%;
-					border-right: 1px solid rgba(197, 204, 214, 0.42);
-				}
-				&-title {
-					background-color: rgba(22, 96, 241, 0.06);
-					border-right: 1px solid rgba(197, 204, 214, 0.42);
-					padding: 6px 24px; /*no*/
-					width: 60%;
-					font-weight: bold;
-					// line-height: 29px; /*no*/
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-				}
-				&-value {
-					width: 40%;
-					padding: 6px 24px; /*no*/
-					// line-height: 29px; /*no*/
-					background-color: #fff;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-				}
-				&:nth-of-type(even) {
-					.rsTop-right-item-title {
-						width: 65%;
-					}
-					.rsTop-right-item-value {
-						width: 35%;
-					}
-				}
-			}
-		}
-	}
-	.prototypeTable {
-		::v-deep tr {
-			&:nth-child(even) {
-				background-color: #f7f7ff;
-			}
-		}
-	}
-	.rsTable {
-		font-size: 8px; /*no*/
-		&::before {
-			height: 0;
-		}
-		::v-deep thead th {
-			padding-top: 8px; /*no*/
-			padding-bottom: 8px; /*no*/
-			& > .cell {
-				padding-left: 3px; /*no*/
-				padding-right: 3px; /*no*/
-				line-height: 14px; /*no*/
-				font-size: 12px; /*no*/
-				span {
-					// zoom: 0.85;
-				}
-			}
-		}
 	}
 
   .rsTop {

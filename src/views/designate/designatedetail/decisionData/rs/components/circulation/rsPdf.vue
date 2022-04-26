@@ -373,45 +373,6 @@ export default {
 		}
 	}
 
-	.rsTable {
-		font-size: 8px; /*no*/
-		&::before {
-			height: 0;
-		}
-		::v-deep thead th {
-			padding-top: 8px; /*no*/
-			padding-bottom: 8px; /*no*/
-			& > .cell {
-				padding-left: 3px; /*no*/
-				padding-right: 3px; /*no*/
-				line-height: 14px; /*no*/
-				span {
-					// zoom: 0.85;
-				}
-
-				// span span {
-				//   // font-size: 8px;
-				// }
-				p {
-					min-height: 16px; /*no*/
-				}
-			}
-		}
-		::v-deep tr {
-			border-left: 1px solid #ebeef5;
-			border-bottom: 1px solid #ebeef5;
-			td {
-				& > .cell {
-					padding-right: 1px; /*no*/
-					padding-left: 1px; /*no*/
-				}
-			}
-			&:nth-child(even) {
-				background-color: #f7f7ff;
-			}
-		}
-	}
-
   .rsTable {
     &.el-table--group, &.el-table--border{
       border-color: #ccc;
