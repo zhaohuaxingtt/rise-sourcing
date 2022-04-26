@@ -57,7 +57,7 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="110"
+        min-width="110"
         fixed
         >
       <template slot-scope="scope">

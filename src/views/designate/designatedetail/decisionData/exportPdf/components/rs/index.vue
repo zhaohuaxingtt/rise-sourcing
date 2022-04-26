@@ -38,7 +38,7 @@ import {
   searchRsPageExchangeRate
 } from "@/api/designate/decisiondata/rs"
 import {findFrontPageSeat} from "@/api/designate"
-import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData, remarkProcess } from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
 import {partProjTypes} from "@/config"
 
 export default {
