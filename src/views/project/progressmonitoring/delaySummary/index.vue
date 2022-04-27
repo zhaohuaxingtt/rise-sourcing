@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 14:42:04
+ * @LastEditTime: 2022-04-27 17:38:50
  * @Description: 延误原因汇总
 -->
 
@@ -124,7 +124,7 @@ export default {
       tableData: [],
       tableLoading: false,
       selectTableData: [],
-      // searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       withSend: false,
       withAllBtn: false,
@@ -144,14 +144,6 @@ export default {
     permissionKey() {
       return !this.isFS ? 'PROJECTMGT_DELAYSUMMARY_PAGE|项目管理-进度监控-延误原因汇总页面' : 'PROJECTMGT_DELAYCONFIRM_PAGE|项目管理-进度监控-延误原因确认页面'
     },
-    searchList(){
-      if (this.isFS) {
-        return searchList.filter((item)=>!item.hidden)
-      }else{
-        return searchList
-      }
-      
-    }, 
   },
   created() {
     this.initSearchParams()
@@ -175,11 +167,9 @@ export default {
       roleList.map((item)=>{
         if(list.includes(item)) isIncludes = true;
       })
-      if(isIncludes){
-        this.searchList.map((item)=>{
-          if(item.value == 'fsId') item.hidden = false
-        })
-      }
+      if(isIncludes) this.searchList = searchList
+    }else{
+      this.searchList = searchList;
     }
   },
   methods: {
