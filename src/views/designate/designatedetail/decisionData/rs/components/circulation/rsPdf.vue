@@ -9,7 +9,7 @@
             <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
           </div>
         </template>
-          <div class="pdf-item">
+          <div class="pdf-content">
             <div class="infos">
               <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
                 <div class="info">
@@ -228,10 +228,7 @@
 <script>
 import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
-import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle, infos, dateFilter } from "./data"
-import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import { dateFilter } from "./data"
 import { resetLtcData, remarkProcess } from '../meeting/data'
 import filters from "@/utils/filters"
 import { toThousands } from "@/utils"
@@ -239,49 +236,20 @@ export default {
 	mixins: [filters],
 	components: { iCard, iFormGroup, iFormItem, iText, tableList, icon },
 	props: {
-		nominateId: {
-			type: String,
-		},
 		cardTitle: { type: String },
 		basicData: { type: Object, default: () => ({}) },
 		infos: { type: Array, default: () => [] },
-		titleData: { type: Array, default: () => [] },
 		tableTitle: { type: Array, default: () => [] },
 		tableData: { type: Array, default: () => [] },
-		firstCount: { type: Number, default: 0 },
-		count: { type: Number, default: 0 },
 		remarkItem: { type: Array, default: () => [] },
-		projectType: { type: String },
-		isApproval: { type: Boolean },
-		exchangeRageCurrency: { type: Array, default: () => [] },
 		checkList: { type: Array, default: () => [] },
 		exchangeRate: { type: String, default: '' },
 		tableHeight: { type: Number, default: 0 },
-		otherTableHeight: { type: Number, default: 0 },
-		tableList: { type: Array, default: () => [] },
+		tableList: { type: Array, default: () => [[]] },
 		processApplyDate: { type: String, default: '' },
 	},
 	filters: {
 		toThousands,
-	},
-	data() {
-		return {
-			partProjTypes,
-			// titleData: [
-			//   { label: "零件关系", value: "配件", props: "partProjectType" },
-			//   { label: "询价采购员", value: "胡伟", props: "buyer" },
-			//   { label: "货币单位", value: "RMB", props: "currency" },
-			//   { label: "申请单号", value: "", props: "nominateAppId" },
-			//   { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
-			//   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
-			//   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
-			// ],
-			// basicData: {},
-			// tableData: [],
-			// projectType: partProjTypes.PEIJIAN,
-			// remarkItem: [],
-			// infos,
-		}
 	},
 	computed: {
 		userName() {
@@ -289,24 +257,6 @@ export default {
 				? this.$store.state.permission.userInfo.nameZh
 				: this.$store.state.permission.userInfo.nameEn
 		},
-		// tableTitle () {
-		//   if (this.projectType === partProjTypes.PEIJIAN) {
-		//     return sparePartTableTitle
-		//   } else if (this.projectType === partProjTypes.FUJIAN) {
-		//     return accessoryTableTitle
-		//   } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-		//     return gsTableTitle
-		//   }
-
-    //   return nomalTableTitleSub
-    // },
-    isPF() {
-      // 是否配附件
-      return (
-        this.projectType === this.partProjTypes.PEIJIAN ||
-        this.projectType === this.partProjTypes.FUJIAN
-      );
-    },
   },
   methods: {
     remarkProcess,
@@ -317,34 +267,6 @@ export default {
         return "suggestionRow"
       }
     },
-    // /**
-    //  * @Description: 获取表格初始数据
-    //  * @Author: Luoshuang
-    //  * @param {*}
-    //  * @return {*}
-    //  */    
-    // getTopList() {
-    //   getList(this.nominateId).then(res => {
-    //     if (res.code == 200) {
-    //       this.basicData = res.data
-    //       this.tableData = res.data.lines
-    //       this.projectType = res.data.partProjectType || ''
-    //     } else {
-    //       this.basicData = {}
-    //       this.tableData = []
-    //       this.projectType = ''
-    //     }
-    //   })
-    // },
-    // getRemark() {
-    //   getRemark(this.nominateId).then(res => {
-    //     if (res.code == 200) {
-    //       this.remarkItem = res.data.map(item => {
-    //         return {value: item, checked: false}
-    //       })
-    //     }
-    //   })
-    // },
   },
 };
 </script>
@@ -367,8 +289,8 @@ export default {
 			padding: 0px;
 		}
 	}
-	.pdf-item {
-		& + .pdf-item {
+	.pdf-content {
+		& + .pdf-content {
 			margin-top: 20px;
 		}
 	}

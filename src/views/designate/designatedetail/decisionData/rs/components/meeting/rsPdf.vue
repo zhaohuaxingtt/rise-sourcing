@@ -385,7 +385,7 @@ export default {
     tableHeight: { type: Number, default: 0 },
     // otherTableHeight: { type: Number, default: 0 },
     prototypeListPageHeight: { type: Number, default: 0 },
-    tableList: { type: Array, default: () => [] },
+    tableList: { type: Array, default: () => [[]] },
     prototypeTableList: { type: Array, default: () => [] },
   },
   filters: {
@@ -650,12 +650,12 @@ export default {
   .cancel {
     color: rgb(95, 104, 121);
   }
-  .pdf-item {
-    & + .pdf-item {
+  .pdf-content {
+    & + .pdf-content {
       margin-top: 20px;
     }
   }
-  .pdf-item,
+  .pdf-content,
   .pageCard {
     ::v-deep .cardHeader {
       padding-left: 0;

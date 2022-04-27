@@ -239,146 +239,16 @@
       </iCard>
     </div>
     <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
-      <!-- <iCard class="rsCard">
-        <tableList
-          :tableLoading="tableLoading"
-          :selection="false"
-          :tableTitle="tableTitleSub"
-          :tableData="tableData"
-          class="rsTable mainTable"
-          :tableRowClassName="tableRowClassName"
-          border>
-          <template #fsnrGsnrNum="scope">
-            <div>
-              <p>{{ scope.row.fsnrGsnrNum }}</p>
-              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-            </div>
-          </template>
-          <template #oldAPrice="scope">
-            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-          </template>
-          <template #rw="scope">
-            <span>{{ scope.row.rw | toThousands(true) }}</span>
-          </template>
-          <template #packPrice="scope">
-            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
-          </template>
-          <template #transportPrice="scope">
-            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-          </template>
-          <template #operatePrice="scope">
-            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-          </template>
-          <template #turnover="scope">
-            <span>{{ scope.row.turnover | toThousands(true) }}</span>
-          </template>
-
-          <template #ltc="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-          </template>
-
-          <template #beginYearReduce="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
-
-          <template #svwCode="scope">
-            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-          </template>
-
-          <template #aprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.aprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
-          </template>
-
-          <template #bprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.bprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
-          </template>
-
-          <template #investFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
-
-          <template #remarks="scope">
-            <div>
-              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
-              <span v-else>{{ scope.row.remarks }}</span>
-            </div>
-          </template>
-
-          <template #savingFee="scope">
-            <span>{{ scope.row.savingFee | toThousands(true) }}</span>
-          </template>
-
-          <template #share="scope">
-            <span>{{ +scope.row.share || 0 }}</span>
-          </template>
-        </tableList>
-      </iCard> -->
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
         :basicData="basicData"
-        :titleData="titleData"
         :tableTitle="tableTitleSub"
         :tableData="tableData"
         :tableList="tableList"
-        :firstCount="firstCount"
-        :count="count"
         :remarkItem="remarkItem"
-        :projectType="projectType"
-        :isApproval="isApproval"
-        :exchangeRageCurrency="exchangeRageCurrency"
         :checkList="checkList"
         :tableHeight="tableHeight"
-        :otherTableHeight="otherTableHeight"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
         >
@@ -664,7 +534,6 @@ import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
 import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
 import { pageMixins } from '@/utils/pageMixins'
-import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
@@ -715,10 +584,7 @@ export default {
       editStatus: false,
       saveLoading: false,
       tableLoading: false,
-      firstCount: 0,
-      count: 0,
       tableHeight:0,
-      otherTableHeight:0,
       fileList:[],
       infos,
       exchangeRate: "",
@@ -818,15 +684,6 @@ export default {
             heightSum=item.offsetHeight
             arr = [this.tableData[i]]
           }
-        // }else{
-        //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-        //     arr.push(this.tableData[i])
-        //   }else{
-        //     tableList.push(JSON.parse(JSON.stringify(arr)))
-        //     heightSum=item.offsetHeight
-        //     arr = [this.tableData[i]]
-        //   }
-        // }
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
@@ -969,8 +826,8 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data || {}
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = res.data?.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
           } else {
