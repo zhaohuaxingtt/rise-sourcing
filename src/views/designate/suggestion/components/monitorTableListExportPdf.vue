@@ -12,13 +12,13 @@
       fit
       border
       tooltip-effect='light'
-      :height="height"
       :data='data'
       :cell-class-name="getCellClass"
       width="100%"
       default-expand-all
       v-loading='tableLoading'
       @selection-change="handleSelectionChange"
+      v-bind="$attrs"
       :span-method="spanMethod"
       :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       ref="monitorTable">
@@ -57,7 +57,7 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="110"
+        min-width="110"
         fixed
         >
       <template slot-scope="scope">
@@ -155,6 +155,7 @@ import _ from 'lodash'
 export default {
   mixins: [ filters ],
    props:{
+    key:{type: String},
     tableData:{type:Array},
     tableLoading:{type:Boolean,default:false},
     selection:{type:Boolean,default:true},
@@ -182,7 +183,10 @@ export default {
   watch: {
     tableData() {
       this.init()
-    }
+    },
+  },
+  created(){
+    this.init()
   },
   methods: {
     thousandsFilter(value) {
@@ -652,7 +656,7 @@ export default {
 <style lang="scss" scoped>
 .monitorTable {
   ::v-deep .el-table {
-    height: 450px;
+    // height: 450px;
     .el-table__header {
       background-color: #e8efff;
     }
@@ -675,7 +679,6 @@ export default {
 
     .el-table__fixed,
     .el-table__fixed-right {
-      height: auto !important;
       bottom: 10px !important;
     }
   }
