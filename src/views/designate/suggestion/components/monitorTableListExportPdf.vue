@@ -34,7 +34,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="66"
+        min-width="66"
         label='Group'
         align='center'
         fixed>
@@ -69,7 +69,7 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="120"
+        min-width="120"
         fixed
         >
       </el-table-column>
@@ -83,7 +83,7 @@
       <!-- 循环取出厂商以及TTO -->
       <el-table-column
         align='center'
-        width="100"
+        min-width="100"
         label-class-name="tline"
         v-for="(head, hindex) in supplier"
         :key="hindex"
