@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-26 10:18:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 15:59:26
+ * @LastEditTime: 2022-04-26 14:43:46
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\delaySummary\data.js
  */
@@ -34,6 +34,6 @@ export const searchList = [
   {value: 'projectId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'carProjectSelect', filterable: true, selectOption: 'carProjectOptions'},
   {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input'},
   {value: 'confirmStatus', name: '回复状态', key: 'HUIFUZHUANGTAI', type: 'selectDict', selectOption: 'CONFIRM_STATUS'},
-  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions'},
+  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions',hidden:true,},
   {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'productPurchaserSelect', filterable: true, selectOption: 'purchaseOptions'}
 ]
