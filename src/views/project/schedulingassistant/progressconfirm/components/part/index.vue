@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:55:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 14:37:31
+ * @LastEditTime: 2022-04-27 17:33:01
  * @Description: 零件
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\index.vue
 -->
@@ -75,7 +75,7 @@ export default {
       tableTitleKickoff,
       tableDataNomi: [],
       tableDataKickoff: [],
-      // searchList:searchList.filter((item)=>!item.hidden),
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       selectOptions: {}
     }
@@ -84,13 +84,6 @@ export default {
     isFS() {
       return this.$route.path.includes('proconfirm')
     },
-    searchList(){
-      if (this.isFS) {
-        return searchList.filter((item)=>!item.hidden)
-      }else{
-        return searchList
-      }
-    }
   },
   created() {
     this.initSearchParams()
@@ -112,10 +105,10 @@ export default {
         if(list.includes(item)) isIncludes = true;
       })
       if(isIncludes){
-        this.searchList.map((item)=>{
-          if(item.value == 'fsId') item.hidden = false
-        })
+        this.searchList = searchList
       }
+    }else{
+      this.searchList = searchList
     }
 
   },

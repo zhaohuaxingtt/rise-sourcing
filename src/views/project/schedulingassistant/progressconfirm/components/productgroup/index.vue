@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 14:36:22
+ * @LastEditTime: 2022-04-27 17:39:03
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -92,7 +92,7 @@ export default {
   components: { iSearch, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, iInput, iButton, iCard, tableList, iPagination, fsConfirmDialog, confirmBtn, saveBtn, backBtn, transferBtn },
   data() {
     return {
-      // searchList:searchList.filter((item)=>!item.hidden),
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {
         confirmStatus: 'TO_BE_CONFIRMED'
       },
@@ -118,14 +118,6 @@ export default {
         return tableTitle
       }
     },
-    searchList(){
-      if (this.isFS) {
-        return searchList.filter((item)=>!item.hidden)
-      }else{
-        return searchList
-      }
-      
-    },
   },
   created() {
     this.initSearchParams()
@@ -148,11 +140,9 @@ export default {
       roleList.map((item)=>{
         if(list.includes(item)) isIncludes = true;
       })
-      if(isIncludes){
-        this.searchList.map((item)=>{
-          if(item.value == 'fsId') item.hidden = false
-        })
-      }
+      if(isIncludes) this.searchList = searchList
+    }else{
+      this.searchList = searchList
     }
 
   },
