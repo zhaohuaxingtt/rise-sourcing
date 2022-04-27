@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 10:01:18
+ * @LastEditTime: 2022-04-27 11:50:58
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -331,22 +331,33 @@ export default {
         }
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
+        const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
         // console.log(nextThreeWorkDay)
         this.fsTableList = canSendRows.map(item => {
-          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
-          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
-          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
-            if (item.userId) {
-              return [...accu, {
-                ...item,
-                value: item.userId,
-                label: item.userName
-              }]
-            } else {
-              return accu
+          // const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
+          // const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
+          // const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
+          //   if (item.userId) {
+          //     return [...accu, {
+          //       ...item,
+          //       value: item.userId,
+          //       label: item.userName
+          //     }]
+          //   } else {
+          //     return accu
+          //   }
+          // },[]) : []
+          let fs = '';
+          const fsId = buyerUserMap[item.productGroupId] ? buyerUserMap[item.productGroupId]+'' : '';
+          userInfoVOList.map((userItem)=>{
+            userItem.value = userItem.userId;
+            userItem.label = userItem.userName;
+            if(fsId && userItem.userId == fsId){
+              fs = userItem.userName
             }
-          },[]) : []
+          })
+
           return {
             ...item,
             cartypeProject: item.cartypeProName,
@@ -358,7 +369,8 @@ export default {
             confirmDateDeadline: nextThreeWorkDay,
             projectPurchaser: this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn,
             projectPurchaserId: this.$store.state.permission.userInfo.id,
-            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
+            // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
+             selectOption:userInfoVOList || [],
             fs: fs,
             fsId: fsId
           }
