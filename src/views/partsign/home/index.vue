@@ -211,7 +211,15 @@
               v-permission.auto="PARTSIGN_TABLE|表格"
             >
               <template #status="scope">
-                <p :class="{ incomplete: scope.row.status === '未完整' }">{{ scope.row.status }}<icon v-if="scope.row.status === '未完整'" class="tips" name="iconzhongyaoxinxitishi" /></p>
+                <el-popover
+                  placement="top"
+                  trigger="hover"
+                  :disabled="!(scope.row.status === '未完整' && Array.isArray(scope.row.incompleteMsg) && scope.row.incompleteMsg.length)">
+                  <p slot="reference" :class="{ incomplete: scope.row.status === '未完整' }" style="cursor: pointer">{{ scope.row.status }}<icon v-if="scope.row.status === '未完整'" class="tips" name="iconzhongyaoxinxitishi" /></p>
+                  <div>
+                    <p v-for="(msg, $index) in scope.row.incompleteMsg" :key="$index">{{ msg }}</p>
+                  </div>
+                </el-popover>
               </template>
             </tablelist>
             <!------------------------------------------------------------------------>
