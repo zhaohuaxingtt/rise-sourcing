@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-03-04 12:04:38
+ * @LastEditTime: 2022-04-27 11:55:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -41,7 +41,7 @@
 					<!-------------------------------------------------------------------------------->
 					<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 					<!---出现此按钮。------------------------------------------------------------------->
-					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
+					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="openCurentSupplierDialog">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 					<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
 						v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 					<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATEPARTSFSNRNUMBER|生成零件采购项目号"></creatFsGsNr>
@@ -416,7 +416,7 @@
 		<!---------------------------------------------------------------->
 		<!----------------------------现供供应商维护模块--------------------->
 		<!---------------------------------------------------------------->
-		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
+		<currentSupplier :dialogVisible='curentSupplierDialog' :sopDate="sopDate"></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
     <!---------------------- 采购申请弹框 -------------------------------->
@@ -647,7 +647,8 @@
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
 				sourceProcureFactory: '',
-				cacheCarTypeProject: {}
+				cacheCarTypeProject: {},
+				sopDate: ""
 			};
 		},
 		created() {
@@ -751,6 +752,7 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data || {};
+					this.sopDate = res.data.sopDate || ""
 					this.sourceProcureFactory = res.data.procureFactory
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
@@ -1179,6 +1181,14 @@
 					inputDom.blur()
 					showDom.style.height = "auto"
 				}
+			},
+			openCurentSupplierDialog() {
+				if (this.sopDate !== this.detailData.sopDate) {
+					iMessage.warn(this.language("SOPRIQICUNZAIGAIDONG", "SOP日期存在改动，请保存后再试"))
+					return
+				}
+
+				this.curentSupplierDialog.show = true
 			}
 		}
 }

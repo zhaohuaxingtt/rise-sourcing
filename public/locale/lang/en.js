@@ -1,4 +1,4 @@
-;(function (global, factory) {
+(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
@@ -6359,7 +6359,8 @@
 		FENTANJINE: 'Apportioned amount',
 		WEIFENTANJINE: 'Unassessed amount',
 		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: 'Cannot include scoring incomplete data',
-		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall'
+		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall',
+		SOPRIQICUNZAIGAIDONG: 'SOP date has been changed, please save and try again'
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

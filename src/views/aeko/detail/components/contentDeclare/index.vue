@@ -235,6 +235,7 @@
           </iSelect>
         </p> -->
         <tableList
+          permissionKey="AEKO_DETAIL_COMPONENTS_CONTENTDECLARE"
           class="table"
           ref="tableList"
           index
@@ -248,8 +249,6 @@
           :tableLoading="loading"
           :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
           <template #supplierNameZh="scope">
             <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>

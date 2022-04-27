@@ -46,15 +46,15 @@
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <!-- 表格 -->
-      <tableList indexKey
+      <tableList 
+                permissionKey="PROJECT_PROGRESSMONITORING_DELAYSUMMARY"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
                  :tableData="tableData"
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #newPlanDate="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.newPlanDate}}</span>
