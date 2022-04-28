@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-27 11:50:58
+ * @LastEditTime: 2022-04-28 14:56:10
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -18,7 +18,7 @@
         <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_QIEHUANJIEDIANSHITU_BUTTON|产品组排程-切换节点视图-按钮" @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
         <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SAVE_BUTTON|产品组排程-保存-按钮" @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SENDFS_BUTTON|产品组排程-发送FS确认-按钮" @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_DAOCHUFASONGPV_BUTTON|产品组排程-导出发送PV/PK清单-按钮" @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_DAOCHUFASONGPV_BUTTON|产品组排程-导出发送PV/PK清单-按钮" @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}} ( {{language('FASONGCHANPINJINGLI', '发送产品经理')}} ) </iButton>
       </div>
     </div>
     <div class="periodicView-content">
