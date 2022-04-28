@@ -35,7 +35,7 @@
         </iSelect>
       </div>
     </div>
-    <div id="charts0"></div>
+    <div id="charts0" ref="charts"></div>
   </div>
 </template>
 <script>
@@ -99,6 +99,12 @@ export default {
       
     }
   },
+  computed:{
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+        mapControlInit: state => state.sourcing.mapControl,
+    }),
+  },
   mounted() {
   },
   methods: {
@@ -135,12 +141,14 @@ export default {
       this.mapControl.forEach(key => {
         mapOptionsArray.push(this.mapOptions[key])
       })
+      this.$store.dispatch('sourcing/updateMapControl',this.mapControl)
       this.mapOptionsArray = mapOptionsArray
 
       this.load()
     },
     load() {
-      const vm = echarts().init(document.getElementById("charts0"));
+      let dom = this.$refs.charts
+      const vm = echarts().init(dom);
       const self = this
       const bgColor = '#94c8fc'
       const mapControl = this.mapControl
@@ -155,7 +163,6 @@ export default {
         const xAxisData = !mapControl.length ? quota : mapControl.map(i => {
           return quota[i]
         })
-        // console.log('-load-', xAxisData, mapControl)
         // seriesData
         
         
@@ -173,7 +180,6 @@ export default {
           }
           return o
         })
-        console.log('series', series)
 
         const genSupTPL = (dataArray, dataCounTotal=0) => {
           const supplierList = self.data.supplierList || []
@@ -285,7 +291,6 @@ export default {
                 'lineHeight': 16
               },
               formatter: function (val) {
-                // console.log(val)
                 return `{n|${val}}` // 使用 rich 中的 n 来设置样式
               },
               rich,
@@ -321,10 +326,9 @@ export default {
           },
           series
         };
-        // console.log(JSON.stringify(option))
-        console.log('option', option)
         vm.clear()
         vm.setOption(option);
+        this.$store.dispatch('sourcing/updateMapControl',this.mapControl)
       })
     },
     genSeries() {
@@ -369,7 +373,6 @@ export default {
       const bestGroup = self.data.bestGroup || []
       const bestGroupSupplierTotal = self.data.bestGroupSupplierTotal || 0
       
-      // console.log('----',bestGroupSupplier)
       bestGroup.forEach((item, index) => {
         series.push({
           _type: 'bestGroupSupplier',
@@ -539,8 +542,8 @@ export default {
       immediate: true,
       deep: true
     },
-    mapControl() {
-      console.log(this.mapControl)
+    mapControlInit(val) {
+      this.mapControl = val
       this.load()
     }
   }

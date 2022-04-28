@@ -1,4 +1,6 @@
 <template>
+<div class="pageCard-main rsPdfCard">
+  <slot name="tabTitle"></slot>
   <div class="rs">
     <cRsPdf v-if="isCirculation" />
     <mRsPdf
@@ -22,6 +24,7 @@
       :prototypeList="PrototypeList"
       :prototypeTitleList="prototypeTitleList"/>
   </div>
+</div>
 </template>
 
 <script>
@@ -35,21 +38,7 @@ import {
   searchRsPageExchangeRate
 } from "@/api/designate/decisiondata/rs"
 import {findFrontPageSeat} from "@/api/designate"
-import {
-  accessoryTableTitle,
-  checkList,
-  dbTableTitle,
-  gsDetailTitleBlue,
-  gsTableTitle,
-  meetingRemark,
-  nomalDetailTitle,
-  nomalDetailTitleBlue,
-  nomalDetailTitleGS,
-  nomalDetailTitlePF,
-  nomalTableTitle,
-  prototypeTitleList,
-  sparePartTableTitle
-} from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
 import {partProjTypes} from "@/config"
 
 export default {
