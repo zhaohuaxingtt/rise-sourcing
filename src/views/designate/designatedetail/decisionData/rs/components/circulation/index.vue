@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 13:41:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-28 11:05:56
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -675,6 +675,9 @@ import {
 } from '@/api/file/upload'
 import filters from "@/utils/filters"
 
+
+import {cloneDeep} from 'lodash'
+
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
   props: {
@@ -753,6 +756,12 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitle
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
 
       return nomalTableTitle
@@ -764,6 +773,12 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitleSub
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
       return nomalTableTitleSub
     },
