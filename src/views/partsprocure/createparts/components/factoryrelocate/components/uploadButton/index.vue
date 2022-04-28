@@ -7,11 +7,11 @@
  * @FilePath: \front-web\src\views\costanalysismanage\components\uploadButton\index.vue
 -->
 <template>
-  <el-upload 
+  <el-upload
     :class="uploadClass"
     :multiple="multiple"
     ref="upload"
-    name="multipartFile"
+    name="file"
     :http-request="upload"
     :show-file-list="false" 
     :before-upload="beforeUpload"
@@ -21,13 +21,17 @@
 </template>
 
 <script>
-import { uploadFile, uploadUdFile } from "@/api/file/upload"
+import { factoryImportRecords } from '@/api/partsprocure/editordetail'
 
 export default {
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     uploadClass: {
       type: String,
-      default: "uploadButton"
+      default: 'uploadButton'
     },
     multiple: {
       type: Boolean,
@@ -35,7 +39,7 @@ export default {
     },
     accept: {
       type: String,
-      default: ".pdf,.xlsx,.docx"
+      default: '.xls,.xlsx,.XLS,.XLSX'
     },
     beforeUpload: {
       type: Function,
@@ -44,14 +48,18 @@ export default {
   },
   methods: {
     upload(content) {
-      uploadUdFile({
-        multifile: content.file
-      })
+      const formData = new FormData()
+      formData.append('file', content.file)
+
+      factoryImportRecords(
+        formData, 
+        { id: this.id || 0 }
+      )
       .then(res => {
-        this.$emit("success", res, content.file)
+        this.$emit('success', res, content.file)
       })
       .catch(rej => {
-        this.$emit("error", rej, content.file)
+        this.$emit('error', rej, content.file)
       })
     },
   }

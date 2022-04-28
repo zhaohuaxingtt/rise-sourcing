@@ -6386,7 +6386,8 @@
 		MINGXIXIANGDAOCHU: '明细项导出',
 		CHONGXINDAORU: '重新导入',
 		BAOZHUANG: '包装',
-		YUNSHU: '运输'
+		YUNSHU: '运输',
+		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？'
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })

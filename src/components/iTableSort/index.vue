@@ -59,7 +59,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!items.showTips">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
@@ -110,7 +110,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!(items.showTips || items.tipsLang)">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips || items.tipsLang" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>

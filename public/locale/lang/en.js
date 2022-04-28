@@ -6383,7 +6383,8 @@
 		MINGXIXIANGDAOCHU: 'Export detail items',
 		CHONGXINDAORU: 'Reimport',
 		BAOZHUANG: 'Pkg.',
-		YUNSHU: 'Shipping'
+		YUNSHU: 'Shipping',
+		SHIFOUQUERENSHANCHUSUOXUANJILU: 'Whether to confirm the deletion of the selected record？'
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
