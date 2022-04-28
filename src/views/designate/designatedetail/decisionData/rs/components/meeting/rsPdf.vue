@@ -1,329 +1,333 @@
 <template>
   <div class="rsPdf">
-      <template v-for="(tableData,index) in tableList">
-    <iCard :key="index" class="rsCard pageCard">
-      <template #header>
-        <div class="title">
-          <p>CSC定点推荐 - {{ cardTitle }}</p>
-          <p>{{ cardTitleEn }}</p>
-        </div>
-        <div>
-          <div class="control">
-            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
-            <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
-          </div>
-        </div>
-      </template>
-        <div>
-          <div class="rsTop">
-            <div class="rsTop-left">
-              <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-                <div class="rsTop-left-item-title">
-                  <p>{{ item.name }}</p><p>{{ item.enName }}</p>
-                </div>
-                <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+    <template v-for="(tableData,index) in tableList">
+      <div :key="index" class="pageCard-main">
+        <slot name="tabTitle"></slot>
+        <iCard :key="index" class="rsCard pageCard">
+          <template #header>
+            <div class="title">
+              <p>CSC定点推荐 - {{ cardTitle }}</p>
+              <p>{{ cardTitleEn }}</p>
+            </div>
+            <div>
+              <div class="control">
+                <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
+                <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
               </div>
             </div>
-            <div class="rsTop-right">
-              <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
-                <template v-if="Array.isArray(item)">
-                  <div class="rsTop-right-item-title">
-                    <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+          </template>
+            <div>
+              <div class="rsTop">
+                <div class="rsTop-left">
+                  <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+                    <div class="rsTop-left-item-title">
+                      <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+                    </div>
+                    <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
                   </div>
-                  <div class="rsTop-right-item-value">
-                    <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                      {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                </div>
+                <div class="rsTop-right">
+                  <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+                    <template v-if="Array.isArray(item)">
+                      <div class="rsTop-right-item-title">
+                        <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                      </div>
+                      <div class="rsTop-right-item-value">
+                        <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                          {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                        <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                          <div v-for="(item,index) in basicData[item.props]" :key="index">
+                              <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                                <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                                <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                              </el-tooltip>
+                          </div>
+                        </div>
+                        <div class="rsTop-right-item-value" v-else >
+                          <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                          <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                          <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                        </div>
+                    </template>
                   </div>
-                </template>
-                <template v-else>
-                  <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
-                    <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
-                      <div v-for="(item,index) in basicData[item.props]" :key="index">
-                          <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
-                            <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
-                            <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
-                          </el-tooltip>
+                </div>
+              </div>
+              <div :style="{'height': tableHeight + 'px'}">
+                <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" tableRowClassName="table-row" border>
+                  <template #fsnrGsnrNum="scope">
+                    <div>
+                      <p>{{ scope.row.fsnrGsnrNum }}</p>
+                      <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                    </div>
+                  </template>
+                  
+                  <!-- 年降 -->
+                  <template #ltc="scope">
+                    <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+                  </template>
+
+                  <!-- 年降开始时间 -->
+                  <template #beginYearReduce="scope">
+                    <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+                  </template>
+                  
+                  <template #status="scope">
+                    <div v-if="scope.row.status === 'SKDLC'">
+                      <p>SKD</p>
+                      <p>LC</p>
+                    </div>
+                    <span v-else>{{ scope.row.status }}</span>
+                  </template>
+
+                  <template #svwCode="scope">
+                    <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+                  </template>
+                  <!-- <template #demand="scope">
+                    <span>{{ scope.row.demand | kFilter }}</span>
+                  </template>
+                  <template #output="scope">
+                    <span>{{ scope.row.output | kFilter }}</span>
+                  </template> -->
+                  <template #presentPrice="scope">
+                    <span>{{ scope.row.presentPrice | toThousands }}</span>
+                  </template>
+                  <template #cfTargetAPrice="scope">
+                    <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+                  </template>
+                  <template #cfTargetBPrice="scope">
+                    <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+                  </template>
+                  <template #aprice="scope">
+                    <div v-if="scope.row.status === 'SKDLC'">
+                      <p>{{ scope.row.skdAPrice | toThousands }}</p>
+                      <p>{{ scope.row.aprice | toThousands }}</p>
+                    </div>
+                    <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+                    <span v-else>{{ scope.row.aprice | toThousands }}</span>
+                  </template>
+                  <template #bprice="scope">
+                    <div v-if="scope.row.status === 'SKDLC'">
+                      <p>{{ scope.row.skdBPrice | toThousands }}</p>
+                      <p>{{ scope.row.bprice | toThousands }}</p>
+                    </div>
+                    <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+                    <span v-else>{{ scope.row.bprice | toThousands }}</span>
+                  </template>
+
+                  <template #investFee="scope">
+                    <div v-if="scope.row.status === 'SKDLC'">
+                      <el-popover
+                        placement="top-start"
+                        width="200"
+                        trigger="hover"
+                        :disabled="!scope.row.investFeeIsShared">
+                        <div>
+                          <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                          <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                        </div>
+                        <div slot="reference">
+                          <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                          <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+                        </div>
+                      </el-popover>
+                    </div>
+                    <span v-else-if="scope.row.status === 'SKD'">
+                      <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                    </span>
+                    <span v-else>
+                      <el-popover
+                        placement="top-start"
+                        width="200"
+                        trigger="hover"
+                        :disabled="!scope.row.investFeeIsShared">
+                        <div>
+                          <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                          <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                        </div>
+                        <div slot="reference">
+                          <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                        </div>
+                      </el-popover>
+                    </span>
+                  </template>
+
+                  <template #devFee="scope">
+                    <div v-if="scope.row.status === 'SKDLC'">
+                      <el-popover
+                        placement="top-start"
+                        width="200"
+                        trigger="hover"
+                        :disabled="!scope.row.devFeeIsShared">
+                        <div>
+                          <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                          <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                        </div>
+                        <div slot="reference">
+                          <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                          <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+                        </div>
+                      </el-popover>
+                    </div>
+                    <span v-else-if="scope.row.status === 'SKD'">
+                      <p>{{ scope.row.skdDevFee | toThousands }}</p>
+                    </span>
+                    <span v-else>
+                      <el-popover
+                        placement="top-start"
+                        width="200"
+                        trigger="hover"
+                        :disabled="!scope.row.devFeeIsShared">
+                        <div>
+                          <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                          <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                        </div>
+                        <div slot="reference">
+                          <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                        </div>
+                      </el-popover>
+                    </span>
+                  </template>
+                  <template #addFee="scope">
+                    <span>{{ scope.row.addFee | toThousands }}</span>
+                  </template>
+                  <template #savingFee="scope">
+                    <span>{{ scope.row.savingFee | toThousands }}</span>
+                  </template>
+                  <template #turnover="scope">
+                    <span>{{ scope.row.turnover | toThousands }}</span>
+                  </template>
+
+                  <template #share="scope">
+                    <span>{{ +scope.row.share || 0 }}</span>
+                  </template>
+                </tableList>
+                <div>
+                  <div style="margin-left:20px">
+                    <span style="color: red">*</span><span>代表投资费已分摊</span>
+                  </div>
+                  <div class="beizhu">
+                    备注 Remarks:
+                    <div class="beizhu-value">
+                      <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+                  汇率：Exchange rate: 
+                  <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+                    1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+                  </span>
+                </div>
+                <div v-else>
+                  <div class="margin-top10">
+                    <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+                  </div>
+                </div>
+                <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                  <div class="checkList">
+                    <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                      <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                      <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                      <div v-else class="" >-</div>
+                      <div class="checkList-item-info">
+                        <span>Dept.:</span>
+                        <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                      </div>
+                      <div class="checkList-item-info">
+                        <span>Date:</span>
+                        <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
                       </div>
                     </div>
-                    <div class="rsTop-right-item-value" v-else >
-                      <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
-                      <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
-                      <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
-                    </div>
-                </template>
+                  </div>
+                </iCard>
               </div>
-            </div>
-          </div>
-          <div :style="{'height': tableHeight + 'px'}">
-            <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" tableRowClassName="table-row" border>
-              <template #fsnrGsnrNum="scope">
+              <div class="page-logo">
+                <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
                 <div>
-                  <p>{{ scope.row.fsnrGsnrNum }}</p>
-                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                  <p class="pageNum">{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
                 </div>
-              </template>
-              
-              <!-- 年降 -->
-              <template #ltc="scope">
-                <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-              </template>
-
-              <!-- 年降开始时间 -->
-              <template #beginYearReduce="scope">
-                <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-              </template>
-              
-              <template #status="scope">
-                <div v-if="scope.row.status === 'SKDLC'">
-                  <p>SKD</p>
-                  <p>LC</p>
-                </div>
-                <span v-else>{{ scope.row.status }}</span>
-              </template>
-
-              <template #svwCode="scope">
-                <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-              </template>
-              <!-- <template #demand="scope">
-                <span>{{ scope.row.demand | kFilter }}</span>
-              </template>
-              <template #output="scope">
-                <span>{{ scope.row.output | kFilter }}</span>
-              </template> -->
-              <template #presentPrice="scope">
-                <span>{{ scope.row.presentPrice | toThousands }}</span>
-              </template>
-              <template #cfTargetAPrice="scope">
-                <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-              </template>
-              <template #cfTargetBPrice="scope">
-                <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-              </template>
-              <template #aprice="scope">
-                <div v-if="scope.row.status === 'SKDLC'">
-                  <p>{{ scope.row.skdAPrice | toThousands }}</p>
-                  <p>{{ scope.row.aprice | toThousands }}</p>
-                </div>
-                <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-                <span v-else>{{ scope.row.aprice | toThousands }}</span>
-              </template>
-              <template #bprice="scope">
-                <div v-if="scope.row.status === 'SKDLC'">
-                  <p>{{ scope.row.skdBPrice | toThousands }}</p>
-                  <p>{{ scope.row.bprice | toThousands }}</p>
-                </div>
-                <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-                <span v-else>{{ scope.row.bprice | toThousands }}</span>
-              </template>
-
-              <template #investFee="scope">
-                <div v-if="scope.row.status === 'SKDLC'">
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :disabled="!scope.row.investFeeIsShared">
-                    <div>
-                      <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                      <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                    </div>
-                    <div slot="reference">
-                      <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                      <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                    </div>
-                  </el-popover>
-                </div>
-                <span v-else-if="scope.row.status === 'SKD'">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                </span>
-                <span v-else>
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :disabled="!scope.row.investFeeIsShared">
-                    <div>
-                      <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                      <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                    </div>
-                    <div slot="reference">
-                      <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                    </div>
-                  </el-popover>
-                </span>
-              </template>
-
-              <template #devFee="scope">
-                <div v-if="scope.row.status === 'SKDLC'">
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :disabled="!scope.row.devFeeIsShared">
-                    <div>
-                      <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                      <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-                    </div>
-                    <div slot="reference">
-                      <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
-                      <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
-                    </div>
-                  </el-popover>
-                </div>
-                <span v-else-if="scope.row.status === 'SKD'">
-                  <p>{{ scope.row.skdDevFee | toThousands }}</p>
-                </span>
-                <span v-else>
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :disabled="!scope.row.devFeeIsShared">
-                    <div>
-                      <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                      <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-                    </div>
-                    <div slot="reference">
-                      <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
-                    </div>
-                  </el-popover>
-                </span>
-              </template>
-              <template #addFee="scope">
-                <span>{{ scope.row.addFee | toThousands }}</span>
-              </template>
-              <template #savingFee="scope">
-                <span>{{ scope.row.savingFee | toThousands }}</span>
-              </template>
-              <template #turnover="scope">
-                <span>{{ scope.row.turnover | toThousands }}</span>
-              </template>
-
-              <template #share="scope">
-                <span>{{ +scope.row.share || 0 }}</span>
-              </template>
-            </tableList>
-            <div>
-              <div style="margin-left:20px">
-                <span style="color: red">*</span><span>代表投资费已分摊</span>
-              </div>
-              <div class="beizhu">
-                备注 Remarks:
-                <div class="beizhu-value">
-                  <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                <div>
+                  <p>{{ userName }}</p>
+                  <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
                 </div>
               </div>
             </div>
-            <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
-              汇率：Exchange rate: 
-              <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-                1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
-              </span>
-            </div>
-            <div v-else>
-              <div class="margin-top10">
-                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+          <!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+            <template #ltc="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+            </template>
+            <template #beginYearReduce="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+            </template>
+
+            <template #status="scope">
+              <div v-if="scope.row.status === 'SKDLC'">
+                <p>SKD</p>
+                <p>LC</p>
               </div>
-            </div>
-            <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
-              <div class="checkList">
-                <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-                  <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
-                  <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
-                  <div v-else class="" >-</div>
-                  <div class="checkList-item-info">
-                    <span>Dept.:</span>
-                    <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
-                  </div>
-                  <div class="checkList-item-info">
-                    <span>Date:</span>
-                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
-                  </div>
-                </div>
+              <span v-else>{{ scope.row.status }}</span>
+            </template>
+            <template #supplierSapCode="scope">
+              <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+            </template>
+            <template #presentPrice="scope">
+              <span>{{ scope.row.presentPrice | toThousands }}</span>
+            </template>
+            <template #cfTargetAPrice="scope">
+              <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+            </template>
+            <template #cfTargetBPrice="scope">
+              <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+            </template>
+            <template #aprice="scope">
+              <div v-if="scope.row.status === 'SKDLC'">
+                <p>{{ scope.row.skdAPrice | toThousands }}</p>
+                <p>{{ scope.row.aprice | toThousands }}</p>
               </div>
-            </iCard>
-          </div>
-          <div class="page-logo">
-            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-            <div>
-              <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
-            </div>
+              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+              <span v-else>{{ scope.row.aprice | toThousands }}</span>
+            </template>
+            <template #bprice="scope">
+              <div v-if="scope.row.status === 'SKDLC'">
+                <p>{{ scope.row.skdBPrice | toThousands }}</p>
+                <p>{{ scope.row.bprice | toThousands }}</p>
+              </div>
+              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+              <span v-else>{{ scope.row.bprice | toThousands }}</span>
+            </template>
+            <template #investFee="scope">
+              <span>{{ scope.row.investFee | toThousands }}</span>
+            </template>
+            <template #devFee="scope">
+              <span>{{ scope.row.devFee | toThousands }}</span>
+            </template>
+            <template #addFee="scope">
+              <span>{{ scope.row.addFee | toThousands }}</span>
+            </template>
+            <template #savingFee="scope">
+              <span>{{ scope.row.savingFee | toThousands }}</span>
+            </template>
+          </tableList> -->
+          
+          <!-- <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="">
             <div>
               <p>{{ userName }}</p>
               <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+              <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
             </div>
-          </div>
-        </div>
-      <!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
-        <template #ltc="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-        </template>
-        <template #beginYearReduce="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-        </template>
-
-        <template #status="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>SKD</p>
-            <p>LC</p>
-          </div>
-          <span v-else>{{ scope.row.status }}</span>
-        </template>
-        <template #supplierSapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
-        </template>
-        <template #presentPrice="scope">
-          <span>{{ scope.row.presentPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetAPrice="scope">
-          <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetBPrice="scope">
-          <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-        </template>
-        <template #aprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands }}</p>
-            <p>{{ scope.row.aprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands }}</span>
-        </template>
-        <template #bprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands }}</p>
-            <p>{{ scope.row.bprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands }}</span>
-        </template>
-        <template #investFee="scope">
-          <span>{{ scope.row.investFee | toThousands }}</span>
-        </template>
-        <template #devFee="scope">
-          <span>{{ scope.row.devFee | toThousands }}</span>
-        </template>
-        <template #addFee="scope">
-          <span>{{ scope.row.addFee | toThousands }}</span>
-        </template>
-        <template #savingFee="scope">
-          <span>{{ scope.row.savingFee | toThousands }}</span>
-        </template>
-      </tableList> -->
-      
-      <!-- <div class="page-logo">
-        <img src="../../../../../../../assets/images/logo.png" alt="">
-        <div>
-          <p>{{ userName }}</p>
-          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-          <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
-        </div>
-      </div> -->
-    </iCard>
+          </div> -->
+        </iCard>
+      </div>
     </template>
-    
-      <template v-for="(tableData,key) in prototypeTableList">
-        <iCard :key="key" title="Prototype Cost List" class="rsCard pageCard" v-if='!showSignatureForm && prototypeList.length > 5'>
+    <template v-for="(tableData,key) in prototypeTableList">
+      <div :key="key" class="pageCard-main">
+        <slot name="tabTitle"></slot>
+        <iCard title="Prototype Cost List" class="rsCard pageCard" v-if='!showSignatureForm && prototypeList.length > 5'>
           <div :style="{'height': prototypeListPageHeight + 'px'}">
             <el-table :data='tableData' class="prototypeTable">
               <template v-for="(items,index) in prototypeTitleList">
@@ -334,7 +338,7 @@
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
             <div>
-              <p>{{'page '+(tableList.length+key+1)+' of '+(prototypeTableList.length+tableList.length)}}</p>
+              <p class="pageNum">{{'page '+(tableList.length+key+1)+' of '+(prototypeTableList.length+tableList.length)}}</p>
             </div>
             <div>
               <p>{{ userName }}</p>
@@ -342,7 +346,8 @@
             </div>
           </div>
         </iCard>
-      </template>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -367,8 +372,6 @@ export default {
     basicData: { type: Object, default: () => {} },
     tableTitle: { type: Array, default: () => [] },
     tableData: { type: Array, default: () => [] },
-    firstCount: { type: Number, default: 0 },
-    count: { type: Number, default: 0 },
     remarkItem: { type: Array, default: () => [] },
     projectType: { type: String, default: "" },
     exchangeRageCurrency: { type: Array, default: () => [] },
@@ -392,9 +395,7 @@ export default {
         true: "Y",
         false: "N"
       }
-
-      return obj[val] || val
-    },
+    }
   },
   data() {
     return {
@@ -416,41 +417,41 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  min-width: 100%;
-  width: 100%;
-  overflow-y: auto;
-  
-  .rsCard {
-    box-shadow: none;
+	min-width: 100%;
+	width: 100%;
+	overflow-y: auto;
 
-    ::v-deep .title {
-      font-size: 18px !important; /*no*/
-    }
-    
-    ::v-deep .cardHeader{
-      padding: 30px 0px;
-    }
-    ::v-deep .cardBody{
-      padding: 0px;
-    }
-    .control {
-      display: flex !important;
-      align-items: center !important;
+	.rsCard {
+		box-shadow: none;
 
-      .nomiId {
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-  }
+		::v-deep .title {
+			font-size: 18px !important; /*no*/
+		}
 
-  .singleSourcing {
-    padding: 8px 12px; /*no*/
-    font-size: 16px; /*no*/
-    font-weight: 400; /*no*/
-    color: rgba(22, 96, 241, 1);
-    border: 1px dashed #1660f1; /*no*/
-  }
+		::v-deep .cardHeader {
+			padding: 30px 0px;
+		}
+		::v-deep .cardBody {
+			padding: 0px;
+		}
+		.control {
+			display: flex !important;
+			align-items: center !important;
+
+			.nomiId {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+	}
+
+	.singleSourcing {
+		padding: 8px 12px; /*no*/
+		font-size: 16px; /*no*/
+		font-weight: 400; /*no*/
+		color: rgba(22, 96, 241, 1);
+		border: 1px dashed #1660f1; /*no*/
+	}
 
   .rsTop {
     display: flex;
@@ -579,96 +580,97 @@ export default {
     }
   }
 
-  .beizhu {
-    background-color: rgba(22, 96, 241, 0.03);
-    // height: 40px;
-    padding: 12px 14px; /*no*/
-    font-weight: bold;
-    display: flex;
-    &-value {
-      font-weight: 400;
-      margin-left: 20px; /*no*/
-    }
-  }
+	.beizhu {
+		background-color: rgba(22, 96, 241, 0.03);
+		// height: 40px;
+		padding: 12px 14px; /*no*/
+		font-weight: bold;
+		display: flex;
+		&-value {
+			font-weight: 400;
+			margin-left: 20px; /*no*/
+		}
+	}
 
-  .checkDate {
-    ::v-deep .card .cardHeader .title {
-      font-weight: 400;
-      color: rgba(75, 75, 76, 1);
-    }
-  }
+	.checkDate {
+		::v-deep .card .cardHeader .title {
+			font-weight: 400;
+			color: rgba(75, 75, 76, 1);
+		}
+	}
 
-  .Application {
-    ::v-deep .cardHeader {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      .title .title_content {
-        font-size: 13px !important;
-      }
-    }
-  }
+	.Application {
+		::v-deep .cardHeader {
+			padding-top: 12px;
+			padding-bottom: 12px;
+			.title .title_content {
+				font-size: 13px !important;
+			}
+		}
+	}
 
-  .checkList {
-    display: flex;
-    overflow: auto;
-    &-item {
-      max-width: 224px;
-      flex: 1;
-      flex-shrink: 0;
-      width: 224px; /*no*/
-      height: 125px; /*no*/
-      border-radius: 15px; /*no*/
-      background-color: rgba(205, 212, 226, 0.12);
-      margin-right: 19px; /*no*/
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 15px; /*no*/
-      font-size: 16px; /*no*/
-      color: rgba(65, 67, 74, 1);
-      &-info {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        &-depart {
-          font-size: 18px; /*no*/
-          font-weight: bold;
-        }
-      }
-    }
-    &-item:last-child{
-      margin-right: 0;
-    }
-  }
+	.checkList {
+		display: flex;
+		overflow: auto;
+		&-item {
+			max-width: 224px;
+			flex: 1;
+			flex-shrink: 0;
+			width: 224px; /*no*/
+			height: 125px; /*no*/
+			border-radius: 15px; /*no*/
+			background-color: rgba(205, 212, 226, 0.12);
+			margin-right: 19px; /*no*/
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px 15px; /*no*/
+			font-size: 16px; /*no*/
+			color: rgba(65, 67, 74, 1);
+			&-info {
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				&-depart {
+					font-size: 18px; /*no*/
+					font-weight: bold;
+				}
+			}
+		}
+		&-item:last-child {
+			margin-right: 0;
+		}
+	}
 
-  .complete {
-    color: rgb(104, 193, 131);
-  }
+	.complete {
+		color: rgb(104, 193, 131);
+	}
 
-  .cancel {
-    color: rgb(95, 104, 121);
-  }
-  .pdf-item {
-    & + .pdf-item {
-      margin-top: 20px;
-    }
-  }
-  .pdf-item, .pageCard{
-    ::v-deep .cardHeader{
-      padding-left: 0
-    }
-    ::v-deep .cardBody{
-      padding-left: 0;
-      padding-right: 0
-    }
-  }
-  .page-logo{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
-  }
+	.cancel {
+		color: rgb(95, 104, 121);
+	}
+	.pdf-item {
+		& + .pdf-item {
+			margin-top: 20px;
+		}
+	}
+	.pdf-item,
+	.pageCard {
+		::v-deep .cardHeader {
+			padding-left: 0;
+		}
+		::v-deep .cardBody {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	.page-logo {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		align-items: center;
+		border-top: 1px solid #666;
+	}
 }
 </style>

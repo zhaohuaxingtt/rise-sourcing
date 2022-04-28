@@ -20,6 +20,7 @@
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_SELALLOCATIONSHEET|定点信息-SEL分摊单" @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         
+        <button-table-setting @click="edittableHeader" />
       </div>
     </div>
     <tableList

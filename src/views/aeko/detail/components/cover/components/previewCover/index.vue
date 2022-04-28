@@ -18,6 +18,7 @@
         <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
         <iInput
             disabled
+            class="text-disabled"
             type="textarea"
             rows="10" 
             resize="none"
@@ -217,6 +218,7 @@ export default {
                       this.$emit('getBbasicInfo');
                       this.getLinie()
                     }
+                    this.basicInfo.fsName = Array.from(new Set(data.fsName.split(','))).join(',');
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -343,6 +345,11 @@ export default {
                 color: #f56c6c;
                 margin-right: 4px;
                 display: inline-block;
+                }
+            }
+            ::v-deep .el-textarea{
+                &.text-disabled.is-disabled .el-textarea__inner{
+                    color: #505050;
                 }
             }
         .summaryTable{
