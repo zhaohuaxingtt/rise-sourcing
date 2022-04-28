@@ -1,4 +1,4 @@
-;(function (global, factory) {
+(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
@@ -6384,7 +6384,9 @@
 		CHONGXINDAORU: 'Reimport',
 		BAOZHUANG: 'Pkg.',
 		YUNSHU: 'Shipping',
-		SHIFOUQUERENSHANCHUSUOXUANJILU: 'Whether to confirm the deletion of the selected record？'
+		SHIFOUQUERENSHANCHUSUOXUANJILU: 'Whether to confirm the deletion of the selected record？',
+		SOPRIQICUNZAIGAIDONG: 'SOP date has been changed, please save and try again',
+		'FASONGCHANPINJINGLI':'',
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

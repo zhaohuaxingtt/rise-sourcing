@@ -6387,7 +6387,9 @@
 		CHONGXINDAORU: '重新导入',
 		BAOZHUANG: '包装',
 		YUNSHU: '运输',
-		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？'
+		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？',
+		SOPRIQICUNZAIGAIDONG: 'SOP日期存在改动，请保存后再试',
+		'FASONGCHANPINJINGLI':'发送产品经理',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })

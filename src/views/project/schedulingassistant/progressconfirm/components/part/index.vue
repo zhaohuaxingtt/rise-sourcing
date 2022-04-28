@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:55:36
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:26:06
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-27 17:33:01
  * @Description: 零件
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\index.vue
 -->
@@ -65,15 +65,17 @@ import productPurchaserSelect from '@/views/project/components/commonSelect/prod
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
   components: { fsConfirm, confirmTable, iSearch, iInput, iButton, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions },
+  mixins: [roleMixins],
   data() {
     return {
       tableTitleNomi,
       tableTitleKickoff,
       tableDataNomi: [],
       tableDataKickoff: [],
-      searchList: searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       selectOptions: {}
     }
@@ -81,10 +83,34 @@ export default {
   computed: {
     isFS() {
       return this.$route.path.includes('proconfirm')
-    }
+    },
   },
   created() {
     this.initSearchParams()
+
+    // 判断一下是否包含以下角色 若包含则展示询价采购员搜索框
+    // ADMIN      超级管理员
+    // QQCGKZ     前期采购科长
+    // QQCGGZ     前期采购股长
+    // CGBZ       采购部长
+    // CIXTGLY    CI系统管理员
+    // CSXTGLY    CS系统管理员
+    // QQCGKZ_WF    前期采购科长_外方
+    // CGBZ_WF      采购部长_外方
+    if(this.$route.path.includes('proconfirm')){
+      const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+      const roleList = this.roleList;
+      let isIncludes = false;
+      roleList.map((item)=>{
+        if(list.includes(item)) isIncludes = true;
+      })
+      if(isIncludes){
+        this.searchList = searchList
+      }
+    }else{
+      this.searchList = searchList
+    }
+
   },
   methods: {
     initSearchParams() {

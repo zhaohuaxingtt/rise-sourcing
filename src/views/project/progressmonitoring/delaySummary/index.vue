@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 11:15:25
+ * @LastEditTime: 2022-04-27 17:38:50
  * @Description: 延误原因汇总
 -->
 
@@ -114,8 +114,9 @@ import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
 import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
-  mixins: [pageMixins,tableSortMixins],
+  mixins: [pageMixins,tableSortMixins,roleMixins],
   components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog, buttonTableSetting },
   data() {
     return {
@@ -123,7 +124,7 @@ export default {
       tableData: [],
       tableLoading: false,
       selectTableData: [],
-      searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       withSend: false,
       withAllBtn: false,
@@ -142,7 +143,7 @@ export default {
     },
     permissionKey() {
       return !this.isFS ? 'PROJECTMGT_DELAYSUMMARY_PAGE|项目管理-进度监控-延误原因汇总页面' : 'PROJECTMGT_DELAYCONFIRM_PAGE|项目管理-进度监控-延误原因确认页面'
-    }, 
+    },
   },
   created() {
     this.initSearchParams()
@@ -150,6 +151,25 @@ export default {
     this.getTableList()
     if(this.isFS) {
       this.getDelayReason()
+
+    // 判断一下是否包含以下角色 若包含则展示询价采购员搜索框
+    // ADMIN      超级管理员
+    // QQCGKZ     前期采购科长
+    // QQCGGZ     前期采购股长
+    // CGBZ       采购部长
+    // CIXTGLY    CI系统管理员
+    // CSXTGLY    CS系统管理员
+    // QQCGKZ_WF    前期采购科长_外方
+    // CGBZ_WF      采购部长_外方
+    const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+      const roleList = this.roleList;
+      let isIncludes = false;
+      roleList.map((item)=>{
+        if(list.includes(item)) isIncludes = true;
+      })
+      if(isIncludes) this.searchList = searchList
+    }else{
+      this.searchList = searchList;
     }
   },
   methods: {
