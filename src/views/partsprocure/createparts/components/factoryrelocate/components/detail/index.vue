@@ -21,13 +21,14 @@
       <iCard class="mainCard" :title="language('MINGXIXIANG', '明细项')">
         <template #header-control>
           <iButton :loading="exportLoading" @click="handleExport">{{ language('MINGXIXIANGDAOCHU', '明细项导出') }}</iButton>
-          <uploadButton v-if="operableStatus" v-permission.auto="FACTORYRELOCATE_UPLOAD|工厂迁移-新建批次" :id="id" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+          <uploadButton v-if="operableStatus" :id="id" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
             <iButton :loading="uploadLoading">{{ language('CHONGXINDAORU', '重新导入') }}</iButton>
           </uploadButton>
           <iButton v-if="operableStatus" :loading="deleteLoading" @click="handleDelete">{{ language('SHANCHU', '删除') }}</iButton>
           <buttonTableSetting class="setting" @click="edittableHeader"></buttonTableSetting>
         </template>
         <tablelist
+          permissionKey="PARTSPROCURE_CREATEPARTS_COMPONENTS_FACTORYRELOCATE_COMPONENTS_DETAIL"
           lang
           index
           indexFixed
