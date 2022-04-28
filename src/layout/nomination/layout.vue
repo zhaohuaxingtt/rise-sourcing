@@ -170,4 +170,26 @@ export default {
     line-height: calc(100vh - 360px);
   }
 }
+
+  ::v-deep .pdf-item{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    .rsPdfCard{
+      box-shadow: none;
+      & + .rsCard {
+        margin-top: 20px; /*no*/
+      }
+      .cardHeader{
+        padding: 30px 0px;
+      }
+      .cardBody{
+        padding: 0px;
+      }
+    }
+  }
+  ::v-deep .pageCard-main{
+    overflow: hidden;
+    margin-top: 20px;
+  }
 </style>

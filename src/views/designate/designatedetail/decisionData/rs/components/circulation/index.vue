@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 13:41:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-28 11:05:56
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -239,149 +239,23 @@
       </iCard>
     </div>
     <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
-      <!-- <iCard class="rsCard">
-        <tableList
-          :tableLoading="tableLoading"
-          :selection="false"
-          :tableTitle="tableTitleSub"
-          :tableData="tableData"
-          class="rsTable mainTable"
-          :tableRowClassName="tableRowClassName"
-          border>
-          <template #fsnrGsnrNum="scope">
-            <div>
-              <p>{{ scope.row.fsnrGsnrNum }}</p>
-              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-            </div>
-          </template>
-          <template #oldAPrice="scope">
-            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-          </template>
-          <template #rw="scope">
-            <span>{{ scope.row.rw | toThousands(true) }}</span>
-          </template>
-          <template #packPrice="scope">
-            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
-          </template>
-          <template #transportPrice="scope">
-            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-          </template>
-          <template #operatePrice="scope">
-            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-          </template>
-          <template #turnover="scope">
-            <span>{{ scope.row.turnover | toThousands(true) }}</span>
-          </template>
-
-          <template #ltc="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-          </template>
-
-          <template #beginYearReduce="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
-
-          <template #svwCode="scope">
-            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-          </template>
-
-          <template #aprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.aprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
-          </template>
-
-          <template #bprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.bprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
-          </template>
-
-          <template #investFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
-
-          <template #remarks="scope">
-            <div>
-              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
-              <span v-else>{{ scope.row.remarks }}</span>
-            </div>
-          </template>
-
-          <template #savingFee="scope">
-            <span>{{ scope.row.savingFee | toThousands(true) }}</span>
-          </template>
-
-          <template #share="scope">
-            <span>{{ +scope.row.share || 0 }}</span>
-          </template>
-        </tableList>
-      </iCard> -->
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
         :basicData="basicData"
-        :titleData="titleData"
         :tableTitle="tableTitleSub"
         :tableData="tableData"
         :tableList="tableList"
-        :firstCount="firstCount"
-        :count="count"
         :remarkItem="remarkItem"
-        :projectType="projectType"
-        :isApproval="isApproval"
-        :exchangeRageCurrency="exchangeRageCurrency"
         :checkList="checkList"
         :tableHeight="tableHeight"
-        :otherTableHeight="otherTableHeight"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
-        />
+        >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+        </rsPdf>
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -448,7 +322,6 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
-        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
@@ -661,7 +534,6 @@ import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
 import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
 import { pageMixins } from '@/utils/pageMixins'
-import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
@@ -671,6 +543,9 @@ import {
     uploadUdFile
 } from '@/api/file/upload'
 import filters from "@/utils/filters"
+
+
+import {cloneDeep} from 'lodash'
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
@@ -712,10 +587,7 @@ export default {
       editStatus: false,
       saveLoading: false,
       tableLoading: false,
-      firstCount: 0,
-      count: 0,
       tableHeight:0,
-      otherTableHeight:0,
       fileList:[],
       infos,
       exchangeRate: "",
@@ -750,6 +622,12 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitle
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
 
       return nomalTableTitle
@@ -761,6 +639,12 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitleSub
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
       return nomalTableTitleSub
     },
@@ -780,6 +664,9 @@ export default {
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
     }
   },
   methods: {
@@ -797,9 +684,7 @@ export default {
       let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
       // 第一页
-      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo  // 表格区域高度, 用div支撑空间
-      // 第二页
-      // this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
       let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0
@@ -814,15 +699,6 @@ export default {
             heightSum=item.offsetHeight
             arr = [this.tableData[i]]
           }
-        // }else{
-        //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-        //     arr.push(this.tableData[i])
-        //   }else{
-        //     tableList.push(JSON.parse(JSON.stringify(arr)))
-        //     heightSum=item.offsetHeight
-        //     arr = [this.tableData[i]]
-        //   }
-        // }
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
@@ -965,8 +841,8 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data || {}
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = res.data?.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
           } else {
