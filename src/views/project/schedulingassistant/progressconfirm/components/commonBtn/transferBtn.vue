@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:49:19
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-22 18:36:10
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-29 17:54:03
  * @Description: 转派按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\transferBtn.vue
 -->
@@ -59,13 +59,13 @@ export default {
     changeTransferVisible(visible) {
       this.transferDialogVisible = visible
     },
-    handleTransfer(val, valDesc) {
+    handleTransfer(val, valDesc,positionId=null) {
       if (this.tansferType === '1') {
         this.transferSchedule(val, valDesc)
       } else if (this.tansferType === '2') {
         this.transferPartScheduleList(val, valDesc)
       } else {
-        this.transferDelayReasonConfirm(val, valDesc)
+        this.transferDelayReasonConfirm(val, valDesc,positionId)
       }
     },
     /**
@@ -106,14 +106,15 @@ export default {
         this.$refs.productGroupTransfer.changeLoading(false)
       })
     },
-    transferDelayReasonConfirm(val, valDesc) {
+    transferDelayReasonConfirm(val, valDesc,fsPositionId) {
       console.log(this.tansferData)
       transferDelayReasonConfirm(this.tansferData.map(item => {
         return {
           ...item,
           oldFs: item.projectPurchaser,
           fs: valDesc,
-          fsId: val
+          fsId: val,
+          fsPositionId
         }
       })).then(res => {
         if (res?.result) {
