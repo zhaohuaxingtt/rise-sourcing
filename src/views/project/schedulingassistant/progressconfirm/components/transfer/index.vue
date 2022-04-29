@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-03 17:50:47
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-29 17:12:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-29 17:52:49
  * @Description: 转派弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\transfer\index.vue
 -->
@@ -37,7 +37,8 @@ export default {
     return {
       fsId: '',
       loading: false,
-      fs: ''
+      fs: '',
+      positionId:'',
     }
   },
   watch: {
@@ -48,11 +49,13 @@ export default {
     }
   },
   methods: {
-    handleChange(fsId, fs) {
+    handleChange(fsId, fs,positionId) {
       this.fs = fs
+      this.positionId = positionId
     },
     clearDialog() {
       this.fsId = ''
+      this.positionId=''
       this.$emit('changeVisible', false)
     },
     handleCancel() {
@@ -64,7 +67,7 @@ export default {
         return
       }
       this.loading = true
-      this.$emit('handleTransfer', this.fsId, this.fs)
+      this.$emit('handleTransfer', this.fsId, this.fs,this.positionId)
     },
     changeLoading(loading) {
       this.loading = loading
