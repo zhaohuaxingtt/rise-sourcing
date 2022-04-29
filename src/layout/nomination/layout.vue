@@ -192,8 +192,4 @@ export default {
     overflow: hidden;
     margin-top: 20px;
   }
-  ::v-deep .max-content{
-    width: max-content;
-    min-width: 1860px;
-  }
 </style>
