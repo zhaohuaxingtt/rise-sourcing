@@ -27,10 +27,10 @@ export const detailTableTitle = [
   { props: 'carTypeProj', name: '车型项目', key: 'CHEXINGXIANGMU', tooltip: true },
   { props: 'sopDate', name: '起步生产时间', key: 'QIBUSHENGCHANSHIJIAN', tooltip: true, minWidth: 110 },
   { props: 'supplierNameCn', name: '定点供应商', key: 'DINGDIANGONGYINGSHANG', tooltip: true, minWidth: 100 },
-  { props: 'newAPrice', name: 'A价', key: 'AJIA', tooltip: true, minWidth: 90 },
+  { props: 'aprice', name: 'A价', key: 'AJIA', tooltip: true, minWidth: 90 },
   { props: 'packageCost', name: '包装', key: 'BAOZHUANG', tooltip: true, minWidth: 90 },
   { props: 'transportCost', name: '运输', key: 'YUNSHU', tooltip: true, minWidth: 90 },
   { props: 'operateCost', name: '操作', key: 'CAOZUO', tooltip: true, minWidth: 90 },
-  { props: 'newBPrice', name: 'B价', key: 'BJIA', tooltip: true, minWidth: 90 },
+  { props: 'bprice', name: 'B价', key: 'BJIA', tooltip: true, minWidth: 90 },
   { props: 'ltc', name: '年降', key: 'NIANJIANG', tooltip: true },
 ]
