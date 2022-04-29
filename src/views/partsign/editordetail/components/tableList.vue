@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table ref="table" class="table" :class="(singleSelect ? 'singleSelectTable' : '' )||(isminHeight?'aotoTableHeight':'')" :height="height" :min-height="minHeight" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" >
+  <el-table ref="table" class="table" :class="(singleSelect ? 'singleSelectTable' : '' )||(isminHeight?'aotoTableHeight':'')" :height="height" :min-height="minHeight" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" v-bind="$attrs">
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -17,6 +17,22 @@
         </template>
       </el-table-column>
       <el-table-column :key="$index" align="center" v-else :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader" :sortable="item.sortable||false" :sort-method="item.sortMethod">
+        <template #header="scope">
+          <el-popover
+            v-if="item.showTips"
+            placement="top"
+            trigger="hover"
+            popper-class="tableTitleTip"
+            :visible-arrow="false"
+            :disabled="!item.showTips">
+            <p v-html="item.showTips ? item.tips() : ''"></p>
+            <span slot="reference">
+              <span>{{ scope.column.label }}</span>
+              <icon v-if="item.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+            </span>
+          </el-popover>
+          <span v-else>{{ scope.column.label }}</span>
+        </template>
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
@@ -27,7 +43,7 @@
 
 <script>
 import tablelist from '@/views/partsign/home/components/tableList'
-import {iInput} from 'rise'
+import { iInput, icon } from 'rise'
 export default {
   props:{
     ...tablelist.props,
@@ -85,12 +101,7 @@ export default {
     selectable: { type: Function },
     spanMethod: { type: Function }
   },
-  components:{
-    iInput
-  },
-  created() {
-    console.log(this.$slots)
-  },
+  components: { iInput, icon },
   methods: {
     handleSelectionChange(list) {
       if (this.singleSelect) return
