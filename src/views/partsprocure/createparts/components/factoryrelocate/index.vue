@@ -119,7 +119,7 @@ import { navList } from '../data'
 import tableList from '@/components/iTableSort'
 import { tableSortMixins } from '@/components/iTableSort/tableSortMixins'
 import buttonTableSetting from '@/components/buttonTableSetting'
-import { selectDictByRootKeys } from '@/api/dictionary'
+import { procureFactorySelectVo, selectDictByRootKeys } from '@/api/dictionary'
 import { downloadFactoryMoveTemplate, deleteFactoryImportRecordsList, executeFactoryRelocation, getFactoryImportRecordsList } from '@/api/partsprocure/editordetail'
 
 export default {
@@ -151,31 +151,37 @@ export default {
     }
   },
   created() {
+    this.procureFactorySelectVo()
     this.selectDictByRootKeys()
     this.getFactoryImportRecordsList()
   },
   methods: {
+    procureFactorySelectVo() {
+      procureFactorySelectVo()
+      .then(res => {
+        if (res.code == 200) {
+          this.factoryOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              value: item.code,
+              zh: item.name,
+              en: item.nameEn || item.name,
+              de: item.nameDe
+            })) :
+            []
+        }
+      })
+    },
     selectDictByRootKeys() {
       selectDictByRootKeys([
-        { keys: "FAC" },
         { keys: "FactoryMigrationStatus" }
       ])
       .then(res => {
         if (res.code == 200) {
           Object.keys(res.data).forEach(key => {
             switch(key) {
-              case "FAC":
-                this.factoryOptions = Array.isArray(res.data["FAC"]) ? 
-                  res.data["FAC"].map(item => ({
-                    ...item,
-                    key: item.code,
-                    value: item.code,
-                    zh: item.name,
-                    en: item.nameEn,
-                    de: item.nameDe
-                  })) :
-                  []
-                break
               case "FactoryMigrationStatus":
                 this.batchStatusOptions = Array.isArray(res.data["FactoryMigrationStatus"]) ? 
                   res.data["FactoryMigrationStatus"].map(item => ({
