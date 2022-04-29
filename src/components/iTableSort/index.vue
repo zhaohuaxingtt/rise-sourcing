@@ -249,7 +249,8 @@ export default{
       // header: cloneDeep(this.tableTitle).filter(i=> !i.isHidden),
       tableSettingColumns: [],
       tableColumns: [],
-      settingId: ''
+      settingId: '',
+      tableTitleMap: {}
     }
   },
   created() {
@@ -327,11 +328,16 @@ export default{
     },
     renewTableHeader(data) {
       const header = data.filter(o => !o.isHidden)
+
+
+
       this.header = header.map(o => ({
         ...o,
         prop: o.prop || o.props,
         label: o.label || o.name,
-        i18n: o.i18n || o.key
+        i18n: o.i18n || o.key,
+        showTips: this.tableTitleMap[o.props].showTips || false,
+        tips: this.tableTitleMap[o.props].tips || ''
       }))
     },
     initTableSettingColumns() {
@@ -341,6 +347,11 @@ export default{
         label: o.label || o.name,
         i18n: o.i18n || o.key
       }))
+
+      this.tableTitleMap = {}
+      this.tableTitle.forEach(item => {
+        this.$set(this.tableTitleMap, item.props, item)
+      })
     },
     getCookie(name) {
 			const strCookie = document.cookie //获取cookie字符串

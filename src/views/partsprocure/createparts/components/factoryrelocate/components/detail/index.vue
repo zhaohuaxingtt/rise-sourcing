@@ -27,7 +27,7 @@
           <iButton v-if="operableStatus" :loading="deleteLoading" @click="handleDelete">{{ language('SHANCHU', '删除') }}</iButton>
           <buttonTableSetting class="setting" @click="edittableHeader"></buttonTableSetting>
         </template>
-        <tablelist
+        <tableList
           permissionKey="PARTSPROCURE_CREATEPARTS_COMPONENTS_FACTORYRELOCATE_COMPONENTS_DETAIL"
           lang
           index
@@ -79,7 +79,7 @@
           <template #newBPrice="scope">
             <span>{{ scope.row.newBPrice | toThousands }}</span>
           </template>
-        </tablelist>
+        </tableList>
         <iPagination
           class="pagination margin-top30"
           @size-change="handleSizeChange($event, factoryTranslate)"
@@ -100,7 +100,7 @@
 import { iPage, iCard, iButton, iSearch, iMultiLineInput, iInput, iSelect, icon, iPagination, iMessage } from 'rise'
 import uploadButton from "../uploadButton"
 import buttonTableSetting from '@/components/buttonTableSetting'
-import tablelist from '@/components/iTableSort'
+import tableList from '@/components/iTableSort'
 import { tableSortMixins } from '@/components/iTableSort/tableSortMixins'
 import { detailTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
@@ -111,7 +111,7 @@ import { getFactoryImportRecordsList, executeFactoryRelocation, exportFactoryBat
 
 export default {
   name: 'createPartsBatchDetail',
-  components: { iPage, iCard, iButton, iSearch, iMultiLineInput, iInput, iSelect, icon, iPagination, uploadButton, buttonTableSetting, tablelist },
+  components: { iPage, iCard, iButton, iSearch, iMultiLineInput, iInput, iSelect, icon, iPagination, uploadButton, buttonTableSetting, tableList },
   mixins:[ tableSortMixins, pageMixins, filters ],
   data() {
     return {
