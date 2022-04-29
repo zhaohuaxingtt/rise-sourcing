@@ -611,3 +611,12 @@ export function updatePriceReducePlan(data) {
     method: 'POST'
   })
 }
+
+// DS零件提交前校验
+export function checkDsPart(data) {
+  return requst({
+    url: `/part/check-ds-part`,
+    method: 'POST',
+    data
+  })
+}
