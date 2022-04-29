@@ -157,16 +157,16 @@ export default {
   methods: {
     selectDictByRootKeys() {
       selectDictByRootKeys([
-        { keys: "PROCURE_FACTORY" },
+        { keys: "FAC" },
         { keys: "FactoryMigrationStatus" }
       ])
       .then(res => {
         if (res.code == 200) {
           Object.keys(res.data).forEach(key => {
             switch(key) {
-              case "PROCURE_FACTORY":
-                this.factoryOptions = Array.isArray(res.data["PROCURE_FACTORY"]) ? 
-                  res.data["PROCURE_FACTORY"].map(item => ({
+              case "FAC":
+                this.factoryOptions = Array.isArray(res.data["FAC"]) ? 
+                  res.data["FAC"].map(item => ({
                     ...item,
                     key: item.code,
                     value: item.code,
