@@ -6390,6 +6390,7 @@
 		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？',
 		SOPRIQICUNZAIGAIDONG: 'SOP日期存在改动，请保存后再试',
 		'FASONGCHANPINJINGLI':'发送产品经理',
+		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A价发生变化，是否确认提交？',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })
