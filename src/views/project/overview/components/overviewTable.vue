@@ -2,21 +2,28 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 12:14:05
+ * @LastEditTime: 2022-04-29 17:32:43
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
 
 <template>
 <div class="overviewTable-box">
+  <div class="fixTitle" :style="`left:${scrolLeft}px`">
+    <div class="fixTitle-column" :style="`width:${item.width}`" v-for="(item, index) in headerTitle" :key="`fix-title_${index}`">
+      {{item.key ? language(item.key, item.name) : item.name}}
+      <span v-move class="resizeBorder" :attr-index="index"></span>
+      </div>
+  </div>
+  <div class="contain">
   <div class="overviewTable" v-loading="tableLoading">
     <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
       <!---------------------------------------------------------------------->
       <!----------                 表头                        ---------------->
       <!---------------------------------------------------------------------->
-      <div class="overviewTable-cell title" :style="`top:${titleTop}px`">
+      <div class="overviewTable-cell title overviewTable-cell-title" style="opacity:0">
         {{item.key ? language(item.key, item.name) : item.name}}
-        <span v-move class="resizeBorder"></span>
+        
       </div>
       <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
         <!---------------------------------------------------------------------->
@@ -171,12 +178,14 @@
     </div>
   </div>
   </div>
+  </div>
 </template>
 
 <script>
 import { icon } from 'rise'
 import moment from 'moment'
 import { getTousandNum } from '@/utils/tool'
+import { cloneDeep } from "lodash" 
 export default {
   components: { icon },
   props: {
@@ -185,16 +194,34 @@ export default {
     tableLoading: {type:Boolean, default: false},
     showOperation: {type:Boolean, default: true}
   },
+  watch:{
+    tableLoading(val){
+      if(!val){
+        const list = document.querySelectorAll('.overviewTable-cell-title');
+        console.log(list)
+        const headerTitle = cloneDeep(this.tableTitle);
+        headerTitle.map((item)=>{item.width=null});
+        for(let i =0 ;i<list.length;i++){
+          headerTitle[i] && (headerTitle[i]['width'] = (list[i].offsetWidth+'px') || null);
+        }
+        this.headerTitle = headerTitle;
+      }
+    },
+  },
   directives: {
     move(el, bindings) {
       el.onmousedown = function(e) {
         var init = e.clientX;
-        var parent = e.currentTarget.parentElement.parentElement;
-        var initWidth = parent.offsetWidth;
+        var index = e.currentTarget.getAttribute('attr-index');
+        console.log(el,'ellll',index);
+        var parentNode = e.currentTarget.parentElement;
+        var parent = document.querySelectorAll('.overviewTable-column');
+        var initWidth = parent[index].offsetWidth || 0;
         document.onmousemove = function(e) {
           var end = e.clientX;
           var newWidth = end - init + initWidth;
-          parent && (parent.style.width = newWidth + "px");
+          parent[index] && (parent[index].style.width = newWidth + "px");
+          parentNode && (parentNode.style.width = newWidth + "px");
         };
         document.onmouseup = function() {
           document.onmousemove = document.onmouseup = null;
@@ -227,18 +254,12 @@ export default {
       },
       minFontSize: 12,
       titleTop:0,
+      scrolLeft:0,
+      headerTitle:[],
     }
   },
   mounted() {
     this.getMinFontSize()
-
-    const el = document.querySelector('.overviewTable');
-    el.onscroll = () => {
-      const scrollTop = el.scrollTop;
-      this.$nextTick(()=>{
-        this.titleTop = scrollTop
-      })
-    }
   },
   methods: {
     getMinFontSize () {
@@ -417,15 +438,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overviewTable-box{
+  overflow: auto;
+  position: relative;
+  // overflow-x: scroll;
+  .fixTitle{
+      background-color: rgba(236, 239, 245, 0.2);
+      border: 2px solid #fff;
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 999;
+    &-column{
+      flex-shrink: 0;
+      height: 40px;
+      background-color: rgba(231, 234, 240, 1);
+      font-size: 16px;
+      font-weight: bold;
+      padding: 9px 0;
+      display: block;
+      text-align: center;
+      border: 2px solid #fff;
+      .resizeBorder{
+        display: block;
+        width: 5px;
+        height: 40px;
+        margin-top: -10px;
+        // z-index: 1000;
+        float: right;
+        &:hover{
+          cursor:col-resize;
+        }
+      }
+      &:first-child {
+      // width: auto;
+      min-width: 264px;
+      }
+    &:nth-child(2),&:nth-child(3),&:nth-child(4),&:nth-child(5) {
+      // width: auto;
+      min-width: 240px;
+    }
+    &:nth-child(8) {
+      // width: auto;
+      min-width: 160px;
+    }
+    }
+  }
+}
+.contain{
+  display: table;
+  padding-left: 5px;
+}
 .overviewTable {
   display: flex;
-  overflow: auto;
+  overflow-y: scroll;
   // position: relative;
   max-height: 500px;
   &-column {
     flex-shrink: 0;
     width: 136px;
-    min-height: 400px;
+    min-height: 300px;
     position: relative;
     padding-top: 40px;
     &:first-child {
@@ -457,20 +530,9 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 999;
+        z-index: 0;
         display: block;
         text-align: center;
-        .resizeBorder{
-          display: block;
-          width: 5px;
-          height: 40px;
-          margin-top: -10px;
-          // z-index: 1000;
-          float: right;
-          &:hover{
-            cursor:col-resize;
-          }
-        }
       }
       .nomal-cell {
         padding: 0 28px;
