@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 11:44:15
+ * @LastEditTime: 2022-04-29 16:15:53
  * @Description: 项目管理概览
  * @FilePath: \front-sourcing\src\views\project\overview\index.vue
 -->
@@ -275,8 +275,8 @@ export default {
   &-home {
     padding: 0 !important;
     padding-top: 10px !important;
-    height: calc(100% - 55px) !important;
-    overflow: auto !important;
+    // height: calc(100% - 55px) !important;
+    // overflow: auto !important;
   }
 }
 </style>
