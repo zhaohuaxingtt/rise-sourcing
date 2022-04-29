@@ -163,8 +163,9 @@ export default {
         let tableList = []
         let arr = []
         if(child.tableData&&child.tableData.length&&child.tableList&&!child.tableList.length){
+          const bdl = this.$refs.bdl
           let Interval = setInterval(() => {
-            let rowList = this.$refs.bdl.getElementsByClassName('table-row'+index)
+            let rowList = bdl.getElementsByClassName('table-row'+index)
             if(rowList.length){
               clearInterval(Interval)
               rowList.forEach((item,i)=>{
