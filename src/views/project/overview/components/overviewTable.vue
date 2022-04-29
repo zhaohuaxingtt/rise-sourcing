@@ -1,20 +1,22 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-14 14:59:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-29 12:14:05
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
 
 <template>
+<div class="overviewTable-box">
   <div class="overviewTable" v-loading="tableLoading">
     <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
       <!---------------------------------------------------------------------->
       <!----------                 表头                        ---------------->
       <!---------------------------------------------------------------------->
-      <div class="overviewTable-cell title">
+      <div class="overviewTable-cell title" :style="`top:${titleTop}px`">
         {{item.key ? language(item.key, item.name) : item.name}}
+        <span v-move class="resizeBorder"></span>
       </div>
       <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
         <!---------------------------------------------------------------------->
@@ -168,6 +170,7 @@
       {{language('ZANWUSHUJU','暂无数据')}}
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -181,6 +184,23 @@ export default {
     tableData: {type:Array},
     tableLoading: {type:Boolean, default: false},
     showOperation: {type:Boolean, default: true}
+  },
+  directives: {
+    move(el, bindings) {
+      el.onmousedown = function(e) {
+        var init = e.clientX;
+        var parent = e.currentTarget.parentElement.parentElement;
+        var initWidth = parent.offsetWidth;
+        document.onmousemove = function(e) {
+          var end = e.clientX;
+          var newWidth = end - init + initWidth;
+          parent && (parent.style.width = newWidth + "px");
+        };
+        document.onmouseup = function() {
+          document.onmousemove = document.onmouseup = null;
+        };
+      };
+    }
   },
   data() {
     return {
@@ -205,11 +225,20 @@ export default {
         'iconchanpinzupaicheng_jinhangzhong': '<svg t="1631758354535" class="icon" viewBox="0 0 8704 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="76121" width="100%" height="100"><path d="M7750.236034 988.508727A213.63016 213.63016 0 0 1 7678.400333 824.020329V682.737763h-682.524474a170.631119 170.631119 0 1 1 0-341.262237h682.524474v-141.282566a213.63016 213.63016 0 0 1 71.835701-164.488398 143.500771 143.500771 0 0 1 153.568007-23.035201l690.885399 311.913684a216.701521 216.701521 0 0 1 0 375.388461l-690.885399 311.401791a141.453197 141.453197 0 0 1-58.526474 12.797334 147.93718 147.93718 0 0 1-95.041533-35.661904zM5289.564674 682.737763a170.631119 170.631119 0 0 1 0-341.262237h853.155593a170.631119 170.631119 0 1 1 0 341.262237zM3583.253489 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 0 1 0 341.262237zM1876.942304 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237zM170.631119 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237z" fill="#1660F1" p-id="76122"></path></svg>',
         'iconchanpinzupaicheng_xuxian': '<svg t="1631758384625" class="icon" viewBox="0 0 28918 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85726" width="100%" height="100"><path d="M28406.784 1024H26112a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2294.784a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM23552 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM18432 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM13312 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM8192 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM3072 1024H512a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#1660F1" p-id="85727"></path></svg>'
       },
-      minFontSize: 12
+      minFontSize: 12,
+      titleTop:0,
     }
   },
   mounted() {
     this.getMinFontSize()
+
+    const el = document.querySelector('.overviewTable');
+    el.onscroll = () => {
+      const scrollTop = el.scrollTop;
+      this.$nextTick(()=>{
+        this.titleTop = scrollTop
+      })
+    }
   },
   methods: {
     getMinFontSize () {
@@ -391,11 +420,14 @@ export default {
 .overviewTable {
   display: flex;
   overflow: auto;
-  position: relative;
+  // position: relative;
+  max-height: 500px;
   &-column {
     flex-shrink: 0;
     width: 136px;
     min-height: 400px;
+    position: relative;
+    padding-top: 40px;
     &:first-child {
       width: auto;
       min-width: 264px;
@@ -416,11 +448,29 @@ export default {
       align-items: center;
       justify-content: center;
       &.title {
+        width: 100%;
         height: 40px;
         background-color: rgba(231, 234, 240, 1);
         font-size: 16px;
         font-weight: bold;
         padding: 9px 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        display: block;
+        text-align: center;
+        .resizeBorder{
+          display: block;
+          width: 5px;
+          height: 40px;
+          margin-top: -10px;
+          // z-index: 1000;
+          float: right;
+          &:hover{
+            cursor:col-resize;
+          }
+        }
       }
       .nomal-cell {
         padding: 0 28px;
@@ -485,8 +535,9 @@ export default {
         align-items: center;
         &-item {
           height: 100%;
-          flex-shrink: 0;
-          width: 60px;
+          flex-shrink: 1;
+          flex-grow: 1;
+          min-width: 60px;
           display: flex;
           // flex-direction: column;
           align-items: center;

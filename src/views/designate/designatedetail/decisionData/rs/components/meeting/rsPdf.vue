@@ -385,7 +385,7 @@ export default {
     tableHeight: { type: Number, default: 0 },
     // otherTableHeight: { type: Number, default: 0 },
     prototypeListPageHeight: { type: Number, default: 0 },
-    tableList: { type: Array, default: () => [] },
+    tableList: { type: Array, default: () => [[]] },
     prototypeTableList: { type: Array, default: () => [] },
   },
   filters: {
@@ -395,6 +395,7 @@ export default {
         true: "Y",
         false: "N"
       }
+    }
   },
   data() {
     return {
@@ -411,32 +412,31 @@ export default {
     dateFilter,
     resetLtcData
   }
-  }
 }
 </script>
 
 <style lang="scss" scoped>
 .rsPdf {
-	min-width: 100%;
-	width: 100%;
-	overflow-y: auto;
+  min-width: 100%;
+  width: 100%;
+  overflow-y: auto;
 
-	.rsCard {
-		box-shadow: none;
+  .rsCard {
+    box-shadow: none;
 
-		::v-deep .title {
-			font-size: 18px !important; /*no*/
-		}
+    ::v-deep .title {
+      font-size: 18px !important; /*no*/
+    }
 
-		::v-deep .cardHeader {
-			padding: 30px 0px;
-		}
-		::v-deep .cardBody {
-			padding: 0px;
-		}
-		.control {
-			display: flex !important;
-			align-items: center !important;
+    ::v-deep .cardHeader {
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody {
+      padding: 0px;
+    }
+    .control {
+      display: flex !important;
+      align-items: center !important;
 
 			.nomiId {
 				font-size: 16px;
@@ -714,68 +714,68 @@ export default {
 		}
 	}
 
-	.checkList {
-		display: flex;
-		overflow: auto;
-		&-item {
-			max-width: 224px;
-			flex: 1;
-			flex-shrink: 0;
-			width: 224px; /*no*/
-			height: 125px; /*no*/
-			border-radius: 15px; /*no*/
-			background-color: rgba(205, 212, 226, 0.12);
-			margin-right: 19px; /*no*/
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: space-between;
-			padding: 10px 15px; /*no*/
-			font-size: 16px; /*no*/
-			color: rgba(65, 67, 74, 1);
-			&-info {
-				width: 100%;
-				display: flex;
-				justify-content: space-between;
-				&-depart {
-					font-size: 18px; /*no*/
-					font-weight: bold;
-				}
-			}
-		}
-		&-item:last-child {
-			margin-right: 0;
-		}
-	}
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      max-width: 224px;
+      flex: 1;
+      flex-shrink: 0;
+      width: 224px; /*no*/
+      height: 125px; /*no*/
+      border-radius: 15px; /*no*/
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px; /*no*/
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px; /*no*/
+      font-size: 16px; /*no*/
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px; /*no*/
+          font-weight: bold;
+        }
+      }
+    }
+    &-item:last-child {
+      margin-right: 0;
+    }
+  }
 
 	.complete {
 		color: rgb(104, 193, 131);
 	}
 
-	.cancel {
-		color: rgb(95, 104, 121);
-	}
-	.pdf-item {
-		& + .pdf-item {
-			margin-top: 20px;
-		}
-	}
-	.pdf-item,
-	.pageCard {
-		::v-deep .cardHeader {
-			padding-left: 0;
-		}
-		::v-deep .cardBody {
-			padding-left: 0;
-			padding-right: 0;
-		}
-	}
-	.page-logo {
-		display: flex;
-		justify-content: space-between;
-		padding: 10px;
-		align-items: center;
-		border-top: 1px solid #666;
-	}
+  .cancel {
+    color: rgb(95, 104, 121);
+  }
+  .pdf-content {
+    & + .pdf-content {
+      margin-top: 20px;
+    }
+  }
+  .pdf-content,
+  .pageCard {
+    ::v-deep .cardHeader {
+      padding-left: 0;
+    }
+    ::v-deep .cardBody {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  .page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 }
 </style>

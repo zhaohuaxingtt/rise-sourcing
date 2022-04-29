@@ -26,14 +26,32 @@
       </tableList>
     </iCard>
     <div class="pdf-item">
+      <div class="tasks pageCard-main rsPdfCard">
+        <slot name="tabTitle"></slot>
+        <iCard title="Background & Objective" class="bo">
+          <div class="content"  :style="{ height: cntentHeight + 'px' }">
+            <div v-html="content"></div>
+          </div>
+          <div class="page-logo">
+            <img
+              src="../../../../../../../assets/images/logo.png"
+              alt=""
+              :height="46 * 0.6 + 'px'"
+              :width="126 * 0.6 + 'px'"
+            />
+            <div>
+              <p class="pageNum"></p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+            </div>
+          </div>
+        </iCard>
+      </div>
       <template v-for="(tableData, i) in tableList">
         <div class="tasks pageCard-main rsPdfCard" :key="i">
           <slot name="tabTitle"></slot>
-          <iCard title="Background & Objective" class="bo">
-            <div class="content" ref="bo">
-              <div v-html="content"></div>
-            </div>
-          </iCard>
           <iCard title="Tasks" class="task">
             <div :style="{ height: cntentHeight + 'px' }">
               <tableList
@@ -124,23 +142,10 @@ export default {
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },
-  mounted() {
-    this.width = this.$refs.tasks.clientWidth;
-    let boHeight = this.$refs.bo.clientHeight + 84;
-    let headerHeight = 84; // Title 区域高度
-    let pageLogo = 52; // logo 区域高度
-    this.cntentHeight =
-      (this.width / 841.89) * 595.28 -
-      headerHeight -
-      pageLogo -
-      boHeight -
-      this.hasTitle; // 内容区域对应的高度
-  },
   methods: {
     getHeight() {
       if (!this.$refs.tasks) return;
       this.width = this.$refs.tasks.clientWidth;
-      let boHeight = this.$refs.bo.clientHeight + 104;
       let headerHeight = 84; // Title 区域高度
       let pageLogo = 52; // logo 区域高度
       let tableHeader = 41; // 表头高度
@@ -148,7 +153,6 @@ export default {
         (this.width / 841.89) * 595.28 -
         headerHeight -
         pageLogo -
-        boHeight -
         this.hasTitle; // 内容区域对应的高度
       let rowList = this.$refs.tasks.getElementsByClassName("table-row");
       let heightSum = 0;

@@ -170,7 +170,6 @@ export default {
   },
     watch: {
       update(val){
-        console.log(val);
         this.$forceUpdate()
       }
     },
@@ -339,40 +338,15 @@ export default {
         
        }
     },
-
-    // ================================================================================================
-    // ================================================================================================
-    // ================================================================================================
-    // ================================================================================================
-    // ================================================================================================
-    // ================================================================================================
-    // ================================================================================================
-    
-    // webWorker: 创建线程函数
-    webWorker(f){
-      let vm = this
-      if(window.Worker){
-        const worker = new Worker('/locale/Worker.js')
-        worker.onmessage = (event)=> {
-          // vm.exportPDF2()
-        }
-        worker.onerror = (error)=>{
-        }
-      }
-    },
     // 导出pdf
     async handleExportPdf() {
-      console.time('Time')
       this.fileList = []
-      this.loading = true
       let elList = this.$refs.exportPdf.getElementsByClassName('pageCard-main')
-      console.log(elList);
+      // console.log(elList);
       setTimeout(async () => {
-      // this.webWorker(this.exportPDF2)
-      // this.exportPDF2()
         if(!elList.length){
           iMessage.warn('请稍等')
-          this.loading = false
+          this.$emit('changeStatus','exportLoading',false)
           return
         }
         for (let i = 0; i < elList.length; i++) {
@@ -386,14 +360,6 @@ export default {
         }
         this.uploadUdFile();
       }, 0)
-      // this.createEl()
-      
-      // this.getPdfImage({
-      //   dom: this.$refs.rsPdf.$el,
-      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
-      //   exportPdf: true,
-      //   waterMark: true
-      // })
     },
     // 截取页面,存入pdf
     // 截取页面,转图片, 上传服务器
@@ -431,9 +397,7 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
-      this.loading = false
       this.$emit('changeStatus','exportLoading',false)
-      console.timeEnd('Time')
     },
 
     // 上传图片
@@ -444,7 +408,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(res.data[0].objectUrl);
+            // console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

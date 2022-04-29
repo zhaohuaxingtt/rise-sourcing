@@ -9,7 +9,7 @@
             <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
           </div>
         </template>
-          <div class="pdf-item">
+          <div class="pdf-content">
             <div class="infos">
               <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
                 <div class="info">
@@ -228,10 +228,7 @@
 <script>
 import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
-import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle, infos, dateFilter } from "./data"
-import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import { dateFilter } from "./data"
 import { resetLtcData, remarkProcess } from '../meeting/data'
 import filters from "@/utils/filters"
 import { toThousands } from "@/utils"
@@ -239,49 +236,20 @@ export default {
 	mixins: [filters],
 	components: { iCard, iFormGroup, iFormItem, iText, tableList, icon },
 	props: {
-		nominateId: {
-			type: String,
-		},
 		cardTitle: { type: String },
 		basicData: { type: Object, default: () => ({}) },
 		infos: { type: Array, default: () => [] },
-		titleData: { type: Array, default: () => [] },
 		tableTitle: { type: Array, default: () => [] },
 		tableData: { type: Array, default: () => [] },
-		firstCount: { type: Number, default: 0 },
-		count: { type: Number, default: 0 },
 		remarkItem: { type: Array, default: () => [] },
-		projectType: { type: String },
-		isApproval: { type: Boolean },
-		exchangeRageCurrency: { type: Array, default: () => [] },
 		checkList: { type: Array, default: () => [] },
 		exchangeRate: { type: String, default: '' },
 		tableHeight: { type: Number, default: 0 },
-		otherTableHeight: { type: Number, default: 0 },
-		tableList: { type: Array, default: () => [] },
+		tableList: { type: Array, default: () => [[]] },
 		processApplyDate: { type: String, default: '' },
 	},
 	filters: {
 		toThousands,
-	},
-	data() {
-		return {
-			partProjTypes,
-			// titleData: [
-			//   { label: "零件关系", value: "配件", props: "partProjectType" },
-			//   { label: "询价采购员", value: "胡伟", props: "buyer" },
-			//   { label: "货币单位", value: "RMB", props: "currency" },
-			//   { label: "申请单号", value: "", props: "nominateAppId" },
-			//   { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
-			//   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
-			//   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
-			// ],
-			// basicData: {},
-			// tableData: [],
-			// projectType: partProjTypes.PEIJIAN,
-			// remarkItem: [],
-			// infos,
-		}
 	},
 	computed: {
 		userName() {
@@ -289,24 +257,6 @@ export default {
 				? this.$store.state.permission.userInfo.nameZh
 				: this.$store.state.permission.userInfo.nameEn
 		},
-		// tableTitle () {
-		//   if (this.projectType === partProjTypes.PEIJIAN) {
-		//     return sparePartTableTitle
-		//   } else if (this.projectType === partProjTypes.FUJIAN) {
-		//     return accessoryTableTitle
-		//   } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-		//     return gsTableTitle
-		//   }
-
-    //   return nomalTableTitleSub
-    // },
-    isPF() {
-      // 是否配附件
-      return (
-        this.projectType === this.partProjTypes.PEIJIAN ||
-        this.projectType === this.partProjTypes.FUJIAN
-      );
-    },
   },
   methods: {
     remarkProcess,
@@ -317,34 +267,6 @@ export default {
         return "suggestionRow"
       }
     },
-    // /**
-    //  * @Description: 获取表格初始数据
-    //  * @Author: Luoshuang
-    //  * @param {*}
-    //  * @return {*}
-    //  */    
-    // getTopList() {
-    //   getList(this.nominateId).then(res => {
-    //     if (res.code == 200) {
-    //       this.basicData = res.data
-    //       this.tableData = res.data.lines
-    //       this.projectType = res.data.partProjectType || ''
-    //     } else {
-    //       this.basicData = {}
-    //       this.tableData = []
-    //       this.projectType = ''
-    //     }
-    //   })
-    // },
-    // getRemark() {
-    //   getRemark(this.nominateId).then(res => {
-    //     if (res.code == 200) {
-    //       this.remarkItem = res.data.map(item => {
-    //         return {value: item, checked: false}
-    //       })
-    //     }
-    //   })
-    // },
   },
 };
 </script>
@@ -367,48 +289,9 @@ export default {
 			padding: 0px;
 		}
 	}
-	.pdf-item {
-		& + .pdf-item {
+	.pdf-content {
+		& + .pdf-content {
 			margin-top: 20px;
-		}
-	}
-
-	.rsTable {
-		font-size: 8px; /*no*/
-		&::before {
-			height: 0;
-		}
-		::v-deep thead th {
-			padding-top: 8px; /*no*/
-			padding-bottom: 8px; /*no*/
-			& > .cell {
-				padding-left: 3px; /*no*/
-				padding-right: 3px; /*no*/
-				line-height: 14px; /*no*/
-				span {
-					// zoom: 0.85;
-				}
-
-				// span span {
-				//   // font-size: 8px;
-				// }
-				p {
-					min-height: 16px; /*no*/
-				}
-			}
-		}
-		::v-deep tr {
-			border-left: 1px solid #ebeef5;
-			border-bottom: 1px solid #ebeef5;
-			td {
-				& > .cell {
-					padding-right: 1px; /*no*/
-					padding-left: 1px; /*no*/
-				}
-			}
-			&:nth-child(even) {
-				background-color: #f7f7ff;
-			}
 		}
 	}
 
@@ -453,7 +336,6 @@ export default {
       }
     }
 //   }
-
 		.infoWrapper {
 			flex: 1;
 
@@ -495,6 +377,38 @@ export default {
 		align-items: center;
 		border-top: 1px solid #666;
 	}
+  .infos {
+    display: flex;
+    padding: 0 0 20px;
+  }
+  .pdf-item, .pageCard{
+    ::v-deep .cardHeader{
+      padding-left: 0;
+    }
+    ::v-deep .cardBody {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
+  .page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 
 	.checkDate {
 		::v-deep .card .cardHeader .title {
@@ -514,39 +428,39 @@ export default {
 		}
 	}
 
-	.checkList {
-		display: flex;
-		overflow: auto;
-		&-item {
-			flex: 1;
-			flex-shrink: 0;
-			max-width: 224px;
-			width: 224px;
-			height: 125px;
-			border-radius: 15px;
-			background-color: rgba(205, 212, 226, 0.12);
-			margin-right: 19px;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: space-between;
-			padding: 10px 15px;
-			font-size: 16px;
-			color: rgba(65, 67, 74, 1);
-			&-info {
-				width: 100%;
-				display: flex;
-				justify-content: space-between;
-				&-depart {
-					font-size: 18px;
-					font-weight: bold;
-				}
-			}
-		}
-		&-item:last-child {
-			margin-right: 0;
-		}
-	}
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex: 1;
+      flex-shrink: 0;
+      max-width: 224px;
+      width: 224px;
+      height: 125px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+    &-item:last-child { 
+      margin-right: 0;
+    }
+  }
 
 	.complete {
 		color: rgb(104, 193, 131);

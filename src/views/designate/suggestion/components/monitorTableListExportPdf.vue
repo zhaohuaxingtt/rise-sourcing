@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-09 14:17:36
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-04-29 12:33:31
+ * @LastEditors: Please set LastEditors
 -->
 
 <template>
@@ -34,7 +34,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="66"
+        min-width="66"
         label='Group'
         align='center'
         fixed>
@@ -57,7 +57,7 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="110"
+        min-width="110"
         fixed
         >
       <template slot-scope="scope">
@@ -69,7 +69,7 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="120"
+        min-width="120"
         fixed
         >
       </el-table-column>
@@ -83,7 +83,7 @@
       <!-- 循环取出厂商以及TTO -->
       <el-table-column
         align='center'
-        width="100"
+        min-width="100"
         label-class-name="tline"
         v-for="(head, hindex) in supplier"
         :key="hindex"
