@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <div class="meeting" ref="demo" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
+  <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
+    <div class="demo" :style="{'width': pageWidth + 'px'}">
       <div ref="pdf-table">
         <iCard class="rsCard">
           <template #header>
@@ -215,29 +215,31 @@
             </template>
           </tableList>
           <!-- v-if="isPreview" -->
-          <div class="out-compute">
+          <div class="require-start">
             <div style="margin-left:20px">
               <span style="color: red">*</span><span>代表投资费已分摊</span>
             </div>
+          </div>
+          <div class="out-compute">
             <div class="beizhu">
               备注 Remarks:
               <div class="beizhu-value">
-                <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item&&item.value)"></p>
               </div>
             </div>
-            <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+            <div ref="other">
+              <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+                汇率：Exchange rate: 
               汇率：Exchange rate: 
-            汇率：Exchange rate: 
-              汇率：Exchange rate: 
-            汇率：Exchange rate: 
-              汇率：Exchange rate: 
-              <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-                1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
-              </span>
-            </div>
-            <div v-else>
-              <div class="margin-top10">
-                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+                汇率：Exchange rate: 
+                <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+                  1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+                </span>
+              </div>
+              <div v-else>
+                <div class="margin-top10">
+                  <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -299,6 +301,7 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         :remarkItem="remarkItem"
+        :remarkList="remarkList"
         :projectType="projectType"
         :exchangeRageCurrency="exchangeRageCurrency"
         :exchangeRates="exchangeRates"
@@ -309,6 +312,8 @@
         :prototypeList="PrototypeList"
         :tableList="tableList"
         :tableHeight="tableHeight"
+        :otherPageHeight="otherPageHeight"
+        :hasOtherPage="hasOtherPage"
         :prototypeListPageHeight="prototypeListPageHeight"
         :prototypeTableList="prototypeTableList"
         :prototypeTitleList="prototypeTitleList" >
@@ -589,7 +594,7 @@
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item&&item.value)"></p>
           </div>
         </div>
         <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -710,8 +715,11 @@ export default {
 			// otherTableHeight:0,
 			prototypeListPageHeight: 0,
 			tableHeight: 0,
+      otherPageHeight:0,
+      hasOtherPage: false,
 			tableList: [],
 			prototypeTableList: [],
+      remarkList:[]
 		}
 	},
 	filters: {
@@ -860,13 +868,15 @@ export default {
         let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
         let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
         let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+        let requireStart = document.getElementsByClassName('demo')[0].getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
+        let beizhuOther = this.$refs.other.offsetHeight // 备注区域的其它内容
         for (let i = 0; i < el.length; i++) {
           height += el[i].offsetHeight;
         }
         // 第一页
         this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
-        // 第二页
-        // this.otherTableHeight = this.pageHeight - pageLogo - 21
+        // 独立备注页
+        this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
         if(!this.tableData.length) return
         let rowList = this.$refs['pdf-table'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
         let arr = []
@@ -874,7 +884,8 @@ export default {
         let tableList = []
         rowList.forEach((item,i)=>{
           heightSum+=item.offsetHeight
-          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+          // if(heightSum<this.tableHeight - tableHeader - outEl - el){
+          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -884,18 +895,45 @@ export default {
         })
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
+        // 备注独立页面内容计算
+        this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+        if(this.hasOtherPage){
+          let itemHeight = 0
+          let list = []
+          let itemList =[]
+          if(this.otherPageHeight<outEl - 24){ // 需要分页
+            let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
+            remarkList.forEach((item,i)=>{
+              itemHeight+=item.offsetHeight
+              if(itemHeight<=this.otherPageHeight - 24 - beizhuOther){ // 上下padding各12
+                list.push(this.remarkItem[i])
+              }else{
+                itemList.push(JSON.parse(JSON.stringify(list)))
+                itemHeight=item.offsetHeight
+                list = [this.remarkItem[i]]
+              }
+            })
+          }
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+        }
+        
       },1000)
     },
     getPrototypeListHeight(){
-      setTimeout(() => {
-        let dom = this.$refs.rsPdf.$el
-        this.width = dom.offsetWidth
-        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-        let tableHeader = 41  // 表头高度
-        let headerHeight = 84  // 表头高度
-        let pageLogo = 52     // logo 区域高度
-        // let headerHeight = 106 // 顶部标题高度
-        if(!this.PrototypeList.length) return
+      let time = 0
+      let timeOut = 6000
+      if(!this.$refs.rsPdf) return
+      let dom = this.$refs.rsPdf.$el
+      this.width = dom.offsetWidth
+      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+      let tableHeader = 41  // 表头高度
+      let headerHeight = 84  // 表头高度
+      let pageLogo = 52     // logo 区域高度
+      let Interval = setInterval(()=>{
+        time+=400
+        if(time==timeOut) clearInterval(Interval)
+        if(!this.$refs['pdf-list']) return
         let rowList = this.$refs['pdf-list'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('list-row')
         this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5 - this.hasTitle
         let arr = []
@@ -911,10 +949,37 @@ export default {
             arr = [this.PrototypeList[i]]
           }
         })
-          
         PrototypeList.push(JSON.parse(JSON.stringify(arr)))
         this.prototypeTableList = PrototypeList
-      }, 1000);
+        if(this.prototypeTableList) clearInterval(Interval)
+      },400)
+      // setTimeout(() => {
+      //   let dom = this.$refs.rsPdf.$el
+      //   this.width = dom.offsetWidth
+      //   this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+      //   let tableHeader = 41  // 表头高度
+      //   let headerHeight = 84  // 表头高度
+      //   let pageLogo = 52     // logo 区域高度
+      //   if(!this.PrototypeList.length&&this.$refs['pdf-list'].getElementsByClassName('el-table__body-wrapper')[0]) return
+      //   let rowList = this.$refs['pdf-list'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('list-row')
+      //   this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5 - this.hasTitle
+      //   let arr = []
+      //   let heightSum = 0
+      //   let PrototypeList = []
+      //   rowList.forEach((item,i)=>{
+      //     heightSum+=item.offsetHeight
+      //     if(heightSum<=this.prototypeListPageHeight - tableHeader){
+      //       arr.push(this.PrototypeList[i])
+      //     }else{
+      //       PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+      //       heightSum=item.offsetHeight
+      //       arr = [this.PrototypeList[i]]
+      //     }
+      //   })
+          
+      //   PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+      //   this.prototypeTableList = PrototypeList
+      // }, 1000);
     },
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
@@ -1105,28 +1170,6 @@ export default {
         }
       })
     },
-		/**
-		 * @Description: 获取备注
-		 * @Author: Luoshuang
-		 * @param {*}
-		 * @return {*}
-		 */
-		getRemark() {
-			getRemark(this.nominateId).then((res) => {
-				if (res?.result) {
-					const data = Array.isArray(res.data) ? res.data : []
-					data.forEach((element) => {
-						this.remarks[element.remarkType] = element.remark || ''
-						this.remarkItem = meetingRemark.map((item) => {
-							return { ...item, value: this.remarks[item.remarkType] }
-						})
-					})
-				} else {
-					this.remarks = {}
-					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-				}
-			})
-		},
 
 		resetLtcData,
 
@@ -1297,7 +1340,7 @@ export default {
 			this.loading = true
 
 			setTimeout(async () => {
-				let elList = document.getElementsByClassName('pageCard')
+				let elList = this.$refs.meeting.getElementsByClassName('pageCard')
 				if (!elList.length) {
 					iMessage.warn('请稍等')
 					this.loading = false
@@ -1440,6 +1483,30 @@ export default {
   display: none;
 }
 .meeting {
+  
+  .demo .rsCard {
+    box-shadow: none;
+
+    ::v-deep .title {
+      font-size: 18px !important; /*no*/
+    }
+
+    ::v-deep .cardHeader {
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody {
+      padding: 0px;
+    }
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
   .rsCard {
     ::v-deep .cardHeader {
       flex-wrap: wrap;
@@ -1459,18 +1526,6 @@ export default {
         font-size: 16px;
         font-weight: 600;
       }
-    }
-  }
-  .rsPdfCard {
-    box-shadow: none;
-    & + .rsCard {
-      margin-top: 20px; /*no*/
-    }
-    ::v-deep .cardHeader {
-      padding: 30px 0px;
-    }
-    ::v-deep .cardBody {
-      padding: 0px;
     }
   }
 }
@@ -1686,7 +1741,7 @@ export default {
   }
 }
 
-.Application {
+.Application.card {
   ::v-deep .cardHeader {
     padding-top: 12px;
     padding-bottom: 12px;
