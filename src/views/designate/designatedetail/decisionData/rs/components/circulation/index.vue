@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <div class="circulation" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
+  <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
+    <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
       <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
@@ -152,47 +152,20 @@
             <span>{{ +scope.row.share || 0 }}</span>
           </template>
         </tableList>
-        <div class="position-compute out-compute">
+        <div class="require-start">
           <div style="margin-left:20px">
             <span style="color: red">*</span><span>代表投资费已分摊</span>
           </div>
+        </div>
+        <div class="position-compute out-compute">
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+              <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           </div>
       </iCard>
-      <div v-if="!isRoutePreview && !isApproval">
-        <iCard :title="language('BEIZHU','备注')"
-              :class="!isPreview && 'margin-top20'">
-          <template slot="header-control" v-if="!isPreview">
-            <iButton v-if="!isRoutePreview && !isApproval && !isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
-            <template v-else>
-              <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
-              <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
-              <iButton @click="handleSaveRemarks"
-                      :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
-              <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
-            </template>
-          </template>
-          <div class="meetingRemark">
-            <div class="meetingRemark-item"
-                v-for="(item, index) in remarkItem"
-                :key="index">
-              <el-checkbox v-if="!isPreview"
-                          v-model="item.checked"></el-checkbox>
-              <iInput v-model="item.value"
-                      class="margin-top10"
-                      :class="!isPreview && 'margin-left20'"
-                      type="textarea"
-                      :rows="3"
-                      resize="none"></iInput>
-            </div>
-          </div>
-        </iCard>
-      </div>
       <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
@@ -239,146 +212,19 @@
       </iCard>
     </div>
     <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
-      <!-- <iCard class="rsCard">
-        <tableList
-          :tableLoading="tableLoading"
-          :selection="false"
-          :tableTitle="tableTitleSub"
-          :tableData="tableData"
-          class="rsTable mainTable"
-          :tableRowClassName="tableRowClassName"
-          border>
-          <template #fsnrGsnrNum="scope">
-            <div>
-              <p>{{ scope.row.fsnrGsnrNum }}</p>
-              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-            </div>
-          </template>
-          <template #oldAPrice="scope">
-            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-          </template>
-          <template #rw="scope">
-            <span>{{ scope.row.rw | toThousands(true) }}</span>
-          </template>
-          <template #packPrice="scope">
-            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
-          </template>
-          <template #transportPrice="scope">
-            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-          </template>
-          <template #operatePrice="scope">
-            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-          </template>
-          <template #turnover="scope">
-            <span>{{ scope.row.turnover | toThousands(true) }}</span>
-          </template>
-
-          <template #ltc="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-          </template>
-
-          <template #beginYearReduce="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
-
-          <template #svwCode="scope">
-            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-          </template>
-
-          <template #aprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.aprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
-          </template>
-
-          <template #bprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.bprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
-          </template>
-
-          <template #investFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
-
-          <template #remarks="scope">
-            <div>
-              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
-              <span v-else>{{ scope.row.remarks }}</span>
-            </div>
-          </template>
-
-          <template #savingFee="scope">
-            <span>{{ scope.row.savingFee | toThousands(true) }}</span>
-          </template>
-
-          <template #share="scope">
-            <span>{{ +scope.row.share || 0 }}</span>
-          </template>
-        </tableList>
-      </iCard> -->
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
         :basicData="basicData"
-        :titleData="titleData"
         :tableTitle="tableTitleSub"
         :tableData="tableData"
         :tableList="tableList"
-        :firstCount="firstCount"
-        :count="count"
         :remarkItem="remarkItem"
-        :projectType="projectType"
-        :isApproval="isApproval"
-        :exchangeRageCurrency="exchangeRageCurrency"
+        :remarkList="remarkList"
         :checkList="checkList"
         :tableHeight="tableHeight"
-        :otherTableHeight="otherTableHeight"
+        :otherPageHeight="otherPageHeight"
+        :hasOtherPage="hasOtherPage"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
         >
@@ -435,7 +281,7 @@
           <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <div class="infos position-infos">
+      <div class="infos">
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
@@ -564,7 +410,7 @@
           <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
-      <div class="position-compute out-compute">
+      <div class="position-compute">
         <div style="margin-left:20px">
           <span style="color: red">*</span><span>代表投资费已分摊</span>
         </div>
@@ -664,7 +510,6 @@ import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
 import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
 import { pageMixins } from '@/utils/pageMixins'
-import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
@@ -691,7 +536,7 @@ export default {
   },
   data () {
     return {
-      tableList:[],
+      tableList:[[]],
       loading: false,
       // 零件项目类型
       partProjTypes,
@@ -718,11 +563,10 @@ export default {
       editStatus: false,
       saveLoading: false,
       tableLoading: false,
-      firstCount: 0,
-      count: 0,
       tableHeight:0,
-      otherTableHeight:0,
+      otherPageHeight:0,
       fileList:[],
+      remarkList:[],
       infos,
       exchangeRate: "",
       processApplyDate: ""
@@ -814,38 +658,52 @@ export default {
       let tableHeader = 49  // 表头高度
       let headerHeight = 84 // 顶部标题高度
       let pageLogo = 52     // logo 区域高度
-      let computeHeight = document.getElementsByClassName('demo')[0].getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
-      let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-      let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+      let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
       // 第一页
       this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
-      let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      // 独立备注页
+      this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
+      let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0
       let tableList = []
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         // if(tableList.length==0){
-          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
             heightSum=item.offsetHeight
             arr = [this.tableData[i]]
           }
-        // }else{
-        //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-        //     arr.push(this.tableData[i])
-        //   }else{
-        //     tableList.push(JSON.parse(JSON.stringify(arr)))
-        //     heightSum=item.offsetHeight
-        //     arr = [this.tableData[i]]
-        //   }
-        // }
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      // if(tableList.length==1) this.tableHeight -= 2
+      this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+      if(this.hasOtherPage){
+          let itemHeight = 0
+          let list = []
+          let itemList =[]
+          if(this.otherPageHeight<outEl){ // 需要分页
+            let remarkList = this.$refs.circulation.getElementsByClassName('remarkItem')  //备注信息
+            remarkList.forEach((item,i)=>{
+              itemHeight+=item.offsetHeight
+              if(itemHeight<this.otherPageHeight - 24){ // 上下padding各12
+                list.push(this.remarkItem[i])
+              }else{
+                itemList.push(JSON.parse(JSON.stringify(list)))
+                itemHeight=item.offsetHeight
+                list = [this.remarkItem[i]]
+              }
+            })
+          }
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+        }
       },1000)
     },
     downloadFile () {
@@ -984,8 +842,8 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data || {}
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = res.data?.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
           } else {
@@ -1082,16 +940,11 @@ export default {
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-      let elList = document.getElementsByClassName('pageCard')
-      if(!elList.length){
-        iMessage.warn('无数据')
-        this.loading = false
-        return
-      }
       setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard')
+        let elList = this.$refs.circulation.getElementsByClassName('pageCard')
         if(!elList.length){
           iMessage.warn('无数据')
+          this.loading = false
           return
         }
         for (let i = 0; i < elList.length; i++) {
