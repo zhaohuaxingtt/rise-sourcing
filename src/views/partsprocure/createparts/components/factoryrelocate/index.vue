@@ -11,7 +11,12 @@
     <div class="header">
       <iNavMvp :lev="1" :list="navList" :lang="true" routerPage class="nav" />
       <div class="control">
-        <logButton class="margin-left20" @click="log" />
+        <iLoger 
+          class="margin-left20"
+					credentials
+					isPage
+					isUser
+          :config="{ module_obj_ae: '工厂迁移' }" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
@@ -110,7 +115,7 @@
 
 <script>
 import { iPage, iNavMvp, icon, iSearch, iMultiLineInput, iInput, iSelect, iCard, iButton, iPagination, iMessage } from 'rise'
-import logButton from '@/components/logButton'
+import iLoger from 'rise/web/components/iLoger'
 import uploadButton from "./components/uploadButton"
 import { tableTitle } from './components/data'
 import filters from '@/utils/filters'
@@ -123,7 +128,7 @@ import { procureFactorySelectVo, selectDictByRootKeys } from '@/api/dictionary'
 import { downloadFactoryMoveTemplate, deleteFactoryImportRecordsList, executeFactoryRelocation, getFactoryImportRecordsList } from '@/api/partsprocure/editordetail'
 
 export default {
-  components:{ iPage, iNavMvp, icon, iSearch, iMultiLineInput, iInput, iSelect, iCard, iButton, iPagination, tableList, buttonTableSetting, logButton, uploadButton },
+  components:{ iPage, iNavMvp, icon, iSearch, iMultiLineInput, iInput, iSelect, iCard, iButton, iPagination, tableList, buttonTableSetting, iLoger, uploadButton },
   mixins:[ filters, pageMixins, tableSortMixins ],
   data() {
     return {
