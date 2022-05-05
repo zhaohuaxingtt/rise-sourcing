@@ -211,7 +211,7 @@
                     :total="page.totalCount" />
       </iCard>
     </div>
-    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
+    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}" :key="key">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
@@ -298,7 +298,6 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
-        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
@@ -537,6 +536,7 @@ export default {
   },
   data () {
     return {
+      key:'0',
       tableList:[[]],
       loading: false,
       // 零件项目类型
@@ -647,6 +647,9 @@ export default {
     hasTitle(){
       return this.$slots.tabTitle && 116 || 0
     }
+  },
+  created(){
+    this.key = +new Date()
   },
   methods: {
     remarkProcess,
@@ -986,6 +989,8 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
+          this.init()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(message)
         }
