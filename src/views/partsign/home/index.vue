@@ -481,7 +481,7 @@ export default {
       const params = {
         ...this.form,
         ...this.page,
-        status: this.form.status || []
+        status: this.form.status ? (this.form.status[0] === '' ? [] : this.form.status) : []
       }
       getTabelData(params)
         .then((res) => {

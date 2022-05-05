@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2022-03-25 14:42:38
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-05-05 11:11:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
@@ -17,6 +17,22 @@
         </template>
       </el-table-column>
       <el-table-column :key="$index" align="center" v-else :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader" :sortable="item.sortable||false" :sort-method="item.sortMethod">
+        <template #header="scope">
+          <el-popover
+            v-if="item.showTips"
+            placement="top"
+            trigger="hover"
+            popper-class="tableTitleTip"
+            :visible-arrow="false"
+            :disabled="!item.showTips">
+            <p v-html="item.showTips ? item.tips() : ''"></p>
+            <span slot="reference">
+              <span>{{ scope.column.label }}</span>
+              <icon v-if="item.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+            </span>
+          </el-popover>
+          <span v-else>{{ scope.column.label }}</span>
+        </template>
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
@@ -27,7 +43,7 @@
 
 <script>
 import tablelist from '@/views/partsign/home/components/tableList'
-import {iInput} from 'rise'
+import { iInput, icon } from 'rise'
 export default {
   props:{
     ...tablelist.props,
@@ -85,9 +101,7 @@ export default {
     selectable: { type: Function },
     spanMethod: { type: Function }
   },
-  components:{
-    iInput
-  },
+  components: { iInput, icon },
   methods: {
     handleSelectionChange(list) {
       if (this.singleSelect) return

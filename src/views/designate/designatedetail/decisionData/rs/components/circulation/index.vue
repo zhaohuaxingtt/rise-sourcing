@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <div class="circulation" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
+  <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
+    <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
       <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
@@ -152,47 +152,20 @@
             <span>{{ +scope.row.share || 0 }}</span>
           </template>
         </tableList>
-        <div class="position-compute out-compute">
+        <div class="require-start">
           <div style="margin-left:20px">
             <span style="color: red">*</span><span>代表投资费已分摊</span>
           </div>
+        </div>
+        <div class="position-compute out-compute">
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+              <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           </div>
       </iCard>
-      <div v-if="!isRoutePreview && !isApproval">
-        <iCard :title="language('BEIZHU','备注')"
-              :class="!isPreview && 'margin-top20'">
-          <template slot="header-control" v-if="!isPreview">
-            <iButton v-if="!isRoutePreview && !isApproval && !isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
-            <template v-else>
-              <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
-              <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
-              <iButton @click="handleSaveRemarks"
-                      :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
-              <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
-            </template>
-          </template>
-          <div class="meetingRemark">
-            <div class="meetingRemark-item"
-                v-for="(item, index) in remarkItem"
-                :key="index">
-              <el-checkbox v-if="!isPreview"
-                          v-model="item.checked"></el-checkbox>
-              <iInput v-model="item.value"
-                      class="margin-top10"
-                      :class="!isPreview && 'margin-left20'"
-                      type="textarea"
-                      :rows="3"
-                      resize="none"></iInput>
-            </div>
-          </div>
-        </iCard>
-      </div>
       <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
@@ -247,8 +220,11 @@
         :tableData="tableData"
         :tableList="tableList"
         :remarkItem="remarkItem"
+        :remarkList="remarkList"
         :checkList="checkList"
         :tableHeight="tableHeight"
+        :otherPageHeight="otherPageHeight"
+        :hasOtherPage="hasOtherPage"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
         >
@@ -305,7 +281,7 @@
           <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <div class="infos position-infos">
+      <div class="infos">
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
@@ -434,7 +410,7 @@
           <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
-      <div class="position-compute out-compute">
+      <div class="position-compute">
         <div style="margin-left:20px">
           <span style="color: red">*</span><span>代表投资费已分摊</span>
         </div>
@@ -560,7 +536,7 @@ export default {
   },
   data () {
     return {
-      tableList:[],
+      tableList:[[]],
       loading: false,
       // 零件项目类型
       partProjTypes,
@@ -588,7 +564,9 @@ export default {
       saveLoading: false,
       tableLoading: false,
       tableHeight:0,
+      otherPageHeight:0,
       fileList:[],
+      remarkList:[],
       infos,
       exchangeRate: "",
       processApplyDate: ""
@@ -680,19 +658,22 @@ export default {
       let tableHeader = 49  // 表头高度
       let headerHeight = 84 // 顶部标题高度
       let pageLogo = 52     // logo 区域高度
-      let computeHeight = document.getElementsByClassName('demo')[0].getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
-      let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-      let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+      let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
       // 第一页
       this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
-      let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      // 独立备注页
+      this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
+      let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0
       let tableList = []
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         // if(tableList.length==0){
-          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -702,7 +683,27 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      // if(tableList.length==1) this.tableHeight -= 2
+      this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+      if(this.hasOtherPage){
+          let itemHeight = 0
+          let list = []
+          let itemList =[]
+          if(this.otherPageHeight<outEl){ // 需要分页
+            let remarkList = this.$refs.circulation.getElementsByClassName('remarkItem')  //备注信息
+            remarkList.forEach((item,i)=>{
+              itemHeight+=item.offsetHeight
+              if(itemHeight<this.otherPageHeight - 24){ // 上下padding各12
+                list.push(this.remarkItem[i])
+              }else{
+                itemList.push(JSON.parse(JSON.stringify(list)))
+                itemHeight=item.offsetHeight
+                list = [this.remarkItem[i]]
+              }
+            })
+          }
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+        }
       },1000)
     },
     downloadFile () {
@@ -939,16 +940,11 @@ export default {
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-      let elList = document.getElementsByClassName('pageCard')
-      if(!elList.length){
-        iMessage.warn('无数据')
-        this.loading = false
-        return
-      }
       setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard')
+        let elList = this.$refs.circulation.getElementsByClassName('pageCard')
         if(!elList.length){
           iMessage.warn('无数据')
+          this.loading = false
           return
         }
         for (let i = 0; i < elList.length; i++) {
