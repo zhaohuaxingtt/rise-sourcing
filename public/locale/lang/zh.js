@@ -5959,7 +5959,7 @@
 		THISISTESTKEY: '测试key',
 		'costanalysismanage.CaiGouGongChang': '采购工厂',
 		WUFENGXIANLVDENG: '无风险(绿灯)',
-		DIFENGXIANHUANGDENG: '低风险(黄灯)',
+		DIFENGXIANHUANGDENG: '中风险(黄灯)',
 		GAOFENGXIANHONGDENG: '高风险(红灯)',
 		MTZDONTDELETE: '与零件定点申请相关联，不能移除',
 		QUXIAOGUANLIANSTARTMONIORJILUa: '取消关联StarMonior记录a',
