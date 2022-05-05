@@ -274,12 +274,12 @@ export default {
         // 跳转定点申请详情页
         goToDesignate(row){
             console.log(row);
-            const { nominateAppId,nominateProcessType={} } = row;
+            const { nominateAppId, nominateProcessType } = row;
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
                 desinateId: nominateAppId, 
-                designateType: (nominateProcessType && nominateProcessType.code) || ''
+                designateType: nominateProcessType
             }
             })
             window.open(routeData.href, '_blank')
