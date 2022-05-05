@@ -33,7 +33,7 @@
           :prop="item.props"
         >
           <template v-if="item.editable && isEdit">
-            <el-tooltip class="item" effect="dark" :disabled="!item.tooltip && basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
+            <el-tooltip class="item" effect="dark" :disabled="!item.tooltip || !basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
               <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
