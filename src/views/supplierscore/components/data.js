@@ -42,7 +42,7 @@ export const tableTitle = [
   { props: "rfqStatus", name: "RFQ状态", key: "RFQZHUANGTAI", tooltip: true, sortable: true },
   { props: "buyerName", name: "询价采购员", key: "XUNJIACAIGOUYUAN", tooltip: true, sortable: true },
   { props: "linie", name: "LINIE", key: "LINIE", tooltip: true, sortable: true },
-  { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true, sortable: true },
+  { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true, sortable: true, showTips: true, tips: () => `<span>${ localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status' }</span>` },
   { props: "currentRoundsEndTime", name: "报价截止日期", key: "BAOJIAJIEZHIRIQI", tooltip: true, sortable: true }
 ]
 
