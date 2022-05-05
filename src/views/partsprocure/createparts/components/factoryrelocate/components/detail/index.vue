@@ -82,8 +82,8 @@
         </tableList>
         <iPagination
           class="pagination margin-top30"
-          @size-change="handleSizeChange($event, factoryTranslate)"
-          @current-change="handleCurrentChange($event, factoryTranslate)"
+          @size-change="handleSizeChange($event, getFactoryBatchDetail)"
+          @current-change="handleCurrentChange($event, getFactoryBatchDetail)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
