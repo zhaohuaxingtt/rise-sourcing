@@ -3,12 +3,12 @@ const resolve = (dir) => path.join(__dirname, dir)
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const ChangeNginxConfig = require(resolve(
-  './loadersPlugins/pluginTranslateNginxConfig'
+	'./loadersPlugins/pluginTranslateNginxConfig'
 ))
 const NodeserverUpload = require(resolve('./loadersPlugins/pluginLanguage'))
 const px2rem = require('postcss-px2rem')
 const postcss = px2rem({
-  remUnit: 16,
+	remUnit: 16,
 })
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
@@ -315,7 +315,8 @@ module.exports = {
 				},
 			},
 			'/prApi': {
-				target: 'http://10.122.17.38:8023',
+				// target: 'http://10.122.17.38:8023',
+				target: 'http://rise-nginx-internal.apps.vmocp-dev.csvw.com/partProcureApi/web',	// dev 环境代理
 				changeOrigin: true,
 				pathRewrite: {
 					'^/prApi': '',
