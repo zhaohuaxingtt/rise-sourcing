@@ -106,6 +106,12 @@ export default {
             this.$store.dispatch('setNominationType', res.data.nominateProcessType)
             this.$store.dispatch('setMtzAppid',res.data.mtzApplyId)
             this.$store.dispatch('setNominateData',res.data || {})
+
+            const query = this.$router.history.current.query
+            const path = this.$router.history.current.path
+            const newQuery = JSON.parse(JSON.stringify(query))
+            newQuery.designateType = res.data.nominateProcessType
+            this.$router.replace({path, query: newQuery})
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
