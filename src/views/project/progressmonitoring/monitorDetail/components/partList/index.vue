@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 15:21:33
+ * @LastEditTime: 2022-05-05 11:39:13
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -21,8 +21,9 @@
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
-    <div class="partListView-content" ref="partListViewContent" > 
-      <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
+    <div class="partListView-content" ref="partListViewContent" v-infinite-scroll="load" :infinite-scroll-distance="20"> 
+      <!-- <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem">  -->
+      <div v-for="pro in showParts" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
@@ -137,7 +138,11 @@ export default {
     cartypeProId: {type:String},
     list: {type:Array,default:() => []},
     partStatus: {type: String||Number},
-    carProjectName: {type:String}
+    carProjectName: {type:String},
+    sliceArr:{
+      type:Array,
+      default:()=>[0, 10]
+    }
   },
   data() {
     return {
@@ -161,7 +166,7 @@ export default {
       selectParts: {},
       dialogVisibleDelayReason: false,
       delayReasonConfirmList:[],
-      moment
+      moment,
     }
   },
   computed: {
@@ -194,7 +199,12 @@ export default {
           partStatusTemp: partStatus == 7 ? 8 : partStatus == 8 ? 7 : partStatus
         }
       }) : []
+    },
+    
+    showParts() {
+      return this.listWithNodeDelayWeeks.length < 10 ? this.listWithNodeDelayWeeks : this.listWithNodeDelayWeeks.slice(this.sliceArr[0],this.sliceArr[1])
     }
+    
   },
   methods: {
     resetSelectPart() {
@@ -521,6 +531,10 @@ export default {
       // const selectPart = this.list.filter(item => item.isChecked).map(item => item.partNum)
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {type: '1',carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
       window.open(router.href,'_blank') 
+    },
+    
+    load() {
+      this.sliceArr = [0, this.sliceArr[1] + 2]
     },
   }
 }
