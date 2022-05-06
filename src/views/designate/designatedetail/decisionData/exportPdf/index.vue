@@ -552,7 +552,7 @@ export default {
     overflow: hidden;
   }
   ::v-deep .pageCard-main{
-    overflow: hidden;
+    // overflow: hidden;
     margin-top: 20px;
   }
   ::v-deep .max-content{

@@ -384,6 +384,7 @@ export default {
         true: "Y",
         false: "N"
       }
+      return obj[val] || val
     }
   },
   data() {

@@ -638,6 +638,9 @@ export default {
       }
       return 1730
     },
+    pageHeight() {
+      return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
+    },
     isRoutePreview() {
       return this.$route.query.isPreview == 1
     },
@@ -656,9 +659,6 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth  // 打印区域宽度
-      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeader = 49  // 表头高度
       let headerHeight = 84 // 顶部标题高度
       let pageLogo = 52     // logo 区域高度
@@ -704,8 +704,10 @@ export default {
                 list = [this.remarkItem[i]]
               }
             })
+            itemList.push(JSON.parse(JSON.stringify(list)))
+          }else{
+            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
           }
-          itemList.push(JSON.parse(JSON.stringify(list)))
           this.remarkList = itemList
         }
       },1000)
@@ -811,6 +813,7 @@ export default {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.getRemark()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -870,9 +873,7 @@ export default {
       .finally(() => {
         this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })
       })
     },
@@ -904,12 +905,10 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
-      .finally(() => {this.tableLoading = false
-      
+      .finally(() => {
+        this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })})
     },
     /**
@@ -1069,7 +1068,7 @@ export default {
       let arr = this.fileList.filter(item=>item.imageUrl)
       if(arr.length!=this.fileList.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.pageWidth, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
     },
 
@@ -1081,7 +1080,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(res.data[0].objectUrl);
+            // console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

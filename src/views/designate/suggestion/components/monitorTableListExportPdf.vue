@@ -16,7 +16,6 @@
       :cell-class-name="getCellClass"
       width="100%"
       default-expand-all
-      v-loading='tableLoading'
       @selection-change="handleSelectionChange"
       v-bind="$attrs"
       :span-method="spanMethod"
@@ -36,8 +35,7 @@
       <el-table-column
         min-width="66"
         label='Group'
-        align='center'
-        fixed>
+        align='center'>
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.selected"
@@ -58,7 +56,6 @@
         prop="partNo"
         label="Part"
         min-width="110"
-        fixed
         >
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
@@ -70,14 +67,12 @@
         prop="partPrjCode"
         label="FS/GS/SP No."
         min-width="120"
-        fixed
         >
       </el-table-column>
       <el-table-column
         align='center'
         prop="factoryEn"
-        label="Factory"
-        fixed>
+        label="Factory">
       </el-table-column>
 
       <!-- 循环取出厂商以及TTO -->
@@ -157,7 +152,6 @@ export default {
    props:{
     key:{type: String},
     tableData:{type:Array},
-    tableLoading:{type:Boolean,default:false},
     selection:{type:Boolean,default:true},
     index:{type:Boolean,default:false},
     indexLabel:{type:String,default:'#'},
@@ -655,6 +649,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .monitorTable {
+  width: max-content;
   ::v-deep .el-table {
     // height: 450px;
     .el-table__header {
@@ -675,11 +670,6 @@ export default {
     }
     .el-table__header {
       border-bottom: 1px solid #fff;
-    }
-
-    .el-table__fixed,
-    .el-table__fixed-right {
-      bottom: 10px !important;
     }
   }
   ::v-deep .el-table--border {
@@ -743,21 +733,6 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  // 滚动条
-  ::v-deep.el-table__body-wrapper {
-    &::-webkit-scrollbar {
-      width: 8px !important;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #c9d2e6;
-    }
-    &::-webkit-scrollbar-track {
-      display: none;
-    }
-    ::-webkit-scrollbar-corner {
-      background-color: #111;
-    }
   }
 }
 

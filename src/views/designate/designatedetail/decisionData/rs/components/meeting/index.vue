@@ -820,6 +820,9 @@ export default {
 			}
 			return 1544
 		},
+    pageHeight() {
+      return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
+    },
 		cardTitle() {
 			if (this.projectType === partProjTypes.PEIJIAN) {
 				return '配件采购'
@@ -849,6 +852,15 @@ export default {
       return this.$slots.tabTitle && 116 || 0
     }
 	},
+  watch:{
+    pageWidth:{
+      immediate:true,
+      handler(){
+        this.getHeight()
+        this.getPrototypeListHeight()
+      }
+    }
+  },
 	created() {
 		this.isAuth = this.$route.query.type === 'auth'
 		// this.getPrototypeList()
@@ -859,9 +871,6 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-        let dom = this.$refs.rsPdf.$el
-        this.width = dom.offsetWidth
-        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
         let tableHeader = 57  // 表头高度
         let headerHeight = 106 // 顶部标题高度
         let pageLogo = 52     // logo 区域高度
@@ -913,20 +922,18 @@ export default {
                 list = [this.remarkItem[i]]
               }
             })
+            itemList.push(JSON.parse(JSON.stringify(list)))
+          }else{
+            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
           }
-          itemList.push(JSON.parse(JSON.stringify(list)))
           this.remarkList = itemList
         }
-        
-      },1000)
+      },400)
     },
     getPrototypeListHeight(){
       let time = 0
       let timeOut = 6000
       if(!this.$refs.rsPdf) return
-      let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth
-      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeader = 41  // 表头高度
       let headerHeight = 84  // 表头高度
       let pageLogo = 52     // logo 区域高度
@@ -1045,8 +1052,10 @@ export default {
       updateRemark(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getRemark()
-          this.getPrototypeList()
+          // this.getRemark()
+          // this.getPrototypeList()
+          this.init()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -1472,7 +1481,7 @@ export default {
 				filePaths: list,
 				needLogo: false,
 				needSplit: false,
-				width: this.width,
+				width: this.pageWidth,
 				height: this.pageHeight,
 			}) // 1.2 预留 页脚位置
 			this.loading = false
