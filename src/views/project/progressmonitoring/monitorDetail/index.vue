@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-05 13:42:01
+ * @LastEditTime: 2022-05-06 14:06:15
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div>
-          <iButton @click="handleSure">{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
           <iButton @click="handleReset">{{language('CHONGZHI','重置')}}</iButton>
         </div>
       </div>
