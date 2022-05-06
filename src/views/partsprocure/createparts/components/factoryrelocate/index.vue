@@ -13,7 +13,6 @@
       <div class="control">
         <iLoger 
           class="margin-left20"
-					credentials
 					isPage
 					isUser
           :config="{ module_obj_ae: '工厂迁移' }" />
