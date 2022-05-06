@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-24 10:36:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 15:08:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-05 10:37:03
  * @Description: 指示灯修改弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\changeLight\index.vue
 -->
@@ -50,7 +50,7 @@ export default {
     return {
       lightOption: [
         {value: '1', label: this.language('WUFENGXIANLVDENG', '无风险(绿灯)')},
-        {value: '2', label: this.language('DIFENGXIANHUANGDENG', '低风险(黄灯)')},
+        {value: '2', label: this.language('DIFENGXIANHUANGDENG', '中风险(黄灯)')},
         {value: '3', label: this.language('GAOFENGXIANHONGDENG', '高风险(红灯)')}
       ],
       loading: false,
