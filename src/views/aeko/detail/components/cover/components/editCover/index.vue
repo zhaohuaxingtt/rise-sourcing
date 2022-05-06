@@ -202,19 +202,16 @@ export default {
       // 是否显示提示信息
       showTip(){
         const { basicInfo={} } = this;
+        // 更改零件名称, 主要供应商, 新⾸批送样周期(周数) 三个没有值
+        // 封面状态不为待表态，指定前期采购有值
         let flag = [
-          'isTop',
-          'isReference',
           'partName',
           'mainSupplier',
           'sendCycle',
-          'isEffectpro',
         ].some(item=>{
           return !(basicInfo[item] === '' || basicInfo[item] === null)
         })
-        return !flag && basicInfo.fsName && basicInfo.coverStatusDesc
-        return true 
-        return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
+        return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
       }
     },
     data(){
