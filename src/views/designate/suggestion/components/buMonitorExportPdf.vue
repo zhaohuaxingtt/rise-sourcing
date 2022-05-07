@@ -7,19 +7,24 @@
 
 <template>
   <div ref="scenario">
+  <div ref="tabTitle" style="padding:1px">
+    <slot name="tabTitle"></slot>
+  </div>
   <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 供应商表格 -->
       <div class="supplierTable">
-        <div class="margin-bottom20 clearFloat">
-          <div>
-            <span class="font18 font-weight">
-              {{ title }}
-            </span>
+        <div class="clearFloat">
+          <div ref="tableTitle">
+            <div class="padding-bottom20">
+              <span class="font18 font-weight">
+                {{ title }}
+              </span>
+            </div>
           </div>
 
           <!-- 表格 -->
           <div class="clearfix"></div>
-          <div class="margin-top20 max-content" ref="table-content">
+          <div class="max-content" ref="table-content">
             <monitorTableList
               @updateCharts="updateCharts"
               row-class-name="table-row"
@@ -34,6 +39,16 @@
         </div>
       </div>
   </iCard>
+  <div class="page-logo" ref="logo">
+    <img src="../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+    <div>
+      <p class="pageNum"></p>
+    </div>
+    <div>
+      <p>{{ userName }}</p>
+      <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+    </div>
+  </div>
       <!-- <div class="pdf-item"> -->
     <template v-for="(tableData,i) in tableList">
     <div class="pageCard-main max-content" :key="i">
@@ -43,7 +58,7 @@
         <div>
             <div class="supplierTable">
               <div class="clearFloat">
-                <div>
+                <div class="padding-bottom20">
                   <span class="font18 font-weight">
                     {{ title }}
                   </span>
@@ -51,7 +66,7 @@
 
                 <!-- 表格 -->
                 <div class="clearfix"></div>
-                <div class="margin-top20" :style="{'height': cntentHeight + 'px'}">
+                <div :style="{'height': cntentHeight + 'px'}">
                   <monitorTableList
                     :key="'tableData'+i"
                     :selection="tableSelection"
@@ -175,9 +190,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   data() {
     return {
@@ -205,13 +220,16 @@ export default {
       if(!this.$refs.scenario) return
       this.width = this.$refs['table-content'].clientWidth
       this.chartsWidth = this.$refs.scenario.clientWidth
-      let headerHeight = 42 // Title 区域高度
-      let pageLogo = 52     // logo 区域高度
-      let tableHeader = 71  // 表头高度
-      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
-      this.chartsHeight = (this.chartsWidth / 841.89) * 595.28 - pageLogo - this.hasTitle // 绘图区域对应的高度
-      console.log('cntentHeight=>',this.cntentHeight);
-      console.log('chartsHeight=>',this.chartsHeight);
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let headerHeight = this.$refs.scenario.getElementsByClassName('cardHeader')[0]&&this.$refs.scenario.getElementsByClassName('cardHeader')[0].clientHeight || 0 // Title 区域高度
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      let tableHeader = this.$refs['table-content'].getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      let tableTitle = this.$refs.tableTitle.clientHeight 
+      // let headerHeight = 42 // Title 区域高度
+      // let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 71  // 表头高度
+      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - tableTitle - pageLogo - this.hasTitle // 内容区域对应的高度
+      this.chartsHeight = (this.chartsWidth / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 绘图区域对应的高度
       let rowList = this.$refs.scenario.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let heightSum = 0
       let tableList = []

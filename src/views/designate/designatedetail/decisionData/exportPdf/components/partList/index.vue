@@ -5,24 +5,39 @@
 -->
 <template>
   <div ref="partList">
-    <iCard class="partList rsPdfCard" title="Part List">
-      <tableList
-          showName
-          :selection="false"
-          row-class-name="table-row"
-          :tableTitle="tableTitle"
-          :tableData="tableListData">
-        <template #mtz="scope">
-          <span>{{ mtzFormat(scope.row.mtz) }}</span>
-        </template>
-        <template #ebrCalculatedValue="scope">
-          <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
-        </template>
-        <template #ebrConfirmValue="scope">
-          <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
-        </template>
-      </tableList>
-    </iCard>
+    <div ref="tabTitle" style="padding:1px">
+      <slot name="tabTitle"></slot>
+    </div>
+    <div ref="rsPdfCard">
+      <iCard class="partList rsPdfCard" title="Part List">
+        <tableList
+            showName
+            :selection="false"
+            row-class-name="table-row"
+            :tableTitle="tableTitle"
+            :tableData="tableListData">
+          <template #mtz="scope">
+            <span>{{ mtzFormat(scope.row.mtz) }}</span>
+          </template>
+          <template #ebrCalculatedValue="scope">
+            <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
+          </template>
+          <template #ebrConfirmValue="scope">
+            <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
+          </template>
+        </tableList>
+      </iCard>
+      <div class="page-logo" ref="logo">
+        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+        <div>
+          <p class="pageNum"></p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+        </div>
+      </div>
+    </div>
     <div class="pdf-item">
       <template v-for="(tableData,index) in tableList">
       <div :key="index" class="pageCard-main rsPdfCard">
@@ -79,9 +94,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    },
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // },
   },
   components: {
     iCard,
@@ -106,9 +121,10 @@ export default {
     getHeight(){
       if(!this.$refs.partList) return
       this.width = this.$refs.partList.clientWidth
-      let headerHeight = 84 // Title 区域高度
-      let pageLogo = 52     // logo 区域高度
-      let tableHeader = 41  // 表头高度
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.partList.getElementsByClassName('table-row')
       let heightSum = 0
@@ -168,15 +184,6 @@ export default {
   }
   ::v-deep .cardBody{
     padding: 0px;
-  }
-}
-.partList {
-  .page-logo{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
   }
 }
 </style>
