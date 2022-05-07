@@ -11,7 +11,7 @@
             <iButton class="export-btn" v-if="!isRoutePreview && !isApproval"  :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
         </div>
         <div  class="tab-list">
-            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
+            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick" :before-leave="beforeLeave">
                 <template  v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -19,7 +19,7 @@
                     <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
                 </template>
             </iTabsList>
-             <iTabsList v-else type="card"  v-model='defaultTab' @tab-click="handleClick">
+             <iTabsList v-else type="card"  v-model='defaultTab' @tab-click="handleClick" :before-leave="beforeLeave">
                  <template v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -140,7 +140,10 @@ export default {
         },
         isApproval() {
             return this.$route.query.isApproval === "true"
-        }
+        },
+        phaseType(){
+            return this.$store.getters.phaseType;
+        },
     },
     methods:{
         init() {
@@ -168,6 +171,7 @@ export default {
         handleClick(tab){
             const { query } =  this.$route;
             let { name='Title' } = tab;
+            if(this.phaseType < 5) return;
             this.updateSteps()
 
             if (this.$route.meta.layoutPath ==='/desinatepreview') {
@@ -179,6 +183,12 @@ export default {
                 path: name,
                 query,
             });
+        },
+        beforeLeave(activeName,oldActiveName){
+            if(oldActiveName == 'Title'){
+                return true
+            }
+             if(this.phaseType < 5) return false;
         },
 
         // 关闭预览
