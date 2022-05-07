@@ -10,16 +10,13 @@
 <template>
   <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
     <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
+      <div ref="tabTitle" style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
             <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
-          </div>
-          <div class="btnWrapper">
-            <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
-            <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
         </template>
         <div class="infos position-infos">
@@ -210,6 +207,21 @@
                     :layout="page.layout"
                     :total="page.totalCount" />
       </iCard>
+      <div class="page-logo" ref="logo">
+        <img
+          src="../../../../../../../assets/images/logo.png"
+          alt=""
+          :height="46 * 0.6 + 'px'"
+          :width="126 * 0.6 + 'px'"
+        />
+        <div>
+          <p class="pageNum"></p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+        </div>
+      </div>
     </div>
     <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}" :key="key">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
@@ -647,9 +659,9 @@ export default {
     isApproval() {
       return this.$route.query.isApproval === "true"
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   created(){
     this.key = +new Date()
@@ -659,9 +671,13 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      let tableHeader = 49  // 表头高度
-      let headerHeight = 84 // 顶部标题高度
-      let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 49  // 表头高度
+      // let headerHeight = 84 // 顶部标题高度
+      // let pageLogo = 52     // logo 区域高度
+        this.hasTitle = this.$refs.tabTitle.clientHeight
+        let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+        let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
       let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
       let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注

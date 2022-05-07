@@ -572,5 +572,12 @@ export default {
     padding: 0px;
   }
 }
+::v-deep .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 }
 </style>

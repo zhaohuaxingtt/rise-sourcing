@@ -12,8 +12,10 @@
       </iFormGroup>
     </iCard>
     <div class="pdf-item">
-      <div class="pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
+      <div class="pageCard-main rsPdfCard" ref="rsPdfCard">
+        <div ref="tabTitle" style="padding:1px">
+          <slot name="tabTitle"></slot>
+        </div>
         <iCard class="rsTitle pageCard rsPdfCard" title="Title">
           <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
             <div class="col">
@@ -24,7 +26,7 @@
               </template>
             </div>
           </iFormGroup>
-          <div class="page-logo">
+          <div class="page-logo" ref="logo">
             <img src="../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
             <div>
               <p class="pageNum"></p>
@@ -56,9 +58,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   components: {
     iCard,
@@ -77,8 +79,11 @@ export default {
   },
   mounted(){
     this.width = this.$refs.reTitle.clientWidth
-    let headerHeight = 84 // Title 区域高度
-    let pageLogo = 52     // logo 区域高度
+    this.hasTitle = this.$refs.tabTitle.clientHeight
+    // let headerHeight = 84
+    // if(this.$refs.rsPdfCard.$el)
+    let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+    let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
     this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
   },
   methods: {

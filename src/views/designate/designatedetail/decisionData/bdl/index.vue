@@ -13,6 +13,7 @@
     <!-- 流转中、被冻结的申请单不可编辑 -->
     <iButton v-if="applicationStatus!=='ONFLOW' && applicationStatus!=='FREEZE'" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
   </div>
+  <div ref="rsPdfCard">
   <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
     <tableList :tableRowClassName="'table-row'+index" :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
       <template #supplierName="scope">
@@ -46,8 +47,22 @@
       v-if="!isExportPdf"
     />
   </iCard>
+  </div>
   <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
   <div class="pdf-item">
+    <div ref="tabTitle" style="padding:1px">
+      <slot name="tabTitle"></slot>
+    </div>
+    <div class="page-logo" ref="logo">
+      <img src="../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+      <div>
+        <p class="pageNum"></p>
+      </div>
+      <div>
+        <p>{{ userName }}</p>
+        <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+      </div>
+    </div>
     <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
       <template  v-for="(item, index) in rfqList">
           <div class="pageCard-main rsPdfCard" :key="i+'_'+index" v-for="(child,i) in item.tableList">
@@ -136,9 +151,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   created() {
     this.init()
@@ -153,9 +168,13 @@ export default {
     getHeight(){
       if(!this.$refs.bdl) return
       this.width = this.$refs.bdl.clientWidth
-      let headerHeight = 86 // Title 区域高度
-      let pageLogo = 52     // logo 区域高度
-      let tableHeader = 64  // 表头高度
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      // let headerHeight = 86 // Title 区域高度
+      // let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 64  // 表头高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
       let rfqList = this.rfqList
       rfqList.forEach((child,index)=>{

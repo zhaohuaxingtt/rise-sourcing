@@ -10,12 +10,12 @@
 <template>
   <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
     <div class="demo" :style="{'width': pageWidth + 'px'}">
+      <div ref="tabTitle" style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <div ref="pdf-table">
         <iCard class="rsCard">
           <template #header>
-            <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-              <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
-            </div>
             <div class="title">
               <p>CSC定点推荐 - {{ cardTitle }}</p>
               <p>{{ cardTitleEn }}</p>
@@ -245,23 +245,6 @@
           </div>
         </iCard>
       </div>
-      <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
-        <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
-        <div>
-          <div class="meetingRemark" v-if="isApproval">
-            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
-            </div>
-          </div>
-          <div class="meetingRemark" v-else>
-            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
-              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
-            </div>
-          </div>
-        </div>
-      </iCard>
       <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
@@ -279,15 +262,30 @@
           </div>
         </div>
       </iCard>
-      <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
-        <div ref="pdf-list">
-          <el-table :data='PrototypeList' class="prototypeList" row-class-name="list-row">
-            <template v-for="(items,index) in prototypeTitleList">
-              <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-            </template>
-          </el-table>
+      <div ref="pdf-list">
+        <iCard title="Prototype Cost List" class="margin-top20">
+            <el-table :data='PrototypeList' class="prototypeList" row-class-name="list-row">
+              <template v-for="(items,index) in prototypeTitleList">
+                <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+              </template>
+            </el-table>
+        </iCard>
+      </div>
+      <div class="page-logo" ref="logo">
+        <img
+          src="../../../../../../../assets/images/logo.png"
+          alt=""
+          :height="46 * 0.6 + 'px'"
+          :width="126 * 0.6 + 'px'"
+        />
+        <div>
+          <p class="pageNum"></p>
         </div>
-      </iCard>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+        </div>
+      </div>
     </div>
     <div class="rsPdfWrapper" :style="{'width':pageWidth + 'px'}">
       <rsPdf
@@ -848,9 +846,12 @@ export default {
 		isApproval() {
 			return this.$route.query.isApproval === 'true'
 		},
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
 	},
   watch:{
     pageWidth:{
@@ -871,9 +872,13 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-        let tableHeader = 57  // 表头高度
-        let headerHeight = 106 // 顶部标题高度
-        let pageLogo = 52     // logo 区域高度
+        // let tableHeader = 57  // 表头高度
+        // let headerHeight = 106 // 顶部标题高度
+        // let pageLogo = 52     // logo 区域高度
+        this.hasTitle = this.$refs.tabTitle.offsetHeight
+        let headerHeight = this.$refs['pdf-table'].getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+        let tableHeader = this.$refs['pdf-table'].getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
         let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
         let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
         let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
@@ -933,10 +938,14 @@ export default {
     getPrototypeListHeight(){
       let time = 0
       let timeOut = 6000
-      if(!this.$refs.rsPdf) return
-      let tableHeader = 41  // 表头高度
-      let headerHeight = 84  // 表头高度
-      let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 41  // 表头高度
+      // let headerHeight = 84  // 表头高度
+      // let pageLogo = 52     // logo 区域高度
+      if(!this.$refs.tabTitle) return
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs['pdf-list'].getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs['pdf-list'].getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       let Interval = setInterval(()=>{
         time+=400
         if(time==timeOut) clearInterval(Interval)
@@ -1519,7 +1528,7 @@ export default {
     box-shadow: none;
 
     ::v-deep .title {
-      font-size: 18px !important; /*no*/
+      font-size: 18px !important;
     }
 
     ::v-deep .cardHeader {
@@ -1582,14 +1591,8 @@ export default {
 		& > .cell {
 			padding-left: 3px;
 			padding-right: 3px;
-			line-height: 14px;
-			span {
-				// zoom: 0.85;
-			}
-
-			// span span {
-			//   // font-size: 8px;
-			// }
+			line-height: 16px;
+      font-size: 12px;
 			p {
 				min-height: 16px;
 			}
@@ -1795,5 +1798,13 @@ export default {
   overflow: hidden;
   position: relative;
   top: 0;
+  
+  .page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 }
 </style>

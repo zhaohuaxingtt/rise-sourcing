@@ -87,7 +87,9 @@ export default {
           this.auditItems.forEach((item, index) => {
             item.approvalResult = 1
           })
-
+          let fsName = res.data.auditCover.fsName.split('/').join(',')
+          fsName = Array.from(new Set(fsName.split(','))).join(',')
+          this.auditCover.fsName = fsName
         }
       })
     },

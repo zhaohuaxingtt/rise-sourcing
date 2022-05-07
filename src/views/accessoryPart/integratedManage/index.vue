@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:29:54
+ * @LastEditTime: 2022-03-23 19:29:07
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
