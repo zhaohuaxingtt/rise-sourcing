@@ -109,8 +109,8 @@
       </tableList>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getTableListFn)"
-        @current-change="handleCurrentChange($event, getTableListFn)"
+        @size-change="handleSizeChange($event, getFetchData)"
+        @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"

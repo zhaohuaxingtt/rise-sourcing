@@ -73,9 +73,9 @@
                   }}</span>
                 </template>
 
-                <template #svwCode="scope">
-                  <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-                </template>
+							<template #svwCode="scope">
+								<span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+							</template>
 
                 <template #aprice="scope">
                   <div v-if="scope.row.status === 'SKDLC'">
@@ -170,9 +170,9 @@
                   </div>
                 </template>
 
-                <template #share="scope">
-                  <span>{{ +scope.row.share || 0 }}</span>
-                </template>
+							<template #share="scope">
+								<span>{{ +scope.row.share || 0 }}</span>
+							</template>
 
                   <template #savingFee="scope">
                     <span>{{ scope.row.savingFee | toThousands(true) }}</span>
@@ -418,23 +418,23 @@ export default {
     border-top: 1px solid #666;
   }
 
-  .checkDate {
-    ::v-deep .card .cardHeader .title {
-      // font-size: 16px;
-      font-weight: 400;
-      color: rgba(75, 75, 76, 1);
-    }
-  }
+	.checkDate {
+		::v-deep .card .cardHeader .title {
+			// font-size: 16px;
+			font-weight: 400;
+			color: rgba(75, 75, 76, 1);
+		}
+	}
 
-  .Application {
-    ::v-deep .cardHeader {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      .title .title_content {
-        font-size: 13px !important;
-      }
-    }
-  }
+	.Application {
+		::v-deep .cardHeader {
+			padding-top: 12px;
+			padding-bottom: 12px;
+			.title .title_content {
+				font-size: 13px !important;
+			}
+		}
+	}
 
   .checkList {
     display: flex;
@@ -470,12 +470,12 @@ export default {
     }
   }
 
-  .complete {
-    color: rgb(104, 193, 131);
-  }
+	.complete {
+		color: rgb(104, 193, 131);
+	}
 
-  .cancel {
-    color: rgb(95, 104, 121);
-  }
+	.cancel {
+		color: rgb(95, 104, 121);
+	}
 }
 </style>

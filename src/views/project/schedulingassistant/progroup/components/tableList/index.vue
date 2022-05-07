@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:13:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 10:22:59
+ * @LastEditTime: 2022-05-07 10:50:20
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
 -->
@@ -182,5 +182,8 @@ export default{
   }
   ::v-deep .el-date-editor.el-input, .el-date-editor.el-input__inner {
     width: 100%;
+  }
+  ::v-deep .el-input__icon{
+    line-height: 30px;
   }
 </style>
