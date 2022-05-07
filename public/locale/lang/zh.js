@@ -6365,6 +6365,7 @@
 		PINGFENRENWURECALLTIPS: '评分任务将撤回至待评分状态，是否确认撤回',
 		SOPRIQICUNZAIGAIDONG: 'SOP日期存在改动，请保存后再试',
 		'FASONGCHANPINJINGLI':'发送产品经理',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'仅针对匹配零件号历史进度',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })

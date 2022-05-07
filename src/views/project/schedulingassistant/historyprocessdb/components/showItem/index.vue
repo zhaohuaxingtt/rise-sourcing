@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:17:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 13:46:57
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -15,7 +15,7 @@
   >
     <template slot="title">
       <div class="chosseProGroup">
-        <span class="chosseProGroup-title">{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</span>
+        <span class="chosseProGroup-title">{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}（{{language('JINZHENDUIPIPEILINGJIANHAOLISHIJINDU','仅针对匹配零件号历史进度')}}）</span>
         <div>
           <iButton @click="handleAllSelect">{{language('QUANXUAN','全选')}}</iButton>
           <iButton @click="handleReset">{{language('LK_CHONGZHI','重置')}}</iButton>

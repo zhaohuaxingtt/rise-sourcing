@@ -6362,6 +6362,7 @@
 		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall',
 		SOPRIQICUNZAIGAIDONG: 'SOP date has been changed, please save and try again',
 		'FASONGCHANPINJINGLI':'',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'',
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
