@@ -4,7 +4,13 @@
  * @Description: 封面表态---编辑页
 -->
 <template>
-  <iCard class="aeko-editCover" v-loading="btnLoading">
+  <iCard class="aeko-editCover" :title="' '" v-loading="btnLoading">
+    <!-- 封面提示 -->
+    <template #subInfo v-if="showTip">
+      <span class="tip">
+        {{language('FENGMIANTISHIXINXI','封面无须再进行提交，如需修改，请先【撤回】或者联系AEKO管理员【解冻】后再修改提交')}}
+      </span>
+    </template>
     <template v-if="!(aekoInfo.aekoStatus == 'FROZEN' || aekoInfo.aekoStatus == 'CANCELED')" v-slot:header-control>
       <!-- 封面状态为待表态时展示 -->
       <template v-if="isTobeStated">
@@ -192,6 +198,21 @@ export default {
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
       },
+
+      // 是否显示提示信息
+      showTip(){
+        const { basicInfo={} } = this;
+        // 更改零件名称, 主要供应商, 新⾸批送样周期(周数) 三个没有值
+        // 封面状态不为待表态，指定前期采购有值
+        let flag = [
+          'partName',
+          'mainSupplier',
+          'sendCycle',
+        ].some(item=>{
+          return !(basicInfo[item] === '' || basicInfo[item] === null)
+        })
+        return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
+      }
     },
     data(){
       return{
@@ -637,6 +658,11 @@ export default {
   }
   .thousandsFilterInput{
     margin: 0 auto;
+  }
+  .tip{
+    font-size: 12px !important;
+    color: red;
+    vertical-align: top;
   }
 }
 
