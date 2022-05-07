@@ -566,7 +566,7 @@ const state = {
   configscoredeptThirdMenu: [],
   pendingRequestNum:0,
   mapControl:[],
-  update:false
+  updateKey:'0'
 }
 
 const mutations = {
@@ -586,7 +586,7 @@ const mutations = {
     state.mapControl = mapControl
   },
   SET_UPDATE(state){
-    state.update = !state.update
+    state.updateKey = + new Date()
   }
 }
 
@@ -660,7 +660,7 @@ const actions = {
 const getters = {
   navList: (state) => state.navList,
   pendingRequestNum: (state) => state.pendingRequestNum,
-  update: (state) => state.update,
+  updateKey: (state) => state.updateKey,
   mapControl: (state) => state.mapControl
 }
 

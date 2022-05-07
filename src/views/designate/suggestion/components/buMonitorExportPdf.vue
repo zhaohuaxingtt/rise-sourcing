@@ -19,7 +19,7 @@
 
           <!-- 表格 -->
           <div class="clearfix"></div>
-          <div class="margin-top20">
+          <div class="margin-top20 max-content" ref="table-content">
             <monitorTableList
               @updateCharts="updateCharts"
               row-class-name="table-row"
@@ -29,15 +29,14 @@
               :supplier="supplierList"
               :supplierEN="supplierListEN"
               :batchEdit="multiEditControl"
-              v-loading="tableLoading"
-              ref="monitorTable" />
+              v-loading="tableLoading" />
           </div>
         </div>
       </div>
   </iCard>
       <!-- <div class="pdf-item"> -->
     <template v-for="(tableData,i) in tableList">
-    <div class="pageCard-main" :key="i">
+    <div class="pageCard-main max-content" :key="i">
       <slot name="tabTitle"></slot>
       <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
         <!-- 供应商表格 -->
@@ -83,7 +82,7 @@
       <iCard class="buMonitor rsPdfCard" :key="i" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 图标模拟 -->
         <div class="buMonitor-charts" :style="{'height': chartsHeight + 'px'}">
-          <buMonitorCharts
+          <buMonitorChartsPdf
             :supplier="supplierList"
             :data="chartData"
           />
@@ -105,6 +104,7 @@
 <script>
 import { iInput, iCard, iButton, iMessage } from 'rise'
 import buMonitorCharts from './buMonitorCharts'
+import buMonitorChartsPdf from './buMonitorChartsPdf'
 import monitorTableList from './monitorTableListExportPdf'
 import _ from 'lodash'
 import * as nego from '@/api/designate/suggestion'
@@ -160,7 +160,8 @@ export default {
     iCard,
     iButton,
     buMonitorCharts,
-    monitorTableList
+    monitorTableList,
+    buMonitorChartsPdf
   },
   computed: {
     api() {
@@ -202,12 +203,15 @@ export default {
   methods: {
     getHeight(){
       if(!this.$refs.scenario) return
-      this.width = this.$refs.scenario.clientWidth
+      this.width = this.$refs['table-content'].clientWidth
+      this.chartsWidth = this.$refs.scenario.clientWidth
       let headerHeight = 42 // Title 区域高度
       let pageLogo = 52     // logo 区域高度
       let tableHeader = 71  // 表头高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
-      this.chartsHeight = (this.width / 841.89) * 595.28 - pageLogo - this.hasTitle // 绘图区域对应的高度
+      this.chartsHeight = (this.chartsWidth / 841.89) * 595.28 - pageLogo - this.hasTitle // 绘图区域对应的高度
+      console.log('cntentHeight=>',this.cntentHeight);
+      console.log('chartsHeight=>',this.chartsHeight);
       let rowList = this.$refs.scenario.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let heightSum = 0
       let tableList = []
