@@ -250,7 +250,7 @@ export default {
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('QINZHISHAOXUANZEYITIAOSHUJU', '请至少选择一条数据'))
       if (this.multipleSelection.length > 1) return iMessage.warn(this.language('JINKECAOZUODANTIAOSHUJU', '仅可操作单条数据'))
-      if (this.multipleSelection[0].status === '已执行') return iMessage.warn(this.language('DANGQIANPICIYIZHIXINGTIPS', '当前批次已执行，仅已导入状态可操作'))
+      if (this.multipleSelection[0].status === '已执行' || this.multipleSelection[0].status === '执行中') return iMessage.warn(this.language('DANGQIANPICIYIZHIXINGTIPS', '当前批次已执行，仅已导入状态可操作'))
     
       this.deleteLoading = true
 
