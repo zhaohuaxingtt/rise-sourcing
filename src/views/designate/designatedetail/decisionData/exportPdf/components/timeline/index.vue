@@ -160,6 +160,12 @@ export default {
   created() {
     this.getTimeaxis()
   },
+  mounted(){
+    this.width = this.$refs.timeline.clientWidth
+    let headerHeight = 86 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+  },
   methods: {
     getHeight(){
       if(!this.$refs.timeline) return

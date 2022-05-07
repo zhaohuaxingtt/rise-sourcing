@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2022-02-11 17:38:43
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-21 10:36:27
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\main.js
  */
@@ -19,6 +19,7 @@ import Vue from 'vue'
 import { iTable } from 'rise'
 // import AmapVue from '@amap/amap-vue'
 import './utils/mydirect'
+import './globalComponnets'
 
 require('./auto').init()
 Vue.config.productionTip = false

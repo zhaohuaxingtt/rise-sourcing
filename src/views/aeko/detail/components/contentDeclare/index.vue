@@ -31,12 +31,11 @@
         </el-form-item>
         <el-form-item :label="showCarTypeLabel" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
           <iSelect
+            clearable
             multiple
             collapse-tags
             filterable
             reserve-keyword
-            size="mini"
-            class="multipleSelect"
             v-model="form.cartypeProjectCode"
             :placeholder="language('partsprocure.CHOOSE','请选择')"
             :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
@@ -63,8 +62,6 @@
             filterable
             clearable
             reserve-keyword
-            size="mini"
-            class="multipleSelect"
             v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
             :filter-method="$event => selectFilter($event, 'status')"
@@ -203,6 +200,16 @@
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
           </iButton>
+          <iButton @click="transfer">
+            {{ language("ZHUANPAI", "转派") }}
+            <el-tooltip 
+              effect="light" 
+              popper-class="custom-card-tooltip"
+              :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
+              placement="top">
+              <i class="el-icon-warning-outline tipsIcon"></i>
+            </el-tooltip>
+          </iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
@@ -243,13 +250,6 @@
           :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #groupName="scope">
-            <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
-              </iInput>
-              <span v-else>{{scope.row.groupName}}</span>
-            </div>
-          </template>
           <template #supplierNameZh="scope">
             <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
           </template>
@@ -319,6 +319,13 @@
           <template #tranWayDesc="scope">
             <span>{{getRranWayDesc(scope.row)}}</span>
           </template>
+          <template #groupName="scope">
+            <div class="aeko-combine-input" v-if="scope.row.groupCode">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
+            </div>
+          </template>
         </tableList>
         <iPagination 
           v-update
@@ -338,6 +345,8 @@
     <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
     <!-- 价格轴 -->
     <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" :priceAxisRow="priceAxisRow" @changeVisible="changeVisible"/>
+    <!-- 转派 -->
+    <assignDialog v-if="transferVisible" :dialogVisible="transferVisible" @changeVisible="changeVisible" @getList="init" :selectItems="multipleSelection"/>
   </div>
 </template>
 
@@ -373,13 +382,13 @@ import {floatFixNum} from "../../../approve/approveDetails/data.js"
 import { setLogMenu } from "@/utils";
 import qs from 'qs'
 import buttonTableSetting from '@/components/buttonTableSetting'
-
+import assignDialog from './components/assignDialog'
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, 
-  buttonTableSetting, iMultiLineInput },
+  buttonTableSetting, iMultiLineInput, assignDialog },
   mixins: [ pageMixins, combine, tableSortMixins ],
   props: {
     aekoInfo: {
@@ -436,6 +445,7 @@ export default {
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
       priceAxisVisible: false,
+      transferVisible: false,
       priceAxisRow:{},
       submitLoading: false,
       debouncer: null,
@@ -444,6 +454,7 @@ export default {
       // showLineList:hidenTableTitle,
       addTableTitle:[],
       importItemExcel:importItemExcel,
+      singleAssign:[]
     };
   },
   created() {
@@ -488,6 +499,11 @@ export default {
   },
   methods: {
     floatFixNum,
+    // 转派
+    transfer(){
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDELINGJIAN", "请选择需要转派的零件"))
+      this.transferVisible = true
+    },
     searchCartypeProject() {
       const {query} = this.$route;
       const { requirementAekoId ='',} = query;
