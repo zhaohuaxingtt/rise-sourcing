@@ -6387,6 +6387,7 @@
 		SHIFOUQUERENSHANCHUSUOXUANJILU: 'Whether to confirm the deletion of the selected record？',
 		SOPRIQICUNZAIGAIDONG: 'SOP date has been changed, please save and try again',
 		'FASONGCHANPINJINGLI':'',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'',
 		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A price change, whether to confirm the submission？',
 	}
 	i18n.setLocaleMessage('en', oldLanguage)

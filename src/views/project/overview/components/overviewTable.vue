@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 17:32:43
+ * @LastEditTime: 2022-05-07 13:52:08
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
@@ -52,7 +52,8 @@
               </li>
               <li>
                 <div>
-                  <el-tooltip :content='dataItem.carTypeLevel + " class"' effect='light'>
+                  <el-tooltip effect='light'>
+                    <div slot="content">{{dataItem.carTypeLevel || ''}} class</div>
                     <span class="overText">{{dataItem.carTypeLevel}} class</span>
                   </el-tooltip>
                 </div>
@@ -252,14 +253,14 @@ export default {
         'iconchanpinzupaicheng_jinhangzhong': '<svg t="1631758354535" class="icon" viewBox="0 0 8704 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="76121" width="100%" height="100"><path d="M7750.236034 988.508727A213.63016 213.63016 0 0 1 7678.400333 824.020329V682.737763h-682.524474a170.631119 170.631119 0 1 1 0-341.262237h682.524474v-141.282566a213.63016 213.63016 0 0 1 71.835701-164.488398 143.500771 143.500771 0 0 1 153.568007-23.035201l690.885399 311.913684a216.701521 216.701521 0 0 1 0 375.388461l-690.885399 311.401791a141.453197 141.453197 0 0 1-58.526474 12.797334 147.93718 147.93718 0 0 1-95.041533-35.661904zM5289.564674 682.737763a170.631119 170.631119 0 0 1 0-341.262237h853.155593a170.631119 170.631119 0 1 1 0 341.262237zM3583.253489 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 0 1 0 341.262237zM1876.942304 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237zM170.631119 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237z" fill="#1660F1" p-id="76122"></path></svg>',
         'iconchanpinzupaicheng_xuxian': '<svg t="1631758384625" class="icon" viewBox="0 0 28918 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85726" width="100%" height="100"><path d="M28406.784 1024H26112a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2294.784a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM23552 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM18432 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM13312 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM8192 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM3072 1024H512a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#1660F1" p-id="85727"></path></svg>'
       },
-      minFontSize: 12,
+      minFontSize: 9,
       titleTop:0,
       scrolLeft:0,
       headerTitle:[],
     }
   },
   mounted() {
-    this.getMinFontSize()
+    // this.getMinFontSize()
   },
   methods: {
     getMinFontSize () {
@@ -493,6 +494,7 @@ export default {
 .overviewTable {
   display: flex;
   overflow-y: scroll;
+  overflow-x: hidden;
   // position: relative;
   max-height: 500px;
   &-column {
@@ -542,7 +544,10 @@ export default {
         padding: 0 30px;
       }
       .baiscInfo {
-        width: 264px;
+        // width: 264px;
+        min-width: 264px;
+        width: 100%;
+        box-sizing: border-box;
         &-top {
           display: flex;
           flex-direction: column;
@@ -558,10 +563,13 @@ export default {
         }
         &-bottom {
           display: flex;
-          justify-content: space-around;
+          justify-content:center;
+          width: 70%;
+          min-width: 264px;
           font-size: 14px;
           color: rgba(92, 99, 113, 1);
           padding: 20px 0 0 20px;
+          margin: 0 auto;
           ul, li {
             list-style: disc;
             margin-bottom: 5px;
@@ -576,15 +584,18 @@ export default {
           ol {
             display: flex;
             flex-direction: column;
+            padding-right: 10px;
+            box-sizing: border-box;
             &:first-child {
-              width: 30%;
+              width: 40%;
             }
             &:last-child {
               width: 50%;
             }
             li {
+              width: 90%;
               list-style-type: disc;
-              min-height: 14px;
+              min-height: 22px;
               
             }
           }
@@ -599,7 +610,7 @@ export default {
           height: 100%;
           flex-shrink: 1;
           flex-grow: 1;
-          min-width: 60px;
+          // min-width: 60px;
           display: flex;
           // flex-direction: column;
           align-items: center;
@@ -680,7 +691,8 @@ export default {
             width: 100%;
             margin-bottom: 25px;
             .step-between-icon {
-              width: 100%;
+              // width: 100%;
+              width: 30px;
             }
           }
           .iconBox {
