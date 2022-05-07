@@ -1,4 +1,7 @@
 import axios from '@/utils/axios'
+import axiosDownload from '@/utils/axios.download'
+import { serialize } from '@/utils'
+
 const requst = axios(process.env.VUE_APP_PARTS)
 const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTSPROCURE
@@ -12,6 +15,8 @@ const requestOutputPart = axios(process.env.VUE_APP_SOURCING)
 const requestPriceRecord = axios(process.env.VUE_APP_SOURCING)
 const requestPurchase= axios(process.env.VUE_APP_PURCHASE)
 const carApi= axios(process.env.VUE_APP_PARTSPROCURE_API)
+const sourcingDownload = axiosDownload(process.env.VUE_APP_SOURCING)
+
 //自动定点-创建接口
 export function autonomi(params) {
 	return sourcing({
@@ -416,5 +421,81 @@ export function getCarTypeSop(params) {
 		url:'/purchasing-project-parts/carProSimpleInfoList',
 		method:'GET',
 		params
+	})
+}
+
+// 下载工厂迁移模板
+export function downloadFactoryMoveTemplate() {
+	return sourcingDownload({
+    url: '/factory-import-records/download',
+    method: 'POST'
+  })
+}
+
+// 删除工厂迁移记录
+export function deleteFactoryImportRecordsList(data) {
+	return sourcing({
+		url: `/factory-import-records/delete/${ data.id }`,
+		method: 'DELETE',
+	})
+}
+
+// 执行工厂迁移
+export function executeFactoryRelocation(params) {
+	return sourcing({
+    url: `/auto-special/special/auto?itemId=${ params.id }`,
+    method: 'GET'
+  })
+}
+
+// 导入批次
+export function factoryImportRecords(formData, data) {
+	return sourcing({
+		url: `/factory-import-records/import/${ data.id }`,
+		method: 'POST',
+		data: formData
+	})
+}
+
+// 获取工厂迁移记录
+export function getFactoryImportRecordsList(data) {
+	return sourcing({
+		url: '/factory-import-records/list',
+		method: 'POST',
+		data
+	})
+}
+
+// 获取工厂迁移记录
+export function getFactoryImportRecordsImport(data) {
+	return sourcing({
+		url: `/factory-import-records/import/${ data.id }`,
+		method: 'POST',
+		data
+	})
+}
+
+// 导出批次详情
+export function exportFactoryBatchDetail(data) {
+	return sourcingDownload({
+    url: `/factory-batch-detail/export/${ data.id }`,
+    method: 'POST'
+  })
+}
+
+// 删除批次详情
+export function deleteFactoryBatchDetailList(data) {
+	return sourcing({
+		url: `/factory-batch-detail/delete?${ serialize(data, Array) }`,
+		method: 'DELETE'
+	})
+}
+
+// 获取批次详情列表
+export function getFactoryBatchDetail(data) {
+	return sourcing({
+		url: `/factory-batch-detail/list`,
+		method: 'POST',
+		data
 	})
 }

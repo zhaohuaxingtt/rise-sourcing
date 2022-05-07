@@ -418,30 +418,30 @@ export default {
       font-size: 18px !important; /*no*/
     }
 
-    ::v-deep .cardHeader {
-      padding: 30px 0px;
-    }
-    ::v-deep .cardBody {
-      padding: 0px;
-    }
-    .control {
-      display: flex !important;
-      align-items: center !important;
+		::v-deep .cardHeader {
+			padding: 30px 0px;
+		}
+		::v-deep .cardBody {
+			padding: 0px;
+		}
+		.control {
+			display: flex !important;
+			align-items: center !important;
 
-      .nomiId {
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-  }
+			.nomiId {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+	}
 
-  .singleSourcing {
-    padding: 8px 12px; /*no*/
-    font-size: 16px; /*no*/
-    font-weight: 400; /*no*/
-    color: rgba(22, 96, 241, 1);
-    border: 1px dashed #1660f1; /*no*/
-  }
+	.singleSourcing {
+		padding: 8px 12px; /*no*/
+		font-size: 16px; /*no*/
+		font-weight: 400; /*no*/
+		color: rgba(22, 96, 241, 1);
+		border: 1px dashed #1660f1; /*no*/
+	}
 
   .rsTop {
     display: flex;
@@ -570,34 +570,34 @@ export default {
     }
   }
 
-  .beizhu {
-    background-color: rgba(22, 96, 241, 0.03);
-    // height: 40px;
-    padding: 12px 14px; /*no*/
-    font-weight: bold;
-    display: flex;
-    &-value {
-      font-weight: 400;
-      margin-left: 20px; /*no*/
-    }
-  }
+	.beizhu {
+		background-color: rgba(22, 96, 241, 0.03);
+		// height: 40px;
+		padding: 12px 14px; /*no*/
+		font-weight: bold;
+		display: flex;
+		&-value {
+			font-weight: 400;
+			margin-left: 20px; /*no*/
+		}
+	}
 
-  .checkDate {
-    ::v-deep .card .cardHeader .title {
-      font-weight: 400;
-      color: rgba(75, 75, 76, 1);
-    }
-  }
+	.checkDate {
+		::v-deep .card .cardHeader .title {
+			font-weight: 400;
+			color: rgba(75, 75, 76, 1);
+		}
+	}
 
-  .Application {
-    ::v-deep .cardHeader {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      .title .title_content {
-        font-size: 13px !important;
-      }
-    }
-  }
+	.Application {
+		::v-deep .cardHeader {
+			padding-top: 12px;
+			padding-bottom: 12px;
+			.title .title_content {
+				font-size: 13px !important;
+			}
+		}
+	}
 
   .checkList {
     display: flex;
@@ -633,9 +633,9 @@ export default {
     }
   }
 
-  .complete {
-    color: rgb(104, 193, 131);
-  }
+	.complete {
+		color: rgb(104, 193, 131);
+	}
 
   .cancel {
     color: rgb(95, 104, 121);

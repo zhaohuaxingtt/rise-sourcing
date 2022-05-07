@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 16:15:53
+ * @LastEditTime: 2022-05-06 14:01:28
  * @Description: 项目管理概览
  * @FilePath: \front-sourcing\src\views\project\overview\index.vue
 -->
@@ -19,7 +19,7 @@
       <iSearch :icon="true" >
         <template slot="button">
           <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
-          <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+          <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
           <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
         </template>
         <el-form>
