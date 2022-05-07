@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 15:48:17
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:02:57
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -12,7 +12,7 @@
   <iPage class="historyProcessDB" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PAGE|项目管理-排程助手-历史进度数据库">
     <iSearch :icon="true" >
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>

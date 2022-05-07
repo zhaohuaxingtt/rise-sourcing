@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-10-12 10:02:14
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-12 10:21:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:02:49
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressreport\partprogress\components\searchPart\index.vue
 -->
@@ -10,7 +10,7 @@
 <template>
   <iSearch :icon="true" class="margin-top20">
     <template slot="button">
-      <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+      <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
       <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
     </template>
     <el-form>

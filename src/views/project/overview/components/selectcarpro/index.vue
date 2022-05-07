@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 23:35:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-29 17:51:16
+ * @LastEditTime: 2022-05-06 14:02:29
  * @Description: 选择车型项目弹窗
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\index.vue
 -->
@@ -16,7 +16,7 @@
   >
     <iSearch :icon="true" class="selectcarSearch">
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
