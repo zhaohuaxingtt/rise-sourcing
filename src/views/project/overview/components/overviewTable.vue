@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-07 10:26:35
+ * @LastEditTime: 2022-05-07 13:52:08
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
@@ -691,7 +691,8 @@ export default {
             width: 100%;
             margin-bottom: 25px;
             .step-between-icon {
-              width: 100%;
+              // width: 100%;
+              width: 30px;
             }
           }
           .iconBox {
