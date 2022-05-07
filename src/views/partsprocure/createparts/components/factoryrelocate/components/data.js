@@ -6,21 +6,31 @@
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\factoryrelocate\components\data.js
  */
+export const tableTitle = [
+  { props: 'id', name: '导入批次', key: 'DAORUPICI', tooltip: true, minWidth: '320px', align: 'left' },
+  { props: 'createByName', name: '导入用户', key: 'DAORUYONGHU', tooltip: true },
+  { props: 'status', name: '状态', key: 'ZHUANGTAI', tooltip: true },
+  { props: 'createDate', name: '导入时间', key: 'DAORUSHIJIAN', tooltip: true }
+]
 
-
-export const tableFileTitle = [
-  { props: 'a', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true },
-  { props: 'b', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true },
-  { props: 'c', name: 'PROJECT', key: 'PROJECTNAME', tooltip: true },
-  { props: 'd', name: '类型', key: 'LEIX', tooltip: true  },
-  { props: 'e', name: '状态', key: 'ZHUANGTAI', tooltip: true },
-  { props: 'f', name: '项目类型', key: 'XIANGMULEIX', tooltip: true },
-  { props: 'g', name: '会议', key: 'HUIYI', tooltip: true },
-  { props: 'h', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true  },
-  { props: 'i', name: 'LINIE', key: 'LINIE', tooltip: true },
-  { props: 'j', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true  },
-  { props: 'k', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true  },
-  { props: 'l', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true  },
-  { props: 'm', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true  },
-  { props: 'n', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true  }
+export const detailTableTitle = [
+  { props: 'partNum', name: '零件号', key: 'LINGJIANHAO', tooltip: true, fixed: 'left', minWidth: 100 },
+  { props: 'sourcingPurchasingFactory', name: '迁移前工厂', key: 'QIANYIQIANGONGCHANG', tooltip: true, fixed: 'left', minWidth: 100 },
+  { props: 'status', name: '状态', key: 'ZHUANGTAI', tooltip: true },
+  { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'YUANFSHAO', tooltip: true, minWidth: 120 },
+  { props: 'targetPurchasingFactory', name: '迁移后工厂', key: 'QIANYIHOUGONGCHANG', tooltip: true, minWidth: 100 },
+  { props: 'buyerName', name: 'CSF/CSS采购员', key: 'CSFCSSCAIGOUYUAN', tooltip: true, minWidth: 110 },
+  { props: 'linieName', name: 'LINIE采购员', key: 'LINIECAIGOUYUAN', tooltip: true, minWidth: 100 },
+  { props: 'fsnrGsnrNum', name: 'FS号', key: 'FSHAO', tooltip: true, showTips: true, tips: () => `<span>${ localStorage.getItem('lang') === 'zh' ? '执行后生成' : 'Generated after execution' }</span>`, minWidth: 120 },
+  { props: 'rfqId', name: 'RFQ编号', key: 'RFQBIANHAO', tooltip: true, showTips: true, tips: () => `<span>${ localStorage.getItem('lang') === 'zh' ? '执行后生成' : 'Generated after execution' }</span>`, minWidth: 110 },
+  { props: 'carType', name: '车型', key: 'CHEXING', tooltip: true },
+  { props: 'carTypeProj', name: '车型项目', key: 'CHEXINGXIANGMU', tooltip: true },
+  { props: 'sopDate', name: '起步生产时间', key: 'QIBUSHENGCHANSHIJIAN', tooltip: true, minWidth: 110 },
+  { props: 'supplierNameCn', name: '定点供应商', key: 'DINGDIANGONGYINGSHANG', tooltip: true, minWidth: 100 },
+  { props: 'aprice', name: 'A价', key: 'AJIA', tooltip: true, minWidth: 90 },
+  { props: 'packageCost', name: '包装', key: 'BAOZHUANG', tooltip: true, minWidth: 90 },
+  { props: 'transportCost', name: '运输', key: 'YUNSHU', tooltip: true, minWidth: 90 },
+  { props: 'operateCost', name: '操作', key: 'CAOZUO', tooltip: true, minWidth: 90 },
+  { props: 'bprice', name: 'B价', key: 'BJIA', tooltip: true, minWidth: 90 },
+  { props: 'ltc', name: '年降', key: 'NIANJIANG', tooltip: true },
 ]

@@ -10,16 +10,13 @@
 <template>
   <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
     <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
+      <div ref="tabTitle" style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
             <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
-          </div>
-          <div class="btnWrapper">
-            <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
-            <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
         </template>
         <div class="infos position-infos">
@@ -210,8 +207,23 @@
                     :layout="page.layout"
                     :total="page.totalCount" />
       </iCard>
+      <div class="page-logo" ref="logo">
+        <img
+          src="../../../../../../../assets/images/logo.png"
+          alt=""
+          :height="46 * 0.6 + 'px'"
+          :width="126 * 0.6 + 'px'"
+        />
+        <div>
+          <p class="pageNum"></p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+        </div>
+      </div>
     </div>
-    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
+    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}" :key="key">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
@@ -298,7 +310,6 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
-        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
@@ -537,6 +548,7 @@ export default {
   },
   data () {
     return {
+      key:'0',
       tableList:[[]],
       loading: false,
       // 零件项目类型
@@ -638,27 +650,34 @@ export default {
       }
       return 1730
     },
+    pageHeight() {
+      return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
+    },
     isRoutePreview() {
       return this.$route.query.isPreview == 1
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
+  },
+  created(){
+    this.key = +new Date()
   },
   methods: {
     remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth  // 打印区域宽度
-      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeader = 49  // 表头高度
-      let headerHeight = 84 // 顶部标题高度
-      let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 49  // 表头高度
+      // let headerHeight = 84 // 顶部标题高度
+      // let pageLogo = 52     // logo 区域高度
+        this.hasTitle = this.$refs.tabTitle.clientHeight
+        let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+        let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
       let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
       let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
@@ -701,8 +720,10 @@ export default {
                 list = [this.remarkItem[i]]
               }
             })
+            itemList.push(JSON.parse(JSON.stringify(list)))
+          }else{
+            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
           }
-          itemList.push(JSON.parse(JSON.stringify(list)))
           this.remarkList = itemList
         }
       },1000)
@@ -808,6 +829,7 @@ export default {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.getRemark()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -867,9 +889,7 @@ export default {
       .finally(() => {
         this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })
       })
     },
@@ -901,12 +921,10 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
-      .finally(() => {this.tableLoading = false
-      
+      .finally(() => {
+        this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })})
     },
     /**
@@ -986,6 +1004,8 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
+          this.init()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(message)
         }
@@ -1064,7 +1084,7 @@ export default {
       let arr = this.fileList.filter(item=>item.imageUrl)
       if(arr.length!=this.fileList.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.pageWidth, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
     },
 
@@ -1076,7 +1096,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(res.data[0].objectUrl);
+            // console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

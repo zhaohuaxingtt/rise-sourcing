@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:55:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-27 17:33:01
+ * @LastEditTime: 2022-05-06 14:03:02
  * @Description: 零件
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\index.vue
 -->
@@ -11,7 +11,7 @@
   <div>
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>

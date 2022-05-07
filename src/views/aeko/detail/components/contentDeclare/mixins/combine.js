@@ -202,17 +202,25 @@ export const combine = {
       return spanArr
     },
     spanMethod({row, column, rowIndex, columnIndex}) {
+      let isFixed = false
       let groupNameIndex = 2;
       const {query} = this.$route;
       const {from=''} = query;
       if(this.$refs['tableList']){
         const list = this.$refs['tableList'].getHeader() || [];
         list.map((item,index)=>{
-          if(item.props == 'groupName') groupNameIndex = index+2;
+          if(item.props == 'groupName') {
+            groupNameIndex = index+2;
+            if(item.fixed){
+              isFixed = true
+            }
+          }
         })
-        // 获取固定列的数量
-        const fixNum = (list.filter((item)=>item.fixed)).length;
-        if(groupNameIndex > fixNum+1) groupNameIndex = fixNum+1;
+        if(isFixed){
+          // 获取固定列的数量
+          const fixNum = (list.filter((item)=>item.fixed)).length;
+          if(groupNameIndex > fixNum+1) groupNameIndex = fixNum+1;
+        }
       }
       // 若是aeko查看进来没有勾选框需要减去一列
       if(from == 'check') --groupNameIndex ;

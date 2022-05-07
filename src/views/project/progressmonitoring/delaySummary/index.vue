@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-27 17:38:50
+ * @LastEditTime: 2022-05-06 14:02:44
  * @Description: 延误原因汇总
 -->
 
@@ -10,7 +10,7 @@
   <iPage class="delaySummary" v-permission.dynamic.auto="permissionKey">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>

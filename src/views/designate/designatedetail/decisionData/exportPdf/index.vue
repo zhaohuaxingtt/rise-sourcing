@@ -107,7 +107,7 @@
         </div>
         
 
-        <div id="html2canvasRs">
+        <div id="html2canvasRs" :key="key">
           <rs class="module" :nomiData="nomiData">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/rs"/>
@@ -165,14 +165,9 @@ export default {
   computed:{
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-        update: state => state.sourcing.update,
+        key: state => state.sourcing.updateKey,
     }),
   },
-    watch: {
-      update(val){
-        this.$forceUpdate()
-      }
-    },
   created() {
     this.nominateAppId = this.$route.query.desinateId
     if (!this.nominateAppId) return
@@ -353,10 +348,12 @@ export default {
           const el = elList[i];
           if(el.getElementsByClassName('pageNum')[0])
           el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
+          console.log(i,'=>img:start');
           await this.getPdfImage({
             dom: el,
             index: i
           })
+          console.log(i,'=>img:end');
         }
         this.uploadUdFile();
       }, 0)
@@ -408,7 +405,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            // console.log(res.data[0].objectUrl);
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -555,7 +552,7 @@ export default {
     overflow: hidden;
   }
   ::v-deep .pageCard-main{
-    overflow: hidden;
+    // overflow: hidden;
     margin-top: 20px;
   }
   ::v-deep .max-content{
@@ -575,5 +572,12 @@ export default {
     padding: 0px;
   }
 }
+::v-deep .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 }
 </style>

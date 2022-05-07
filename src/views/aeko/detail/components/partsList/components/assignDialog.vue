@@ -353,6 +353,12 @@ export default {
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.clearDialog();
                     this.$emit('getList');
+                    // 提示XXX（Linie中文名）没有当前零件(XXX）所属材料组权限，请及时申请，以免影响后续操作
+                    // this.$message.warning({
+                    //     message: this.$i18n.locale === "zh" ? res.desZh : res.desEn,
+                    //     duration:15000,
+                    //     showClose: true
+                    // })
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
