@@ -401,7 +401,6 @@ export default {
           this.tableListData = newTableList
           this.updateTime = res.data.refreshTime || ''
           this.updateTime = this.updateTime ? window.moment(this.updateTime).format('YYYY-MM-DD HH:mm:ss') : ''
-          console.log('tableListData', newTableList)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
