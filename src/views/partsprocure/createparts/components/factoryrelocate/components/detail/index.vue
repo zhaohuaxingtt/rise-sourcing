@@ -53,10 +53,10 @@
             <span v-else>{{ scope.row.status }}</span>
           </template>
           <template #oldFsnrGsnrNum="scope">
-            <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.oldFsnrGsnrNum }}</span>
+            <span class="link-underline" @click="jumpPartDetail(scope.row, 'old')">{{ scope.row.oldFsnrGsnrNum }}</span>
           </template>
           <template #fsnrGsnrNum="scope">
-            <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.fsnrGsnrNum }}</span>
+            <span class="link-underline" @click="jumpPartDetail(scope.row, 'new')">{{ scope.row.fsnrGsnrNum }}</span>
           </template>
           <template #rfqId="scope">
             <span class="link-underline" @click="jumpRfqDetail(scope.row)">{{ scope.row.rfqId }}</span>
@@ -302,11 +302,11 @@ export default {
     },
 
     // 跳转零件详情
-    jumpPartDetail(row) {
+    jumpPartDetail(row, type) {
       const routeData = this.$router.resolve({
         path: '/sourceinquirypoint/sourcing/partsprocure/editordetail',
         query: {
-          projectId: row.partProjectId,
+          projectId: type === 'new' ? row.partProjectId : row.oldPartProjectId,
           businessKey: row.partProjectType
         },
       })
