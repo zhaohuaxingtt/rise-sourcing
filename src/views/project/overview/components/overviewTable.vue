@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-06 12:25:17
+ * @LastEditTime: 2022-05-07 10:26:35
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
@@ -610,7 +610,7 @@ export default {
           height: 100%;
           flex-shrink: 1;
           flex-grow: 1;
-          min-width: 60px;
+          // min-width: 60px;
           display: flex;
           // flex-direction: column;
           align-items: center;
