@@ -820,6 +820,9 @@ export default {
 			}
 			return 1544
 		},
+    pageHeight() {
+      return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
+    },
 		cardTitle() {
 			if (this.projectType === partProjTypes.PEIJIAN) {
 				return '配件采购'
@@ -849,6 +852,15 @@ export default {
       return this.$slots.tabTitle && 116 || 0
     }
 	},
+  watch:{
+    pageWidth:{
+      immediate:true,
+      handler(){
+        this.getHeight()
+        this.getPrototypeListHeight()
+      }
+    }
+  },
 	created() {
 		this.isAuth = this.$route.query.type === 'auth'
 		// this.getPrototypeList()
@@ -859,9 +871,6 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-        let dom = this.$refs.rsPdf.$el
-        this.width = dom.offsetWidth
-        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
         let tableHeader = 57  // 表头高度
         let headerHeight = 106 // 顶部标题高度
         let pageLogo = 52     // logo 区域高度
@@ -913,20 +922,18 @@ export default {
                 list = [this.remarkItem[i]]
               }
             })
+            itemList.push(JSON.parse(JSON.stringify(list)))
+          }else{
+            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
           }
-          itemList.push(JSON.parse(JSON.stringify(list)))
           this.remarkList = itemList
         }
-        
-      },1000)
+      },400)
     },
     getPrototypeListHeight(){
       let time = 0
       let timeOut = 6000
       if(!this.$refs.rsPdf) return
-      let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth
-      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeader = 41  // 表头高度
       let headerHeight = 84  // 表头高度
       let pageLogo = 52     // logo 区域高度
@@ -1045,8 +1052,10 @@ export default {
       updateRemark(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getRemark()
-          this.getPrototypeList()
+          // this.getRemark()
+          // this.getPrototypeList()
+          this.init()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -1170,6 +1179,28 @@ export default {
         }
       })
     },
+		/**
+		 * @Description: 获取备注
+		 * @Author: Luoshuang
+		 * @param {*}
+		 * @return {*}
+		 */
+		getRemark() {
+			getRemark(this.nominateId).then((res) => {
+				if (res?.result) {
+					const data = Array.isArray(res.data) ? res.data : []
+					data.forEach((element) => {
+						this.remarks[element.remarkType] = element.remark || ''
+						this.remarkItem = meetingRemark.map((item) => {
+							return { ...item, value: this.remarks[item.remarkType] }
+						})
+					})
+				} else {
+					this.remarks = {}
+					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+				}
+			})
+		},
 
 		resetLtcData,
 
@@ -1450,7 +1481,7 @@ export default {
 				filePaths: list,
 				needLogo: false,
 				needSplit: false,
-				width: this.width,
+				width: this.pageWidth,
 				height: this.pageHeight,
 			}) // 1.2 预留 页脚位置
 			this.loading = false
@@ -1518,9 +1549,9 @@ export default {
       }
     }
 
-    .control {
-      display: flex !important;
-      align-items: center !important;
+		.control {
+			display: flex !important;
+			align-items: center !important;
 
       .nomiId {
         font-size: 16px;
@@ -1531,7 +1562,7 @@ export default {
 }
 
 .exchangeRageCurrency + .exchangeRageCurrency {
-  margin-left: 20px;
+	margin-left: 20px;
 }
 .singleSourcing {
   padding: 8px 12px;
@@ -1541,33 +1572,33 @@ export default {
   border: 1px dashed #1660f1;
 }
 .rsTable {
-  font-size: 8px;
-  &::before {
-    height: 0;
-  }
-  ::v-deep thead th {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    & > .cell {
-      padding-left: 3px;
-      padding-right: 3px;
-      line-height: 14px;
-      span {
-        // zoom: 0.85;
-      }
+	font-size: 8px;
+	&::before {
+		height: 0;
+	}
+	::v-deep thead th {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		& > .cell {
+			padding-left: 3px;
+			padding-right: 3px;
+			line-height: 14px;
+			span {
+				// zoom: 0.85;
+			}
 
-      // span span {
-      //   // font-size: 8px;
-      // }
-      p {
-        min-height: 16px;
-      }
+			// span span {
+			//   // font-size: 8px;
+			// }
+			p {
+				min-height: 16px;
+			}
 
-      p + p {
-        margin-top: 8px;
-      }
-    }
-  }
+			p + p {
+				margin-top: 8px;
+			}
+		}
+	}
 
   ::v-deep tr {
     &:nth-child(even) {
@@ -1575,16 +1606,16 @@ export default {
     }
   }
 
-  ::v-deep .el-table__row td {
-    .cell {
-      padding-left: 3px;
-      padding-right: 3px;
+	::v-deep .el-table__row td {
+		.cell {
+			padding-left: 3px;
+			padding-right: 3px;
 
-      span {
-        // zoom: 0.88;
-      }
-    }
-  }
+			span {
+				// zoom: 0.88;
+			}
+		}
+	}
 }
 .prototypeList{
   ::v-deep tr {
@@ -1679,66 +1710,66 @@ export default {
   }
 }
 .beizhu {
-  background-color: rgba(22, 96, 241, 0.03);
-  // height: 40px;
-  padding: 12px 14px;
-  font-weight: bold;
-  display: flex;
-  &-value {
-    font-weight: 400;
-    margin-left: 20px;
-  }
+	background-color: rgba(22, 96, 241, 0.03);
+	// height: 40px;
+	padding: 12px 14px;
+	font-weight: bold;
+	display: flex;
+	&-value {
+		font-weight: 400;
+		margin-left: 20px;
+	}
 }
 .meetingRemark {
-  display: flex;
+	display: flex;
 
-  &-item {
-    flex: 1;
-    & + & {
-      margin-left: 24px;
-    }
-    &-title {
-      font-size: 16px;
-      color: rgba(44, 46, 51, 1);
-      font-weight: 400;
-    }
-  }
+	&-item {
+		flex: 1;
+		& + & {
+			margin-left: 24px;
+		}
+		&-title {
+			font-size: 16px;
+			color: rgba(44, 46, 51, 1);
+			font-weight: 400;
+		}
+	}
 }
 .checkList {
-  display: flex;
-  overflow: auto;
-  &-item {
-    flex-shrink: 0;
-    width: 224px;
-    height: 125px;
-    max-width: 224px;
-    border-radius: 15px;
-    background-color: rgba(205, 212, 226, 0.12);
-    margin-right: 19px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px 22px;
-    font-size: 16px;
-    color: rgba(65, 67, 74, 1);
-    &-info {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      &-depart {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-  }
+	display: flex;
+	overflow: auto;
+	&-item {
+		flex-shrink: 0;
+		width: 224px;
+		height: 125px;
+		max-width: 224px;
+		border-radius: 15px;
+		background-color: rgba(205, 212, 226, 0.12);
+		margin-right: 19px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30px 22px;
+		font-size: 16px;
+		color: rgba(65, 67, 74, 1);
+		&-info {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			&-depart {
+				font-size: 18px;
+				font-weight: bold;
+			}
+		}
+	}
 }
 .checkDate {
-  ::v-deep .card .cardHeader .title {
-    // font-size: 16px;
-    font-weight: 400;
-    color: rgba(75, 75, 76, 1);
-  }
+	::v-deep .card .cardHeader .title {
+		// font-size: 16px;
+		font-weight: 400;
+		color: rgba(75, 75, 76, 1);
+	}
 }
 
 .Application.card {
@@ -1751,9 +1782,9 @@ export default {
   }
 }
 .isPreview {
-  .card {
-    box-shadow: none;
-  }
+	.card {
+		box-shadow: none;
+	}
 }
 
 .rsPdfWrapper,
