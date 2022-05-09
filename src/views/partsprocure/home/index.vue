@@ -52,6 +52,12 @@
                 >
                 </iInput>
               </el-form-item>
+              <el-form-item :label="language('RFQBIANHAO','RFQ编号')">
+                <iInput
+                  :placeholder="`${ language('partsprocure.PLEENTER','请输入') }${ language('RFQBIANHAO','RFQ编号') }`"
+                  v-model="form['rfqId']"
+                ></iInput>
+              </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')"
                 v-permission.auto="PARTSPROCURE_INQUIRYBUYER|询价采购员"
