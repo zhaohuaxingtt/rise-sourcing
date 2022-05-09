@@ -375,6 +375,7 @@ export default {
           const validate =  this.validateData(data);
           if(!validate) {
             this.btnLoading = false;
+            this.$message.warning(this.language('BITIANXIANGBUNENGWEIKONG','必填项不能为空'));
             return;
           }
           // 提交前需校验下审批情况
@@ -492,14 +493,15 @@ export default {
 
       // 费用千分位处理
       fixNumber(str,precision=2){
-          if(!str) return '';
-          var re=/(?=(?!(\b))(\d{3})+$)/g;
-          var fixstr =  str.replace(re,",");
-          if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
-              var last = fixstr.substr(fixstr.length-3,3);
-              if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
-          }
-          return fixstr;
+        if(!str) return '';
+        var re=/(?=(?!(\b))(\d{3})+$)/g;
+        str+=''
+        var fixstr =  str.replace(re,",");
+        if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+            var last = fixstr.substr(fixstr.length-3,3);
+            if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+        }
+        return fixstr;
       },
 
       // 撤回
