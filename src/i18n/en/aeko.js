@@ -15,5 +15,6 @@ export default {
   QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO: 'Please select the parts whose content status is to be declared, quoted, quoted or rejected to submit',
   TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI: 'Multiple original part rows associated with the same part will be assigned together',
   XUANZEZHUANPAIDECAIGOUYUAN: 'Please select the assigned buyer',
-  FENGMIANTISHIXINXI: 'The cover does not need to be submitted again. If you need to modify it, please [withdraw] or contact the AEKO administrator [unfreeze] before modifying and submitting'
+  FENGMIANTISHIXINXI: 'The cover does not need to be submitted again. If you need to modify it, please [withdraw] or contact the AEKO administrator [unfreeze] before modifying and submitting',
+  BITIANXIANGBUNENGWEIKONG: 'The required item cannot be empty'
 }

@@ -375,6 +375,7 @@ export default {
           const validate =  this.validateData(data);
           if(!validate) {
             this.btnLoading = false;
+            this.$message.warning(this.language('BITIANXIANGBUNENGWEIKONG','必填项不能为空'));
             return;
           }
           // 提交前需校验下审批情况
