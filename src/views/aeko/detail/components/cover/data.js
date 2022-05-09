@@ -26,7 +26,7 @@ export const BaicFrom = (state=true) => ([
     {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatusDesc',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI|封⾯状态',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI_LINIE|封⾯状态—LINIE'},
 ])
 
-const isEmpty = (val) => val == false && 0 !== val && '0' !== val || val == null;
+const isEmpty = (val) => val == false && parseInt(val) !== 0 || val === null;
 const validator = (rule, value, callback)=>{
     if(isEmpty(value)){
         callback(new Error(rule.message))
