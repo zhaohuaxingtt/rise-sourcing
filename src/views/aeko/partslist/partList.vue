@@ -192,13 +192,21 @@ export default {
     },
     methods:{
       openPartSignPage(val) {
-        local.set(
-          "tpPartInfoVO",
-          JSON.stringify(this.translateDataForDetail(val))
-        );
-        this.$router.push({
-          name: "editordetailPreview",
-        });
+        // local.set(
+        //   "tpPartInfoVO",
+        //   JSON.stringify(this.translateDataForDetail(val))
+        // );
+        // this.$router.push({
+        //   name: "editordetailPreview",
+        // });
+
+        const routeData = this.$router.resolve({
+        path: "/sourceinquirypoint/sourcing/partsign/preview",
+          query: {
+            tpPartID: val.tpPartID
+          }
+        })
+        window.open(routeData.href, '_blank')
       },
       //在跳转到详情界面之前，需要将数据格式化为中文。
       translateDataForDetail(v) {

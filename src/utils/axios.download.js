@@ -17,7 +17,7 @@ const fileType = {
 	doc: 'application/msword',
 	xlsx: 'application/vnd.ms-excel',
 }
-export default function httpRequest(baseUrl = '', timeOut = 15000) {
+export default function httpRequest(baseUrl = '', timeOut = 600000) {
 	// eslint-disable-next-line no-undef
 	const instance = axios.create({
 		baseURL: baseUrl,

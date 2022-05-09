@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-26 16:55:07
+ * @LastEditTime: 2022-03-23 15:38:09
  * @Description: 
 -->
 <template>
@@ -12,9 +12,10 @@
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
       <template v-slot:header-control>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <tableList
+        permissionKey="AEKO_MTZ_LIST"
         height="400"
         ref="tableList"
         index
@@ -26,8 +27,6 @@
         v-permission.auto="MTZ_MODIFY_LIST_PAGE_TABLE|查看MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       </tableList>
       <div class="pagination">
@@ -59,6 +58,7 @@ import {
   aekoMtzDosage,
   getMaterial
 } from '@/api/aeko/mtz'
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   mixins: [pageMixins, tableSortMixins],
@@ -67,7 +67,8 @@ export default {
     iPagination,
     tableList,
     iButton,
-    search
+    search,
+    buttonTableSetting
   },
   data() {
     return {

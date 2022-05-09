@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-10-20 13:55:59
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-24 11:03:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-15 09:57:53
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\selectKw\index.vue
 -->
@@ -77,8 +77,10 @@ export default {
      * @return {*} 
      */    
     initOption() { 
-      const option = [] 
-      for(var i = 1900; i <= moment().year() + 10; i++) { 
+      const option = [];
+      // 当前日期往前十年和往后十年的区间可选
+      const afterYear = (moment().year() - 10) || 1900;
+      for(var i = afterYear; i <= moment().year() + 10; i++) { 
         const countMonth = moment(i+'-01-01').weeksInYear() 
         const children = [] 
         for(var j = 1; j <= countMonth; j++) { 

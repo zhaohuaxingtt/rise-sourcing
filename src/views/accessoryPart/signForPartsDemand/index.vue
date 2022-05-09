@@ -42,7 +42,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------签收按钮----------------------------------->
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -53,13 +52,13 @@
                   <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件签收-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
             </div>
             <tableList
               ref="tableList"
+              permissionKey="ACCESSORYPART_SIGNFORPARTSDEMAND"
               :lang="true" 
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
             :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
@@ -115,13 +114,14 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import moment from 'moment'
 
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp, headerNav },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, buttonTableSetting, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp, headerNav },
   data() {
     return {
       tableData: [],

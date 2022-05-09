@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2022-01-05 10:51:54
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-23 16:03:20
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\components\data.js
  */
@@ -56,7 +56,7 @@ export const riskAndAlarmData = [
     crossOver: [false, true]
   },
   {
-    level: '低风险',
+    level: '中风险',
     key: 'LK_DIFENGXIAN',
     delayLevel: 2,
     icon: 'iconbaojiapingfengenzong-jiedian-huang',

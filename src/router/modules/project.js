@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:44:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 10:28:40
  * @Description: 
  * @FilePath: \front-sourcing\src\router\modules\project.js
  */
@@ -81,15 +81,15 @@ export default [
             },
             component: () => import("@/views/project/schedulingassistant/historyprocessdb")
           },
-          {
-            path: 'proconfirm',
-            name: "proconfirm",
-            meta: {
-              title: "项目管理-排程助手-进度确认",
-              activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
-            },
-            component: () => import("@/views/project/schedulingassistant/progressconfirm")
-          },
+          // {
+          //   path: 'proconfirm',
+          //   name: "proconfirm",
+          //   meta: {
+          //     title: "项目管理-排程助手-进度确认",
+          //     activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+          //   },
+          //   component: () => import("@/views/project/schedulingassistant/progressconfirm")
+          // },
           {
             path: 'defaultscheLogic',
             name: 'defaultScheLogic',
@@ -177,6 +177,15 @@ export default [
               activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/delaySummary"),
+          },
+          {
+            path: 'proconfirm',
+            name: "proconfirm",
+            meta: {
+              title: "项目管理-排程助手-进度确认",
+              activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+            },
+            component: () => import("@/views/project/schedulingassistant/progressconfirm")
           },
         ]
       },

@@ -1,20 +1,29 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-14 14:59:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-07 13:52:08
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
 
 <template>
+<div class="overviewTable-box">
+  <div class="fixTitle" :style="`left:${scrolLeft}px`">
+    <div class="fixTitle-column" :style="`width:${item.width}`" v-for="(item, index) in headerTitle" :key="`fix-title_${index}`">
+      {{item.key ? language(item.key, item.name) : item.name}}
+      <span v-move class="resizeBorder" :attr-index="index"></span>
+      </div>
+  </div>
+  <div class="contain">
   <div class="overviewTable" v-loading="tableLoading">
     <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
       <!---------------------------------------------------------------------->
       <!----------                 表头                        ---------------->
       <!---------------------------------------------------------------------->
-      <div class="overviewTable-cell title">
+      <div class="overviewTable-cell title overviewTable-cell-title" style="opacity:0">
         {{item.key ? language(item.key, item.name) : item.name}}
+        
       </div>
       <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
         <!---------------------------------------------------------------------->
@@ -43,7 +52,8 @@
               </li>
               <li>
                 <div>
-                  <el-tooltip :content='dataItem.carTypeLevel + " class"' effect='light'>
+                  <el-tooltip effect='light'>
+                    <div slot="content">{{dataItem.carTypeLevel || ''}} class</div>
                     <span class="overText">{{dataItem.carTypeLevel}} class</span>
                   </el-tooltip>
                 </div>
@@ -168,12 +178,15 @@
       {{language('ZANWUSHUJU','暂无数据')}}
     </div>
   </div>
+  </div>
+  </div>
 </template>
 
 <script>
 import { icon } from 'rise'
 import moment from 'moment'
 import { getTousandNum } from '@/utils/tool'
+import { cloneDeep } from "lodash" 
 export default {
   components: { icon },
   props: {
@@ -181,6 +194,41 @@ export default {
     tableData: {type:Array},
     tableLoading: {type:Boolean, default: false},
     showOperation: {type:Boolean, default: true}
+  },
+  watch:{
+    tableLoading(val){
+      if(!val){
+        const list = document.querySelectorAll('.overviewTable-cell-title');
+        console.log(list)
+        const headerTitle = cloneDeep(this.tableTitle);
+        headerTitle.map((item)=>{item.width=null});
+        for(let i =0 ;i<list.length;i++){
+          headerTitle[i] && (headerTitle[i]['width'] = (list[i].offsetWidth+'px') || null);
+        }
+        this.headerTitle = headerTitle;
+      }
+    },
+  },
+  directives: {
+    move(el, bindings) {
+      el.onmousedown = function(e) {
+        var init = e.clientX;
+        var index = e.currentTarget.getAttribute('attr-index');
+        console.log(el,'ellll',index);
+        var parentNode = e.currentTarget.parentElement;
+        var parent = document.querySelectorAll('.overviewTable-column');
+        var initWidth = parent[index].offsetWidth || 0;
+        document.onmousemove = function(e) {
+          var end = e.clientX;
+          var newWidth = end - init + initWidth;
+          parent[index] && (parent[index].style.width = newWidth + "px");
+          parentNode && (parentNode.style.width = newWidth + "px");
+        };
+        document.onmouseup = function() {
+          document.onmousemove = document.onmouseup = null;
+        };
+      };
+    }
   },
   data() {
     return {
@@ -205,11 +253,14 @@ export default {
         'iconchanpinzupaicheng_jinhangzhong': '<svg t="1631758354535" class="icon" viewBox="0 0 8704 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="76121" width="100%" height="100"><path d="M7750.236034 988.508727A213.63016 213.63016 0 0 1 7678.400333 824.020329V682.737763h-682.524474a170.631119 170.631119 0 1 1 0-341.262237h682.524474v-141.282566a213.63016 213.63016 0 0 1 71.835701-164.488398 143.500771 143.500771 0 0 1 153.568007-23.035201l690.885399 311.913684a216.701521 216.701521 0 0 1 0 375.388461l-690.885399 311.401791a141.453197 141.453197 0 0 1-58.526474 12.797334 147.93718 147.93718 0 0 1-95.041533-35.661904zM5289.564674 682.737763a170.631119 170.631119 0 0 1 0-341.262237h853.155593a170.631119 170.631119 0 1 1 0 341.262237zM3583.253489 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 0 1 0 341.262237zM1876.942304 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237zM170.631119 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237z" fill="#1660F1" p-id="76122"></path></svg>',
         'iconchanpinzupaicheng_xuxian': '<svg t="1631758384625" class="icon" viewBox="0 0 28918 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85726" width="100%" height="100"><path d="M28406.784 1024H26112a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2294.784a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM23552 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM18432 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM13312 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM8192 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM3072 1024H512a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#1660F1" p-id="85727"></path></svg>'
       },
-      minFontSize: 12
+      minFontSize: 9,
+      titleTop:0,
+      scrolLeft:0,
+      headerTitle:[],
     }
   },
   mounted() {
-    this.getMinFontSize()
+    // this.getMinFontSize()
   },
   methods: {
     getMinFontSize () {
@@ -388,14 +439,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.overviewTable {
-  display: flex;
+.overviewTable-box{
   overflow: auto;
   position: relative;
+  // overflow-x: scroll;
+  .fixTitle{
+      background-color: rgba(236, 239, 245, 0.2);
+      border: 2px solid #fff;
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 999;
+    &-column{
+      flex-shrink: 0;
+      height: 40px;
+      background-color: rgba(231, 234, 240, 1);
+      font-size: 16px;
+      font-weight: bold;
+      padding: 9px 0;
+      display: block;
+      text-align: center;
+      border: 2px solid #fff;
+      .resizeBorder{
+        display: block;
+        width: 5px;
+        height: 40px;
+        margin-top: -10px;
+        // z-index: 1000;
+        float: right;
+        &:hover{
+          cursor:col-resize;
+        }
+      }
+      &:first-child {
+      // width: auto;
+      min-width: 264px;
+      }
+    &:nth-child(2),&:nth-child(3),&:nth-child(4),&:nth-child(5) {
+      // width: auto;
+      min-width: 240px;
+    }
+    &:nth-child(8) {
+      // width: auto;
+      min-width: 160px;
+    }
+    }
+  }
+}
+.contain{
+  display: table;
+  padding-left: 5px;
+}
+.overviewTable {
+  display: flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  // position: relative;
+  max-height: 500px;
   &-column {
     flex-shrink: 0;
     width: 136px;
-    min-height: 400px;
+    min-height: 300px;
+    position: relative;
+    padding-top: 40px;
     &:first-child {
       width: auto;
       min-width: 264px;
@@ -416,11 +523,18 @@ export default {
       align-items: center;
       justify-content: center;
       &.title {
+        width: 100%;
         height: 40px;
         background-color: rgba(231, 234, 240, 1);
         font-size: 16px;
         font-weight: bold;
         padding: 9px 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        display: block;
+        text-align: center;
       }
       .nomal-cell {
         padding: 0 28px;
@@ -430,7 +544,10 @@ export default {
         padding: 0 30px;
       }
       .baiscInfo {
-        width: 264px;
+        // width: 264px;
+        min-width: 264px;
+        width: 100%;
+        box-sizing: border-box;
         &-top {
           display: flex;
           flex-direction: column;
@@ -446,10 +563,13 @@ export default {
         }
         &-bottom {
           display: flex;
-          justify-content: space-around;
+          justify-content:center;
+          width: 70%;
+          min-width: 264px;
           font-size: 14px;
           color: rgba(92, 99, 113, 1);
           padding: 20px 0 0 20px;
+          margin: 0 auto;
           ul, li {
             list-style: disc;
             margin-bottom: 5px;
@@ -464,15 +584,18 @@ export default {
           ol {
             display: flex;
             flex-direction: column;
+            padding-right: 10px;
+            box-sizing: border-box;
             &:first-child {
-              width: 30%;
+              width: 40%;
             }
             &:last-child {
               width: 50%;
             }
             li {
+              width: 90%;
               list-style-type: disc;
-              min-height: 14px;
+              min-height: 22px;
               
             }
           }
@@ -485,8 +608,9 @@ export default {
         align-items: center;
         &-item {
           height: 100%;
-          flex-shrink: 0;
-          width: 60px;
+          flex-shrink: 1;
+          flex-grow: 1;
+          // min-width: 60px;
           display: flex;
           // flex-direction: column;
           align-items: center;
@@ -567,7 +691,8 @@ export default {
             width: 100%;
             margin-bottom: 25px;
             .step-between-icon {
-              width: 100%;
+              // width: 100%;
+              width: 30px;
             }
           }
           .iconBox {

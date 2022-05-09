@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-01 11:19:32
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 11:02:06
+ * @LastEditors: YoHo
  * @Description: table组件
 -->
 <template>
@@ -38,7 +38,7 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))">
+      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" :align="items.align || 'center'" :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))" :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
@@ -59,7 +59,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!items.showTips">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
@@ -80,14 +80,16 @@
       <!----------------------普通表格展示---------------------------------------->
       <el-table-column
         v-else
-        align='center'
+        :align="items.align || 'center'"
         :key="`${items.props}_${index}`"
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
         :show-overflow-tooltip='items.tooltip'
-        :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))"
+        :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))"
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''"
+        :sortable="items.sortable||false"
+        :sort-method="items.sortMethod"
         :fixed="items.fixed">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
@@ -108,7 +110,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!(items.showTips || items.tipsLang)">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips || items.tipsLang" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
@@ -142,9 +144,10 @@
 </template>
 <script>
 import {cloneDeep} from 'lodash'
-import {icon} from "rise"
+import {icon, iMessage} from "rise"
 import iTableHeaderSorter from './iTableHeaderSort'
 // import {iTableHeaderSorter} from "rise"
+import { getUserListMemory, configUserListMemory } from '@/api/tableSort'
 export default{
   props:{
     /**
@@ -235,6 +238,7 @@ export default{
     enabletableHeadersetting: {type: Boolean, default: true},
     showTitleName:{type:Boolean,default:false}, // 直接展示name字段
     indexFixed:{type:Boolean,default:false}, // 序列号是否固定
+    permissionKey: { type: String }
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
@@ -243,11 +247,17 @@ export default{
       settingVisible: false,
       header: cloneDeep(this.tableTitle),
       // header: cloneDeep(this.tableTitle).filter(i=> !i.isHidden),
-      tableSettingColumns: []
+      tableSettingColumns: [],
+      tableColumns: [],
+      settingId: '',
+      tableTitleMap: {}
     }
   },
   created() {
     this.initTableSettingColumns()
+    if (this.permissionKey) {
+      this.querySetting()
+    }
   },
   methods:{
     /**
@@ -318,11 +328,16 @@ export default{
     },
     renewTableHeader(data) {
       const header = data.filter(o => !o.isHidden)
+
+
+
       this.header = header.map(o => ({
         ...o,
         prop: o.prop || o.props,
         label: o.label || o.name,
-        i18n: o.i18n || o.key
+        i18n: o.i18n || o.key,
+        showTips: this.tableTitleMap[o.props].showTips || false,
+        tips: this.tableTitleMap[o.props].tips || ''
       }))
     },
     initTableSettingColumns() {
@@ -332,22 +347,81 @@ export default{
         label: o.label || o.name,
         i18n: o.i18n || o.key
       }))
+
+      this.tableTitleMap = {}
+      this.tableTitle.forEach(item => {
+        this.$set(this.tableTitleMap, item.props, item)
+      })
     },
-    handleSaveSetting(data) {
-      // console.log('handleSaveSetting',data)
-      if (this.$attrs.handleSaveSetting && typeof this.$attrs.handleSaveSetting === 'function') {
-        this.tableSettingColumns = data
-        this.$attrs.handleSaveSetting({data, done: this.renewTableHeader})
-      }
+    getCookie(name) {
+			const strCookie = document.cookie //获取cookie字符串
+			const arrCookie = strCookie.split('; ') //分割
+			//遍历匹配
+			for (let i = 0; i < arrCookie.length; i++) {
+				if (arrCookie[i].indexOf(`${name}=`) === 0) {
+					return arrCookie[i].replace(`${name}=`, '')
+				}
+			}
+			return ''
+		},
+    handleSaveSetting(val = []) {
+      configUserListMemory({
+        accountId: this.$store.state.permission.userInfo.accountId,
+        listConfig: JSON.stringify(val),
+        permissionKey: this.permissionKey
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+
+          try {
+            const tableTitle = JSON.parse(res.data.listConfig)
+            this.renewTableHeader(tableTitle)
+            this.tableSettingColumns = tableTitle
+            this.settingId = res.data.id
+          } catch {}
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
     },
     handleResetSetting() {
-      if (this.$attrs.handleResetSetting && typeof this.$attrs.handleResetSetting === 'function') {
-        this.initTableSettingColumns()
-        this.$attrs.handleResetSetting({data: cloneDeep(this.tableTitle), done: this.renewTableHeader})
-      }
+      this.initTableSettingColumns()
+      this.handleSaveSetting(this.tableSettingColumns)
     },
     getHeader(){
       return cloneDeep(this.header);
+    },
+    querySetting() {
+      getUserListMemory({
+        permissionKey: this.permissionKey
+      })
+      .then(res => {
+        if (res.code == 200 && res.data[0] && res.data[0].listConfig) {
+          try {
+            const tableTitle = JSON.parse(res.data[0].listConfig)
+            this.renewTableHeader(tableTitle)
+            this.tableSettingColumns = tableTitle
+            this.settingId = res.data[0].id
+          } catch {
+            this.header = []
+            this.tableSettingColumns = []
+          }
+        } else {
+          if (!res.data.length) {
+            this.initTableSettingColumns()
+            this.renewTableHeader(this.tableSettingColumns)
+            return
+          }
+
+          this.header = []
+          this.tableSettingColumns = []
+        }
+      })
+      .catch(() => {
+        this.header = []
+        this.tableSettingColumns = [] 
+      })
     }
   }
 }
@@ -407,6 +481,7 @@ export default{
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        display: inline-flex;
       }
       .label-require{
         color: #f56c6c;

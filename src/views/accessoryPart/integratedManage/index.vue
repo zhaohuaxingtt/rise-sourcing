@@ -41,7 +41,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
@@ -58,13 +57,13 @@
                   <iButton @click="downloadAll" :loading="downloadAllLoading" v-permission.auto="APREPART_MANAGFMENT_DWONLOAD|配件-配件管理-下载报表">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
             </div>
             <tableList
+              permissionKey="ACCESSORYPART_INTEGRATEDMANAGE"
               ref="tableList"
               :lang="true" 
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
               :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
@@ -130,13 +129,14 @@ import {
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 import { numberProcessor } from '@/utils' 
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iDatePicker, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, buttonTableSetting, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {
       // 零件项目类型

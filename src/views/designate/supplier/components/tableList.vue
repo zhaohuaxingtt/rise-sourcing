@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-16 15:31:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 15:13:22
+ * @LastEditors: YoHo
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
@@ -16,7 +16,7 @@
       </template>
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)" :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <template slot-scope="row">
            <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor "  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
@@ -41,7 +41,8 @@
         :show-overflow-tooltip='items.tooltip'
         :label="lang ? language(items.key, items.name) : $t(items.key)" 
         :prop="items.props"
-        :class-name="items.tree ? 'tree' : ''">
+        :class-name="items.tree ? 'tree' : ''"
+        :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <template slot-scope="scope">
           <span :class="{normal: true, child: scope.row.children}">
             <slot :name="items.props" :row="scope.row" :$index="scope.$index">
@@ -99,18 +100,34 @@ export default{
         return ''
       }
     },
-	handleSelect(selection,row){
+	  handleSelect(selection,row) {
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
     },
-    handleSelectAll(selection){  
+    isParentNode(node) {
+      return node && Array.isArray(node.children)
+    },
+    recursiveSelectChildNode(node, status) {
+      node.children.forEach(childNode => {
+        this.$nextTick(() => this.$refs.moviesTable.toggleRowSelection(childNode, status))
+        this.$set(childNode, "selectedBorder", status)
+
+        this.isParentNode(childNode) && this.recursiveSelectChildNode(childNode, status)
+      })
+    },
+    handleSelectAll(selection) {
+      this.$nextTick(() =>  this.tableData.forEach(row => {
+        this.isParentNode(row) && this.recursiveSelectChildNode(row, this.$refs.moviesTable.store._data.states.isAllSelected)
+        this.$set(row, "selectedBorder", this.$refs.moviesTable.store._data.states.isAllSelected)
+      }))
+
       const flag = selection.length
       for(let i= 0  ; i<flag;i++){
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
     },
-    borderLeft({row, column, rowIndex, columnIndex}){
+    borderLeft({row, column, rowIndex, columnIndex}) {
       if(columnIndex === 0 && row.selectedBorder === true){
          return "border-left:2px solid #1660F1;"
       }

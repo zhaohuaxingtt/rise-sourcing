@@ -7,13 +7,14 @@
     <iSearch :icon="true" class="margin-top20">
       <template slot="button">
         <!-- <iButton @click="back">{{language('Back', '返回')}}</iButton> -->
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
 
         <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission" :class="item.type === 'input'? 'currentWidth' : ''">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+            <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption]"
               :key="item.value"
@@ -30,15 +31,17 @@
         <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
-          <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
+          <iButton  :loading="btnSaveLoading" @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
           <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
-      <tableList indexKey
+      <tableList 
+                permissionKey="PROJECT_PROGRESSMONITORING_PARTSTASKLIST"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
@@ -47,9 +50,20 @@
                  :tableLoading="tableLoading"
                  @handleSelectChange="handleSelectChange"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
+        <template #partNum="scope">
+          <span style="white-space:pre;">{{scope.row.partNum}}</span>
+        </template>
+        <template #partSort="scope">
+          <iSelect v-model="scope.row['partSort']" @change="val => handleSelectChange(val, scope.row)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in  selectOptions['partTaskPartSort']"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </template>
 
       </tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
@@ -91,9 +105,10 @@ import { getDictByCode } from '@/api/dictionary'
 
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage },
+  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage, buttonTableSetting },
   data() {
     return {
       searchList,
@@ -102,7 +117,9 @@ export default {
       dialogVisible:false,
       searchParams: {
         cartypeProId: this.$route.query.cartypeProId,
-        status: this.$route.query.status
+        status: this.$route.query.status || '',
+        partSort:'',
+        risePartDesc:'',
       },
       titleName:this.$route.query.carProjectName,
       selectOptions: {
@@ -119,7 +136,8 @@ export default {
       oldTableData:[],
       batchUpdataMap:new Map(),
       dialogPartSort:"",
-      downloadLoading: false
+      downloadLoading: false,
+      btnSaveLoading:false,
     }
   },
   computed: {
@@ -168,7 +186,12 @@ export default {
         partTaskDTOS.push({ id:item.id, partSort:item.partSort, })
       }
 
+      this.btnSaveLoading = true;
+      this.tableLoading = true;
+
       updatePartInfoList(partTaskDTOS).then(res => {
+        this.btnSaveLoading = false;
+        this.tableLoading = false;
         if (res?.result) {
           this.getTableList();
           if(isMessage == '2'){
@@ -178,6 +201,9 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).catch((err)=>{
+        this.btnSaveLoading = false;
+        this.tableLoading = false;
       })
     },
     /**
@@ -277,7 +303,10 @@ export default {
     },
     handleReset() {
       this.searchParams = {
-        cartypeProId:this.$route.query.cartypeProId
+        cartypeProId:this.$route.query.cartypeProId,
+        status:'',
+        partSort:'',
+        risePartDesc:'',
       }
       this.handleSure()
     },

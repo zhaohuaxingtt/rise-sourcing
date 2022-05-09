@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-25 12:49:07
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:36:16
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -12,21 +12,21 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------纸质RS单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_PAPERRSSHEET|定点信息-纸质RS单" @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
         <iButton  v-permission.auto="PARTSPROCURE_DESIGNATEINFO_ELECTRONICRSSHEET|定点信息-电子RS单" @click="changersEeditionDialogVisible(true)">{{language('DIANZIRSDAN','电子RS单')}}</iButton>
         <!--------------------SEL分摊单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_SELALLOCATIONSHEET|定点信息-SEL分摊单" @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         
+        <button-table-setting @click="edittableHeader" />
       </div>
     </div>
-    <tableList 
+    <tableList
+      permissionKey="PARTSPROCURE_EDITORDETAIL_COMPONENTS_DESIGNATEINFO"
       ref="tableList"
       :lang="true"
-      :handleSaveSetting="handleSaveSetting"
-      :handleResetSetting="handleResetSetting"
       v-permission.auto="PARTSPROCURE_DESIGNATEINFO_TABLE|定点信息-表格"  :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -63,9 +63,10 @@ import rsPaperDialog from './components/rsPaper'
 import selDialog from './components/sel'
 import rsEEditionDialog from './components/rsEEdition'
 import { findNominateInfo } from "@/api/partsprocure/editordetail"
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog },
+  components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog, buttonTableSetting },
   data() {
     return {
       tableTitle: tableTitle,

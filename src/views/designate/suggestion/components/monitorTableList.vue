@@ -422,7 +422,6 @@ export default {
       count = _.sum(weightedArray)
 
       const formulaStr = formula.join('+')
-      console.log('cacleSc日志',  supplierName, formulaStr, count, data)
       return Number(count).toFixed(0)
     },
     // 筛选出分组最低的供应商
@@ -645,7 +644,6 @@ export default {
         // 供应商名称列表
         supplierList: this.supplier
       }
-      console.log(res)
       return res
     }
   }

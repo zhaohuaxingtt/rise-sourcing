@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2022-01-25 14:14:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:35:01
+ * @LastEditors: YoHo
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -44,7 +44,7 @@
       <div class="margin-bottom20 clearFloat">
        <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          
           <template  v-if="mode === 'add'">
             <iButton @click="chooseSignsheet()">
               {{ language("XUANZE", '选择') }}
@@ -54,10 +54,13 @@
               {{ language("YICHU",'移除') }}
             </iButton>
           </template>  
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>   
       </div>
       <!-- 表格 -->
-      <tablelist class="margin-top20"
+      <tablelist
+                  permissionKey="DESIGNATE_HOME_SIGNSHEET_DETAILS"
+                  class="margin-top20"
                  :tableData="tableListData"
                  :tableTitle="tableTitle"
                  :tableLoading="tableLoading"
@@ -65,8 +68,6 @@
                  @handleSelectionChange="handleSelectionChange"
                   ref="tableList"
                   :lang="true"
-                  :handleSaveSetting="handleSaveSetting"
-                  :handleResetSetting="handleResetSetting"
                  >
         <!-- 定点单号 -->
         <template #nominateName="scope">
@@ -153,7 +154,7 @@ import {
   removeSignsheetItems,
   getsignSheetDetails
 } from '@/api/designate/nomination/signsheet'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 import {
   iPage,
   iCard,
@@ -200,6 +201,7 @@ export default {
     iButton,
     tablelist,
     addSignsheet,
+    buttonTableSetting
     // designateSign
   },
   created () {

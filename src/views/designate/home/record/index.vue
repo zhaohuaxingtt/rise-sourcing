@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2022-01-24 17:13:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:34:25
+ * @LastEditors: YoHo
 -->
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
@@ -16,11 +16,12 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
-        <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
-      lang
+        permissionKey="DESIGNATE_HOME_RECORD"
+        lang
         class="aotoTableHeight"
         :tableTitle="tableTitle"
         :tableData="tableListData"
@@ -30,8 +31,6 @@
         @handleSelectionChange="handleSelectionChange"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">
@@ -68,6 +67,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {tableTitle, form} from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiApplicationPageList, exportNomiRecordExcel} from '@/api/designate/nomination/record'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ pageMixins,tableSortMixins ],
   components: {
@@ -78,7 +78,8 @@ export default {
     tablelist,
     iPagination,
     icon,
-    iButton
+    iButton,
+    buttonTableSetting
     },
   data() {
     return{
@@ -86,7 +87,8 @@ export default {
       tableListData:[],
       tableLoading: false,
       searchForm: _.cloneDeep(form),
-      selectTableData:[]
+      selectTableData:[],
+      downloading: false
     }
   },
   created() {
@@ -148,11 +150,15 @@ export default {
     handleSelectionChange(data){
       this.selectTableData = data
     },
-    exportRecord() {
+    async exportRecord() {
       let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
-      exportNomiRecordExcel(data).then(res=> {
-        
-      })
+      data.nominateStartTime = Array.isArray(data.nominateTime) ? data.nominateTime[0] : undefined
+      data.nominateEndTime = Array.isArray(data.nominateTime) ? data.nominateTime[1] : undefined
+      delete data.nominateTime
+
+      this.downloading = true
+      await exportNomiRecordExcel(data)
+      this.downloading = false
     }
   }
 }

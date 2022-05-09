@@ -5,7 +5,7 @@ export const budgetApprovalData = [
     props: 'carTypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
-    width: 125,
+    // width: 140,
     tooltip: false
   },
   {
@@ -40,14 +40,14 @@ export const budgetApprovalData = [
     props: 'paymentAmountLast',
     name: '已付款⾦额-往年',
     key: 'LK_YIFUKUANJINEWANGNIAN',
-    width: 130,
+    width: 140,
     tooltip: false
   },
   {
     props: 'paymentAmountCurrent',
     name: '已付款⾦额-当年',
     key: 'LK_YIFUKUAIJINEDANGNIAN',
-    width: 130,
+    width: 140,
     tooltip: false
   },
   {
@@ -75,6 +75,7 @@ export const budgetApprovalData = [
     props: 'linieName',
     name: '项目采购员',
     key: 'LK_XIANGMUCAIGOUYUAN',
+    width: 130,
     tooltip: false
   },
 ]

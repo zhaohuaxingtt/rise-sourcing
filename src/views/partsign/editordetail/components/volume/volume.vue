@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2022-01-26 13:40:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 15:52:14
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -11,13 +11,14 @@
     <div class="header clearFloat">
       <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} : {{ versionComputed }}）</span>
       <div class="control">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton v-if="!disabled" @click="jump" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_ALL|每车用量查看全部版本">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
         <iButton v-if="!disabled" @click="download" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT|每车用量导出">{{ language('LK_DAOCHU','导出') }}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList 
+      <tableList
+        permissionKey="PARTSIGN_EDITORDETAIL_COMPONENTS_VOLUME_VOLUME"
         index 
         class="table" 
         :tableData="tableListData" 
@@ -26,8 +27,6 @@
         v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_TABLE|每车用量-表格"
         ref="tableList"
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
        />
       <iPagination v-update
         class="pagination"
@@ -54,9 +53,9 @@ import { volumeTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
 import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsprocure/editordetail'
 import { excelExport } from '@/utils/filedowLoad'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
-  components: { iCard, iButton, iPagination, tableList },
+  components: { iCard, iButton, iPagination, tableList, buttonTableSetting },
   mixins: [ pageMixins,tableSortMixins ],
   props: {
     data: {

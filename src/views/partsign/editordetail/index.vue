@@ -5,7 +5,7 @@
 * @Description: In User Settings Edit
  -->
 <template>
-  <iPage>
+  <iPage v-loading="loading">
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <span>{{partDetails.partNum || ''}}</span>
@@ -15,7 +15,7 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
-        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="logBizId" credentials isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="新件信息单详情页" @onTypeChange="onTypeChange" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
+        <iLoger v-if="partDetails" :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="logBizId" credentials isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="新件信息单详情页" @onTypeChange="onTypeChange" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
@@ -26,7 +26,7 @@
       <partInfo icons :title="partTitle" :data="partDetails"></partInfo>
     </iCard>
     <!-- 零件详情tab页 -->
-    <div class="iTabs">
+    <div class="iTabs" v-if="partDetails">
       <iTabs-list type="card" class="margin-top20" value="2">
         <el-tab-pane lazy :label="language('LK_XINXIDANXIANGQING','信息单详情')" name="1" v-permission.auto="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS|新建信息单详情-信息单详情Tab">
           <iCard>
@@ -63,7 +63,7 @@ import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
-import {patchRecords} from "@/api/partsign/home";
+import { getTabelData, patchRecords } from "@/api/partsign/home";
 // import logButton from '@/components/logButton'
 import local from "@/utils/localstorage";
 import { TP_INFO_STATUS } from "@/views/partsign/home/components/data"
@@ -93,9 +93,10 @@ export default {
       partTitle: partTitle, //tab页零件详情数据
       diologChangeItems: false, //转派弹窗
       diologBack: false, //退回弹窗
-      partDetails: {}, //零件信息单详情
+      partDetails: null, //零件信息单详情
       backmark:'',
-      logFiltType: ''
+      logFiltType: '',
+      loading: false
     };
   },
   computed: {
@@ -112,7 +113,7 @@ export default {
   },
   created() {
     this.getPartInfo();
-    this.searchBuyerInfo()
+    // this.searchBuyerInfo()
   },
   methods: {
     onTypeChange(type) {
@@ -128,8 +129,21 @@ export default {
       
     },
     getPartInfo() {
-      this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
-      console.log(this.partDetails, '***********');
+      // this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
+      // console.log(this.partDetails, '***********');
+      this.loading = true
+      getTabelData({
+        tpId: this.$route.query.tpPartID
+      })
+      .then(res => {
+        if (res.code == 200 && res.data.tpRecordsSenarioResult) {
+          this.partDetails = Array.isArray(res.data.tpRecordsSenarioResult.tpRecordList) ? (res.data.tpRecordsSenarioResult.tpRecordList[0].tpPartInfoVO || {}) : {}
+          this.searchBuyerInfo()
+        } else {
+          this.partDetails = {}
+        }
+      })
+      .finally(() => this.loading = false)
     },
     //签收
     save() {
@@ -174,11 +188,12 @@ export default {
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.partDetails.status = type == TP_INFO_STATUS.ACCEPTED ? this.language('LK_YIQIANSHOU','已签收') : this.language('LK_YITUIHUI','已退回')
-          local.set(
-            "tpPartInfoVO",
-            JSON.stringify(this.partDetails)
-          );
+          this.getPartInfo()
+          // this.partDetails.status = type == TP_INFO_STATUS.ACCEPTED ? this.language('LK_YIQIANSHOU','已签收') : this.language('LK_YITUIHUI','已退回')
+          // local.set(
+          //   "tpPartInfoVO",
+          //   JSON.stringify(this.partDetails)
+          // );
         }else{
           iMessage.error(res.desZh)
         }
@@ -192,7 +207,7 @@ export default {
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.searchBuyerInfo()
+          this.getPartInfo()
         }else{
           iMessage.error(res.desZh)
         }
@@ -217,7 +232,8 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.$set(this.partDetails, "stuffName", res.data.nameZh)
-          localStorage.setItem("tpPartInfoVO", JSON.stringify(this.partDetails))
+          // localStorage.setItem("tpPartInfoVO", JSON.stringify(this.partDetails))
+          // this.getPartInfo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

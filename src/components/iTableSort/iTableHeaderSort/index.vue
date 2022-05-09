@@ -85,6 +85,7 @@ export default {
         item && newData.push(item)
       }
       this.isShow = false
+
       this.$emit('callback', newData)
     },
     handleCancel() {

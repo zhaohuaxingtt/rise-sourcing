@@ -69,11 +69,12 @@
         </iSearch>
         <iCard class="margin-top20" :title="language('LK_AEKOCHAKAN','AEKO查看')">
           <template v-slot:header-control>
-            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </template>
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
+                permissionKey="AEKO_CHECK"
                 class="table"
                 ref="tableList"
                 index
@@ -83,8 +84,6 @@
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
-                :handleSaveSetting="handleSaveSetting"
-                :handleResetSetting="handleResetSetting"
                 >
                   <!-- AEKO号 -->
                   <template #aekoCode="scope">
@@ -162,7 +161,7 @@ import {
 import {user as configUser } from '@/config'
 import { debounce } from "lodash";
 import { lookDetails } from '../approve/approveList/lib'
-import logButton from "@/components/logButton"
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
     name:'aekoCheck',
@@ -182,7 +181,8 @@ export default {
         filesListDialog,
         switchPost,
         iMultiLineInput,
-        iButton
+        iButton,
+        buttonTableSetting
     },
     computed: {
         //eslint-disable-next-line no-undef

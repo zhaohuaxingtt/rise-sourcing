@@ -16,7 +16,7 @@
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -102,9 +102,11 @@
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME"
         class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -113,8 +115,6 @@
         v-permission.auto="SOURCING_NOMINATION_NOMINATETABLE|表格"
         @handleSelectionChange="handleSelectionChange"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
@@ -251,7 +251,7 @@ import {
 } from "rise";
 
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins, roleMixins,tableSortMixins ],
   data() {
@@ -288,6 +288,7 @@ export default {
     rfqDialog,
     icon,
     dialogTableTips,
+    buttonTableSetting
   },
   mounted() {
     this.getFetchData()

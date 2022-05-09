@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 11:40:05
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:37:38
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -65,14 +65,15 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('RFQZONGHEGUANLI','RFQ综合管理') }}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!--加入该键-->
           <iButton @click="joinRfq" :loading="activateButtonLoading">
             {{language('JIARU','加入')}}
           </iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATEFILES_FILEMANAGE_COMPONENTS_JOINRFQ"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -81,8 +82,6 @@
         open-page-props="id"
         :index="true"
         icon-props="recordId"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         ref="tableList"
         lang
       >
@@ -114,9 +113,10 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
+  components: { iDialog, iButton, buttonTableSetting, iInput, iPagination, tablelist, iSelect, iSearch },
   props: {
     dialogVisible: { type: Boolean, default: false },
     partType: {type:String}

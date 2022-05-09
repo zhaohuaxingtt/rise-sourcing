@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-01-24 14:23:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:37:08
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
@@ -46,13 +46,14 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
         <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
         <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
         <tableList
+          permissionKey="SCORECONFIG_CONFIGSCOREDEPT_DEMO"
           class="table"
           ref="tableList"
           index
@@ -61,8 +62,6 @@
           :tableLoading="loading"
           height="100%"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
           <!-- 评分人 -->
           <template #raterList="scope">
@@ -101,7 +100,7 @@ import { cloneDeep } from "lodash"
 import { getListSysRateDepart,departsDelete} from "@/api/scoreConfig/configscoredept"
 import { TAB } from '../data'
 import iDicoptions from 'rise/web/components/iDicoptions' 
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   components: {
     iPage,
@@ -115,6 +114,7 @@ export default {
     addDialog,
     iNavMvp,
     iDicoptions,
+    buttonTableSetting
   },
   data() {
     return {

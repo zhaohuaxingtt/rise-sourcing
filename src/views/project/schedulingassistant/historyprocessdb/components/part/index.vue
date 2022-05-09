@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:15:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-29 17:54:47
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -169,6 +169,7 @@ export default {
           partHistoryProgressVO: {
             ...this.selectRowPart[0],
             partNum: this.$route.query.partNum,
+            prjTmTeileclubProjId: this.$route.query.cartypeProId,
             type: 2 // 历史
           }
         }
@@ -179,6 +180,7 @@ export default {
           partHistoryProgressVO: {
             ...this.partTableData[0],
             partNum: this.$route.query.partNum,
+            prjTmTeileclubProjId: this.$route.query.cartypeProId,
             fsdocCscWeekly: selectFit.fsdocCscWeekly,
             cscBfWeekly: selectFit.cscBfWeekly,
             bf1stWeekly: selectFit.bf1stWeekly,

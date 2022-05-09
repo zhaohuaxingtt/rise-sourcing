@@ -16,7 +16,7 @@
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          
           <!-- 发起复核 -->
           <iButton
             @click="initRsReview"
@@ -80,11 +80,12 @@
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
-
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME_RSREVIEW"
         class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -94,8 +95,6 @@
         @handleSelectionChange="handleSelectionChange"
         ref="tableList"
         :lang="true"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
@@ -207,7 +206,7 @@ import {
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 import {
   iPage,
   iCard,
@@ -246,7 +245,8 @@ export default {
     search,
     tablelist,
     selDialog,
-    icon
+    icon,
+    buttonTableSetting
   },
   mounted() {
     this.getFetchData()

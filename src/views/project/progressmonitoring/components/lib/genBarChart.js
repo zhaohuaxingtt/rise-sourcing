@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-12-16 15:39:16
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-23 16:00:57
+ * @LastEditors: Please set LastEditors
  * @Description: 风险图的配置文件
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\genBarChart.js
  */
@@ -30,7 +30,7 @@ export function generateOptions(params = {}, type = 1) {
             // 风险
             {
                 key: 'value2',
-                name: '低风险',
+                name: '中风险',
                 index: 1,
                 style: {
                     color: colors[2],

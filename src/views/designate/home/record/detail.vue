@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2022-01-25 14:27:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:34:19
+ * @LastEditors: YoHo
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
@@ -21,10 +21,11 @@
     </iCard>
     <iCard class="margin-top20">
       <div class="btnRight">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME_RECORD_DETAIL"
         lang
         class="aotoTableHeight"
         :tableTitle="tableDetailTitle"
@@ -35,8 +36,6 @@
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         >
 
         <template #supplierId="scope">
@@ -76,6 +75,7 @@ import topComponents from '@/views/designate/designatedetail/components/topCompo
 import {detailList, tableDetailTitle} from "./data"
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiRecordDetailPageList} from '@/api/designate/nomination/record'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ pageMixins,tableSortMixins ],
   components: {
@@ -87,7 +87,8 @@ export default {
     iText,
     tablelist,
     iPagination,
-    iButton
+    iButton,
+    buttonTableSetting
   },
   data() {
     return {

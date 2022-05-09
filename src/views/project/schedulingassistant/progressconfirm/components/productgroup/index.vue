@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 18:17:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:03:08
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -11,7 +11,7 @@
   <div class="productGroup">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
@@ -33,16 +33,16 @@
         <span class="font18 font-weight">{{language('CHANPINZUJINDUQUERENHUIZONG', '产品组进度确认汇总')}}</span>
         <div class="floatright">
           <!--------------------发送按钮----------------------------------->
-          <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+          <iButton v-if="!isFS && withSend" @click="handleSend" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SEND_BUTTON|进度确认汇总-发送-按钮">{{language('FASONG','发送')}}</iButton>
           <template v-if="isFS">
             <!--------------------转派按钮----------------------------------->
-            <transferBtn class="margin-right10" tansferType="1" :tansferData="selectRows" @getTableList="getTableList" ></transferBtn>
+            <transferBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_TRANSFER_BUTTON|进度确认转派按钮" class="margin-right10" tansferType="1" :tansferData="selectRows" @getTableList="getTableList" ></transferBtn>
             <!--------------------退回按钮----------------------------------->
-            <backBtn class="margin-right10" v-if="withAllBtn" backType="1" :backData="selectRows" @getTableList="getTableList" ></backBtn>
+            <backBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_BACK_BUTTON|进度确认退回按钮" class="margin-right10" v-if="withAllBtn" backType="1" :backData="selectRows" @getTableList="getTableList" ></backBtn>
             <!--------------------保存按钮----------------------------------->
-            <saveBtn v-if="withAllBtn" saveType="1" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+            <saveBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SAVE_BUTTON|进度确认保存按钮" v-if="withAllBtn" saveType="1" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
             <!--------------------确认并发送按钮----------------------------------->
-            <confirmBtn v-if="withAllBtn" confirmType="1" :confirmData="selectRows" @getTableList="getTableList" ></confirmBtn>
+            <confirmBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SENDCONFIRM_BUTTON|进度确认确认并发送按钮" v-if="withAllBtn" confirmType="1" :confirmData="selectRows" @getTableList="getTableList" ></confirmBtn>
           </template>
         </div>
       </div>
@@ -86,12 +86,13 @@ import fsSelect from '@/views/project/components/commonSelect/fsSelect'
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 import iDicoptions from 'rise/web/components/iDicoptions'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,roleMixins],
   components: { iSearch, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, iInput, iButton, iCard, tableList, iPagination, fsConfirmDialog, confirmBtn, saveBtn, backBtn, transferBtn },
   data() {
     return {
-      searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {
         confirmStatus: 'TO_BE_CONFIRMED'
       },
@@ -122,6 +123,28 @@ export default {
     this.initSearchParams()
     this.getFSOPtions()
     this.getTableList()
+
+    // 判断一下是否包含以下角色 若包含则展示询价采购员搜索框
+    // ADMIN      超级管理员
+    // QQCGKZ     前期采购科长
+    // QQCGGZ     前期采购股长
+    // CGBZ       采购部长
+    // CIXTGLY    CI系统管理员
+    // CSXTGLY    CS系统管理员
+    // QQCGKZ_WF    前期采购科长_外方
+    // CGBZ_WF      采购部长_外方
+    if(this.$route.path.includes('proconfirm')){
+      const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+      const roleList = this.roleList;
+      let isIncludes = false;
+      roleList.map((item)=>{
+        if(list.includes(item)) isIncludes = true;
+      })
+      if(isIncludes) this.searchList = searchList
+    }else{
+      this.searchList = searchList
+    }
+
   },
   methods: {
     initSearchParams() {

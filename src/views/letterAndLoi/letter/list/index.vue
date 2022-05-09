@@ -28,7 +28,6 @@
 
         <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
         <div class="floatright">
-            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_QUERENBINGTIJIAO|定点信-确认并提交" :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIEQUEREN|定点信-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIETUIHUI|定点信-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -37,10 +36,12 @@
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|定点信-关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|定点信-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_DAOCHU|定点信-导出" @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
         </div>
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LETTER_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -49,8 +50,6 @@
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LETTER_LIST_TABLE|定点信-表格"
             ref="tableList"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
@@ -141,6 +140,7 @@ import {
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
 import {setPretreatmentParams} from '@/utils/tool'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'letterList',
     mixins: [pageMixins,tableSortMixins],
@@ -155,7 +155,8 @@ export default {
         turnSendDialog,
         closeLetterDialog,
         iCard,
-        icon
+        icon,
+        buttonTableSetting
     },
     data(){
         return{
@@ -273,12 +274,12 @@ export default {
         // 跳转定点申请详情页
         goToDesignate(row){
             console.log(row);
-            const { nominateAppId,nominateProcessType={} } = row;
+            const { nominateAppId, nominateProcessType } = row;
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
                 desinateId: nominateAppId, 
-                designateType: (nominateProcessType && nominateProcessType.code) || ''
+                designateType: nominateProcessType
             }
             })
             window.open(routeData.href, '_blank')

@@ -1,4 +1,4 @@
-;(function (global, factory) {
+(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
@@ -6357,7 +6357,38 @@
 		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: 'Cannot include scoring incomplete data',
 		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall',
 		FENTANJINE: 'Apportioned amount',
-		WEIFENTANJINE: 'Unassessed amount'
+		WEIFENTANJINE: 'Unassessed amount',
+		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: 'Cannot include scoring incomplete data',
+		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall',
+		DAORUXIANGCIHAO: 'Import item No.',
+		QIANYIQIANGONGCHANG: 'Old factory',
+		QIANYIHOUGONGCHANG: 'New factory',
+		CSFCSSCAIGOUYUAN: 'CSF/CSS buyer',
+		PICIZHUANGTAI: 'Batch status',
+		DAORUJILU: 'Import records',
+		SHANCHUPICI: 'Delete batch',
+		ZHIXING: 'Execute',
+		XINJIANPICI: 'New batch',
+		DAORUPICI: 'Import batch',
+		DAORUYONGHU: 'Import user',
+		DAORUSHIJIAN: 'Import date',
+		QUANBUMINGXIXIANG: 'All detail items',
+		CHENGGONG: 'Success',
+		SHIBAI: 'Failed',
+		JINKECAOZUODANTIAOSHUJU: 'Only a single piece of data can be manipulated',
+		DANGQIANPICIYIZHIXINGTIPS: 'The current batch has been executed and only the imported status is operable',
+		PICIZHONGCUNZAISHIBAIDEMINGXIXIANGTIPS: 'There is a failure detail item in the batch, please delete the failure record and then execute',
+		PICI: 'Batch',
+		MINGXIXIANG: 'Detail items',
+		MINGXIXIANGDAOCHU: 'Export detail items',
+		CHONGXINDAORU: 'Reimport',
+		BAOZHUANG: 'Pkg.',
+		YUNSHU: 'Shipping',
+		SHIFOUQUERENSHANCHUSUOXUANJILU: 'Whether to confirm the deletion of the selected record？',
+		SOPRIQICUNZAIGAIDONG: 'SOP date has been changed, please save and try again',
+		'FASONGCHANPINJINGLI':'',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'',
+		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A price change, whether to confirm the submission？',
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

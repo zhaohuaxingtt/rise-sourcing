@@ -71,11 +71,12 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
         <template v-slot:header-control>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
+          permissionKey="AEKO_STANCE"
           class="table"
           ref="tableList"
           index
@@ -85,8 +86,6 @@
           :tableLoading="loading"
           :selection="false"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号  -->
         <template #aekoCode="scope">
@@ -184,6 +183,7 @@ import {
 import aekoSelect from '../components/aekoSelect'
 import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins,roleMixins,tableSortMixins],
@@ -205,7 +205,8 @@ export default {
       switchPost,
       iMultiLineInput,
       iButton,
-      iLoger
+      iLoger,
+      buttonTableSetting
     },
     data(){
       return{
@@ -346,10 +347,10 @@ export default {
             data['deadLineEnd'] = deadLine[1];
         }
 
-        // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-        if(partNum && partNum.trim().length < 9){
+        // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
+        if(partNum && partNum.trim().length < 3){
           this.loading = false;
-          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
         }
         await getLiniePage({...searchParams,...data}).then((res)=>{
           this.loading = false;

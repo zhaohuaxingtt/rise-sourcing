@@ -45,10 +45,10 @@
               </span>
             </template>
             <template #tto="scope">
-              <span>{{ scope.row.tto | toThousands }}</span>
+              <span>{{ scope.row.tto | toFixed | toThousands }}</span>
             </template>
             <template #share="scope">
-              <span>{{ scope.row.share + `${ scope.row.share ? '%' : '' }` }}</span>
+              <span>{{ (scope.row.share && +scope.row.share) + `${ scope.row.share ? '%' : '' }` }}</span>
             </template>
           </tablelist>
         </div>
@@ -89,7 +89,14 @@ export default {
     tablelist
   },
   filters: {
-    toThousands
+    toThousands,
+    toFixed(value, precision = 2) {
+      if (value && math.hasNumericValue(value)) {
+        return math.bignumber(value).toFixed(precision)
+      }
+
+      return ""
+    },
   },
   data() {
     return {
@@ -180,7 +187,7 @@ export default {
                   props: `ltc_${year}`,
                   name: `LTC ${year}`,
                   key: `LTC ${year}`,
-                  width: 200,
+                  width: 70,
                   tooltip: false
                 })
               })
@@ -235,23 +242,23 @@ export default {
         min-height: 90%;
         &::-webkit-scrollbar{
           /*width: 0;宽度为0隐藏*/
-          width: 0;
+          // width: 0;
 
         }
         &::-webkit-scrollbar{
           /*width: 0;宽度为0隐藏*/
-          width: 0;
+          // width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }

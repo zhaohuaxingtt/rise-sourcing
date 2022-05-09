@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-11-29 13:51:50
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-18 10:45:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\data.js
  */
@@ -37,6 +37,16 @@ export const MENU = [
     key: 'YANWUYUANYINQUEREN',
     permissionKey: 'PROJECTMGT_DELAYCONFIRM_PAGE',
     permissionName: '项目管理-排程助手-延误原因确认页面'
+  },
+  {
+    value: 4,
+    name: '进度确认',
+    message: 0,
+    url: '/projectmgt/projectprogressmonitoring/proconfirm',
+    activePath: 'proconfirm',
+    key: 'JINDUQUEREN',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PAGE',
+    permissionName: '项目管理-排程助手-进度确认汇总页面'
   },
 ]
 

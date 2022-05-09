@@ -8,7 +8,7 @@
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
-      <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
+      <designateStep v-if="isPreview=='0'" :showDecision="showDecision" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
@@ -106,6 +106,12 @@ export default {
             this.$store.dispatch('setNominationType', res.data.nominateProcessType)
             this.$store.dispatch('setMtzAppid',res.data.mtzApplyId)
             this.$store.dispatch('setNominateData',res.data || {})
+
+            const query = this.$router.history.current.query
+            const path = this.$router.history.current.path
+            const newQuery = JSON.parse(JSON.stringify(query))
+            newQuery.designateType = res.data.nominateProcessType
+            this.$router.replace({path, query: newQuery})
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -170,4 +176,26 @@ export default {
     line-height: calc(100vh - 360px);
   }
 }
+
+  ::v-deep .pdf-item{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    .rsPdfCard{
+      box-shadow: none;
+      & + .rsCard {
+        margin-top: 20px; /*no*/
+      }
+      .cardHeader{
+        padding: 30px 0px;
+      }
+      .cardBody{
+        padding: 0px;
+      }
+    }
+  }
+  ::v-deep .pageCard-main{
+    overflow: hidden;
+    margin-top: 20px;
+  }
 </style>

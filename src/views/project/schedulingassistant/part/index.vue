@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 11:24:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:07:12
  * @Description: 零件排程页面
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div>
-          <iButton @click="handleSure">{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
           <iButton @click="handleReset">{{language('CHONGZHI','重置')}}</iButton>
         </div>
       </div>

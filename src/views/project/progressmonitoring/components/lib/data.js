@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-12-28 10:04:59
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-23 15:59:08
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\data.js
  */
@@ -134,7 +134,7 @@ export const projectRisk = [
   },
   {
     code: '2',
-    name: '低风险',
+    name: '中风险',
   },
   {
     code: '3',

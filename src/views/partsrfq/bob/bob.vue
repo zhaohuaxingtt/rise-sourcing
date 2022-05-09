@@ -42,9 +42,12 @@
           <div class="floatright">
             <!-- v-if="disabled"-->
             <div v-if="!edit">
-              <iButton @click="newBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_ADD">{{ language('XINJIAN', '新建') }}</iButton>
-              <iButton @click="editBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_EDIT">{{ language('BIANJI', '编辑') }}</iButton>
-              <iButton @click="deleteBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_REMOVE">{{ language('SHANCHU', '删除') }}</iButton>
+              <iButton @click="newBob"
+                       v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_ADD">{{ language('XINJIAN', '新建') }}</iButton>
+              <iButton @click="editBob"
+                       v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_EDIT">{{ language('BIANJI', '编辑') }}</iButton>
+              <iButton @click="deleteBob"
+                       v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_REMOVE">{{ language('SHANCHU', '删除') }}</iButton>
             </div>
             <div v-else>
               <iButton @click="cancelEditBob">{{ language('QUXIAO', '取消') }}</iButton>
@@ -141,15 +144,18 @@
           <el-table-column :label="$t('TPZS.WJLX')"
                            prop="fileType"
                            align="center"
-                           header-align="center"> </el-table-column>
+                           header-align="center"
+                           width="100"> </el-table-column>
           <el-table-column :label="$t('TPZS.CJR')"
                            prop="createNameZh"
                            align="center"
+                           width="120"
                            header-align="center"> </el-table-column>
           <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
                            prop="createDate"
                            show-overflow-tooltip
                            align="center"
+                           width="140"
                            header-align="center"> </el-table-column>
           <el-table-column :label="$t('TPZS.SCXGRQ')"
                            prop="updateDate"

@@ -67,14 +67,14 @@ export const allTableHead = [
     props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
-    width: 90,
+    width: 110,
     tooltip: false
   },
   {
     props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
-    width: 90,
+    width: 100,
     tooltip: false
   },
   {
@@ -94,6 +94,7 @@ export const allTableHead = [
     props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
+    width: 100,
     tooltip: false
   },
   {
@@ -119,6 +120,7 @@ export const allTableHead = [
     props: 'akeoTypeName',
     name: 'AEKO类型',
     key: 'LK_AEKOLEIXING',
+    width: 100,
     tooltip: false
   },
   {
@@ -309,6 +311,7 @@ export const aekoTableHead = [
     props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
+    width: 100,
     tooltip: false
   },
   {
@@ -420,6 +423,7 @@ export const aekoBmTableHead = [
     props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
+    width: 100,
     tooltip: false
   },
   {

@@ -10,12 +10,28 @@
 <template>
   <div>
     <div v-if="isApproval">
-      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" />
-      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" />
+      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+      </circulation>
+      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+      </meeting>
     </div>
-    <div v-else v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs">
-      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
-      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
+    <div v-else v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS|定点记录-RS']">
+      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_CIRCULATION|定点记录-circulation']" >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+      </circulation>
+      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_METTING|定点记录-meeting']" >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+      </meeting>
     </div>
   </div>
 </template>

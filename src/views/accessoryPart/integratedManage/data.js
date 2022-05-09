@@ -2,35 +2,35 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 09:37:06
+ * @LastEditTime: 2022-04-02 12:55:26
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
 
 export const tableTitle = [
-  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left"},
-  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left"},
-  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100, fixed: "left"},
-  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 120, fixed: "left"},
-  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 120, fixed: "left"},
-  {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},
-  {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
-  {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
-  {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 140},
-  {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100},
-  {props:'csfuserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true},
-  {props:'csfuserName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 100},
-  {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
-  {props:'brand',name:'品牌', key: "PINPAI", tooltip: true},
-  {props:'stateDesc',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
-  {props:'accessoryStatusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
-  {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
-  {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
-  {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
-  {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
-  {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
-  {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true},
-  {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
+  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left", sortable: true},
+  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left", sortable: true},
+  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 105, fixed: "left", sortable: true},
+  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 150, fixed: "left", sortable: true},
+  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 120, fixed: "left", sortable: true},
+  {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140, sortable: true},
+  {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120, sortable: true},
+  {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240, sortable: true},
+  {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 140, sortable: true},
+  {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100, sortable: true},
+  {props:'csfuserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true, width: 105, sortable: true},
+  {props:'csfuserName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 120, sortable: true},
+  {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true, width: 105, sortable: true},
+  {props:'brand',name:'品牌', key: "PINPAI", tooltip: true, sortable: true},
+  {props:'stateDesc',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120, sortable: true},
+  {props:'accessoryStatusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120, sortable: true},
+  {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 185, sortable: true},
+  {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120, sortable: true},
+  {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140, sortable: true},
+  {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true, sortable: true, width: 90},
+  {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true, sortable: true, width: 105},
+  {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true, sortable: true},
+  {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 135, sortable: true},
 ]
 
 export const tableMockData = [

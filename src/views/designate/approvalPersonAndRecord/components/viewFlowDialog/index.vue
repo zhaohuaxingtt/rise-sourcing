@@ -75,12 +75,10 @@ export default {
     }
   },
   watch: {
-    detail(val) {
-      console.log('detail', val)
-      this.queryPanoramas()
-    },
     visible(val) {
       this.dialogVisible = val
+
+      if (val) this.queryPanoramas()
     }
   },
   created() {

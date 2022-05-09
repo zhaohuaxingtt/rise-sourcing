@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2022-02-25 13:50:00
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 15:33:09
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -27,9 +27,6 @@
           ></el-option>
         </iSelect>
       </div>
-      <!-- <span class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
-      </span> -->
     </template>
     <tableList
       v-loading="loading"
@@ -39,11 +36,7 @@
       :selection="false"
       :tableTitle="tableTitle"
       :tableData="tableData"
-      v-permission.auto="
-        AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO | 零件列表
-      "
-      :handleSaveSetting="handleSaveSetting"
-      :handleResetSetting="handleResetSetting"
+      v-permission.auto="AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO | 零件列表"
     >
       <template #originAPrice="scope">
         <el-popover placement="top" trigger="hover">

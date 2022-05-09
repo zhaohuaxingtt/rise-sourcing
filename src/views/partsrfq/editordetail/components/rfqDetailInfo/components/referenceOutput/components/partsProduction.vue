@@ -93,7 +93,8 @@ export default {
                 {props: 'sum', name: 'Sum'},
                 {props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO'},
             )
-            this.tableTitle = this.tableTitle.concat(yearTitle)
+
+            this.tableTitle = partsProductionTableTitle.concat(yearTitle)
             this.tableListData = this.tableListData.map(item => {
               item.outputPlanList.map(item2 => {
                 item[item2.year] = item2.outPut

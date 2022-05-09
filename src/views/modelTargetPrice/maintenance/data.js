@@ -1,27 +1,27 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-08 17:41:49
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 15:36:00
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\data.js
  */
 
 
 export const tableTitle = [
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true},
-  {props:'rfqName',name:'RFQ名称', key: "RFQMINGCHENG", tooltip: true},
-  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
-  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'cfName',name:'CF', key: "CF", tooltip: true, width: 100},
-  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
-  {props:'taskStateDesc',name:'任务状态', key: "RENWUZHUANGTAI", tooltip: true},
-  {props:'approvalStateDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
-  {props:'applicationDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'endDate',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'returnDate',name:'返回日期', key: "FANHUIRIQI", tooltip: true, width: 120},
-  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true},
-  {props:'remarks',name:'备注', key: "BEIZHU", tooltip: true, width: 120}
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, sortable: true},
+  {props:'rfqName',name:'RFQ名称', key: "RFQMINGCHENG", tooltip: true, sortable: true},
+  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true},
+  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true},
+  {props:'cfName',name:'CF', key: "CF", tooltip: true, width: 100, sortable: true},
+  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true, sortable: true},
+  {props:'taskStateDesc',name:'任务状态', key: "RENWUZHUANGTAI", tooltip: true, sortable: true},
+  {props:'approvalStateDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, sortable: true},
+  {props:'applicationDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'endDate',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'returnDate',name:'返回日期', key: "FANHUIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, sortable: true},
+  {props:'remarks',name:'备注', key: "BEIZHU", tooltip: true, width: 120, sortable: true}
 ]
 
 export const tableMockData = [

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-07 14:23:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-28 14:56:10
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -15,10 +15,10 @@
         <span class="periodicView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
-        <iButton @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
-        <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
-        <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_QIEHUANJIEDIANSHITU_BUTTON|产品组排程-切换节点视图-按钮" @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SAVE_BUTTON|产品组排程-保存-按钮" @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SENDFS_BUTTON|产品组排程-发送FS确认-按钮" @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_DAOCHUFASONGPV_BUTTON|产品组排程-导出发送PV/PK清单-按钮" @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}} ( {{language('FASONGCHANPINJINGLI', '发送产品经理')}} ) </iButton>
       </div>
     </div>
     <div class="periodicView-content">
@@ -331,25 +331,36 @@ export default {
         }
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
+        const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
         // console.log(nextThreeWorkDay)
         this.fsTableList = canSendRows.map(item => {
-          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
-          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
-          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
-            if (item.userId) {
-              return [...accu, {
-                ...item,
-                value: item.userId,
-                label: item.userName
-              }]
-            } else {
-              return accu
+          // const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
+          // const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
+          // const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
+          //   if (item.userId) {
+          //     return [...accu, {
+          //       ...item,
+          //       value: item.userId,
+          //       label: item.userName
+          //     }]
+          //   } else {
+          //     return accu
+          //   }
+          // },[]) : []
+          let fs = '';
+          const fsId = buyerUserMap[item.productGroupId] ? buyerUserMap[item.productGroupId]+'' : '';
+          userInfoVOList.map((userItem)=>{
+            userItem.value = userItem.userId;
+            userItem.label = userItem.userName;
+            if(fsId && userItem.userId == fsId){
+              fs = userItem.userName
             }
-          },[]) : []
+          })
+
           return {
             ...item,
-            cartypeProject: this.carProjectName,
+            cartypeProject: item.cartypeProName,
             scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
             scheFirstTryEmWeek: item.keyFirstTryEmWeek,
             scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
@@ -358,7 +369,8 @@ export default {
             confirmDateDeadline: nextThreeWorkDay,
             projectPurchaser: this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn,
             projectPurchaserId: this.$store.state.permission.userInfo.id,
-            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
+            // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
+             selectOption:userInfoVOList || [],
             fs: fs,
             fsId: fsId
           }
@@ -387,6 +399,9 @@ export default {
         let { year, month, day } = res.data[res.data.length - 1]
         if(+day <10){
           day = '0'+day
+        }
+        if(+month < 10){
+          month = '0'+month
         }
         return year + '-' + month + '-' + day
       }

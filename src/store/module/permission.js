@@ -115,7 +115,6 @@ const actions = {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
             mergeMenuToresouce(res.data.resourceList, res.data.menuList)
-            console.log(res.data.resourceList)
             commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
             r(res.data.menuList || [])
           } else {

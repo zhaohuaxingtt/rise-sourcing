@@ -262,7 +262,7 @@ export default {
       this.readQuotationLoading = true
       const params = {
         nominateAppId: this.$route.query.desinateId,
-        nomiMaintenanceRecordIdlist: this.selectedTableData.map(item => item.nominateRecordId)
+        nomiMaintenanceRecordIdlist: this.selectedTableData.map(item => item.nomiMaintenanceRecordId)
       }
       // this.selectedTableData.map(item => {
       //     return {
@@ -384,6 +384,8 @@ export default {
      * @return {*}
      */    
     getTableList() {
+      this.tableLoading = true
+
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
           this.partProjectType = res.data?.partProjectType
@@ -412,6 +414,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
     },
     handleSelectionChange(val) {
       this.selectedTableData = val

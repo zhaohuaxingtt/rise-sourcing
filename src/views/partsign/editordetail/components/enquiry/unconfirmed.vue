@@ -88,6 +88,11 @@ export default {
   created() {
     this.getAttachmentVersion()
   },
+  watch: {
+    data() {
+      this.getAttachmentVersion()
+    }
+  },
   methods: {
     getAttachmentVersion() {
       this.loading = true

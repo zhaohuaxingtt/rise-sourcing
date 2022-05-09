@@ -21,7 +21,6 @@
 			<iButton @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
-      <!-- <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
     </div>
     <tableList
       height="400"

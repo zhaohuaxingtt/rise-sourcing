@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:22:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-29 17:36:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-06 14:37:40
  * @Description: 确认并发送按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\confirmBtn.vue
 -->
@@ -53,6 +53,11 @@ export default {
       }
     },
     confirmSchedule() {
+      // 数据冻结-1st tryout (周) [scheBfToFirstTryoutWeek] 1st tryout-EM (周)[scheFirstTryEmWeek]  1st tryout-OTS (周)[scheFirstTryOtsWeek] 需判断这三个字段是否为空
+      const {confirmData = [] } = this;
+      for(var i = 0;i<confirmData.length;i++){
+        if(!confirmData[i]['scheBfToFirstTryoutWeek'] || !confirmData[i]['scheFirstTryEmWeek'] || !confirmData[i]['scheFirstTryOtsWeek']) return iMessage.warn(this.language('LK_AEKO_QINGTIANXIEWANZHENGHOUTIJIAO','请填写完整后提交'));
+      }
       this.loading = true
       confirmSchedule(this.confirmData).then(res => {
         if (res?.result) {

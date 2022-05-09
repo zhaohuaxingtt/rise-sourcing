@@ -18,6 +18,7 @@
         <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
         <iInput
             disabled
+            class="text-disabled"
             type="textarea"
             rows="10" 
             resize="none"
@@ -61,7 +62,6 @@
                     <!-- aeko状态为已撤销的时候禁用解冻按钮 -->
                     <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
                 </template>
-                <!-- <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
             </p>
             <tableList
                 index
@@ -218,6 +218,7 @@ export default {
                       this.$emit('getBbasicInfo');
                       this.getLinie()
                     }
+                    this.basicInfo.fsName = Array.from(new Set(data.fsName.split(','))).join(',');
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -344,6 +345,11 @@ export default {
                 color: #f56c6c;
                 margin-right: 4px;
                 display: inline-block;
+                }
+            }
+            ::v-deep .el-textarea{
+                &.text-disabled.is-disabled .el-textarea__inner{
+                    color: #505050;
                 }
             }
         .summaryTable{

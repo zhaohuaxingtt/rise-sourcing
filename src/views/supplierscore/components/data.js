@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 14:36:13
- * @LastEditTime: 2021-12-06 16:47:00
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-25 15:40:46
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\supplierscore\components\data.js
  */
@@ -36,14 +36,14 @@ export const queryForm = {
 }
 
 export const tableTitle = [
-  { props: "rfqId", name: "RFQ编号", key: "RFQBIANHAO", tooltip: true },
-  { props: "rfqName", name: "RFQ名称", key: "RFQMINGCHENG", tooltip: true },
-  { props: "rfqType", name: "RFQ类型", key: "RFQLEIXING", tooltip: true },
-  { props: "rfqStatus", name: "RFQ状态", key: "RFQZHUANGTAI", tooltip: true },
-  { props: "buyerName", name: "询价采购员", key: "XUNJIACAIGOUYUAN", tooltip: true },
-  { props: "linie", name: "LINIE", key: "LINIE", tooltip: true },
-  { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true },
-  { props: "currentRoundsEndTime", name: "报价截止日期", key: "BAOJIAJIEZHIRIQI", tooltip: true }
+  { props: "rfqId", name: "RFQ编号", key: "RFQBIANHAO", tooltip: true, sortable: true },
+  { props: "rfqName", name: "RFQ名称", key: "RFQMINGCHENG", tooltip: true, sortable: true },
+  { props: "rfqType", name: "RFQ类型", key: "RFQLEIXING", tooltip: true, sortable: true },
+  { props: "rfqStatus", name: "RFQ状态", key: "RFQZHUANGTAI", tooltip: true, sortable: true },
+  { props: "buyerName", name: "询价采购员", key: "XUNJIACAIGOUYUAN", tooltip: true, sortable: true },
+  { props: "linie", name: "LINIE", key: "LINIE", tooltip: true, sortable: true },
+  { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true, sortable: true, showTips: true, tips: () => `<span>${ localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status' }</span>` },
+  { props: "currentRoundsEndTime", name: "报价截止日期", key: "BAOJIAJIEZHIRIQI", tooltip: true, sortable: true }
 ]
 
 export const afterSaleLeaderIds = [ 1016, 1018, 1023, 1024, 1025, 1026 ]

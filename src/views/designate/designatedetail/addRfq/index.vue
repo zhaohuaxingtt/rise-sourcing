@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-02 22:59:55
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:30:27
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -54,20 +54,19 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
-            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleSelect">{{language('XUANZE','选择')}}</iButton>
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </div>
       </div>
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
         <tableList
+          permissionKey="DESIGNATE_DESIGNATEDETAIL_ADDRFQ"
           ref="tableList" 
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
           lang
           :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'>
           <template #kmAnalysis="scope">
@@ -113,9 +112,11 @@ import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
 import { downloadFile, downloadUdFile } from "@/api/file"
 import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 import { selectDictByRootKeys } from "@/api/dictionary"
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
+  components: { iPage, iCard, 
+  buttonTableSetting, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
   data() {
     return {
       tableListData: [],

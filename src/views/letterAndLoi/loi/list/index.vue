@@ -28,7 +28,6 @@
         <div class="margin-bottom20 clearFloat">
          <span class="font18 font-weight">{{language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')}}</span>
             <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_QUERENBINGTIJIAO|LOI-确认并提交"  :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIEQUEREN|LOI-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIETUIHUI|LOI-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -36,11 +35,13 @@
                 <iButton v-permission.auto="LK_LOI_LIST_GUANBI|LOI-关闭"  @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_JIHUO|LOI-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_EDITREMARK|LOI-编辑备注" @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
             </div> 
         </div>
         <!-- </template> -->
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LOI_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -48,8 +49,6 @@
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LOI_LIST_TABLE|LOI-表格"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             ref="tableList"
         >
             <!-- 定点申请单号 -->
@@ -128,6 +127,7 @@ import {
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
 import {setPretreatmentParams} from '@/utils/tool'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'loiList',
      mixins: [pageMixins,tableSortMixins],
@@ -142,7 +142,8 @@ export default {
         iCard,
         closeLoiDialog,
         remarkDialog,
-        icon
+        icon,
+        buttonTableSetting
     },
     data(){
         return{
@@ -250,12 +251,12 @@ export default {
         },
         
         // 跳转定点申请详情页
-        goToDesignate(row){
+        goToDesignate(row) {
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
                 desinateId: row.nominateAppId, 
-                designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+                designateType: row.nominateProcessType
             }
             })
             window.open(routeData.href, '_blank')

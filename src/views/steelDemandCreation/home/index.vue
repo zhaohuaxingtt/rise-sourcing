@@ -32,19 +32,18 @@
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('GANGCAICHUANGJIAN','钢材创建') }}</span>
         <div  class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton @click="downloadTemplate" v-permission.auto="SOURCING_STEELDEMANCREATION_BATCHDOWNLOADTEMPLATE|下载批量模板">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
           <el-upload class="uploadfile margin-left10" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}/steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne" v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEONCE|上传文件一次性">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
           <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile margin-left10" :headers="{'token':getToken()}" :action="`${baseUrl}/steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEBATCH|上传文件批量">{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
           <iButton class="margin-left10" @click="print(1)" :loading='printLoadingOne' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTONCE|打印定点流转单一次性">{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
           <iButton @click="print(2)" :loading='printLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTBATCH|打印定点流转单批量">{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablePart
+        permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
@@ -88,11 +87,12 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { selectDictByKeys } from "@/api/dictionary"
 import {getBuyers} from '@/api/letterAndLoi/letter'
 import {user} from '@/config'
+import buttonTableSetting from '@/components/buttonTableSetting'
 import {getToken} from '@/utils'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins,tableSortMixins],
-  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav},
+  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav,buttonTableSetting},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()

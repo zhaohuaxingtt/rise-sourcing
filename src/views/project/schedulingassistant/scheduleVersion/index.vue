@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-10 16:19:58
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:37:03
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -14,25 +14,26 @@
     <iCard class="margin-top20" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 批量下载排程版本 -->
           <iButton
             :loading="batchUploading"
             @click="batchDownload"
+             v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_DOWNLOAD_BUTTON|排程版本查询-下载-按钮"
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
-      <tableList indexKey
+      <tableList
+                permissionKey="PROJECT_SCHEDULINGASSISTANT_SCHEDULEVERSION"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
                  :tableData="tableData"
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #versionName="scope">
          <span class="flexRow-link">
@@ -65,10 +66,10 @@ import {
 } from '@/api/project/scheduleVersion'
 // 导入rise附件下载方法
 import {downloadFile} from 'rise/web/components/iFile/lib'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins, tableSortMixins ],
-  components: { iCard, iPagination, iButton, search, tableList },
+  components: { iCard, iPagination, iButton, search, tableList,buttonTableSetting },
   data() {
     return {
       tableTitle,

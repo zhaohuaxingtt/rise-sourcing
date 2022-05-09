@@ -1,25 +1,22 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 00:52:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-28 11:05:56
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
-  <div class="circulation" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
+  <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
+    <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
+      <div ref="tabTitle" style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
             <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
-          </div>
-          <div class="btnWrapper">
-            <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-            <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
-            <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
         </template>
         <div class="infos position-infos">
@@ -27,7 +24,7 @@
             <div class="info">
               <span class="label">{{ info.name }}：</span>
               <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
-              <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+              <!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
               <div v-else>{{ basicData[info.props] }}</div>
             </div>
           </div>
@@ -152,47 +149,20 @@
             <span>{{ +scope.row.share || 0 }}</span>
           </template>
         </tableList>
-        <div class="position-compute out-compute">
+        <div class="require-start">
           <div style="margin-left:20px">
             <span style="color: red">*</span><span>代表投资费已分摊</span>
           </div>
+        </div>
+        <div class="position-compute out-compute">
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+              <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           </div>
       </iCard>
-      <div v-if="!isRoutePreview && !isApproval">
-        <iCard :title="language('BEIZHU','备注')"
-              :class="!isPreview && 'margin-top20'">
-          <template slot="header-control" v-if="!isPreview">
-            <iButton v-if="!isRoutePreview && !isApproval && !isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
-            <template v-else>
-              <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
-              <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
-              <iButton @click="handleSaveRemarks"
-                      :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
-              <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
-            </template>
-          </template>
-          <div class="meetingRemark">
-            <div class="meetingRemark-item"
-                v-for="(item, index) in remarkItem"
-                :key="index">
-              <el-checkbox v-if="!isPreview"
-                          v-model="item.checked"></el-checkbox>
-              <iInput v-model="item.value"
-                      class="margin-top10"
-                      :class="!isPreview && 'margin-left20'"
-                      type="textarea"
-                      :rows="3"
-                      resize="none"></iInput>
-            </div>
-          </div>
-        </iCard>
-      </div>
       <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
@@ -237,151 +207,43 @@
                     :layout="page.layout"
                     :total="page.totalCount" />
       </iCard>
+      <div class="page-logo" ref="logo">
+        <img
+          src="../../../../../../../assets/images/logo.png"
+          alt=""
+          :height="46 * 0.6 + 'px'"
+          :width="126 * 0.6 + 'px'"
+        />
+        <div>
+          <p class="pageNum"></p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+        </div>
+      </div>
     </div>
-    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}">
-      <!-- <iCard class="rsCard">
-        <tableList
-          :tableLoading="tableLoading"
-          :selection="false"
-          :tableTitle="tableTitleSub"
-          :tableData="tableData"
-          class="rsTable mainTable"
-          :tableRowClassName="tableRowClassName"
-          border>
-          <template #fsnrGsnrNum="scope">
-            <div>
-              <p>{{ scope.row.fsnrGsnrNum }}</p>
-              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-            </div>
-          </template>
-          <template #oldAPrice="scope">
-            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-          </template>
-          <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-          </template>
-          <template #rw="scope">
-            <span>{{ scope.row.rw | toThousands(true) }}</span>
-          </template>
-          <template #packPrice="scope">
-            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
-          </template>
-          <template #transportPrice="scope">
-            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-          </template>
-          <template #operatePrice="scope">
-            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-          </template>
-          <template #turnover="scope">
-            <span>{{ scope.row.turnover | toThousands(true) }}</span>
-          </template>
-
-          <template #ltc="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-          </template>
-
-          <template #beginYearReduce="scope">
-            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
-
-          <template #svwCode="scope">
-            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-          </template>
-
-          <template #aprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.aprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
-          </template>
-
-          <template #bprice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.bprice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
-            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
-          </template>
-
-          <template #investFee="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-                </div>
-              </el-popover>
-            </div>
-            <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            </span>
-            <span v-else>
-              <el-popover
-                placement="top-start"
-                width="200"
-                trigger="hover"
-                :disabled="!scope.row.investFeeIsShared">
-                <div>
-                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-                </div>
-                <div slot="reference">
-                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-                </div>
-              </el-popover>
-            </span>
-          </template>
-
-          <template #remarks="scope">
-            <div>
-              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
-              <span v-else>{{ scope.row.remarks }}</span>
-            </div>
-          </template>
-
-          <template #savingFee="scope">
-            <span>{{ scope.row.savingFee | toThousands(true) }}</span>
-          </template>
-
-          <template #share="scope">
-            <span>{{ +scope.row.share || 0 }}</span>
-          </template>
-        </tableList>
-      </iCard> -->
+    <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}" :key="key">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :infos="infos"
         :basicData="basicData"
-        :titleData="titleData"
         :tableTitle="tableTitleSub"
         :tableData="tableData"
         :tableList="tableList"
-        :firstCount="firstCount"
-        :count="count"
         :remarkItem="remarkItem"
-        :projectType="projectType"
-        :isApproval="isApproval"
-        :exchangeRageCurrency="exchangeRageCurrency"
+        :remarkList="remarkList"
         :checkList="checkList"
         :tableHeight="tableHeight"
-        :otherTableHeight="otherTableHeight"
+        :otherPageHeight="otherPageHeight"
+        :hasOtherPage="hasOtherPage"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
-        />
+        >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+        </rsPdf>
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -431,7 +293,7 @@
           <iButton :loading="loading" :disabled="disabled" v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <div class="infos position-infos">
+      <div class="infos">
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
@@ -448,7 +310,6 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
-        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
@@ -561,14 +422,14 @@
           <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
-      <div class="position-compute out-compute">
+      <div class="position-compute">
         <div style="margin-left:20px">
           <span style="color: red">*</span><span>代表投资费已分摊</span>
         </div>
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
           </div>
         </div>
         </div>
@@ -653,7 +514,7 @@
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos, dateFilter } from './data'
-import { resetLtcData } from '../meeting/data'
+import { resetLtcData, remarkProcess } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
@@ -661,7 +522,6 @@ import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
 import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
 import { pageMixins } from '@/utils/pageMixins'
-import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
@@ -671,6 +531,9 @@ import {
     uploadUdFile
 } from '@/api/file/upload'
 import filters from "@/utils/filters"
+
+
+import {cloneDeep} from 'lodash'
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
@@ -685,7 +548,8 @@ export default {
   },
   data () {
     return {
-      tableList:[],
+      key:'0',
+      tableList:[[]],
       loading: false,
       // 零件项目类型
       partProjTypes,
@@ -712,11 +576,10 @@ export default {
       editStatus: false,
       saveLoading: false,
       tableLoading: false,
-      firstCount: 0,
-      count: 0,
       tableHeight:0,
-      otherTableHeight:0,
+      otherPageHeight:0,
       fileList:[],
+      remarkList:[],
       infos,
       exchangeRate: "",
       processApplyDate: ""
@@ -750,6 +613,12 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitle
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
 
       return nomalTableTitle
@@ -761,70 +630,102 @@ export default {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
         return gsTableTitleSub
+      }else if(this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI){ // 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
+        const tableTitle = cloneDeep(nomalTableTitleSub); // 
+        tableTitle.map((item)=>{
+          if(item.props == 'partNum') item.props = 'oldPartNum';
+        })
+        return tableTitle
       }
       return nomalTableTitleSub
     },
     pageWidth(){
+      // 多加2px 避免出现滚动条
       if (this.projectType === partProjTypes.PEIJIAN) {
         return 2052
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return 2022
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return 1720
+        return 1722
       }
-      return 1728
+      return 1730
+    },
+    pageHeight() {
+      return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
     },
     isRoutePreview() {
       return this.$route.query.isPreview == 1
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
-    }
+    },
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
+  },
+  created(){
+    this.key = +new Date()
   },
   methods: {
+    remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth  // 打印区域宽度
-      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeader = 49  // 表头高度
-      let headerHeight = 84 // 顶部标题高度
-      let pageLogo = 52     // logo 区域高度
-      let computeHeight = document.getElementsByClassName('demo')[0].getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
-      let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-      let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      // let tableHeader = 49  // 表头高度
+      // let headerHeight = 84 // 顶部标题高度
+      // let pageLogo = 52     // logo 区域高度
+        this.hasTitle = this.$refs.tabTitle.clientHeight
+        let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+        let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+      let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
       // 第一页
-      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo  // 表格区域高度, 用div支撑空间
-      // 第二页
-      // this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
-      let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
+      // 独立备注页
+      this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
+      let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0
       let tableList = []
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         // if(tableList.length==0){
-          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
             heightSum=item.offsetHeight
             arr = [this.tableData[i]]
           }
-        // }else{
-        //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-        //     arr.push(this.tableData[i])
-        //   }else{
-        //     tableList.push(JSON.parse(JSON.stringify(arr)))
-        //     heightSum=item.offsetHeight
-        //     arr = [this.tableData[i]]
-        //   }
-        // }
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      // if(tableList.length==1) this.tableHeight -= 2
+      this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+      if(this.hasOtherPage){
+          let itemHeight = 0
+          let list = []
+          let itemList =[]
+          if(this.otherPageHeight<outEl){ // 需要分页
+            let remarkList = this.$refs.circulation.getElementsByClassName('remarkItem')  //备注信息
+            remarkList.forEach((item,i)=>{
+              itemHeight+=item.offsetHeight
+              if(itemHeight<this.otherPageHeight - 24){ // 上下padding各12
+                list.push(this.remarkItem[i])
+              }else{
+                itemList.push(JSON.parse(JSON.stringify(list)))
+                itemHeight=item.offsetHeight
+                list = [this.remarkItem[i]]
+              }
+            })
+            itemList.push(JSON.parse(JSON.stringify(list)))
+          }else{
+            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
+          }
+          this.remarkList = itemList
+        }
       },1000)
     },
     downloadFile () {
@@ -928,6 +829,7 @@ export default {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.getRemark()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -963,8 +865,8 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data || {}
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = res.data?.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
           } else {
@@ -987,9 +889,7 @@ export default {
       .finally(() => {
         this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })
       })
     },
@@ -999,9 +899,9 @@ export default {
       reviewListRs(this.nominateId)
       .then(res => {
         if (res.code == 200) {
-          this.basicData = res.data
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.basicData = res.data || {}
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = this.basicData.partProjectType || ''
 
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
@@ -1021,12 +921,10 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
-      .finally(() => {this.tableLoading = false
-      
+      .finally(() => {
+        this.tableLoading = false
         this.$nextTick(()=>{
-          setTimeout(()=>{
-            this.getHeight()
-          },1000)
+          this.getHeight()
         })})
     },
     /**
@@ -1061,16 +959,11 @@ export default {
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-      let elList = document.getElementsByClassName('pageCard')
-      if(!elList.length){
-        iMessage.warn('无数据')
-        this.loading = false
-        return
-      }
       setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard')
+        let elList = this.$refs.circulation.getElementsByClassName('pageCard')
         if(!elList.length){
           iMessage.warn('无数据')
+          this.loading = false
           return
         }
         for (let i = 0; i < elList.length; i++) {
@@ -1111,6 +1004,8 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
+          this.init()
+          this.$store.dispatch('sourcing/updatePdfPage')
         } else {
           iMessage.error(message)
         }
@@ -1126,7 +1021,7 @@ export default {
     }) {
       await html2canvas(dom, {
         dpi: 96, //分辨率
-        scale: 1, //设置缩放
+        scale: 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
@@ -1189,7 +1084,7 @@ export default {
       let arr = this.fileList.filter(item=>item.imageUrl)
       if(arr.length!=this.fileList.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.pageWidth, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
     },
 
@@ -1201,7 +1096,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(res.data[0].objectUrl);
+            // console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -1237,7 +1132,7 @@ export default {
 
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+      return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
     },
 
     /**
@@ -1373,9 +1268,14 @@ export default {
       border-left: 1px solid #EBEEF5;
       border-bottom: 1px solid #EBEEF5;
        td {
+        border-top: 1px solid #ccc;
         & > .cell{
           padding-right: 1px; /*no*/
           padding-left: 1px; /*no*/
+          
+          &:first-child{
+          padding-left: 8px; /*no*/
+          }
         }
       }
     }

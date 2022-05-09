@@ -1,44 +1,44 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 15:11:44
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 14:53:36
  * @Description: 
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\data.js
  */
 
 export const tableTitle = [
-  {props:'partNum',name:'附件零件号', key: "FUJIANLINGJIANHAO", tooltip: true, minWidth: 110, fixed: "left"},
-  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120},
-  {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100},
-  {props:'item',name:'导入项次', key: "DAORUXIANGCI", tooltip: true, minWidth: 100},
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100},
-  {props:'csfuserDeptName',name:'CSF科室', key: "CSFKESHI", tooltip: true, minWidth: 140},
-  {props:'csfUser',name:'CSF', key: "CSF", tooltip: true, minWidth: 100},
-  {props:'linieDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, minWidth: 120},
-  {props:'linieUserName',name:'LINIE', key: "LINIE", tooltip: true, minWidth: 100},
-  {props:'statusDesc',name:'状态', key: "ZHUANGTAI", tooltip: true, minWidth: 140},
-  {props:'partNameCh',name:'附件零件名称', key: "FUJIANLINGJIANMINGCHENG", tooltip: true, minWidth: 140},
-  {props:'carType',name:'使用车型', key: "SHIYONGCHEXING", tooltip: true, minWidth: 120},
-  {props:'carQty',name:'每车用量', key: "MEICHEYONGLIANG", tooltip: true},
-  {props:'fujian',name:'附件', key: "FUJIAN", tooltip: true},
-  {props:'timeToMarket',name:'附件上市时间', key: "FUJIANSHANGSHISHIJIAN", tooltip: true, minWidth: 120},
-  {props:'firstYearQty',name:'第1年需求量', key: "DIYINIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'secondYearQty',name:'第2年需求量', key: "DIERNIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'thirdYearQty',name:'第3年需求量', key: "DISANNIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'forthYearQty',name:'第4年需求量', key: "DISINIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'fifthYearQty',name:'第5年需求量', key: "DIWUNIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'sixthYearQty',name:'第6年需求量', key: "DILIUNIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'seventhYearQty',name:'第7年需求量', key: "DIQINIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'eighthYearQty',name:'第8年需求量', key: "DIBANIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'ninthYearQty',name:'第9年需求量', key: "DIJIUNIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'tenthYearQty',name:'第10年需求量', key: "DISHINIANXUQIULIANG", tooltip: true, minWidth: 120},
-  {props:'purchasePrice',name:'建议采购价(不含税)', key: "JIANYICAIGOUJIA_BUHANSHUI", tooltip: true, minWidth: 140},
-  {props:'salesPrice',name:'建议销售价(不含税)', key: "JIANYIXIAOSHOUJIA_BUHANSHUI", tooltip: true, minWidth: 140},
-  {props:'marketRetailPrice',name:'市场零售价(不含税)', key: "SHICHANGLINGSHOUJIA_BUHANSHUI", tooltip: true, minWidth: 140},
-  {props:'accessoryDeptManager',name:'附件科主管人', key: "FUJIANKEZHUGUANREN", tooltip: true, minWidth: 120},
-  {props:'remark',name:'备注', key: "BEIZHU", tooltip: true, minWidth: 120},
-  {props:'reason',name:'退回原因（仅股长可见）', key: "TUIHUIYUANYIN_JINGUZHANGKEJIAN", tooltip: true, minWidth: 160},
+  {props:'partNum',name:'附件零件号', key: "FUJIANLINGJIANHAO", tooltip: true, minWidth: 120, fixed: "left", sortable: true},
+  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120, sortable: true},
+  {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100, sortable: true},
+  {props:'item',name:'导入项次', key: "DAORUXIANGCI", tooltip: true, minWidth: 105, sortable: true},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 105, sortable: true},
+  {props:'csfuserDeptName',name:'CSF科室', key: "CSFKESHI", tooltip: true, minWidth: 140, sortable: true},
+  {props:'csfUser',name:'CSF', key: "CSF", tooltip: true, minWidth: 100, sortable: true},
+  {props:'linieDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, minWidth: 120, sortable: true},
+  {props:'linieUserName',name:'LINIE', key: "LINIE", tooltip: true, minWidth: 100, sortable: true},
+  {props:'statusDesc',name:'状态', key: "ZHUANGTAI", tooltip: true, minWidth: 140, sortable: true},
+  {props:'partNameCh',name:'附件零件名称', key: "FUJIANLINGJIANMINGCHENG", tooltip: true, minWidth: 140, sortable: true},
+  {props:'carType',name:'使用车型', key: "SHIYONGCHEXING", tooltip: true, minWidth: 120, sortable: true},
+  {props:'carQty',name:'每车用量', key: "MEICHEYONGLIANG", tooltip: true, sortable: true},
+  {props:'fujian',name:'附件', key: "FUJIAN", tooltip: true, sortable: true},
+  {props:'timeToMarket',name:'附件上市时间', key: "FUJIANSHANGSHISHIJIAN", tooltip: true, minWidth: 135, sortable: true},
+  {props:'firstYearQty',name:'第1年需求量', key: "DIYINIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'secondYearQty',name:'第2年需求量', key: "DIERNIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'thirdYearQty',name:'第3年需求量', key: "DISANNIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'forthYearQty',name:'第4年需求量', key: "DISINIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'fifthYearQty',name:'第5年需求量', key: "DIWUNIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'sixthYearQty',name:'第6年需求量', key: "DILIUNIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'seventhYearQty',name:'第7年需求量', key: "DIQINIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'eighthYearQty',name:'第8年需求量', key: "DIBANIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'ninthYearQty',name:'第9年需求量', key: "DIJIUNIANXUQIULIANG", tooltip: true, minWidth: 130, sortable: true},
+  {props:'tenthYearQty',name:'第10年需求量', key: "DISHINIANXUQIULIANG", tooltip: true, minWidth: 140, sortable: true},
+  {props:'purchasePrice',name:'建议采购价(不含税)', key: "JIANYICAIGOUJIA_BUHANSHUI", tooltip: true, minWidth: 175, sortable: true},
+  {props:'salesPrice',name:'建议销售价(不含税)', key: "JIANYIXIAOSHOUJIA_BUHANSHUI", tooltip: true, minWidth: 175, sortable: true},
+  {props:'marketRetailPrice',name:'市场零售价(不含税)', key: "SHICHANGLINGSHOUJIA_BUHANSHUI", tooltip: true, minWidth: 175, sortable: true},
+  {props:'accessoryDeptManager',name:'附件科主管人', key: "FUJIANKEZHUGUANREN", tooltip: true, minWidth: 135, sortable: true},
+  {props:'remark',name:'备注', key: "BEIZHU", tooltip: true, minWidth: 120, sortable: true},
+  {props:'reason',name:'退回原因（仅股长可见）', key: "TUIHUIYUANYIN_JINGUZHANGKEJIAN", tooltip: true, minWidth: 180, sortable: true},
 ]
 
 export const tableMockData = [

@@ -154,7 +154,7 @@
               <div class="txt">
                 <span>{{ $t('LK_CAIGOUGONGCHANG') }}</span><!-- 采购工厂 -->
               </div>
-              <iSelect v-model="detailObj.productionFactoryId" class="input" :placeholder="$t('LK_QINGXUANZE')">
+              <iSelect v-model="detailObj.productionFactoryId" :disabled="true" class="input" :placeholder="$t('LK_QINGXUANZE')">
                 <el-option
                     :value="item.productionFactoryId"
                     :label="item.productionFactoryName"

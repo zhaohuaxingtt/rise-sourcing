@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2022-02-28 15:49:16
+ * @LastEditTime: 2022-04-01 16:20:21
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -23,8 +23,12 @@
           :loading="saveLoading"
           @click="handleSave"
           v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE|保存"
-          >{{ language("BAOCUN", "保存") }}</iButton
-        >
+          >{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton
+          v-if="!disabled"
+          :loading="saveLoading"
+          @click="reset"
+          >{{ language("CHONGZHI", "重置") }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
@@ -76,11 +80,7 @@
         v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE|装车率_表格"
         class="table margin-top30"
         height="480"
-        :data="
-          Array.isArray(dosage.aekoProjectCarDosageList)
-            ? dosage.aekoProjectCarDosageList
-            : []
-        "
+        :data="tableData"
       >
         <template v-for="item in tableTitle">
           <el-table-column
@@ -143,7 +143,7 @@
             <template slot-scope="scope">
               <!-- 装车率加个% -->
               <template v-if="item.props == 'assemblyRate'"
-                >{{ calculatePercentage(scope.row)}}%</template
+                >{{ scope.row.assemblyRate&&calculatePercentage(scope.row)+'%'}}</template
               >
               <template v-else>{{ scope.row[item.props] }}</template>
             </template>
@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage } from "rise"
+import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage, iMessageBox } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
 import { numberProcessor } from "@/utils"
@@ -227,6 +227,9 @@ export default {
         this.$emit("update:visible", value);
       },
     },
+    tableData(){
+      return Array.isArray(this.dosage.aekoProjectCarDosageList)&&this.dosage.aekoProjectCarDosageList.length ? this.dosage.aekoProjectCarDosageList: [{}]
+    },
     summary() {
       let result = {};
       let sumlist = ["originPerCarDosage", "perCarDosage"];
@@ -237,11 +240,11 @@ export default {
           result[i.props] = "";
         }
       });
-      this.dosage?.aekoProjectCarDosageList?.forEach((i) => {
+      this.tableData.forEach((i) => {
         i &&
           Object.keys(i).forEach((key) => {
             if (sumlist.includes(key)) {
-              result[key] += i[key] * i.assemblyRate;
+              result[key] += i[key] * i.assemblyRate || 0;
             }
           });
       });
@@ -276,6 +279,7 @@ export default {
     },
     // 提交时校验一下沿⽤原零件份额:usePortion
     validateData() {
+      this.dosage.aekoProjectCarDosageList = JSON.parse(JSON.stringify(this.tableData))
       let isValidate = true;
       // 沿⽤原零件份额
       if (!this.dosage["usePortion"]) {
@@ -407,6 +411,18 @@ export default {
       if (value) {
         this.$set(row, props, math.bignumber(value).toFixed(2));
       }
+    },
+    // 重置
+    reset(){
+      iMessageBox(
+        this.language('CHONGZHIQINGQUEREN','重置后，当前页面所有信息将被恢复至默认状态，请确认！'), // 暂时处理
+        this.language('CHONGZHITISHI','重置提示'),{
+          showCancelButton:false
+        }
+      ).then(()=>{
+        this.getAekoCarProject();
+        this.getAekoCarDosage();
+      })
     },
     // 保存
     handleSave() {

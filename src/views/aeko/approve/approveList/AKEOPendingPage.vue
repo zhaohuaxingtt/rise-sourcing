@@ -85,10 +85,11 @@
           </el-tooltip>
 				</i-button>
         <i-button @click="transfer" v-if="transferButtonDisplay"  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <!--表格展示区-->
       <tableList
+        permissionKey="AEKO_APPROVE_APPROVELIST_AKEOPENDINGPAGE"
           height="400"
           ref="tableList"
           class="aeko-pending-table"
@@ -100,8 +101,6 @@
           :selectConfig="selectConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #isTop="scope">
           <div>
@@ -226,6 +225,7 @@ import * as dateUtils from "@/utils/date";
 import {lookDetails} from './lib'
 import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
 import { setLogCount, setLogMenu } from "@/utils";
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   name: "AKEOPendingPage",
@@ -240,7 +240,8 @@ export default {
     iPagination,
     icon,
     iSelect,
-    iMultiLineInput
+    iMultiLineInput,
+    buttonTableSetting
   },
   filters: {
     formatDate(value) {
