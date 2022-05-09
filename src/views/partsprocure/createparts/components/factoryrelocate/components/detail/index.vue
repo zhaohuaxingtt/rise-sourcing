@@ -320,10 +320,10 @@ export default {
         path: '/sourceinquirypoint/sourcing/partsrfq/editordetail',
         query: {
           id: row.rfqId,
-          round: '',
+          round: row.round,
           carTypeNames: row.carTypeProj,
           businessKey: row.partProjectType,
-          rfqName: '',
+          rfqName: row.rfqName,
         },
       })
 
