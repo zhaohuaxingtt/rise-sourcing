@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2022-03-23 16:37:18
+ * @LastEditTime: 2022-03-31 14:32:01
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
@@ -14,8 +14,8 @@
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index" v-permission.dynamic.auto="`${items.permissionKey}|${items.i18nName}`">
             <template v-if='items.type == "input"'>
-              <iInput v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
-              <iInput v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
+              <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
+              <iInput clearable v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
             <template v-else>
               <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>

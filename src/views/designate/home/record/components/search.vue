@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2022-03-11 14:40:12
+ * @LastEditTime: 2022-03-31 15:04:32
  * @LastEditors: YoHo
 -->
 <template>
@@ -15,6 +15,7 @@
       <el-form>
         <el-form-item :label="language('FS/GS/SP No.','FS/GS/SP No.')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_FSGSSPNO|FSGSSPNO">
           <iInput
+            clearable
             v-model="formRecord.fsnrGsnrNum"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
@@ -22,6 +23,7 @@
         </el-form-item>
         <el-form-item :label="language('nominationLanguage_LingJianHao','零件号')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PARTNUM|零件号">
           <iInput
+            clearable
             v-model="formRecord.partNum"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
@@ -29,6 +31,7 @@
         </el-form-item>
         <el-form-item :label="language('nominationLanguage_LingJianMingCheng','零件名称')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PARTNAME|零件名称">        
           <iInput
+            clearable
             v-model="formRecord.partNameCn"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
@@ -36,6 +39,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXING','车型')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_CARTYPE|车型">
           <iSelect 
+            clearable
             :placeholder="
               language('LK_QINGXUANZE','请选择') +
               language('CHEXING','车型')
@@ -56,6 +60,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_CARTYPEPROJ|车型项目">
           <iSelect
+            clearable
             :placeholder="
               language('LK_QINGXUANZE','请选择') +
               language('CHEXINGXIANGMU','车型项目')
@@ -76,6 +81,7 @@
         </el-form-item>
         <el-form-item :label="language('JIAGEZHUANGTAI','价格状态')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_APPLICATIONSTATUS|价格状态">
            <iSelect 
+            clearable
             v-model="formRecord.applicationStatus"
             :placeholder="
             language('partsprocure.CHOOSE','请选择') +
@@ -103,6 +109,7 @@
         </el-form-item> -->
         <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PARTPROJTYPE|零件项目类型">
           <iSelect 
+            clearable
             v-model="formRecord.partProjType"
             :placeholder="
             language('partsprocure.CHOOSE','请选择') +
@@ -123,6 +130,7 @@
         </el-form-item>
         <el-form-item :label="language('XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_CSF|询价采购员">
           <iInput
+            clearable
             v-model="formRecord.nominateUser"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
@@ -130,6 +138,7 @@
         </el-form-item>
         <el-form-item :label="language('LINIE','LINIE')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_LINIE|LINIE">
          <iInput
+            clearable
             v-model="formRecord.linie"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
@@ -137,6 +146,7 @@
         </el-form-item>
         <el-form-item :label="language('DINGDIANSHENQINGLEIXING','定点申请类型')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_NOMINATIONTYPE|定点申请类型">
           <iSelect 
+            clearable
             v-model="formRecord.isNewNominate"
             :placeholder="language('LK_QINGXUANZE','请选择')
              + 
@@ -156,6 +166,7 @@
         </el-form-item>
         <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_NOMIDATE|定点时间">
           <iDatePicker 
+          clearable
           v-model='formRecord.nominateTime'
            type="daterange"
            value-format="yyyy-MM-dd">
@@ -290,5 +301,11 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
+.search{
+  ::v-deep .el-date-editor .el-range__close-icon{
+    display: block;
+    width: 10px;
+  }
+}
 </style>
