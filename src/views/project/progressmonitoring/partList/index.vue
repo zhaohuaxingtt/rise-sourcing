@@ -20,6 +20,7 @@
         </div>
         <div class="cardview-body padding-top30">
           <tableList
+            permissionKey="PROJECT_PROGRESSMONITORING_PARTLIST"
             height="450"
             index
             ref="tableList"
@@ -30,8 +31,6 @@
             :tableLoading="tableLoading"
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
           >
           <template #cartypeProject="">
             <span>{{carProjectName}}</span>
@@ -211,15 +210,15 @@ export default {
           width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }

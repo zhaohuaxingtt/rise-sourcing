@@ -41,6 +41,7 @@
         <!-- </template> -->
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LOI_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -48,8 +49,6 @@
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LOI_LIST_TABLE|LOI-表格"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             ref="tableList"
         >
             <!-- 定点申请单号 -->
@@ -252,12 +251,12 @@ export default {
         },
         
         // 跳转定点申请详情页
-        goToDesignate(row){
+        goToDesignate(row) {
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
                 desinateId: row.nominateAppId, 
-                designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+                designateType: row.nominateProcessType
             }
             })
             window.open(routeData.href, '_blank')

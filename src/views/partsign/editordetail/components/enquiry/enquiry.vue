@@ -88,6 +88,11 @@ export default {
       return !/^v\d+$/i.test(str) ? `V${ str }` : str 
     }
   },
+  watch: {
+    data() {
+      this.getEnquiry()
+    }
+  },
   methods: {
     async getEnquiry() {
       this.loading = true

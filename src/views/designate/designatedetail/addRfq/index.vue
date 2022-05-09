@@ -65,9 +65,8 @@
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
         <tableList
+          permissionKey="DESIGNATE_DESIGNATEDETAIL_ADDRFQ"
           ref="tableList" 
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
           lang
           :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'>
           <template #kmAnalysis="scope">

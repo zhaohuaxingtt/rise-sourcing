@@ -36,11 +36,7 @@
       :selection="false"
       :tableTitle="tableTitle"
       :tableData="tableData"
-      v-permission.auto="
-        AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO | 零件列表
-      "
-      :handleSaveSetting="handleSaveSetting"
-      :handleResetSetting="handleResetSetting"
+      v-permission.auto="AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO | 零件列表"
     >
       <template #originAPrice="scope">
         <el-popover placement="top" trigger="hover">

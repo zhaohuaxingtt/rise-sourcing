@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:55:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:06:15
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -37,12 +37,12 @@
           </div>
         </div>
         <div>
-          <iButton @click="handleSure">{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
           <iButton @click="handleReset">{{language('CHONGZHI','重置')}}</iButton>
         </div>
       </div>
       <div class="projectCard-content">
-        <partList ref="monitorDetailPartList" v-loading="loading" :list="partList" :partStatus="partStatus" :cartypeProId="carProjectId" :carProjectName="carProjectName" @handleSure="handleSure" />
+        <partList v-if="!loading" ref="monitorDetailPartList" v-loading="loading" :list="partList" :partStatus="partStatus" :cartypeProId="carProjectId" :carProjectName="carProjectName" @handleSure="handleSure" :sliceArr="sliceArr"/>
       </div>
     </iCard>
   </iPage>
@@ -73,7 +73,8 @@ export default {
       partList: [],
       loading: false,
       partStatus: 0,
-      options: []
+      options: [],
+      sliceArr: [0, 10],
     }
   },
   inject:['vm'],
@@ -151,6 +152,7 @@ export default {
       this.partStatus = this.searchParams.partStatus
       this.loading = true
       getProProgressMonitorDetail(this.searchParams).then(res => {
+        this.sliceArr = [0, 10]
         if (res?.result) {
           this.partList = res.data
         } else {

@@ -91,7 +91,6 @@ export const getHomeSocket = () => process.env.VUE_APP_SOCKET + store.state.perm
 /* 实时获取消息 */
 
 export const getHomeSocketMessage = onMessage => {
-  console.log('store', store.state)
   return getSocket(getHomeSocket, message => {
     onMessage(message)
   })

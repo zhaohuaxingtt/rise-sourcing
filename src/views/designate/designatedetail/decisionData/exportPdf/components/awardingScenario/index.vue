@@ -1,4 +1,6 @@
 <template>
+<div class="pageCard-main rsPdfCard">
+  <slot></slot>
   <iCard ref="awardingScenario" class="awardingScenario">
     <div class="content">
       <div class="left">
@@ -18,6 +20,7 @@
       </div>
     </div>
   </iCard>
+</div>
 </template>
 
 <script>

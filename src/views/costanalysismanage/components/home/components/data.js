@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-07-13 14:30:42
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 15:45:17
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
@@ -55,20 +55,20 @@ export const queryForm = {
 }
 
 export const tableTitle = permissionTitle("COSTANALYSISMANAGE_HOME_TABLE", [
-  { props: "id", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
-  { props: "rfqName", name: "RFQ名称", key: "costanalysismanage.RfqMingCheng", tooltip: true },
-  { props: "rfqType", name: "RFQ类型", key: "costanalysismanage.RfqLeiXing", tooltip: true },
-  { props: "createDate", name: "创建日期", key: "costanalysismanage.ChuangJianRiQi", tooltip: true, width: 100 },
-  { props: "currentRounds", name: "当前轮次", key: "costanalysismanage.DangQianLunCi", tooltip: true },
-  { props: "statusName", name: "RFQ状态", key: "costanalysismanage.RfqZhuangTai", tooltip: true },
-  { props: "currentRoundsEndTime", name: "报价截止日期", key: "costanalysismanage.BaoJiaJieZhiRiQi", tooltip: true, width: 110 },
-  { props: "buyerName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true, width: 100 },
-  { props: "linieNameZh", name: "LINIE", key: "costanalysismanage.Linie", tooltip: true },
-  { props: "pcaName", name: "PCA", key: "costanalysismanage.Pca", tooltip: true },
-  { props: "tiaName", name: "TIA", key: "costanalysismanage.Tia", tooltip: true },
-  { props: "heavyItem", name: "Heavy Item", key: "costanalysismanage.HeavyItem", tooltip: true, width: 100 },
-  { props: "technoMaterial", name: "技术资料", key: "costanalysismanage.JiShuZiLiao", tooltip: true },
-  { props: "sendDate", name: "CBD", key: "costanalysismanage.Cbd", tooltip: true, width: 150 },
-  { props: "analysisReport", name: "分析报告", key: "costanalysismanage.FenXiBaoGao", tooltip: true },
+  { props: "id", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true, width: 110, sortable: true },
+  { props: "rfqName", name: "RFQ名称", key: "costanalysismanage.RfqMingCheng", tooltip: true, width: 110, sortable: true },
+  { props: "rfqType", name: "RFQ类型", key: "costanalysismanage.RfqLeiXing", tooltip: true, width: 110, sortable: true },
+  { props: "createDate", name: "创建日期", key: "costanalysismanage.ChuangJianRiQi", tooltip: true, width: 110, sortable: true },
+  { props: "currentRounds", name: "当前轮次", key: "costanalysismanage.DangQianLunCi", tooltip: true, width: 105, sortable: true },
+  { props: "statusName", name: "RFQ状态", key: "costanalysismanage.RfqZhuangTai", tooltip: true, width: 110, sortable: true },
+  { props: "currentRoundsEndTime", name: "报价截止日期", key: "costanalysismanage.BaoJiaJieZhiRiQi", tooltip: true, width: 135, sortable: true },
+  { props: "buyerName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true, width: 120, sortable: true },
+  { props: "linieNameZh", name: "LINIE", key: "costanalysismanage.Linie", tooltip: true, width: 90, sortable: true },
+  { props: "pcaName", name: "PCA", key: "costanalysismanage.Pca", tooltip: true, sortable: true },
+  { props: "tiaName", name: "TIA", key: "costanalysismanage.Tia", tooltip: true, sortable: true },
+  { props: "heavyItem", name: "Heavy Item", key: "costanalysismanage.HeavyItem", tooltip: true, width: 140, sortable: true },
+  { props: "technoMaterial", name: "技术资料", key: "costanalysismanage.JiShuZiLiao", tooltip: true, width: 105, sortable: true },
+  { props: "sendDate", name: "CBD", key: "costanalysismanage.Cbd", tooltip: true, width: 140, sortable: true },
+  { props: "analysisReport", name: "分析报告", key: "costanalysismanage.FenXiBaoGao", tooltip: true, width: 105, sortable: true },
   { props: "recordId", width: 40 }
 ])

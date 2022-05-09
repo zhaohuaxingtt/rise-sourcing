@@ -7,9 +7,12 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
 -->
 <template>
+<div>
+  <slot name="tabTitle"></slot>
   <iCard v-permission.auto="SOURCING_NOMINATION_ATTATCH_ABPRICE|决策资料-abprice">
       <fsandsupplier preview></fsandsupplier>
   </iCard>
+</div>
 </template> 
 <script>
 import {iCard} from 'rise'

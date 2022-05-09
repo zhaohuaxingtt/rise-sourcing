@@ -14,7 +14,6 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader('rfqTable')"></buttonTableSetting>
           <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 margin-left20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
@@ -24,9 +23,11 @@
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
         
           
+          <button-table-setting class="margin-top10" @click="edittableHeader('rfqTable')" />
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_RFQTABLE"
         :activeItems='"id"'
         selection
         indexKey
@@ -40,8 +41,6 @@
         ref="rfqTable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #kmAnalysis="scope">
           <el-popover
@@ -66,7 +65,6 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader('partTable')"></buttonTableSetting>
           <iButton 
             v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
@@ -88,9 +86,11 @@
             @click="handleClickByCancelSelected">
             {{ language("QUXIAOSHENQING", "取消申请") }}
           </iButton>
+          <button-table-setting class="margin-top10" @click="edittableHeader('partTable')" />
         </div>
       </div>
       <tableList
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_RFQDETAIL_PARTTABLE"
         class="partsTable"
         :activeItems='"fsnrGsnrNum"'
         selection
@@ -107,8 +107,6 @@
         :selectable="partsSelectable"
         index
         lang
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <template #selected="scope">
           <span>{{ selectedFormat(scope.row.selected) }}</span>
@@ -396,7 +394,18 @@ export default {
      * @return {*}
      */    
     openRfqPage(row){
-      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
+      const router =  this.$router.resolve({
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail`,
+        query: {
+          id: row.id,
+          round: row.currentRounds,
+          carTypeNames: row.carTypeNames,
+          rfqName: row.rfqName,
+          businessKey: row.partProjectType
+        }
+      })
+
+      // const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
       window.open(router.href,'_blank')
     },
     /**

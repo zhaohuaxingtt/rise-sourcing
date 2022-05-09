@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-04-01 14:48:30
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-04-02 16:05:57
+ * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -43,7 +43,7 @@
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
                 <iInput :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
-              </el-form-item>  
+              </el-form-item>
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
@@ -155,10 +155,11 @@
                   {{ language('LK_CHUANGJIANDINGDIANSHENQINGS','创建定点申请') }}
                 </iButton>
                 <iButton @click="exportTable" v-permission.auto="PARTSRFQ_EXPORT|导出">{{ language('LK_DAOCHUS','导出') }}</iButton>
-                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+                <button-table-setting @click="edittableHeader" />
               </div>
             </div>
             <tablelist
+                permissionKey="PARTSRFQ_HOME"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
                 :tableLoading="tableLoading"
@@ -170,8 +171,6 @@
                 icon-props="recordId"
                 :lang="true"
                 class="aotoTableHeight"
-                :handleSaveSetting="handleSaveSetting"
-                :handleResetSetting="handleResetSetting"
                 ref="tableList"
             >
               <template #recordId="scope">

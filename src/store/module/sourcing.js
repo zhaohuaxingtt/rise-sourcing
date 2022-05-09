@@ -565,6 +565,8 @@ const state = {
   ],
   configscoredeptThirdMenu: [],
   pendingRequestNum:0,
+  mapControl:[],
+  updateKey:'0'
 }
 
 const mutations = {
@@ -579,6 +581,12 @@ const mutations = {
   },
   SET_PENDINGREQUESTNUM(state,data){
     state.pendingRequestNum = data
+  },
+  SET_MAPCONTROL(state,mapControl){
+    state.mapControl = mapControl
+  },
+  SET_UPDATE(state){
+    state.updateKey = + new Date()
   }
 }
 
@@ -639,14 +647,21 @@ const actions = {
     })
   },
   updatePendingRequestNum({commit},requestNum=0){
-    console.log(requestNum,'requestNum');
     commit('SET_PENDINGREQUESTNUM', requestNum)
+  },
+  updatePdfPage({ commit }) {
+    commit('SET_UPDATE')
+  },
+  updateMapControl({ commit }, mapControl) {
+    commit('SET_MAPCONTROL', mapControl)
   }
 }
 
 const getters = {
   navList: (state) => state.navList,
   pendingRequestNum: (state) => state.pendingRequestNum,
+  updateKey: (state) => state.updateKey,
+  mapControl: (state) => state.mapControl
 }
 
 export default {

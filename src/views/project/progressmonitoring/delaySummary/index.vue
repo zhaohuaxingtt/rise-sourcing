@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:36:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:02:44
  * @Description: 延误原因汇总
 -->
 
@@ -10,7 +10,7 @@
   <iPage class="delaySummary" v-permission.dynamic.auto="permissionKey">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
@@ -31,30 +31,30 @@
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
-        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
-        <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_ZAICIFASONG_BUTTON|延误原因汇总再次发送按钮" v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_DAOCHU_BUTTON|延误原因汇总导出按钮" v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
-          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
+          <transferBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_TRANSFER_BUTTON|延误原因确认转派按钮" class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
           <!--------------------退回按钮----------------------------------->
-          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
+          <backBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_BACK_BUTTON|延误原因确认退回按钮" class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
           <!--------------------保存按钮----------------------------------->
-          <saveBtn v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+          <saveBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_SAVE_BUTTON|延误原因确认保存按钮" v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
-          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
+          <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <!-- 表格 -->
-      <tableList indexKey
+      <tableList 
+                permissionKey="PROJECT_PROGRESSMONITORING_DELAYSUMMARY"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
                  :tableData="tableData"
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #newPlanDate="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.newPlanDate}}</span>
@@ -114,8 +114,9 @@ import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
 import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
-  mixins: [pageMixins,tableSortMixins],
+  mixins: [pageMixins,tableSortMixins,roleMixins],
   components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog, buttonTableSetting },
   data() {
     return {
@@ -123,7 +124,7 @@ export default {
       tableData: [],
       tableLoading: false,
       selectTableData: [],
-      searchList,
+      searchList:searchList.filter((item)=>!item.hidden),
       searchParams: {},
       withSend: false,
       withAllBtn: false,
@@ -142,7 +143,7 @@ export default {
     },
     permissionKey() {
       return !this.isFS ? 'PROJECTMGT_DELAYSUMMARY_PAGE|项目管理-进度监控-延误原因汇总页面' : 'PROJECTMGT_DELAYCONFIRM_PAGE|项目管理-进度监控-延误原因确认页面'
-    }, 
+    },
   },
   created() {
     this.initSearchParams()
@@ -150,6 +151,25 @@ export default {
     this.getTableList()
     if(this.isFS) {
       this.getDelayReason()
+
+    // 判断一下是否包含以下角色 若包含则展示询价采购员搜索框
+    // ADMIN      超级管理员
+    // QQCGKZ     前期采购科长
+    // QQCGGZ     前期采购股长
+    // CGBZ       采购部长
+    // CIXTGLY    CI系统管理员
+    // CSXTGLY    CS系统管理员
+    // QQCGKZ_WF    前期采购科长_外方
+    // CGBZ_WF      采购部长_外方
+    const list = ['ADMIN','QQCGKZ','QQCGGZ','CGBZ','CIXTGLY','CSXTGLY','QQCGKZ_WF','CGBZ_WF'];
+      const roleList = this.roleList;
+      let isIncludes = false;
+      roleList.map((item)=>{
+        if(list.includes(item)) isIncludes = true;
+      })
+      if(isIncludes) this.searchList = searchList
+    }else{
+      this.searchList = searchList;
     }
   },
   methods: {
@@ -171,6 +191,7 @@ export default {
       const params = {
         ids: this.selectTableData.map(item => item.id),
         identityTag: this.isFS ? '2' : '1',
+        ...this.searchParams,
       }
       await exportDelayReasonConfirm(params)
       this.exportLoading = false
@@ -190,13 +211,13 @@ export default {
       })
     },
     querySearch(queryString, cb) { 
-      var restaurants = [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
+      var restaurants = [4,5,6,7,8].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据 
       cb(results); 
     },
     createFilter(queryString) { 
-      return (restaurant= [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
+      return (restaurant= [4,5,6,7,8].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
       }; 
     },  

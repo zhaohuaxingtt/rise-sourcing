@@ -49,6 +49,7 @@
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_SUPPLIER_COMPONENTS_SINGLETABLE"
         index
         :tableData="singleListData"
         :tableTitle="singleSupplierTitle"
@@ -58,8 +59,6 @@
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_TABLE|单一供应商表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
@@ -69,6 +68,7 @@
           <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.suppliersName"
+              :loading="getSupplierLoading"
               @focus="getRfqDepartment(scope.row)"
               @change="onSupplierChange(arguments, scope.row)"
               :placeholder="language('LK_QINGXUANZE','请选择')">
@@ -153,8 +153,7 @@ import {
 import {
   getSingleSupplierList,
   addsingleSuppliersInfo,
-  getRfqSupplierList,
-  exportExclusiveSuppliersList
+  getPartSupplierList,
 } from '@/api/designate/supplier' 
 import { getDictByCode } from '@/api/dictionary'
 import { excelExport } from '@/utils/filedowLoad'
@@ -186,7 +185,8 @@ export default {
       submiting: false,
       selectOptions: {},
       // 记录删除的行
-      deletedRowList: []
+      deletedRowList: [],
+      getSupplierLoading: false
     }
   },
   computed: {
@@ -208,21 +208,21 @@ export default {
       const val = data && data[0] || ''
       const list = row.departmentOption || []
       const op = list.find(o => o.supplierName === val) || {}
-      Vue.set(row, 'supplierId', op.supplierId || '')
-      Vue.set(row, 'sapNum', op.sap || '')
+      this.$set(row, 'supplierId', op.supplierId || '')
+      this.$set(row, 'sapCode', op.sapCode || '')
     },
     getRfqDepartment(item) {
-      getRfqSupplierList({
-        rfqId: item.rfqId
-      }).then(res => {
-        if (res.code === '200') {
-          Vue.set(item, 'departmentOption', res.data)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      }).catch(e => {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      this.getSupplierLoading = true
+
+      getPartSupplierList({
+        nominateAppId: item.nominateId || this.$store.getters.nomiAppId,
+        rfqId: item.rfqId,
+        fsnrGsnrNum: item.fsnrGsnrNum,
       })
+      .then(res => {
+        this.$set(item, 'departmentOption', res.code == 200 && Array.isArray(res.data) ? res.data : [])
+      })
+      .finally(() => this.getSupplierLoading = false)
     },
     async submit() {
       const items = [...this.singleListData, ...this.deletedRowList];

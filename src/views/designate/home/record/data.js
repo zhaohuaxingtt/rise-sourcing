@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2022-03-09 11:18:41
+ * @LastEditTime: 2022-03-25 15:20:49
  * @LastEditors: YoHo
  */
 export const form = {
@@ -26,57 +26,66 @@ export const tableTitle = [
     props:'fsnrGsnrNum',
     name:'FS/GS/SP No.',
     key:'FSGSSPNO',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'partNum',
     name:'零件号',
     key:'nominationLanguage_LingJianHao',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'partNameCn',
     name:'零件名称',
     key:'nominationLanguage_LingJianMingCheng',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'partProjType',
     name:'零件项目类型',
     key:'LINGJIANXIANGMULEIXING',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'carType',
     name:'车型',
     key:'CHEXING',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'carTypeProj',
     name:'车型项目',
     key:'CHEXINGXIANGMU',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   },
   {
     props:'buyerName',
     name:'询价采购员',
     key:'XUNJIACAIGOUYUAN',
     tooltip:true,
-    width:120
+    width:120,
+    sortable: true
   },
   {
     props:'linie',
     name:'LINIE',
     key:'LINIE',
     tooltip:true,
-    width:90
+    width:90,
+    sortable: true
   },
   {
     props:'nominateTime',
     name:'定点时间',
     key:'DINGDIANSHIJIAN',
-    tooltip:true
+    tooltip:true,
+    sortable: true
   }
 ]
 

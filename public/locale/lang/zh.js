@@ -1,4 +1,4 @@
-;(function (global, factory) {
+(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
@@ -3523,13 +3523,13 @@
 		FENTANJINE: '分摊金额',
 		FENGXIANLINGJIANJINDUQUERENDAIDINGDIAN: '风险零件进度确认-待定点',
 		FENGXIANLINGJIANJINDUQUERENDAIKICKOFF: '风险零件进度确认-待Kickoff',
-		FASONGSHIJIAN: 'FASONGSHIJIAN',
+		FASONGSHIJIAN: '发送时间',
 		AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU:
 			'请选择需要操作的原零件项目',
-		BAOCUNSHIJIAN: 'BAOCUNSHIJIAN',
-		CAOZUOZHEDONGZUO: 'CAOZUOZHEDONGZUO',
-		PAICHENGWEIDU: 'PAICHENGWEIDU',
-		BANBENMINGCHENG: 'BANBENMINGCHENG',
+		BAOCUNSHIJIAN: '保存时间',
+		CAOZUOZHEDONGZUO: '操作者动作',
+		PAICHENGWEIDU: '排程维度',
+		BANBENMINGCHENG: '版本名称',
 		LK_TUICHUBIANJI: '退出编辑',
 		LK_AEKO_GUANLIYUANBEIZHU: 'aeko管理员备注',
 		home: '项目进度监控',
@@ -3753,8 +3753,8 @@
 		LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO:
 			'审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】',
 		YANWUYUANYIN: '延误原因',
-		XINJIAHUASHIJIAN: 'XINJIAHUASHIJIAN',
-		SHIJIHUIFURIQI: 'SHIJIHUIFURIQI',
+		XINJIAHUASHIJIAN: '新计划时间',
+		SHIJIHUIFURIQI: '实际回复日期',
 		CAILIAOZUBIANHAOCAILIAOZUMINCHEN: '材料组编号-材料组名称：',
 		LK_FENPAI: '分派',
 		LK_AEKO_PRICEAXIS: '价格轴',
@@ -5914,7 +5914,7 @@
 		ZHONGLEIMINGCHENG: '中类名称',
 		MTZHUILV: '汇率',
 		YONGLIANGJILIANGDANWEI: '用量计量单位',
-		XIANGMUFENGXIANZHUANGTAI: 'XIANGMUFENGXIANZHUANGTAI',
+		XIANGMUFENGXIANZHUANGTAI: '项目风险状态',
 		NOMILINGJIANWEIKONGJINXAIYIBUTIXINGOTHER:
 			'当前零件清单没有已加入申请的零件，请至少将一个零件加入申请后再进行操作',
 		SKDQIBUSHENGCHANSHIJIANBUKEWANYULCQIBUSHENGCHANSHIJIAN:
@@ -5959,7 +5959,7 @@
 		THISISTESTKEY: '测试key',
 		'costanalysismanage.CaiGouGongChang': '采购工厂',
 		WUFENGXIANLVDENG: '无风险(绿灯)',
-		DIFENGXIANHUANGDENG: '低风险(黄灯)',
+		DIFENGXIANHUANGDENG: '中风险(黄灯)',
 		GAOFENGXIANHONGDENG: '高风险(红灯)',
 		MTZDONTDELETE: '与零件定点申请相关联，不能移除',
 		QUXIAOGUANLIANSTARTMONIORJILUa: '取消关联StarMonior记录a',
@@ -6099,7 +6099,7 @@
 		定点类型: '定点类型',
 		XUANZHONGDELINGJIANZHONGBUNENGHANYOUWEICANYUDELINGJIAN:
 			'选中的零件中不能含有未参与的零件',
-		LK_DIFENGXIAN: '低风险',
+		LK_DIFENGXIAN: '中风险',
 		LK_WUZHENGCHANG: '无风险',
 		LK_GAOFENGXIAN: '高风险',
 		BIDDING_SKGYSBKXJ: '受控供应商不可询价！',
@@ -6360,7 +6360,38 @@
 		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: '不能包含评分未完成的数据',
 		PINGFENRENWURECALLTIPS: '评分任务将撤回至待评分状态，是否确认撤回',
 		FENTANJINE: '分摊金额',
-		WEIFENTANJINE: '未分摊金额'
+		WEIFENTANJINE: '未分摊金额',
+		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: '不能包含评分未完成的数据',
+		PINGFENRENWURECALLTIPS: '评分任务将撤回至待评分状态，是否确认撤回',
+		DAORUXIANGCIHAO: '导入项次号',
+		QIANYIQIANGONGCHANG: '迁移前工厂',
+		QIANYIHOUGONGCHANG: '迁移后工厂',
+		CSFCSSCAIGOUYUAN: 'CSF/CSS采购员',
+		PICIZHUANGTAI: '批次状态',
+		DAORUJILU: '导入记录',
+		SHANCHUPICI: '删除批次',
+		ZHIXING: '执行',
+		XINJIANPICI: '新建批次',
+		DAORUPICI: '导入批次',
+		DAORUYONGHU: '导入用户',
+		DAORUSHIJIAN: '导入时间',
+		QUANBUMINGXIXIANG: '全部明细项',
+		CHENGGONG: '成功',
+		SHIBAI: '失败',
+		JINKECAOZUODANTIAOSHUJU: '仅可操作单条数据',
+		DANGQIANPICIYIZHIXINGTIPS: '当前批次已执行，仅已导入状态可操作',
+		PICIZHONGCUNZAISHIBAIDEMINGXIXIANGTIPS: '批次中存在失败的明细项，请删除失败记录后再进行执行',
+		PICI: '批次',
+		MINGXIXIANG: '明细项',
+		MINGXIXIANGDAOCHU: '明细项导出',
+		CHONGXINDAORU: '重新导入',
+		BAOZHUANG: '包装',
+		YUNSHU: '运输',
+		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？',
+		SOPRIQICUNZAIGAIDONG: 'SOP日期存在改动，请保存后再试',
+		'FASONGCHANPINJINGLI':'发送产品经理',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'仅针对匹配零件号历史进度',
+		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A价发生变化，是否确认提交？',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })

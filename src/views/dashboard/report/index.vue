@@ -106,7 +106,6 @@ export default {
       // 是否显示刷新状态
       this.loading = initState
       this.dataLoading = true
-      console.log('新请求', this.$refs)
       // 获取寻源概览过来的预置参数
       const acceptKeys = require('@/config/dashboard').acceptKeys || []
       const searchParams = this.$refs.search.form || {}

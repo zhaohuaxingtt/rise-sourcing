@@ -106,6 +106,7 @@
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME"
         class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -114,8 +115,6 @@
         v-permission.auto="SOURCING_NOMINATION_NOMINATETABLE|表格"
         @handleSelectionChange="handleSelectionChange"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>

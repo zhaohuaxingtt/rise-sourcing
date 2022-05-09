@@ -16,11 +16,12 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
-        <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
-      lang
+        permissionKey="DESIGNATE_HOME_RECORD"
+        lang
         class="aotoTableHeight"
         :tableTitle="tableTitle"
         :tableData="tableListData"
@@ -30,8 +31,6 @@
         @handleSelectionChange="handleSelectionChange"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
         ref="tableList"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">
@@ -88,7 +87,8 @@ export default {
       tableListData:[],
       tableLoading: false,
       searchForm: _.cloneDeep(form),
-      selectTableData:[]
+      selectTableData:[],
+      downloading: false
     }
   },
   created() {
@@ -150,11 +150,15 @@ export default {
     handleSelectionChange(data){
       this.selectTableData = data
     },
-    exportRecord() {
+    async exportRecord() {
       let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
-      exportNomiRecordExcel(data).then(res=> {
-        
-      })
+      data.nominateStartTime = Array.isArray(data.nominateTime) ? data.nominateTime[0] : undefined
+      data.nominateEndTime = Array.isArray(data.nominateTime) ? data.nominateTime[1] : undefined
+      delete data.nominateTime
+
+      this.downloading = true
+      await exportNomiRecordExcel(data)
+      this.downloading = false
     }
   }
 }

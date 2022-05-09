@@ -7,7 +7,10 @@
     <iPage class="importFiles">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-             <headerNav />
+             
+          <headerNav>
+            <iLoger ref="log" :config="{module_obj_ae: '附件需求',  queryParams:[]}" :credentials="true" isPage :isUser="true" class="font-24 margin-left25" />
+          </headerNav>
                 <!-- 内容区 -->
                 <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
                   <div class="margin-bottom20 clearFloat">
@@ -86,6 +89,7 @@ import {
 } from '@/api/designateFiles/importFiles'
 import { iMessage } from 'rise';
 import { clickMessage} from "@/views/partsign/home/components/data"
+import iLoger from 'rise/web/components/iLoger'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -102,7 +106,8 @@ export default {
         Upload,
         tableList,
         icon,
-        headerNav
+        headerNav,
+        iLoger
     },
     data(){
         return{

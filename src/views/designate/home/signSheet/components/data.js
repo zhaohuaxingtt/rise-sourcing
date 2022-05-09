@@ -1,8 +1,8 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-11-11 14:45:41
- * @LastEditors:  
+ * @LastEditTime: 2022-03-25 15:13:50
+ * @LastEditors: YoHo
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
  */
@@ -17,39 +17,45 @@ export const tableTitle = [
     props: 'signCode',
     name: '签字单号',
     key: 'QIANZIDANHAO',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
   {
     props: 'statusDesc',
     name: '签字单状态',
     width: 150,
     key: 'QIANZIDANZHUANGTAI',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
   {
     props: 'csf',
     name: '创建人',
     key: 'CJR',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
   {
     props: 'createDate',
     name: '生成时间',
     key: 'TIJIAORIQI',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
   {
     props: 'dueDate',
     name: '截止日期',
     key: 'JIEZHIRIQI',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
   
   {
     props: 'description',
     name: '描述',
     key: 'LK_MIAOSHU',
-    tooltip: false
+    tooltip: false,
+    sortable: true
   },
 //   {
 //     props: 'meetingName',
@@ -154,14 +160,14 @@ export const signsheetViewTableTitle = [
     name: 'Year CW',
     key: 'YEARCW',
     tooltip: true,
-    minWidth: '120'
+    minWidth: '90'
   },
   {
     props: 'nominateId',
     name: 'Nomination No.',
     key: 'NOMINATIONNO.',
     tooltip: true,
-    minWidth: '140'
+    minWidth: '114'
   },
   {
     props: 'partNameCn',
@@ -202,13 +208,15 @@ export const signsheetViewTableTitle = [
     props: 'share',
     name: 'Share',
     key: 'SHARE',
-    tooltip: true
+    tooltip: true,
+    minWidth: '60'
   },
   {
     props: 'tto',
     name: 'TTO',
     key: 'TTO',
-    tooltip: true
+    tooltip: true,
+    minWidth: '110'
   },
   {
     props: 'rsRemark',

@@ -73,6 +73,7 @@
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATEFILES_FILEMANAGE_COMPONENTS_JOINRFQ"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -81,8 +82,6 @@
         open-page-props="id"
         :index="true"
         icon-props="recordId"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
         ref="tableList"
         lang
       >

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-10 10:24:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-25 17:28:42
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -11,15 +11,16 @@
   <div class="partListView" v-loading="loading"> 
     <div class="partListView-title"> 
       <div class="partListView-title-span"> 
-        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox> 
+        <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox>  -->
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span> 
       </div> 
       <div v-if="!isSop && parts.length > 0"> 
-        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" /> 
-        <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton> 
-        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
-        <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
-        <el-popover 
+        <logicSettingBtn v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SUANFAPEIZHI_BUTTON|零件排程-算法配置-按钮' ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" /> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SAVE_BUTTON|零件排程-保存-按钮" @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SHENGCHENGPAICHENGBANBEN_BUTTON|零件排程-生成排程版本-按钮" :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_FASONGFSQUEREN_BUTTON|零件排程-发送FS确认-按钮" @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
+        <el-popover
+          v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_DAOCHUPAICHENGQINGDAN_BUTTON|零件排程-导出排程清单-按钮"
           class="margin-left10"
           placement="bottom" 
           width="156" 
@@ -41,16 +42,18 @@
       <div v-for="pro in showParts" :key="pro.label" class="productItem" ref="partSchedulPartListViewItem"> 
         <div class="productItem-top"> 
           <div class="checkBox-wrapper">
-            <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+            <!-- <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">  -->
               <el-popover
                 v-if="pro.zp && pro.zp === 'ZP5'"
                 :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
                 placement="top-start"
                 trigger="hover">
-                <span slot="reference" >*</span>
+                <!-- <span slot="reference" >*</span> -->
+                <span slot="reference" class="checkBox-wrapper-text">*</span>
               </el-popover>
-            </el-checkbox> 
-            <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
+            <!-- </el-checkbox>  -->
+            <!-- <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span> -->
+            <span class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
           </div>
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
@@ -68,7 +71,7 @@
               :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
               placement="top-start"
               trigger="hover">
-              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px;outline:none"></icon> 
             </el-popover>
              
           </div> 
@@ -81,9 +84,10 @@
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
               <div v-if="index == nodeList.length - 1" class="margin-top20 doubleItem"> 
                 <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro[item.kw]}}</iText> 
+                <!-- 是BMG 并且状态不等于1 就可以修改 -->
                 <span v-else  :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
-                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '否' ? '/' : pro[item.kw2]}}</iText>
-                <span v-else :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>)
+                (<span v-if="pro.bmgFlag === '是' && pro[item.status2] != 1" :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
+                <iText v-else  :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '否' ? '/' : pro[item.kw2]}}</iText>)
               </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
@@ -247,6 +251,7 @@ export default {
     },
     handleChangeKw(val) {
       const { pro, item, index } = this.selectKwPro
+      console.log(val, pro, item, index);
       this.handleChange(val, pro, item, index)
     },
     openChangeKw(pro, item, index) {
@@ -406,6 +411,10 @@ export default {
         if(+day <10){
           day = '0'+day
         }
+        
+        if(+month < 10){
+          month = '0'+month
+        }
         return year + '-' + month + '-' + day
       }
     }, 
@@ -431,8 +440,8 @@ export default {
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
-          const targetList = [item.pvsTarget, item.vffTarget] 
-          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
+          const targetList = [item.zerosTarget, item.vffTarget] 
+          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3 || item.fsConfirmStatus	== 4) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
           iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
@@ -444,31 +453,44 @@ export default {
         const nextThreeWorkDay = await this.getNextThreeWorkDay() 
         const tableListNomi = []  
         const tableListKickoff = [] 
+        const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
         selectRows.forEach((item) => { 
-          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
-            if (item.userId) { 
-              return [...accu, { 
-                ...item, 
-                value: item.userId, 
-                label: item.userName 
-              }] 
-            } else { 
-              return accu 
-            } 
-          },[]) : []  
+          // const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          // const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          // const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+          //   if (item.userId) { 
+          //     return [...accu, { 
+          //       ...item, 
+          //       value: item.userId, 
+          //       label: item.userName 
+          //     }] 
+          //   } else { 
+          //     return accu 
+          //   } 
+          // },[]) : [] 
+          let fs = '';
+          const fsId = buyerUserMap[item.partNum] ? buyerUserMap[item.partNum]+'' : '';
+          userInfoVOList.map((userItem)=>{
+            userItem.value = userItem.userId;
+            userItem.label = userItem.userName;
+            if(fsId && userItem.userId == fsId){
+              fs = userItem.userName
+            }
+          })
+ 
           const targetList = [item.pvsTarget, item.vffTarget] 
           const tableItem = {  
             // ...item, 
             cartypeProId: this.cartypeProId, 
             cartypeProject: this.carProjectName, 
+            cartypeProjectZh:item.cartypeProjectZh,
             partNum: item.partNum, 
             partName: item.partNameZh, 
             confirmDateDeadline: nextThreeWorkDay, 
             projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
             projectPurchaserId: this.$store.state.permission.userInfo.id, 
-            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            selectOption:userInfoVOList || [],
             fs, 
             fsId, 
             delayWeek: item.expectImpactWeek, 
@@ -642,6 +664,8 @@ export default {
      */    
     handleChange(val, item, props, index) { 
       this.$set(item, props, val) 
+      // 为了保存接口只传修改的数据 加一个字段来判断是否编辑过
+      this.$set(item,'edit', true) 
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props) 
       if (this.nodeList[index - 1]) {  
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
@@ -662,11 +686,16 @@ export default {
      */    
     async handleSave(refresh = true) { 
       console.log('1')
-      this.saveloading = true 
-      const res = await updatePartSchedule(this.partsTemp.map(item => { 
+      // this.saveloading = true 
+      const filterData = this.partsTemp.map(item => { 
         const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
         return findItem ? findItem : item 
-      }))
+      })
+      const sendData = filterData.filter((item)=>item.edit) || [];
+
+      if(!sendData.length) return;   // 未编辑过不调接口
+      
+      const res = await updatePartSchedule(sendData)
       if (res?.result) { 
         refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
         await this.getPartList(this.cartypeProId) 
@@ -912,6 +941,7 @@ export default {
           font-size: 18px;
           margin-left: 10px;
           cursor: pointer;
+          white-space:pre;
         }
       }
       &-targetList { 
@@ -1069,6 +1099,7 @@ export default {
               font-size: 18px;
               .productItem-bottom-stepBetween-input {
                 width: 100px;
+                font-size: 16px;
                 margin-right: 5px;
                 &:last-child {
                   margin-left: 5px;

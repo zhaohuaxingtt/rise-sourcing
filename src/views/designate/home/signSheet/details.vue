@@ -58,7 +58,9 @@
         </div>   
       </div>
       <!-- 表格 -->
-      <tablelist class="margin-top20"
+      <tablelist
+                  permissionKey="DESIGNATE_HOME_SIGNSHEET_DETAILS"
+                  class="margin-top20"
                  :tableData="tableListData"
                  :tableTitle="tableTitle"
                  :tableLoading="tableLoading"
@@ -66,8 +68,6 @@
                  @handleSelectionChange="handleSelectionChange"
                   ref="tableList"
                   :lang="true"
-                  :handleSaveSetting="handleSaveSetting"
-                  :handleResetSetting="handleResetSetting"
                  >
         <!-- 定点单号 -->
         <template #nominateName="scope">

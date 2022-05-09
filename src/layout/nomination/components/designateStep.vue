@@ -38,6 +38,7 @@
                 <iButton v-if="!nominationDisabled && !rsDisabled && !submitDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
                 <!-- <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton> -->
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
+                <iButton v-if="isDecision && showDecision" :loading="exportLoading" @click="exportPdf">{{language('DAOCHUPDF','导出PDF')}}</iButton>
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
                 <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
@@ -46,7 +47,7 @@
         </div>
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30" v-permission.auto="NOMINATION_MOUDULES_STEPSTABLE|定点管理步骤栏">
-            <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
+            <div class="step-list-item-wrapper flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
                 <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
@@ -69,11 +70,11 @@
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
-                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']"></span>
+                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']" class="stepLine"></span>
                     <!-- 已完成 -->
-                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']"></span>
+                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']" class="stepLine"></span>
                      <!-- 未完成 -->
-                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']"></span>
+                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']" class="stepLine"></span>
 
 
                     <!-- 正在进行中 -->
@@ -95,6 +96,9 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
+        <div style="width: 0; height: 0; overflow: hidden">
+            <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
+        </div>
     </div>
 </template>
 
@@ -136,6 +140,7 @@ import {allitemsList} from '@/config'
 import { cloneDeep } from "lodash"
 
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
 
 export default {
     name:'designateStep',
@@ -148,6 +153,7 @@ export default {
         meetingConclusionDialog,
         iLoger,
         dialogTableTips,
+        exportPdf
     },
     props:{
         status: {
@@ -155,6 +161,10 @@ export default {
             default: '1',
             isDecision:false,
         },
+        showDecision:{
+            type:Boolean,
+            default:false,
+        }
     },
     created(){
         this.getApplyType()
@@ -186,6 +196,7 @@ export default {
             nominationDisabled: state => state.nomination.nominationDisabled,
             rsDisabled: state => state.nomination.rsDisabled,
             mtzApplyId: state => state.nomination.mtzApplyId,
+            pendingRequestNum: state => state.sourcing.pendingRequestNum,
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -208,6 +219,13 @@ export default {
             return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
         }
     },
+    watch: {
+        pendingRequestNum(val){
+            if(val == 0 && this.exportLoading && this.showExportPdf){
+                // this.$refs['exportPdf'].exportPdf();
+            }
+        }
+    },
     data(){
         return{
             desinateId: '',
@@ -219,6 +237,8 @@ export default {
             meetingConclusionDialogVisible: false,
             svgList:svgList,
             blackTableListData:[],
+            exportLoading: false,
+            showExportPdf: false
         }
     },
     methods:{
@@ -483,6 +503,7 @@ export default {
             let state = true
             let dataInfo = ''
             let systemerror = false
+            let autoNomi = false
             try {
                 let res = {}
                 if (level === 1) res = await checkNomiMeetingSubmit1(data)
@@ -491,16 +512,26 @@ export default {
                 if (level === 4) res = await checkNomiMeetingSubmit4(data)
                 if (res && res.code === '200') {
                     state = true
-                    if (res.data && res.data.length) {
-                        res.data.forEach((item) => {
-                            if (this.$i18n.locale === "zh") {
-                                dataInfo+= `${item.zhMsg}<br>`
-                            } else {
-                                dataInfo+= `${item.engMsg}<br>`
-                            }
-                        })
+
+                    if (level === 2) {
+                        if (res.data) {
+                            autoNomi = res.data.autoNomi || false
+                            dataInfo = res.data.msg ? `${ this.$i18n.locale === 'zh' ? res.data.msg.zhMsg : res.data.msg.engMsg }` : ''
+                        } else {
+                            state = false
+                        }
                     } else {
-                        state = false
+                        if (res.data && res.data.length) {
+                            res.data.forEach((item) => {
+                                if (this.$i18n.locale === "zh") {
+                                    dataInfo+= `${item.zhMsg}<br>`
+                                } else {
+                                    dataInfo+= `${item.engMsg}<br>`
+                                }
+                            })
+                        } else {
+                            state = false
+                        }
                     }
                 } else {
                     state = true
@@ -514,7 +545,7 @@ export default {
                 !dataInfo && (dataInfo = this.language('NETWORKERROR', '网络错误，请稍后重试'))
                 // iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             }
-            return {state, dataInfo, systemerror}
+            return {state, dataInfo, systemerror, autoNomi}
         },
         // 提交
         // 提交逻辑需求有变化，所有类型的定点申请都要进行四轮校验，且第四轮为强制
@@ -556,44 +587,53 @@ export default {
                         }
                     }
                     // 进行第二轮校验
+                    // 备案/所有零件均为引用批量价格 弹窗提示确认自动定点，否则中断提交
+                    // 上会 弹窗提示确认正常提交，否则中断提交
+                    // 流转和无弹窗内容 不弹窗
                     res = await this.checkNomiMeetingSubmit(2)
                     console.log('第二轮校验',res)
                     if (res.state) {
-                        try {
-                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                                confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
-                                showCancelButton: true,
-                                showConfirmButton: res.systemerror ? false : true,
-                                type: res.systemerror? 'error' : 'warning',
-                                dangerouslyUseHTMLString:true
-
-                            })
-
-                            if (confirmNextInfo == 'confirm') {
-                                fittingNomi({
-                                    nominateId: this.$route.query.desinateId
-                                }).then(res => {
-                                    if (res.code == 200) {
-                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                        this.$emit("updateNomi")
-                                    } else {
-                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                    }
-
-                                    this.submitting = false
+                        if (res.dataInfo) {
+                            try {
+                                const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                    confirmButtonText: this.language('LK_JIXU','继续'),
+                                    cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                    showCancelButton: true,
+                                    showConfirmButton: res.systemerror ? false : true,
+                                    type: res.systemerror? 'error' : 'warning',
+                                    dangerouslyUseHTMLString: true
                                 })
 
+                                if (confirmNextInfo == 'confirm') {
+                                    if (res.autoNomi) {
+                                        fittingNomi({
+                                            nominateId: this.$route.query.desinateId
+                                        }).then(res => {
+                                            if (res.code == 200) {
+                                                iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                                this.$emit("updateNomi")
+                                            } else {
+                                                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                            }
+
+                                            this.submitting = false
+                                        })
+
+                                        this.submitting = false
+                                        return
+                                    }
+                                } else {
+                                    this.submitting = false
+                                    return
+                                }
+                            } catch (e) {
+                                console.log(e)
                                 this.submitting = false
                                 return
                             }
-                        } catch (e) {
-                            console.log(e)
-                            this.submitting = false
-                            return
                         }
                     }
-                    // 进行第二轮校验
+                    // 进行第三轮校验
                     res = await this.checkNomiMeetingSubmit(3)
                     console.log('第三轮校验',res)
                     if (res.state) {
@@ -613,26 +653,26 @@ export default {
                             return
                         }
                     }
-                    res = await this.checkNomiMeetingSubmit(4)
-                    if (res.state) { 
-                        console.log('4',res.dataInfo);
-                        try{
-                              const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                                confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
-                                type:'warning',
-                                dangerouslyUseHTMLString:true
+                    // res = await this.checkNomiMeetingSubmit(4)
+                    // if (res.state) { 
+                    //     console.log('4',res.dataInfo);
+                    //     try{
+                    //           const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                    //             confirmButtonText: this.language('LK_JIXU','继续'),
+                    //             cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                    //             type:'warning',
+                    //             dangerouslyUseHTMLString:true
 
-                            })
-                            if (confirmNextInfo !== 'confirm') {
-                                this.submitting = false
-                                return
-                            }
-                        } catch (e) {
-                            this.submitting = false
-                            return
-                        }
-                    }
+                    //         })
+                    //         if (confirmNextInfo !== 'confirm') {
+                    //             this.submitting = false
+                    //             return
+                    //         }
+                    //     } catch (e) {
+                    //         this.submitting = false
+                    //         return
+                    //     }
+                    // }
 
                     if (nominationType === 'MEETING') {
                         // 打开上会确认弹窗
@@ -718,7 +758,21 @@ export default {
         // 跳转MTZ申请详情
         toMtzDetail() {
             window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow?currentStep=1&mtzAppId=${ this.mtzApplyId }`, "_blank")
-        }
+        },
+
+        exportPdf(){
+            if(!this.exportLoading){
+                this.exportLoading = true;
+                this.$refs['exportPdf'].exportPdf();
+            }else{
+                // this.showExportPdf = true;
+                // this.exportLoading = true;
+            }
+        },
+
+        changeStatus(type,status){
+            this[type] = status;
+        },
     }
 }
 </script>
@@ -763,10 +817,16 @@ export default {
     }
     .step-list{
         padding: 0 70px;
-        .step-list-item{
+        .step-list-item-wrapper{
+            width: 100%;
             position: relative;
-            flex-grow: 1;
+            // flex-grow: 1;
             text-align: center;
+
+            &:last-of-type {
+                width: auto !important;
+            }
+
             .step-list-item{
                 width: 80px;
                 display: flex;

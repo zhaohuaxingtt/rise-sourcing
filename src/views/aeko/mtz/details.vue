@@ -38,6 +38,7 @@
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tableList
+        permissionKey="AEKO_MTZ_DETAILS"
         height="400"
         ref="tableList"
         index
@@ -49,8 +50,6 @@
         v-permission.auto="MTZ_MODIFY_DETAILS_TABLE|MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       <template #dosageChange="scope">
         <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}" v-if="!disable">

@@ -100,7 +100,7 @@ export default {
           if (val === "RMB") {
             this.$set(item, "exchangeRate", 100);
           }
-          const params = {currencyCodes: [val], type: 1, queryDate: dayjs().format("YYYY-MM-DD HH:mm:ss")}
+          const params = {currencyCodes: [val], type: 1, queryDate: this.ruleForm.createDate}
           getParities(params).then((res) => {
             // sessionStorage.setItem("currency", [res.data[0]?.exchangeRate] || '');
             // this.currency = sessionStorage.getItem("currency");

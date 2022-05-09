@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 09:58:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-06 14:01:28
  * @Description: 项目管理概览
  * @FilePath: \front-sourcing\src\views\project\overview\index.vue
 -->
@@ -19,7 +19,7 @@
       <iSearch :icon="true" >
         <template slot="button">
           <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
-          <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+          <iButton @click="handleSure">{{language('LK_INQUIRE', '查询')}}</iButton>
           <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
         </template>
         <el-form>
@@ -63,6 +63,7 @@ import tableList from './components/overviewTable'
 import selectCarProDialog from './components/selectcarpro'
 import { getOverview, getAllProPurchaser } from '@/api/project'
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
+import { TAB } from '../components/data'
 export default {
   components: { iPage, projectTop, iCard, iSearch, iButton, iDatePicker, iSelect, tableList, selectCarProDialog, productPurchaserSelect },
   data() {
@@ -102,7 +103,25 @@ export default {
       tableDataTemp: []
     }
   },
+  computed: {
+      //eslint-disable-next-line no-undef
+      ...Vuex.mapState({
+          permission: state => state.permission,
+          
+      }),
+  },
   created() {
+    console.log(this.$route,'this.$router');
+    // 进来的时候判断是否有页面的权限 如果没有就顺延到下个月权限页面跳转
+    for(var i  = 0; i<TAB.length;i++){
+        if(TAB[i].permissionKey == 'PROJECTMGT_OVERVIEW_TAB' && this.permission.whiteBtnList[TAB[i].permissionKey]) break;
+        else if(this.permission.whiteBtnList[TAB[i].permissionKey]){
+          this.$router.push({
+            path:TAB[i].url
+          })
+          break;
+        }
+      }
     this.getOverviewList()
   },
   methods: {
@@ -256,8 +275,8 @@ export default {
   &-home {
     padding: 0 !important;
     padding-top: 10px !important;
-    height: calc(100% - 55px) !important;
-    overflow: auto !important;
+    // height: calc(100% - 55px) !important;
+    // overflow: auto !important;
   }
 }
 </style>

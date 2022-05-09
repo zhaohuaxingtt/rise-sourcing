@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:50:17
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-01 14:45:37
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -12,7 +12,9 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
 
-        <headerNav />
+          <headerNav>
+            <iLoger ref="log" :config="{module_obj_ae: '附件需求',  queryParams:[]}" :credentials="true" isPage :isUser="true" class="font-24 margin-left25" />
+          </headerNav>
 
 
           <!-- <div class="margin-bottom33">
@@ -73,13 +75,13 @@
                   <iButton @click="handleJoinRFQ" v-permission.auto="ACCESSORY_MANAGEMENT_JOINRFQ|附件-附件管理-加入已有RFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------删除按钮----------------------------------->
                   <iButton @click="handleDelete" v-permission.auto="ACCESSORY_MANAGEMENT_DELETE|附件-附件管理-删除">{{language('SHANCHU','删除')}}</iButton>
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
             </div>
             <tableList
+            permissionKey="DESIGNATEFILES_FILEMANAGE"
             ref="tableList"
             :lang="true"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
             :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight">
               <template #fujian="scope">
                 <el-popover
@@ -148,12 +150,13 @@ import {partProjTypes} from '@/config'
 import headerNav from '@/components/headerNav'
 import moment from 'moment'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import iLoger from 'rise/web/components/iLoger'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger},
   data() {
     return {
       // 零件项目类型

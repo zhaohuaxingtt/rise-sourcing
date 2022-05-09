@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 11:06:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-05 11:39:13
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -21,8 +21,9 @@
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
-    <div class="partListView-content" ref="partListViewContent" > 
-      <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
+    <div class="partListView-content" ref="partListViewContent" v-infinite-scroll="load" :infinite-scroll-distance="20"> 
+      <!-- <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem">  -->
+      <div v-for="pro in showParts" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
@@ -63,7 +64,7 @@
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
-                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : Number(pro.partStatusTemp) == item.partPeriod" slot="reference">
+                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : ([7,8].includes(item.partPeriod)&&Number(pro.partStatusTemp) == 6 || Number(pro.partStatusTemp) == item.partPeriod)" slot="reference">
                   <icon v-if="item.key === 'SHIFANG' || pro[item.delayWeeks] < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
@@ -118,14 +119,14 @@
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
     <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
-    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" :delayReasonConfirmList="delayReasonConfirmList"/>
   </div> 
 </template>
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
 import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm, getFsUserListPart, getAllFS } from '@/api/project'
-import { actionPlan, getProgressConfirmList, downloadProjectMonitorFile } from '@/api/project/process'
+import { actionPlan, getProgressConfirmList, downloadProjectMonitorFile,getDelayReasonConfirmList } from '@/api/project/process'
 import { svgList, nodeList } from './data'
 import moment from 'moment'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
@@ -137,7 +138,11 @@ export default {
     cartypeProId: {type:String},
     list: {type:Array,default:() => []},
     partStatus: {type: String||Number},
-    carProjectName: {type:String}
+    carProjectName: {type:String},
+    sliceArr:{
+      type:Array,
+      default:()=>[0, 10]
+    }
   },
   data() {
     return {
@@ -160,7 +165,8 @@ export default {
       dialogVisibleLight: false,
       selectParts: {},
       dialogVisibleDelayReason: false,
-      moment
+      delayReasonConfirmList:[],
+      moment,
     }
   },
   computed: {
@@ -178,8 +184,8 @@ export default {
       const currentKw = moment().format('YYYY-[KW]WW')
       return this.list ? this.list.map(item => {
         const partStatus = Number(item.partStatus)
-        const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
-        const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
+        const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 || partStatus == 7 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 || partStatus == 7 ? currentKw : item.emTimeKw) : 0
+        const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 || partStatus == 8 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 || partStatus == 8 ? currentKw : item.otsTimeKw) : 0
         return {
           ...item,
           releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(partStatus == 1 ? item.releaseTimeKw : item.planReleaseTimeKw, partStatus == 1 ? currentKw : item.releaseTimeKw) : 0,
@@ -193,7 +199,12 @@ export default {
           partStatusTemp: partStatus == 7 ? 8 : partStatus == 8 ? 7 : partStatus
         }
       }) : []
+    },
+    
+    showParts() {
+      return this.listWithNodeDelayWeeks.length < 10 ? this.listWithNodeDelayWeeks : this.listWithNodeDelayWeeks.slice(this.sliceArr[0],this.sliceArr[1])
     }
+    
   },
   methods: {
     resetSelectPart() {
@@ -233,11 +244,28 @@ export default {
         this.$refs.changeLight.changeSaveLoading(false)
       })
     },
-    openDelayReasonDialog() {
-      this.changeDelayReasonDialogVisible(true)
+    async openDelayReasonDialog() {
+      const params = {
+        partStatus: this.partStatus,
+        projectId: this.cartypeProId,
+        selectList: this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
+      }
+      await getDelayReasonConfirmList(params).then((res)=>{
+        if (res?.result) {
+          const tableList = res.data || []
+          if (tableList.length < 1) iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
+          else {
+            this.changeDelayReasonDialogVisible(true);
+            this.delayReasonConfirmList = tableList;
+          }
+        }
+      })
+        
+      // this.changeDelayReasonDialogVisible(true)
     },
     changeDelayReasonDialogVisible(visible) {
       this.dialogVisibleDelayReason = visible
+      if(!visible) this.delayReasonConfirmList = [];
     },
     /**
      * @Description: 打开进度灯弹窗
@@ -246,9 +274,9 @@ export default {
      * @return {*}
      */    
     openChangeLight(pro) {
-      if (this.partStatus == 7) {
-        return
-      }
+      // if (this.partStatus == 7) {
+      //   return
+      // }
       this.selectParts = pro
       this.changeLightDialogVisible(true)
     },
@@ -320,30 +348,42 @@ export default {
         if (res?.result) {
           let tableList = res.data || []
           const fsOptions = await this.getFsUserList(tableList)
+          const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
           tableList = tableList.reduce((accu, item) => {
             if (item.procStatus != 1 && item.procStatus != 3) {
               return accu
             }
-            const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-            const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-            const options = fsOptions && fsOptions[item.partNum] ? fsOptions[item.partNum].reduce((accu, item) => { 
-              if (item.userId) { 
-                return [...accu, { 
-                  ...item, 
-                  value: item.userId, 
-                  label: item.userName 
-                }] 
-              } else { 
-                return accu 
-              } 
-            },[]) : []  
+            // const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+            // const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+            // const options = fsOptions && fsOptions[item.partNum] ? fsOptions[item.partNum].reduce((accu, item) => { 
+            //   if (item.userId) { 
+            //     return [...accu, { 
+            //       ...item, 
+            //       value: item.userId, 
+            //       label: item.userName 
+            //     }] 
+            //   } else { 
+            //     return accu 
+            //   } 
+            // },[]) : []  
+            let fs = '';
+            const fsId = buyerUserMap[item.partNum] ? buyerUserMap[item.partNum]+'' : '';
+            userInfoVOList.map((userItem)=>{
+              userItem.value = userItem.userId;
+              userItem.label = userItem.userName;
+              if(fsId && userItem.userId == fsId){
+                fs = userItem.userName
+              }
+            })
+ 
             return [...accu, {  
               ...item, 
               cartypeProId: this.cartypeProId, 
               cartypeProject: this.carProjectName, 
               projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
               projectPurchaserId: this.$store.state.permission.userInfo.id, 
-              selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              selectOption:userInfoVOList || [],
               fs, 
               fsId,
               confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'), 
@@ -491,6 +531,10 @@ export default {
       // const selectPart = this.list.filter(item => item.isChecked).map(item => item.partNum)
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {type: '1',carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
       window.open(router.href,'_blank') 
+    },
+    
+    load() {
+      this.sliceArr = [0, this.sliceArr[1] + 2]
     },
   }
 }

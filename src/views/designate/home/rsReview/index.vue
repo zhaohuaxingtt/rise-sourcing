@@ -85,6 +85,7 @@
         </div>
       </div>
       <tablelist
+        permissionKey="DESIGNATE_HOME_RSREVIEW"
         class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -94,8 +95,6 @@
         @handleSelectionChange="handleSelectionChange"
         ref="tableList"
         :lang="true"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>

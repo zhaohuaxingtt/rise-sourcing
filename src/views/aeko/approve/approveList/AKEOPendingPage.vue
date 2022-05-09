@@ -89,6 +89,7 @@
       </div>
       <!--表格展示区-->
       <tableList
+        permissionKey="AEKO_APPROVE_APPROVELIST_AKEOPENDINGPAGE"
           height="400"
           ref="tableList"
           class="aeko-pending-table"
@@ -100,8 +101,6 @@
           :selectConfig="selectConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #isTop="scope">
           <div>

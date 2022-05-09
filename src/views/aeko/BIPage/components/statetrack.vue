@@ -53,9 +53,9 @@ import { roleMixins } from "@/utils/roleMixins";
 					// reportId:	'bfa0fc3a-f12a-48e4-94ca-2e042f6ef542',
 					// datasetId:	['980a894e-6ee7-442a-97ad-11abf8aab6a9'],
 					// 测试环境
-					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
-					reportId: '25724165-8d58-4452-a6e3-363facc62d2b',
-          datasets:['734b852b-4b5e-4392-b715-3a698a5a7209'],
+					workspaceId: process.env.NODE_ENV == 'production' ? 'c272ae69-a6b4-4407-bd0e-f67953de36ce' : '876776a9-f959-442e-a011-b4bade0dd862', 
+					reportId: process.env.NODE_ENV == 'production' ? 'bfa0fc3a-f12a-48e4-94ca-2e042f6ef542' : '25724165-8d58-4452-a6e3-363facc62d2b',
+          datasets:[process.env.NODE_ENV == 'production' ? '980a894e-6ee7-442a-97ad-11abf8aab6a9' : '734b852b-4b5e-4392-b715-3a698a5a7209'],
           username: this.userInfo.id,
           roles:['role'],	// 固定参数，报表端自己判断角色权限
 				}

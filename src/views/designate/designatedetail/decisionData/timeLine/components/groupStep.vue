@@ -68,9 +68,6 @@ export default {
             default: true
         }
     },
-    created(){
-        console.log(this.groupNode,'groupNode');
-    },
     data(){
         return{
            isTodayAfterIndex:0,

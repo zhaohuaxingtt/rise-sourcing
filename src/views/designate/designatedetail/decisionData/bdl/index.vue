@@ -8,46 +8,104 @@
 -->
 
 <template>
-  <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
-    <div class="margin-top20" style="text-align:right;" v-if="!isExportPdf && isPreview!='1'">
-      <!-- 流转中、被冻结的申请单不可编辑 -->
-      <iButton v-if="applicationStatus!=='ONFLOW' && applicationStatus!=='FREEZE'" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
-    </div>
-    <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
-      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
-        <template #supplierName="scope">
-          <div>
-            <span class="factoryDesc">{{scope.row.supplierName }}</span>
-            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1">
-              <span>
-                <icon symbol name="iconzhongyaoxinxitishi" />
-              </span>
-            </el-tooltip>
-            <supplierBlackIcon
-              :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
-              :BlackList="scope.row.blackStuffs || []"
-            />
-            <div>{{ scope.row.supplierNameEn }}</div>
-          </div>
-        </template>
-        <template #sapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
-        </template>
-      </tableList>
-      <iPagination v-update 
-        @size-change="val => sizeChange(val, index)" 
-        @current-change="val => currentChange(val, index)" 
-        background 
-        :page-sizes="item.page.pageSizes"
-        :page-size="item.page.pageSize"
-        :layout="item.page.layout"
-        :current-page="item.page.currPage"
-        :total="item.page.totalCount"
-        v-if="!isExportPdf"
-      />
-    </iCard>
-    <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
+<div ref="bdl">
+  <div class="margin-top20" style="text-align:right;" v-if="!isExportPdf && isPreview!='1'">
+    <!-- 流转中、被冻结的申请单不可编辑 -->
+    <iButton v-if="applicationStatus!=='ONFLOW' && applicationStatus!=='FREEZE'" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
   </div>
+  <div ref="rsPdfCard">
+  <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
+    <tableList :tableRowClassName="'table-row'+index" :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
+      <template #supplierName="scope">
+        <div>
+          <span class="factoryDesc">{{scope.row.supplierName }}</span>
+          <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1">
+            <span>
+              <icon symbol name="iconzhongyaoxinxitishi" />
+            </span>
+          </el-tooltip>
+          <supplierBlackIcon
+            :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+            :BlackList="scope.row.blackStuffs || []"
+          />
+          <div>{{ scope.row.supplierNameEn }}</div>
+        </div>
+      </template>
+      <template #sapCode="scope">
+        <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+      </template>
+    </tableList>
+    <iPagination v-update 
+      @size-change="val => sizeChange(val, index)" 
+      @current-change="val => currentChange(val, index)" 
+      background 
+      :page-sizes="item.page.pageSizes"
+      :page-size="item.page.pageSize"
+      :layout="item.page.layout"
+      :current-page="item.page.currPage"
+      :total="item.page.totalCount"
+      v-if="!isExportPdf"
+    />
+  </iCard>
+  </div>
+  <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
+  <div class="pdf-item">
+    <div ref="tabTitle" style="padding:1px">
+      <slot name="tabTitle"></slot>
+    </div>
+    <div class="page-logo" ref="logo">
+      <img src="../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+      <div>
+        <p class="pageNum"></p>
+      </div>
+      <div>
+        <p>{{ userName }}</p>
+        <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+      </div>
+    </div>
+    <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
+      <template  v-for="(item, index) in rfqList">
+          <div class="pageCard-main rsPdfCard" :key="i+'_'+index" v-for="(child,i) in item.tableList">
+            <slot name="tabTitle"></slot>
+            <iCard :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
+              <div :style="{'height': cntentHeight + 'px'}">
+                <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="child" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
+                  <template #supplierName="scope">
+                    <div>
+                      <span class="factoryDesc">{{scope.row.supplierName }}</span>
+                      <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1">
+                        <span>
+                          <icon symbol name="iconzhongyaoxinxitishi" />
+                        </span>
+                      </el-tooltip>
+                      <supplierBlackIcon
+                        :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+                        :BlackList="scope.row.blackStuffs || []"
+                      />
+                      <div>{{ scope.row.supplierNameEn }}</div>
+                    </div>
+                  </template>
+                  <template #sapCode="scope">
+                    <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+                  </template>
+                </tableList>
+              </div>
+              <div class="page-logo" v-if="isExportPdf">
+                <img src="../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+                <div>
+                  <p class="pageNum"></p>
+                </div>
+                <div>
+                  <p>{{ userName }}</p>
+                  <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+                </div>
+              </div>
+            </iCard>
+          </div>
+      </template>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -59,8 +117,9 @@ import { readQuotation, findRfqSupplierQuotationPage} from '@/api/designate/deci
 import { pageMixins } from "@/utils/pageMixins"
 import { cloneDeep, uniq } from 'lodash'
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+import filters from "@/utils/filters"
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,filters],
   components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon,
   supplierBlackIcon
    },
@@ -69,14 +128,17 @@ export default {
       rfqList: [],
       tableTitle: [],
       dialogVisible: false,
-      rateTableData: []
+      rateTableData: [],
+      cntentHeight:null
     }
   },
   props:{
     isExportPdf:{
       type:Boolean,
       default:false,
-    }
+    },
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
   },
   computed: {
     isPreview() {
@@ -85,12 +147,65 @@ export default {
     // 定点状态
     applicationStatus(){
       return this.$store.getters.applicationStatus
-    }
+    },
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   created() {
     this.init()
   },
+  watch:{
+    rfqList:{
+      deep:true,
+      handler(val){}
+    }
+  },
   methods: {
+    getHeight(){
+      if(!this.$refs.bdl) return
+      this.width = this.$refs.bdl.clientWidth
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      // let headerHeight = 86 // Title 区域高度
+      // let pageLogo = 52     // logo 区域高度
+      // let tableHeader = 64  // 表头高度
+      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+      let rfqList = this.rfqList
+      rfqList.forEach((child,index)=>{
+        let heightSum = 0
+        let tableList = []
+        let arr = []
+        if(child.tableData&&child.tableData.length&&child.tableList&&!child.tableList.length){
+          const bdl = this.$refs.bdl
+          let Interval = setInterval(() => {
+            let rowList = bdl.getElementsByClassName('table-row'+index)
+            if(rowList.length){
+              clearInterval(Interval)
+              rowList.forEach((item,i)=>{
+                heightSum+=item.offsetHeight
+                if(heightSum<this.cntentHeight - tableHeader){
+                  arr.push(this.rfqList[index].tableData[i])
+                }else{
+                  tableList.push(JSON.parse(JSON.stringify(arr)))
+                  heightSum=item.offsetHeight
+                  arr = [this.rfqList[index].tableData[i]]
+                }
+              })
+              tableList.push(JSON.parse(JSON.stringify(arr)))
+              rfqList[index].tableList = tableList
+            }
+          }, 2000);
+        }
+      })
+      this.rfqList = rfqList
+      return
+    },
     sizeChange(val, index) {
       this.rfqList[index].page = {
         ...this.rfqList[index].page,
@@ -140,7 +255,6 @@ export default {
       const rates = uniq(tableData.reduce((accum, curr) => {
         return [...accum, ...((curr.departmentRate || []).map(item => item.rateDepartNum))]
       },[]))
-      console.log(rates)
       title.push({
         props:'departmentRate',
         name:'RATING', 
@@ -155,6 +269,9 @@ export default {
               }
         })
       })
+      
+      if(this.hasTitle)
+      title.unshift({ props: 'index', name: '序号', key: '', width: 80 })
       return title
     },
     /**
@@ -172,11 +289,17 @@ export default {
       }
       const res = await findRfqSupplierQuotationPage(params)
       if (res?.result) {
+        let tableData = res?.data.map((child,i)=>{
+          if(this.hasTitle)
+          child.index = 1+i
+          return child
+        })
         this.rfqList = this.rfqList.map((item, rfqIndex) => {
           return rfqIndex === index ? {
+          tableList:[],
           rfqNum: element.id,
           rfqName: element.rfq_name,
-          tableData: res?.data,
+          tableData: tableData,
           tableTitle: this.getTableTitle(res.data),
           page: {
             ...item.page,
@@ -185,6 +308,9 @@ export default {
             totalCount: Number(res?.total)
           }
         } : item
+        })
+        this.$nextTick(()=>{
+          this.getHeight()
         })
       } else {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -239,6 +365,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .factoryDesc {
   display: inline-block;
   padding-right: 3px;
@@ -268,4 +406,12 @@ export default {
     border-right: none;
   }
 }
+
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 </style>

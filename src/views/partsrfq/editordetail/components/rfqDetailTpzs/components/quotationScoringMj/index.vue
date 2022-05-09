@@ -70,8 +70,8 @@ export default {
     this.getRfqSupplierList().then((r) => {
       this.getAllMouldFee()
       this.hasShowDelegate()
+      this.getAllPartForMould()
     })
-    this.getAllPartForMould()
     console.log(this.rfqInfoData)
   },
   mounted() {
@@ -126,8 +126,8 @@ export default {
         getRfqSupplierList({ rfqId: this.partInfo.rfqId })
           .then((res) => {
             if (res && res.code == 200) {
-              this.supplierId = res.data[0].supplierId
-              this.supplierList = res.data
+              this.supplierId = Array.isArray(res.data) && res.data.length ? res.data[0].supplierId : ''
+              this.supplierList = Array.isArray(res.data) ? res.data : []
               r(res)
             }
           })

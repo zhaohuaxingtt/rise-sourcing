@@ -20,14 +20,13 @@
       </div>
       <div class="table">
         <tableList
+          permissionKey="PROJECT_SCHEDULINGASSISTANT_RISKANDALARMCONFIG"
           index
           ref="tableList"
           :tableData="data"
           :tableTitle="riskAndAlarmTitle"
           :tableLoading="tableLoading"
           :lang="true"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
           style="min-height: 400px"
         >
           <!-- 风险状态 -->

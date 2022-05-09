@@ -1,8 +1,9 @@
 <template>
-  <div class="bdl">
+  <div class="bdl pageCard-main rsPdfCard" ref="bdl">
+    <slot name="tabTitle"></slot>
     <iCard class="bdlCard" v-for="(rfq, $index) in rfqList" :key="$index"
            :title="`RFQ NO.${ rfq.id },RFQ Name:${ rfq.rfq_name }`">
-      <div v-if="dataGroup[rfq.id]">
+      <div v-if="dataGroup[rfq.id]" :style="{'height': cntentHeight + 'px'}">
         <el-table class="table" default-expand-all :data="dataGroup[rfq.id].tableListData"
                   :cell-class-name="cellClassName">
           <el-table-column type="expand">
@@ -52,6 +53,16 @@
             </el-table-column>
           </template>
         </el-table>
+        <div class="page-logo">
+          <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+          <div>
+            <p class="pageNum"></p>
+          </div>
+          <div>
+            <p>{{ userName }}</p>
+            <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+          </div>
+        </div>
       </div>
     </iCard>
   </div>
@@ -62,13 +73,24 @@ import {iCard} from "rise"
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 import {tableTitle} from "@/views/designate/designatedetail/decisionData/bdl/data"
 import {findRfqSupplierQuotationPage, readQuotation} from "@/api/designate/decisiondata/bdl"
-
+import filters from "@/utils/filters"
 export default {
+  mixins:[filters],
+  props:{
+    tableList: { type: Array, default: () => [] },
+    prototypeTableList: { type: Array, default: () => [] },
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+  },
   components: {iCard, supplierBlackIcon},
   data() {
     return {
       rfqList: [],
       dataGroup: {},
+      cntentHeight:0
     }
   },
   async created() {
@@ -82,6 +104,12 @@ export default {
 
       this.findRfqSupplierQuotationPage(rfq.id)
     })
+  },
+  mounted(){
+    this.width = this.$refs.dbl.clientWidth
+    let headerHeight = 86 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo // 内容区域对应的高度
   },
   methods: {
     readQuotation: function () {
@@ -114,6 +142,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rsPdfCard{
+  box-shadow: none;
+  & + .rsCard {
+    margin-top: 20px; /*no*/
+  }
+  ::v-deep .cardHeader{
+    padding: 30px 0px;
+  }
+  ::v-deep .cardBody{
+    padding: 0px;
+  }
+}
 .bdl {
   .bdlCard {
     margin-bottom: 20px; /*no*/
@@ -162,6 +202,14 @@ export default {
       font-weight: 700;
       padding-left: 10px; /*no*/
     }
+  }
+  
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>

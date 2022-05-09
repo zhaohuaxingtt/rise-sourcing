@@ -227,6 +227,7 @@
               </div>
             </div>
             <tablelist
+              permissionKey="PARTSPROCURE_HOME"
               class="aotoTableHeight"
               :tableData="tableListData"
               :tableTitle="tableTitle"
@@ -238,8 +239,6 @@
               :activeItemsTwo="'code'"
               ref="tableList"
               :lang="true"
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
             >
             </tablelist>
             <!------------------------------------------------------------------------>

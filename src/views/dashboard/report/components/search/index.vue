@@ -233,7 +233,6 @@ export default {
           })
           this.options = options
           this.optionsOrigin = _.cloneDeep(this.options)
-          console.log('options', options)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

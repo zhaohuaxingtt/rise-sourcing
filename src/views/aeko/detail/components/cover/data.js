@@ -11,9 +11,43 @@ export const previewBaicFrom = [
     {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'mainSupplier',type:'input',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_MAINSUPPLIER|主要供应商',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_MAINSUPPLIER|主要供应商-编辑',},
     {label:'新⾸批送样周期(周数)',labelWidth:'13rem',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'sendCycle',type:'input',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_SENDCYCLE|新⾸批送样周期',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_SENDCYCLE|新⾸批送样周期-编辑',},
     {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'isEffectpro',required:true,editable:true,isObj:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_ISEFFECTPRO|影响进度',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_ISEFFECTPRO|影响进度-编辑',},
-    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',clearable:true,required:true,editable:true,filterable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FSNAME|指定前期采购',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_FSNAME|指定前期采购-编辑',},
+    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',clearable:true,required:true,editable:true,filterable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FSNAME|指定前期采购',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_FSNAME|指定前期采购-编辑',multiple:true,tooltip:true},
     {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatusDesc',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI|封⾯状态',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI_LINIE|封⾯状态—LINIE'},
 ]
+
+export const BaicFrom = (state=true) => ([
+    {label:'是否TOP',labelWidth:'13rem',labelKey:'LK_AEKO_SHIFOUTOP',props:'isTop',type:'select',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_ISTOP|是否TOP',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_ISTOP|是否TOP-编辑',selectOption:'isTop',required:true,editable:true,isObj:true,},
+    {label:'是否相关',labelKey:'LK_AEKO_SHIFOUXIANGGUAN',props:'isReference',type:'select',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_ISREFERENCE|是否相关',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_ISREFERENCE|是否相关-编辑',selectOption:'isReference',required:true,editable:true,isObj:true,},
+    {label:'更改零件名称',labelKey:'LK_AEKO_GENGGAILINGJIANMINGCHENG',props:'partName',type:'input',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_PARTNAME|更改零件名称',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_PARTNAME|更改零件名称-编辑',required:true,editable:true},
+    {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'mainSupplier',type:'input',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_MAINSUPPLIER|主要供应商',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_MAINSUPPLIER|主要供应商-编辑',},
+    {label:'新⾸批送样周期(周数)',labelWidth:'13rem',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'sendCycle',type:'input',required:state,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_SENDCYCLE|新⾸批送样周期',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_SENDCYCLE|新⾸批送样周期-编辑',},
+    {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'isEffectpro',required:state,editable:true,isObj:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_ISEFFECTPRO|影响进度',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_ISEFFECTPRO|影响进度-编辑',},
+    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',clearable:true,required:state,editable:true,filterable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FSNAME|指定前期采购',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_FSNAME|指定前期采购-编辑',multiple:true,tooltip:true},
+    {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatusDesc',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI|封⾯状态',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI_LINIE|封⾯状态—LINIE'},
+])
+
+const isEmpty = (val) => val == false && parseInt(val) !== 0 || val === null;
+const validator = (rule, value, callback)=>{
+    if(isEmpty(value)){
+        callback(new Error(rule.message))
+    }else{
+        callback()
+    }
+}
+
+export const fromRules = (vm,state=true)=>({
+    isTop:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    isReference:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    partName:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    mainSupplier:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    sendCycle:state&&[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    isEffectpro:state&&[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    fsName:state&&[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    remark:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    materialIncrease:state&&[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    investmentIncrease:state&&[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    otherCost:state&&[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+})
 
 export const coverTableTitleCost=[
     { props: "cartypeNameZh", name: "⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true },

@@ -93,6 +93,7 @@
       </div>
       <!--表格展示区-->
       <tableList
+        permissionKey="AEKO_APPROVE_APPROVELIST_AKEOAPPROVEDPAGE"
           height="400"
           ref="tableList"
           class="margin-top20 aeko-approved-table"
@@ -103,8 +104,6 @@
           :lang="true"
           :selectConfig="selectConfig"
           v-loading="tableLoading"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
       >
         <!-- <template #isTop="scope">
           <div>

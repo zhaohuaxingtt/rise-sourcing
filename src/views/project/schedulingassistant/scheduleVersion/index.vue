@@ -18,21 +18,22 @@
           <iButton
             :loading="batchUploading"
             @click="batchDownload"
+             v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_DOWNLOAD_BUTTON|排程版本查询-下载-按钮"
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
-      <tableList indexKey
+      <tableList
+                permissionKey="PROJECT_SCHEDULINGASSISTANT_SCHEDULEVERSION"
+                indexKey
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
                  :tableData="tableData"
                  :tableLoading="tableLoading"
                  @handleSelectionChange="handleSelectionChange"
-                 :handleSaveSetting="handleSaveSetting"
-                 :handleResetSetting="handleResetSetting"
       >
         <template #versionName="scope">
          <span class="flexRow-link">

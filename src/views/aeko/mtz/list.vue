@@ -15,6 +15,7 @@
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <tableList
+        permissionKey="AEKO_MTZ_LIST"
         height="400"
         ref="tableList"
         index
@@ -26,8 +27,6 @@
         v-permission.auto="MTZ_MODIFY_LIST_PAGE_TABLE|查看MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :handleSaveSetting="handleSaveSetting"
-        :handleResetSetting="handleResetSetting"
       >
       </tableList>
       <div class="pagination">

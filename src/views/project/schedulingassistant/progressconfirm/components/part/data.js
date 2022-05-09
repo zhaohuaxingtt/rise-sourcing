@@ -1,14 +1,14 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:57:18
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 17:25:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-26 11:06:44
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progressconfirm\components\part\data.js
  */
 
 export const tableTitleNomi = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 150},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 150},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 150},
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
@@ -25,7 +25,7 @@ export const tableTitleNomi = [
 ]
 
 export const tableTitleKickoff = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 150},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 150},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 150},
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
@@ -45,6 +45,6 @@ export const searchList = [
   {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'carProjectSelect', filterable: true, selectOption: 'carProjectOptions'},
   {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input'},
   {value: 'confirmStatus', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'selectDict', selectOption: 'PART_SCHEDULE_CONFIRM_STATUS'},
-  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions'},
+  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions',hidden:true,},
   {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'productPurchaserSelect', filterable: true, selectOption: 'purchaseOptions'}
 ]

@@ -41,6 +41,7 @@
         </div>
         <!-- 表单区域 -->
         <tableList
+            permissionKey="LETTERANDLOI_LETTER_LIST"
             class="table aotoTableHeight"
             :lang="true"
             :tableData="tableListData"
@@ -49,8 +50,6 @@
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LETTER_LIST_TABLE|定点信-表格"
             ref="tableList"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
@@ -275,12 +274,12 @@ export default {
         // 跳转定点申请详情页
         goToDesignate(row){
             console.log(row);
-            const { nominateAppId,nominateProcessType={} } = row;
+            const { nominateAppId, nominateProcessType } = row;
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
                 desinateId: nominateAppId, 
-                designateType: (nominateProcessType && nominateProcessType.code) || ''
+                designateType: nominateProcessType
             }
             })
             window.open(routeData.href, '_blank')

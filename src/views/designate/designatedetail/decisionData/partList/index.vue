@@ -20,14 +20,13 @@
           </h1>
           <!-- table区域 -->
           <tablelist
+            permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
             ref="tableList"
             showTitleName
             v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE|表格"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
-            :handleSaveSetting="handleSaveSetting"
-            :handleResetSetting="handleResetSetting"
           >
             <!-- 系统计算EBR值 -->
             <template #ebrCalculatedValue="scope">

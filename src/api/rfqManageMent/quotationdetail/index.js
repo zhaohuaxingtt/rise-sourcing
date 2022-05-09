@@ -276,7 +276,7 @@ export function getAllMouldFee(params) {
 // 获取rfq所有零件号和fs号
 export function getAllPartForMould(params) {
   return requst({
-    url: `/part/getAllPartForMould/${ params.rfqId }?supplierId=${supplierId()}`,
+    url: `/part/getAllPartForMould/${ params.rfqId }/${ params.supplierId }`,
     method: 'GET',
   })
 }
@@ -609,5 +609,14 @@ export function updatePriceReducePlan(data) {
   return requst({
     url: `/part/update-price-reduce-plan/${ data.quotationId }`,
     method: 'POST'
+  })
+}
+
+// DS零件提交前校验
+export function checkDsPart(data) {
+  return requst({
+    url: `/part/check-ds-part`,
+    method: 'POST',
+    data
   })
 }

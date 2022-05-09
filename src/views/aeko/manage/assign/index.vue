@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:36:57
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-01 15:39:53
  * @Description: 
 -->
 <template>
@@ -15,17 +15,20 @@
       <div class="editControl margin-bottom20">
         <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
         <span class="floatright">
-          <iButton
+          <!-- <iButton
               :loading="assigning"
               v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
               @click="assign"
           >
             {{ language('LK_FENPAI', '分派') }}
-          </iButton>
+          </iButton> -->
+          <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          </iButton> -->
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div>
       <tableList
+          permissionKey="AEKO_MANAGE_ASSIGN"
           index
           ref="tableList"
           :selection="true"
@@ -47,8 +50,6 @@
           v-loading="tableLoading"
           v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_TABLE|表格"
           @handleSelectionChange="handleSelectionChange"
-          :handleSaveSetting="handleSaveSetting"
-          :handleResetSetting="handleResetSetting"
       >
         <template #isTop="scope">
           <div>
@@ -73,7 +74,7 @@
           </a>
         </template>
         <template #chiefName="scope">
-          <iSelect
+          <!-- <iSelect
             class="el-select-multi"
             v-if="!scope.row.chiefName"
             v-model="scope.row.chiefNames"
@@ -91,7 +92,8 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <span v-else>{{ scope.row.chiefName }}</span>
+          <span v-else>{{ scope.row.chiefName }}</span> -->
+          <span >{{ scope.row.chiefName }}</span>
         </template>
       </tableList>
       <div class="pagination">

@@ -107,3 +107,12 @@ export function getPartViewList(data) {
     data,
   })
 }
+
+// 转派采购员
+export function assignContent(data) {
+  return requst({
+    url: '/aeko/cover/assignContent',
+    method: 'POST',
+    data,
+  })
+}

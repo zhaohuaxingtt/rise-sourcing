@@ -80,9 +80,9 @@ export function numberToCurrencyNo2(value) {
     // 整数部分处理，增加,
     let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
 
-    // intPart.toString()这个方法会把负数的负号吃掉 故单独判断是负数的情况下把负号加上去
+    // intPart.toString()数值处于-1到0区间时,这个方法会把负数的负号吃掉 故单独判断是负数的情况下把负号加上去
     let stringValue = value+'';
-    if(stringValue.length && stringValue[0] == '-'){
+    if(intPartFormat=='0' && stringValue.length && stringValue[0] == '-'){
         intPartFormat = '-'+ intPartFormat
     }
     // 预定义小数部分
