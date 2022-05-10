@@ -347,7 +347,7 @@ export default {
         iMessage.warn('请勾选未审批的项目')
         return
       }
-      const isNext = this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount);
+      const isNext = this.multipleSelection.some(item => Number(item.budgetApplyAmount) > Number(item.budgetLeftoverAmount));
       const filterLenth = this.multipleSelection.filter(item => !['50002001','1000003','50003001'].includes(item.partPurchaseProType));
       if(isNext && filterLenth.length != 0){
         let redMultipleSelection = []
