@@ -74,7 +74,7 @@
           </a>
         </template>
         <template #chiefName="scope">
-          <!-- <iSelect
+          <iSelect
             class="el-select-multi"
             v-if="!scope.row.chiefName"
             v-model="scope.row.chiefNames"
@@ -92,8 +92,8 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <span v-else>{{ scope.row.chiefName }}</span> -->
-          <span >{{ scope.row.chiefName }}</span>
+          <span v-else>{{ scope.row.chiefName }}</span>
+          <!-- <span >{{ scope.row.chiefName }}</span> -->
         </template>
       </tableList>
       <div class="pagination">
