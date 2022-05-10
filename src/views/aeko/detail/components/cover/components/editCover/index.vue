@@ -211,7 +211,8 @@ export default {
         ].some(item=>{
           return !(basicInfo[item] === '' || basicInfo[item] === null)
         })
-        return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
+        return false
+        // return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
       }
     },
     data(){
