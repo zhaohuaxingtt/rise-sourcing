@@ -304,7 +304,8 @@ export default {
             this.basicInfo = {
               ...data,
               coverCostsWithCarType:costData,
-              fsName:fsId&&fsId.split(','),
+              // fsName:fsId&&fsId.split(','),
+              fsName:[fsId+''],
               getFsName:fsName,
             };
 
@@ -365,7 +366,8 @@ export default {
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
-          fsId:basicInfo.fsName.join(','),
+          // fsId:basicInfo.fsName.join(','),
+          fsId:basicInfo.fsName,
           fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
           getFsName:undefined,
