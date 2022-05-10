@@ -310,6 +310,7 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
+        :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
           <div>
