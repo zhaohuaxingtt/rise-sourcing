@@ -19,6 +19,7 @@
       <!-- 申请单号 -->
       <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_NOMINATEID|申请单号">
         <iInput
+          clearable
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -26,6 +27,7 @@
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_PARTNUM|零件号">
         <iInput
+          clearable
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -33,6 +35,7 @@
       <!-- 询价采购员 -->
       <el-form-item :label="language('CSF','CSF')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BUYERNAME|CSF">
         <iInput
+          clearable
           v-model="form.buyerName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -40,6 +43,7 @@
       <!-- LINIE -->
       <el-form-item label="LINIE" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_LINIENAME|linieName">
         <iInput
+          clearable
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -47,6 +51,7 @@
       <!-- 签字单状态 -->
       <el-form-item :label="language('QIANZIDANZHUANGTAI','签字单状态')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_STATUS|签字单状态">
         <iSelect
+          clearable
           v-model="form.status"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -65,6 +70,7 @@
       <!-- 复核是否截至 -->
       <el-form-item :label="language('FUHESHIFOUJIEZHI','复核是否截至')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_ISPASSCHECK|复核是否截至">
         <iSelect
+          clearable
           v-model="form.isPassCheck"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -81,6 +87,7 @@
       <!-- 会议名称 -->
       <el-form-item :label="language('HUIYIMINGCHENG','会议名称')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_METTINGNAME|会议名称">
         <iInput
+          clearable
           v-model="form.meetingName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -88,6 +95,7 @@
       <!-- 复核开始日期 -->
       <el-form-item :label="language('JIEZHIQIZHIRIQI','截止起止日期')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHECKDATE|截止起止日期">
         <iDatePicker
+          clearable
           v-model='form.checkDate'
           type="daterange"
           value-format="yyyy-MM-dd HH:mm:ss">
@@ -96,6 +104,7 @@
       <!-- 签字单号 -->
       <el-form-item :label="language('QIANZIDANHAO','签字单号')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNID|签字单号">
         <iInput
+          clearable
           v-model="form.signCode"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -169,5 +178,9 @@ export default {
 <style lang="scss" scoped>
 .designateSearch {
   margin-top: 20px;
+  ::v-deep .el-date-editor .el-range__close-icon{
+      display: block;
+      width: 10px;
+  }
 }
 </style>

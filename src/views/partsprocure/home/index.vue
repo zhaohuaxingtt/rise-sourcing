@@ -56,6 +56,7 @@
               </el-form-item>
               <el-form-item :label="language('RFQBIANHAO','RFQ编号')">
                 <iInput
+                  clearable
                   :placeholder="`${ language('partsprocure.PLEENTER','请输入') }${ language('RFQBIANHAO','RFQ编号') }`"
                   v-model="form['rfqId']"
                 ></iInput>
