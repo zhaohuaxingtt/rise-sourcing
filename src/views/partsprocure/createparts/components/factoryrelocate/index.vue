@@ -57,12 +57,12 @@
     </iSearch>
     <iCard class="mainCard margin-top40" :title="language('DAORUJILU', '导入记录')">
       <template #header-control>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ language('SHANCHUPICI','删除批次') }}</iButton>
-        <iButton :loading="executeLoading" @click="handleExecute">{{ language('ZHIXING','执行') }}</iButton>
-        <uploadButton id="0" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+        <iButton v-permission.auto="FACTORYRELOCATE_DELETE_BATCH|工厂迁移-删除批次" :loading="deleteLoading" @click="handleDelete">{{ language('SHANCHUPICI','删除批次') }}</iButton>
+        <iButton v-permission.auto="FACTORYRELOCATE_EXECUTE|工厂迁移-执行" :loading="executeLoading" @click="handleExecute">{{ language('ZHIXING','执行') }}</iButton>
+        <uploadButton id="0" uploadClass="uploadButton" v-permission.auto="FACTORYRELOCATE_NEW_BATCH|工厂迁移-新建批次" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
           <iButton :loading="uploadLoading">{{ language("XINJIANPICI", "新建批次") }}</iButton>
         </uploadButton>
-        <iButton :loading="downloadLoading" @click="handleDownload">{{ language('DUNLOADTEMPATE','下载模板') }}</iButton>
+        <iButton v-permission.auto="FACTORYRELOCATE_DOWNLOAD|工厂迁移-下载模板" :loading="downloadLoading" @click="handleDownload">{{ language('DUNLOADTEMPATE','下载模板') }}</iButton>
         <buttonTableSetting class="setting" @click="edittableHeader"></buttonTableSetting>
       </template>
       <tableList
