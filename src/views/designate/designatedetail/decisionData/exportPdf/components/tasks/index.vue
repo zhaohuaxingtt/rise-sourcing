@@ -47,8 +47,10 @@
     </div>
     <div class="pdf-item">
       <div class="tasks pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
-        <iCard title="Background & Objective" class="bo">
+        <div style="padding:1px">
+          <slot name="tabTitle"></slot>
+        </div>
+        <iCard title="Background & Objective">
           <div class="content"  :style="{ height: cntentHeight + 'px' }">
             <div v-html="content"></div>
           </div>
@@ -71,7 +73,9 @@
       </div>
       <template v-for="(tableData, i) in tableList">
         <div class="tasks pageCard-main rsPdfCard" :key="i">
-          <slot name="tabTitle"></slot>
+          <div style="padding:1px">
+            <slot name="tabTitle"></slot>
+          </div>
           <iCard title="Tasks" class="task">
             <div :style="{ height: cntentHeight + 'px' }">
               <tableList
@@ -165,14 +169,19 @@ export default {
   methods: {
     getHeight() {
       if (!this.$refs.tasks) return;
-      this.width = this.$refs.tasks.clientWidth;
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      this.width = this.$refs.tasks.offsetWidth;
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       // let headerHeight = 84; // Title 区域高度
       // let pageLogo = 52; // logo 区域高度
       // let tableHeader = 41; // 表头高度
+      console.log(this.width);
+      console.log((this.width / 841.89) * 595.28);
+      console.log('headerHeight=>',headerHeight);
+      console.log('pageLogo=>',pageLogo);
+      console.log('this.hasTitle=>',this.hasTitle);
       this.cntentHeight =
         (this.width / 841.89) * 595.28 -
         headerHeight -
@@ -260,12 +269,12 @@ export default {
       color: rgb(22, 96, 241);
     }
   }
-  .page-logo {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
-  }
+}
+.page-logo {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+  border-top: 1px solid #666;
 }
 </style>

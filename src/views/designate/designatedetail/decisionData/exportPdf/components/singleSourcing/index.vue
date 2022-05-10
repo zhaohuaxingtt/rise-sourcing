@@ -42,7 +42,9 @@
     </div>
     <template v-for="(tableData,i) in tableList">
       <div :key="i" class="pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
+        <div style="padding:1px">
+          <slot name="tabTitle"></slot>
+        </div>
         <iCard class="singleSourcing" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
           <div class="content">
             <div ref="form">
@@ -130,22 +132,15 @@ export default {
 
     this.getSingleSourcing()
   },
-  mounted(){
-    this.width = this.$refs.single.clientWidth
-    let formHeight = this.$refs.form.clientHeight
-    let headerHeight = 84 // Title 区域高度
-    let pageLogo = 52     // logo 区域高度
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - formHeight - this.hasTitle // 内容区域对应的高度
-  },
   methods: {
     getHeight(){
       if(!this.$refs.single) return
-      this.width = this.$refs.single.clientWidth
-      let formHeight = this.$refs.form.clientHeight
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.single.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      this.width = this.$refs.single.offsetWidth
+      let formHeight = this.$refs.form.offsetHeight
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.single.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       // let headerHeight = 84 // Title 区域高度
       // let pageLogo = 52     // logo 区域高度
       // let tableHeader = 64  // 表头高度
@@ -213,6 +208,7 @@ export default {
       width: 280px; /*no*/
     }
   }
+}
   .page-logo{
     display: flex;
     justify-content: space-between;
@@ -220,5 +216,4 @@ export default {
     align-items: center;
     border-top: 1px solid #666;
   }
-}
 </style>

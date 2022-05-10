@@ -52,7 +52,9 @@
       <!-- <div class="pdf-item"> -->
     <template v-for="(tableData,i) in tableList">
     <div class="pageCard-main max-content" :key="i">
-      <slot name="tabTitle"></slot>
+      <div style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
         <!-- 供应商表格 -->
         <div>
@@ -93,7 +95,9 @@
     </div>
     </template>
     <div class="pageCard-main">
-      <slot name="tabTitle"></slot>
+      <div style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="buMonitor rsPdfCard" :key="i" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 图标模拟 -->
         <div class="buMonitor-charts" :style="{'height': chartsHeight + 'px'}">
@@ -348,7 +352,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .buMonitor {
-  margin-top: 20px;
   .supplierTable {
     .updateTime {
       display: inline-block;

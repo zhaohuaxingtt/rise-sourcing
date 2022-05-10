@@ -1,4 +1,5 @@
 <template> <!-- 导出RS单决策资料 -->
+<div>
   <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
@@ -13,6 +14,7 @@
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
       <div class="content" id="allMoudles">
+        <div class="showPage" ref="showPage">
         <!-- title -->
         <div id="html2canvasTitle">
           <rsTitle class="module">
@@ -21,20 +23,6 @@
             </template>
           </rsTitle>
          </div>
-        <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
-        { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
-         { "key": "Tasks", "name": "Tasks", "path": "/designate/decisiondata/tasks" },
-          { "key": "Drawing", "name": "Drawing", "path": "/designate/decisiondata/drawing" },
-           { "key": "BDL", "name": "BDL", "path": "/designate/decisiondata/bdl" }, 
-           { "key": "SingleSourcing", "name": "Single Sourcing", "path": "/designate/decisiondata/singlesourcing" }, 
-           { "key": "ABPrice", "name": "A-B Price", "path": "/designate/decisiondata/abprice" }, 
-           { "key": "CostAnalysis", "name": "Cost Analysis", "path": "/designate/decisiondata/costanalysis" }, \
-           { "key": "TimeLine", "name": "Timeline", "path": "/designate/decisiondata/timeline" },
-            { "key": "Strategy", "name": "Strategy", "path": "/designate/decisiondata/strategy" },
-             { "key": "AwardingScenario", "name": "Awarding Scenario", "path": "/designate/decisiondata/awardingscenario" },
-              { "key": "RS", "name": "RS", "path": "/designate/decisiondata/rs" },
-               { "key": "MTZ", "name": "MTZ", "path": "/designate/decisiondata/mtz", "isMtz": true }, 
-               { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
         <!-- PartList -->
         <div id="html2canvasPartList">
           <partList class="module">
@@ -107,19 +95,21 @@
         </div>
         
 
-        <div id="html2canvasRs" :key="key">
+        <div id="html2canvasRs">
           <rs class="module" :nomiData="nomiData">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/rs"/>
             </template>
           </rs>
         </div>
+        
+        <canvas id="myCanvas"></canvas>
+        </div>
+        <div ref="pdf-containr" class="pdf-containr"></div>
       </div>
     </div>
-
-    
-    <canvas id="myCanvas"></canvas>
   </div>
+</div>
 </template>
 
 <script>
@@ -165,9 +155,14 @@ export default {
   computed:{
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-        key: state => state.sourcing.updateKey,
+        update: state => state.sourcing.update,
     }),
   },
+    watch: {
+      update(val){
+        this.$forceUpdate()
+      }
+    },
   created() {
     this.nominateAppId = this.$route.query.desinateId
     if (!this.nominateAppId) return
@@ -236,67 +231,67 @@ export default {
         }
 
     },
-    getPdfImage(){
-        const ops = {
-          scale:(1,1),
-        };
-        const {clickIndex,transferDom} = this;
+    // getPdfImage(){
+    //     const ops = {
+    //       scale:(1,1),
+    //     };
+    //     const {clickIndex,transferDom} = this;
 
-        // const domId = '#'+transferDom[clickIndex]['DomId'];
-        html2canvas(this.$el.querySelector('#allMoudles'),ops).then(canvas=>{
+    //     // const domId = '#'+transferDom[clickIndex]['DomId'];
+    //     html2canvas(this.$el.querySelector('#allMoudles'),ops).then(canvas=>{
 
 
-          // 为了处理分别截图延迟问题 现将整块截图后裁取
-          transferDom.map((item,index)=>{
-              let outOffsetTop = document.getElementById("allMoudles").offsetTop;
-              let innerOffsetTop = document.getElementById(item.DomId).offsetTop
+    //       // 为了处理分别截图延迟问题 现将整块截图后裁取
+    //       transferDom.map((item,index)=>{
+    //           let outOffsetTop = document.getElementById("allMoudles").offsetTop;
+    //           let innerOffsetTop = document.getElementById(item.DomId).offsetTop
               
-              let offsetTop = innerOffsetTop - outOffsetTop;
-              let offsetHeight = document.getElementById(item.DomId).offsetHeight;
+    //           let offsetTop = innerOffsetTop - outOffsetTop;
+    //           let offsetHeight = document.getElementById(item.DomId).offsetHeight;
 
-              console.log(item.DomId+':','offsetTop:'+offsetTop,'offsetHeight:'+offsetHeight);
+    //           console.log(item.DomId+':','offsetTop:'+offsetTop,'offsetHeight:'+offsetHeight);
 
            
-              var ctx=canvas.getContext("2d");
-              var imgData=ctx.getImageData(0,offsetTop,1920,offsetHeight);
+    //           var ctx=canvas.getContext("2d");
+    //           var imgData=ctx.getImageData(0,offsetTop,1920,offsetHeight);
 
               
-              var copyCanvas = document.getElementById("myCanvas");
-              copyCanvas.width = '1920';
-              copyCanvas.height = offsetHeight;
+    //           var copyCanvas = document.getElementById("myCanvas");
+    //           copyCanvas.width = '1920';
+    //           copyCanvas.height = offsetHeight;
               
-              var ctxs = copyCanvas.getContext("2d");
-              ctxs.putImageData(imgData,0,0);
+    //           var ctxs = copyCanvas.getContext("2d");
+    //           ctxs.putImageData(imgData,0,0);
 
-              // const url = copyCanvas.toDataURL("image/png")
-              // const a = document.createElement('a');
-              // a.href = url;
-              // a.setAttribute('download', 'chart-download');
-              // a.click();
+    //           // const url = copyCanvas.toDataURL("image/png")
+    //           // const a = document.createElement('a');
+    //           // a.href = url;
+    //           // a.setAttribute('download', 'chart-download');
+    //           // a.click();
 
               
-                this.clickIndex++;
+    //             this.clickIndex++;
 
 
-                var imgurl = copyCanvas.toBlob((blob)=>{
-                  //以时间戳作为文件名 实时区分不同文件
-                  let filename = `${new Date().getTime()}.png`;
+    //             var imgurl = copyCanvas.toBlob((blob)=>{
+    //               //以时间戳作为文件名 实时区分不同文件
+    //               let filename = `${new Date().getTime()}.png`;
 
-                  console.log(blob,'copyCanvas')
-                  //转换canvas图片数据格式为formData
-                  let pdfFile = new File([blob], filename, {type: 'image/png'});
-                  // let formData = new FormData();
-                  // formData.append('file', pdfFile);
+    //               console.log(blob,'copyCanvas')
+    //               //转换canvas图片数据格式为formData
+    //               let pdfFile = new File([blob], filename, {type: 'image/png'});
+    //               // let formData = new FormData();
+    //               // formData.append('file', pdfFile);
                   
-                  this.transferDom[index]['pdfFile'] = pdfFile;
-                  this.checkAllFilesDone();
-                })
-              // if(this.clickIndex < transferDom.length) this.getPdfImage();
-              // else this.exportLoading = false;
-            })
+    //               this.transferDom[index]['pdfFile'] = pdfFile;
+    //               this.checkAllFilesDone();
+    //             })
+    //           // if(this.clickIndex < transferDom.length) this.getPdfImage();
+    //           // else this.exportLoading = false;
+    //         })
              
-        });
-    },
+    //     });
+    // },
 
     // 查看所有图片是否上传完毕
     async checkAllImageUpload(){
@@ -336,26 +331,45 @@ export default {
     // 导出pdf
     async handleExportPdf() {
       this.fileList = []
-      let elList = this.$refs.exportPdf.getElementsByClassName('pageCard-main')
-      // console.log(elList);
+      let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
       setTimeout(async () => {
         if(!elList.length){
           iMessage.warn('请稍等')
           this.$emit('changeStatus','exportLoading',false)
           return
         }
+        console.time('截图')
+        let div = document.createElement('div')
+        let sumHeight = 0
         for (let i = 0; i < elList.length; i++) {
-          const el = elList[i];
+          console.time(`img=>${i}`)
+          const el = elList[i]
+          console.log(el.offsetHeight);
           if(el.getElementsByClassName('pageNum')[0])
           el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
-          console.log(i,'=>img:start');
-          await this.getPdfImage({
-            dom: el,
-            index: i
-          })
-          console.log(i,'=>img:end');
+          const elDom = el.cloneNode(true);
+          sumHeight+=el.offsetHeight
+          if(sumHeight>=16000){
+            this.$refs['pdf-containr'].appendChild(div)
+            await this.getPdfImage({
+                dom: this.$refs['pdf-containr'],
+              })
+            this.$refs['pdf-containr'].innerHTML = ''
+            sumHeight = el.offsetHeight
+            div = document.createElement('div')
+          }
+          div.appendChild(elDom)
+          console.timeEnd(`img=>${i}`)
         }
-        this.uploadUdFile();
+        this.$refs['pdf-containr'].appendChild(div)
+        await this.getPdfImage({
+            dom: this.$refs['pdf-containr'],
+          })
+        console.timeEnd('截图')
+        this.$nextTick(()=>{
+            this.uploadUdFile();
+        })
+        this.$emit('changeStatus','exportLoading',false)
       }, 0)
     },
     // 截取页面,存入pdf
@@ -363,28 +377,49 @@ export default {
     async getPdfImage({
       //html横向导出pdf
       dom,
-      index
     }) {
+      let scale = 2
       await html2canvas(dom, {
         allowTaint:true,
         dpi: 96, //分辨率
-        scale: 2, //设置缩放
+        scale: scale, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
       }).then(async (canvas) => {
-          await this.getPdfFile(canvas,index)
+        var copyCanvas = document.getElementById("myCanvas");
+        let ctx=canvas.getContext("2d");
+        this.width = canvas.width
+        let height = canvas.height
+        let offsetHeight = 0
+        let i = 0
+        while(height>20){
+          this.pageHeight = this.width/841.89*595.28;
+          console.log(height);
+          console.log(this.pageHeight);
+          copyCanvas.width = this.width
+          copyCanvas.height = this.pageHeight
+          var imgData=ctx.getImageData(0,offsetHeight,this.width,this.pageHeight );
+          var ctxs = copyCanvas.getContext("2d");
+          ctxs.putImageData(imgData,0,0);
+          await this.getPdfFile(copyCanvas)
+          height -= this.pageHeight
+          offsetHeight+=this.pageHeight
+          i++
+          ctxs.clearRect(0, 0, this.width, this.pageHeight); //清空截图画布
+        }
       });
     },
 
-    async getPdfFile(copyCanvas,num){
+    async getPdfFile(copyCanvas){
+      console.log(copyCanvas);
       return new Promise((r,j)=>{
         copyCanvas.toBlob((blob) => {
           //以时间戳作为文件名 实时区分不同文件
           let filename = `${new Date().getTime()}.png`;
           let pdfFile = new File([blob], filename, { type: "image/png" });
-          this.fileList.push({ file: pdfFile, index: num });
-          r(num)
+          this.fileList.push({ file: pdfFile });
+          r(true)
         });
       })
     },
@@ -393,7 +428,8 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
+      // 841.89*2
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.width/841.89*595.28})
       this.$emit('changeStatus','exportLoading',false)
     },
 
@@ -418,6 +454,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pdf-containr{
+  width: 100%;
+  // height: 0;
+  // position: absolute;
+  // overflow: hidden;
+}
 .exportPdf {
   width: 100vw;
   height: 100vh;
@@ -478,10 +520,6 @@ export default {
 
     .content {
       margin-top: 30px; /*no*/
-      >div{
-        padding: 0 20px;
-      }
-
       ::v-deep .card {
         box-shadow: none;
         // border: 1px solid #999;
@@ -552,8 +590,14 @@ export default {
     overflow: hidden;
   }
   ::v-deep .pageCard-main{
-    // overflow: hidden;
+    overflow: hidden;
     margin-top: 20px;
+  }
+  ::v-deep .pdf-containr{
+    .pageCard-main{
+      overflow: hidden;
+      margin-top: 0px;
+    }
   }
   ::v-deep .max-content{
     width: max-content;

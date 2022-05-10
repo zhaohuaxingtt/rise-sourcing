@@ -96,7 +96,8 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
-        <div style="width: 0; height: 0; overflow: hidden">
+        <!-- <div style="width: 0; height: 0; overflow: hidden"> -->
+        <div>
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>

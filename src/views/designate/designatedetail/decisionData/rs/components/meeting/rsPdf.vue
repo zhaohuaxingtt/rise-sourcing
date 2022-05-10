@@ -312,7 +312,7 @@
       </template>
     </div>
     <template v-for="(tableData,key) in prototypeTableList">
-      <div :key="key" class="pageCard-main">
+      <div :key="key" class="pageCard-main" v-if="tableData.length">
         <slot name="tabTitle"></slot>
         <iCard title="Prototype Cost List" class="rsCard pageCard" v-if='!showSignatureForm && prototypeList.length > 5'>
           <div :style="{'height': prototypeListPageHeight + 'px'}">
@@ -406,7 +406,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rsPdf {
+.pageCard-main {
   min-width: 100%;
   width: 100%;
   overflow-y: auto;
