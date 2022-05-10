@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2022-03-23 16:36:25
+ * @LastEditTime: 2022-03-31 14:34:24
  * @LastEditors: YoHo
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
@@ -32,6 +32,7 @@
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission.auto="PARTSPROCURE_PARTNAMEZH|零件名中文">
                 <iInput
+                  clearable
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')
@@ -44,6 +45,7 @@
                  v-permission.auto="PARTSPROCURE_FSINPUT|零件采购项目号"
               >
                 <iInput
+                  clearable
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')
@@ -54,8 +56,10 @@
               </el-form-item>
               <el-form-item :label="language('RFQBIANHAO','RFQ编号')">
                 <iInput
-                  :placeholder="`${ language('partsprocure.PLEENTER','请输入') }${ language('RFQBIANHAO','RFQ编号') }`"
+                  clearable
+                  v-Int
                   v-model="form['rfqId']"
+                  :placeholder="`${ language('partsprocure.PLEENTER','请输入') }${ language('RFQBIANHAO','RFQ编号') }`"
                 ></iInput>
               </el-form-item>
               <el-form-item
@@ -63,6 +67,7 @@
                 v-permission.auto="PARTSPROCURE_INQUIRYBUYER|询价采购员"
               >
                 <iInput
+                  clearable
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')
@@ -75,6 +80,7 @@
               v-permission.auto="PARTSPROCURE_LINIEINPUT|LINIE"
               >
                 <iInput
+                  clearable
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCURELINIE','LINIE')
@@ -85,6 +91,7 @@
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')"
                   v-permission.auto="PARTSPROCURE_PARTSTATUS|零件状态">
                 <iSelect
+                  clearable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')
@@ -108,6 +115,7 @@
                 v-permission.auto="PARTSPROCURE_VEHICLECATEGORIES|车型大类"
               >
                 <iSelect
+                  clearable
                   filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
@@ -133,6 +141,7 @@
                 v-permission.auto="PARTSPROCURE_MODELPROJECT|车型项目"
               >
                 <iSelect
+                  clearable
                   filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
@@ -158,6 +167,7 @@
                 v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
               >
                 <iSelect
+                  clearable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
@@ -182,6 +192,7 @@
                 v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
               >
                 <iSelect
+                  clearable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')
@@ -203,6 +214,7 @@
               </el-form-item>
               <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSPROCURE_SHOWSELF|显示自己">
                 <iSelect
+                  clearable
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','显示自己')"
                 >
