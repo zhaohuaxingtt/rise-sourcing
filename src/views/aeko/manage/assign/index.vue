@@ -15,13 +15,13 @@
       <div class="editControl margin-bottom20">
         <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
         <span class="floatright">
-          <!-- <iButton
+          <iButton
               :loading="assigning"
               v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
               @click="assign"
           >
             {{ language('LK_FENPAI', '分派') }}
-          </iButton> -->
+          </iButton>
           <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           </iButton> -->
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
