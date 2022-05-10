@@ -36,6 +36,7 @@
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
+              :default-value="new Date()"
               type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
@@ -46,6 +47,7 @@
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
+              :default-value="new Date()"
               type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
@@ -132,6 +134,9 @@ export default {
     ruleForm(val) {
       this.$emit("input", val);
     },
+    "ruleForm.pricingDeadline"(val) {
+      if (moment(val).isBefore(new Date())) return this.$set(this.ruleForm, 'pricingDeadline', moment().format("YYYY-MM-DD HH:mm:00"))
+    },
     "ruleForm.biddingBeginTime"(val) {
       let three = 3 * 24 * 3600 * 1000;
       let end =
@@ -179,9 +184,7 @@ export default {
   computed: {
     pricingDeadlineOptions() {
       return {
-        selectableRange: [
-          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
-        ],
+        selectableRange: [ moment(this.ruleForm.pricingDeadline || null).isAfter(Date.now(), 'day') ? '00:00:00 - 23:59:59' : `${ moment().format('HH:mm:00') } - 23:59:59` ],
         disabledDate: (time) => {
            return time.getTime() < Date.now() - 8.64e7;
         },

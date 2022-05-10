@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-01 14:45:37
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-31 14:30:21
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -36,6 +36,7 @@
                   </el-option>
                 </iSelect> 
                 <iSelect 
+                  clearable
                   v-else-if="item.type === 'linie'"
                   v-model="searchParams[item.value]"
                   filterable
@@ -53,7 +54,7 @@
                   </el-option>
                 </iSelect> 
                 <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
-                <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
+                <iInput clearable v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>

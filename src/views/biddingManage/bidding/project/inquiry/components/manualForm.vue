@@ -81,6 +81,7 @@
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
+              :default-value="new Date()"
               type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
@@ -91,6 +92,7 @@
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
+              :default-value="new Date()"
               type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
@@ -304,6 +306,8 @@ export default {
       this.$emit("input", val);
     },
     "ruleForm.biddingBeginTime"(val) {
+      if (moment(val).isBefore(new Date())) return this.$set(this.ruleForm, 'biddingBeginTime', moment().format("YYYY-MM-DD HH:mm:00"))
+
       // let three = 3 * 24 * 3600 * 1000;
       let end =
         this.ruleForm.manualBiddingType == "01" ? 30 * 60 * 1000 : 60 * 1000;
@@ -417,9 +421,7 @@ export default {
     },
     pricingBeginTimeOptions() {
       return {
-        selectableRange: [
-          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
-        ],
+        selectableRange: [ moment(this.ruleForm.biddingBeginTime || null).isAfter(Date.now(), 'day') ? '00:00:00 - 23:59:59' : `${ moment().format('HH:mm:00') } - 23:59:59` ],
         disabledDate: (time) => {
           return time.getTime() < Date.now() - 8.64e7;
         },
