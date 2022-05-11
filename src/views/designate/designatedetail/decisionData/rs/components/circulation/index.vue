@@ -674,10 +674,10 @@ export default {
       // let tableHeader = 49  // 表头高度
       // let headerHeight = 84 // 顶部标题高度
       // let pageLogo = 52     // logo 区域高度
-        this.hasTitle = this.$refs.tabTitle.clientHeight
-        let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-        let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-        let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
       let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注

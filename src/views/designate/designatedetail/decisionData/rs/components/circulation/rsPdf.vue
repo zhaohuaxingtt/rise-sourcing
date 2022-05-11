@@ -311,7 +311,8 @@ export default {
 .rsPdf {
 	width: 100%;
 	background: #ffffff;
-
+}
+.pageCard-main{
 	.rsCard {
 		box-shadow: none;
 		& + .rsCard {

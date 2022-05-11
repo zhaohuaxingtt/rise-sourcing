@@ -102,7 +102,6 @@
             </template>
           </rs>
         </div>
-        
         <canvas id="myCanvas"></canvas>
         </div>
         <div ref="pdf-containr" class="pdf-containr"></div>
@@ -365,6 +364,7 @@ export default {
         await this.getPdfImage({
             dom: this.$refs['pdf-containr'],
           })
+        this.$refs['pdf-containr'].innerHTML = ''
         console.timeEnd('截图')
         this.$nextTick(()=>{
             this.uploadUdFile();
@@ -446,6 +446,8 @@ export default {
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
+        }).catch(()=>{
+          this.$message.error('PDF 导出失败')
         });
       })
     },
