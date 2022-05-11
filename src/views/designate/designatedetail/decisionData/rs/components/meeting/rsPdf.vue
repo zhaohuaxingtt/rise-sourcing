@@ -415,18 +415,18 @@ export default {
     box-shadow: none;
 
     ::v-deep .title {
-      font-size: 18px !important; /*no*/
+      font-size: 18px !important; 
     }
 
-    ::v-deep .cardHeader {
-      padding: 30px 0px;
-    }
-    ::v-deep .cardBody {
-      padding: 0px;
-    }
-    .control {
-      display: flex !important;
-      align-items: center !important;
+		::v-deep .cardHeader {
+			padding: 30px 0px;
+		}
+		::v-deep .cardBody {
+			padding: 0px;
+		}
+		.control {
+			display: flex !important;
+			align-items: center !important;
 
 			.nomiId {
 				font-size: 16px;
@@ -435,118 +435,13 @@ export default {
 		}
 	}
 
-	.singleSourcing {
-		padding: 8px 12px; /*no*/
-		font-size: 16px; /*no*/
-		font-weight: 400; /*no*/
-		color: rgba(22, 96, 241, 1);
-		border: 1px dashed #1660f1; /*no*/
-	}
-
-	.rsTop {
-		display: flex;
-		.rsTop-left-item-title {
-			white-space: pre-line;
-		}
-		&-left {
-			width: 65%;
-			display: flex;
-			flex-wrap: wrap;
-			&-item {
-				width: 50%;
-				font-size: 12px;
-				display: flex;
-				height: 17px;
-				margin-bottom: 12px;
-				&:last-of-type {
-					margin-bottom: 26px;
-				}
-				&-title {
-					font-weight: bold;
-					width: 40%;
-				}
-				&:nth-of-type(odd) {
-					.rsTop-left-item-title {
-						width: 33%;
-					}
-				}
-				&-value {
-					font-weight: 400;
-					width: 60%;
-				}
-			}
-		}
-		&-right {
-			width: 40%;
-			display: flex;
-			flex-wrap: wrap;
-			border: 1px solid rgba(197, 204, 214, 0.42);
-			border-radius: 5px 5px 0 0; /*no*/
-			&-item {
-				width: 45%;
-				display: flex;
-				border-bottom: 1px solid rgba(197, 204, 214, 0.42);
-				&:nth-of-type(odd) {
-					width: 55%;
-					border-right: 1px solid rgba(197, 204, 214, 0.42);
-				}
-				&-title {
-					background-color: rgba(22, 96, 241, 0.06);
-					border-right: 1px solid rgba(197, 204, 214, 0.42);
-					padding: 6px 24px; /*no*/
-					width: 60%;
-					font-weight: bold;
-					// line-height: 29px; /*no*/
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-				}
-				&-value {
-					width: 40%;
-					padding: 6px 24px; /*no*/
-					// line-height: 29px; /*no*/
-					background-color: #fff;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-				}
-				&:nth-of-type(even) {
-					.rsTop-right-item-title {
-						width: 65%;
-					}
-					.rsTop-right-item-value {
-						width: 35%;
-					}
-				}
-			}
-		}
-	}
-	.prototypeTable {
-		::v-deep tr {
-			&:nth-child(even) {
-				background-color: #f7f7ff;
-			}
-		}
-	}
-	.rsTable {
-		font-size: 8px; /*no*/
-		&::before {
-			height: 0;
-		}
-		::v-deep thead th {
-			padding-top: 8px; /*no*/
-			padding-bottom: 8px; /*no*/
-			& > .cell {
-				padding-left: 3px; /*no*/
-				padding-right: 3px; /*no*/
-				line-height: 14px; /*no*/
-				font-size: 12px; /*no*/
-				span {
-					// zoom: 0.85;
-				}
-			}
-		}
-	}
+  .singleSourcing {
+    padding: 8px 12px; 
+    font-size: 16px; 
+    font-weight: 400; 
+    color: rgba(22, 96, 241, 1);
+    border: 1px dashed #1660f1; 
+  }
 
   .rsTop {
     display: flex;
@@ -586,7 +481,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
       border: 1px solid rgba(197, 204, 214, 0.42);
-      border-radius: 5px 5px 0 0; /*no*/
+      border-radius: 5px 5px 0 0;
       &-item {
         width: 45%;
         display: flex;
@@ -598,18 +493,18 @@ export default {
         &-title {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
-          padding: 6px 24px; /*no*/
+          padding: 6px 24px;
           width: 60%;
           font-weight: bold;
-          // line-height: 29px; /*no*/
+          // line-height: 29px;
           display: flex;
           flex-direction: column;
           justify-content: center;
         }
         &-value {
           width: 40%;
-          padding: 6px 24px; /*no*/
-          // line-height: 29px; /*no*/
+          padding: 6px 24px;
+          // line-height: 29px;
           background-color: #fff;
           display: flex;
           flex-direction: column;
@@ -637,7 +532,7 @@ export default {
     &.el-table--group, &.el-table--border{
       border-color: #ccc;
     }
-    font-size: 8px; /*no*/
+    font-size: 8px;
     &::before, &::after {
       background-color: #ccc;
     }
@@ -645,18 +540,18 @@ export default {
       background-color: #ccc;
     }
     ::v-deep thead th {
-      padding-top: 8px; /*no*/
-      padding-bottom: 8px; /*no*/
+      padding-top: 8px;
+      padding-bottom: 8px;
       & > .cell {
-        padding-left: 3px; /*no*/
-        padding-right: 3px; /*no*/
-        line-height: 14px; /*no*/
-        font-size: 12px; /*no*/
+        padding-left: 3px;
+        padding-right: 3px;
+        line-height: 16px;
+        font-size: 12px;
         p {
-          min-height: 16px; /*no*/
+          min-height: 16px;
         }
         p + p {
-          margin-top: 8px; /*no*/
+          margin-top: 8px;
         }
       }
     }
@@ -665,8 +560,8 @@ export default {
       td {
         border-top: 1px solid #ccc;
         & > .cell{
-          padding-left: 3px; /*no*/
-          padding-right: 3px; /*no*/
+          padding-left: 3px;
+          padding-right: 3px;
         }
       }
       &:nth-child(even) {
@@ -675,17 +570,17 @@ export default {
     }
   }
 
-	.beizhu {
-		background-color: rgba(22, 96, 241, 0.03);
-		// height: 40px;
-		padding: 12px 14px; /*no*/
-		font-weight: bold;
-		display: flex;
-		&-value {
-			font-weight: 400;
-			margin-left: 20px; /*no*/
-		}
-	}
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
 
 	.checkDate {
 		::v-deep .card .cardHeader .title {
@@ -711,24 +606,24 @@ export default {
       max-width: 224px;
       flex: 1;
       flex-shrink: 0;
-      width: 224px; /*no*/
-      height: 125px; /*no*/
-      border-radius: 15px; /*no*/
+      width: 224px; 
+      height: 125px; 
+      border-radius: 15px; 
       background-color: rgba(205, 212, 226, 0.12);
-      margin-right: 19px; /*no*/
+      margin-right: 19px; 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 15px; /*no*/
-      font-size: 16px; /*no*/
+      padding: 10px 15px; 
+      font-size: 16px; 
       color: rgba(65, 67, 74, 1);
       &-info {
         width: 100%;
         display: flex;
         justify-content: space-between;
         &-depart {
-          font-size: 18px; /*no*/
+          font-size: 18px; 
           font-weight: bold;
         }
       }

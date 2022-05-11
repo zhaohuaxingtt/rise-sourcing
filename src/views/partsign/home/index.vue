@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-04-29 12:33:38
+ * @LastEditTime: 2022-05-11 17:12:36
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
@@ -23,24 +23,28 @@
             <el-form>
               <el-form-item :label="language('partsignLanguage.LingJianHao','零件号')" v-permission.auto="PARTSIGN_PARTNUM|零件号">
                 <iInput
+                  clearable
                   v-model="form.partNum"
                   :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|零件名中">
                 <iInput
+                  clearable
                   v-model="form.partNameZh"
                   :placeholder="language('LK_QINGSHURULINGJIANMING','请输入零件名（中）')"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('partsignLanguage.SheJiKeShi','设计科室')" v-permission.auto="PARTSIGN_DESIGNDEPARTMENT|设计科室">
                 <iInput
+                  clearable
                   v-model="form.dept"
                   :placeholder="language('LK_QINGTIANXIESHEJIKESHI','请填写设计科室')"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_GONGCHENGSHI','工程师')" v-permission.auto="PARTSIGN_ENGINEER|工程师">
                 <iInput
+                  clearable
                   :placeholder="language('LK_QINGTIANXIEGONGCHENGSHI','请填写工程师')"
                   v-model="form.tpPrincepalName"
                 ></iInput>

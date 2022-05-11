@@ -24,11 +24,12 @@
     <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
           <el-form>
+            <template v-for="(item,index) in SearchList" >
               <el-form-item 
-              v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic.auto="item.permissionKey || true"
+              v-if="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey"
               >
               <template  v-if="item.type === 'select'" >
                   <aeko-select 
@@ -71,6 +72,53 @@
                 <iDatePicker :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
+              <el-form-item 
+              :key="'SearchList_aeko'+index" 
+              :label="language(item.labelKey,item.label)"
+              v-else
+              >
+              <template  v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
+                    :clearable="item.clearable" 
+                  />
+                  <iSelect
+                    v-else
+                    class="multipleSelect" 
+                    collapse-tags 
+                    :multiple="item.multiple" 
+                    :filterable="item.filterable" 
+                    :clearable="item.clearable" 
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    reserve-keyword
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
+                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
+                    <el-option
+                      v-for="(item,index) in selectOptions[item.selectOption] || []"
+                      :key="item.selectOption+'_'+index"
+                      :label="item.desc"
+                      :value="item.code"
+                      >
+                    </el-option>  
+                  </iSelect> 
+                </template>
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
+                <iDatePicker :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
+              </el-form-item>
+            </template>
           </el-form>
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
@@ -356,14 +404,20 @@ export default {
           })
       }
 
-      this.sure();
-      this.getSearchList();
-
       setLogMenu('')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-      this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+      this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
+      // if(this.isAekoManager){
+      //   this.searchParams.assignStatus = 1  // 科室未分派
+      // }
+      // if(this.isCommodityCoordinator){
+      //   this.searchParams.assignStatus = 2  // Linie 未分派
+      // }
+      this.sure();
+      this.getSearchList();
+
 
       this.leftTab = getLeftTab(0);
     },
@@ -397,6 +451,12 @@ export default {
           linieDeptNumList:[''],
         };
         this.page.currPage = 1;
+        if(this.isAekoManager){
+          this.searchParams.assignStatus = 1  // 科室未分派
+        }
+        if(this.isCommodityCoordinator){
+          this.searchParams.assignStatus = 2  // Linie 未分派
+        }
         this.getList();
       },
 

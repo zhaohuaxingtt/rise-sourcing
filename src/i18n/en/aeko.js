@@ -12,7 +12,9 @@ export default {
   CHONGZHIQINGQUEREN: 'After reset, all the information on the current page will be restored to the default state, please confirm!',
   ZHUANPAICAIGOUYUAN: 'Transfer to buyer',
   QINGXUANZEXUYAOZHUANPAIDELINGJIAN: 'Please select the data you want to transfer',
-  QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO: '请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交',
-  TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI: '同一零件关联的多个原零件行将被一同转派',
-  XUANZEZHUANPAIDECAIGOUYUAN: '请选择转派的采购员'
+  QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO: 'Please select the parts whose content status is to be declared, quoted, quoted or rejected to submit',
+  TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI: 'Multiple original part rows associated with the same part will be assigned together',
+  XUANZEZHUANPAIDECAIGOUYUAN: 'Please select the assigned buyer',
+  FENGMIANTISHIXINXI: 'The cover does not need to be submitted again. If you need to modify it, please [withdraw] or contact the AEKO administrator [unfreeze] before modifying and submitting',
+  BITIANXIANGBUNENGWEIKONG: 'The required item cannot be empty'
 }

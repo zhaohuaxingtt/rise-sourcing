@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2022-03-28 15:45:15
+ * @LastEditTime: 2022-04-07 14:05:30
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -37,8 +37,8 @@
           />
         </el-form-item>
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE|采购工厂">
-            <!-- v-if="!factoryDisabled" -->
           <iSelect
+            v-if="!factoryDisabled"
             v-model="form.factoryCode"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
           >
@@ -53,7 +53,7 @@
               :key="item.key"
             ></el-option>
           </iSelect>
-          <!-- <iInput v-else readonly :value="factoryName"></iInput> -->
+          <iInput v-else readonly :value="factoryName"></iInput>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -141,7 +141,6 @@ export default {
       requirementAekoId: "",
       oldPartNumPreset: "",
       initPartNum: "",
-      factoryCode: "", // 初始工厂
       procureFactoryOptiopns: [],
       form: cloneDeep(ledgerQueryForm),
       loading: false,
@@ -176,7 +175,7 @@ export default {
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.originPartNum = this.$route.query.originPartNum  // 选择的原零件号
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset  // 预设的原零件号
-    // await this.getAekoOriginFactory()
+    await this.getAekoOriginFactory()
     // 如果选择了原零件,查询原零件
     if(this.originPartNum && this.originPartNum != this.partNum){
       this.form.partNum = this.originPartNum
@@ -198,12 +197,11 @@ export default {
           if (res.data.factoryCode) {
             this.form.factoryCode = res.data.factoryCode
             this.factoryName = res.data.factoryName
-            this.factoryCode = res.data.factoryCode
-            // if(!this.isAea){
-            //   this.factoryDisabled = true
-            // }
+            if(!this.isAea){
+              this.factoryDisabled = true
+            }
           } else {
-            // this.factoryDisabled = false
+            this.factoryDisabled = false
             this.form.factoryCode = ""
             this.factoryName = ""
           }
@@ -237,15 +235,12 @@ export default {
       judgeRight(data)
       .then(res => {
         if (res.code == 200) {
-          if (!res.data[0].isView) {
-            this.$message({
-              type: 'warning',
-              showClose: true,
-              message: this.language('NOPERMISSIONS','您没有当前原零件材料组权限，请及时申请，以免影响后续操作。'),
-              duration: 12000
-            })
-          }
+          if (res.data[0].isView) {
             this.getAekoOriginPartInfo(flag)
+          } else {
+            iMessage.error(res.data[0].describe)
+            this.loading = false
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -273,9 +268,9 @@ export default {
     },
     // 查询台账库数据
     getAekoOriginPartInfo(flag='') {
-      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-      if(this.form.partNum && this.form.partNum.trim().length < 9){
-        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 3){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
       }
 
       this.loading = true
@@ -341,8 +336,7 @@ export default {
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep({ ledgerQueryForm, factoryCode:  this.factoryCode,partNum: this.initPartNum ? this.initPartNum : undefined})
-      // this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.initPartNum ? this.initPartNum : undefined})
+      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.initPartNum ? this.initPartNum : undefined})
       
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       // this.getAekoOriginPartInfo()

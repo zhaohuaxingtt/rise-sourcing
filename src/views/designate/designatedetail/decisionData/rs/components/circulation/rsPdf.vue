@@ -73,9 +73,9 @@
                   }}</span>
                 </template>
 
-                <template #svwCode="scope">
-                  <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-                </template>
+							<template #svwCode="scope">
+								<span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+							</template>
 
                 <template #aprice="scope">
                   <div v-if="scope.row.status === 'SKDLC'">
@@ -413,6 +413,7 @@ export default {
 		align-items: center;
 		border-top: 1px solid #666;
 	}
+
   .infos {
     display: flex;
     padding: 0 0 20px;

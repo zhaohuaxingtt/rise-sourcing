@@ -38,7 +38,7 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))" :sortable="items.sortable||false" :sort-method="items.sortMethod">
+      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" :align="items.align || 'center'" :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))" :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
@@ -59,7 +59,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!items.showTips">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
@@ -80,7 +80,7 @@
       <!----------------------普通表格展示---------------------------------------->
       <el-table-column
         v-else
-        align='center'
+        :align="items.align || 'center'"
         :key="`${items.props}_${index}`"
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
@@ -110,7 +110,7 @@
               popper-class="tableTitleTip"
               :visible-arrow="false"
               :disabled="!(items.showTips || items.tipsLang)">
-              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <p v-html="items.showTips ? items.tips() : ''"></p>
               <span slot="reference">
                 <icon v-if="items.showTips || items.tipsLang" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
@@ -249,7 +249,8 @@ export default{
       // header: cloneDeep(this.tableTitle).filter(i=> !i.isHidden),
       tableSettingColumns: [],
       tableColumns: [],
-      settingId: ''
+      settingId: '',
+      tableTitleMap: {}
     }
   },
   created() {
@@ -327,11 +328,16 @@ export default{
     },
     renewTableHeader(data) {
       const header = data.filter(o => !o.isHidden)
+
+
+
       this.header = header.map(o => ({
         ...o,
         prop: o.prop || o.props,
         label: o.label || o.name,
-        i18n: o.i18n || o.key
+        i18n: o.i18n || o.key,
+        showTips: this.tableTitleMap[o.props].showTips || false,
+        tips: this.tableTitleMap[o.props].tips || ''
       }))
     },
     initTableSettingColumns() {
@@ -341,6 +347,11 @@ export default{
         label: o.label || o.name,
         i18n: o.i18n || o.key
       }))
+
+      this.tableTitleMap = {}
+      this.tableTitle.forEach(item => {
+        this.$set(this.tableTitleMap, item.props, item)
+      })
     },
     getCookie(name) {
 			const strCookie = document.cookie //获取cookie字符串

@@ -4,7 +4,13 @@
  * @Description: 封面表态---编辑页
 -->
 <template>
-  <iCard class="aeko-editCover" v-loading="btnLoading">
+  <iCard class="aeko-editCover" :title="' '" v-loading="btnLoading">
+    <!-- 封面提示 -->
+    <template #subInfo v-if="showTip">
+      <span class="tip">
+        {{language('FENGMIANTISHIXINXI','封面无须再进行提交，如需修改，请先【撤回】或者联系AEKO管理员【解冻】后再修改提交')}}
+      </span>
+    </template>
     <template v-if="!(aekoInfo.aekoStatus == 'FROZEN' || aekoInfo.aekoStatus == 'CANCELED')" v-slot:header-control>
       <!-- 封面状态为待表态时展示 -->
       <template v-if="isTobeStated">
@@ -33,7 +39,7 @@
           :prop="item.props"
         >
           <template v-if="item.editable && isEdit">
-            <el-tooltip class="item" effect="dark" :disabled="!item.tooltip && basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
+            <el-tooltip class="item" effect="dark" :disabled="!item.tooltip || !basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
               <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
@@ -192,13 +198,29 @@ export default {
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
       },
+
+      // 是否显示提示信息
+      showTip(){
+        const { basicInfo={} } = this;
+        // 更改零件名称, 主要供应商, 新⾸批送样周期(周数) 三个没有值
+        // 封面状态不为待表态，指定前期采购有值
+        let flag = [
+          'partName',
+          'mainSupplier',
+          'sendCycle',
+        ].some(item=>{
+          return !(basicInfo[item] === '' || basicInfo[item] === null)
+        })
+        return false
+        // return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
+      }
     },
     data(){
       return{
         isEdit:true,
         basicTitle:previewBaicFrom,
         basicInfo:{
-          fsName:[],
+          // fsName:[],
           isReference:''
         },
         selectOptions:{
@@ -279,11 +301,12 @@ export default {
 
               
             })
-            
+
             this.basicInfo = {
               ...data,
               coverCostsWithCarType:costData,
-              fsName:[fsId+''],
+              // fsName:fsId&&fsId.split(','),
+              fsName:fsId,
               getFsName:fsName,
             };
 
@@ -344,7 +367,8 @@ export default {
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
-          fsId:basicInfo.fsName.join(','),
+          // fsId:basicInfo.fsName.join(','),
+          fsId:basicInfo.fsName,
           fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
           getFsName:undefined,
@@ -354,6 +378,7 @@ export default {
           const validate =  this.validateData(data);
           if(!validate) {
             this.btnLoading = false;
+            this.$message.warning(this.language('BITIANXIANGBUNENGWEIKONG','必填项不能为空'));
             return;
           }
           // 提交前需校验下审批情况
@@ -471,14 +496,15 @@ export default {
 
       // 费用千分位处理
       fixNumber(str,precision=2){
-          if(!str) return '';
-          var re=/(?=(?!(\b))(\d{3})+$)/g;
-          var fixstr =  str.replace(re,",");
-          if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
-              var last = fixstr.substr(fixstr.length-3,3);
-              if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
-          }
-          return fixstr;
+        if(!str) return '';
+        var re=/(?=(?!(\b))(\d{3})+$)/g;
+        str+=''
+        var fixstr =  str.replace(re,",");
+        if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+            var last = fixstr.substr(fixstr.length-3,3);
+            if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+        }
+        return fixstr;
       },
 
       // 撤回
@@ -637,6 +663,11 @@ export default {
   }
   .thousandsFilterInput{
     margin: 0 auto;
+  }
+  .tip{
+    font-size: 12px !important;
+    color: red;
+    vertical-align: top;
   }
 }
 
