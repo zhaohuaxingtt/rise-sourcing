@@ -340,31 +340,41 @@ export default {
         console.time('截图')
         let div = document.createElement('div')
         let sumHeight = 0
+        this.$refs['pdf-containr'].innerHTML = ''
+        let WH = []
         for (let i = 0; i < elList.length; i++) {
-          console.time(`img=>${i}`)
+          console.time(`img=>${i}`,'=>',elList.length  )
           const el = elList[i]
           console.log(el.offsetHeight);
           if(el.getElementsByClassName('pageNum')[0])
           el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
           const elDom = el.cloneNode(true);
+          const itemDom = document.createElement('div')
+          itemDom.style.width = el.offsetWidth +'px'
+          itemDom.style.height = el.offsetHeight + 'px'
+          itemDom.appendChild(elDom)
           sumHeight+=el.offsetHeight
-          if(sumHeight>=16000){
+          if(sumHeight>=16000/2){
             this.$refs['pdf-containr'].appendChild(div)
             await this.getPdfImage({
                 dom: this.$refs['pdf-containr'],
+                WH
               })
             this.$refs['pdf-containr'].innerHTML = ''
             sumHeight = el.offsetHeight
+            WH = []
             div = document.createElement('div')
           }
-          div.appendChild(elDom)
+          div.appendChild(itemDom)
+          WH.push({width: el.offsetWidth, height: el.offsetHeight})
           console.timeEnd(`img=>${i}`)
         }
         this.$refs['pdf-containr'].appendChild(div)
         await this.getPdfImage({
             dom: this.$refs['pdf-containr'],
+            WH
           })
-        this.$refs['pdf-containr'].innerHTML = ''
+        // this.$refs['pdf-containr'].innerHTML = ''
         console.timeEnd('截图')
         this.$nextTick(()=>{
             this.uploadUdFile();
@@ -377,36 +387,40 @@ export default {
     async getPdfImage({
       //html横向导出pdf
       dom,
+      WH
     }) {
       let scale = 2
       await html2canvas(dom, {
-        allowTaint:true,
+        // allowTaint:true,
         dpi: 96, //分辨率
         scale: scale, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
+        porxy: ''
       }).then(async (canvas) => {
         var copyCanvas = document.getElementById("myCanvas");
         let ctx=canvas.getContext("2d");
-        this.width = canvas.width
         let height = canvas.height
         let offsetHeight = 0
         let i = 0
         while(height>20){
-          this.pageHeight = this.width/841.89*595.28;
-          console.log(height);
-          console.log(this.pageHeight);
-          copyCanvas.width = this.width
-          copyCanvas.height = this.pageHeight
-          var imgData=ctx.getImageData(0,offsetHeight,this.width,this.pageHeight );
+          // this.pageHeight = this.width/841.89*595.28;
+          // console.log(height);
+          // console.log(this.pageHeight);
+          console.log(WH[i]);
+          let width = (WH[i]?.width || WH[0].width) * scale
+          let pageHeight = (WH[i]?.height || WH[0].height) * scale
+          copyCanvas.width = width
+          copyCanvas.height = pageHeight
+          var imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
           var ctxs = copyCanvas.getContext("2d");
           ctxs.putImageData(imgData,0,0);
           await this.getPdfFile(copyCanvas)
-          height -= this.pageHeight
-          offsetHeight+=this.pageHeight
+          height -= pageHeight
+          offsetHeight+=pageHeight
           i++
-          ctxs.clearRect(0, 0, this.width, this.pageHeight); //清空截图画布
+          ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
         }
       });
     },
@@ -429,7 +443,7 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       // 841.89*2
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.width/841.89*595.28})
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
       this.$emit('changeStatus','exportLoading',false)
     },
 

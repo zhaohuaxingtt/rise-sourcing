@@ -202,10 +202,12 @@ export default {
     padding: 0px;
   }
 }
-.singleSourcing {
-  .info {
-    ::v-deep .el-form-item__label {
-      width: 280px; /*no*/
+.pageCard-main{
+  .singleSourcing {
+    .info {
+      ::v-deep .el-form-item__label {
+        width: 280px; /*no*/
+      }
     }
   }
 }

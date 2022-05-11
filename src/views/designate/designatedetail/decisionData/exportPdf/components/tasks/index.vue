@@ -177,11 +177,6 @@ export default {
       // let headerHeight = 84; // Title 区域高度
       // let pageLogo = 52; // logo 区域高度
       // let tableHeader = 41; // 表头高度
-      console.log(this.width);
-      console.log((this.width / 841.89) * 595.28);
-      console.log('headerHeight=>',headerHeight);
-      console.log('pageLogo=>',pageLogo);
-      console.log('this.hasTitle=>',this.hasTitle);
       this.cntentHeight =
         (this.width / 841.89) * 595.28 -
         headerHeight -
