@@ -220,7 +220,7 @@ export default {
         isEdit:true,
         basicTitle:previewBaicFrom,
         basicInfo:{
-          fsName:[],
+          // fsName:[],
           isReference:''
         },
         selectOptions:{
@@ -306,7 +306,7 @@ export default {
               ...data,
               coverCostsWithCarType:costData,
               // fsName:fsId&&fsId.split(','),
-              fsName:[fsId+''],
+              fsName:fsId,
               getFsName:fsName,
             };
 
