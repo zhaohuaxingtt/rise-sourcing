@@ -544,7 +544,7 @@
 			},
 			// 组合零件项目类型框的数据(code + options) 用于监控
 			partProjectTypePack() {
-				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.filterProjectList(this.partProjectTypeArray, this.detailData.partProjectType) || [] || [] }
+				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.filterProjectList(this.partProjectTypeArray, this.detailData.partProjectType) || [] }
 			},
 			// 组合Linie框的数据(code + options) 用于监控
 			liniePack() {
@@ -750,6 +750,10 @@
 			getDatailFn() {
 				this.detailLoading = true
 				getProjectDetail(this.$route.query.projectId).then((res) => {
+					if (this.$route.query.businessKey != res.data.partProjectType) {
+						this.$router.replace({ path: this.$router.history.current.path, query: { ...this.$route.query, businessKey: res.data.partProjectType } })
+					}
+
 					this.detailLoading = false
 					this.detailData = res.data || {};
 					this.sopDate = res.data.sopDate || ""
