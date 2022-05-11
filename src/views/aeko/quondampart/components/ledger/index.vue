@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2022-02-28 12:05:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-07 14:05:30
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -268,9 +268,9 @@ export default {
     },
     // 查询台账库数据
     getAekoOriginPartInfo(flag='') {
-      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-      if(this.form.partNum && this.form.partNum.trim().length < 9){
-        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 3){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
       }
 
       this.loading = true

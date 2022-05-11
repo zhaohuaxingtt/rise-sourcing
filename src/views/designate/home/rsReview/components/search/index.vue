@@ -15,6 +15,7 @@
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianHao','零件号')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PARTNUM|零件号">
         <iInput
+          clearable
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -22,6 +23,7 @@
       <!-- 零件名 -->
       <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PARTNAME|零件名">
         <iInput
+          clearable
           v-model="form.partName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -29,6 +31,7 @@
       <!-- FSNR/GSNR -->
       <el-form-item :label="language('FSNR/GSNR','FSNR/GSNR')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_FSNRPSNR|FSNR/GSNR">
         <iInput
+          clearable
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -57,6 +60,7 @@
       <!-- 询价采购员 -->
       <el-form-item :label="language('XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_BUYERNAME|询价采购员">
         <iInput
+          clearable
           v-model="form.nominateUserName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -64,6 +68,7 @@
       <!-- LINIE -->
       <el-form-item label="LINIE" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_LININENAME|linieName">
         <iInput
+          clearable
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -71,6 +76,7 @@
       <!-- 申请单号 -->
       <el-form-item :label="language('SHENGQINGDANHAO','申请单号')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_NOMINAEID|申请单号">
         <iInput
+          clearable
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -78,6 +84,7 @@
         <!-- RFQ编号 -->
       <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_RFQID|RFQ编号">
         <iInput
+          clearable
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           @input="form.rfqId = numberProcessor(form.rfqId, 0)"
@@ -86,6 +93,7 @@
       <!-- 会议 -->
       <el-form-item :label="language('nominationLanguage_HuiYi','会议')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_MEETINGNAME|会议">
         <iInput
+          clearable
           v-model="form.meetingType"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -93,6 +101,7 @@
       <!-- 签字单号 -->
       <el-form-item :label="language('QIANZIDANHAO','签字单号')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SIGNID|签字单号">
         <iInput
+          clearable
           v-model="form.signCode"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -100,6 +109,7 @@
       <!-- rs冻结日期 -->
       <el-form-item :label="language('RSDONGJIERIQI','RS冻结日期')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_RSFREEZEDATE|RS冻结日期">
         <iDatePicker
+          clearable
           v-model='form.rsFreezeDate'
           value-format="yyyy-MM-dd HH:mm:ss">
         </iDatePicker>
@@ -107,6 +117,7 @@
       <!-- 冻结日期 -->
       <el-form-item :label="language('nominationLanguage_DongJieRiQi','冻结日期')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_FREEZEDATE|冻结日期">
         <iDatePicker
+          clearable
           v-model='form.freezeDate'
           value-format="yyyy-MM-dd">
         </iDatePicker>
@@ -114,6 +125,7 @@
       <!-- 定点日期 -->
       <el-form-item :label="language('nominationLanguage_DingDianRiQi','定点日期')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_NOMINATEDATE|定点日期">
         <iDatePicker
+          clearable
           v-model='form.nominateDate'
           value-format="yyyy-MM-dd">
         </iDatePicker>
@@ -131,6 +143,7 @@
       <!-- 申请状态 -->
       <el-form-item :label="language('SHENGQINGZHUANGTAI','申请状态')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_APPLICATIONSTATE|申请状态">
         <iSelect
+          clearable
           v-model="form.applicationStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -149,6 +162,7 @@
       <!-- 报价一致性校验 -->
       <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_ISPRICECONSISTENT|报价一致性校验">
         <iSelect
+          clearable
           v-model="form.isPriceConsistent"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -167,6 +181,7 @@
       <!-- SEL单据确认状态 -->
       <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SELSTATUS|SEL单据确认状态">
         <iSelect
+          clearable
           v-model="form.selStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -185,6 +200,7 @@
       <!-- 是否单一供应商 -->
       <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SINGLESOURCING|是否单一供应商">
         <iSelect
+          clearable
           v-model="form.isSingle"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -201,6 +217,7 @@
       <!-- 单一原因 -->
       <el-form-item :label="language('DANYIYUANYIN','单一原因')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SINGLEREASON|单一原因">
         <iSelect
+          clearable
           v-model="form.singleReason"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -219,6 +236,7 @@
       <!-- 原因部门 -->
       <el-form-item :label="language('YUANYINBUMEN','原因部门')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SINGLEDEPARTMENT|原因部门">
         <iSelect
+          clearable
           v-model="form.singleDepartment"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -237,6 +255,7 @@
       <!-- 签字单状态 -->
       <el-form-item :label="language('QIANZIDANZHUANGTAI', '签字单状态')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SIGNSTATUS|签字单状态">
         <iSelect
+          clearable
           v-model="form.signStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -424,5 +443,9 @@ export default {
 <style lang="scss" scoped>
 .designateSearch {
   margin-top: 20px;
+  ::v-deep .el-date-editor .el-range__close-icon{
+      display: block;
+      width: 10px;
+  }
 }
 </style>

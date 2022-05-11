@@ -5,22 +5,37 @@
 -->
 <template>
 <div ref="drawing">
-  <iCard class="drawing rsPdfCard" title="Drawing">
-    <div class="content">
-      <div v-if="files.length">
-        <div class="wrapper" v-for="(file, $index) in files" :key="$index">
-          <div class="file img-row">
-            <img class="img" :src="file.filePath" :alt="file.fileName"/>
+  <div ref="tabTitle" style="padding:1px">
+    <slot name="tabTitle"></slot>
+  </div>
+  <div ref="rsPdfCard">
+    <iCard class="drawing rsPdfCard" title="Drawing">
+      <div class="content">
+        <div v-if="files.length">
+          <div class="wrapper" v-for="(file, $index) in files" :key="$index">
+            <div class="file img-row">
+              <img class="img" :src="file.filePath" :alt="file.fileName"/>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="blank">
+            <span>{{ language("ZANWUSHUJU", "暂无数据") }}</span>
           </div>
         </div>
       </div>
-      <div v-else>
-        <div class="blank">
-          <span>{{ language("ZANWUSHUJU", "暂无数据") }}</span>
-        </div>
+    </iCard>
+    <div class="page-logo" ref="logo">
+      <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+      <div>
+        <p class="pageNum"></p>
+      </div>
+      <div>
+        <p>{{ userName }}</p>
+        <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
       </div>
     </div>
-  </iCard>
+  </div>
   
   <div class="pdf-item">
     <template v-for="(files,i) in filesList">
@@ -72,9 +87,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   components: {iCard},
   data() {
@@ -91,8 +106,11 @@ export default {
     getHeight(){
       if(!this.$refs.drawing) return
       this.width = this.$refs.drawing.clientWidth
-      let headerHeight = 84 // Title 区域高度
-      let pageLogo = 52     // logo 区域高度
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      // let headerHeight = 84 // Title 区域高度
+      // let pageLogo = 52     // logo 区域高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.drawing.getElementsByClassName('img-row')
       let heightSum = 0

@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:36:57
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-01 15:39:53
  * @Description: 
 -->
 <template>
@@ -22,6 +22,8 @@
           >
             {{ language('LK_FENPAI', '分派') }}
           </iButton>
+          <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          </iButton> -->
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div>
@@ -91,6 +93,7 @@
             ></el-option>
           </iSelect>
           <span v-else>{{ scope.row.chiefName }}</span>
+          <!-- <span >{{ scope.row.chiefName }}</span> -->
         </template>
       </tableList>
       <div class="pagination">

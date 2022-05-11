@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:29:45
+ * @LastEditTime: 2022-03-31 14:57:45
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -29,9 +29,9 @@
                     </el-option>
                   </template>
                 </iSelect>
-                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
-                <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
-                <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
+                <iDatePicker clearable v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iMultiLineInput clearable v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
+                <iInput clearable v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -581,6 +581,10 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  ::v-deep .el-date-editor .el-range__close-icon{
+      display: block;
+      width: 10px;
   }
 }
 </style>

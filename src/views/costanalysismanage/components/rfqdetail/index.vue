@@ -11,7 +11,12 @@
     <div class="header clearFloat">
       <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div class="control">
-        <logButton class="margin-left20" />
+        <iLoger 
+          :config="{ module_obj_ae: 'KM评分', bizId_obj_ae: 'rfqId', queryParams: ['bizId_obj_ae'] }" 
+          isPage 
+          isUser
+          credentials
+          class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
@@ -24,8 +29,8 @@
 </template>
 
 <script>
-import { iPage } from "rise"
-import logButton from "@/components/logButton"
+import { iPage, icon } from "rise"
+import iLoger from "rise/web/components/iLoger"
 import infos from "./components/infos"
 import partList from "./components/partList"
 import reportList from "./components/reportList"
@@ -33,7 +38,8 @@ import reportList from "./components/reportList"
 export default {
   components: {
     iPage,
-    logButton,
+    icon,
+    iLoger,
     infos,
     partList,
     reportList,
@@ -57,7 +63,9 @@ export default {
 <style lang="scss" scoped>
 .rfqdetail {
   .header {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .title {
       font-size: 20px;
@@ -65,13 +73,10 @@ export default {
       color: #000;
       height: 28px;
       line-height: 28px;
+      flex: 1;
     }
 
     .control {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translate(0, -50%);
       display: flex;
       align-items: center;
       height: 30px;

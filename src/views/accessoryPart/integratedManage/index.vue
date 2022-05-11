@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:29:54
+ * @LastEditTime: 2022-03-31 14:58:07
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -30,7 +30,7 @@
                 </iSelect>
                 <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
                  <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
-                <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
+                <iInput clearable v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -754,6 +754,10 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  ::v-deep .el-date-editor .el-range__close-icon{
+      display: block;
+      width: 10px;
   }
 }
 </style>

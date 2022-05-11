@@ -46,6 +46,19 @@
       </div>
     </iCard>
     <div class="pdf-item">
+      <div ref="tabTitle" style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
+      <div class="page-logo" ref="logo">
+        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+        <div>
+          <p class="pageNum"></p>
+        </div>
+        <div>
+          <p>{{ userName }}</p>
+          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+        </div>
+      </div>
       <template v-for="(dataGroup,i) in tableList">
         <div class="pageCard-main rsPdfCard" :key="i">
           <slot name="tabTitle"></slot>
@@ -131,9 +144,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    hasTitle(){
-      return this.$slots.tabTitle && 116 || 0
-    }
+    // hasTitle(){
+    //   return this.$slots.tabTitle && 116 || 0
+    // }
   },
   components: {iCard, icon, groupStep, supplierStep, supplierLine, todayIcon},
   data() {
@@ -147,11 +160,19 @@ export default {
   created() {
     this.getTimeaxis()
   },
+  mounted(){
+    this.width = this.$refs.timeline.clientWidth
+    let headerHeight = 86 // Title 区域高度
+    let pageLogo = 52     // logo 区域高度
+    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+  },
   methods: {
     getHeight(){
       if(!this.$refs.timeline) return
       this.width = this.$refs.timeline.clientWidth
-      let pageLogo = 52     // logo 区域高度
+      this.hasTitle = this.$refs.tabTitle.clientHeight
+      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+      // let pageLogo = 52     // logo 区域高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - pageLogo - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.timeline.getElementsByClassName('table-row')
       let heightSum = 0

@@ -30,6 +30,14 @@ export function getList(nominateAppId) {
   })
 }
 
+// 手工维护RS单列表查询
+export function manualListRs(nominateAppId) {
+  return requst({
+    url: '/rs/manualListRs?nominateAppId='+nominateAppId,
+    method: "GET"
+  })
+}   
+
 // 获取备注信息
 export function getRemark(nominateAppId) {
   return requst({
