@@ -9,14 +9,14 @@
 export const tableTitle = [
   { props: 'id', name: '导入批次', key: 'DAORUPICI', tooltip: true, minWidth: '320px', align: 'left' },
   { props: 'createByName', name: '导入用户', key: 'DAORUYONGHU', tooltip: true },
-  { props: 'status', name: '状态', key: 'ZHUANGTAI', tooltip: true },
+  { props: 'status', name: '状态', key: 'ZHUANGTAI' },
   { props: 'createDate', name: '导入时间', key: 'DAORUSHIJIAN', tooltip: true }
 ]
 
 export const detailTableTitle = [
   { props: 'partNum', name: '零件号', key: 'LINGJIANHAO', tooltip: true, fixed: 'left', minWidth: 100 },
   { props: 'sourcingPurchasingFactory', name: '迁移前工厂', key: 'QIANYIQIANGONGCHANG', tooltip: true, fixed: 'left', minWidth: 100 },
-  { props: 'status', name: '状态', key: 'ZHUANGTAI', tooltip: true },
+  { props: 'status', name: '状态', key: 'ZHUANGTAI', width: 90 },
   { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'YUANFSHAO', tooltip: true, minWidth: 120 },
   { props: 'targetPurchasingFactory', name: '迁移后工厂', key: 'QIANYIHOUGONGCHANG', tooltip: true, minWidth: 100 },
   { props: 'buyerName', name: 'CSF/CSS采购员', key: 'CSFCSSCAIGOUYUAN', tooltip: true, minWidth: 110 },
