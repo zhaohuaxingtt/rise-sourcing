@@ -439,7 +439,7 @@
 	// import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
-	import {dictkey,checkFactory,purchasingLiline,purchasingDept,getCarTypeSop} from "@/api/partsprocure/editordetail";
+	import {dictkey,checkFactory,purchasingLiline,purchasingDept,getCarTypeSop, purchaseFactory} from "@/api/partsprocure/editordetail";
 	import {getCartypeDict} from "@/api/partsrfq/home";
 	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
@@ -648,14 +648,15 @@
 				sourcePartProjectType: '', // 后端返回的partProjectType
 				sourceProcureFactory: '',
 				cacheCarTypeProject: {},
-				sopDate: ""
+				sopDate: "",
+				factoryCache: []
 			};
 		},
 		created() {
-			this.getDatailFn();
-			this.getProcureGroup();
 			this.getDicts()
+			this.getProcureGroup()
 			this.getCarTypeSopList()
+			this.getDatailFn()
 		},
 		methods: {
 			getEnumValue,
@@ -750,12 +751,19 @@
 			getDatailFn() {
 				this.detailLoading = true
 				getProjectDetail(this.$route.query.projectId).then((res) => {
+					if ([this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(res.data.partProjectType)) {
+						this.purchaseFactory()
+					} else {
+						this.$set(this.fromGroup, "PURCHASE_FACTORY", this.factoryCache)
+					}
+
 					if (this.$route.query.businessKey != res.data.partProjectType) {
 						this.$router.replace({ path: this.$router.history.current.path, query: { ...this.$route.query, businessKey: res.data.partProjectType } })
 					}
 
 					this.detailLoading = false
 					this.detailData = res.data || {};
+					this.getLinie(this.detailData.linieDept)
 					this.sopDate = res.data.sopDate || ""
 					this.sourceProcureFactory = res.data.procureFactory
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
@@ -822,6 +830,9 @@
 					if (res.code == 200 && res.data) {
 						const map = {}
 						Object.keys(res.data || {}).forEach(key => { // 容错
+							if (key == "PURCHASE_FACTORY") this.factoryCache = res.data[key]
+							if (this.detailData && [this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(this.detailData.partProjectType)) return
+
 							if (key !== "CAR_TYPE_PRO") {
 								map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
 							}
@@ -829,7 +840,6 @@
 
 						this.fromGroup = Object.assign({}, this.fromGroup, map)
 						this.purchasingDept()
-						this.getLinie(this.detailData.linieDept)
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
@@ -960,6 +970,12 @@
 				this.$set(this.detailData, "procureFactory", code)
 				this.$set(this.detailData, "procureFactoryId", currentProcureFactory.id || '')
 				this.$set(this.detailData, "procureFactoryName", currentProcureFactory.name || '')
+			},
+			// 清除采购工厂
+			clearProcureFactory() {
+				this.$set(this.detailData, "procureFactory", "")
+				this.$set(this.detailData, "procureFactoryId", "")
+				this.$set(this.detailData, "procureFactoryName", "")
 			},
 			// 修改Linie
 			handleChangeByLinie(code) {
@@ -1118,6 +1134,14 @@
 				} else {
 					this.$refs.volume && typeof this.$refs.volume.clearAll === "function" && this.$refs.volume.clearAll()
 				}
+
+				
+				if ([this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(data)) { // 非配附件 => 配附件
+					this.purchaseFactory()
+				} else { // 配附件 => 非配附件
+					this.$set(this.fromGroup, "PURCHASE_FACTORY", this.factoryCache)
+				}
+				this.clearProcureFactory()
 			},
 			// 判断是否为GS类零件
 			isGs(partProjectType) {
@@ -1193,6 +1217,33 @@
 				}
 
 				this.curentSupplierDialog.show = true
+			},
+			purchaseFactory() {
+				purchaseFactory({
+					isSparePart: true
+				})
+				.then(res => {
+					if (res.code == 200) {
+						this.$set(
+							this.fromGroup, 
+							"PURCHASE_FACTORY",
+							Array.isArray(res.data) ?
+								res.data.map(item => ({
+									id: item.id,
+									name: item.factoryName,
+									nameDe: item.factoryNameDe,
+									nameEn: item.factoryNameEn,
+									code: item.procureFactory
+								})) :
+								[]
+						)
+					} else {
+						this.$set(this.fromGroup, "PURCHASE_FACTORY", [])
+					}
+				})
+				.catch(() => {
+					this.$set(this.fromGroup, "PURCHASE_FACTORY", [])
+				})
 			}
 		}
 }
