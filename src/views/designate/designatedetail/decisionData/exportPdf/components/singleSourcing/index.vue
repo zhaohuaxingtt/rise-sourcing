@@ -148,13 +148,6 @@ export default {
       let heightSum = 0
       let tableList = []
       let arr = []
-      console.log('width =>',this.width);
-      console.log('headerHeight =>',headerHeight);
-      console.log('pageLogo =>',pageLogo);
-      console.log('tableHeader =>',tableHeader);
-      console.log('hasTitle =>',this.hasTitle);
-      console.log('formHeight =>',  formHeight);
-      console.log('cntentHeight =>',this.cntentHeight);
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         if(heightSum<this.cntentHeight - tableHeader){

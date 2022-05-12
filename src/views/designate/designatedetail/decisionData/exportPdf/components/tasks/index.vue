@@ -51,7 +51,7 @@
           <div style="padding:1px">
             <slot name="tabTitle"></slot>
           </div>
-          <iCard title="Background & Objective">
+          <iCard title="Background & Objective" class="bo">
             <div class="content"  :style="{ height: cntentHeight + 'px' }">
               <div v-html="content"></div>
             </div>
@@ -173,65 +173,66 @@ export default {
     getHeight() {
       if (!this.$refs.tasks) return;
       let pList = this.$refs.bo.getElementsByTagName('p');
-      console.log(pList);
+      let imgList = []
       for (let i = 0; i < pList.length; i++) {
         const element = pList[i];
-        console.log(element.outerHTML,'=>',element.offsetHeight);
         if(element.outerHTML.includes('img')){
-          let img = element.getElementsByTagName('img')[0]
-          img.onload = ()=>{
-            console.log('======',[element.offsetHeight]);
-            return true
-          }
-          this.$store.dispatch('sourcing/pushImgList', img.onload())
+          this.$store.dispatch('sourcing/pushImgList', {key:'taskimg'+i, value:false})
+          imgList.push(new Promise((r,j)=>{
+            const img = element.getElementsByTagName('img')[0]
+            img.onload = () => {this.$store.dispatch('sourcing/pushImgList', {key:'taskimg'+i, value:true}); r(true)}
+            img.onerror = () => r(true)
+          }))
         }
       }
-      this.width = this.$refs.tasks.offsetWidth;
-      this.hasTitle = this.$refs.tabTitle.offsetHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-      // let headerHeight = 84; // Title 区域高度
-      // let pageLogo = 52; // logo 区域高度
-      // let tableHeader = 41; // 表头高度
-      this.cntentHeight =
-        (this.width / 841.89) * 595.28 -
-        headerHeight -
-        pageLogo -
-        this.hasTitle; // 内容区域对应的高度
-      let rowList = this.$refs.tasks.getElementsByClassName("table-row");
-      let heightSum = 0;
-      let tableList = [];
-      let arr = [];
-      rowList.forEach((item, i) => {
-        heightSum += item.offsetHeight;
-        if (heightSum < this.cntentHeight - tableHeader) {
-          arr.push(this.tableListData[i]);
-        } else {
-          tableList.push(JSON.parse(JSON.stringify(arr)));
-          heightSum = item.offsetHeight;
-          arr = [this.tableListData[i]];
-        }
-      });
-      tableList.push(JSON.parse(JSON.stringify(arr)));
-      this.tableList = tableList;
-      
-      let pHeightSum = 0
-      let contentList = []
-      let itemContent = ''
-      pList.forEach(p=>{
-        pHeightSum += p.offsetHeight
-        if(pHeightSum < this.cntentHeight){
-          itemContent+=p.outerHTML
-        }else{
-          contentList.push(itemContent)
-          itemContent = p.outerHTML
-          pHeightSum = p.offsetHeight
-        }
+      Promise.all(imgList).then(()=>{
+        this.width = this.$refs.tasks.offsetWidth;
+        this.hasTitle = this.$refs.tabTitle.offsetHeight
+        let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+        let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
+        // let headerHeight = 84; // Title 区域高度
+        // let pageLogo = 52; // logo 区域高度
+        // let tableHeader = 41; // 表头高度
+        this.cntentHeight =
+          (this.width / 841.89) * 595.28 -
+          headerHeight -
+          pageLogo -
+          this.hasTitle; // 内容区域对应的高度
+        let rowList = this.$refs.tasks.getElementsByClassName("table-row");
+        let heightSum = 0;
+        let tableList = [];
+        let arr = [];
+        rowList.forEach((item, i) => {
+          heightSum += item.offsetHeight;
+          if (heightSum < this.cntentHeight - tableHeader) {
+            arr.push(this.tableListData[i]);
+          } else {
+            tableList.push(JSON.parse(JSON.stringify(arr)));
+            heightSum = item.offsetHeight;
+            arr = [this.tableListData[i]];
+          }
+        });
+        tableList.push(JSON.parse(JSON.stringify(arr)));
+        this.tableList = tableList;
+        
+        let pHeightSum = 0
+        let contentList = []
+        let itemContent = ''
+        pList.forEach(p=>{
+          console.log( p.offsetHeight);
+          pHeightSum += p.offsetHeight
+          if(pHeightSum < this.cntentHeight){
+            itemContent+=p.outerHTML
+          }else{
+            contentList.push(itemContent)
+            itemContent = p.outerHTML
+            pHeightSum = p.offsetHeight
+          }
+        })
+        contentList.push(itemContent)
+        this.contentList = contentList
       })
-      contentList.push(itemContent)
-      this.contentList = contentList
-      return;
     },
     getBackgroundAndObjectiveInfo: function () {
       getBackgroundAndObjectiveInfo({

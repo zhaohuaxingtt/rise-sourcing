@@ -111,18 +111,17 @@ export default {
       this.hasTitle = this.$refs.tabTitle.offsetHeight
       let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
       let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
-      // let headerHeight = 84 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.drawing.getElementsByClassName('img-row')
       let heightSum = 0
       let filesList = []
       let arr = []
       let list = []
-      rowList.forEach(item=>{
+      rowList.forEach((item,i)=>{
+        this.$store.dispatch('sourcing/pushImgList', {key:'Drawingimg'+i, value:false})
         list.push(new Promise((r,j)=>{
           const img = item.getElementsByClassName('img')[0];
-          img.onload = () => r(item)
+          img.onload = () => {this.$store.dispatch('sourcing/pushImgList', {key:'Drawingimg'+i, value:true}); r(item)}
           img.onerror = () => r(item)
         }))
       })

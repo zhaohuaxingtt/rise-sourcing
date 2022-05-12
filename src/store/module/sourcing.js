@@ -567,7 +567,7 @@ const state = {
   pendingRequestNum:0,
   mapControl:[],
   updateKey:'0',
-  imgList: []
+  imgList: {}
 }
 
 const mutations = {
@@ -590,8 +590,8 @@ const mutations = {
     state.updateKey = + new Date()
   },
   // img 数据加载
-  PUSH_IMGLIST(state,img){
-    state.imgList.push(img)
+  PUSH_IMGLIST(state,{key,value}){
+    state.imgList[key] = value
   }
 }
 
@@ -660,8 +660,8 @@ const actions = {
   updateMapControl({ commit }, mapControl) {
     commit('SET_MAPCONTROL', mapControl)
   },
-  pushImgList({ commit }, img) {
-    commit('PUSH_IMGLIST', img)
+  pushImgList({ commit }, data) {
+    commit('PUSH_IMGLIST', data)
   }
 }
 

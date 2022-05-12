@@ -189,6 +189,7 @@ export default {
         if(['designateRfqdetail', 'designateSuggestion', 'designateSupplier', 'approvalPersonAndRecord','designateDecisionData'].includes(name)) {
             this.$store.dispatch('checkPartNull', {})
         }
+        console.log(this.$store.getters['sourcing/imgList']);
     },
     computed:{
         // eslint-disable-next-line no-undef
@@ -198,7 +199,6 @@ export default {
             rsDisabled: state => state.nomination.rsDisabled,
             mtzApplyId: state => state.nomination.mtzApplyId,
             pendingRequestNum: state => state.sourcing.pendingRequestNum,
-            imgList: state => state.sourcing.imgList
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -220,20 +220,27 @@ export default {
         submitDisabled() {
             return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
         },
-        imgListStatus() {
-            return !this.imgList.some((img)=>img!==true)
+        hasPending(){
+            return Object.values(this.$store.getters['sourcing/imgList']).some((img)=> !img)
         }
     },
     watch: {
         pendingRequestNum(val){
-            console.log(this.imgList);
-            if(val == 0 && this.exportLoading && this.showExportPdf && this.imgListStatus){
+            console.log(this.hasPending);
+            if(val == 0 && this.exportLoading && this.showExportPdf && !this.hasPending){
                 setTimeout(() => {
-                    console.log(this.imgList);
-                    // this.$refs['exportPdf'].exportPdf();
-                }, 2000);
+                    this.$refs['exportPdf'].exportPdf();
+                }, 4000);
             }
+        },
+        
+      hasPending:{
+        deep:true,
+        immediate: true,
+        handler(val){
+            console.log(val);
         }
+      },
     },
     data(){
         return{
@@ -773,7 +780,7 @@ export default {
             if(!this.exportLoading){
                 this.showExportPdf = true;
                 this.exportLoading = true;
-                this.$refs['exportPdf'].exportPdf();
+                // this.$refs['exportPdf'].exportPdf();
             }else{
                 // this.showExportPdf = true;
                 // this.exportLoading = true;

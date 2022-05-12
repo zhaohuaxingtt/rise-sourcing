@@ -16,21 +16,21 @@
       <div class="content" id="allMoudles">
         <div class="showPage" ref="showPage">
         <!-- title -->
-        <div id="html2canvasTitle">
+        <!-- <div id="html2canvasTitle">
           <rsTitle class="module">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/title"/>
             </template>
           </rsTitle>
-         </div>
+         </div> -->
         <!-- PartList -->
-        <div id="html2canvasPartList">
+        <!-- <div id="html2canvasPartList">
           <partList class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/partlist"/>
             </template>
           </partList>
-        </div>
+        </div> -->
 
         <!-- Tasks -->
         <div id="html2canvasTasks">
@@ -51,13 +51,13 @@
         </div>
 
         <!-- bdl -->
-        <div id="html2canvasBDl">
+        <!-- <div id="html2canvasBDl">
           <bdl isExportPdf class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/bdl"/>
             </template>
           </bdl>
-        </div>
+        </div> -->
 
         <!-- singleSourcing -->
         <div id="html2canvasSingleSourcing">
@@ -78,30 +78,30 @@
         </div> -->
 
         <!-- timeline -->
-        <div id="html2canvasTimeline">
+        <!-- <div id="html2canvasTimeline">
           <timeline class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/timeline"/>
             </template>
           </timeline>
-        </div>
+        </div> -->
         <!-- awardingScenario -->
-        <div id="html2canvasAwardingScenario">
+        <!-- <div id="html2canvasAwardingScenario">
           <awardingScenario class="module">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/awardingscenario"/>
             </template>
           </awardingScenario>
-        </div>
+        </div> -->
         
 
-        <div id="html2canvasRs">
+        <!-- <div id="html2canvasRs">
           <rs class="module" :nomiData="nomiData">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/rs"/>
             </template>
           </rs>
-        </div>
+        </div> -->
         <canvas id="myCanvas"></canvas>
         </div>
         <div ref="pdf-containr" class="pdf-containr"></div>
@@ -154,11 +154,11 @@ export default {
   computed:{
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-        update: state => state.sourcing.update,
+        updateKey: state => state.sourcing.updateKey,
     }),
   },
     watch: {
-      update(val){
+      updateKey(val){
         this.$forceUpdate()
       }
     },
@@ -382,7 +382,7 @@ export default {
         // this.$refs['pdf-containr'].innerHTML = ''
         console.timeEnd('截图')
         this.$nextTick(()=>{
-            // this.uploadUdFile();
+            this.uploadUdFile();
         })
         // this.$emit('changeStatus','exportLoading',false)
       }, 0)
@@ -396,7 +396,6 @@ export default {
       j
     }) {
       let scale = 2
-      return
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -451,8 +450,8 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       // 841.89*2
+      this.$emit('changeStatus','exportLoading',false)
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
-      // this.$emit('changeStatus','exportLoading',false)
     },
 
     // 上传图片
