@@ -1,5 +1,5 @@
 <template>
-<div ref="single">
+<div ref="single" class="">
   <iCard class="singleSourcing rsPdfCard" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
     <div class="content" ref="rsPdfCard">
       <div ref="form">
@@ -121,7 +121,6 @@ export default {
   },
   created() {
     this.nominateId = this.$route.query.desinateId
-
     this.tableTitle = this.tableTitle.map(item => ({
       ...item,
       renderHeader: h => h("div", [
@@ -149,6 +148,13 @@ export default {
       let heightSum = 0
       let tableList = []
       let arr = []
+      console.log('width =>',this.width);
+      console.log('headerHeight =>',headerHeight);
+      console.log('pageLogo =>',pageLogo);
+      console.log('tableHeader =>',tableHeader);
+      console.log('hasTitle =>',this.hasTitle);
+      console.log('formHeight =>',  formHeight);
+      console.log('cntentHeight =>',this.cntentHeight);
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         if(heightSum<this.cntentHeight - tableHeader){
@@ -192,6 +198,7 @@ export default {
 <style lang="scss" scoped>
 .rsPdfCard{
   box-shadow: none;
+  width: 100%;
   & + .rsCard {
     margin-top: 20px; /*no*/
   }
@@ -202,7 +209,6 @@ export default {
     padding: 0px;
   }
 }
-.pageCard-main{
   .singleSourcing {
     .info {
       ::v-deep .el-form-item__label {
@@ -210,7 +216,6 @@ export default {
       }
     }
   }
-}
   .page-logo{
     display: flex;
     justify-content: space-between;

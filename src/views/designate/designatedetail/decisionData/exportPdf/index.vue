@@ -299,9 +299,9 @@ export default {
       if(filter.length == transferDom.length){ // 上传完毕
         const list = transferDom.map((item)=>item.imageUrl);
         await decisionDownloadPdf(list).then((res)=>{
-          this.$emit('changeStatus','exportLoading',false)
+          // this.$emit('changeStatus','exportLoading',false)
         }).catch((err)=>{
-          this.$emit('changeStatus','exportLoading',false)
+          // this.$emit('changeStatus','exportLoading',false)
         })
       }
     },
@@ -334,7 +334,7 @@ export default {
       setTimeout(async () => {
         if(!elList.length){
           iMessage.warn('请稍等')
-          this.$emit('changeStatus','exportLoading',false)
+          // this.$emit('changeStatus','exportLoading',false)
           return
         }
         console.time('截图')
@@ -342,44 +342,49 @@ export default {
         let sumHeight = 0
         this.$refs['pdf-containr'].innerHTML = ''
         let WH = []
-        for (let i = 0; i < elList.length; i++) {
-          console.time(`img=>${i}`,'=>',elList.length  )
-          const el = elList[i]
-          console.log(el.offsetHeight);
+        let j = 0
+        const pageLength = elList.length
+        for (let i = 0; i<pageLength; i++) {
+          console.time(`img=>${i}`)
+          const el = elList[0]
+          WH.push({width: el.offsetWidth+'', height: el.offsetHeight+''})
           if(el.getElementsByClassName('pageNum')[0])
-          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
-          const elDom = el.cloneNode(true);
+          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${pageLength}`;
+          sumHeight+=el.offsetHeight
+          const elDom = el;
           const itemDom = document.createElement('div')
           itemDom.style.width = el.offsetWidth +'px'
           itemDom.style.height = el.offsetHeight + 'px'
           itemDom.appendChild(elDom)
-          sumHeight+=el.offsetHeight
-          if(sumHeight>=16000/2){
+          console.log(sumHeight);
+          if(sumHeight>=14000/2){
             this.$refs['pdf-containr'].appendChild(div)
             await this.getPdfImage({
                 dom: this.$refs['pdf-containr'],
-                WH
+                WH,
+                j
               })
+            j = i
             this.$refs['pdf-containr'].innerHTML = ''
             sumHeight = el.offsetHeight
-            WH = []
+            // WH = []
             div = document.createElement('div')
           }
           div.appendChild(itemDom)
-          WH.push({width: el.offsetWidth, height: el.offsetHeight})
           console.timeEnd(`img=>${i}`)
         }
         this.$refs['pdf-containr'].appendChild(div)
         await this.getPdfImage({
             dom: this.$refs['pdf-containr'],
-            WH
+            WH,
+            j
           })
         // this.$refs['pdf-containr'].innerHTML = ''
         console.timeEnd('截图')
         this.$nextTick(()=>{
-            this.uploadUdFile();
+            // this.uploadUdFile();
         })
-        this.$emit('changeStatus','exportLoading',false)
+        // this.$emit('changeStatus','exportLoading',false)
       }, 0)
     },
     // 截取页面,存入pdf
@@ -387,9 +392,11 @@ export default {
     async getPdfImage({
       //html横向导出pdf
       dom,
-      WH
+      WH,
+      j
     }) {
       let scale = 2
+      return
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -404,13 +411,14 @@ export default {
         let height = canvas.height
         let offsetHeight = 0
         let i = 0
+        console.log(j,'=>',WH);
         while(height>20){
           // this.pageHeight = this.width/841.89*595.28;
           // console.log(height);
           // console.log(this.pageHeight);
-          console.log(WH[i]);
-          let width = (WH[i]?.width || WH[0].width) * scale
-          let pageHeight = (WH[i]?.height || WH[0].height) * scale
+          console.log(WH[j+i]);
+          let width = (WH[j+i]?.width || WH[0].width) * scale
+          let pageHeight = (WH[j+i]?.height || WH[0].height) * scale
           copyCanvas.width = width
           copyCanvas.height = pageHeight
           var imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
@@ -444,7 +452,7 @@ export default {
       const list = this.fileList.map((item)=>item.imageUrl);
       // 841.89*2
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
-      this.$emit('changeStatus','exportLoading',false)
+      // this.$emit('changeStatus','exportLoading',false)
     },
 
     // 上传图片
@@ -471,7 +479,7 @@ export default {
 
 <style lang="scss" scoped>
 .pdf-containr{
-  width: 100%;
+  width: max-content;
   // height: 0;
   // position: absolute;
   // overflow: hidden;

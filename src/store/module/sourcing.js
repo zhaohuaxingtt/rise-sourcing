@@ -566,7 +566,8 @@ const state = {
   configscoredeptThirdMenu: [],
   pendingRequestNum:0,
   mapControl:[],
-  updateKey:'0'
+  updateKey:'0',
+  imgList: []
 }
 
 const mutations = {
@@ -587,6 +588,10 @@ const mutations = {
   },
   SET_UPDATE(state){
     state.updateKey = + new Date()
+  },
+  // img 数据加载
+  PUSH_IMGLIST(state,img){
+    state.imgList.push(img)
   }
 }
 
@@ -654,6 +659,9 @@ const actions = {
   },
   updateMapControl({ commit }, mapControl) {
     commit('SET_MAPCONTROL', mapControl)
+  },
+  pushImgList({ commit }, img) {
+    commit('PUSH_IMGLIST', img)
   }
 }
 
@@ -661,7 +669,8 @@ const getters = {
   navList: (state) => state.navList,
   pendingRequestNum: (state) => state.pendingRequestNum,
   updateKey: (state) => state.updateKey,
-  mapControl: (state) => state.mapControl
+  mapControl: (state) => state.mapControl,
+  imgList: (state) => state.imgList
 }
 
 export default {

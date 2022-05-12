@@ -97,7 +97,7 @@
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
         <!-- <div style="width: 0; height: 0; overflow: hidden"> -->
-        <div>
+        <div v-if="exportLoading">
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>
@@ -198,6 +198,7 @@ export default {
             rsDisabled: state => state.nomination.rsDisabled,
             mtzApplyId: state => state.nomination.mtzApplyId,
             pendingRequestNum: state => state.sourcing.pendingRequestNum,
+            imgList: state => state.sourcing.imgList
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -218,12 +219,19 @@ export default {
         // 是否为提交后的状态
         submitDisabled() {
             return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
+        },
+        imgListStatus() {
+            return !this.imgList.some((img)=>img!==true)
         }
     },
     watch: {
         pendingRequestNum(val){
-            if(val == 0 && this.exportLoading && this.showExportPdf){
-                // this.$refs['exportPdf'].exportPdf();
+            console.log(this.imgList);
+            if(val == 0 && this.exportLoading && this.showExportPdf && this.imgListStatus){
+                setTimeout(() => {
+                    console.log(this.imgList);
+                    // this.$refs['exportPdf'].exportPdf();
+                }, 2000);
             }
         }
     },
@@ -763,6 +771,7 @@ export default {
 
         exportPdf(){
             if(!this.exportLoading){
+                this.showExportPdf = true;
                 this.exportLoading = true;
                 this.$refs['exportPdf'].exportPdf();
             }else{
