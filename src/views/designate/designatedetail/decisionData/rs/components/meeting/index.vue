@@ -382,11 +382,6 @@
             <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
           </div>
         </template>
-        
-        <!-- 年降 -->
-        <template #ltc="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-        </template>
 
 				<!-- 年降 -->
 				<template #ltc="scope">

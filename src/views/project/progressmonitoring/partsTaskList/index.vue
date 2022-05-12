@@ -12,7 +12,7 @@
       </template>
       <el-form>
 
-        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission" :class="item.type === 'input'? 'currentWidth' : ''">
+        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission" :class="item.type === 'iMultiLineInput'? 'currentWidth' : ''">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
             <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
@@ -23,6 +23,13 @@
             </el-option>
           </iSelect>
           <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
+          
+          <iMultiLineInput
+            v-else-if="item.type === 'iMultiLineInput'"
+            :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="searchParams[item.value]"
+          ></iMultiLineInput>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -96,7 +103,7 @@
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog, iPage } from 'rise'
+import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog, iPage,iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle,partSortStatus } from './data'
 import { getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
@@ -108,7 +115,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage, buttonTableSetting },
+  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage, buttonTableSetting,iMultiLineInput },
   data() {
     return {
       searchList,
