@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-10-11 10:31:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 11:16:49
+ * @LastEditTime: 2022-05-11 16:40:16
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\partsTaskList\data.js
  */
 
 export const searchList = [
-  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'input', permission: "PROJECTMGT_PARTSTASK_PARTNUM|项目管理-零件任务清单-零件号"  },
+  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'iMultiLineInput', permission: "PROJECTMGT_PARTSTASK_PARTNUM|项目管理-零件任务清单-零件号"  },
   {value: 'partSort', name: '零件分类', key: 'LINGJIANFENLEI', type: 'select', selectOption: 'partTaskPartSortQuery', permission: "PROJECTMGT_PARTSTASK_PARTSORT|项目管理-零件任务清单-零件分类"},
   {value: 'status', name: '处理状态', key: 'CHULIZHUANGTAI', type: 'select', filterable: true, selectOption: 'partTaskStatus', permission: "PROJECTMGT_PARTSTASK_STATUS|项目管理-零件任务清单-处理状态"},
   {value: 'risePartDesc', name: '异常原因', key: 'YICHANGYUANYING', type: 'select', filterable: true, selectOption: 'partTaskRisePartDesc', permission: "PROJECTMGT_PARTSTASK_RISEPARTDESC|项目管理-零件任务清单-异常原因"},
