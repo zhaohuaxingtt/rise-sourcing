@@ -15,7 +15,7 @@ export const searchList = [
   {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_AEKOSTATUS|AEKO状态',multiple:true,clearable:true},
   {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_COVERSTATUS|封面状态',multiple:true,clearable:true},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',permissionKey:'AEKO_MANAGELIST_SELECT_BUYERNAME|Linie',noShowAll:true,filterable:true,clearable:true},
-  // {props:'assignStatus',label:'分派状态',type:'select',labelKey:'FENPAIZHUANGTAI',selectOption:'typeList',filterable:true,clearable:true},
+  {props:'assignStatus',label:'分派状态',type:'select',labelKey:'FENPAIZHUANGTAI',selectOption:'typeList',filterable:true,clearable:true},
 ]
 
 // 表头
