@@ -511,7 +511,7 @@ export default {
         })
         let maxMaterialIncreaseMoneyCount = Math.max(...arrs)
         let item = groupModelProjects.find(item => item.materialIncreaseMoneyCount == maxMaterialIncreaseMoneyCount)
-        row.materialIncrease=maxMaterialIncreaseMoneyCount
+        row.materialIncrease=maxMaterialIncreaseMoneyCount+''
         let strTip = ''
         item.data.forEach(item1 => {
           strTip += `${item1.linieDeptNum}-${item1.linieName}:RMB ${numberToCurrencyNo(item1.materialIncrease)} \n `
