@@ -170,19 +170,19 @@ export default {
     this.getNominateTaskList();
   },
   methods: {
-    getHeight() {
+    async getHeight() {
       if (!this.$refs.tasks) return;
       let pList = this.$refs.bo.getElementsByTagName('p');
       let imgList = []
       for (let i = 0; i < pList.length; i++) {
         const element = pList[i];
         if(element.outerHTML.includes('img')){
-          this.$store.dispatch('sourcing/pushImgList', {key:'taskimg'+i, value:false})
-          imgList.push(new Promise((r,j)=>{
-            const img = element.getElementsByTagName('img')[0]
-            img.onload = () => {this.$store.dispatch('sourcing/pushImgList', {key:'taskimg'+i, value:true}); r(true)}
-            img.onerror = () => r(true)
-          }))
+          const img = element.getElementsByTagName('img')[0]
+          await this.$store.dispatch('sourcing/pushImgList', img)
+          // imgList.push(new Promise((r,j)=>{
+          //   img.onload = () => r(true)
+          //   img.onerror = () => r(true)
+          // }))
         }
       }
       Promise.all(imgList).then(()=>{

@@ -118,11 +118,10 @@ export default {
       let arr = []
       let list = []
       rowList.forEach((item,i)=>{
-        this.$store.dispatch('sourcing/pushImgList', {key:'Drawingimg'+i, value:false})
-        list.push(new Promise((r,j)=>{
+        list.push(new Promise(async (r,j)=>{
           const img = item.getElementsByClassName('img')[0];
-          img.onload = () => {this.$store.dispatch('sourcing/pushImgList', {key:'Drawingimg'+i, value:true}); r(item)}
-          img.onerror = () => r(item)
+          await this.$store.dispatch('sourcing/pushImgList', img)
+          r(item)
         }))
       })
       Promise.all(list).then(res=>{

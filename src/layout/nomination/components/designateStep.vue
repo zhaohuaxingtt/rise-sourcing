@@ -189,7 +189,6 @@ export default {
         if(['designateRfqdetail', 'designateSuggestion', 'designateSupplier', 'approvalPersonAndRecord','designateDecisionData'].includes(name)) {
             this.$store.dispatch('checkPartNull', {})
         }
-        console.log(this.$store.getters['sourcing/imgList']);
     },
     computed:{
         // eslint-disable-next-line no-undef
@@ -220,27 +219,15 @@ export default {
         submitDisabled() {
             return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
         },
-        hasPending(){
-            return Object.values(this.$store.getters['sourcing/imgList']).some((img)=> !img)
-        }
     },
     watch: {
         pendingRequestNum(val){
-            console.log(this.hasPending);
-            if(val == 0 && this.exportLoading && this.showExportPdf && !this.hasPending){
+            if(val == 0 && this.exportLoading && this.showExportPdf){
                 setTimeout(() => {
                     this.$refs['exportPdf'].exportPdf();
                 }, 4000);
             }
         },
-        
-      hasPending:{
-        deep:true,
-        immediate: true,
-        handler(val){
-            console.log(val);
-        }
-      },
     },
     data(){
         return{

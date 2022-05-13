@@ -567,7 +567,7 @@ const state = {
   pendingRequestNum:0,
   mapControl:[],
   updateKey:'0',
-  imgList: {}
+  imgList: []
 }
 
 const mutations = {
@@ -590,13 +590,18 @@ const mutations = {
     state.updateKey = + new Date()
   },
   // img 数据加载
-  PUSH_IMGLIST(state,{key,value}){
-    state.imgList[key] = value
+  PUSH_IMGLIST(state, data){
+    state.imgList.push(data)
+  },
+  // img 数据加载完毕
+  REMOVE_IMGLIST(state, data){
+    let i = state.imgList.indexOf(data)
+    state.imgList.splice(i,1)
   }
 }
 
 let source = null
-
+let num = 0
 const actions = {
   updateNavList({ commit, state }) {
     if (source) source.cancel()
@@ -660,8 +665,20 @@ const actions = {
   updateMapControl({ commit }, mapControl) {
     commit('SET_MAPCONTROL', mapControl)
   },
-  pushImgList({ commit }, data) {
-    commit('PUSH_IMGLIST', data)
+  pushImgList({ commit }, img) {
+    const key = 'img'+num
+    num++
+    commit('PUSH_IMGLIST',key)
+    return new Promise((r,j)=>{
+      img.onload = () => {
+        commit('REMOVE_IMGLIST',key)
+        r(true)
+      }
+      img.onerror = () => {
+        commit('REMOVE_IMGLIST',key)
+        r(true)
+      }
+    })
   }
 }
 

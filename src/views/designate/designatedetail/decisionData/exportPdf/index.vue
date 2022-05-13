@@ -49,7 +49,6 @@
             </template>
           </drawing>
         </div>
-
         <!-- bdl -->
         <!-- <div id="html2canvasBDl">
           <bdl isExportPdf class="module">
@@ -60,13 +59,13 @@
         </div> -->
 
         <!-- singleSourcing -->
-        <div id="html2canvasSingleSourcing">
+        <!-- <div id="html2canvasSingleSourcing">
           <singleSourcing class="module">
             <template #tabTitle>
             <headerTab value="/designate/decisiondata/singlesourcing"/>
             </template>
           </singleSourcing>
-        </div>
+        </div> -->
 
         <!-- abprice -->
         <!-- <div id="html2canvasAbprice">
@@ -155,12 +154,21 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
         updateKey: state => state.sourcing.updateKey,
+        imgList: state => state.sourcing.imgList,
     }),
   },
     watch: {
       updateKey(val){
         this.$forceUpdate()
-      }
+      },
+      imgList(val){
+        console.log('val=>',JSON.stringify(val));
+        if(this.pendingRequestNum == 0 && this.exportLoading && this.showExportPdf && !val.length){
+            setTimeout(() => {
+                this.$refs['exportPdf'].exportPdf();
+            }, 4000);
+        }
+      },
     },
   created() {
     this.nominateAppId = this.$route.query.desinateId
@@ -206,6 +214,7 @@ export default {
       })
     },
     exportPdf() {
+      console.log(this.imgList);
       this.handleExportPdf()
       return
       // this.exportLoading = true
@@ -450,7 +459,7 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       // 841.89*2
-      this.$emit('changeStatus','exportLoading',false)
+      // this.$emit('changeStatus','exportLoading',false)
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
     },
 
@@ -463,7 +472,9 @@ export default {
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
             console.log(res.data[0].objectUrl);
-            this.DownloadPdf();
+            this.$nextTick(()=>{
+              this.DownloadPdf();
+            })
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
