@@ -114,7 +114,7 @@ export default {
                 } else {
                   this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year, key: planData.year })
                 }
-                this.$set(this.tableListData[0], planData.year, planData.output)
+                this.$set(this.tableListData[0], planData.year, planData.outputInt)
                 // this.tableListData[0][planData.year] = planData.output
                 this.tableListData[0].info[planData.year] = planData
               })
