@@ -121,7 +121,7 @@ export default {
             if (Array.isArray(res.data.outputPlanList)) {
               res.data.outputPlanList.forEach((planData, index) => {
                 this.tableTitle.push({props: planData.year, name: planData.year, key: planData.year, editable: true, type: 'input', isPC: true})
-                this.tableData[0][planData.year] = planData.output
+                this.tableData[0][planData.year] = planData.outputInt
               })
             }
           }
