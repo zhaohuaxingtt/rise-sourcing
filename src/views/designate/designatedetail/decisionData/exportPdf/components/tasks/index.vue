@@ -161,10 +161,10 @@ export default {
     };
   },
   created() {
-    this.tableTitle.push({
-      props: "show",
-      name: "Hide/Unhide",
-    });
+    // this.tableTitle.push({
+    //   props: "show",
+    //   name: "Hide/Unhide",
+    // });
 
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
@@ -178,11 +178,10 @@ export default {
         const element = pList[i];
         if(element.outerHTML.includes('img')){
           const img = element.getElementsByTagName('img')[0]
-          await this.$store.dispatch('sourcing/pushImgList', img)
-          // imgList.push(new Promise((r,j)=>{
-          //   img.onload = () => r(true)
-          //   img.onerror = () => r(true)
-          // }))
+          imgList.push(new Promise((r,j)=>{
+            img.onload = () => r(true)
+            img.onerror = () => r(true)
+          }))
         }
       }
       Promise.all(imgList).then(()=>{
@@ -216,11 +215,10 @@ export default {
         tableList.push(JSON.parse(JSON.stringify(arr)));
         this.tableList = tableList;
         
-        let pHeightSum = 0
+        let pHeightSum = 20
         let contentList = []
         let itemContent = ''
         pList.forEach(p=>{
-          console.log( p.offsetHeight);
           pHeightSum += p.offsetHeight
           if(pHeightSum < this.cntentHeight){
             itemContent+=p.outerHTML

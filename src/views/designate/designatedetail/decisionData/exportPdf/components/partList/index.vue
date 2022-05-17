@@ -144,7 +144,6 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      return
     },
     getPartList: function () {
       getPartList({

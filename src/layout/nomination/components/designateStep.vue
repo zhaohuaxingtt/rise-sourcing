@@ -96,8 +96,7 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
-        <!-- <div style="width: 0; height: 0; overflow: hidden"> -->
-        <div v-if="exportLoading">
+        <div style="width: 0; height: 0; overflow: hidden" v-if="exportLoading">
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>
@@ -223,11 +222,20 @@ export default {
     watch: {
         pendingRequestNum(val){
             if(val == 0 && this.exportLoading && this.showExportPdf){
-                setTimeout(() => {
+                if(this.$refs['exportPdf'])
+                this.$nextTick(()=>{
                     this.$refs['exportPdf'].exportPdf();
-                }, 4000);
+                })
             }
         },
+        // exportLoading(val){
+        //     if(!val){
+        //         this.$nextTick(()=>{
+        //             this.showExportPdf = false
+        //             this.exportLoading = true
+        //         })
+        //     }
+        // }
     },
     data(){
         return{

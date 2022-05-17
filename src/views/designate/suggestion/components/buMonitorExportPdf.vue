@@ -229,9 +229,6 @@ export default {
       let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
       let tableHeader = this.$refs['table-content'].getElementsByClassName('el-table__header-wrapper')[0].clientHeight
       let tableTitle = this.$refs.tableTitle.clientHeight 
-      // let headerHeight = 42 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
-      // let tableHeader = 71  // 表头高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - tableTitle - pageLogo - this.hasTitle // 内容区域对应的高度
       this.chartsHeight = (this.chartsWidth / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 绘图区域对应的高度
       let rowList = this.$refs.scenario.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
@@ -250,7 +247,6 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      return
     },
     async init() {
       this.getFetchData()

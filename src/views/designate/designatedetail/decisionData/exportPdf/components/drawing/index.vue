@@ -120,8 +120,8 @@ export default {
       rowList.forEach((item,i)=>{
         list.push(new Promise(async (r,j)=>{
           const img = item.getElementsByClassName('img')[0];
-          await this.$store.dispatch('sourcing/pushImgList', img)
-          r(item)
+          img.onload = () => r(item)
+          img.onerror = () =>  r(item)
         }))
       })
       Promise.all(list).then(res=>{
@@ -149,7 +149,10 @@ export default {
         pageSize: 999999
       }).then(res => {
         if (res.code == 200) {
-          this.files = Array.isArray(res.data) ? res.data : []
+          let a = 'qwe'
+          a.toUpperCase()
+          
+          this.files = Array.isArray(res.data) ? res.data.filter(item=> ['.jpg', '.jpeg', '.png', '.bmp', '.webp'].some(type => String(item.fileName).toLowerCase().endsWith(type))) : []
           this.$nextTick(()=>{
             this.getHeight()
           })
@@ -192,9 +195,6 @@ export default {
       border-radius: 5px; /*no*/
       min-height: 300px; /*no*/
 
-      .img {
-        max-width: 60%;
-      }
     }
 
     .blank {
@@ -208,12 +208,10 @@ export default {
       line-height: 200px; /*no*/
     }
   }
-  .page-logo{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
+  
+  .img {
+    max-width: 60%;
+    padding-bottom: 20px;
   }
 }
 </style>

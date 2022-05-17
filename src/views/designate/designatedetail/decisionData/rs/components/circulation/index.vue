@@ -671,9 +671,6 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      // let tableHeader = 49  // 表头高度
-      // let headerHeight = 84 // 顶部标题高度
-      // let pageLogo = 52     // logo 区域高度
       this.hasTitle = this.$refs.tabTitle.offsetHeight
       let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
       let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度

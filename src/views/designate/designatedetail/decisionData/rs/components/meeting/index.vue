@@ -236,10 +236,8 @@
                   1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
                 </span>
               </div>
-              <div v-else>
-                <div class="margin-top10">
-                  <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
-                </div>
+              <div class="margin-top10" v-else>
+                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
               </div>
             </div>
           </div>
@@ -312,6 +310,8 @@
         :tableHeight="tableHeight"
         :otherPageHeight="otherPageHeight"
         :hasOtherPage="hasOtherPage"
+        :residualRemark="residualRemark"
+        :hasLastPage="hasLastPage"
         :prototypeListPageHeight="prototypeListPageHeight"
         :prototypeTableList="prototypeTableList"
         :prototypeTitleList="prototypeTitleList" >
@@ -710,9 +710,11 @@ export default {
 			tableHeight: 0,
       otherPageHeight:0,
       hasOtherPage: false,
+      hasLastPage:false,
 			tableList: [],
 			prototypeTableList: [],
-      remarkList:[]
+      remarkList:[],
+      residualRemark:[]
 		}
 	},
 	filters: {
@@ -867,25 +869,19 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-        // let tableHeader = 57  // 表头高度
-        // let headerHeight = 106 // 顶部标题高度
-        // let pageLogo = 52     // logo 区域高度
         this.hasTitle = this.$refs.tabTitle.offsetHeight
         let headerHeight = this.$refs['pdf-table'].getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
         let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
         let tableHeader = this.$refs['pdf-table'].getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
         let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注签字栏
         let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
         let requireStart = document.getElementsByClassName('demo')[0].getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
         let beizhuOther = this.$refs.other.offsetHeight // 备注区域的其它内容
-        for (let i = 0; i < el.length; i++) {
-          height += el[i].offsetHeight;
-        }
         // 第一页
         this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         // 独立备注页
-        this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
+        this.otherPageHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         if(!this.tableData.length) return
         let rowList = this.$refs['pdf-table'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
         let arr = []
@@ -894,7 +890,7 @@ export default {
         rowList.forEach((item,i)=>{
           heightSum+=item.offsetHeight
           // if(heightSum<this.tableHeight - tableHeader - outEl - el){
-          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
+          if(heightSum<this.tableHeight - tableHeader - requireStart){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -902,40 +898,74 @@ export default {
             arr = [this.tableData[i]]
           }
         })
+        let residualHeight = this.tableHeight - tableHeader - requireStart - heightSum  // 最后一页表格剩余高度
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
         // 备注独立页面内容计算
-        this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+        // this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
+        this.hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
         if(this.hasOtherPage){
           let itemHeight = 0
           let list = []
           let itemList =[]
-          if(this.otherPageHeight<outEl - 24){ // 需要分页
-            let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
-            remarkList.forEach((item,i)=>{
+          let residualRemark = []
+          let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
+          remarkList.forEach((item,i)=>{
+            if(item.offsetHeight<residualHeight){  // 放在表格页剩余空间内
+              residualHeight -= item.offsetHeight
+              residualRemark.push(this.remarkItem[i])
+            }else{  // 另起一页
               itemHeight+=item.offsetHeight
-              if(itemHeight<=this.otherPageHeight - 24 - beizhuOther){ // 上下padding各12
+              if(itemHeight<=this.otherPageHeight -24 - beizhuOther){ // 上下padding各12
                 list.push(this.remarkItem[i])
               }else{
+                if(list.length)
                 itemList.push(JSON.parse(JSON.stringify(list)))
                 itemHeight=item.offsetHeight
                 list = [this.remarkItem[i]]
               }
+            }
             })
+            if(itemHeight){
+              if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
+                this.hasLastPage = true
+              }else{
+                this.hasLastPage = false
+              }
+            }else{
+              if(residualHeight < el){
+                this.hasLastPage = true
+              }else{
+                this.hasLastPage = false
+              }
+            }
+          // if(this.otherPageHeight<outEl - 24){ // 需要分页
+          //   let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
+          //   remarkList.forEach((item,i)=>{
+          //     itemHeight+=item.offsetHeight
+          //     if(itemHeight<=this.otherPageHeight - 24 - beizhuOther){ // 上下padding各12
+          //       list.push(this.remarkItem[i])
+          //     }else{
+          //       itemList.push(JSON.parse(JSON.stringify(list)))
+          //       itemHeight=item.offsetHeight
+          //       list = [this.remarkItem[i]]
+          //     }
+          //   })
+            if(list.length)
             itemList.push(JSON.parse(JSON.stringify(list)))
-          }else{
-            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
-          }
+          // }else{
+            // itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
+          // }
           this.remarkList = itemList
+          this.residualRemark = residualRemark
+        }else{
+          this.residualRemark = this.remarkItem
         }
-      },400)
+      },0)
     },
     getPrototypeListHeight(){
       let time = 0
       let timeOut = 6000
-      // let tableHeader = 41  // 表头高度
-      // let headerHeight = 84  // 表头高度
-      // let pageLogo = 52     // logo 区域高度
       if(!this.$refs.tabTitle) return
       this.hasTitle = this.$refs.tabTitle.offsetHeight
       let headerHeight = this.$refs['pdf-list'].getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
@@ -964,33 +994,6 @@ export default {
         this.prototypeTableList = PrototypeList
         if(this.prototypeTableList) clearInterval(Interval)
       },400)
-      // setTimeout(() => {
-      //   let dom = this.$refs.rsPdf.$el
-      //   this.width = dom.offsetWidth
-      //   this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      //   let tableHeader = 41  // 表头高度
-      //   let headerHeight = 84  // 表头高度
-      //   let pageLogo = 52     // logo 区域高度
-      //   if(!this.PrototypeList.length&&this.$refs['pdf-list'].getElementsByClassName('el-table__body-wrapper')[0]) return
-      //   let rowList = this.$refs['pdf-list'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('list-row')
-      //   this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5 - this.hasTitle
-      //   let arr = []
-      //   let heightSum = 0
-      //   let PrototypeList = []
-      //   rowList.forEach((item,i)=>{
-      //     heightSum+=item.offsetHeight
-      //     if(heightSum<=this.prototypeListPageHeight - tableHeader){
-      //       arr.push(this.PrototypeList[i])
-      //     }else{
-      //       PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-      //       heightSum=item.offsetHeight
-      //       arr = [this.PrototypeList[i]]
-      //     }
-      //   })
-          
-      //   PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-      //   this.prototypeTableList = PrototypeList
-      // }, 1000);
     },
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
@@ -1302,7 +1305,6 @@ export default {
         }
       })
       .finally(() => this.tableLoading = false)
-
 	},
 		
 
@@ -1310,44 +1312,40 @@ export default {
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-    
-      setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard')
-        if(!elList.length){
-          iMessage.warn('请稍等')
-          this.loading = false
-          return
-        }
-        for (let i = 0; i < elList.length; i++) {
-          const el = elList[i];
-          await this.getPdfImage({
-            dom: el,
-            index: i
-          })
-        }
-        this.uploadUdFile();
-      }, 100)
-      // this.createEl()
-      
-      // this.getPdfImage({
-      //   dom: this.$refs.rsPdf.$el,
-      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
-      //   exportPdf: true,
-      //   waterMark: true
-      // })
+      this.getHeight()
+      this.$nextTick(()=>{
+        setTimeout(async () => {
+          let elList = document.getElementsByClassName('pageCard')
+          if(!elList.length){
+            iMessage.warn('请稍等')
+            this.loading = false
+            return
+          }
+          for (let i = 0; i < elList.length; i++) {
+            const el = elList[i];
+            el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
+            await this.getPdfImage({
+              dom: el,
+              index: i
+            })
+          }
+          this.uploadUdFile();
+        }, 100)
+      })
     },
+
     // 截取页面,存入pdf
     // 截取页面,转图片, 上传服务器
     async getPdfImage({
       //html横向导出pdf
       dom,
-      index
+      index,
     }) {
       await html2canvas(dom, {
         dpi: 96, //分辨率
-        scale: 2, //设置缩放
+        scale: 1, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
-        bgcolor: "#ffffff", //应该这样写
+        bgcolor: '#ffffff', //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
       }).then(async (canvas) => {
         // var contentWidth = canvas.width; //
@@ -1358,158 +1356,95 @@ export default {
         // var leftHeight = contentHeight; //
         // var ctx = canvas.getContext("2d");
 
-						this.searchRsPageExchangeRate()
-					// } else {
-						this.basicData = {}
-						this.tableData = []
-						this.projectType = ''
-						iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-					// }
-				})
-				.finally(() => (this.tableLoading = false))
-		},
+        // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+        // copyCanvas.width = contentWidth;
+        // copyCanvas.height = pageHeight;
+        // var ctxs = copyCanvas.getContext("2d");
+        await this.getPdfFile(canvas)
 
-		// 导出pdf
-		async handleExportPdf() {
-			this.fileList = []
-			this.loading = true
+        // ctxs.fillStyle = '#FFF'
+        // // 保存每一页的画布, 然后清空canvas
+        // if (leftHeight <= pageHeight) {
+        //   ctxs.fillRect(0,0,contentWidth,pageHeight)
+        //   //   console.log(pageData);
+        //   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
+        //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+        //   // 截图画布转为file
+        //   await this.getPdfFile(copyCanvas,index)
+        // } else {
+        //   // 分页
+        //   var num = 1;
+        //   while (leftHeight > 0) {
+        //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+        //     ctxs.fillRect(0,0,contentWidth,pageHeight)
+        //     if(leftHeight <= pageHeight){
+        //       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
+        //     }else{
+        //       var imgData = ctx.getImageData(
+        //         0,
+        //         (num - 1) * pageHeight,
+        //         contentWidth,
+        //         pageHeight
+        //       ); // 截取主画布当前页
+        //     }
+        //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+        //     // 截图画布转为file
+        //     await this.getPdfFile(copyCanvas,index)
+        //     leftHeight -= pageHeight;
+        //     // //避免添加空白页
+        //     if (leftHeight > 0) {
+        //       num++;
+        //     }
+        // }
+        // }
+      })
+    },
 
-			setTimeout(async () => {
-				let elList = this.$refs.meeting.getElementsByClassName('pageCard')
-				if (!elList.length) {
-					iMessage.warn('请稍等')
-					this.loading = false
-					return
-				}
-				for (let i = 0; i < elList.length; i++) {
-					const el = elList[i]
-					await this.getPdfImage({
-						dom: el,
-						index: i,
-					})
-				}
-				this.uploadUdFile()
-			}, 100)
-			// this.createEl()
+    async getPdfFile(copyCanvas, num) {
+      return new Promise((r, j) => {
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`
+          let pdfFile = new File([blob], filename, { type: 'image/png' })
+          this.fileList.push({ file: pdfFile, index: num })
+          r(num)
+        })
+      })
+    },
+    // 下载 pdf 文件
+    async DownloadPdf() {
+      let arr = this.fileList.filter((item) => !item.imageUrl)
+      if (arr.length) return
+      const list = this.fileList.map((item) => item.imageUrl)
+      await decisionDownloadPdfLogo({
+        filePaths: list,
+        needLogo: false,
+        needSplit: false,
+        width: this.pageWidth,
+        height: this.pageHeight,
+      }) // 1.2 预留 页脚位置
+      this.loading = false
+    },
 
-			// this.getPdfImage({
-			//   dom: this.$refs.rsPdf.$el,
-			//   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
-			//   exportPdf: true,
-			//   waterMark: true
-			// })
-		},
-		// 截取页面,存入pdf
-		// 截取页面,转图片, 上传服务器
-		async getPdfImage({
-			//html横向导出pdf
-			dom,
-			index,
-		}) {
-			await html2canvas(dom, {
-				dpi: 96, //分辨率
-				scale: 1, //设置缩放
-				useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
-				bgcolor: '#ffffff', //应该这样写
-				logging: false, //打印日志用的 可以不加默认为false
-			}).then(async (canvas) => {
-				// var contentWidth = canvas.width; //
-				// var contentHeight = canvas.height; //
-				//一页pdf显示html页面生成的canvas高度;
-				// var pageHeight = (contentWidth / 841.89) * 595.28; //
-				//未生成pdf的html页面高度
-				// var leftHeight = contentHeight; //
-				// var ctx = canvas.getContext("2d");
-
-				// var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
-				// copyCanvas.width = contentWidth;
-				// copyCanvas.height = pageHeight;
-				// var ctxs = copyCanvas.getContext("2d");
-				await this.getPdfFile(canvas)
-
-				// ctxs.fillStyle = '#FFF'
-				// // 保存每一页的画布, 然后清空canvas
-				// if (leftHeight <= pageHeight) {
-				//   ctxs.fillRect(0,0,contentWidth,pageHeight)
-				//   //   console.log(pageData);
-				//   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
-				//   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
-				//   // 截图画布转为file
-				//   await this.getPdfFile(copyCanvas,index)
-				// } else {
-				//   // 分页
-				//   var num = 1;
-				//   while (leftHeight > 0) {
-				//     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
-				//     ctxs.fillRect(0,0,contentWidth,pageHeight)
-				//     if(leftHeight <= pageHeight){
-				//       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
-				//     }else{
-				//       var imgData = ctx.getImageData(
-				//         0,
-				//         (num - 1) * pageHeight,
-				//         contentWidth,
-				//         pageHeight
-				//       ); // 截取主画布当前页
-				//     }
-				//     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
-				//     // 截图画布转为file
-				//     await this.getPdfFile(copyCanvas,index)
-				//     leftHeight -= pageHeight;
-				//     // //避免添加空白页
-				//     if (leftHeight > 0) {
-				//       num++;
-				//     }
-				// }
-				// }
-			})
-		},
-
-		async getPdfFile(copyCanvas, num) {
-			return new Promise((r, j) => {
-				copyCanvas.toBlob((blob) => {
-					//以时间戳作为文件名 实时区分不同文件
-					let filename = `${new Date().getTime()}.png`
-					let pdfFile = new File([blob], filename, { type: 'image/png' })
-					this.fileList.push({ file: pdfFile, index: num })
-					r(num)
-				})
-			})
-		},
-		// 下载 pdf 文件
-		async DownloadPdf() {
-			let arr = this.fileList.filter((item) => !item.imageUrl)
-			if (arr.length) return
-			const list = this.fileList.map((item) => item.imageUrl)
-			await decisionDownloadPdfLogo({
-				filePaths: list,
-				needLogo: false,
-				needSplit: false,
-				width: this.pageWidth,
-				height: this.pageHeight,
-			}) // 1.2 预留 页脚位置
-			this.loading = false
-		},
-
-		// 上传图片
-		async uploadUdFile() {
-			this.fileList.map((item) => {
-				uploadUdFile({
-					multifile: item.file,
-				}).then((res) => {
-					if (res.code == 200) {
-						item['imageUrl'] = res.data[0].path
-						// console.log(res.data[0].objectUrl)
-						this.DownloadPdf()
-					} else {
-						this.$message.error(
-							this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-						)
-					}
-				})
-			})
-		},
-	},
+    // 上传图片
+    async uploadUdFile() {
+      this.fileList.map((item) => {
+        uploadUdFile({
+          multifile: item.file,
+        }).then((res) => {
+          if (res.code == 200) {
+            item['imageUrl'] = res.data[0].path
+            // console.log(res.data[0].objectUrl)
+            this.DownloadPdf()
+          } else {
+            this.$message.error(
+              this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            )
+          }
+        })
+      })
+    },
+  },
 }
 </script>
 
@@ -1519,7 +1454,7 @@ export default {
 }
 .meeting {
   
-  .demo .rsCard {
+  .demo,.rsCard {
     box-shadow: none;
 
     ::v-deep .title {
@@ -1529,9 +1464,11 @@ export default {
     ::v-deep .cardHeader {
       padding: 30px 0px;
     }
+
     ::v-deep .cardBody {
       padding: 0px;
     }
+
     .control {
       display: flex !important;
       align-items: center !important;
@@ -1642,7 +1579,6 @@ export default {
       width: 50%;
       font-size: 12px;
       display: flex;
-      height: 17px;
       margin-bottom: 12px;
       &:last-of-type {
         margin-bottom: 26px;
@@ -1710,7 +1646,7 @@ export default {
 .beizhu {
 	background-color: rgba(22, 96, 241, 0.03);
 	// height: 40px;
-	padding: 12px 14px;
+	padding: 12px 14px;  /*no*/
 	font-weight: bold;
 	display: flex;
 	&-value {

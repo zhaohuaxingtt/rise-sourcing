@@ -208,12 +208,12 @@
               <div style="margin-left:20px">
                 <span style="color: red">*</span><span>代表投资费已分摊</span>
               </div>
-              <div v-if="index==tableList.length-1 && !hasOtherPage">
+              <div v-if="index==tableList.length-1 && residualRemark.length">
                 <div>
                   <div class="beizhu">
                     备注 Remarks:
                     <div class="beizhu-value">
-                      <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                      <p v-for="(item,index) in residualRemark" :key="index" v-html="remarkProcess(item.value)"></p>
                     </div>
                   </div>
                 </div>
@@ -228,29 +228,29 @@
                     <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
                   </div>
                 </div>
-              </div>
-              <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
-                <div class="checkList">
-                  <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-                    <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
-                    <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
-                    <div v-else class="" >-</div>
-                    <div class="checkList-item-info">
-                      <span>Dept.:</span>
-                      <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
-                    </div>
-                    <div class="checkList-item-info">
-                      <span>Date:</span>
-                      <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                <iCard v-if="!hasLastPage && !showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                  <div class="checkList">
+                    <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                      <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                      <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                      <div v-else class="" >-</div>
+                      <div class="checkList-item-info">
+                        <span>Dept.:</span>
+                        <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                      </div>
+                      <div class="checkList-item-info">
+                        <span>Date:</span>
+                        <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </iCard>
+                </iCard>
+              </div>
             </div>
             <div class="page-logo">
               <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
               <div>
-                <p class="pageNum">{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length+remarkList.length)}}</p>
+                <p class="pageNum"></p>
               </div>
               <div>
                 <p>{{ userName }}</p>
@@ -278,8 +278,47 @@
                 </div>
               </div>
             </template>
+            <div class="rsTop">
+              <div class="rsTop-left">
+                <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+                  <div class="rsTop-left-item-title">
+                    <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+                  </div>
+                  <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+                </div>
+              </div>
+              <div class="rsTop-right">
+                <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+                  <template v-if="Array.isArray(item)">
+                    <div class="rsTop-right-item-title">
+                      <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                    </div>
+                    <div class="rsTop-right-item-value">
+                      <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                        {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                      <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                        <div v-for="(item,index) in basicData[item.props]" :key="index">
+                            <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                              <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                              <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                            </el-tooltip>
+                        </div>
+                      </div>
+                      <div class="rsTop-right-item-value" v-else >
+                        <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                        <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                        <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                      </div>
+                  </template>
+                </div>
+              </div>
+            </div>
             <div :style="{'height': otherPageHeight + 'px'}">
-              <div class="beizhu">
+              <div class="beizhu" v-if="remark.length">
                 备注 Remarks:
                 <div class="beizhu-value">
                   <p v-for="(item,index) in remark" :key="index" v-html="remarkProcess(item&&item.value)"></p>
@@ -296,11 +335,30 @@
                   <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
                 </div>
               </div>
+              <template v-if="!hasLastPage && i==remarkList.length-1">
+                <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                  <div class="checkList">
+                    <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                      <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                      <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                      <div v-else class="" >-</div>
+                      <div class="checkList-item-info">
+                        <span>Dept.:</span>
+                        <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                      </div>
+                      <div class="checkList-item-info">
+                        <span>Date:</span>
+                        <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </iCard>
+              </template>
             </div>
             <div class="page-logo">
               <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
               <div>
-                <p class="pageNum">{{'page '+(tableList.length+i+1)+' of '+ (prototypeTableList.length+tableList.length+remarkList.length)}}</p>
+                <p class="pageNum"></p>
               </div>
               <div>
                 <p>{{ userName }}</p>
@@ -310,6 +368,93 @@
           </iCard>
         </div>
       </template>
+    </div>
+    <div v-if="hasLastPage">
+      <div class="pageCard-main">
+        <slot name="tabTitle"></slot>
+        <iCard class="rsCard pageCard">
+          <template #header>
+            <div class="title">
+              <p>CSC定点推荐 - {{ cardTitle }}</p>
+              <p>{{ cardTitleEn }}</p>
+            </div>
+            <div>
+              <div class="control">
+                <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
+                <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+              </div>
+            </div>
+          </template>
+          <div class="rsTop">
+            <div class="rsTop-left">
+              <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+                <div class="rsTop-left-item-title">
+                  <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+                </div>
+                <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+              </div>
+            </div>
+            <div class="rsTop-right">
+              <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+                <template v-if="Array.isArray(item)">
+                  <div class="rsTop-right-item-title">
+                    <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                  </div>
+                  <div class="rsTop-right-item-value">
+                    <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                      {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                    <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                      <div v-for="(item,index) in basicData[item.props]" :key="index">
+                          <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                            <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                            <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                          </el-tooltip>
+                      </div>
+                    </div>
+                    <div class="rsTop-right-item-value" v-else >
+                      <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                      <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                      <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                    </div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <div :style="{'height': otherPageHeight + 'px'}">
+            <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+              <div class="checkList">
+                <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                  <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                  <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                  <div v-else class="" >-</div>
+                  <div class="checkList-item-info">
+                    <span>Dept.:</span>
+                    <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                  </div>
+                  <div class="checkList-item-info">
+                    <span>Date:</span>
+                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                  </div>
+                </div>
+              </div>
+            </iCard>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p class="pageNum"></p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </iCard>
+      </div>
     </div>
     <template v-for="(tableData,key) in prototypeTableList">
       <div :key="key" class="pageCard-main" v-if="tableData.length">
@@ -325,7 +470,7 @@
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
             <div>
-              <p class="pageNum">{{'page '+(tableList.length+remarkList.length+key+1)+' of '+(prototypeTableList.length+tableList.length+remarkList.length)}}</p>
+              <p class="pageNum"></p>
             </div>
             <div>
               <p>{{ userName }}</p>
@@ -361,6 +506,7 @@ export default {
     tableData: { type: Array, default: () => [] },
     remarkItem: { type: Array, default: () => [] },
     remarkList: { type: Array, default: () => [] },
+    residualRemark: { type: Array, default: () => [] },
     projectType: { type: String, default: "" },
     exchangeRageCurrency: { type: Array, default: () => [] },
     exchangeRates: { type: Array, default: () => [] },
@@ -376,6 +522,7 @@ export default {
     tableList: { type: Array, default: () => [[]] },
     prototypeTableList: { type: Array, default: () => [] },
     hasOtherPage:{ type: Boolean, default: false },
+    hasLastPage:{ type: Boolean, default: false },
   },
   filters: {
     toThousands,
@@ -456,7 +603,6 @@ export default {
         width: 50%;
         font-size: 12px;
         display: flex;
-        height: 17px;
         margin-bottom: 12px;
         &:last-of-type {
           margin-bottom: 26px;
@@ -573,7 +719,7 @@ export default {
   .beizhu {
     background-color: rgba(22, 96, 241, 0.03);
     // height: 40px;
-    padding: 12px 14px;
+    padding: 12px 14px; /*no*/
     font-weight: bold;
     display: flex;
     &-value {

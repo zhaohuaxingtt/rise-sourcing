@@ -62,10 +62,26 @@
                 :selection="false"
                 :tableTitle="tableTitle"
                 :tableData="tableListData">
+                <template #suppliersName="scope">
+                  <div>
+                      <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
+                      <br>
+                      <span >{{scope.row.suppliersNameEn }}</span>
+                  </div>
+                </template>
+                <!-- 零件名称 -->
+                <template #partNameCh="scope">
+                  <span>{{scope.row.partNameCh}}</span>
+                  <br/>
+                  <span>{{scope.row.partNameEn}}</span>
+                </template>
+                <template #sapCode="scope">
+                  <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+                </template>
                 <template #singleReason="scope">
                   <div>
-                    <p>{{ scope.row.singleReason }}</p>
-                    <p>{{ scope.row.singleReasonEng }}</p>
+                      <p>{{ scope.row.singleReason }}</p>
+                      <p>{{ scope.row.singleReasonEng }}</p>
                   </div>
                 </template>
               </tableList>
@@ -140,9 +156,6 @@ export default {
       let headerHeight = this.$refs.single.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
       let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
       let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-      // let headerHeight = 84 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
-      // let tableHeader = 64  // 表头高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - formHeight - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.single.getElementsByClassName('table-row')
       let heightSum = 0

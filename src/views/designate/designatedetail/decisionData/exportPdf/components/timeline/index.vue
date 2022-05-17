@@ -30,7 +30,7 @@
             </div>
             <div class="supplierContent">
               <ul class="supplier-item-list">
-                <li class="flex-between-center"
+                <li class="flex-between-center li-row"
                     v-for="(exp, $expIndex) in (Array.isArray(supplier.nomiTimeAxisSupplierExps) ? supplier.nomiTimeAxisSupplierExps : [])"
                     :key="$expIndex">
                   <span class="supplier-item-name">{{ exp.durationName }}</span>
@@ -136,10 +136,6 @@ import {stepList} from "@/views/designate/designatedetail/decisionData/timeLine/
 import filters from "@/utils/filters"
 export default {
   mixins:[filters],
-  props:{
-    tableList: { type: Array, default: () => [] },
-    prototypeTableList: { type: Array, default: () => [] },
-  },
   computed:{
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
@@ -172,18 +168,46 @@ export default {
       let tableList = []
       let arr = []
       rowList.forEach((item,i)=>{
-        heightSum+=item.offsetHeight
-        if(heightSum<this.cntentHeight){
-          arr.push(this.dataGroup[i])
+        let tableChild = JSON.parse(JSON.stringify(this.dataGroup[i]))
+        if(item.offsetHeight>this.cntentHeight){  // 如果单一项就超过一页高度
+          let cardHeader = item.getElementsByClassName('cardHeader')[0].offsetHeight  // 标题高度
+          let groupStep = item.getElementsByClassName('groupStep')[0].offsetHeight  // 步骤条高度
+          let supplierWrapperList = item.getElementsByClassName('supplierWrapper')  // 数据行div
+          let title = supplierWrapperList[0].getElementsByClassName('title')[0].offsetHeight || 0  // title 高度
+          let item_arr =[]
+          supplierWrapperList.forEach((child,j)=>{
+            let liList = child.getElementsByClassName('li-row') // 每一行的高度
+            let liData = tableChild.nomiTimeAxisSupplierResultVOList[j].nomiTimeAxisSupplierExps  // 对应的数据
+            heightSum= cardHeader + groupStep + title + 70
+            liList.forEach((li,k)=>{
+              heightSum+=li.offsetHeight
+              if(heightSum<this.cntentHeight){
+                item_arr.push(liData[k])
+              }else{
+                let CHILD = JSON.parse(JSON.stringify(tableChild))
+                CHILD.nomiTimeAxisSupplierResultVOList[j].nomiTimeAxisSupplierExps = item_arr
+                tableList.push([CHILD])
+                heightSum=li.offsetHeight + cardHeader + groupStep + title + 70
+                item_arr = [liData[k]]
+              }
+            })
+            let CHILD = JSON.parse(JSON.stringify(tableChild))
+            CHILD.nomiTimeAxisSupplierResultVOList[j].nomiTimeAxisSupplierExps = item_arr
+            arr.push(CHILD)
+          })
         }else{
-          tableList.push(JSON.parse(JSON.stringify(arr)))
-          heightSum=item.offsetHeight
-          arr = [this.dataGroup[i]]
+          heightSum+=item.offsetHeight
+          if(heightSum<this.cntentHeight){
+            arr.push(tableChild)
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [tableChild]
+          }
         }
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      return
     },
     getTimeaxis: function () {
       getTimeaxis(this.$route.query.desinateId).then(res => {
@@ -223,6 +247,7 @@ export default {
     color: rgb(112, 112, 112);
   }
 
+}
   .supplierWrapper {
     border: 1px solid rgb(201, 216, 219); /*no*/
     // box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
@@ -279,5 +304,4 @@ export default {
     align-items: center;
     border-top: 1px solid #666;
   }
-}
 </style>
