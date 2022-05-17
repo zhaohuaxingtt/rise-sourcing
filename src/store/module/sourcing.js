@@ -566,7 +566,8 @@ const state = {
   configscoredeptThirdMenu: [],
   pendingRequestNum:0,
   mapControl:[],
-  updateKey:'0'
+  updateKey:'0',
+  imgList: []
 }
 
 const mutations = {
@@ -587,11 +588,20 @@ const mutations = {
   },
   SET_UPDATE(state){
     state.updateKey = + new Date()
+  },
+  // img 数据加载
+  PUSH_IMGLIST(state, data){
+    state.imgList.push(data)
+  },
+  // img 数据加载完毕
+  REMOVE_IMGLIST(state, data){
+    let i = state.imgList.indexOf(data)
+    state.imgList.splice(i,1)
   }
 }
 
 let source = null
-
+let num = 0
 const actions = {
   updateNavList({ commit, state }) {
     if (source) source.cancel()
@@ -654,6 +664,21 @@ const actions = {
   },
   updateMapControl({ commit }, mapControl) {
     commit('SET_MAPCONTROL', mapControl)
+  },
+  pushImgList({ commit }, img) {
+    const key = 'img'+num
+    num++
+    commit('PUSH_IMGLIST',key)
+    return new Promise((r,j)=>{
+      img.onload = () => {
+        commit('REMOVE_IMGLIST',key)
+        r(true)
+      }
+      img.onerror = () => {
+        commit('REMOVE_IMGLIST',key)
+        r(true)
+      }
+    })
   }
 }
 
@@ -661,7 +686,8 @@ const getters = {
   navList: (state) => state.navList,
   pendingRequestNum: (state) => state.pendingRequestNum,
   updateKey: (state) => state.updateKey,
-  mapControl: (state) => state.mapControl
+  mapControl: (state) => state.mapControl,
+  imgList: (state) => state.imgList
 }
 
 export default {

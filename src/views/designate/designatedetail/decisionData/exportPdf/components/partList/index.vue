@@ -41,7 +41,9 @@
     <div class="pdf-item">
       <template v-for="(tableData,index) in tableList">
       <div :key="index" class="pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
+        <div style="padding:1px">
+          <slot name="tabTitle"></slot>
+        </div>
         <iCard class="partList pageCard rsPdfCard" title="Part List">
           <div :style="{'height': cntentHeight + 'px'}">
             <tableList
@@ -120,11 +122,11 @@ export default {
   methods: {
     getHeight(){
       if(!this.$refs.partList) return
-      this.width = this.$refs.partList.clientWidth
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
+      this.width = this.$refs.partList.offsetWidth
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.partList.getElementsByClassName('table-row')
       let heightSum = 0
@@ -142,7 +144,6 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      return
     },
     getPartList: function () {
       getPartList({
@@ -185,5 +186,12 @@ export default {
   ::v-deep .cardBody{
     padding: 0px;
   }
+}
+.page-logo{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+  border-top: 1px solid #666;
 }
 </style>

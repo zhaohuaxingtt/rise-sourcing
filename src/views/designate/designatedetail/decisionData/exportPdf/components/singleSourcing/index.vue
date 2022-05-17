@@ -1,5 +1,5 @@
 <template>
-<div ref="single">
+<div ref="single" class="">
   <iCard class="singleSourcing rsPdfCard" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
     <div class="content" ref="rsPdfCard">
       <div ref="form">
@@ -42,7 +42,9 @@
     </div>
     <template v-for="(tableData,i) in tableList">
       <div :key="i" class="pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
+        <div style="padding:1px">
+          <slot name="tabTitle"></slot>
+        </div>
         <iCard class="singleSourcing" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
           <div class="content">
             <div ref="form">
@@ -60,10 +62,26 @@
                 :selection="false"
                 :tableTitle="tableTitle"
                 :tableData="tableListData">
+                <template #suppliersName="scope">
+                  <div>
+                      <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
+                      <br>
+                      <span >{{scope.row.suppliersNameEn }}</span>
+                  </div>
+                </template>
+                <!-- 零件名称 -->
+                <template #partNameCh="scope">
+                  <span>{{scope.row.partNameCh}}</span>
+                  <br/>
+                  <span>{{scope.row.partNameEn}}</span>
+                </template>
+                <template #sapCode="scope">
+                  <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+                </template>
                 <template #singleReason="scope">
                   <div>
-                    <p>{{ scope.row.singleReason }}</p>
-                    <p>{{ scope.row.singleReasonEng }}</p>
+                      <p>{{ scope.row.singleReason }}</p>
+                      <p>{{ scope.row.singleReasonEng }}</p>
                   </div>
                 </template>
               </tableList>
@@ -119,7 +137,6 @@ export default {
   },
   created() {
     this.nominateId = this.$route.query.desinateId
-
     this.tableTitle = this.tableTitle.map(item => ({
       ...item,
       renderHeader: h => h("div", [
@@ -130,25 +147,15 @@ export default {
 
     this.getSingleSourcing()
   },
-  mounted(){
-    this.width = this.$refs.single.clientWidth
-    let formHeight = this.$refs.form.clientHeight
-    let headerHeight = 84 // Title 区域高度
-    let pageLogo = 52     // logo 区域高度
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - formHeight - this.hasTitle // 内容区域对应的高度
-  },
   methods: {
     getHeight(){
       if(!this.$refs.single) return
-      this.width = this.$refs.single.clientWidth
-      let formHeight = this.$refs.form.clientHeight
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.single.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
-      // let headerHeight = 84 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
-      // let tableHeader = 64  // 表头高度
+      this.width = this.$refs.single.offsetWidth
+      let formHeight = this.$refs.form.offsetHeight
+      this.hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.single.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - formHeight - this.hasTitle // 内容区域对应的高度
       let rowList = this.$refs.single.getElementsByClassName('table-row')
       let heightSum = 0
@@ -197,6 +204,7 @@ export default {
 <style lang="scss" scoped>
 .rsPdfCard{
   box-shadow: none;
+  width: 100%;
   & + .rsCard {
     margin-top: 20px; /*no*/
   }
@@ -207,10 +215,11 @@ export default {
     padding: 0px;
   }
 }
-.singleSourcing {
-  .info {
-    ::v-deep .el-form-item__label {
-      width: 280px; /*no*/
+  .singleSourcing {
+    .info {
+      ::v-deep .el-form-item__label {
+        width: 280px; /*no*/
+      }
     }
   }
   .page-logo{
@@ -220,5 +229,4 @@ export default {
     align-items: center;
     border-top: 1px solid #666;
   }
-}
 </style>
