@@ -104,3 +104,46 @@ export function getOptionField(value, valueField, options, otherField = "name") 
 
 	return value
 }
+
+// 对应config中的partProjTypes code
+export const partProjTypeCodeScenarioMap = {
+	EPS: [ 
+		'PEIJIAN', // 配件
+	],
+	ExcelImport: [ 
+		'FUJIAN', // 附件
+		'GANGCAIYICIXINGCAIGOU', // 钢材一次性采购
+		'GANGCAIPILIANGCAIGOU', // 钢材批量采购
+	],
+	NewPro: [
+		'FSXIAOLINGJIAN', // FS零件
+		'GSLINGJIAN', // GS零件
+		'COPLINGJIAN', // COP零件
+		'DBLINGJIAN', // DB零件
+		'JINLINGJIANHAOGENGGAI', // 仅零件号更改
+		'SPECIALLINGJIAN', // SPECIAL零件
+		'FSCOMMONSOURCING', // FS Common Sourcing
+		'GSCOMMONSOURCING', // GS Common Sourcing
+		'DSLINGJIAN', // DS零件
+	],
+	ManualCreate: [
+		'FSXIAOLINGJIAN', // FS零件
+		'GSLINGJIAN', // GS零件
+		'COPLINGJIAN', // COP零件
+		'DBLINGJIAN', // DB零件
+		'ZHANGJIALINGJIAN', // 涨价零件
+		'JINLINGJIANHAOGENGGAI', // 仅零件号更改
+		'SPECIALLINGJIAN', // SPECIAL零件
+		'FSCOMMONSOURCING', // FS Common Sourcing
+		'GSCOMMONSOURCING', // GS Common Sourcing
+		'DSLINGJIAN', // DS零件
+		// 'KUOCHANNENG', // 扩产能
+	],
+	AEKO: [
+		'AEKOLINGJIAN', // AEKO零件
+	],
+	PR: [
+		'YICIXINGCAIGOU', // 一次性采购
+		'DBYICHIXINGCAIGOU', // DB一次性采购
+	]
+}
