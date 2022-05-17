@@ -99,7 +99,7 @@
 
       <!-- 循环取出供应商百分比分布 -->
       <template
-        v-for="hindex in (supplier || []).length"
+        v-for="hindex in percentLength"
       >
         <el-table-column
           align='center'
@@ -178,6 +178,15 @@ export default {
     tableData() {
       this.init()
     },
+  },
+  computed:{
+    percentLength(){
+      let length = 0
+      this.tableData.forEach(child=>{
+        length = length > child.percent.length? length : child.percent.length
+      })
+      return length
+    }
   },
   created(){
     this.init()

@@ -52,7 +52,9 @@
       <!-- <div class="pdf-item"> -->
     <template v-for="(tableData,i) in tableList">
     <div class="pageCard-main max-content" :key="i">
-      <slot name="tabTitle"></slot>
+      <div style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="buMonitor rsPdfCard" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
         <!-- 供应商表格 -->
         <div>
@@ -93,7 +95,9 @@
     </div>
     </template>
     <div class="pageCard-main">
-      <slot name="tabTitle"></slot>
+      <div style="padding:1px">
+        <slot name="tabTitle"></slot>
+      </div>
       <iCard class="buMonitor rsPdfCard" :key="i" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
       <!-- 图标模拟 -->
         <div class="buMonitor-charts" :style="{'height': chartsHeight + 'px'}">
@@ -225,9 +229,6 @@ export default {
       let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
       let tableHeader = this.$refs['table-content'].getElementsByClassName('el-table__header-wrapper')[0].clientHeight
       let tableTitle = this.$refs.tableTitle.clientHeight 
-      // let headerHeight = 42 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
-      // let tableHeader = 71  // 表头高度
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - tableTitle - pageLogo - this.hasTitle // 内容区域对应的高度
       this.chartsHeight = (this.chartsWidth / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 绘图区域对应的高度
       let rowList = this.$refs.scenario.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
@@ -246,7 +247,6 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      return
     },
     async init() {
       this.getFetchData()
@@ -348,7 +348,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .buMonitor {
-  margin-top: 20px;
   .supplierTable {
     .updateTime {
       display: inline-block;

@@ -105,12 +105,6 @@ export default {
       this.findRfqSupplierQuotationPage(rfq.id)
     })
   },
-  mounted(){
-    this.width = this.$refs.dbl.clientWidth
-    let headerHeight = 86 // Title 区域高度
-    let pageLogo = 52     // logo 区域高度
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo // 内容区域对应的高度
-  },
   methods: {
     readQuotation: function () {
       return readQuotation(this.$route.query.desinateId)
