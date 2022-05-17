@@ -167,7 +167,7 @@
 									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.partProjectType, "code", filterProjectList(partProjectTypeArray,detailData.partProjectType)) }}</iText>
+							<iText v-else>{{ getName(detailData.partProjectType, "code", partProjectTypeArray) }}</iText>
 						</iFormItem>
 
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_FSNRGSNRSPNR|FSNR/GSNR/SPNR">
@@ -476,7 +476,7 @@
 			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
-				return this.fromGroup.PART_PROJECT_TYPE || []
+				return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
 			},
 
    /**
@@ -649,7 +649,10 @@
 				sourceProcureFactory: '',
 				cacheCarTypeProject: {},
 				sopDate: "",
-				factoryCache: []
+				factoryCache: [],
+				previousPartProjectType: "",
+				defaultPartProjectTypeProcureFactoryCache: "", // 批量件类型的采购工厂缓存
+				pFPartProjectTypeProcureFactoryCache: "", // 配附件类型的采购工厂缓存
 			};
 		},
 		created() {
@@ -750,11 +753,15 @@
 			// 获取详情数据
 			getDatailFn() {
 				this.detailLoading = true
+				this.defaultPartProjectTypeProcureFactoryCache = ""
+				this.pFPartProjectTypeProcureFactoryCache = ""
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					if ([this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(res.data.partProjectType)) {
 						this.purchaseFactory()
+						this.pFPartProjectTypeProcureFactoryCache = res.data.procureFactory
 					} else {
 						this.$set(this.fromGroup, "PURCHASE_FACTORY", this.factoryCache)
+						this.defaultPartProjectTypeProcureFactoryCache = res.data.procureFactory
 					}
 
 					if (this.$route.query.businessKey != res.data.partProjectType) {
@@ -768,6 +775,8 @@
 					this.sourceProcureFactory = res.data.procureFactory
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
+					this.previousPartProjectType = res.data.partProjectType
+
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					if(this.detailData.cartypes) {
 						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.id))
@@ -831,7 +840,7 @@
 						const map = {}
 						Object.keys(res.data || {}).forEach(key => { // 容错
 							if (key == "PURCHASE_FACTORY") this.factoryCache = res.data[key]
-							if (this.detailData && [this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(this.detailData.partProjectType)) return
+							if (key == "PURCHASE_FACTORY" && this.detailData && [this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(this.detailData.partProjectType)) return
 
 							if (key !== "CAR_TYPE_PRO") {
 								map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
@@ -839,6 +848,7 @@
 						})
 
 						this.fromGroup = Object.assign({}, this.fromGroup, map)
+						this.$forceUpdate()
 						this.purchasingDept()
 					}
 				}).catch(err=>{
@@ -1135,13 +1145,28 @@
 					this.$refs.volume && typeof this.$refs.volume.clearAll === "function" && this.$refs.volume.clearAll()
 				}
 
-				
-				if ([this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(data)) { // 非配附件 => 配附件
+
+				if (![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(this.previousPartProjectType) && [this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(data)) { // 非配附件 => 配附件
+					this.defaultPartProjectTypeProcureFactoryCache = this.detailData.procureFactory
 					this.purchaseFactory()
-				} else { // 配附件 => 非配附件
-					this.$set(this.fromGroup, "PURCHASE_FACTORY", this.factoryCache)
+					this.clearProcureFactory()
+
+					if (this.pFPartProjectTypeProcureFactoryCache) {
+						this.setProcureFactory(this.pFPartProjectTypeProcureFactoryCache)
+					}
 				}
-				this.clearProcureFactory()
+				
+				if ([this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(this.previousPartProjectType) && ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(data)) { // 配附件 => 非配附件
+					this.pFPartProjectTypeProcureFactoryCache = this.detailData.procureFactory
+					this.$set(this.fromGroup, "PURCHASE_FACTORY", this.factoryCache)
+					this.clearProcureFactory()
+
+					if (this.defaultPartProjectTypeProcureFactoryCache) {
+						this.setProcureFactory(this.defaultPartProjectTypeProcureFactoryCache)
+					}
+				}
+
+				this.previousPartProjectType = data // 重置为当前选择的采购项目类型
 			},
 			// 判断是否为GS类零件
 			isGs(partProjectType) {

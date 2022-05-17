@@ -78,12 +78,12 @@ export default {
     this.findLayoutTitleInfo()
   },
   mounted(){
-    this.width = this.$refs.reTitle.clientWidth
-    this.hasTitle = this.$refs.tabTitle.clientHeight
+    this.width = this.$refs.reTitle.offsetWidth
+    this.hasTitle = this.$refs.tabTitle.offsetHeight
     // let headerHeight = 84
     // if(this.$refs.rsPdfCard.$el)
-    let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-    let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
+    let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+    let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
     this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
   },
   methods: {
@@ -136,6 +136,7 @@ export default {
     width: 200px; /*no*/
   }
 
+}
   .page-logo{
     display: flex;
     justify-content: space-between;
@@ -143,5 +144,4 @@ export default {
     align-items: center;
     border-top: 1px solid #666;
   }
-}
 </style>

@@ -97,7 +97,7 @@ export default {
                 }
 
                 item.outputPlanList.forEach(planData => {
-                  result[planData.year] = planData.output
+                  result[planData.year] = planData.outputInt
                 })
 
                 return result

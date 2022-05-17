@@ -12,24 +12,7 @@
             <i :style="`background: ${colorPanel[item.index || 0]}`"></i>
             {{item.data}}
           </li>
-          <!-- <li>SH Huashi</li>
-          <li class="corlor1">NBHX</li> -->
         </ul>
-        <!-- <div class="control">
-          <iSelect
-            popper-class="mapControl"
-            v-model="mapControl"
-            @change="load"
-            :multiple="true"
-            :placeholder="language('nominationSuggestion_FanAnXuanZhe','方案选择')">
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in mapOptionsArray"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </div> -->
       </div>
       <div class="charts-content">
         <div id="charts0" ref="charts"></div>
@@ -46,7 +29,6 @@ import {
 } from './data'
 import filters from "@/utils/filters"
 import _ from 'lodash'
-import { items } from '../../../partsprocure/editordetail/components/drawingSheet/data';
 
 export default {
   mixins: [ filters ],
@@ -147,7 +129,6 @@ export default {
     },
     load() {
       let dom = this.$refs.charts
-      const vm = echarts().init(dom);
       const self = this
       const bgColor = '#94c8fc'
       const mapControl = this.mapControl
@@ -325,8 +306,10 @@ export default {
           },
           series
         };
+        const vm = echarts().init(dom);
         vm.clear()
         vm.setOption(option);
+        vm.resize()
         this.$store.dispatch('sourcing/updateMapControl',this.mapControl)
       })
     },
@@ -554,7 +537,6 @@ export default {
   display: flex;
   flex-flow: row;
   .charts-content{
-    // width: 80%;
     flex: 1;
   }
 }
@@ -593,7 +575,7 @@ export default {
   }
   #charts0 {
     width: 100%;
-    height: 480PX;
+    height: 480px;
   }
   ::v-deep.toolTipBox {
     background: #fff;
