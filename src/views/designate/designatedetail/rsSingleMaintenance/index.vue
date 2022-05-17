@@ -88,7 +88,7 @@ import tableList from '../components/tableList'
 import { rsTableTitle, defaultLtcs } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
-import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
+import { manualListRs, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import {partProjTypes} from '@/config'
@@ -386,7 +386,7 @@ export default {
     getTableList() {
       this.tableLoading = true
 
-      getList(this.$route.query.desinateId).then(res => {
+      manualListRs(this.$route.query.desinateId).then(res => {
         if (res?.result) {
           this.partProjectType = res.data?.partProjectType
           this.otherNominationType = res.data?.nominateProcessType

@@ -104,12 +104,25 @@
             <template #presentPrice="scope">
               <span>{{ scope.row.presentPrice | toThousands }}</span>
             </template>
+
             <template #cfTargetAPrice="scope">
-              <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+              <div v-if="scope.row.status === 'SKDLC'">
+                <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
+                <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
+              </div>
+              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+              <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
             </template>
+
             <template #cfTargetBPrice="scope">
-              <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+              <div v-if="scope.row.status === 'SKDLC'">
+                <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
+                <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
+              </div>
+              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+              <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
             </template>
+
             <template #aprice="scope">
               <div v-if="scope.row.status === 'SKDLC'">
                 <p>{{ scope.row.skdAPrice | toThousands }}</p>
@@ -382,11 +395,6 @@
             <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
           </div>
         </template>
-        
-        <!-- 年降 -->
-        <template #ltc="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-        </template>
 
 				<!-- 年降开始时间 -->
 				<template #beginYearReduce="scope">
@@ -413,12 +421,25 @@
 				<template #presentPrice="scope">
 					<span>{{ scope.row.presentPrice | toThousands }}</span>
 				</template>
-				<template #cfTargetAPrice="scope">
-					<span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-				</template>
-				<template #cfTargetBPrice="scope">
-					<span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-				</template>
+
+        <template #cfTargetAPrice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
+            <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+        </template>
+
+        <template #cfTargetBPrice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
+            <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+        </template>
+
 				<template #aprice="scope">
 					<div v-if="scope.row.status === 'SKDLC'">
 						<p>{{ scope.row.skdAPrice | toThousands }}</p>

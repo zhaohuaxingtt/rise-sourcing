@@ -200,7 +200,7 @@
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
           </iButton>
-          <iButton @click="transfer">
+          <!-- <iButton @click="transfer">
             {{ language("ZHUANPAI", "转派") }}
             <el-tooltip 
               effect="light" 
@@ -209,7 +209,7 @@
               placement="top">
               <i class="el-icon-warning-outline tipsIcon"></i>
             </el-tooltip>
-          </iButton>
+          </iButton> -->
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
@@ -235,7 +235,6 @@
           </iSelect>
         </p> -->
         <tableList
-          permissionKey="AEKO_DETAIL_COMPONENTS_CONTENTDECLARE"
           class="table"
           ref="tableList"
           index
@@ -249,6 +248,8 @@
           :tableLoading="loading"
           :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
           <template #supplierNameZh="scope">
             <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
