@@ -297,6 +297,7 @@ export default {
         }
         this.$refs['pdf-containr'].innerHTML = ''
         this.$nextTick(()=>{
+            console.timeEnd('截图')
             // this.uploadUdFile();
             this.DownloadPdf()
         })
@@ -311,7 +312,6 @@ export default {
       j
     }) {
       let scale = 2
-      console.time(`截图开始。。。${j}`);
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -334,13 +334,13 @@ export default {
           var imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
           var ctxs = copyCanvas.getContext("2d");
           ctxs.putImageData(imgData,0,0);
+          console.log('img=>',j+i+1,',  total=>',WH.length);
           await this.getPdfFile(copyCanvas)
           height -= pageHeight
           offsetHeight+=pageHeight
           i++
           ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
         }
-        console.timeEnd(`截图开始。。。${j}`);
       });
     },
 
@@ -366,11 +366,12 @@ export default {
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
+      console.time('接口')
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
+        console.timeEnd('接口')
       })
-      console.timeEnd('截图')
     },
     // 上传图片
     async uploadUdFile(){
