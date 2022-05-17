@@ -158,13 +158,22 @@
 					</div>
 					<div class="col">
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE|零件项目类型" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
-							<iSelect
+							<!-- <iSelect
 								ref="partProjectTypeSelect"
 								v-if="!disabled"
 								v-model="detailData.partProjectType"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
+								</el-option>
+							</iSelect> -->
+							<iSelect
+								ref="partProjectTypeSelect"
+								v-if="!disabled"
+								v-model="detailData.partProjectType"
+								@change="onPartProjectTypeChange">
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in dataFlow(getPartProjectTypeOptions(), manualCreateCapacityPartProjectTypeOptionsRule)" :key="index">
 								</el-option>
 							</iSelect>
 							<iText v-else>{{ getName(detailData.partProjectType, "code", partProjectTypeArray) }}</iText>
@@ -441,7 +450,7 @@
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
 	import {dictkey,checkFactory,purchasingLiline,purchasingDept,getCarTypeSop, purchaseFactory} from "@/api/partsprocure/editordetail";
 	import {getCartypeDict} from "@/api/partsrfq/home";
-	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
+	import {detailData,partsCommonSourcing,translateDataForService, getOptionField, partProjTypeCodeScenarioMap } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
 	import { selectDictByRootKeys } from '@/api/dictionary'
@@ -461,7 +470,7 @@
 		},
 		computed: {
 			...Vuex.mapState({
-				userInfo: state => state.permission.userInfo
+				userInfo: state => state.permission.userInfo,
 			}),
 			/**
 				* @description: 现供供应商按钮逻辑。
@@ -474,9 +483,9 @@
 			createdNomiOnlyPartShow(){
 				return this.detailData.partProjectType == partProjTypes.JINLINGJIANHAOGENGGAI
 			},
-			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
-				return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
+				return this.fromGroup.PART_PROJECT_TYPE || []
+				// return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
 			},
 
    /**
@@ -544,7 +553,7 @@
 			},
 			// 组合零件项目类型框的数据(code + options) 用于监控
 			partProjectTypePack() {
-				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.filterProjectList(this.partProjectTypeArray, this.detailData.partProjectType) || [] }
+				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.partProjectTypeArray || [] }
 			},
 			// 组合Linie框的数据(code + options) 用于监控
 			liniePack() {
@@ -557,7 +566,7 @@
 			// 判断后端是否有保存采购工厂
 			isBlankProcureFactory() {
 				return !!this.sourceProcureFactory
-			}
+			},
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
@@ -653,6 +662,7 @@
 				previousPartProjectType: "",
 				defaultPartProjectTypeProcureFactoryCache: "", // 批量件类型的采购工厂缓存
 				pFPartProjectTypeProcureFactoryCache: "", // 配附件类型的采购工厂缓存
+				partProjectSourceScenarioCode: ""
 			};
 		},
 		created() {
@@ -776,6 +786,8 @@
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
 					this.previousPartProjectType = res.data.partProjectType
+
+					this.executeScenario() // 执行场景
 
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					if(this.detailData.cartypes) {
@@ -1269,6 +1281,87 @@
 				.catch(() => {
 					this.$set(this.fromGroup, "PURCHASE_FACTORY", [])
 				})
+			},
+
+			// 采购项目来源Code
+			getPartProjectSourceScenarioCode() {
+				if (this.sourcePartProjectType === partProjTypes.PEIJIAN) return "EPS" // 零件来源：EPS
+
+				if ([ 
+					partProjTypes.FUJIAN, // 附件
+					partProjTypes.GANGCAIYICIXINGCAIGOU, // 钢材一次性采购 
+					partProjTypes.GANGCAIPILIANGCAIGOU // 钢材批量采购
+				].includes(this.sourcePartProjectType)) return "ExcelImport" // 零件来源：Excel导入
+
+				if (this.detailData.partProjectSource == 1) return "NewPro" // 零件来源：NewPro
+
+				if (this.detailData.partProjectSource == 2) return "ManualCreate" // 零件来源：手工创建
+
+				if (this.detailData.partProjectSource == 3) return "AEKO" // 零件来源：AEKO
+
+				if (this.detailData.partProjectSource == 4 || this.detailData.partProjectSource == 5) return "PR" // 零件来源：一次性采购
+			},
+			
+			// 根据项目来源执行场景
+			executeScenario() {
+				this.partProjectSourceScenarioCode = this.getPartProjectSourceScenarioCode()
+
+				if (!this.partProjectSourceScenarioCode) return
+
+				// ...
+			},
+
+			// 获取零件采购列表
+			getPartProjectTypeOptions() {
+				if (!this.partProjectSourceScenarioCode) return []
+
+				const keys = partProjTypeCodeScenarioMap[this.partProjectSourceScenarioCode]
+				const codes = keys.map(key => this.partProjTypes[key])
+				return this.partProjectTypeArray.filter(item => codes.includes(item.code))
+			},
+
+			dataFlow() {
+				const args = Array.apply(null, arguments)
+				const items = args[0]
+				const rules = args.slice(1)
+
+				let result = items
+				rules.forEach(rule => {
+					if (typeof rule === "function") {
+						result = rule(result)
+					}
+				})
+
+				return result
+			},
+
+			// 扩产能规则 仅适用于手工创建
+			manualCreateCapacityPartProjectTypeOptionsRule(data) {
+				if (this.partProjectSourceScenarioCode !== "ManualCreate") return data
+
+				const roleSet = new Set()
+				const positionList = (this.userInfo.positionList) || []
+				positionList.forEach(position => {
+					if (Array.isArray(position.roleDTOList)) {
+						position.roleDTOList.forEach(role => roleSet.add(role.code))
+					}
+				})
+
+				const roleList = Array.from(roleSet)
+				roleList.push("KCNGLY", "absss")
+				if (roleList.includes("KCNGLY")) {
+					let keys = []
+					if (roleList.length === 1) { // 仅有扩产能采购员角色的情况
+						keys = ["KUOCHANNENG"]
+					} else {
+						keys = partProjTypeCodeScenarioMap[this.partProjectSourceScenarioCode].concat("KUOCHANNENG") // 扩产能
+					}
+
+					const codes = keys.map(key => this.partProjTypes[key])
+					return this.partProjectTypeArray.filter(item => codes.includes(item.code))
+				}
+				
+				return data
 			}
 		}
 }
