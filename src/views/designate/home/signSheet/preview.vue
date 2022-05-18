@@ -39,11 +39,11 @@
             @handleSelectionChange="handleSelectionChange"
           >
             <template #rsRemark="scope">
-              <p>
+              <span>
                 <p v-if="scope.row.csfMeetMemo">{{scope.row.csfMeetMemo}}</p>
                 <p v-if="scope.row.linieMeetMemo">{{scope.row.linieMeetMemo}}</p>
                 <p v-if="scope.row.cs1MeetMemo">{{scope.row.cs1MeetMemo}}</p>
-              </p>
+              </span>
             </template>
             <template #tto="scope">
               <span>{{ scope.row.tto | toFixed | toThousands }}</span>
