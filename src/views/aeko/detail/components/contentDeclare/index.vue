@@ -199,18 +199,18 @@
             placement="top">
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
-          </iButton>
-          <iButton @click="transfer">
-            {{ language("ZHUANPAI", "转派") }}
-            <el-tooltip 
-              effect="light" 
-              popper-class="custom-card-tooltip"
-              :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
-              placement="top">
-              <i class="el-icon-warning-outline tipsIcon"></i>
-            </el-tooltip>
-          </iButton>
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+        </iButton>
+        <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
+          {{ language("ZHUANPAI", "转派") }}
+          <el-tooltip 
+            effect="light" 
+            popper-class="custom-card-tooltip"
+            :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
+            placement="top">
+            <i class="el-icon-warning-outline tipsIcon"></i>
+          </el-tooltip>
+        </iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
         <!-- 列隐藏显示 -->
