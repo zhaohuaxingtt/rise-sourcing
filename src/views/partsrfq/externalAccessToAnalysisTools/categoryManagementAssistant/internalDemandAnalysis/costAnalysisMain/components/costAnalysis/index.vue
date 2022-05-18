@@ -1,36 +1,55 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-09-11 17:56:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-18 15:27:20
+ * @LastEditors: zhaohuaxing 5359314+zhaohuaxing@user.noreply.gitee.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
 -->
 <template>
   <div>
     <iCard>
-      <div slot="header" class="headBox">
+      <div slot="header"
+           class="headBox">
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXIKU', '成本结构分析库') }}</p>
         <span class="buttonBox">
           <iButton @click="clickBack">{{ language('FANHUI', '返回') }}</iButton>
         </span>
       </div>
       <div class="searchBox">
-        <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
-          <el-form-item style="marginRight: 53px;" :label="language('CHAILIAOZU', '材料组')">
-            <iSelect filterable v-model="searchForm['categoryCode']" :placeholder="language('QINGXUANZECHAILIAOZU', '请选择材料组')">
-               <el-option value='' label='全部'></el-option>
-               <el-option v-for="(item, index) in materialGroupList" :key="index" :value='item.categoryCode' :label='item.categoryName'></el-option>
+        <el-form :inline="true"
+                 :model="searchForm"
+                 :label-position="labelPosition"
+                 class="demo-form-inline">
+          <el-form-item style="marginRight: 53px;"
+                        :label="language('CHAILIAOZU', '材料组')">
+            <iSelect filterable
+                     v-model="searchForm['categoryCode']"
+                     :placeholder="language('QINGXUANZECHAILIAOZU', '请选择材料组')">
+              <el-option value=''
+                         label='全部'></el-option>
+              <el-option v-for="(item, index) in materialGroupList"
+                         :key="index"
+                         :value='item.categoryCode'
+                         :label='item.categoryName'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item style="marginRight: 53px;" :label="language('WENJIANLEIXING', '文件类型')">
-            <iSelect v-model="searchForm['fileType']" :placeholder="language('QINGXUANZEWENJIANLEIXING', '请选择文件类型')">
-               <el-option value='' label='全部'></el-option>
-               <el-option v-for="(item, index) in fileTypeList" :key="index" :value='item.val' :label='item.label'></el-option>
+          <el-form-item style="marginRight: 53px;"
+                        :label="language('WENJIANLEIXING', '文件类型')">
+            <iSelect v-model="searchForm['fileType']"
+                     :placeholder="language('QINGXUANZEWENJIANLEIXING', '请选择文件类型')">
+              <el-option value=''
+                         label='全部'></el-option>
+              <el-option v-for="(item, index) in fileTypeList"
+                         :key="index"
+                         :value='item.val'
+                         :label='item.label'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item style="marginRight: 53px;" :label="language('CHUANGJIANREN', '创建人')">
-            <iInput v-model="searchForm['createBy']" :placeholder="language('QINGSHURUCHUANGJIANRENMINGCHENG', '请输入创建人名称')"></iInput>
+          <el-form-item style="marginRight: 53px;"
+                        :label="language('CHUANGJIANREN', '创建人')">
+            <iInput v-model="searchForm['createBy']"
+                    :placeholder="language('QINGSHURUCHUANGJIANRENMINGCHENG', '请输入创建人名称')"></iInput>
           </el-form-item>
           <el-form-item class="searchButton">
             <el-button @click="handleSubmitSearch">{{language('QUEREN', '确认')}}</el-button>
@@ -42,26 +61,36 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">分析库列表</p>
-          <iButton v-if="!editMode" @click="clickDel" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_SHANCHU">{{language('SHANCHU', '删除')}}</iButton>
-          <iButton v-if="!editMode" @click="clickAdd" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_ADD">{{language('XINZENG', '新增')}}</iButton>
-          <iButton v-if="!editMode" @click="clickEdit" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_EDIT">{{language('BIANJI', '编辑')}}</iButton>
-          <iButton v-if="editMode" @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
-          <iButton v-if="editMode" @click="clickEdit">{{language('QUXIAO', '取消')}}</iButton>
+          <iButton v-if="!editMode"
+                   @click="clickDel"
+                   v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_SHANCHU">{{language('SHANCHU', '删除')}}</iButton>
+          <iButton v-if="!editMode"
+                   @click="clickAdd"
+                   v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_ADD">{{language('XINZENG', '新增')}}</iButton>
+          <iButton v-if="!editMode"
+                   @click="clickEdit"
+                   v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_EDIT">{{language('BIANJI', '编辑')}}</iButton>
+          <iButton v-if="editMode"
+                   @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
+          <iButton v-if="editMode"
+                   @click="clickEdit">{{language('QUXIAO', '取消')}}</iButton>
         </div>
-        <tableList
-          ref="multipleTable"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          :index="true"
-          @handleSelectionChange="handleSelectionChange">
+        <tableList ref="multipleTable"
+                   :tableData="tableListData"
+                   :tableTitle="tableTitle"
+                   :tableLoading="loading"
+                   :index="true"
+                   @handleSelectionChange="handleSelectionChange">
           <template #schemeName="scope">
             <div>
-              <div v-if="!editMode" class="openPage" @click="handleClickAnalysis(scope.row)">
+              <div v-if="!editMode"
+                   class="openPage"
+                   @click="handleClickAnalysis(scope.row)">
                 {{scope.row.schemeName}}
               </div>
               <div v-if="editMode">
-                <iInput class="nameInput" v-model="scope.row.schemeName"></iInput>
+                <iInput class="nameInput"
+                        v-model="scope.row.schemeName"></iInput>
               </div>
             </div>
           </template>
@@ -69,12 +98,14 @@
             {{scope.row.categoryCode}} - {{scope.row.categoryName}}
           </template>
           <template #option="scope">
-            <div class="openPage" @click="clickPreview(scope.row)">
+            <div class="openPage"
+                 @click="clickPreview(scope.row)">
               预览
             </div>
           </template>
           <template #sort="scope">
-            <div class="stickIcon" @click="clickStick(scope.row)">
+            <div class="stickIcon"
+                 @click="clickStick(scope.row)">
               <icon v-if="scope.row.isTop"
                     style="{font-size:24px}"
                     symbol
@@ -86,47 +117,45 @@
             </div>
           </template>
         </tableList>
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getTableData)"
-          @current-change="handleCurrentChange($event, getTableData)"
-          background
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :current-page='page.currPage'
-          :total="page.totalCount"/>
+        <iPagination v-update
+                     @size-change="handleSizeChange($event, getTableData)"
+                     @current-change="handleCurrentChange($event, getTableData)"
+                     background
+                     :page-sizes="page.pageSizes"
+                     :page-size="page.pageSize"
+                     :layout="page.layout"
+                     :current-page='page.currPage'
+                     :total="page.totalCount" />
       </div>
     </iCard>
     <!-- 手工输入弹窗 -->
-    <handleInput
-    :key="modalParam.key"
-    :data="operateLog"
-    v-model="modalParam.visible"
-    @handleCloseDialog="handleCancel"
-    @handleSubmitDialog="handleSubmitDialog"
-    />
+    <handleInput :key="modalParam.key"
+                 :data="operateLog"
+                 v-model="modalParam.visible"
+                 @handleCloseDialog="handleCancel"
+                 @handleSubmitDialog="handleSubmitDialog" />
     <!-- 预览报告 -->
     <reportPreview :key="reportParams.key"
-                :visible="reportParams.visible"
-                :reportUrl="reportParams.url"
-                :title="reportParams.title"
-                @handleCloseReport="handleCloseReport" />
+                   :visible="reportParams.visible"
+                   :reportUrl="reportParams.url"
+                   :title="reportParams.title"
+                   @handleCloseReport="handleCloseReport" />
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iInput, iSelect, iPagination, icon, iMessage, iMessageBox} from 'rise'
+import { iCard, iButton, iInput, iSelect, iPagination, icon, iMessage, iMessageBox } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
-import {pageMixins} from '@/utils/pageMixins';
+import { pageMixins } from '@/utils/pageMixins';
 import handleInput from '../costAnalysisAdd/components/handleInput'
 import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview.vue'
 import { getAnalysisList, getMaterialGroupByUserIds, fetchModify, fetchStick, fetchDel } from '@/api/partsrfq/costAnalysis/index'
+import { getFileByFileId } from '@/api/file'
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
-  components: {iCard, iButton, iInput, iSelect, iPagination, icon, tableList, handleInput, reportPreview},
+  components: { iCard, iButton, iInput, iSelect, iPagination, icon, tableList, handleInput, reportPreview },
   data () {
     return {
       costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
@@ -140,8 +169,8 @@ export default {
       loading: true,
       materialGroupList: [],
       fileTypeList: [
-        {label: '系统筛选', val: 1},
-        {label: '人工输入', val: 2},
+        { label: '系统筛选', val: 1 },
+        { label: '人工输入', val: 2 },
       ],
       backUpData: [],
       modalParam: {
@@ -156,34 +185,35 @@ export default {
         url: null,
         title: null,
         visible: null
-      }
+      },
+      reportUrl: ""
     }
   },
-  created() {
+  created () {
     // this.initTestData()
     this.getTableData()
     this.getMaterialGroupData()
   },
   methods: {
     // 初始化测试数据
-    initTestData() {
+    initTestData () {
       this.tableListData = [
-        {id: 1, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: true},
-        {id: 2, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false},
-        {id: 3, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false},
+        { id: 1, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: true },
+        { id: 2, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false },
+        { id: 3, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false },
       ]
       this.loading = false
     },
     // 获取材料组数据
-    getMaterialGroupData() {
+    getMaterialGroupData () {
       getMaterialGroupByUserIds({}).then(res => {
-        if(res && res.code == 200) {
+        if (res && res.code == 200) {
           this.materialGroupList = res.data
         } else iMessage.error(res.desZh)
       })
     },
     // 获取表格数据
-    getTableData() {
+    getTableData () {
       return new Promise(resolve => {
         this.loading = true
         const params = {
@@ -194,7 +224,7 @@ export default {
           fileType: this.searchForm.fileType
         }
         getAnalysisList(params).then(res => {
-          if(res && res.code == 200) {
+          if (res && res.code == 200) {
             this.page.totalCount = res.total
             this.loading = false
             this.tableListData = res.data
@@ -204,13 +234,13 @@ export default {
       })
     },
     // 初始化检索条件数据
-    initSearchData() {
-      for(const key in this.searchForm) {
+    initSearchData () {
+      for (const key in this.searchForm) {
         this.searchForm[key] = null
       }
     },
     // 点击确认
-    handleSubmitSearch() {
+    handleSubmitSearch () {
       this.page.currPage = 1
       this.page.pageSize = 10
       this.getTableData().then(res => {
@@ -220,20 +250,20 @@ export default {
       })
     },
     // 点击重置
-    handleSearchReset() {
+    handleSearchReset () {
       this.page.currPage = 1
       this.page.pageSize = 10
       this.initSearchData()
       this.getTableData()
     },
     // 点击置顶
-    clickStick(val) {
+    clickStick (val) {
       const params = {
         id: val.id,
         isTop: !val.isTop
       }
       fetchStick(params).then(res => {
-        if(res && res.code == 200) {
+        if (res && res.code == 200) {
           iMessage.success(res.desZh)
           this.page.currPage = 1
           this.page.pageSize = 10
@@ -242,38 +272,38 @@ export default {
       })
     },
     // 点击返回
-    clickBack() {
+    clickBack () {
       // this.$router.push(this.costAnalysisMainUrl)
       this.$router.go(-1)
     },
     // 点击新增
-    clickAdd() {
+    clickAdd () {
       this.$router.push(this.costAnalysisAddUrl)
     },
     // 点击编辑
-    clickEdit() {
-      if(!this.editMode) 
+    clickEdit () {
+      if (!this.editMode)
         this.backUpData = window._.cloneDeep(this.tableListData)
-      else 
+      else
         this.tableListData = window._.cloneDeep(this.backUpData)
       this.editMode = !this.editMode
     },
     // 点击删除
-    clickDel() {
-      if(this.selection && this.selection.length == 0) {
+    clickDel () {
+      if (this.selection && this.selection.length == 0) {
         iMessage.error(this.language('QINGXUANZEYAOSHANCHUDESHUJU', '请选择要删除的数据'))
-        return 
+        return
       }
       iMessageBox(
-          this.$t('LK_SHIFOUQUERENSHANCHU'),
-          this.$t('LK_WENXINTISHI'),
-          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        this.$t('LK_SHIFOUQUERENSHANCHU'),
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
       ).then(async () => {
         const params = {
           idList: this.selection.map(item => item.id)
         }
         fetchDel(params).then(res => {
-          if(res && res.code == 200) {
+          if (res && res.code == 200) {
             iMessage.success(res.desZh)
             this.getTableData()
           }
@@ -282,18 +312,18 @@ export default {
       });
     },
     // 点击保存
-    clickSave() {
+    clickSave () {
       const params = {
         modifyList: this.tableListData
       }
       fetchModify(params).then(res => {
-        if(res && res.code == 200) {
+        if (res && res.code == 200) {
           this.editMode = false
           this.getTableData()
-          if(res.data && res.data.length > 0) {
+          if (res.data && res.data.length > 0) {
             let msg = "数据名称发生重复，系统将<br/>"
             res.data.map(item => {
-              msg += "原数据："+ item.oldName + "   自动变更为：" + item.newName + "<br/>"
+              msg += "原数据：" + item.oldName + "   自动变更为：" + item.newName + "<br/>"
             })
             this.$message({
               dangerouslyUseHTMLString: true,
@@ -306,8 +336,8 @@ export default {
       })
     },
     // 点击方案名称
-    handleClickAnalysis(val) {
-      if(val.fileType == '1') {
+    handleClickAnalysis (val) {
+      if (val.fileType == '1') {
         // 跳转系统
         this.$router.push({
           path: this.costAnalysisAddUrl,
@@ -330,12 +360,15 @@ export default {
       }
     },
     // 点击预览
-    clickPreview(val) {
-      if(val && val.reportUrl) {
+    clickPreview (val) {
+      if (val && val.reportUrl) {
+        getFileByFileId(val.reportUrl).then(res => {
+          if (res.request.responseURL) this.reportUrl = res.request.responseURL
+        })
         this.reportParams = {
           ...this.reportParams,
           key: Math.random,
-          url: val.reportUrl,
+          url: this.reportUrl,
           title: val.schemeName,
           visible: true
         }
@@ -348,11 +381,11 @@ export default {
       this.reportParams.visible = false
     },
     // 取消手工输入弹窗
-    handleCancel() {
+    handleCancel () {
       this.$set(this.modalParam, 'visible', false)
     },
     // 点击提交手工输入弹窗数据
-    handleSubmitDialog(data) {
+    handleSubmitDialog (data) {
       this.$router.push({
         path: this.costAnalysisInputUrl,
         query: {
@@ -362,7 +395,7 @@ export default {
       })
     },
     // 选中数据发生改变
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selection = val
     }
   }
@@ -399,9 +432,9 @@ export default {
       width: 100px;
       height: 35px;
       border: none;
-      background-color: #EEF2FB;
+      background-color: #eef2fb;
       font-weight: bold;
-      color: #1660F1;
+      color: #1660f1;
       font-size: 16px;
       margin-right: -8px;
       margin-left: 30px;
@@ -428,7 +461,7 @@ export default {
   .stickIcon:hover {
     cursor: pointer;
   }
-  ::v-deep .openPage{
+  ::v-deep .openPage {
     position: relative;
     color: $color-blue;
     font-size: 14px;
