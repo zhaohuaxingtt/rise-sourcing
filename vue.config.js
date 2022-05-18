@@ -181,9 +181,9 @@ module.exports = {
 				},
 			},
 			'/usercenterApi': {
-				target: 'http://10.122.17.38:8015/usercenter',
-				// target:
-				// 	'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+				// target: 'http://10.122.17.38:8015/usercenter',
+				target:
+					'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
 				changeOrigin: true,
 				logLevel: 'info',
 				pathRewrite: {

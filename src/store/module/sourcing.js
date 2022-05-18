@@ -300,6 +300,17 @@ const state = {
       group: 2,
     },
     {
+      name: '工序委外',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/outsouringorder',
+      activePath: 'outsouringorder',
+      key: '工序委外',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_SIGNFORPARTSDEMAND',
+      permissionName: '工序委外',
+      group: 2,
+    },
+    {
       name: 'RFQ',
       message: 0,
       url: '/sourceinquirypoint/sourcing/partsrfq',
@@ -564,9 +575,9 @@ const state = {
     },
   ],
   configscoredeptThirdMenu: [],
-  pendingRequestNum:0,
-  mapControl:[],
-  updateKey:'0'
+  pendingRequestNum: 0,
+  mapControl: [],
+  updateKey: '0'
 }
 
 const mutations = {
@@ -579,13 +590,13 @@ const mutations = {
   SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
     state.sourceinquirypointThirdMenu = data
   },
-  SET_PENDINGREQUESTNUM(state,data){
+  SET_PENDINGREQUESTNUM(state, data) {
     state.pendingRequestNum = data
   },
-  SET_MAPCONTROL(state,mapControl){
+  SET_MAPCONTROL(state, mapControl) {
     state.mapControl = mapControl
   },
-  SET_UPDATE(state){
+  SET_UPDATE(state) {
     state.updateKey = + new Date()
   }
 }
@@ -646,7 +657,7 @@ const actions = {
         .catch((err) => reject(err))
     })
   },
-  updatePendingRequestNum({commit},requestNum=0){
+  updatePendingRequestNum({ commit }, requestNum = 0) {
     commit('SET_PENDINGREQUESTNUM', requestNum)
   },
   updatePdfPage({ commit }) {
