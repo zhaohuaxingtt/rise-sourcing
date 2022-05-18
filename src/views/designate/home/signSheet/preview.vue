@@ -30,6 +30,7 @@
             height="450"
             index
             lang
+            border
             :selection="false"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -38,11 +39,11 @@
             @handleSelectionChange="handleSelectionChange"
           >
             <template #rsRemark="scope">
-              <span>
+              <p>
                 <p v-if="scope.row.csfMeetMemo">{{scope.row.csfMeetMemo}}</p>
                 <p v-if="scope.row.linieMeetMemo">{{scope.row.linieMeetMemo}}</p>
                 <p v-if="scope.row.cs1MeetMemo">{{scope.row.cs1MeetMemo}}</p>
-              </span>
+              </p>
             </template>
             <template #tto="scope">
               <span>{{ scope.row.tto | toFixed | toThousands }}</span>
