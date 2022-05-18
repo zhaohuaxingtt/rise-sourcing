@@ -46,32 +46,38 @@
       </div>
     </div>
     <div class="pdf-item">
-      <div class="tasks pageCard-main rsPdfCard">
-        <slot name="tabTitle"></slot>
-        <iCard title="Background & Objective" class="bo">
-          <div class="content"  :style="{ height: cntentHeight + 'px' }">
-            <div v-html="content"></div>
+      <template v-for="(content,i) in contentList">
+        <div :key="i" class="tasks pageCard-main rsPdfCard">
+          <div style="padding:1px">
+            <slot name="tabTitle"></slot>
           </div>
-          <div class="page-logo">
-            <img
-              src="../../../../../../../assets/images/logo.png"
-              alt=""
-              :height="46 * 0.6 + 'px'"
-              :width="126 * 0.6 + 'px'"
-            />
-            <div>
-              <p class="pageNum"></p>
+          <iCard title="Background & Objective" class="bo">
+            <div class="content"  :style="{ height: cntentHeight + 'px' }">
+              <div v-html="content"></div>
             </div>
-            <div>
-              <p>{{ userName }}</p>
-              <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+            <div class="page-logo">
+              <img
+                src="../../../../../../../assets/images/logo.png"
+                alt=""
+                :height="46 * 0.6 + 'px'"
+                :width="126 * 0.6 + 'px'"
+              />
+              <div>
+                <p class="pageNum"></p>
+              </div>
+              <div>
+                <p>{{ userName }}</p>
+                <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
+              </div>
             </div>
-          </div>
-        </iCard>
-      </div>
+          </iCard>
+        </div>
+      </template>
       <template v-for="(tableData, i) in tableList">
         <div class="tasks pageCard-main rsPdfCard" :key="i">
-          <slot name="tabTitle"></slot>
+          <div style="padding:1px">
+            <slot name="tabTitle"></slot>
+          </div>
           <iCard title="Tasks" class="task">
             <div :style="{ height: cntentHeight + 'px' }">
               <tableList
@@ -151,50 +157,80 @@ export default {
       tableListData: [],
       cntentHeight: 0,
       tableList: [],
+      contentList:[]
     };
   },
   created() {
-    this.tableTitle.push({
-      props: "show",
-      name: "Hide/Unhide",
-    });
+    // this.tableTitle.push({
+    //   props: "show",
+    //   name: "Hide/Unhide",
+    // });
 
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },
   methods: {
-    getHeight() {
+    async getHeight() {
       if (!this.$refs.tasks) return;
-      this.width = this.$refs.tasks.clientWidth;
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
-      // let headerHeight = 84; // Title 区域高度
-      // let pageLogo = 52; // logo 区域高度
-      // let tableHeader = 41; // 表头高度
-      this.cntentHeight =
-        (this.width / 841.89) * 595.28 -
-        headerHeight -
-        pageLogo -
-        this.hasTitle; // 内容区域对应的高度
-      let rowList = this.$refs.tasks.getElementsByClassName("table-row");
-      let heightSum = 0;
-      let tableList = [];
-      let arr = [];
-      rowList.forEach((item, i) => {
-        heightSum += item.offsetHeight;
-        if (heightSum < this.cntentHeight - tableHeader) {
-          arr.push(this.tableListData[i]);
-        } else {
-          tableList.push(JSON.parse(JSON.stringify(arr)));
-          heightSum = item.offsetHeight;
-          arr = [this.tableListData[i]];
+      let pList = this.$refs.bo.getElementsByTagName('p');
+      let imgList = []
+      for (let i = 0; i < pList.length; i++) {
+        const element = pList[i];
+        if(element.outerHTML.includes('img')){
+          const img = element.getElementsByTagName('img')[0]
+          imgList.push(new Promise((r,j)=>{
+            img.onload = () => r(true)
+            img.onerror = () => r(true)
+          }))
         }
-      });
-      tableList.push(JSON.parse(JSON.stringify(arr)));
-      this.tableList = tableList;
-      return;
+      }
+      Promise.all(imgList).then(()=>{
+        this.width = this.$refs.tasks.offsetWidth;
+        this.hasTitle = this.$refs.tabTitle.offsetHeight
+        let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+        let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
+        // let headerHeight = 84; // Title 区域高度
+        // let pageLogo = 52; // logo 区域高度
+        // let tableHeader = 41; // 表头高度
+        this.cntentHeight =
+          (this.width / 841.89) * 595.28 -
+          headerHeight -
+          pageLogo -
+          this.hasTitle; // 内容区域对应的高度
+        let rowList = this.$refs.tasks.getElementsByClassName("table-row");
+        let heightSum = 0;
+        let tableList = [];
+        let arr = [];
+        rowList.forEach((item, i) => {
+          heightSum += item.offsetHeight;
+          if (heightSum < this.cntentHeight - tableHeader) {
+            arr.push(this.tableListData[i]);
+          } else {
+            tableList.push(JSON.parse(JSON.stringify(arr)));
+            heightSum = item.offsetHeight;
+            arr = [this.tableListData[i]];
+          }
+        });
+        tableList.push(JSON.parse(JSON.stringify(arr)));
+        this.tableList = tableList;
+        
+        let pHeightSum = 20
+        let contentList = []
+        let itemContent = ''
+        pList.forEach(p=>{
+          pHeightSum += p.offsetHeight
+          if(pHeightSum < this.cntentHeight){
+            itemContent+=p.outerHTML
+          }else{
+            contentList.push(itemContent)
+            itemContent = p.outerHTML
+            pHeightSum = p.offsetHeight
+          }
+        })
+        contentList.push(itemContent)
+        this.contentList = contentList
+      })
     },
     getBackgroundAndObjectiveInfo: function () {
       getBackgroundAndObjectiveInfo({
@@ -260,12 +296,12 @@ export default {
       color: rgb(22, 96, 241);
     }
   }
-  .page-logo {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
-  }
+}
+.page-logo {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+  border-top: 1px solid #666;
 }
 </style>

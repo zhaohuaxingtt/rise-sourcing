@@ -96,7 +96,7 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
-        <div style="width: 0; height: 0; overflow: hidden">
+        <div style="width: 0; height: 0; overflow: hidden" v-if="exportLoading">
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>
@@ -217,14 +217,25 @@ export default {
         // 是否为提交后的状态
         submitDisabled() {
             return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
-        }
+        },
     },
     watch: {
         pendingRequestNum(val){
             if(val == 0 && this.exportLoading && this.showExportPdf){
-                // this.$refs['exportPdf'].exportPdf();
+                if(this.$refs['exportPdf'])
+                this.$nextTick(()=>{
+                    this.$refs['exportPdf'].exportPdf();
+                })
             }
-        }
+        },
+        // exportLoading(val){
+        //     if(!val){
+        //         this.$nextTick(()=>{
+        //             this.showExportPdf = false
+        //             this.exportLoading = true
+        //         })
+        //     }
+        // }
     },
     data(){
         return{
@@ -762,8 +773,9 @@ export default {
 
         exportPdf(){
             if(!this.exportLoading){
+                this.showExportPdf = true;
                 this.exportLoading = true;
-                this.$refs['exportPdf'].exportPdf();
+                // this.$refs['exportPdf'].exportPdf();
             }else{
                 // this.showExportPdf = true;
                 // this.exportLoading = true;

@@ -66,8 +66,10 @@
     <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
       <template  v-for="(item, index) in rfqList">
           <div class="pageCard-main rsPdfCard" :key="i+'_'+index" v-for="(child,i) in item.tableList">
-            <slot name="tabTitle"></slot>
-            <iCard :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
+            <div style="padding:1px">
+              <slot name="tabTitle"></slot>
+            </div>
+            <iCard :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName">
               <div :style="{'height': cntentHeight + 'px'}">
                 <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="child" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
                   <template #supplierName="scope">
@@ -151,9 +153,9 @@ export default {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    // hasTitle(){
-    //   return this.$slots.tabTitle && 116 || 0
-    // }
+    hasTitle(){
+      return this.$slots.tabTitle && true || false
+    }
   },
   created() {
     this.init()
@@ -167,15 +169,12 @@ export default {
   methods: {
     getHeight(){
       if(!this.$refs.bdl) return
-      this.width = this.$refs.bdl.clientWidth
-      this.hasTitle = this.$refs.tabTitle.clientHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].clientHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.clientHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].clientHeight
-      // let headerHeight = 86 // Title 区域高度
-      // let pageLogo = 52     // logo 区域高度
-      // let tableHeader = 64  // 表头高度
-      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle // 内容区域对应的高度
+      this.width = this.$refs.bdl.offsetWidth
+      let hasTitle = this.$refs.tabTitle.offsetHeight
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
+      this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - hasTitle // 内容区域对应的高度
       let rfqList = this.rfqList
       rfqList.forEach((child,index)=>{
         let heightSum = 0
@@ -204,7 +203,6 @@ export default {
         }
       })
       this.rfqList = rfqList
-      return
     },
     sizeChange(val, index) {
       this.rfqList[index].page = {

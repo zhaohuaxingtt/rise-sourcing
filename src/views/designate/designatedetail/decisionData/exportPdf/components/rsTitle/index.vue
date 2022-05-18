@@ -75,12 +75,6 @@ export default {
   created() {
     this.findLayoutTitleInfo()
   },
-  mounted(){
-    this.width = this.$refs.reTitle.clientWidth
-    let headerHeight = 84 // Title 区域高度
-    let pageLogo = 52     // logo 区域高度
-    this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
-  },
   methods: {
     findLayoutTitleInfo: function () {
       findLayoutTitleInfo({
