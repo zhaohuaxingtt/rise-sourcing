@@ -396,6 +396,11 @@
           </div>
         </template>
 
+        <!-- 年降 -->
+        <template #ltc="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+        </template>
+
 				<!-- 年降开始时间 -->
 				<template #beginYearReduce="scope">
 					<span>{{ resetLtcData(scope.row.ltcs, 'beginYearReduce') }}</span>
