@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2022-02-25 21:38:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-18 11:06:48
+ * @LastEditors: zhaohuaxing 5359314+zhaohuaxing@user.noreply.gitee.com
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
@@ -42,9 +42,12 @@
         <div class="flex"
              :style="getStyle()">
           <template v-if="!isInside">
-            <iButton @click="onJump360" v-permission="CATEGORY_ASSISTANT_PLGYSGL_GYS360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
-            <iButton @click="openMark" v-permission="CATEGORY_ASSISTANT_PLGYSGL_MARK">{{ language("BEIZHU", "备注") }}</iButton>
-            <iButton @click="save" v-permission="CATEGORY_ASSISTANT_PLGYSGL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+            <iButton @click="onJump360"
+                     v-permission="CATEGORY_ASSISTANT_PLGYSGL_GYS360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
+            <iButton @click="openMark"
+                     v-permission="CATEGORY_ASSISTANT_PLGYSGL_MARK">{{ language("BEIZHU", "备注") }}</iButton>
+            <iButton @click="save"
+                     v-permission="CATEGORY_ASSISTANT_PLGYSGL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
             <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
           </template>
         </div>
@@ -217,7 +220,10 @@ export default {
     },
     // 供应商360
     onJump360 () {
-      window.open('http://10.122.17.38/portal/#/supplier/supplierList')
+      console.log(process.env.NODE_ENV)
+      let baseUrl = process.env.NODE_ENV == 'dev' ? 'http://10.122.17.38' : process.env.NODE_ENV != 'production' ? process.env.VUE_APP_HOST : 'http://rise-nginx-internal.apps.vmocp-test.csvw.com'
+      window.open(baseUrl + '/portal/#/supplier/supplierList')
+      // window.open('http://10.122.17.38/portal/#/supplier/supplierList')
     },
     // 获取财报iframeurl
     getPowerBiUrl () {
