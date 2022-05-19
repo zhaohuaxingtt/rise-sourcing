@@ -76,10 +76,12 @@ export const tabList = [
     value: 1,
     name: '按定点记录查看',
     key: 'ADDJLCK',
+    permissionKey:"CATEGORY_ASSISTANT_DDLSJL_ADDJLCK"
   },
   {
     value: 2,
     name: '按供应商查看',
     key: 'AGYSCK',
+    permissionKey:"CATEGORY_ASSISTANT_DDLSJL_AGYSCK"
   },
 ]
