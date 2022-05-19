@@ -32,7 +32,7 @@ export const contentDeclareTableTitle = [
   // { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true, width: 100, isExport: true },
   // { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 100 },
   { props: "supplierNameZh", name: "供应商", key: "GONGYINGSHANG", tooltip: true, width: 100 },
-  { props: "apriceChange", name: "A价变动(含分摊)", key: "AJIABIANDONGHANFENTAN", tooltip: true, width: 140 },
+  // { props: "apriceChange", name: "A价变动(含分摊)", key: "AJIABIANDONGHANFENTAN", tooltip: true, width: 140 },
   { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 140 },
   { props: "mouldPriceChange", name: "模具投资变动", key: "MUJUTOUZIBIANDONG", tooltip: true, width: 120 },
   { props: "originPriceA", name: "原零件A价", key: "YUANLINGJIANAJIA", tooltip: true, width: 100 },
