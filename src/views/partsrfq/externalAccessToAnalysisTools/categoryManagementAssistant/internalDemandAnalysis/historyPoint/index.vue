@@ -7,41 +7,48 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
 -->
 <template>
-  <iCard :title='language("DINGDIANLISHIJILV","定点历史记录")'
+  <iCard
          class="margin-top20"
          id="historyPoint">
     <!-- <template slot="header-control">
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template> -->
-    <div class="flex-between-center">
+    <div class="title_wrap">
+      <span>{{language("DINGDIANLISHIJILV","定点历史记录")}}</span>
       <iNavMvp lev="3"
                :list="tabList"
                @change="change"
                lang></iNavMvp>
-      <div class="flex-align-center">
-        <iSelect class="margin-right10"
-                 :placeholder='language("QXZGYSMC", "请选择供应商名称")'
-                 v-if="value==2"
-                 v-model="searchCriteria.supplierId"
-                 filterable>
-          <el-option :value="item.supplierId"
-                     :label="item.shortNameZh"
-                     v-for="(item,index) in supplierData"
-                     :key="index"></el-option>
-        </iSelect>
-        <iSelect class="margin-right10"
-                 :placeholder='language("QXZDDSJ", "请选择定点时间")'
-                 v-model="searchCriteria.latestYear">
-          <el-option :value="item.code"
-                     :label="item.name"
-                     v-for="(item,index) in dictData.NOMI_TIME"
-                     :key="index"></el-option>
-        </iSelect>
-        <iButton @click="search">{{ language("QUEREN", "确认") }}</iButton>
-        <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
-        <iButton @click="save" v-permission="CATEGORY_ASSISTANT_DDLSJL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
-        <iButton @click="exportTemplate" v-permission="CATEGORY_ASSISTANT_DDLSJL_DAOCHU">{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+    </div>
+    <div class="flex-between-center">
+      <div class="flex-align-center title_button">
+        <div>
+          <iSelect class="margin-right10"
+                  :placeholder='language("QXZGYSMC", "请选择供应商名称")'
+                  v-if="value==2"
+                  v-model="searchCriteria.supplierId"
+                  filterable>
+            <el-option :value="item.supplierId"
+                      :label="item.shortNameZh"
+                      v-for="(item,index) in supplierData"
+                      :key="index"></el-option>
+          </iSelect>
+          <iSelect class="margin-right10"
+                  :placeholder='language("QXZDDSJ", "请选择定点时间")'
+                  v-model="searchCriteria.latestYear">
+            <el-option :value="item.code"
+                      :label="item.name"
+                      v-for="(item,index) in dictData.NOMI_TIME"
+                      :key="index"></el-option>
+          </iSelect>
+        </div>
+        <div>
+          <iButton @click="search">{{ language("QUEREN", "确认") }}</iButton>
+          <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
+          <iButton @click="save" v-permission="CATEGORY_ASSISTANT_DDLSJL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="exportTemplate" v-permission="CATEGORY_ASSISTANT_DDLSJL_DAOCHU">{{ language("DAOCHU", "导出") }}</iButton>
+          <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+        </div>
       </div>
     </div>
     <pointTable v-if="value==1"
@@ -187,5 +194,25 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.title_wrap{
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+::v-deep .cardBody{
+  position: relative;
+}
+.title_button{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+::v-deep .el-select{
+  width: auto!important;
+}
 </style>

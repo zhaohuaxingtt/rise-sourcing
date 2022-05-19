@@ -187,6 +187,7 @@ export default {
         {DomId:'html2canvasRs',key:'rs'},
       ],
       clickIndex:0,
+      loading:false
     }
   },
   props:{
@@ -206,6 +207,7 @@ export default {
       })
     },
     exportPdf() {
+      if(!this.loading)
       this.handleExportPdf()
       return
     },
@@ -246,6 +248,7 @@ export default {
     },
     // 导出pdf
     async handleExportPdf() {
+      this.loading = true
       console.time('截图')
       this.fileList = []
       let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
@@ -263,6 +266,7 @@ export default {
         let list = []
         let j = 0
         const pageLength = elList.length
+        this.pageLength = pageLength
         for (let i = 0; i<pageLength; i++) {
           const el = elList[0]
           WH.push({width: el.offsetWidth+'', height: el.offsetHeight+''})
@@ -296,11 +300,6 @@ export default {
                 })
         }
         this.$refs['pdf-containr'].innerHTML = ''
-        this.$nextTick(()=>{
-            console.timeEnd('截图')
-            // this.uploadUdFile();
-            this.DownloadPdf()
-        })
       }, 10)
     },
     // 截取页面,存入pdf
@@ -321,7 +320,7 @@ export default {
         logging: false, //打印日志用的 可以不加默认为false
         porxy: ''
       }).then(async (canvas) => {
-        var copyCanvas = document.getElementById("myCanvas");
+        const copyCanvas = document.getElementById("myCanvas");
         let ctx=canvas.getContext("2d");
         let height = canvas.height
         let offsetHeight = 0
@@ -331,11 +330,11 @@ export default {
           let pageHeight = (WH[j+i]?.height || WH[0].height) * scale
           copyCanvas.width = width
           copyCanvas.height = pageHeight
-          var imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
-          var ctxs = copyCanvas.getContext("2d");
+          const imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
+          const ctxs = copyCanvas.getContext("2d");
           ctxs.putImageData(imgData,0,0);
           console.log('img=>',j+i+1,',  total=>',WH.length);
-          await this.getPdfFile(copyCanvas)
+          this.getPdfFile(copyCanvas,j+i)
           height -= pageHeight
           offsetHeight+=pageHeight
           i++
@@ -344,7 +343,7 @@ export default {
       });
     },
 
-    async getPdfFile(copyCanvas){
+    async getPdfFile(copyCanvas,index){
       return new Promise((r,j)=>{
         copyCanvas.toBlob((blob) => {
           //以时间戳作为文件名 实时区分不同文件
@@ -352,7 +351,11 @@ export default {
           let pdfFile = new File([blob], filename, { type: "image/png" });
           uploadUdFile({multifile:pdfFile}).then(res=>{
             if(res?.code=='200'){
-              this.fileList.push({ imageUrl: res.data[0].path });
+              this.fileList.push({index, imageUrl: res.data[0].path });
+              if(this.pageLength == this.fileList.length){
+                console.timeEnd('截图')
+                this.DownloadPdf()
+              }
               r(true)
             }else{
               this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -367,7 +370,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       console.time('接口')
-      const list = this.fileList.map((item)=>item.imageUrl);
+      const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
         console.timeEnd('接口')
