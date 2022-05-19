@@ -253,6 +253,7 @@ export default {
       this.fileList = []
       let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
       setTimeout(async () => {
+        console.log(elList);
         if(!elList.length){
           iMessage.warn('请稍等')
           this.$emit('changeStatus','exportLoading',false)
@@ -311,6 +312,7 @@ export default {
       j
     }) {
       let scale = 2
+      console.log('j=>start',j);
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -320,6 +322,7 @@ export default {
         logging: false, //打印日志用的 可以不加默认为false
         porxy: ''
       }).then(async (canvas) => {
+        console.log('j=>end',j);
         const copyCanvas = document.getElementById("myCanvas");
         let ctx=canvas.getContext("2d");
         let height = canvas.height
@@ -340,6 +343,8 @@ export default {
           i++
           ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
         }
+      }).catch((error)=>{
+        console.log(error);
       });
     },
 
