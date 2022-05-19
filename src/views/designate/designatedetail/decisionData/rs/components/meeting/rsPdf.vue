@@ -241,7 +241,7 @@
                     <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
                   </div>
                 </div>
-                <iCard v-if="!hasLastPage && !showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                <iCard v-if="!remarkList.length && !showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                   <div class="checkList">
                     <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
                       <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
