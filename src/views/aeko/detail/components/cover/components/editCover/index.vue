@@ -211,8 +211,7 @@ export default {
         ].some(item=>{
           return !(basicInfo[item] === '' || basicInfo[item] === null)
         })
-        return false
-        // return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
+        return !flag && basicInfo.getFsName && basicInfo.coverStatus != 'TOBE_STATED'
       }
     },
     data(){
@@ -220,7 +219,7 @@ export default {
         isEdit:true,
         basicTitle:previewBaicFrom,
         basicInfo:{
-          // fsName:[],
+          fsName:[],
           isReference:''
         },
         selectOptions:{
@@ -305,8 +304,7 @@ export default {
             this.basicInfo = {
               ...data,
               coverCostsWithCarType:costData,
-              // fsName:fsId&&fsId.split(','),
-              fsName:fsId,
+              fsName:fsId&&fsId.split(','),
               getFsName:fsName,
             };
 
@@ -367,8 +365,7 @@ export default {
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
-          // fsId:basicInfo.fsName.join(','),
-          fsId:basicInfo.fsName,
+          fsId:basicInfo.fsName.join(','),
           fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
           getFsName:undefined,
