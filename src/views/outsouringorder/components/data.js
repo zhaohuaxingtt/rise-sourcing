@@ -144,5 +144,140 @@ export const tableTitle = [
   { props: 'meeting', name: '生成时间', key: '生成时间', tooltip: true, sortable: true },
   { props: 'nominateUserName', name: '推荐采购时间', key: '推荐采购时间', tooltip: true, width: 120, sortable: true },
   { props: 'linieName', name: '备注', key: '备注', tooltip: true, width: 300, sortable: true },
+]
 
+
+export const tableTitledetails = [{
+    //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+    props: 'item',
+    name: '项次',
+    key: 'MODEL-ORDER.LK_XIANGCI',
+    tooltip: true,
+    minWidth: 40,
+},
+{
+    props: 'partCode',
+    name: '零件号',
+    key: 'LK_LINGJIANHAO',
+    minWidth: 140,
+    tooltip: false,
+},
+{
+    props: 'partName',
+    name: '零件名称',
+    key: 'MODEL-ORDER.LK_LINGJIANMINGCENG',
+    minWidth: 120,
+    tooltip: true,
+},
+{
+    props: 'procureFactory',
+    name: '采购⼯⼚',
+    key: 'MODEL-ORDER.LK_CAIGOUGONGCHANG',
+    tooltip: true,
+},
+{
+    props: 'sopDateNew',
+    name: '新价格开始⽇期',
+    key: 'LK_XINJIAGEKAISHIRIQI',
+    tooltip: false,
+    minWidth: 130
+},
+{
+    props: 'sopDateOrigin',
+    name: '原价格开始⽇期',
+    key: 'LK_YUANJIAGEKAISHIRIQI',
+    tooltip: false,
+    minWidth: 130
+},
+{
+    props: 'aPriceOrigin',
+    name: 'A价',
+    key: 'LK_AJIA',
+    tooltip: true,
+},
+{
+    props: 'supplierSapCode',
+    name: '供应商',
+    key: 'MODEL-ORDER.LK_GONGYINSHANG',
+    minWidth: 180,
+    tooltip: true,
+},
+
+{
+    props: 'partType',
+    name: '零件类型',
+    key: 'LK_LINGJIANLEIXING',
+    tooltip: false
+},
+{
+    props: 'supplierConfirmStatus',
+    name: '供应商确认',
+    key: 'MODEL-ORDER.LK_GONGYINGSHANGQUEREN',
+    tooltip: true
+},
+{
+    props: 'operation',
+    name: '价格预览',
+    key: 'LK_JIAGEYULAN',
+    tooltip: true
+},
+]
+
+
+// 详情- 签字单列表
+export const detailsTableTitle = [
+  {
+    props: 'id',
+    name: '申请单号',
+    key: 'nominationLanguage_ShenQingDanHao',
+    tooltip: false
+  },
+  {
+    props: 'nominateName',
+    name: '申请单名',
+    key: 'nominationLanguage_ShenQingDanMing',
+    tooltip: false
+  },
+  {
+    props: 'carType',
+    name: 'PROJECT',
+    key: 'PROJECT',
+    tooltip: false
+  },
+  {
+    props: 'applicationStatusDesc',
+    name: '状态',
+    key: 'LK_ZHUANGTAI',
+    tooltip:false
+  },
+  {
+    props: 'partProjTypeDesc',
+    name: '项目类型',
+    key: 'nominationLanguage_XingMuLeiXing',
+    tooltip: false
+  },
+  {
+    props: 'meetingName',
+    name: '会议',
+    key: 'nominationLanguage_HuiYi',
+    tooltip: true
+  },
+  {
+    props: 'nominateUserName',
+    name: 'CSF',
+    key: 'CSF',
+    tooltip: true
+  },
+  {
+    props: 'linieName',
+    name: 'LINIE',
+    key: 'LINIE',
+    tooltip: false
+  },
+  {
+    props: 'freezeDate',
+    name: '冻结日期',
+    key: 'nominationLanguage_DongJieRiQi',
+    tooltip: false
+  }
 ]

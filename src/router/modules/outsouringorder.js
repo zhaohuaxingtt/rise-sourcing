@@ -10,7 +10,7 @@ export default [
  {
   path: "sourcing",
   meta: {
-   title: '询源执行'
+   title: '工序委外'
   },
   component: () => import("@/layout/default-white"),
   children: [
@@ -19,7 +19,29 @@ export default [
     name: "outsouringorder",
     meta: { title: "工序委外", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'] },
     component: () => import("@/views/outsouringorder/index.vue"),
-   }
+   },
+
   ]
- }
+ },
+ {
+  path: '/partsign/outsouringorder/addoutsourcing',
+  name: 'addoutsouringorder',
+  meta: {
+   title: '工序委外导航',
+   activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+  },
+  component: () => import('@/views/outsouringorder/headerNav/index'),
+  // redirect: '/partsign/outsouringorder/addoutsourcing/details',
+  children: [
+   {
+    path: 'details',
+    name: 'outSouringSignSheet',
+    meta: {
+     title: '新建工序委外',
+     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () => import('@/views/outsouringorder/details'),
+   },
+  ],
+ },
 ]

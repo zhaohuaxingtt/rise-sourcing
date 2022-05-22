@@ -9,10 +9,10 @@
 <template>
   <iPage>
     <headerNav />
-    <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
+    <iSearch class="margin-bottom20" @sure="sure" @reset='reset()'>
       <el-form>
         <template v-for='(items,index) in searchForm'>
-          <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index" v-permission.dynamic.auto="`${items.permissionKey}|${items.i18nName}`">
+          <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
             <template v-if='items.type == "input"'>
               <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
               <iInput clearable v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
@@ -42,24 +42,36 @@
           <el-switch v-model="form['isOwn']" @change="showOnlyMyselfData($event)" active-color="#1660F1" inactive-color="#cccccc"></el-switch>
         </div>
         <div  class="floatright">
-          <iButton @click="createSignSheet" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_NEWSIGNSHEET|新建签字单">
+          <iButton @click="createSignSheet">
             {{language('LK_XINJIANNEW', '新建')}}
           </iButton>
           <!-- 删除 -->
-          <iButton
-            @click="handleBatchDelete"
-            v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DELETESIGNSHEET|删除签字单"
-          >
+          <iButton @click="handleBatchDelete">
             {{ language("SHANCHU", '删除') }}
           </iButton>
-         
+         <!-- 转派 -->
+          <iButton @click="handleBatchDelete">
+            {{ language("ZHUANPAI", '转派') }}
+          </iButton>
+          <!-- 签收 -->
+          <iButton @click="handleBatchDelete">
+            {{ language("QIANSHOU", '签收') }}
+          </iButton>
+          <!-- 退回 -->
+          <iButton @click="handleBatchDelete">
+            {{ language("TUIHUI", '退回') }}
+          </iButton>
+          <!-- 关闭 -->
+          <iButton @click="handleBatchDelete">
+            {{ language("LK_GUANBI", '关闭') }}
+          </iButton>
         </div>
       </div>
       <tablePart
         permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
-        radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
+        radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>
@@ -128,6 +140,9 @@ export default{
       }
     },
     methods:{
+      createSignSheet() {
+        this.$router.push('/partsign/outsouringorder/addoutsourcing/details?mode=add&id=114161')
+      },
       /**
        * @description: 查看定点详情
        * @param {*}
