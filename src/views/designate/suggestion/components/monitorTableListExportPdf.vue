@@ -658,6 +658,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .monitorTable {
+  min-width: 100%;
   width: max-content;
   ::v-deep .el-table {
     // height: 450px;

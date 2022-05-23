@@ -166,6 +166,8 @@ export default {
     //   name: "Hide/Unhide",
     // });
 
+    if(this.hasTitle)
+    this.tableTitle.unshift({ props: 'index', name: '序号', key: '', width: 80 })
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },
@@ -178,13 +180,12 @@ export default {
         const element = pList[i];
         if(element.outerHTML.includes('img')){
           const img = element.getElementsByTagName('img')[0]
-          imgList.push(new Promise((r,j)=>{
-            img.onload = () => r(true)
-            img.onerror = () => r(true)
-          }))
+          if(!img.complete)
+          imgList.push(this.$store.dispatch('sourcing/pushImgList',img))
         }
       }
       Promise.all(imgList).then(()=>{
+        console.log('tasks');
         this.width = this.$refs.tasks.offsetWidth;
         this.hasTitle = this.$refs.tabTitle.offsetHeight
         let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
@@ -246,10 +247,13 @@ export default {
         nominateId: this.$route.query.desinateId,
         current: 1,
         size: 999999,
-        isPreview: false,
+        isPreview: true,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : [];
+          this.tableListData = Array.isArray(res.data) ? res.data.map((item,i)=>{
+            item.index = i+1
+            return item
+          }) : [];
           this.$nextTick(() => {
             this.getHeight();
           });

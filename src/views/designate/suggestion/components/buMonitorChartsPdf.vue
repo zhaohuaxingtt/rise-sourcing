@@ -542,11 +542,11 @@ export default {
 }
 .buNonitorCharts {
   width: 100%;
-  height: 560px;
+  height: 100%;
   .legendLine {
     flex: 0;
     display: inline-flex;
-    padding-top: 10px;
+    padding: 10px 20px;
     .legend {
       flex-flow: column;
       display: inline-flex;

@@ -900,6 +900,11 @@ export default {
         let requireStart = document.getElementsByClassName('demo')[0].getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
         let beizhuOther = this.$refs.other.offsetHeight // 备注区域的其它内容
         // 第一页
+        /* 
+        备注
+        */
+       let beizhu = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0]
+       console.log(beizhu.getElementsByTagName('p'));
         this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         // 独立备注页
         this.otherPageHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
@@ -1135,6 +1140,7 @@ export default {
     getTopList() {
       this.tableLoading = true
 
+      this.searchRsPageExchangeRate()
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
@@ -1170,7 +1176,6 @@ export default {
           this.tableData = data
           this.projectType = this.basicData.partProjectType || ''
 
-          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []

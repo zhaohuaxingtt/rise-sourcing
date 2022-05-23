@@ -160,6 +160,21 @@ export default {
     watch: {
       updateKey(val){
         this.$forceUpdate()
+      },
+      imgList(val){ // 图片加载完毕之后在执行导出
+      console.log(val);
+        if(!val.length&&this.watchPdf){
+          this.exportPdf()
+          this.watchPdf = false
+        }
+      },
+      watchPdf(val){  // 40秒后图片还是没有加载完毕，直接导出
+        if(val){
+          setTimeout(()=>{
+            this.exportPdf()
+            this.watchPdf = false
+          },40000)
+        }
       }
     },
   created() {
@@ -187,7 +202,8 @@ export default {
         {DomId:'html2canvasRs',key:'rs'},
       ],
       clickIndex:0,
-      loading:false
+      loading:false,
+      watchPdf:false
     }
   },
   props:{
@@ -207,6 +223,11 @@ export default {
       })
     },
     exportPdf() {
+      console.log(this.imgList);
+      if(this.imgList.length&&!this.watchPdf){
+        this.watchPdf = true
+        return iMessage.warn('图片加载中，请稍等。。。')
+      }
       if(!this.loading)
       this.handleExportPdf()
       return
@@ -259,48 +280,51 @@ export default {
           this.$emit('changeStatus','exportLoading',false)
           return
         }
-        let div = document.createElement('div')
-        div.setAttribute('class','pdfItem')
-        let sumHeight = 0
-        this.$refs['pdf-containr'].innerHTML = ''
-        let WH = []
-        let list = []
-        let j = 0
-        const pageLength = elList.length
-        this.pageLength = pageLength
-        for (let i = 0; i<pageLength; i++) {
-          const el = elList[0]
-          WH.push({width: el.offsetWidth+'', height: el.offsetHeight+''})
-          if(el.getElementsByClassName('pageNum')[0])
-          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${pageLength}`;
-          sumHeight+=el.offsetHeight
-          const elDom = el;
-          const itemDom = document.createElement('div')
-          itemDom.style.width = el.offsetWidth +'px'
-          itemDom.style.height = el.offsetHeight + 'px'
-          itemDom.appendChild(elDom)
-          if(sumHeight>=14000/2){
-            this.$refs['pdf-containr'].appendChild(div)
-              list.push(j)
-              j = i
-              sumHeight = el.offsetHeight
-              div = document.createElement('div')
-              div.setAttribute('class','pdfItem')
-          }
-          div.appendChild(itemDom)
-        }
-        list.push(j)
-        this.$refs['pdf-containr'].appendChild(div)
-        let pdfPageList = this.$refs['pdf-containr'].getElementsByClassName('pdfItem')
-        for (let index = 0; index < pdfPageList.length; index++) {
-          const pdfItem = pdfPageList[index];
+        // let div = document.createElement('div')
+        // div.setAttribute('class','pdfItem')
+        // let sumHeight = 0
+        // this.$refs['pdf-containr'].innerHTML = ''
+        // let WH = []
+        // let list = []
+        // let j = 0
+        // const pageLength = elList.length
+        // this.pageLength = pageLength
+        // for (let i = 0; i<pageLength; i++) {
+        //   const el = elList[0]
+        //   WH.push({width: el.offsetWidth+'', height: el.offsetHeight+''})
+        //   if(el.getElementsByClassName('pageNum')[0])
+        //   el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${pageLength}`;
+        //   sumHeight+=el.offsetHeight
+        //   const elDom = el;
+        //   const itemDom = document.createElement('div')
+        //   itemDom.style.width = el.offsetWidth +'px'
+        //   itemDom.style.height = el.offsetHeight + 'px'
+        //   itemDom.appendChild(elDom)
+        //   if(sumHeight>=14000/2){
+        //     this.$refs['pdf-containr'].appendChild(div)
+        //       list.push(j)
+        //       j = i
+        //       sumHeight = el.offsetHeight
+        //       div = document.createElement('div')
+        //       div.setAttribute('class','pdfItem')
+        //   }
+        //   div.appendChild(itemDom)
+        // }
+        // list.push(j)
+        // this.$refs['pdf-containr'].appendChild(div)
+        // let pdfPageList = this.$refs['pdf-containr'].getElementsByClassName('pdfItem')
+        for (let index = 0; index < elList.length; index++) {
+          let pdfItem = elList[index];
           await this.getPdfImage({
                   dom: pdfItem,
-                  WH,
-                  j:list[index]
+                  // WH,
+                  // j:list[index]
+                  j:index
                 })
         }
-        this.$refs['pdf-containr'].innerHTML = ''
+        elList = null
+        this.fileList = []
+        // this.$refs['pdf-containr'].innerHTML = ''
       }, 10)
     },
     // 截取页面,存入pdf
@@ -308,41 +332,45 @@ export default {
     async getPdfImage({
       //html横向导出pdf
       dom,
-      WH,
+      // WH,
       j
     }) {
       let scale = 2
       console.log('j=>start',j);
+      console.time('img'+j);
       await html2canvas(dom, {
-        // allowTaint:true,
+        imageTimeout:10000,
+        allowTaint:true,
         dpi: 96, //分辨率
         scale: scale, //设置缩放
-        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        // useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
-        porxy: ''
       }).then(async (canvas) => {
+        console.timeEnd('img'+j);
         console.log('j=>end',j);
-        const copyCanvas = document.getElementById("myCanvas");
-        let ctx=canvas.getContext("2d");
-        let height = canvas.height
-        let offsetHeight = 0
-        let i = 0
-        while(height>20){
-          let width = (WH[j+i]?.width || WH[0].width) * scale
-          let pageHeight = (WH[j+i]?.height || WH[0].height) * scale
-          copyCanvas.width = width
-          copyCanvas.height = pageHeight
-          const imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
-          const ctxs = copyCanvas.getContext("2d");
-          ctxs.putImageData(imgData,0,0);
-          console.log('img=>',j+i+1,',  total=>',WH.length);
-          this.getPdfFile(copyCanvas,j+i)
-          height -= pageHeight
-          offsetHeight+=pageHeight
-          i++
-          ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
-        }
+        // let copyCanvas = document.getElementById("myCanvas");
+        // let ctx=canvas.getContext("2d");
+        // let height = canvas.height
+        // let offsetHeight = 0
+        // let i = 0
+        // while(height>20){
+          // let width = (WH[j+i]?.width || WH[0].width) * scale
+          // let pageHeight = (WH[j+i]?.height || WH[0].height) * scale
+          // let width = canvas.width
+          // let pageHeight = canvas.height
+          // copyCanvas.width = width
+          // copyCanvas.height = pageHeight
+          // const imgData=ctx.getImageData(0,0,canvas.width,canvas.height );
+          // const ctxs = copyCanvas.getContext("2d");
+          // ctxs.putImageData(imgData,0,0);
+          // console.log('img=>',j,);
+          this.getPdfFile(canvas,j)
+          // height -= pageHeight
+          // offsetHeight+=pageHeight
+          // i++
+          // ctxs.clearRect(0, 0, canvas.width,canvas.height); //清空截图画布
+        // }
       }).catch((error)=>{
         console.log(error);
       });
@@ -373,6 +401,7 @@ export default {
     // 下载 pdf 文件
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>!item.imageUrl)
+      console.log(arr);
       if(arr.length) return
       console.time('接口')
       const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);
@@ -428,6 +457,8 @@ export default {
   // overflow: hidden;
 }
 .exportPdf {
+  min-width: 1800px;
+  // width: max-content;
   width: 100vw;
   height: 100vh;
   overflow-y: auto;

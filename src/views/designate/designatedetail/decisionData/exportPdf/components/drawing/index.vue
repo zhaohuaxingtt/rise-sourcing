@@ -118,14 +118,19 @@ export default {
       let arr = []
       let list = []
       rowList.forEach((item,i)=>{
-        list.push(new Promise(async (r,j)=>{
-          const img = item.getElementsByClassName('img')[0];
-          img.onload = () => r(item)
-          img.onerror = () =>  r(item)
-        }))
+        const img = item.getElementsByClassName('img')[0];
+        if(!img.complete)
+        list.push(
+          this.$store.dispatch('sourcing/pushImgList',img)
+
+          // img.onload = () => r(item)
+          // img.onerror = () =>  r(item)
+        )
       })
       Promise.all(list).then(res=>{
-        res.forEach((item,i)=>{
+        console.log('drawing');
+        rowList.forEach((item,i)=>{
+          console.log(item.offsetHeight);
           heightSum+=item.offsetHeight
           if(heightSum<this.cntentHeight){
             arr.push(this.files[i])
@@ -137,6 +142,9 @@ export default {
         })
         filesList.push(JSON.parse(JSON.stringify(arr)))
         this.filesList = filesList
+        console.log(filesList);
+      }).catch(err=>{
+        console.log(err);
       })
     },
     getdDecisiondataList: function () {

@@ -61,7 +61,7 @@
               <tableList
                 :selection="false"
                 :tableTitle="tableTitle"
-                :tableData="tableListData">
+                :tableData="tableData">
                 <template #suppliersName="scope">
                   <div>
                       <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
@@ -161,7 +161,9 @@ export default {
       let heightSum = 0
       let tableList = []
       let arr = []
+      console.log('tableHeader=>',tableHeader);
       rowList.forEach((item,i)=>{
+        console.log(item.offsetHeight);
         heightSum+=item.offsetHeight
         if(heightSum<this.cntentHeight - tableHeader){
           arr.push(this.tableListData[i])
@@ -173,6 +175,7 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
+      console.log(tableList);
       return
     },
     getSingleSourcing:function () {
