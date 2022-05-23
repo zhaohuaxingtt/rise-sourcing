@@ -230,7 +230,7 @@ export default {
         },
         exportLoading(val){
             if(!val){
-                // this.showExportPdf = false
+                this.showExportPdf = false
                 // this.$nextTick(()=>{
                 //     this.showExportPdf = true
                 // })

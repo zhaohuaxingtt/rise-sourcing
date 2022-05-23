@@ -145,15 +145,12 @@ export default {
         ? this.$store.state.permission.userInfo.nameZh
         : this.$store.state.permission.userInfo.nameEn;
     },
-    // hasTitle() {
-    //   return (this.$slots.tabTitle && 116) || 0;
-    // },
   },
   components: { iCard, icon, tableList },
   data() {
     return {
       content: "",
-      tableTitle: _.cloneDeep(tasksTitle),
+      tableTitle: tasksTitle,
       tableListData: [],
       cntentHeight: 0,
       tableList: [],
@@ -165,9 +162,7 @@ export default {
     //   props: "show",
     //   name: "Hide/Unhide",
     // });
-
-    if(this.hasTitle)
-    this.tableTitle.unshift({ props: 'index', name: '序号', key: '', width: 80 })
+    this.tableTitle.unshift({ props: 'index', name: '序号', key: 'LK_XUHAO', width: 80 })
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },
@@ -187,7 +182,7 @@ export default {
       Promise.all(imgList).then(()=>{
         console.log('tasks');
         this.width = this.$refs.tasks.offsetWidth;
-        this.hasTitle = this.$refs.tabTitle.offsetHeight
+        let hasTitle = this.$refs.tabTitle.offsetHeight
         let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
         let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
         let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
@@ -195,7 +190,7 @@ export default {
           (this.width / 841.89) * 595.28 -
           headerHeight -
           pageLogo -
-          this.hasTitle; // 内容区域对应的高度
+          hasTitle; // 内容区域对应的高度
         let rowList = this.$refs.tasks.getElementsByClassName("table-row");
         let heightSum = 0;
         let tableList = [];

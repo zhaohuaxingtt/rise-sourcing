@@ -536,6 +536,8 @@ export default {
 .content{
   display: flex;
   flex-flow: row;
+  margin-top: 120px;
+  height: calc(100% - 180px);
   .charts-content{
     flex: 1;
   }

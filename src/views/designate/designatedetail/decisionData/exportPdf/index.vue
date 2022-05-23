@@ -167,12 +167,12 @@ export default {
           this.watchPdf = false
         }
       },
-      watchPdf(val){  // 40秒后图片还是没有加载完毕，直接导出
+      watchPdf(val){  // 60秒后图片还是没有加载完毕，直接导出
         if(val){
           setTimeout(()=>{
             this.exportPdf()
             this.watchPdf = false
-          },40000)
+          },60000)
         }
       }
     },
@@ -270,9 +270,8 @@ export default {
       this.loading = true
       console.time('截图')
       this.fileList = []
-      let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
       setTimeout(async () => {
-        console.log(elList);
+        let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
         if(!elList.length){
           iMessage.warn('请稍等')
           this.$emit('changeStatus','exportLoading',false)
@@ -281,7 +280,6 @@ export default {
         let div = document.createElement('div')
         div.setAttribute('class','pdfItem')
         let sumHeight = 0
-        // this.$refs['pdf-containr'].innerHTML = ''
         let WH = []
         let list = []
         let j = 0
@@ -300,11 +298,11 @@ export default {
           itemDom.appendChild(elDom)
           if(sumHeight>=14000/2){
             this.$refs['pdf-containr'].appendChild(div)
-              list.push(j)
-              j = i
-              sumHeight = el.offsetHeight
-              div = document.createElement('div')
-              div.setAttribute('class','pdfItem')
+            list.push(j)
+            j = i
+            sumHeight = el.offsetHeight
+            div = document.createElement('div')
+            div.setAttribute('class','pdfItem')
           }
           div.appendChild(itemDom)
         }
@@ -314,12 +312,11 @@ export default {
         for (let index = 0; index < pdfPageList.length; index++) {
           const pdfItem = pdfPageList[index];
           await this.getPdfImage({
-                  dom: pdfItem,
-                  WH,
-                  j:list[index]
-                })
+            dom: pdfItem,
+            WH,
+            j:list[index]
+          })
         }
-        // this.$refs['pdf-containr'].innerHTML = ''
       }, 10)
     },
     // 截取页面,存入pdf
@@ -392,7 +389,6 @@ export default {
     // 下载 pdf 文件
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>!item.imageUrl)
-      console.log(arr);
       if(arr.length) return
       console.time('接口')
       const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);

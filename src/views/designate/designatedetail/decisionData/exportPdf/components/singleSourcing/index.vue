@@ -173,7 +173,6 @@ export default {
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-      console.log(tableList);
       return
     },
     getSingleSourcing:function () {
