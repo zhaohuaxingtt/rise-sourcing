@@ -25,6 +25,11 @@ import sourceInquirypoint from './modules/sourceInquirypoint'
 import biddingRouter from './modules/biddingManage'
 import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
 Vue.use(VueRouter)
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+	return originalPush.call(this, location).catch((err) => err)
+}
 export const staticRouter = [
 	{
 		path: '/',
@@ -400,23 +405,6 @@ const router = new VueRouter({
 		...biddingRouter,
 		...targetPriceAndScoreRoutes,
 	],
-})
-
-const originalPush = VueRouter.prototype.push
-
-VueRouter.prototype.push = function push(location,a,b) {
-	console.log(a);
-	console.log(b);
-	console.log(location);
-	return originalPush.call(this, location).catch((err) => err)
-}
-
-router.beforeEach((from,to,next)=>{
-	if(from.fullPath!==to.fullPath){
-		next();
-	}else{
-		console.log('同页面不跳转');
-	}
 })
 
 router.afterEach(() => {
