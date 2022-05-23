@@ -48,7 +48,7 @@
             <div v-if="files.length">
               <div class="wrapper" v-for="(file, $index) in files" :key="$index">
                 <div class="file">
-                  <img class="img" :src="file.filePath" :alt="file.fileName"/>
+                  <img class="img" :src="file.filePath" :alt="file.fileName" :style="{'height':file.height}"/>
                 </div>
               </div>
             </div>
@@ -122,7 +122,6 @@ export default {
         if(!img.complete)
         list.push(
           this.$store.dispatch('sourcing/pushImgList',img)
-
           // img.onload = () => r(item)
           // img.onerror = () =>  r(item)
         )
@@ -130,7 +129,7 @@ export default {
       Promise.all(list).then(res=>{
         console.log('drawing');
         rowList.forEach((item,i)=>{
-          console.log(item.offsetHeight);
+          this.files[i].height = item.offsetHeight +'px'
           heightSum+=item.offsetHeight
           if(heightSum<this.cntentHeight){
             arr.push(this.files[i])
@@ -142,7 +141,6 @@ export default {
         })
         filesList.push(JSON.parse(JSON.stringify(arr)))
         this.filesList = filesList
-        console.log(filesList);
       }).catch(err=>{
         console.log(err);
       })

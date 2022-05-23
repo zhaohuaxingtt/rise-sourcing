@@ -678,11 +678,13 @@ const actions = {
       img.onerror = () => {
         console.log('onerror');
         commit('REMOVE_IMGLIST',key)
-        r(img)
+        img.style.height = '300px'
+        j(img)
       }
       img.onabort = ()=>{
         commit('REMOVE_IMGLIST',key)
-        r(img)
+        img.style.height = '300px'
+        j(img)
       }
     })
   }

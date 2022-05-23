@@ -161,9 +161,7 @@ export default {
       let heightSum = 0
       let tableList = []
       let arr = []
-      console.log('tableHeader=>',tableHeader);
       rowList.forEach((item,i)=>{
-        console.log(item.offsetHeight);
         heightSum+=item.offsetHeight
         if(heightSum<this.cntentHeight - tableHeader){
           arr.push(this.tableListData[i])

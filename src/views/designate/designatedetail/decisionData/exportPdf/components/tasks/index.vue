@@ -191,9 +191,6 @@ export default {
         let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
         let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
         let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-        // let headerHeight = 84; // Title 区域高度
-        // let pageLogo = 52; // logo 区域高度
-        // let tableHeader = 41; // 表头高度
         this.cntentHeight =
           (this.width / 841.89) * 595.28 -
           headerHeight -

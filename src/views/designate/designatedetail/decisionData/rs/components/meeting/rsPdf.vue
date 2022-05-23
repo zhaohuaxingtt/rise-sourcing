@@ -738,6 +738,9 @@ export default {
     &-value {
       font-weight: 400;
       margin-left: 20px;
+      p{
+        word-break: break-word;
+      }
     }
   }
 

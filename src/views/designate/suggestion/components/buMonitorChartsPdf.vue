@@ -547,12 +547,14 @@ export default {
     flex: 0;
     display: inline-flex;
     padding: 10px 20px;
+    margin-right: 50px;
     .legend {
       flex-flow: column;
       display: inline-flex;
       width: max-content;
       li {
-        font-size: 16px;
+        font-size: 20px;
+        line-height: 1.5;
         display: inline-block;
         padding-right: 15px;
         i {
@@ -574,7 +576,7 @@ export default {
     }
   }
   #charts0 {
-    width: 100%;
+    width: 90%;
     height: 480px;
   }
   ::v-deep.toolTipBox {
