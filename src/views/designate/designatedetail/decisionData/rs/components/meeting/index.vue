@@ -1337,7 +1337,7 @@ export default {
       this.getHeight()
       this.$nextTick(()=>{
         setTimeout(async () => {
-          let elList = document.getElementsByClassName('pageCard')
+          let elList = this.$refs['rsPdf'].$el.getElementsByClassName('pageCard')
           if(!elList.length){
             iMessage.warn('请稍等')
             this.loading = false
