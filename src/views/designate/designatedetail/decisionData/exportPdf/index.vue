@@ -163,16 +163,18 @@ export default {
       imgList(val){ // 图片加载完毕之后在执行导出
       console.log(val);
         if(!val.length&&this.watchPdf){
-          this.exportPdf()
-          this.watchPdf = false
+          this.$nextTick(()=>{
+            this.exportPdf()
+            this.watchPdf = false
+          })
         }
       },
       watchPdf(val){  // 60秒后图片还是没有加载完毕，直接导出
         if(val){
-          setTimeout(()=>{
-            this.exportPdf()
-            this.watchPdf = false
-          },60000)
+          // setTimeout(()=>{
+          //   this.exportPdf()
+          //   this.watchPdf = false
+          // },60000)
         }
       }
     },

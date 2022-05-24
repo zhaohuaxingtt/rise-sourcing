@@ -670,20 +670,29 @@ const actions = {
     num++
     commit('PUSH_IMGLIST',key)
     return new Promise((r,j)=>{
+      const timeOut = setTimeout(() => {
+        console.log('timeOut');
+        commit('REMOVE_IMGLIST',key)
+        img.style.height = '300px'
+        j(img)
+      }, 60000);
       img.onload = () => {
         console.log('onload');
         commit('REMOVE_IMGLIST',key)
+        clearTimeout(timeOut)
         r(img)
       }
       img.onerror = () => {
         console.log('onerror');
         commit('REMOVE_IMGLIST',key)
         img.style.height = '300px'
+        clearTimeout(timeOut)
         j(img)
       }
       img.onabort = ()=>{
         commit('REMOVE_IMGLIST',key)
         img.style.height = '300px'
+        clearTimeout(timeOut)
         j(img)
       }
     })
