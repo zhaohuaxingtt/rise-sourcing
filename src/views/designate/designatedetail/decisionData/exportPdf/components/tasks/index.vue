@@ -145,15 +145,12 @@ export default {
         ? this.$store.state.permission.userInfo.nameZh
         : this.$store.state.permission.userInfo.nameEn;
     },
-    // hasTitle() {
-    //   return (this.$slots.tabTitle && 116) || 0;
-    // },
   },
   components: { iCard, icon, tableList },
   data() {
     return {
       content: "",
-      tableTitle: _.cloneDeep(tasksTitle),
+      tableTitle: tasksTitle,
       tableListData: [],
       cntentHeight: 0,
       tableList: [],
@@ -165,7 +162,7 @@ export default {
     //   props: "show",
     //   name: "Hide/Unhide",
     // });
-
+    this.tableTitle.unshift({ props: 'index', name: '序号', key: 'LK_XUHAO', width: 80 })
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },
@@ -178,26 +175,22 @@ export default {
         const element = pList[i];
         if(element.outerHTML.includes('img')){
           const img = element.getElementsByTagName('img')[0]
-          imgList.push(new Promise((r,j)=>{
-            img.onload = () => r(true)
-            img.onerror = () => r(true)
-          }))
+          if(!img.complete)
+          imgList.push(this.$store.dispatch('sourcing/pushImgList',img))
         }
       }
       Promise.all(imgList).then(()=>{
+        console.log('tasks');
         this.width = this.$refs.tasks.offsetWidth;
-        this.hasTitle = this.$refs.tabTitle.offsetHeight
+        let hasTitle = this.$refs.tabTitle.offsetHeight
         let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
         let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
         let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-        // let headerHeight = 84; // Title 区域高度
-        // let pageLogo = 52; // logo 区域高度
-        // let tableHeader = 41; // 表头高度
         this.cntentHeight =
           (this.width / 841.89) * 595.28 -
           headerHeight -
           pageLogo -
-          this.hasTitle; // 内容区域对应的高度
+          hasTitle; // 内容区域对应的高度
         let rowList = this.$refs.tasks.getElementsByClassName("table-row");
         let heightSum = 0;
         let tableList = [];
@@ -246,10 +239,13 @@ export default {
         nominateId: this.$route.query.desinateId,
         current: 1,
         size: 999999,
-        isPreview: false,
+        isPreview: true,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : [];
+          this.tableListData = Array.isArray(res.data) ? res.data.map((item,i)=>{
+            item.index = i+1
+            return item
+          }) : [];
           this.$nextTick(() => {
             this.getHeight();
           });

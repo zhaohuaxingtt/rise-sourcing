@@ -61,7 +61,7 @@
               <tableList
                 :selection="false"
                 :tableTitle="tableTitle"
-                :tableData="tableListData">
+                :tableData="tableData">
                 <template #suppliersName="scope">
                   <div>
                       <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>

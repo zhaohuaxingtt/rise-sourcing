@@ -96,7 +96,7 @@
 
         <!-- 黑名单校验弹窗提示 -->
         <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
-        <div style="width: 0; height: 0; overflow: hidden" v-if="showData">
+        <div style="width: 0; height: 0; overflow: hidden;" v-if="showExportPdf">
             <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
     </div>
@@ -220,20 +220,20 @@ export default {
         },
     },
     watch: {
-        // pendingRequestNum(val){
-        //     if(val == 0 && this.exportLoading && this.showExportPdf){
-        //         if(this.$refs['exportPdf'])
-        //         this.$nextTick(()=>{
-        //             this.$refs['exportPdf'].exportPdf();
-        //         })
-        //     }
-        // },
+        pendingRequestNum(val){
+            if(val == 0 && this.exportLoading && this.showExportPdf){
+                if(this.$refs['exportPdf'])
+                this.$nextTick(()=>{
+                    this.$refs['exportPdf'].exportPdf();
+                })
+            }
+        },
         exportLoading(val){
             if(!val){
-                this.showData = false
-                this.$nextTick(()=>{
-                    this.showData = true
-                })
+                this.showExportPdf = false
+                // this.$nextTick(()=>{
+                //     this.showExportPdf = true
+                // })
             }
         }
     },
@@ -774,12 +774,15 @@ export default {
 
         exportPdf(){
             if(!this.exportLoading){
-                if(this.pendingRequestNum){
-                    return iMessage.warn('正在获取数据，请稍等。。。')
-                }
+                console.log(this.pendingRequestNum);
+                // if(this.pendingRequestNum){
+                //     return iMessage.warn('正在获取数据，请稍等。。。')
+                // }
                 this.showExportPdf = true;
                 this.exportLoading = true;
-                this.$refs['exportPdf'].exportPdf();
+                // this.$nextTick(()=>{
+                //     this.$refs['exportPdf'].exportPdf();
+                // })
             }
         },
 
