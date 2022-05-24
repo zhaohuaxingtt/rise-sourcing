@@ -671,12 +671,20 @@ const actions = {
     commit('PUSH_IMGLIST',key)
     return new Promise((r,j)=>{
       img.onload = () => {
+        console.log('onload');
         commit('REMOVE_IMGLIST',key)
-        r(true)
+        r(img)
       }
       img.onerror = () => {
+        console.log('onerror');
         commit('REMOVE_IMGLIST',key)
-        r(true)
+        img.style.height = '300px'
+        j(img)
+      }
+      img.onabort = ()=>{
+        commit('REMOVE_IMGLIST',key)
+        img.style.height = '300px'
+        j(img)
       }
     })
   }

@@ -237,7 +237,7 @@
             <div class="beizhu">
               备注 Remarks:
               <div class="beizhu-value">
-                <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item&&item.value)"></p>
+                <p class="remarkItem" v-for="(item,index) in getRemarkAll" :key="index">{{item}}</p>
               </div>
             </div>
             <div ref="other">
@@ -861,7 +861,7 @@ export default {
 			return 'CSC Nomination Recommendation - Production Purchasing'
 		},
 		getRemarkAll() {
-			return this.remarkItem.map((item) => item.value).join('\n')
+			return this.remarkItem.map((item) => item.value).join('\n').split('\n')
 		},
 		isRoutePreview() {
 			return this.$route.query.isPreview == 1
@@ -894,17 +894,19 @@ export default {
     remarkProcess,
     dateFilter,
     getHeight(){
-      setTimeout(()=>{
-        this.hasTitle = this.$refs.tabTitle.offsetHeight
-        let headerHeight = this.$refs['pdf-table'].getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
-        let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
-        let tableHeader = this.$refs['pdf-table'].getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注签字栏
-        let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
-        let requireStart = document.getElementsByClassName('demo')[0].getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
-        let beizhuOther = this.$refs.other.offsetHeight // 备注区域的其它内容
+        this.hasTitle = this.$refs.tabTitle?.offsetHeight || 0
+        let headerHeight = this.$refs['pdf-table']?.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+        let pageLogo = this.$refs.logo?.offsetHeight || 0     // logo 区域高度
+        let tableHeader = this.$refs['pdf-table']?.getElementsByClassName('el-table__header-wrapper')[0]?.offsetHeight || 0
+        let pageTop = document.getElementsByClassName('demo')[0]?.getElementsByClassName('page-top')[0]?.offsetHeight || 0  // 顶部内容高度
+        let el = document.getElementsByClassName('demo')[0]?.getElementsByClassName('Application')[0]?.offsetHeight || 0  // 审批备注签字栏
+        let outEl = document.getElementsByClassName('demo')[0]?.getElementsByClassName('out-compute')[0]?.offsetHeight || 0  // 备注
+        let requireStart = document.getElementsByClassName('demo')[0]?.getElementsByClassName('require-start')[0]?.offsetHeight || 0  // *号提示信息
+        let beizhuOther = this.$refs.other?.offsetHeight || 0 // 备注区域的其它内容
         // 第一页
+        /* 
+        备注
+        */
         this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         // 独立备注页
         this.otherPageHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
@@ -937,34 +939,34 @@ export default {
           let residualRemark = []
           let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
           remarkList.forEach((item,i)=>{
-            if(item.offsetHeight<residualHeight){  // 放在表格页剩余空间内
+            if(item.offsetHeight<residualHeight - 24){  // 放在表格页剩余空间内
               residualHeight -= item.offsetHeight
-              residualRemark.push(this.remarkItem[i])
+              residualRemark.push(this.getRemarkAll[i])
             }else{  // 另起一页
               itemHeight+=item.offsetHeight
               if(itemHeight<=this.otherPageHeight -24 - beizhuOther){ // 上下padding各12
-                list.push(this.remarkItem[i])
+                list.push(this.getRemarkAll[i])
               }else{
                 if(list.length)
                 itemList.push(JSON.parse(JSON.stringify(list)))
                 itemHeight=item.offsetHeight
-                list = [this.remarkItem[i]]
+                list = [this.getRemarkAll[i]]
               }
             }
-            })
-            if(itemHeight){
-              if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
-                this.hasLastPage = true
-              }else{
-                this.hasLastPage = false
-              }
+          })
+          if(itemHeight){
+            if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
+              this.hasLastPage = true
             }else{
-              if(residualHeight < el){
-                this.hasLastPage = true
-              }else{
-                this.hasLastPage = false
-              }
+              this.hasLastPage = false
             }
+          }else{
+            if(residualHeight < el){
+              this.hasLastPage = true
+            }else{
+              this.hasLastPage = false
+            }
+          }
           // if(this.otherPageHeight<outEl - 24){ // 需要分页
           //   let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
           //   remarkList.forEach((item,i)=>{
@@ -977,17 +979,16 @@ export default {
           //       list = [this.remarkItem[i]]
           //     }
           //   })
-            if(list.length)
-            itemList.push(JSON.parse(JSON.stringify(list)))
+          if(list.length)
+          itemList.push(JSON.parse(JSON.stringify(list)))
           // }else{
             // itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
           // }
           this.remarkList = itemList
-          this.residualRemark = residualRemark
+          this.residualRemark = [residualRemark]
         }else{
-          this.residualRemark = this.remarkItem
+          this.residualRemark = this.getRemarkAll
         }
-      },0)
     },
     getPrototypeListHeight(){
       let time = 0
@@ -1140,6 +1141,7 @@ export default {
     getTopList() {
       this.tableLoading = true
 
+      this.searchRsPageExchangeRate()
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
@@ -1175,7 +1177,6 @@ export default {
           this.tableData = data
           this.projectType = this.basicData.partProjectType || ''
 
-          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []
@@ -1341,7 +1342,7 @@ export default {
       this.getHeight()
       this.$nextTick(()=>{
         setTimeout(async () => {
-          let elList = document.getElementsByClassName('pageCard')
+          let elList = this.$refs['rsPdf'].$el.getElementsByClassName('pageCard')
           if(!elList.length){
             iMessage.warn('请稍等')
             this.loading = false
@@ -1678,6 +1679,9 @@ export default {
 	&-value {
 		font-weight: 400;
 		margin-left: 20px;
+    p{
+      word-break: break-word;
+    }
 	}
 }
 .meetingRemark {

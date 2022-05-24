@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div class="monitorTable">
+  <div class="monitorTable max-content">
     <el-table
       :key="'tableKey_'+tableKey"
       fit
@@ -658,7 +658,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .monitorTable {
-  width: max-content;
   ::v-deep .el-table {
     // height: 450px;
     .el-table__header {

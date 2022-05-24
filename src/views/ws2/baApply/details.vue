@@ -103,6 +103,8 @@ export default {
         this.page.currPage = ~~res.pageNum;
         // this.page.pageSize = ~~res.pageSize;
         this.page.totalCount = ~~res.total;
+        this.page.layout = 'sizes, prev, pager, next, jumper';
+        this.page.pageSizes = [10,20,50,100,300]
 
         this.tableLoading = false;
       }).catch(err => {

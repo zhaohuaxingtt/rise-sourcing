@@ -48,7 +48,7 @@
             <div v-if="files.length">
               <div class="wrapper" v-for="(file, $index) in files" :key="$index">
                 <div class="file">
-                  <img class="img" :src="file.filePath" :alt="file.fileName"/>
+                  <img class="img" :src="file.filePath" :alt="file.fileName" :style="{'height':file.height}"/>
                 </div>
               </div>
             </div>
@@ -118,14 +118,18 @@ export default {
       let arr = []
       let list = []
       rowList.forEach((item,i)=>{
-        list.push(new Promise(async (r,j)=>{
-          const img = item.getElementsByClassName('img')[0];
-          img.onload = () => r(item)
-          img.onerror = () =>  r(item)
-        }))
+        const img = item.getElementsByClassName('img')[0];
+        if(!img.complete)
+        list.push(
+          this.$store.dispatch('sourcing/pushImgList',img)
+          // img.onload = () => r(item)
+          // img.onerror = () =>  r(item)
+        )
       })
       Promise.all(list).then(res=>{
-        res.forEach((item,i)=>{
+        console.log('drawing');
+        rowList.forEach((item,i)=>{
+          this.files[i].height = item.offsetHeight +'px'
           heightSum+=item.offsetHeight
           if(heightSum<this.cntentHeight){
             arr.push(this.files[i])
@@ -137,6 +141,8 @@ export default {
         })
         filesList.push(JSON.parse(JSON.stringify(arr)))
         this.filesList = filesList
+      }).catch(err=>{
+        console.log(err);
       })
     },
     getdDecisiondataList: function () {
