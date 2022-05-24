@@ -173,7 +173,7 @@ export default {
               zh: item.name,
               en: item.nameEn || item.name,
               de: item.nameDe
-            })) :
+            })).filter(item=>item.describe!='9000') :
             []
         }
       })
