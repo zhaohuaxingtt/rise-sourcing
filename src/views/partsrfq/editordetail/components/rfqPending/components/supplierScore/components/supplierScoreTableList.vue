@@ -141,11 +141,16 @@ export default {
 
 .supplierProducePlaces {
   ::v-deep input {
-    padding: 0 18px;
+    padding: 0 25px 0 5px;
   }
 
   ::v-deep .el-input__suffix {
     display: none;
+  }
+  &:hover{
+    ::v-deep .el-input__suffix {
+        display: unset;
+      }
   }
 }
 

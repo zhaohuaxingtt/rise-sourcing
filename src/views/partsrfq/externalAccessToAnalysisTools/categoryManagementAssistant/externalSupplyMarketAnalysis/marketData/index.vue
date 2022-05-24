@@ -183,6 +183,7 @@ export default {
         }
         return item;
       });
+      console.log(this.searchProps ,"searchProps")
     },
     // 获取搜索框参数
     getSearchForm () {
@@ -253,9 +254,10 @@ export default {
       }
       const data = res.data;
       this.copySearchProps = cloneDeep(data);
-      this.setSearchProps(data);
+      await this.setSearchProps(data);
       const resRecent = await this.getRecentSearchData();
-      this.setRecentSearchData(resRecent);
+      console.log(resRecent,"resRecent")
+      await this.setRecentSearchData(resRecent);
     },
     // 获取图表数据
     async getChartGroupData ({ type }) {
@@ -268,21 +270,21 @@ export default {
         switch (type) {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
-            if (res.result) {
-              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
-            }
+            // if (res.result) {
+            //   this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
+            // }
             break;
           case LABOUR:
             res = await getLabourGroupData(form);
-            if (res.result) {
-              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'professionList' });
-            }
+            // if (res.result) {
+            //   this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'professionList' });
+            // }
             break;
           case ENERGY:
             res = await getEnergyGroupData(form);
-            if (res.result) {
-              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
-            }
+            // if (res.result) {
+            //   this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
+            // }
             break;
         }
         if (!res.result) {
@@ -386,6 +388,7 @@ export default {
     // 设置最近搜索参数
     setRecentSearchData (data) {
       const copyData = cloneDeep(data);
+      console.log(copyData,"copyeData1")
       if (data) {
         if (copyData.classTypeSpecsAreaList && Array.isArray(copyData.classTypeSpecsAreaList)) {
           copyData.classTypeSpecsArea = copyData.classTypeSpecsAreaList.map(item => {
@@ -407,6 +410,7 @@ export default {
           delete copyData.startDate;
           delete copyData.endDate;
         }
+        console.log(copyData,"copyData2")
         this.$refs.theSearch.form = copyData;
       }
     },

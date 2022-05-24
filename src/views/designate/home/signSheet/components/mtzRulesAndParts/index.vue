@@ -12,6 +12,7 @@
                   :tableTitle="ruleTableTitle"
                   :index="true"
                   :selection="false"
+                  border
                   lang
                   >
         <!-- <template slot-scope="scope"
@@ -35,6 +36,7 @@
                   :tableTitle="partTableTitle"
                   :index="true"
                   :selection="false"
+                  border
                   lang
                   >
         <!-- <template slot-scope="scope"

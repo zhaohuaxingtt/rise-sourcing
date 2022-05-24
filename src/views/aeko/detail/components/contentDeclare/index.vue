@@ -200,7 +200,7 @@
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
+        <!-- <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
           {{ language("ZHUANPAI", "转派") }}
           <el-tooltip 
             effect="light" 
@@ -209,7 +209,7 @@
             placement="top">
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
-        </iButton>
+        </iButton> -->
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
@@ -383,13 +383,14 @@ import { setLogMenu } from "@/utils";
 import qs from 'qs'
 import buttonTableSetting from '@/components/buttonTableSetting'
 import assignDialog from './components/assignDialog'
+import { roleMixins } from "@/utils/roleMixins";
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, 
   buttonTableSetting, iMultiLineInput, assignDialog },
-  mixins: [ pageMixins, combine, tableSortMixins ],
+  mixins: [ pageMixins, combine, tableSortMixins, roleMixins ],
   props: {
     aekoInfo: {
       type: Object,
@@ -695,6 +696,9 @@ export default {
       this.dosageDialogVisible = true
     },
     jumpQuotation(row){
+      if(row.buyerId!=this.userInfo.id){
+        return iMessage.warn(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
+      }
       const { quotationId="" } = row;
       let { quotationFrom="" } = row; // 有quotationFrom则是绑定报价单，不能编辑
       const route = this.$router.resolve({
@@ -1001,12 +1005,19 @@ export default {
       
       // jira-7759 校验同一新零件号同一采购工厂同一供应商”的多个行项目
       const filtRows = []
+      let flag = false
       this.multipleSelection.forEach(item => {
+        if(item.buyerId!==this.userInfo.id){
+          flag = true
+        }
         const dumplicatedParts = this.tableListData.filter(o => o.partNum === item.partNum && o.factoryCode === item.factoryCode && o.supplierSapCode === item.supplierSapCode)
         if (dumplicatedParts.length > 1 && !filtRows.find(o => o.partNum === item.partNum)) {
           filtRows.push(item)
         }
       })
+      if(flag){
+         return iMessage.eror(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
+      }
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
