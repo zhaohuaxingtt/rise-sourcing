@@ -226,7 +226,7 @@
                   <div class="beizhu">
                     备注 Remarks:
                     <div class="beizhu-value">
-                      <p v-for="(item,index) in residualRemark" :key="index" v-html="remarkProcess(item.value)"></p>
+                      <p v-for="(item,index) in residualRemark[0]" :key="index">{{item}}</p>
                     </div>
                   </div>
                 </div>
@@ -334,7 +334,7 @@
               <div class="beizhu" v-if="remark.length">
                 备注 Remarks:
                 <div class="beizhu-value">
-                  <p v-for="(item,index) in remark" :key="index" v-html="remarkProcess(item&&item.value)"></p>
+                  <p v-for="(item,index) in remark" :key="index">{{item}}</p>
                 </div>
               </div>
               <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -738,6 +738,9 @@ export default {
     &-value {
       font-weight: 400;
       margin-left: 20px;
+      p{
+        word-break: break-word;
+      }
     }
   }
 

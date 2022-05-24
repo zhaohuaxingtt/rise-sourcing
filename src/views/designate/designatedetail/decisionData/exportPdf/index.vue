@@ -126,7 +126,6 @@ import awardingScenario from '../../awardingscenario'
 import abPrice from '../abPrice'
 import bdl from "../bdl"
 import rs from "../rs/home"
-import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
 import headerTab from './headerTab'
@@ -160,6 +159,21 @@ export default {
     watch: {
       updateKey(val){
         this.$forceUpdate()
+      },
+      imgList(val){ // 图片加载完毕之后在执行导出
+      console.log(val);
+        if(!val.length&&this.watchPdf){
+          this.exportPdf()
+          this.watchPdf = false
+        }
+      },
+      watchPdf(val){  // 60秒后图片还是没有加载完毕，直接导出
+        if(val){
+          setTimeout(()=>{
+            this.exportPdf()
+            this.watchPdf = false
+          },60000)
+        }
       }
     },
   created() {
@@ -187,7 +201,8 @@ export default {
         {DomId:'html2canvasRs',key:'rs'},
       ],
       clickIndex:0,
-      loading:false
+      loading:false,
+      watchPdf:false
     }
   },
   props:{
@@ -207,6 +222,10 @@ export default {
       })
     },
     exportPdf() {
+      if(this.imgList.length&&!this.watchPdf){
+        this.watchPdf = true
+        return iMessage.warn('图片加载中，请稍等。。。')
+      }
       if(!this.loading)
       this.handleExportPdf()
       return
@@ -251,8 +270,8 @@ export default {
       this.loading = true
       console.time('截图')
       this.fileList = []
-      let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
       setTimeout(async () => {
+        let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
         if(!elList.length){
           iMessage.warn('请稍等')
           this.$emit('changeStatus','exportLoading',false)
@@ -261,7 +280,6 @@ export default {
         let div = document.createElement('div')
         div.setAttribute('class','pdfItem')
         let sumHeight = 0
-        this.$refs['pdf-containr'].innerHTML = ''
         let WH = []
         let list = []
         let j = 0
@@ -280,11 +298,11 @@ export default {
           itemDom.appendChild(elDom)
           if(sumHeight>=14000/2){
             this.$refs['pdf-containr'].appendChild(div)
-              list.push(j)
-              j = i
-              sumHeight = el.offsetHeight
-              div = document.createElement('div')
-              div.setAttribute('class','pdfItem')
+            list.push(j)
+            j = i
+            sumHeight = el.offsetHeight
+            div = document.createElement('div')
+            div.setAttribute('class','pdfItem')
           }
           div.appendChild(itemDom)
         }
@@ -294,12 +312,11 @@ export default {
         for (let index = 0; index < pdfPageList.length; index++) {
           const pdfItem = pdfPageList[index];
           await this.getPdfImage({
-                  dom: pdfItem,
-                  WH,
-                  j:list[index]
-                })
+            dom: pdfItem,
+            WH,
+            j:list[index]
+          })
         }
-        this.$refs['pdf-containr'].innerHTML = ''
       }, 10)
     },
     // 截取页面,存入pdf
@@ -311,6 +328,7 @@ export default {
       j
     }) {
       let scale = 2
+      console.log('j=>start',j);
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -320,6 +338,7 @@ export default {
         logging: false, //打印日志用的 可以不加默认为false
         porxy: ''
       }).then(async (canvas) => {
+        console.log('j=>end',j);
         const copyCanvas = document.getElementById("myCanvas");
         let ctx=canvas.getContext("2d");
         let height = canvas.height
@@ -340,6 +359,8 @@ export default {
           i++
           ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
         }
+      }).catch((error)=>{
+        console.log(error);
       });
     },
 
@@ -423,6 +444,8 @@ export default {
   // overflow: hidden;
 }
 .exportPdf {
+  min-width: 1800px;
+  // width: max-content;
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
