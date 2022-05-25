@@ -14,9 +14,9 @@
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
       <div class="content" id="allMoudles">
-        <div class="showPage" ref="showPage" v-if="showPage">
+        <div class="showPage" ref="showPage">
           <!-- title -->
-          <div id="html2canvasTitle">
+          <div id="html2canvasTitle" v-if="showPage">
             <rsTitle class="module">
               <template #tabTitle>
                 <headerTab value="/designate/decisiondata/title"/>
@@ -24,7 +24,7 @@
             </rsTitle>
           </div>
           <!-- PartList -->
-          <div id="html2canvasPartList">
+          <div id="html2canvasPartList" v-if="showPage">
             <partList class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/partlist"/>
@@ -33,7 +33,7 @@
           </div>
 
           <!-- Tasks -->
-          <div id="html2canvasTasks">
+          <div id="html2canvasTasks" v-if="showPage">
             <tasks class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/tasks"/>
@@ -42,7 +42,7 @@
           </div>
 
           <!-- drawing -->
-          <div id="html2canvasDrawing">
+          <div id="html2canvasDrawing" v-if="showPage">
             <drawing class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/drawing"/>
@@ -50,7 +50,7 @@
             </drawing>
           </div>
           <!-- bdl -->
-          <div id="html2canvasBDl">
+          <div id="html2canvasBDl" v-if="showPage">
             <bdl isExportPdf class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/bdl"/>
@@ -59,7 +59,7 @@
           </div>
 
           <!-- singleSourcing -->
-          <div id="html2canvasSingleSourcing">
+          <div id="html2canvasSingleSourcing" v-if="showPage">
             <singleSourcing class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/singlesourcing"/>
@@ -77,7 +77,7 @@
           </div> -->
 
           <!-- timeline -->
-          <div id="html2canvasTimeline">
+          <div id="html2canvasTimeline" v-if="showPage">
             <timeline class="module">
               <template #tabTitle>
               <headerTab value="/designate/decisiondata/timeline"/>
@@ -94,7 +94,7 @@
           </div>
           
 
-          <div id="html2canvasRs">
+          <div id="html2canvasRs" v-if="showPage">
             <rs class="module" :nomiData="nomiData">
               <template #tabTitle>
                 <headerTab value="/designate/decisiondata/rs"/>
@@ -161,12 +161,11 @@ export default {
         this.$forceUpdate()
       },
       imgList(val){ // 图片加载完毕之后在执行导出
-      console.log(val);
         if(!val.length&&this.watchPdf){
-          this.$nextTick(()=>{
-            this.exportPdf()
-            this.watchPdf = false
-          })
+            this.$nextTick(()=>{
+              this.exportPdf()
+              this.watchPdf = false
+            })
         }
       },
       watchPdf(val){  // 60秒后图片还是没有加载完毕，直接导出
@@ -230,7 +229,7 @@ export default {
         return iMessage.warn('图片加载中，请稍等。。。')
       }
       if(!this.loading)
-      this.handleExportPdf2()
+      setTimeout(()=>{this.handleExportPdf2()},2000)  // 延迟 2s 渲染 img, canvas 元素
       return
     },
     // 查看所有图片是否上传完毕
@@ -274,24 +273,29 @@ export default {
       this.loading = true
       console.time('截图')
       this.fileList = []
-      const elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
+      const pageWH = []
+      let domList = this.$refs.showPage.getElementsByClassName('pageCard-main')
+      for (let i = 0; i < domList.length; i++) {
+        pageWH.push({
+          width:domList[i].offsetWidth,
+          height:domList[i].offsetHeight,
+          el:domList[i].cloneNode(true)
+        });
+        
+      }
+      const dom =  this.$refs.showPage.cloneNode(true)
+      const elList = dom.getElementsByClassName('pageCard-main')
+      this.elList = elList
       if(!elList.length){
         iMessage.warn('请稍等')
         this.$emit('changeStatus','exportLoading',false)
         return
       }
-      const pageWH = []
-      for (let i = 0; i < elList.length; i++) {
-        pageWH.push({
-          width:elList[i].offsetWidth,
-          height:elList[i].offsetHeight,
-        });
-      }
       this.pageLength = elList.length
       this.showPage = false
       setTimeout(async()=>{
         this.$nextTick(async()=>{
-          for (let i = 0; i<elList.length; i++) {
+          for (let i = 0; i<this.pageLength; i++) {
             const el = elList[i]
             await this.getPdfImage2({
               dom: el,
@@ -311,33 +315,49 @@ export default {
       j
     }) {
       let scale = 2
-      console.log('j=>start',j+1);
       const el = this.$refs['pdf-containr']
       console.time(`img${j}`);
-      let this_ = this
-      await html2canvas(el, {
-        // allowTaint:true,
-        dpi: 96, //分辨率
-        scale: scale, //设置缩放
-        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
-        bgcolor: "#ffffff", //应该这样写
-        logging: false, //打印日志用的 可以不加默认为false
-        porxy: '',
-        onclone(doc){
-          let elcontent = doc.getElementsByClassName('pdf-containr')[0]
-          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${j+1} of ${this_.pageLength}`;
-          elcontent.style.width = WH.width + 'px'
-          elcontent.style.height = WH.height + 'px'
-          elcontent.innerHTML = dom.outerHTML
-          console.log(dom.getElementsByTagName('img').length)
-        }
-      }).then(async (canvas) => {
-        console.log('j=>end',j+1, 'total=>',this.pageLength);
-        console.timeEnd(`img${j}`);
-        this.getPdfFile(canvas,j)
-      }).catch((error)=>{
-        console.log(error);
-      })
+      // canvas 不能通过innerHTML渲染
+      if(dom.getElementsByTagName('canvas').length==0){
+        dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${j+1} of ${this.pageLength}`;
+        el.style.width = WH.width + 'px'
+        el.style.height = WH.height + 'px'
+        el.innerHTML = dom.outerHTML
+        await html2canvas(el, {
+          // allowTaint:true,
+          dpi: 96, //分辨率
+          scale: scale, //设置缩放
+          useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+          bgcolor: "#ffffff", //应该这样写
+          logging: false, //打印日志用的 可以不加默认为false
+          porxy: '',
+        }).then(async (canvas) => {
+          console.timeEnd(`img${j}`);
+          this.getPdfFile(canvas,j)
+        }).catch((error)=>{
+          console.log(error);
+        })
+      }else{
+        let length = this.$refs.showPage.getElementsByClassName('pageCard-main').length
+        let el = this.$refs.showPage.getElementsByClassName('pageCard-main')[length-1]
+        el.getElementsByClassName('pageNum')[0].innerHTML = `page ${j+1} of ${this.pageLength}`;
+        el.style.width = WH.width + 'px'
+        el.style.height = WH.height + 'px'
+        await html2canvas(el, {
+          // allowTaint:true,
+          dpi: 96, //分辨率
+          scale: scale, //设置缩放
+          useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+          bgcolor: "#ffffff", //应该这样写
+          logging: false, //打印日志用的 可以不加默认为false
+          porxy: '',
+        }).then(async (canvas) => {
+          console.timeEnd(`img${j}`);
+          this.getPdfFile(canvas,j)
+        }).catch((error)=>{
+          console.log(error);
+        })
+      }
     },
     // 导出pdf
     async handleExportPdf() {
@@ -474,6 +494,7 @@ export default {
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
         console.timeEnd('接口')
+        this.loading = false
       })
     },
     // 上传图片

@@ -677,13 +677,11 @@ const actions = {
         r(img)
       }, 30000);
       img.onload = () => {
-        console.log('onload');
         commit('REMOVE_IMGLIST',key)
         clearTimeout(timeOut)
         r(img)
       }
       img.onerror = () => {
-        console.log('onerror');
         commit('REMOVE_IMGLIST',key)
         img.style.height = '300px'
         clearTimeout(timeOut)
