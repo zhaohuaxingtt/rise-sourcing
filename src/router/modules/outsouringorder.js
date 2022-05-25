@@ -20,28 +20,16 @@ export default [
     meta: { title: "工序委外", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'] },
     component: () => import("@/views/outsouringorder/index.vue"),
    },
-
   ]
  },
  {
-  path: '/partsign/outsouringorder/addoutsourcing',
+  path: '/partsign/outsouringorder/addoutsourcing/details',
   name: 'addoutsouringorder',
   meta: {
    title: '工序委外导航',
    activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
   },
-  component: () => import('@/views/outsouringorder/headerNav/index'),
-  // redirect: '/partsign/outsouringorder/addoutsourcing/details',
-  children: [
-   {
-    path: 'details',
-    name: 'outSouringSignSheet',
-    meta: {
-     title: '新建工序委外',
-     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-    },
-    component: () => import('@/views/outsouringorder/details'),
-   },
-  ],
+  component: () => import('@/views/outsouringorder/newapplication/index'),
+  // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details'
  },
 ]

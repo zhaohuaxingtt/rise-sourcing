@@ -84,7 +84,7 @@
 <script>
 import { iMessage } from 'rise'
 // import { getDictByCode } from '@/api/dictionary'
-// import { splitPurchList } from './data'
+
 export default {
   props: {
     tableData: { type: Array },
@@ -101,7 +101,7 @@ export default {
   inject: ['vm'],
   data() {
     return {
-      purchaseFactory: splitPurchList,
+      purchaseFactory: [],
       supplierTypeList: [
         { name: '待确认', code: '0', class: 'g-red' },
         { name: '已确认', code: '1', class: 'g-black' },
