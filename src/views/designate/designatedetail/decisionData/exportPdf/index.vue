@@ -274,21 +274,28 @@ export default {
       this.loading = true
       console.time('截图')
       this.fileList = []
+      const elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
+      if(!elList.length){
+        iMessage.warn('请稍等')
+        this.$emit('changeStatus','exportLoading',false)
+        return
+      }
+      const pageWH = []
+      for (let i = 0; i < elList.length; i++) {
+        pageWH.push({
+          width:elList[i].offsetWidth,
+          height:elList[i].offsetHeight,
+        });
+      }
+      this.pageLength = elList.length
+      this.showPage = false
       setTimeout(async()=>{
-        const elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
-        if(!elList.length){
-          iMessage.warn('请稍等')
-          this.$emit('changeStatus','exportLoading',false)
-          return
-        }
-        const pageLength = elList.length
-        this.pageLength = pageLength
-        this.showPage = false
         this.$nextTick(async()=>{
-          for (let i = 0; i<pageLength; i++) {
+          for (let i = 0; i<elList.length; i++) {
             const el = elList[i]
             await this.getPdfImage2({
               dom: el,
+              WH: pageWH[i],
               j:i
             })
           }
@@ -300,12 +307,14 @@ export default {
     async getPdfImage2({
       //html横向导出pdf
       dom,
+      WH,
       j
     }) {
       let scale = 2
-      console.log('j=>start',j);
+      console.log('j=>start',j+1);
       const el = this.$refs['pdf-containr']
       console.time(`img${j}`);
+      let this_ = this
       await html2canvas(el, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -316,12 +325,14 @@ export default {
         porxy: '',
         onclone(doc){
           let elcontent = doc.getElementsByClassName('pdf-containr')[0]
-          // el.style.width = dom.offsetWidth + 'px'
-          // el.style.height = dom.offsetHeight + 'px'
+          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${j+1} of ${this_.pageLength}`;
+          elcontent.style.width = WH.width + 'px'
+          elcontent.style.height = WH.height + 'px'
           elcontent.innerHTML = dom.outerHTML
+          console.log(dom.getElementsByTagName('img').length)
         }
       }).then(async (canvas) => {
-        console.log('j=>end',j, 'total=>',this.pageLength);
+        console.log('j=>end',j+1, 'total=>',this.pageLength);
         console.timeEnd(`img${j}`);
         this.getPdfFile(canvas,j)
       }).catch((error)=>{

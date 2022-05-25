@@ -675,7 +675,7 @@ const actions = {
         commit('REMOVE_IMGLIST',key)
         img.style.height = '300px'
         r(img)
-      }, 100000);
+      }, 30000);
       img.onload = () => {
         console.log('onload');
         commit('REMOVE_IMGLIST',key)
