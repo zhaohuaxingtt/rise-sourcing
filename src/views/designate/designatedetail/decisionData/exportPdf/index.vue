@@ -14,95 +14,95 @@
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
       <div class="content" id="allMoudles">
-        <div class="showPage" ref="showPage">
-        <!-- title -->
-        <div id="html2canvasTitle">
-          <rsTitle class="module">
-            <template #tabTitle>
-              <headerTab value="/designate/decisiondata/title"/>
-            </template>
-          </rsTitle>
-         </div>
-        <!-- PartList -->
-        <div id="html2canvasPartList">
-          <partList class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/partlist"/>
-            </template>
-          </partList>
-        </div>
+        <div class="showPage" ref="showPage" v-if="showPage">
+          <!-- title -->
+          <div id="html2canvasTitle">
+            <rsTitle class="module">
+              <template #tabTitle>
+                <headerTab value="/designate/decisiondata/title"/>
+              </template>
+            </rsTitle>
+          </div>
+          <!-- PartList -->
+          <div id="html2canvasPartList">
+            <partList class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/partlist"/>
+              </template>
+            </partList>
+          </div>
 
-        <!-- Tasks -->
-        <div id="html2canvasTasks">
-          <tasks class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/tasks"/>
-            </template>
-          </tasks>
-        </div>
+          <!-- Tasks -->
+          <div id="html2canvasTasks">
+            <tasks class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/tasks"/>
+              </template>
+            </tasks>
+          </div>
 
-        <!-- drawing -->
-        <div id="html2canvasDrawing">
-          <drawing class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/drawing"/>
-            </template>
-          </drawing>
-        </div>
-        <!-- bdl -->
-        <div id="html2canvasBDl">
-          <bdl isExportPdf class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/bdl"/>
-            </template>
-          </bdl>
-        </div>
+          <!-- drawing -->
+          <div id="html2canvasDrawing">
+            <drawing class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/drawing"/>
+              </template>
+            </drawing>
+          </div>
+          <!-- bdl -->
+          <div id="html2canvasBDl">
+            <bdl isExportPdf class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/bdl"/>
+              </template>
+            </bdl>
+          </div>
 
-        <!-- singleSourcing -->
-        <div id="html2canvasSingleSourcing">
-          <singleSourcing class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/singlesourcing"/>
-            </template>
-          </singleSourcing>
-        </div>
+          <!-- singleSourcing -->
+          <div id="html2canvasSingleSourcing">
+            <singleSourcing class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/singlesourcing"/>
+              </template>
+            </singleSourcing>
+          </div>
 
-        <!-- abprice -->
-        <!-- <div id="html2canvasAbprice">
-          <abPrice class="module pageCard-main rsPdfCard">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/abprice"/>
-            </template>
-          </abPrice>
-        </div> -->
+          <!-- abprice -->
+          <!-- <div id="html2canvasAbprice">
+            <abPrice class="module pageCard-main rsPdfCard">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/abprice"/>
+              </template>
+            </abPrice>
+          </div> -->
 
-        <!-- timeline -->
-        <div id="html2canvasTimeline">
-          <timeline class="module">
-            <template #tabTitle>
-            <headerTab value="/designate/decisiondata/timeline"/>
-            </template>
-          </timeline>
-        </div>
-        <!-- awardingScenario -->
-        <div id="html2canvasAwardingScenario">
-          <awardingScenario class="module">
-            <template #tabTitle>
-              <headerTab value="/designate/decisiondata/awardingscenario"/>
-            </template>
-          </awardingScenario>
-        </div>
-        
+          <!-- timeline -->
+          <div id="html2canvasTimeline">
+            <timeline class="module">
+              <template #tabTitle>
+              <headerTab value="/designate/decisiondata/timeline"/>
+              </template>
+            </timeline>
+          </div>
+          <!-- awardingScenario -->
+          <div id="html2canvasAwardingScenario">
+            <awardingScenario class="module">
+              <template #tabTitle>
+                <headerTab value="/designate/decisiondata/awardingscenario"/>
+              </template>
+            </awardingScenario>
+          </div>
+          
 
-        <div id="html2canvasRs">
-          <rs class="module" :nomiData="nomiData">
-            <template #tabTitle>
-              <headerTab value="/designate/decisiondata/rs"/>
-            </template>
-          </rs>
+          <div id="html2canvasRs">
+            <rs class="module" :nomiData="nomiData">
+              <template #tabTitle>
+                <headerTab value="/designate/decisiondata/rs"/>
+              </template>
+            </rs>
+          </div>
         </div>
         <canvas id="myCanvas"></canvas>
-        </div>
         <div ref="pdf-containr" class="pdf-containr"></div>
       </div>
     </div>
@@ -204,7 +204,8 @@ export default {
       ],
       clickIndex:0,
       loading:false,
-      watchPdf:false
+      watchPdf:false,
+      showPage: true
     }
   },
   props:{
@@ -229,7 +230,7 @@ export default {
         return iMessage.warn('图片加载中，请稍等。。。')
       }
       if(!this.loading)
-      this.handleExportPdf()
+      this.handleExportPdf2()
       return
     },
     // 查看所有图片是否上传完毕
@@ -266,6 +267,66 @@ export default {
         })
         
        }
+    },
+    
+    // 导出pdf
+    handleExportPdf2() {
+      this.loading = true
+      console.time('截图')
+      this.fileList = []
+      setTimeout(async()=>{
+        const elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
+        if(!elList.length){
+          iMessage.warn('请稍等')
+          this.$emit('changeStatus','exportLoading',false)
+          return
+        }
+        const pageLength = elList.length
+        this.pageLength = pageLength
+        this.showPage = false
+        this.$nextTick(async()=>{
+          for (let i = 0; i<pageLength; i++) {
+            const el = elList[i]
+            await this.getPdfImage2({
+              dom: el,
+              j:i
+            })
+          }
+        })
+      },200)
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    async getPdfImage2({
+      //html横向导出pdf
+      dom,
+      j
+    }) {
+      let scale = 2
+      console.log('j=>start',j);
+      const el = this.$refs['pdf-containr']
+      console.time(`img${j}`);
+      await html2canvas(el, {
+        // allowTaint:true,
+        dpi: 96, //分辨率
+        scale: scale, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+        porxy: '',
+        onclone(doc){
+          let elcontent = doc.getElementsByClassName('pdf-containr')[0]
+          // el.style.width = dom.offsetWidth + 'px'
+          // el.style.height = dom.offsetHeight + 'px'
+          elcontent.innerHTML = dom.outerHTML
+        }
+      }).then(async (canvas) => {
+        console.log('j=>end',j, 'total=>',this.pageLength);
+        console.timeEnd(`img${j}`);
+        this.getPdfFile(canvas,j)
+      }).catch((error)=>{
+        console.log(error);
+      })
     },
     // 导出pdf
     async handleExportPdf() {
@@ -331,6 +392,7 @@ export default {
     }) {
       let scale = 2
       console.log('j=>start',j);
+      console.time(`img${j}`);
       await html2canvas(dom, {
         // allowTaint:true,
         dpi: 96, //分辨率
@@ -341,6 +403,7 @@ export default {
         porxy: ''
       }).then(async (canvas) => {
         console.log('j=>end',j);
+        console.timeEnd(`img${j}`);
         const copyCanvas = document.getElementById("myCanvas");
         let ctx=canvas.getContext("2d");
         let height = canvas.height
@@ -384,6 +447,9 @@ export default {
               this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
               j(false)
             }
+          }).catch(error=>{
+            console.log(error);
+             this.fileList.push({index, imageUrl: '' });
           })
         });
       })

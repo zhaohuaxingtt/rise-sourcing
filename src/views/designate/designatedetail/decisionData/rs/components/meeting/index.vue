@@ -1318,10 +1318,8 @@ export default {
       .finally(() => this.tableLoading = false)
 	},
 		
-
     // 导出pdf
     async handleExportPdf() {
-      console.time('耗时')
       this.fileList = []
       this.loading = true
       this.getHeight()
@@ -1335,6 +1333,8 @@ export default {
         })
       }
       this.pdfPage = elList.length
+      let time = parseInt(this.pdfPage*30/60)
+      this.$message(`本次导出需耗时大约${time}分钟，请耐心等待`);
       this.showpdf = false
       this.$nextTick(()=>{
         setTimeout(async () => {
@@ -1419,7 +1419,6 @@ export default {
       }) // 1.2 预留 页脚位置
       this.loading = false
       this.showpdf = true
-      console.timeEnd('耗时')
     },
 
     // 上传图片
@@ -1541,10 +1540,6 @@ export default {
 		.cell {
 			padding-left: 3px;
 			padding-right: 3px;
-
-			span {
-				// zoom: 0.88;
-			}
 		}
 	}
 }
