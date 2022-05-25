@@ -254,22 +254,22 @@
             <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="(scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED') && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" readonly>
+            <iInput v-if="(scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED') && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" :readonly="!canEdit(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
+            <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" :readonly="!canEdit(scope.row)"></iInput>
           </template>
           <template #oldPartNamePreset="scope">
             <span v-if="scope.row.isDeclare==0">{{scope.row.oldPartNamePreset}}</span>
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.status !='EMPTY'" class="link" :readonly="!canEdit(scope.row)" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span v-if="scope.row.quotationId" class="link" :readonly="!canEdit(scope.row)" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
@@ -286,7 +286,7 @@
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
-            <span v-if="scope.row.quotationId" class="blue-text" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.quotationId" class="blue-text" :readonly="!canEdit(scope.row)" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -294,6 +294,7 @@
               :disabled="disabledInvestCarTypePro(scope.row)"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeCarInvestProjects($event, scope.row)"
+              :readonly="!canEdit(scope.row)"
             >
               <el-option
                 :value="item.carTypeProjectCode"
@@ -308,7 +309,7 @@
             <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="blue-text" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="blue-text" :readonly="!canEdit(scope.row)" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
             <span v-else>{{scope.row.isMtzDesc}}</span>
           </template>
           <!-- 是否待报价 -->
@@ -321,7 +322,7 @@
           </template>
           <template #groupName="scope">
             <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName" :readonly="!canEdit(scope.row)">
               </iInput>
               <span v-else>{{scope.row.groupName}}</span>
             </div>
@@ -420,6 +421,14 @@ export default {
       const {from=''} = query;
       if(from == 'check') return false
       else return true
+    },
+    // 检查是否可以进行后续操作
+    checkTodo(){
+      let result = true
+      this.multipleSelection.forEach(item => {
+        if(item.buyerId!==this.userInfo.id) result = false
+      })
+      return result
     }
   },
   data() {
@@ -500,6 +509,10 @@ export default {
   },
   methods: {
     floatFixNum,
+    // 判断是否能操作数据
+    canEdit(row){
+      return row.buyerId==this.userInfo.id
+    },
     // 转派
     transfer(){
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDELINGJIAN", "请选择需要转派的零件"))
@@ -732,6 +745,9 @@ export default {
       return false;
     },
     oldPartNumPresetSelect(row) {
+      if(!this.canEdit(row)){
+        return
+      }
       // if (!row.oldPartNumPreset) return
       // 如果是从AEKO查看跳转过来的 不允许跳转
       const routeQuery = this.$route.query;
@@ -1016,7 +1032,7 @@ export default {
         }
       })
       if(flag){
-         return iMessage.eror(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
+         return iMessage.error(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
       }
       // 可支持报价
       if (filtRows.length) {
@@ -1146,6 +1162,7 @@ export default {
     goToinvestCarTypePro(){
       const { multipleSelection } = this;
       if (!multipleSelection.length) return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      if(!this.checkTodo) return iMessage.warn(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGCAOZUO", "请选择自己的零件号进行操作"))
       this.investCarTypeProVisible = true;
     },
 
