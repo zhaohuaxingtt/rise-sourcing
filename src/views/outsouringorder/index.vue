@@ -11,7 +11,7 @@
     <headerNav />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()'>
       <el-form>
-        <template v-for='(items,index) in searchForm'>
+        <template v-for='(items,index) in searchCloumn'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
             <template v-if='items.type == "input"'>
               <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
@@ -71,13 +71,18 @@
         permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
-        radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight">
+        radio 
+        @handleSelectionChange="(row)=>selectRow=row" 
+        :tableData='tabelList' 
+        :tableTitle='tableTitle' 
+        v-loading='tabelLoading'
+        class="aotoTableHeight">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>
-        <template #nominateId="scope">
+        <template #riseCode="scope">
           <!-- <span class="flexRow-link"> -->
-            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateId }}</span>
+            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
             <!-- <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
@@ -111,48 +116,49 @@
 import { iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon,iDatePicker } from 'rise'
 import headerNav from "@/components/headerNav"
 import backEps from "./components/backEps"
-import { searchForm,form,tableTitle } from './components/data'
+import { searchForm, searchCloumn, form,tableTitle } from './components/data'
 import { outsouringFindBypage,signByLinie,rejectByLinie,deleteOutSouring,closeOutSouringOrder } from '@/api/outsouringorder'
 import { pageMixins } from "@/utils/pageMixins";
 import tablePart from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import { selectDictByKeys } from "@/api/dictionary"
-import { getBuyers } from '@/api/letterAndLoi/letter'
+import { selectDictByKeys } from "@/api/dictionary";
+import { getBuyers } from '@/api/letterAndLoi/letter';
 import {user} from '@/config'
 
 // eslint-disable-next-line no-undef
-export default{
+export default {
   mixins:[pageMixins,tableSortMixins],
   components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,icon, headerNav, backEps },
   data(){
     return {
-      backDialogVisible:false,
-      baseUrl:process.env.VUE_APP_SOURCING,
+      backDialogVisible: false,
+      baseUrl: process.env.VUE_APP_SOURCING,
       searchForm:[],
-      form:JSON.parse(JSON.stringify(form)),
-      tableTitle:tableTitle,
-      tabelLoading:false,
+      form: JSON.parse(JSON.stringify(form)),
+      tableTitle: tableTitle,
+      tabelLoading: false,
       tabelList:[],
-      decArrayList:['applicationStatus','nominateProcessType','partProjectType'],
-      selectRow:[],
+      decArrayList: ['applicationStatus','nominateProcessType','partProjectType'],
+      selectRow: [],
+      searchCloumn: searchCloumn,
       mode: 'back'
     }
   },
-    created(){
-      // this.initSelectOptions()
-      this.outsouringFindBypage()
+  created(){
+    // this.initSelectOptions()
+    this.outsouringFindBypage()
+  },
+  methods:{
+    createSignSheet() {
+      this.$router.push('/partsign/outsouringorder/addoutsourcing/details')
     },
-    methods:{
-      createSignSheet() {
-        this.$router.push('/partsign/outsouringorder/addoutsourcing/details')
-      },
-      //仅看自己
-      showOnlyMyselfData(val) {
-        this.form.currentPage = 1;
-        this.form.pageSize = this.page.pageSize;
-        this.form.isOwn = val;
-        this.outsouringFindBypage();
-      },
+    //仅看自己
+    showOnlyMyselfData(val) {
+      this.form.currentPage = 1;
+      this.form.pageSize = this.page.pageSize;
+      this.form.isOwn = val;
+      this.outsouringFindBypage();
+    },
     /**
     * @Description: 退回EPS弹窗状态修改
     * @param {*} visible
@@ -187,17 +193,14 @@ export default{
      * @return {*}
      */
     viewNominationDetail(row) {
-      // 禁用nominateProcessType编辑
-      this.$store.dispatch('setNominationTypeDisable', true)
+      // // 禁用nominateProcessType编辑
+      // this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
+          path: '/partsign/outsouringorder/addoutsourcing/details',
           query: {
-            desinateId: row.nominateId, 
-            designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
-            partProjType: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
-            businessKey: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
-            applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
+            code: row.riseCode,
+            subType: row.subType
           }
         })
         window.open(routeData.href, '_blank')
@@ -304,45 +307,45 @@ export default{
       }
     },
 
-      dictkey(){
-        return new Promise(r=>{
-            selectDictByKeys([{keys:'NOMINATE_APP_PROCESS_TYPE'},{keys:'MEETING_TYPE'},{keys:'NOMINATE_APP_STATUS_FILING'}]).then(res=>{
-              r(res.data)
-            }).catch(()=>r({}))
-          })
-      },
-      getBuyers(roleCode){
-        return new Promise(r=>{
-           getBuyers({roleCode}).then(res=>{r(res.data)}).catch(()=>r({}))
-        })
-      },
-      async initSelectOptions(){    
-        const lineOptions = await this.getBuyers("LINIE") //user.LINLIE
-        const beforBuyer = await this.getBuyers("QQCGY") // user.BEFORBUYER
-        const distKeys = await this.dictkey()
-        this.searchForm = searchForm({...this.translateOptions('LINLIE',lineOptions),...this.translateOptions('BEFORBUYER',beforBuyer),...distKeys})
-      },
-      /**
-       * @description: 转换数据为optionslist格式
-       * @param {*} props
-       * @return {*}
-       */
-      translateOptions(props,data){
-        let object = {}
-        object[props] = data.map(items=>{return {"name":items.nameZh,'code':items.id}})
-        return object
-      },
-      // 重置
-      reset(){
-        Object.keys(this.form).forEach(element => {
-          this.form[element] = ''
-        });
+    getBuyers(roleCode){
+      return new Promise(r=>{
+         getBuyers({roleCode}).then(res=>{r(res.data)}).catch(()=>r({}))
+      })
+    },
+    async initSelectOptions() {
+      console.warn('asSsSSS')
+      const lineOptions = await this.getBuyers("LINIE") //user.LINLIE
+      const beforBuyer = await this.getBuyers("QQCGY") // user.BEFORBUYER
+      const distKeys = await this.dictkey()
+      this.searchForm = searchForm({...this.translateOptions('LINLIE',lineOptions),...this.translateOptions('BEFORBUYER',beforBuyer), ...distKeys})
+    },
 
-        this.form.showSelf = true
-        this.sure()
-      },
-   
-    }
+    dictkey(){
+      return new Promise(r=>{
+          selectDictByKeys([{keys:'NOMINATE_APP_PROCESS_TYPE'},{keys:'MEETING_TYPE'},{keys:'NOMINATE_APP_STATUS_FILING'}]).then(res=>{
+            r(res.data)
+          }).catch(()=>r({}))
+      })
+    },
+    /**
+     * @description: 转换数据为optionslist格式
+     * @param {*} props
+     * @return {*}
+     */
+    translateOptions(props,data){
+      let object = {}
+      object[props] = data.map(items=>{return {"name":items.nameZh,'code':items.id}})
+      return object
+    },
+    // 重置
+    reset(){
+      Object.keys(this.form).forEach(element => {
+        this.form[element] = ''
+      });
+      this.form.showSelf = true
+      this.sure()
+    },
+  }
 }
 </script>
 <style lang='scss' scoped>

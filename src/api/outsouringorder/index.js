@@ -11,6 +11,7 @@ import download from '@/utils/axios.download'
 const requst = axios(process.env.VUE_APP_PURCHASE)
 const downLoad = download(process.env.VUE_APP_PURCHASE)
 const requstPartResource = axios(process.env.VUE_APP_BASE_INFO + '/web')
+const INVESTMENT = axios(process.env.VUE_APP_TOOLING + '/investment')
 
 /**
  * @description: 采购申请列表分页查询接口
@@ -100,5 +101,14 @@ export function dictkey(params) {
   url: '/selectDictKey',
   method: 'GET',
   params: params
+ })
+}
+
+//获取linie下拉
+export function liniePullDownByDept(parmars) {
+ return INVESTMENT({
+  url: '/liniePullDownByDept',
+  method: 'POST',
+  data: parmars
  })
 }

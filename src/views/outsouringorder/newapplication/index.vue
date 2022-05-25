@@ -20,27 +20,30 @@
               <iFormGroup row="1" inline>
                 <div class="row">
                   <div class="col">
-                   <iFormItem :label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'" name="test">
-                    <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.subType" v-if="canEdit" @change="handleTypeChange">
-                      <el-option v-for="(item, index) in addType" :key="index" :value="item.label" :label="$t(item.key)"></el-option>
-                    </iSelect>
-                    <iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>
-                  </iFormItem>
+                    <iFormItem :label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'" name="test">
+                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.subType" v-if="canEdit" @change="handleTypeChange">
+                        <el-option v-for="(item, index) in addType" :key="index" :value="item.label" :label="$t(item.key)"></el-option>
+                      </iSelect>
+                      <iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>
+                    </iFormItem>
                     <iFormItem :label="$t('申请人') + ':'" name="test">
                       <iText>{{ baseinfodata.applyBy }}</iText>
                     </iFormItem>
                   </div>
                   <div class="col">
-                     <iFormItem :label="$t('推荐采购员') + ':'" name="test">
-                      <iText> {{ baseinfodata.owerId }}</iText>
+                    <iFormItem :label="$t('推荐采购员') + ':'" name="test">
+                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.ownerId" v-if="canEdit" @change="handleTypeChange">
+                        <el-option v-for="(item, index) in lineOptiondata" :key="index" :value="item.linieID" :label="$t(item.linieName)"></el-option>
+                      </iSelect>
+                      <iText v-else> {{ baseinfodata.ownerName }}</iText>
                     </iFormItem>
                     <iFormItem :label="$t('申请部门') + ':'" name="test">
-                      <iText> {{ baseinfodata.applyDeptNo }}</iText>
+                      <iText> {{ baseinfodata.deptNum }}</iText>
                     </iFormItem>
                   </div>
                   <div class="col">
                      <iFormItem :label="$t('零件编号前缀') + ':'" name="test">
-                      <iText> {{ baseinfodata.buyerName }} </iText>
+                      <iText> {{ baseinfodata.partPrefix }} </iText>
                     </iFormItem>
                     <iFormItem :label="$t('备注') + ':'" name="test">
                       <iInput v-model="baseinfodata.remarks" :disabled="state == 1 ? true : false" class="width500"></iInput>
@@ -91,7 +94,7 @@ import filters from '@/utils/filters'
 import tablelist from './components/tablelist'
 import logButton from '../components/logButton'
 import { purchaseFactory } from '@/api/partsprocure/editordetail'
-import { dictkey, sendLinie } from '@/api/outsouringorder'
+import { dictkey, sendLinie, liniePullDownByDept } from '@/api/outsouringorder'
 import { inventoryLocation, saveOrUpdate, findNormalPrByPage, findNormalPrById, deleteNormalPr, applyExport, applyImport } from '@/api/ws2/purchaserequest'
 import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
@@ -138,13 +141,14 @@ export default {
         riseCode: '',
         type: 'GPR',
         applyBy: this.$store.state.permission.userInfo?.nameZh,
-        applyDeptNo: this.$store.state.permission.userInfo?.deptDTO.deptNum,
+        deptNum: this.$store.state.permission.userInfo?.deptDTO.deptNum,
         subType: 'ZN_ONE',
         status: 'draft',
         owerId: '',
       },
       logDialogVisible: false,
       isLatest: true,
+      lineOptiondata: []
     }
   },
   created() {
@@ -155,6 +159,7 @@ export default {
       this.fromDetail = true
       this.baseinfodata.riseCode = this.$route.query.code
       this.getTableListFn()
+      this.getTableHaderInfo()
     }
     if (this.$route.query.isLatest === 'false') {
       this.isLatest = false
@@ -168,8 +173,23 @@ export default {
     this.purchaseFactory()
     this.getProcureGroup()
     this.getLocation()
+    this.getLineInfo()
   },
+
   methods: {
+    // 获取推荐采购员
+    getLineInfo() {
+      liniePullDownByDept({
+        deptId: this.$store.state.permission.userInfo?.deptDTO.id
+      }).then(res => {
+        if (res.data instanceof Array && res.data.length > 0) {
+          this.lineOptiondata = res.data;
+        }
+      }).catch(err => {
+        this.lineOptiondata =[];
+      })
+    },
+
     //获取采购工厂列表
     purchaseFactory() {
       purchaseFactory({ firstId: this.firstId, isSparePart: false })
@@ -412,6 +432,15 @@ export default {
         if (+res.code === 200 && res.data instanceof Array) {
           console.log(res.data)
         }
+      })
+    },
+    // 获取头部信息
+    getTableHaderInfo() {
+      let params = {
+        riseCode: this.baseinfodata.riseCode,
+      }
+      findNormalPrById(params).then(res => {
+        console.log(res);
       })
     },
     // 获取零件采购项目相关信息

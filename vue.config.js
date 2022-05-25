@@ -235,12 +235,19 @@ module.exports = {
 					'^/partsProcureApi': '',
 				},
 			},
-			'/toolingApi': {
-				target: 'http://10.122.17.38:8022', //	vmsit
+			// '/toolingApi': {
+			// 	target: 'http://10.122.17.38:8022', //	vmsit
+			// 	changeOrigin: true,
+			// 	pathRewrite: {
+			// 		'^/toolingApi': '',
+			// 	},
+			// },
+			[process.env.VUE_APP_TOOLING]: {
+				target: `http://rise-gateway-runtime.apps.vmocp-test.csvw.com/tooling/web`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/toolingApi': '',
-				},
+					['^' + process.env.VUE_APP_TOOLING]: ''
+				}
 			},
 			'/newCommonApi': {
 				target: 'http://10.122.17.38:8034',
