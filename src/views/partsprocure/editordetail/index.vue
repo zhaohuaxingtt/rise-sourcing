@@ -161,6 +161,7 @@
 							<!-- <iSelect
 								ref="partProjectTypeSelect"
 								v-if="!disabled"
+                :disabled="isGXWW"
 								v-model="detailData.partProjectType"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
@@ -487,6 +488,11 @@
 				return this.fromGroup.PART_PROJECT_TYPE || []
 				// return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
 			},
+      // partProjTypes.GONGXUWEIWAI	工序委外
+      // partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU	工序委外一次性采购
+      isGXWW(){
+        return this.detailData.partProjectType == partProjTypes.GONGXUWEIWAI || this.detailData.partProjectType == partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU
+      },
 
    /**
     * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择

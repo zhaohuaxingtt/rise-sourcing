@@ -64,7 +64,7 @@
       </div>
     </div>
     <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
-      <template  v-for="(item, index) in rfqList">
+      <template  v-for="(item, index) in newRfqList">
           <div class="pageCard-main rsPdfCard" :key="i+'_'+index" v-for="(child,i) in item.tableList">
             <div style="padding:1px">
               <slot name="tabTitle"></slot>
@@ -128,6 +128,7 @@ export default {
   data() {
     return {
       rfqList: [],
+      newRfqList:[],
       tableTitle: [],
       dialogVisible: false,
       rateTableData: [],
@@ -163,7 +164,9 @@ export default {
   watch:{
     rfqList:{
       deep:true,
-      handler(val){}
+      handler(val){
+        this.getHeight()
+      }
     }
   },
   methods: {
@@ -171,38 +174,35 @@ export default {
       if(!this.$refs.bdl) return
       this.width = this.$refs.bdl.offsetWidth
       let hasTitle = this.$refs.tabTitle.offsetHeight
-      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+      let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0]?.offsetHeight || 0 // Title 区域高度
       let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
-      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
+      let tableHeader = this.$refs.rsPdfCard.getElementsByClassName('el-table__header-wrapper')[0]?.offsetHeight || 0
       this.cntentHeight = (this.width / 841.89) * 595.28 - headerHeight - pageLogo - hasTitle // 内容区域对应的高度
-      let rfqList = this.rfqList
+      let rfqList = JSON.parse(JSON.stringify(this.rfqList))
       rfqList.forEach((child,index)=>{
         let heightSum = 0
         let tableList = []
         let arr = []
         if(child.tableData&&child.tableData.length&&child.tableList&&!child.tableList.length){
           const bdl = this.$refs.bdl
-          let Interval = setInterval(() => {
-            let rowList = bdl.getElementsByClassName('table-row'+index)
-            if(rowList.length){
-              clearInterval(Interval)
-              rowList.forEach((item,i)=>{
-                heightSum+=item.offsetHeight
-                if(heightSum<this.cntentHeight - tableHeader){
-                  arr.push(this.rfqList[index].tableData[i])
-                }else{
-                  tableList.push(JSON.parse(JSON.stringify(arr)))
-                  heightSum=item.offsetHeight
-                  arr = [this.rfqList[index].tableData[i]]
-                }
-              })
-              tableList.push(JSON.parse(JSON.stringify(arr)))
-              rfqList[index].tableList = tableList
-            }
-          }, 2000);
+          let rowList = bdl.getElementsByClassName('table-row'+index)
+          if(rowList.length){
+            rowList.forEach((item,i)=>{
+              heightSum+=item.offsetHeight
+              if(heightSum<this.cntentHeight - tableHeader){
+                arr.push(this.rfqList[index].tableData[i])
+              }else{
+                tableList.push(JSON.parse(JSON.stringify(arr)))
+                heightSum=item.offsetHeight
+                arr = [this.rfqList[index].tableData[i]]
+              }
+            })
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            rfqList[index].tableList = tableList
+          }
         }
       })
-      this.rfqList = rfqList
+      this.newRfqList = rfqList
     },
     sizeChange(val, index) {
       this.rfqList[index].page = {
