@@ -1216,65 +1216,46 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => {
+        this.$nextTick(()=>{
+          this.getHeight()
+        })
+      })
     },
-		/**
-		 * @Description: 获取备注
-		 * @Author: Luoshuang
-		 * @param {*}
-		 * @return {*}
-		 */
-		getRemark() {
-			getRemark(this.nominateId).then((res) => {
-				if (res?.result) {
-					const data = Array.isArray(res.data) ? res.data : []
-					data.forEach((element) => {
-						this.remarks[element.remarkType] = element.remark || ''
-						this.remarkItem = meetingRemark.map((item) => {
-							return { ...item, value: this.remarks[item.remarkType] }
-						})
-					})
-				} else {
-					this.remarks = {}
-					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-				}
-			})
-		},
 
 		resetLtcData,
 
 		// 获取汇率
 		searchRsPageExchangeRate() {
-		let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
-		searchRsPageExchangeRate(id)
-		.then(res => {
-			if (res.code == 200) {
-			if (this.basicData.currency) {
-				const sourceData = Array.isArray(res.data) ? res.data : []
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          if (this.basicData.currency) {
+            const sourceData = Array.isArray(res.data) ? res.data : []
 
-				this.exchangeRates = sourceData
-				.filter(item => !item.isCurrentVersion)
-				.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+            this.exchangeRates = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
 
-				this.exchangeRates = this.exchangeRates.map(item => {
-				const result = { version: item.exchangeRateVos[0].version }
-				
-				result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+            this.exchangeRates = this.exchangeRates.map(item => {
+            const result = { version: item.exchangeRateVos[0].version }
+            
+            result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
 
-				if (this.exchangeRates.length > 1) {
-					result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
-				} else {
-					result.fsNumsStr = ""
-				}
+            if (this.exchangeRates.length > 1) {
+              result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+            } else {
+              result.fsNumsStr = ""
+            }
 
-				return result
-				})
-			} else {
-				
-			}
-			} else {
-			iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-			}
-		})
+            return result
+            })
+          }
+        } else {
+        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
 		},
 
 		// 汇率显示处理
@@ -1284,7 +1265,7 @@ export default {
 		// 权限获取数据
 		reviewListRs() {
 			this.tableLoading = true
-		
+      this.searchRsPageExchangeRate()
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -1327,7 +1308,6 @@ export default {
           this.tableData = data
           this.projectType = this.basicData.partProjectType || ""
 
-          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []
