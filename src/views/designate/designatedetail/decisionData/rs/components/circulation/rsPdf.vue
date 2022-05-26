@@ -194,14 +194,64 @@
                 <div style="margin-left:20px">
                   <span style="color: red">*</span><span>代表投资费已分摊</span>
                 </div>
-                <div v-if="index==tableList.length-1 && !hasOtherPage">
+                <div v-if="index==tableList.length-1 && residualRemark.length">
                   <div class="beizhu">
                     备注 Remarks:
                     <div class="beizhu-value">
-                      <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                      <p v-for="(item,index) in residualRemark[0]" :key="index">{{item}}<br/></p>
                     </div>
                   </div>
+                  <iCard v-if="!remarkList.length" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                    <div class="checkList">
+                      <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                        <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                        <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                        <div v-else class="" >-</div>
+                        <div class="checkList-item-info">
+                          <span>Dept.:</span>
+                          <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                        </div>
+                        <div class="checkList-item-info">
+                          <span>Date:</span>
+                          <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </iCard>
                 </div>
+              </div>
+              <div class="page-logo">
+                <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+                <div>
+                  <p class="pageNum">{{'page '+(index+1)+' of '+(tableList.length+remarkList.length)}}</p>
+                </div>
+                <div>
+                  <p>{{ userName }}</p>
+                  <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+                </div>
+              </div>
+            </div>
+        </iCard>
+      </div>
+    </template>
+    <div v-if="hasOtherPage">
+      <template v-for="(remark,index) in remarkList">
+        <div :key="index" class="pageCard-main">
+        <slot name="tabTitle"></slot>
+        <iCard :key="index" class="rsCard pageCard">
+          <template #header>
+            <div class="title">
+              <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
+            </div>
+          </template>
+            <div :style="{'height': otherPageHeight + 'px'}">
+              <div class="beizhu">
+                备注 Remarks:
+                <div class="beizhu-value">
+                  <p v-for="(item,index) in remark" :key="index">{{item}}<br/></p>
+                </div>
+              </div>
+              <template v-if="!hasLastPage && i==remarkList.length-1">
                 <iCard class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                   <div class="checkList">
                     <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
@@ -219,38 +269,7 @@
                     </div>
                   </div>
                 </iCard>
-              </div>
-              <div class="page-logo">
-                <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-                <div>
-                  <p class="pageNum">{{'page '+(index+1)+' of '+(tableList.length+remarkList.length)}}</p>
-                </div>
-                <div>
-                  <p>{{ userName }}</p>
-                  <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-                </div>
-              </div>
-            </div>
-        </iCard>
-      </div>
-    </template>
-    <div v-if="hasOtherPage">
-      <template v-for="(remarkItem,index) in remarkList">
-        <div :key="index" class="pageCard-main">
-        <slot name="tabTitle"></slot>
-        <iCard :key="index" class="rsCard pageCard">
-          <template #header>
-            <div class="title">
-              <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
-            </div>
-          </template>
-            <div :style="{'height': otherPageHeight + 'px'}">
-              <div class="beizhu">
-                备注 Remarks:
-                <div class="beizhu-value">
-                  <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
-                </div>
-              </div>
+              </template>
             </div>
             <div class="pdf-content">
               <div class="page-logo">
@@ -267,6 +286,47 @@
         </iCard>
     </div>
       </template>
+    </div>
+    <div v-if="hasLastPage">
+      <div class="pageCard-main">
+        <slot name="tabTitle"></slot>
+        <iCard class="rsCard pageCard">
+          <template #header>
+            <div class="title">
+              <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
+            </div>
+          </template>
+          <div :style="{'height': otherPageHeight + 'px'}">
+            <iCard class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+              <div class="checkList">
+                <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                  <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                  <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                  <div v-else class="" >-</div>
+                  <div class="checkList-item-info">
+                    <span>Dept.:</span>
+                    <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                  </div>
+                  <div class="checkList-item-info">
+                    <span>Date:</span>
+                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                  </div>
+                </div>
+              </div>
+            </iCard>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p class="pageNum"></p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </iCard>
+      </div>
     </div>
   </div>
 </template>
@@ -289,6 +349,7 @@ export default {
 		tableData: { type: Array, default: () => [] },
 		remarkItem: { type: Array, default: () => [] },
     remarkList: { type: Array, default: () => [] },
+    residualRemark: { type: Array, default: () => [] },
 		checkList: { type: Array, default: () => [] },
 		exchangeRate: { type: String, default: '' },
 		tableHeight: { type: Number, default: 0 },
@@ -296,6 +357,7 @@ export default {
     hasOtherPage:{ type: Boolean, default: false },
 		tableList: { type: Array, default: () => [[]] },
 		processApplyDate: { type: String, default: '' },
+    hasLastPage:{ type: Boolean, default: false },
 	},
 	filters: {
 		toThousands,
@@ -326,24 +388,24 @@ export default {
 	background: #ffffff;
 }
 .pageCard-main{
-	.rsCard {
-		box-shadow: none;
-		& + .rsCard {
-			margin-top: 20px; /*no*/
-		}
+  .rsCard {
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
 
-		::v-deep .cardHeader {
-			padding: 30px 0px;
-		}
-		::v-deep .cardBody {
-			padding: 0px;
-		}
-	}
-	.pdf-content {
-		& + .pdf-content {
-			margin-top: 20px;
-		}
-	}
+    ::v-deep .cardHeader {
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody {
+      padding: 0px;
+    }
+  }
+  .pdf-content {
+    & + .pdf-content {
+      margin-top: 20px;
+    }
+  }
 
   .rsTable {
     &.el-table--group, &.el-table--border{
@@ -432,23 +494,23 @@ export default {
     border-top: 1px solid #666;
   }
 
-	.checkDate {
-		::v-deep .card .cardHeader .title {
-			// font-size: 16px;
-			font-weight: 400;
-			color: rgba(75, 75, 76, 1);
-		}
-	}
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
 
-	.Application {
-		::v-deep .cardHeader {
-			padding-top: 12px;
-			padding-bottom: 12px;
-			.title .title_content {
-				font-size: 13px !important;
-			}
-		}
-	}
+  .Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
+    }
+  }
 
   .checkList {
     display: flex;
@@ -484,12 +546,12 @@ export default {
     }
   }
 
-	.complete {
-		color: rgb(104, 193, 131);
-	}
+  .complete {
+    color: rgb(104, 193, 131);
+  }
 
-	.cancel {
-		color: rgb(95, 104, 121);
-	}
+  .cancel {
+    color: rgb(95, 104, 121);
+  }
 }
 </style>
