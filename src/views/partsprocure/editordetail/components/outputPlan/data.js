@@ -27,7 +27,7 @@ export const volumeTableTitle = [
   { props: 'gearType', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI', tooltip: true },
   { props: 'cartypeLevel', name: '等级配置', key: 'LK_DENGJIPEIZHI', tooltip: true },
   { props: 'otherInfo', name: '其他配置', key: 'LK_QITAPEIZHI', tooltip: true },
-  { props: 'cartypeLevelRate', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
+  { props: 'ratio', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
   { props: 'perCarDosage', name: '用量', key: 'LK_YONGLIANG', tooltip: true,type:'input',editable:true }
 ]
 export const carTitle = [

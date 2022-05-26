@@ -36,9 +36,9 @@
           <iInput v-if="isEdit && ispartProjectSource" v-model="scope.row.perCarDosage" @click.native.stop @focus="handleFocusByInput(scope.row)" @input="handleInputByPerCarDosage($event, scope.row)" />
           <span v-else>{{ scope.row.perCarDosage }}</span>
         </template>
-        <template #cartypeLevelRate="scope">
+        <!-- <template #cartypeLevelRate="scope">
           <span>{{ percent(scope.row.cartypeLevelRate) }}</span>
-        </template>
+        </template> -->
       </tableList>
       <iPagination
         class="pagination margin-top30"
