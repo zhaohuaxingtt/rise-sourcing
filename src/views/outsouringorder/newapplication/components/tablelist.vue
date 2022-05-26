@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table tooltip-effect="light" :height="height" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'" :span-method="objectSpanMethod" :row-class-name="tableRowClassName" class="table" :key="keystring">
+    <el-table border tooltip-effect="light" :height="height" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'" :span-method="objectSpanMethod" :row-class-name="tableRowClassName" class="table" :key="keystring">
       <el-table-column v-if="selection" type="selection" width="50" align="center" :key="index"></el-table-column>
       <template v-for="(items, index) in tableTitle">
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-if="items.props == 'detail'" :prop="items.props" :label="$t(items.key)" :width="items.width">
@@ -47,6 +47,16 @@
           <template slot-scope="scope">
             <iInput v-if="canEdit && statusEdit(scope.row)" v-model.trim="scope.row['partNum']" @blur="getPartInfoAsync(scope.row['partNum'], scope.row['sapItem'])"></iInput>
             <span v-else>{{ scope.row['partNum'] }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'partNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
+          <template slot="header">
+            <span>{{ $t(items.key) }}</span>
+            <span style="color: red">*</span>
+          </template>
+          <template slot-scope="scope">
+            <iInput v-if="canEdit && statusEdit(scope.row)" v-model.trim="scope.row['partNameZh']" />
+            <span v-else>{{ scope.row['partNameZh'] }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'quantity'" :prop="items.props" :label="$t(items.key)" :width="items.width">

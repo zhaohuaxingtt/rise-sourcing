@@ -42,8 +42,9 @@
                     </iFormItem>
                   </div>
                   <div class="col">
-                     <iFormItem :label="$t('零件编号前缀') + ':'" name="test">
-                      <iText> {{ baseinfodata.partPrefix }} </iText>
+                    <iFormItem :label="$t('零件编号前缀') + ':'" name="test">
+                      <iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
+                      <iText v-else> {{ baseinfodata.partPrefix }} </iText>
                     </iFormItem>
                     <iFormItem :label="$t('备注') + ':'" name="test">
                       <iInput v-model="baseinfodata.remarks" :disabled="state == 1 ? true : false" class="width500"></iInput>
@@ -252,13 +253,26 @@ export default {
     // 发送给采购员
     sendToLine() {
       sendLine({
-        deptName: '',
-        deptNum: '',
-        normalPrList: [],
-        ownerId: '',
+        deptName: this.baseinfodata.deptName,
+        deptNum: this.baseinfodata.deptNum,
+        normalPrList: this.tableListData.map(l => {
+          return {
+            id: l.id,
+            purchasingRequirementId: l.purchasingRequirementId,
+            riseCode: l.riseCode,
+            sapCode: l.sapCode,
+            sapItem: l.sapItem,
+            subType: l.subType,
+            type: l.type
+          }
+        }),
+        ownerId: this.baseinfodata.ownerId,
         riseCodes: this.baseinfodata.riseCode
       }).then(res => {
-        console.log(res);
+        if (res.result) {
+          this.getTableListFn()
+          this.getTableHaderInfo()
+        }
       })
     },
     createOrder() {
@@ -422,25 +436,16 @@ export default {
     importExcel() {
       this.baseinfodata.type = this.applicationTypeVal
     },
-    // 获取头部信息
-    getOutSouringHeadDetail() {
-      findNormalPrById({
-        riseCode: '1212',
-        sapCode: 'qqweqe',
-        sapItem: 10
-      }).then(res => {
-        if (+res.code === 200 && res.data instanceof Array) {
-          console.log(res.data)
-        }
-      })
-    },
+  
     // 获取头部信息
     getTableHaderInfo() {
       let params = {
         riseCode: this.baseinfodata.riseCode,
       }
       findNormalPrById(params).then(res => {
-        console.log(res);
+        if(res.data) {
+          this.baseinfodata = res.data[0];
+        }
       })
     },
     // 获取零件采购项目相关信息

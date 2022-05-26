@@ -275,28 +275,28 @@ export const tableTitleOfOutSouringDetail = [
     tooltip: true,
   },
   {
-    props: 'partCode',
+    props: 'partNum',
     name: '零件号',
     key: 'LK_LINGJIANHAO',
     minWidth: 140,
     tooltip: false,
   },
   {
-    props: 'partName',
+    props: 'partNameZh',
     name: '零件名称',
     key: 'LK_LINGJIANMINGCHENZHONG',
     minWidth: 120,
     tooltip: true,
   },
   {
-    props: 'partName',
+    props: 'quantity',
     name: '数量',
     key: 'MODEL-ORDER.LK_LINGJIANMINGCENG',
     minWidth: 120,
     tooltip: true,
   },
   {
-    props: 'partName',
+    props: 'unitCode',
     name: '计量单位',
     key: 'LK_JILIANGDANWEI',
     minWidth: 120,
@@ -381,14 +381,6 @@ export const newTableTitle = [
     align: 'center',
     width: 150
   },
-  // {
-  //   props: 'account',
-  //   name: '科目',
-  //   key: 'LK_KEMU',
-  //   tooltip: true,
-  //   align: 'center',
-  //   width: 90
-  // },
   {
     props: 'partNum',
     name: '零件号',

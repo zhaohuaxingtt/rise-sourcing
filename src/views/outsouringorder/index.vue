@@ -68,7 +68,6 @@
         </div>
       </div>
       <tablePart
-        permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
         radio 
@@ -77,9 +76,9 @@
         :tableTitle='tableTitle' 
         v-loading='tabelLoading'
         class="aotoTableHeight">
-        <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
+        <!--<template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
-        </template>
+        </template>-->
         <template #riseCode="scope">
           <!-- <span class="flexRow-link"> -->
             <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
@@ -138,7 +137,6 @@ export default {
       tableTitle: tableTitle,
       tabelLoading: false,
       tabelList:[],
-      decArrayList: ['applicationStatus','nominateProcessType','partProjectType'],
       selectRow: [],
       searchCloumn: searchCloumn,
       mode: 'back'
@@ -218,12 +216,12 @@ export default {
     outsouringFindBypage(){
       this.tabelLoading = true
       outsouringFindBypage({...{size:this.page.pageSize,current:this.page.currPage},...this.form}).then(res=>{
-        if(+res.code === 200 && res.data.records instanceof Array) {
+        this.tabelLoading = false;
+        if(res.data) {
           this.tabelList = res.data.records;
           this.page.currPage = res.data.current;
           this.page.pageSize = res.data.size;
           this.page.totalCount = res.data.total;
-          this.tabelLoading = false;
         }
       }).catch(err=>{this.tabelLoading = false})
     },
@@ -235,6 +233,7 @@ export default {
     handleBatchDelete(){
       this.tabelLoading = true
       deleteOutSouring(this.selectRow.map(k => k.riseCode)).then(res=>{
+        this.tabelLoading = false
         if(+res.code === 200) {
          this.outsouringFindBypage();
         }
@@ -246,6 +245,7 @@ export default {
      * @return {*}
      */
     handleBatchSingn() {
+      this.tabelLoading = true;
       signByLinie({
         beforeLinie: '',
         beforeLinieId: '',
@@ -254,6 +254,7 @@ export default {
           return { riseCode: k.riseCode, sapItem: k.sapItem }
         })
       }).then(res => {
+      this.tabelLoading = false;
         if (res.code === '200') {
           this.outsouringFindBypage()
         }
@@ -345,6 +346,9 @@ export default {
       this.form.showSelf = true
       this.sure()
     },
+  },
+  mounted() {
+    console.log(this.tabelLoading)
   }
 }
 </script>
