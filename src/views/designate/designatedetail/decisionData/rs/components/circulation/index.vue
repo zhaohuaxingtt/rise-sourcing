@@ -298,6 +298,7 @@
         </div>
       </iFormGroup>
     </iCard> -->
+    <div id="hide">
     <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
@@ -525,6 +526,7 @@
                   :layout="page.layout"
                   :total="page.totalCount" />
     </iCard>
+    </div>
     <canvas id="myCanvas"></canvas>
   </div>
 </template>
@@ -1115,6 +1117,12 @@ export default {
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: '#ffffff', //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
+        ignoreElements:(el)=>{
+          if(el.id=='hide'){
+            return true
+          }
+          return false
+        },
         onclone(doc){
           dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
           let el = doc.getElementById('contentPdf')
@@ -1465,6 +1473,174 @@ export default {
         }
       }
     }
+  }
+}
+
+.contentPdf{
+  ::v-deep .rsCard {
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
+
+    .cardHeader {
+      padding: 30px 0px;
+    }
+    .cardBody {
+      padding: 0px;
+    }
+  }
+  ::v-deep .pdf-content {
+    & + .pdf-content {
+      margin-top: 20px;
+    }
+  }
+
+  ::v-deep .rsTable {
+    &.el-table--group, &.el-table--border{
+      border-color: #ccc;
+    }
+    font-size: 8px; /*no*/
+    &::before, &::after {
+      background-color: #ccc;
+    }
+    .el-table__fixed::before, .el-table__fixed-right::before{
+      background-color: #ccc;
+    }
+    thead th {
+      padding-top: 8px; /*no*/
+      padding-bottom: 8px; /*no*/
+      & > .cell {
+        padding-left: 3px; /*no*/
+        padding-right: 3px; /*no*/
+        line-height: 14px; /*no*/
+        p {
+          min-height: 16px; /*no*/
+        }
+      }
+    }
+    tr {
+      border-left: 1px solid #EBEEF5;
+      border-bottom: 1px solid #EBEEF5;
+      td {
+        border-top: 1px solid #ccc;
+        & > .cell{
+          padding-right: 1px; /*no*/
+          padding-left: 1px; /*no*/
+          &:first-child{
+          padding-left: 8px; /*no*/
+          }
+        }
+      }
+      &:nth-child(even) {
+          background-color: #f7f7ff;
+      }
+    }
+  }
+
+  ::v-deep .infos {
+    display: flex;
+    padding: 0 0 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
+  }
+  ::v-deep .pdf-item, .pageCard{
+    .cardHeader{
+      padding-left: 0;
+    }
+    .cardBody {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  ::v-deep .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px; /*no*/
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
+  ::v-deep .page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
+
+  ::v-deep .checkDate {
+    .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  ::v-deep .Application {
+    .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
+    }
+  }
+
+  ::v-deep .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex: 1;
+      flex-shrink: 0;
+      max-width: 224px;
+      width: 224px;
+      height: 125px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+    &-item:last-child {
+      margin-right: 0;
+    }
+  }
+
+  ::v-deep .complete {
+    color: rgb(104, 193, 131);
+  }
+
+  ::v-deep .cancel {
+    color: rgb(95, 104, 121);
   }
 }
 </style>

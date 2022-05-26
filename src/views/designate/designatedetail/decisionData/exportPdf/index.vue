@@ -319,6 +319,12 @@ export default {
           bgcolor: "#ffffff", //应该这样写
           logging: false, //打印日志用的 可以不加默认为false
           porxy: '',
+          ignoreElements:(el)=>{
+            if(el.id=='pdfHide'){
+              return true
+            }
+            return false
+          },
         }).then(async (canvas) => {
           console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)
@@ -339,6 +345,12 @@ export default {
           bgcolor: "#ffffff", //应该这样写
           logging: false, //打印日志用的 可以不加默认为false
           porxy: '',
+          ignoreElements:(el)=>{
+            if(el.id=='pdfHide'){
+              return true
+            }
+            return false
+          },
         }).then(async (canvas) => {
           console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)

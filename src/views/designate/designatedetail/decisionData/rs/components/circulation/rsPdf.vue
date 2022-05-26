@@ -388,24 +388,24 @@ export default {
 	background: #ffffff;
 }
 .pageCard-main{
-	.rsCard {
-		box-shadow: none;
-		& + .rsCard {
-			margin-top: 20px; /*no*/
-		}
+  .rsCard {
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
 
-		::v-deep .cardHeader {
-			padding: 30px 0px;
-		}
-		::v-deep .cardBody {
-			padding: 0px;
-		}
-	}
-	.pdf-content {
-		& + .pdf-content {
-			margin-top: 20px;
-		}
-	}
+    ::v-deep .cardHeader {
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody {
+      padding: 0px;
+    }
+  }
+  .pdf-content {
+    & + .pdf-content {
+      margin-top: 20px;
+    }
+  }
 
   .rsTable {
     &.el-table--group, &.el-table--border{
@@ -494,23 +494,23 @@ export default {
     border-top: 1px solid #666;
   }
 
-	.checkDate {
-		::v-deep .card .cardHeader .title {
-			// font-size: 16px;
-			font-weight: 400;
-			color: rgba(75, 75, 76, 1);
-		}
-	}
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
 
-	.Application {
-		::v-deep .cardHeader {
-			padding-top: 12px;
-			padding-bottom: 12px;
-			.title .title_content {
-				font-size: 13px !important;
-			}
-		}
-	}
+  .Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
+    }
+  }
 
   .checkList {
     display: flex;
@@ -546,12 +546,12 @@ export default {
     }
   }
 
-	.complete {
-		color: rgb(104, 193, 131);
-	}
+  .complete {
+    color: rgb(104, 193, 131);
+  }
 
-	.cancel {
-		color: rgb(95, 104, 121);
-	}
+  .cancel {
+    color: rgb(95, 104, 121);
+  }
 }
 </style>
