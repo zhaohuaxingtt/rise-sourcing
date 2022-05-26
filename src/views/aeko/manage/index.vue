@@ -409,12 +409,12 @@ export default {
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
-      // if(this.isAekoManager){
-      //   this.searchParams.assignStatus = 1  // 科室未分派
-      // }
-      // if(this.isCommodityCoordinator){
-      //   this.searchParams.assignStatus = 2  // Linie 未分派
-      // }
+      if(this.isAekoManager){
+        this.searchParams.assignStatus = 1  // 科室未分派
+      }
+      if(this.isCommodityCoordinator){
+        this.searchParams.assignStatus = 2  // Linie 未分派
+      }
       this.sure();
       this.getSearchList();
 

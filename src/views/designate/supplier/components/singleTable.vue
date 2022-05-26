@@ -25,7 +25,7 @@
               {{ language("LK_BAOCUN",'保存') }}
             </iButton>
             <iButton
-              @click="singleEditControl = false"
+              @click="cancelEdit"
               v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_CANCEL|单一供应商取消按钮"
             >
               {{ language("LK_QUXIAO",'取消') }}
@@ -124,6 +124,7 @@
     <partDialog :visible.sync="partDialogVisibal" @add="onPartAdd" />
     <!-- 批量操作弹窗 -->
     <batchEditDialog
+      :selectSingleData="selectSingleData"
       :visible.sync="batchEditVisibal"
       :selectOptions="selectOptions"
       @submit="onBatchEdit" />
@@ -369,15 +370,30 @@ export default {
         tar && (Vue.set(tar, 'isEdit', state))
       })
     },
+    cancelEdit(){
+      this.singleEditControl = false
+      this.singleListData = JSON.parse(JSON.stringify(this.oriTableListData))
+    },
     // 单一供应商
     handleSingleSelectionChange(data) {
       this.selectSingleData = data
     },
     onBatchEdit(form) {
+      let tableObj = {}
       this.selectSingleData.forEach(item => {
         Object.keys(form).forEach(key => {
           form[key] && (Vue.set(item, key, form[key]))
         })
+      })
+      this.selectSingleData.forEach(item=>{
+        tableObj[item.partNum] = item
+      })
+      this.singleListData.forEach(item=>{
+        if(tableObj[item.partNum]){
+          Object.keys(form).forEach(key => {
+            form[key] && (Vue.set(item, key, form[key]))
+          })
+        }
       })
     },
     // 导出

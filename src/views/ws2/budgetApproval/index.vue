@@ -352,7 +352,7 @@ export default {
       if(isNext && filterLenth.length != 0){
         let redMultipleSelection = []
         this.multipleSelection.map(item => {
-          if(item.budgetApplyAmount > item.budgetLeftoverAmount && !['50002001','1000003','50003001'].includes(item.partPurchaseProType)){
+          if(Number(item.budgetApplyAmount) > Number(item.budgetLeftoverAmount) && !['50002001','1000003','50003001'].includes(item.partPurchaseProType)){
             redMultipleSelection.push(item)
           }
         })
