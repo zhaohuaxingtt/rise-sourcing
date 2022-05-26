@@ -151,8 +151,8 @@ export default {
         SORT: [
           {
             code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
+            name: '',
+            key: ''
           },
           {
             code: 'TASK_STATUS',
