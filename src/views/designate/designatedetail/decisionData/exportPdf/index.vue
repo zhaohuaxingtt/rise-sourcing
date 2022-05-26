@@ -91,9 +91,9 @@
         </div>
       </div>
     </div>
+    <canvas id="myCanvas"></canvas>
+    <div ref="pdf-containr" class="pdf-containr"></div>
   </div>
-  <canvas id="myCanvas"></canvas>
-  <div ref="pdf-containr" class="pdf-containr"></div>
 </div>
 </template>
 
@@ -448,7 +448,7 @@ export default {
       });
     },
 
-    async getPdfFile(copyCanvas,index){
+    async getPdfFile(copyCanvas,index,i=0){
       return new Promise((r,j)=>{
         copyCanvas.toBlob((blob) => {
           //以时间戳作为文件名 实时区分不同文件
@@ -468,7 +468,16 @@ export default {
             }
           }).catch(error=>{
             console.log(error);
-             this.fileList.push({index, imageUrl: '' });
+            if(i==3) return
+            getPdfFile(copyCanvas,index,++i)
+            // this.$confirm('提示',`第${index}页截取失败，是否重试并继续导出`, {
+            //   confirmButtonText: '确认',
+            //   cancelButtonText: '返回',
+            // }).then(() => {
+            //   getPdfFile(copyCanvas,index)
+            // }).catch(() => {
+            //   this.pageLength--
+            // });
           })
         });
       })
@@ -652,49 +661,50 @@ export default {
 ::v-deep .pageCard-main{
   background: #FFF;
 }
-#allMoudles{
-  &>div+div{
-    margin-top: 20px;
-  }
-  
-  ::v-deep .pdf-item{
-    width: 100%;
-    height: 0;
-    overflow: hidden;
-  }
-  ::v-deep .pageCard-main{
-    overflow: hidden;
-    margin-top: 20px;
-  }
-  ::v-deep .pdf-containr{
-    .pageCard-main{
-      overflow: hidden;
-      margin-top: 0px;
+.exportPdf{
+  #allMoudles{
+    &>div+div{
+      margin-top: 20px;
     }
   }
-  ::v-deep .max-content{
-    width: max-content;
-    min-width: 1860px;
+    ::v-deep .pdf-item{
+      width: 100%;
+      height: 0;
+      overflow: hidden;
+    }
+    ::v-deep .pageCard-main{
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    ::v-deep .pdf-containr{
+      .pageCard-main{
+        overflow: hidden;
+        margin-top: 0px;
+      }
+    }
+    ::v-deep .max-content{
+      width: max-content;
+      min-width: 1860px;
+    }
+    
+  ::v-deep .rsPdfCard{
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
+    .cardHeader{
+      padding: 30px 0px;
+    }
+    .cardBody{
+      padding: 0px;
+    }
   }
-  
-::v-deep .rsPdfCard{
-  box-shadow: none;
-  & + .rsCard {
-    margin-top: 20px; /*no*/
-  }
-  .cardHeader{
-    padding: 30px 0px;
-  }
-  .cardBody{
-    padding: 0px;
-  }
-}
-::v-deep .page-logo{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: center;
-    border-top: 1px solid #666;
-  }
+  ::v-deep .page-logo{
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      align-items: center;
+      border-top: 1px solid #666;
+    }
 }
 </style>

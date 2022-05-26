@@ -171,7 +171,7 @@
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p class="remarkItem" v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+              <p class="remarkItem" v-for="(item,index) in getRemarkAll" :key="index">{{item}}<br/></p>
             </div>
           </div>
           </div>
@@ -251,6 +251,8 @@
         :tableHeight="tableHeight"
         :otherPageHeight="otherPageHeight"
         :hasOtherPage="hasOtherPage"
+        :residualRemark="residualRemark"
+        :hasLastPage="hasLastPage"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
         >
@@ -594,8 +596,11 @@ export default {
       tableLoading: false,
       tableHeight:0,
       otherPageHeight:0,
+      hasLastPage:false,
+      hasOtherPage: false,
       fileList:[],
       remarkList:[],
+      residualRemark:[],
       infos,
       exchangeRate: "",
       processApplyDate: "",
@@ -676,6 +681,14 @@ export default {
     isApproval() {
       return this.$route.query.isApproval === "true"
     },
+		getRemarkAll() {
+      let result = []
+      for (let i = 0; i < this.remarkItem.length; i++) {
+        const item = this.remarkItem[i];
+        result.push(item.value)
+      }
+			return result.join('').split('\n')
+		},
     // hasTitle(){
     //   return this.$slots.tabTitle && 116 || 0
     // }
@@ -688,57 +701,78 @@ export default {
     dateFilter,
     getHeight(){
       setTimeout(()=>{
-      this.hasTitle = this.$refs.tabTitle.offsetHeight
-      let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
-      let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
-      let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
-      let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
-      let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-      let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
-      let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
-      // 第一页
-      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
-      // 独立备注页
-      this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
-      let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
-      let arr = []
-      let heightSum = 0
-      let tableList = []
-      rowList.forEach((item,i)=>{
-        heightSum+=item.offsetHeight
-        // if(tableList.length==0){
-          if(heightSum<this.tableHeight - tableHeader - el - requireStart){
-            arr.push(this.tableData[i])
-          }else{
-            tableList.push(JSON.parse(JSON.stringify(arr)))
-            heightSum=item.offsetHeight
-            arr = [this.tableData[i]]
-          }
-      })
-      tableList.push(JSON.parse(JSON.stringify(arr)))
-      this.tableList = tableList
-      this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
-      if(this.hasOtherPage){
+        this.hasTitle = this.$refs.tabTitle?.offsetHeight
+        let headerHeight = this.$refs.demo.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
+        let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
+        let tableHeader = this.$refs.demo.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight
+        let computeHeight = this.$refs.demo.getElementsByClassName('position-infos')[0].offsetHeight  // 页面所有固定元素的高度： infos
+        let el = this.$refs.demo.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+        let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+        let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
+        // 第一页
+        this.tableHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
+        // 独立备注页
+        this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
+        let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+        let arr = []
+        let heightSum = 0
+        let tableList = []
+        rowList.forEach((item,i)=>{
+          heightSum+=item.offsetHeight
+          // if(tableList.length==0){
+            if(heightSum<this.tableHeight - tableHeader - computeHeight - requireStart){
+              arr.push(this.tableData[i])
+            }else{
+              tableList.push(JSON.parse(JSON.stringify(arr)))
+              heightSum=item.offsetHeight
+              arr = [this.tableData[i]]
+            }
+        })
+        let residualHeight = this.tableHeight - tableHeader - computeHeight - requireStart - heightSum  // 最后一页表格剩余高度
+        tableList.push(JSON.parse(JSON.stringify(arr)))
+        this.tableList = tableList
+        this.hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
+        if(this.hasOtherPage){
           let itemHeight = 0
           let list = []
           let itemList =[]
-          if(this.otherPageHeight<outEl){ // 需要分页
-            let remarkList = this.$refs.circulation.getElementsByClassName('remarkItem')  //备注信息
-            remarkList.forEach((item,i)=>{
+          let residualRemark = []
+          let remarkList = this.$refs.demo.getElementsByClassName('remarkItem')  //备注信息
+          remarkList.forEach((item,i)=>{
+            if(item.offsetHeight<residualHeight - 24){  // 放在表格页剩余空间内
+              residualHeight -= item.offsetHeight
+              residualRemark.push(this.getRemarkAll[i])
+            }else{  // 另起一页
               itemHeight+=item.offsetHeight
-              if(itemHeight<this.otherPageHeight - 24){ // 上下padding各12
-                list.push(this.remarkItem[i])
+              if(itemHeight<=this.otherPageHeight -24 - beizhuOther){ // 上下padding各12
+                list.push(this.getRemarkAll[i])
               }else{
+                if(list.length)
                 itemList.push(JSON.parse(JSON.stringify(list)))
                 itemHeight=item.offsetHeight
-                list = [this.remarkItem[i]]
+                list = [this.getRemarkAll[i]]
               }
-            })
-            itemList.push(JSON.parse(JSON.stringify(list)))
+            }
+          })
+          if(itemHeight){
+            if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
+              this.hasLastPage = true
+            }else{
+              this.hasLastPage = false
+            }
           }else{
-            itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
+            if(residualHeight < el){
+              this.hasLastPage = true
+            }else{
+              this.hasLastPage = false
+            }
           }
+          if(list.length)
+          itemList.push(JSON.parse(JSON.stringify(list)))
           this.remarkList = itemList
+          this.residualRemark = [residualRemark]
+        }else{
+          this.residualRemark = this.getRemarkAll
         }
       },1000)
     },
