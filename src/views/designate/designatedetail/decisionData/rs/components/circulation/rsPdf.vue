@@ -194,14 +194,16 @@
                 <div style="margin-left:20px">
                   <span style="color: red">*</span><span>代表投资费已分摊</span>
                 </div>
+                <!-- 最后一页表格，且剩余空间有备注 -->
                 <div v-if="index==tableList.length-1 && residualRemark.length">
                   <div class="beizhu">
                     备注 Remarks:
                     <div class="beizhu-value">
-                      <p v-for="(item,index) in residualRemark[0]" :key="index">{{item}}<br/></p>
+                      <p v-for="(item,index) in residualRemark" :key="index">{{item}}<br/></p>
                     </div>
                   </div>
-                  <iCard v-if="!remarkList.length" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                  <!-- hasLastPage为false，签字栏不用另起一页 -->
+                  <iCard v-if="!hasLastPage&&!remarkList.length" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                     <div class="checkList">
                       <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
                         <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
@@ -223,7 +225,7 @@
               <div class="page-logo">
                 <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
                 <div>
-                  <p class="pageNum">{{'page '+(index+1)+' of '+(tableList.length+remarkList.length)}}</p>
+                  <p class="pageNum"></p>
                 </div>
                 <div>
                   <p>{{ userName }}</p>
@@ -234,9 +236,10 @@
         </iCard>
       </div>
     </template>
-    <div v-if="hasOtherPage">
-      <template v-for="(remark,index) in remarkList">
-        <div :key="index" class="pageCard-main">
+    <!-- 如果备注有分页 -->
+    <div v-if="remarkList.length">
+      <template v-for="(remark,i) in remarkList">
+        <div :key="i" class="pageCard-main">
         <slot name="tabTitle"></slot>
         <iCard :key="index" class="rsCard pageCard">
           <template #header>
@@ -251,6 +254,7 @@
                   <p v-for="(item,index) in remark" :key="index">{{item}}<br/></p>
                 </div>
               </div>
+              <!-- hasLastPage为false，签字栏不用另起一页 -->
               <template v-if="!hasLastPage && i==remarkList.length-1">
                 <iCard class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                   <div class="checkList">
@@ -275,7 +279,7 @@
               <div class="page-logo">
                 <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
                 <div>
-                  <p class="pageNum">{{'page '+(tableList.length+index+1)+' of '+(tableList.length+remarkList.length)}}</p>
+                  <p class="pageNum"></p>
                 </div>
                 <div>
                   <p>{{ userName }}</p>
@@ -287,6 +291,7 @@
     </div>
       </template>
     </div>
+    <!-- hasLastPage为true，签字栏另起一页 -->
     <div v-if="hasLastPage">
       <div class="pageCard-main">
         <slot name="tabTitle"></slot>
@@ -354,7 +359,6 @@ export default {
 		exchangeRate: { type: String, default: '' },
 		tableHeight: { type: Number, default: 0 },
     otherPageHeight: { type: Number, default: 0 },
-    hasOtherPage:{ type: Boolean, default: false },
 		tableList: { type: Array, default: () => [[]] },
 		processApplyDate: { type: String, default: '' },
     hasLastPage:{ type: Boolean, default: false },
@@ -478,7 +482,7 @@ export default {
   .beizhu {
     background-color: rgba(22, 96, 241, 0.03);
     // height: 40px;
-    padding: 12px 14px;
+    padding: 12px 14px; /*no*/
     font-weight: bold;
     display: flex;
     &-value {
