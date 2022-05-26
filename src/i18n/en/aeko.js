@@ -13,6 +13,7 @@ export default {
   ZHUANPAICAIGOUYUAN: 'Transfer to buyer',
   QINGXUANZEXUYAOZHUANPAIDELINGJIAN: 'Please select the data you want to transfer',
   AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA: 'Please select your own part number for quotation',
+  AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGCAOZUO: 'Please select your own part number for operation',
   QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO: 'Please select the parts whose content status is to be declared, quoted, quoted or rejected to submit',
   TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI: 'Multiple original part rows associated with the same part will be assigned together',
   XUANZEZHUANPAIDECAIGOUYUAN: 'Please select the assigned buyer',

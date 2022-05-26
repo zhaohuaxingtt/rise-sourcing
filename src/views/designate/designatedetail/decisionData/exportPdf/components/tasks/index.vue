@@ -167,7 +167,7 @@ export default {
     this.getNominateTaskList();
   },
   methods: {
-    async getHeight() {
+    getHeight() {
       if (!this.$refs.tasks) return;
       let pList = this.$refs.bo.getElementsByTagName('p');
       let imgList = []
@@ -181,7 +181,7 @@ export default {
       }
       Promise.all(imgList).then(()=>{
         console.log('tasks');
-        this.width = this.$refs.tasks.offsetWidth;
+        this.width = this.$refs.tasks?.offsetWidth;
         let hasTitle = this.$refs.tabTitle.offsetHeight
         let headerHeight = this.$refs.rsPdfCard.getElementsByClassName('cardHeader')[0].offsetHeight // Title 区域高度
         let pageLogo = this.$refs.logo.offsetHeight     // logo 区域高度
