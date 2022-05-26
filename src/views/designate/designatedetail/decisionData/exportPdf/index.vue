@@ -1,112 +1,99 @@
 <template> <!-- 导出RS单决策资料 -->
 <div>
   <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
-    <div class="btnControl">
-      <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
-    </div>
-    <div class="main" ref="contentPage">
-      <div class="title">
-        <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
-        <span class="mtz" v-if="this.nomiData.mtzApplyId">
-          <span class="crossbar">-</span>
-          <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
-        </span>
-        <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-      </div>
-      <div class="content" id="allMoudles">
-        <div class="showPage" ref="showPage">
-          <!-- title -->
-          <div id="html2canvasTitle" v-if="showPage">
-            <rsTitle class="module">
-              <template #tabTitle>
-                <headerTab value="/designate/decisiondata/title"/>
-              </template>
-            </rsTitle>
-          </div>
-          <!-- PartList -->
-          <div id="html2canvasPartList" v-if="showPage">
-            <partList class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/partlist"/>
-              </template>
-            </partList>
-          </div>
-
-          <!-- Tasks -->
-          <div id="html2canvasTasks" v-if="showPage">
-            <tasks class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/tasks"/>
-              </template>
-            </tasks>
-          </div>
-
-          <!-- drawing -->
-          <div id="html2canvasDrawing" v-if="showPage">
-            <drawing class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/drawing"/>
-              </template>
-            </drawing>
-          </div>
-          <!-- bdl -->
-          <div id="html2canvasBDl" v-if="showPage">
-            <bdl isExportPdf class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/bdl"/>
-              </template>
-            </bdl>
-          </div>
-
-          <!-- singleSourcing -->
-          <div id="html2canvasSingleSourcing" v-if="showPage">
-            <singleSourcing class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/singlesourcing"/>
-              </template>
-            </singleSourcing>
-          </div>
-
-          <!-- abprice -->
-          <!-- <div id="html2canvasAbprice">
-            <abPrice class="module pageCard-main rsPdfCard">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/abprice"/>
-              </template>
-            </abPrice>
-          </div> -->
-
-          <!-- timeline -->
-          <div id="html2canvasTimeline" v-if="showPage">
-            <timeline class="module">
-              <template #tabTitle>
-              <headerTab value="/designate/decisiondata/timeline"/>
-              </template>
-            </timeline>
-          </div>
-          <!-- awardingScenario -->
-          <div id="html2canvasAwardingScenario">
-            <awardingScenario class="module">
-              <template #tabTitle>
-                <headerTab value="/designate/decisiondata/awardingscenario"/>
-              </template>
-            </awardingScenario>
-          </div>
-          
-
-          <div id="html2canvasRs" v-if="showPage">
-            <rs class="module" :nomiData="nomiData">
-              <template #tabTitle>
-                <headerTab value="/designate/decisiondata/rs"/>
-              </template>
-            </rs>
-          </div>
+    <div class="content" id="allMoudles">
+      <div class="showPage" ref="showPage">
+        <!-- title -->
+        <div id="html2canvasTitle" v-if="showPage">
+          <rsTitle class="module">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/title"/>
+            </template>
+          </rsTitle>
         </div>
-        <canvas id="myCanvas"></canvas>
-        <div ref="pdf-containr" class="pdf-containr"></div>
+        <!-- PartList -->
+        <div id="html2canvasPartList" v-if="showPage">
+          <partList class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/partlist"/>
+            </template>
+          </partList>
+        </div>
+
+        <!-- Tasks -->
+        <div id="html2canvasTasks" v-if="showPage">
+          <tasks class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/tasks"/>
+            </template>
+          </tasks>
+        </div>
+
+        <!-- drawing -->
+        <div id="html2canvasDrawing" v-if="showPage">
+          <drawing class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/drawing"/>
+            </template>
+          </drawing>
+        </div>
+        <!-- bdl -->
+        <div id="html2canvasBDl" v-if="showPage">
+          <bdl isExportPdf class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/bdl"/>
+            </template>
+          </bdl>
+        </div>
+
+        <!-- singleSourcing -->
+        <div id="html2canvasSingleSourcing" v-if="showPage">
+          <singleSourcing class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/singlesourcing"/>
+            </template>
+          </singleSourcing>
+        </div>
+
+        <!-- abprice -->
+        <!-- <div id="html2canvasAbprice">
+          <abPrice class="module pageCard-main rsPdfCard">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/abprice"/>
+            </template>
+          </abPrice>
+        </div> -->
+
+        <!-- timeline -->
+        <div id="html2canvasTimeline" v-if="showPage">
+          <timeline class="module">
+            <template #tabTitle>
+            <headerTab value="/designate/decisiondata/timeline"/>
+            </template>
+          </timeline>
+        </div>
+        <!-- awardingScenario -->
+        <div id="html2canvasAwardingScenario">
+          <awardingScenario class="module">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/awardingscenario"/>
+            </template>
+          </awardingScenario>
+        </div>
+        
+
+        <div id="html2canvasRs" v-if="showPage">
+          <rs class="module" :nomiData="nomiData">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/rs"/>
+            </template>
+          </rs>
+        </div>
       </div>
     </div>
   </div>
+  <canvas id="myCanvas"></canvas>
+  <div ref="pdf-containr" class="pdf-containr"></div>
 </div>
 </template>
 
@@ -295,6 +282,7 @@ export default {
       this.showPage = false
       setTimeout(async()=>{
         this.$nextTick(async()=>{
+          console.log('start');
           for (let i = 0; i<this.pageLength; i++) {
             const el = elList[i]
             await this.getPdfImage2({
