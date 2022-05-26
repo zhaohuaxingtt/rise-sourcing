@@ -266,10 +266,10 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link" :readonly="!canEdit(scope.row)" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.status !='EMPTY'" class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link" :readonly="!canEdit(scope.row)" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
@@ -286,12 +286,12 @@
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
-            <span v-if="scope.row.quotationId" class="blue-text" :readonly="!canEdit(scope.row)" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.quotationId" class="blue-text" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
               v-model="scope.row.investCarTypePro"
-              :disabled="disabledInvestCarTypePro(scope.row)"
+              :disabled="disabledInvestCarTypePro(scope.row)||!canEdit(scope.row)"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeCarInvestProjects($event, scope.row)"
               :readonly="!canEdit(scope.row)"
@@ -309,7 +309,7 @@
             <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="blue-text" :readonly="!canEdit(scope.row)" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="blue-text" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
             <span v-else>{{scope.row.isMtzDesc}}</span>
           </template>
           <!-- 是否待报价 -->
@@ -705,6 +705,7 @@ export default {
     },
     // 查看装⻋率/每⻋⽤量
     viewDosage(row) {
+      if(!this.canEdit(row)) return
       this.currentRow = row
       this.dosageDialogVisible = true
     },
@@ -727,6 +728,7 @@ export default {
     },
     // 查看mtz变更
     view(row) {
+      if(!this.canEdit(row)) return
       const {query} = this.$route;
       const {from=''} = query; // 从AEKO查看跳转至MTZ的不允许变更 只允许查看
       const routeData = this.$router.resolve({name: 'aekoMtzDetails', query: {
@@ -1191,6 +1193,7 @@ export default {
 
     // 查看价格轴弹窗
     showPriceAxis(row={}){
+      if(!this.canEdit(row)) return
       this.priceAxisVisible = true;
       this.priceAxisRow = row;
     },
