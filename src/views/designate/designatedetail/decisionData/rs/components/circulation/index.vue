@@ -9,7 +9,7 @@
 
 <template>
   <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
-    <div class="demo" ref="demo" :style="{'width': pageWidth + 80 + 'px'}">
+    <div class="demo" ref="demo" v-if="showpdf" :style="{'width': pageWidth + 80 + 'px'}">
       <div ref="tabTitle" style="padding:1px">
         <slot name="tabTitle"></slot>
       </div>
@@ -238,6 +238,7 @@
     </div>
     <div class="rsPdfWrapper" :style="{'width': pageWidth + 'px'}" :key="key">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
+        v-if="showpdf"
         :cardTitle="cardTitle"
         :infos="infos"
         :basicData="basicData"
@@ -257,6 +258,7 @@
           <slot name="tabTitle"></slot>
         </template>
         </rsPdf>
+        <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -596,7 +598,8 @@ export default {
       remarkList:[],
       infos,
       exchangeRate: "",
-      processApplyDate: ""
+      processApplyDate: "",
+      showpdf:true
     }
   },
   computed: {
@@ -967,26 +970,64 @@ export default {
     },
 
     // 导出pdf
+    // async handleExportPdf() {
+    //   this.fileList = []
+    //   this.loading = true
+    //   this.showpdf = false
+    //   this.$nextTick(()=>{
+    //     setTimeout(async () => {
+    //       let elList = this.$refs.circulation.getElementsByClassName('pageCard')
+    //       if(!elList.length){
+    //         iMessage.warn('无数据')
+    //         this.loading = false
+    //         return
+    //       }
+    //       for (let i = 0; i < elList.length; i++) {
+    //         const el = elList[i];
+    //         console.log('page'+(i+1)+' => start   total-page:'+elList.length);
+    //         await this.getPdfImage({
+    //           dom: el,
+    //         })
+    //         console.log('page'+(i+1)+' => end   total-page:'+elList.length);
+    //       }
+    //       this.showpdf = false
+    //     }, 10)
+    //   })
+    // },
+    
+    // 导出pdf
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
-      setTimeout(async () => {
-        let elList = this.$refs.circulation.getElementsByClassName('pageCard')
-        if(!elList.length){
-          iMessage.warn('无数据')
-          this.loading = false
-          return
-        }
-        for (let i = 0; i < elList.length; i++) {
-          const el = elList[i];
-          console.log('page'+(i+1)+' => start   total-page:'+elList.length);
-          await this.getPdfImage({
-            dom: el,
-          })
-          console.log('page'+(i+1)+' => end   total-page:'+elList.length);
-        }
-        this.uploadUdFile()
-      }, 100)
+      this.WH = []
+      const elList = this.$refs['rsPdf'].$el.getElementsByClassName('pageCard')
+      for (let i = 0; i < elList.length; i++) {
+        const item = elList[i];
+        this.WH.push({
+          width: item.offsetWidth,
+          height: item.offsetHeight
+        })
+      }
+      this.pdfPage = elList.length
+      let time = parseInt(this.pdfPage*30/60)
+      this.$message(`本次导出需耗时大约${time}分钟，请耐心等待`);
+      this.showpdf = false
+      this.$nextTick(()=>{
+        setTimeout(async () => {
+          if(!elList.length){
+            iMessage.warn('请稍等')
+            this.loading = false
+            return
+          }
+          for (let i = 0; i < elList.length; i++) {
+            const el = elList[i];
+            await this.getPdfImage({
+              dom: el,
+              index: i
+            })
+          }
+        }, 10)
+      })
     },
 
     tableRowClassName({ row, rowIndex }) {
@@ -1029,66 +1070,105 @@ export default {
     async getPdfImage({
       //html横向导出pdf
       dom,
+      index,
     }) {
-      await html2canvas(dom, {
+      console.time(`index${index}`);
+      let this_ = this
+      let el = this.$refs.contentPdf
+      await html2canvas(el, {
         dpi: 96, //分辨率
-        scale: 2, //设置缩放
+        scale: this.pdfPage > 12 ? 1 : 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
-        bgcolor: "#ffffff", //应该这样写
+        bgcolor: '#ffffff', //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
-      }).then(async (canvas) => {
-        await this.getPdfFile(canvas)
-        // var contentWidth = canvas.width; //
-        // var contentHeight = canvas.height; //
-        // //一页pdf显示html页面生成的canvas高度;
-        // var pageHeight = (contentWidth / 841.89) * 595.28; //
-        // //未生成pdf的html页面高度
-        // var leftHeight = contentHeight; //
-        // var ctx = canvas.getContext("2d");
-
-        // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
-        // copyCanvas.width = contentWidth;
-        // copyCanvas.height = pageHeight;
-        // var ctxs = copyCanvas.getContext("2d");
-        // // 保存每一页的画布, 然后清空canvas
-        // if (leftHeight <= pageHeight) {
-        //   var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
-        //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
-        //   // 截图画布转为file
-        //   await this.getPdfFile(copyCanvas)
-        // } else {
-        //   // 分页
-        //   var num = 1;
-        //   while (leftHeight > 0) {
-        //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
-        //     var imgData = ctx.getImageData(
-        //       0,
-        //       (num - 1) * pageHeight,
-        //       contentWidth,
-        //       pageHeight
-        //     ); // 截取主画布当前页
-        //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
-        //     // 截图画布转为file
-        //     await this.getPdfFile(copyCanvas)
-        //     leftHeight -= pageHeight;
-        //     // //避免添加空白页
-        //     if (leftHeight > 0) {
-        //       num++;
-        //     }
-        //   }
-        // }
-      });
+        onclone(doc){
+          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
+          let el = doc.getElementById('contentPdf')
+          el.style.width = this_.WH[index].width + 'px'
+          el.style.height = this_.WH[index].height + 'px'
+          el.innerHTML = dom.outerHTML
+        }
+      }).then(canvas => {
+        console.timeEnd(`index${index}`);
+        this.getPdfFile(canvas,index)
+      })
     },
-    async getPdfFile(copyCanvas){
-      return new Promise((r,j)=>{
+    // // 截取页面,存入pdf
+    // // 截取页面,转图片, 上传服务器
+    // async getPdfImage({
+    //   //html横向导出pdf
+    //   dom,
+    // }) {
+    //   await html2canvas(dom, {
+    //     dpi: 96, //分辨率
+    //     scale: 2, //设置缩放
+    //     useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+    //     bgcolor: "#ffffff", //应该这样写
+    //     logging: false, //打印日志用的 可以不加默认为false
+    //   }).then(async (canvas) => {
+    //     await this.getPdfFile(canvas)
+    //     // var contentWidth = canvas.width; //
+    //     // var contentHeight = canvas.height; //
+    //     // //一页pdf显示html页面生成的canvas高度;
+    //     // var pageHeight = (contentWidth / 841.89) * 595.28; //
+    //     // //未生成pdf的html页面高度
+    //     // var leftHeight = contentHeight; //
+    //     // var ctx = canvas.getContext("2d");
+
+    //     // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+    //     // copyCanvas.width = contentWidth;
+    //     // copyCanvas.height = pageHeight;
+    //     // var ctxs = copyCanvas.getContext("2d");
+    //     // // 保存每一页的画布, 然后清空canvas
+    //     // if (leftHeight <= pageHeight) {
+    //     //   var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
+    //     //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+    //     //   // 截图画布转为file
+    //     //   await this.getPdfFile(copyCanvas)
+    //     // } else {
+    //     //   // 分页
+    //     //   var num = 1;
+    //     //   while (leftHeight > 0) {
+    //     //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+    //     //     var imgData = ctx.getImageData(
+    //     //       0,
+    //     //       (num - 1) * pageHeight,
+    //     //       contentWidth,
+    //     //       pageHeight
+    //     //     ); // 截取主画布当前页
+    //     //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+    //     //     // 截图画布转为file
+    //     //     await this.getPdfFile(copyCanvas)
+    //     //     leftHeight -= pageHeight;
+    //     //     // //避免添加空白页
+    //     //     if (leftHeight > 0) {
+    //     //       num++;
+    //     //     }
+    //     //   }
+    //     // }
+    //   });
+    // },
+    getPdfFile(copyCanvas, num) {
         copyCanvas.toBlob((blob) => {
           //以时间戳作为文件名 实时区分不同文件
-          let filename = `${new Date().getTime()}.png`;
-          let pdfFile = new File([blob], filename, { type: "image/png" });
-          this.fileList.push({ file: pdfFile });
-          r(true)
-        });
-      })
+          let filename = `${new Date().getTime()}.png`
+          let pdfFile = new File([blob], filename, { type: 'image/png' })
+          uploadUdFile({
+            multifile: pdfFile,
+          }).then((res) => {
+            if (res.code == 200) {
+              // console.log(res.data[0].objectUrl)
+              this.fileList.push({ imageUrl: res.data[0].path, index: num })
+              if(this.fileList.length==this.pdfPage){
+                this.DownloadPdf()
+              }
+            } else {
+              this.$message.error(
+                this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+              )
+            }
+          })
+        })
     },
     // 下载 pdf 文件
     async DownloadPdf(){
@@ -1097,6 +1177,7 @@ export default {
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.pageWidth, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
+      this.showpdf = true
     },
 
     // 上传图片
