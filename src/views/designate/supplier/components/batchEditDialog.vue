@@ -40,6 +40,23 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <!-- 供应商名称 -->
+        <el-form-item :label="language('GYSMC','供应商名称')">
+          <iSelect
+            v-model="form.supplierId"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
+            clearable
+            :loading="getSupplierLoading"
+            @change="change"
+          >
+            <el-option
+              :value="items.supplierId"
+              :label="items.supplierName"
+              v-for="(items, index) in departmentOption"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
       <div class="footer" slot="footer">
         <iButton @click="submit">{{ language("LK_BAOCUN",'保存') }}</iButton>
@@ -53,6 +70,9 @@ import { iDialog, iButton, iSelect } from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 
+import {
+  getPartSupplierList,
+} from '@/api/designate/suggestion/part' 
 export default {
   components: { iDialog, iButton, iSelect },
   mixins: [ pageMixins, filters ],
@@ -66,6 +86,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    selectSingleData:{
+      type: Array,
+      default: () => ([])
+    },
     params: {
       type: Object,
       default: () => ({})
@@ -75,10 +99,13 @@ export default {
     return {
       form: {
         department: '',
-        singleReason: ''
+        singleReason: '',
+        suppliersName:'',
+        supplierId:'',
       },
       loading: false,
-      controlHeight: 0
+      controlHeight: 0,
+      departmentOption:[]
     }
   },
   methods: {
@@ -87,12 +114,36 @@ export default {
       this.$nextTick(() => {
         this.$emit('update:visible', false)
       })
+    },
+    change(){
+      let data = this.departmentOption.filter(item=>item.supplierId==this.form.supplierId)
+      this.form.suppliersName = data[0].supplierName
+    },
+    getRfqDepartment() {
+      this.departmentOption = []
+      this.getSupplierLoading = true
+      let params = this.selectSingleData.map(item=>{
+        return {
+          nominateAppId: item.nominateId || this.$store.getters.nomiAppId,
+          rfqId: item.rfqId,
+          fsnrGsnrNum: item.fsnrGsnrNum,
+        }
+      })
+      getPartSupplierList(params)
+      .then(res => {
+        this.$nextTick(()=>{
+          this.$set(this,'departmentOption',res.code == 200 && Array.isArray(res.data) ? res.data : [])
+        })
+      })
+      .finally(() => this.getSupplierLoading = false)
     }
   },
   watch: {
-    visible() {
+    visible(val) {
       if (!this.visible) {
         this.form = {}
+      }else{
+        this.getRfqDepartment()
       }
     }
   }
