@@ -216,7 +216,7 @@ export const signsheetViewTableTitle = [
     name: 'TTO',
     key: 'TTO',
     tooltip: true,
-    minWidth: '110'
+    minWidth: '130'
   },
   {
     props: 'rsRemark',

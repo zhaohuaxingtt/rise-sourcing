@@ -30,6 +30,7 @@
             height="450"
             index
             lang
+            border
             :selection="false"
             :tableData="tableListData"
             :tableTitle="tableTitle"
