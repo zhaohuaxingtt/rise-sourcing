@@ -119,6 +119,10 @@
     <!--                  退回EPS弹窗                                       --->
     <!------------------------------------------------------------------------>
     <backDialog ref="backEPS" :mode="mode" :dialogVisible="backDialogVisible" @changeVisible="handleBatchReject(false)" @handleBack="handleBackEPS" />
+    <!------------------------------------------------------------------------>
+    <!--                  转派                                       --->
+    <!------------------------------------------------------------------------>
+    <transfer-dialog v-model="showTransfer" @handleTransfer="handleTransfer" ref="transfer" />
   </iPage>
 </template>
 <script>
@@ -127,16 +131,18 @@ import headerNav from "@/components/headerNav"
 import backEps from "./components/backEps"
 import { searchForm, form, tableTitle, addType, statusList } from './components/data'
 import { outsouringFindBypage,signByLinie,rejectByLinie,deleteOutSouring,closeOutSouringOrder } from '@/api/outsouringorder'
+import { toOwner } from '@/api/ws2/purchaserequest'
 import { pageMixins } from "@/utils/pageMixins";
 import tablePart from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { getDepartmentsCombo } from '@/api/ws2/purchase/investmentList'
-import { user } from '@/config'
+import TransferDialog from './components/transferDialog.vue'
+
 
 // eslint-disable-next-line no-undef
 export default {
   mixins:[pageMixins,tableSortMixins],
-  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,iMultiLineInput,icon, headerNav, backEps },
+  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,iMultiLineInput,icon, headerNav, TransferDialog, backEps },
   data() {
     return {
       backDialogVisible: false,
@@ -150,6 +156,7 @@ export default {
       addType: addType,
       statusList: statusList,
       mode: 'back',
+      showTransfer: false
     }
   },
   created(){
@@ -222,10 +229,7 @@ export default {
         window.open(routeData.href, '_blank')
       })
     },
-    sure() {
-      this.page.currPage = 1
-      this.getOutsouringFindBypage()
-    },
+    
     /**
      * @description: 获取钢材列表数据。
      * @param {*}
@@ -324,12 +328,30 @@ export default {
       }
     },
 
+    //转派
+    handleTransfer(val) {
+      let param = val
+      param.normalPrList = this.selectTableData
+      toOwner(param)
+        .then(res => {
+          this.$refs.transfer.transferLoading = false
+          if (res.code == '200') {
+            this.getTableListFn()
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+            this.showTransfer = false
+          } else {
+            return iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        })
+        .catch(() => {
+          this.$refs.transfer.transferLoading = false
+        })
+    },
+
     // 初始化申请部门数据
     async initSelectOptions() {
       const distKeys = await this.dictkey();
-      console.log(distKeys)
-      this.searchFormTitle = searchForm( distKeys );
-      console.error(this.searchFormTitle)
+      this.searchFormTitle = searchForm(distKeys);
     },
 
     // 获取申请部门参数
@@ -340,16 +362,7 @@ export default {
           }).catch(()=>r({}))
       })
     },
-    /**
-     * @description: 转换数据为optionslist格式
-     * @param {*} props
-     * @return {*}
-     */
-    translateOptions(props,data){
-      let object = {}
-      object[props] = data.map(items=>{return {"name":items.nameZh,'code':items.id}})
-      return object
-    },
+   
     // 重置
     reset(){
       Object.keys(this.form).forEach(element => {
@@ -357,6 +370,18 @@ export default {
       });
       this.form.showSelf = true
       this.sure()
+    },
+    // 查询按钮
+    sure() {
+      this.page.currPage = 1
+      this.getOutsouringFindBypage()
+    },
+    // 转派
+    handleBatchTransation() {
+      if (this.selectRow.length == 0) {
+        return iMessage.warn('请先选择数据')
+      }
+      this.showTransfer = true
     },
   },
   mounted() {
