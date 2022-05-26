@@ -11,11 +11,10 @@
     <headerNav />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()'>
       <el-form>
-        <template v-for='(items,index) in searchCloumn'>
+        <template v-for='(items,index) in searchFormTitle'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
             <template v-if='items.type == "input"'>
-              <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
-              <iInput clearable v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' />
+              <iInput clearable v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")' />
             </template>
             <template v-else-if="items.type == 'datepicker'">
              <iDatePicker
@@ -23,6 +22,14 @@
                v-model='form[items.moduleKey]'
                value-format="yyyy-MM-dd HH:mm:ss">
              </iDatePicker>
+            </template>
+            <template v-else-if="items.type == 'partNum'">
+             <iMultiLineInput :placeholder="language('partsprocure.PARTSPROCURE', '请输入零件号，多个逗号分隔')" :title="language('partsprocure.PARTSPROCUREPARTNUMBER', '零件号')" v-model="form['partNum']"></iMultiLineInput>
+            </template>
+            <template v-else-if="items.type == 'linieName'">
+              <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
+                <el-option v-for="(item,i) in items.List" :key='i' :label="item.commodity" :value="item.deptId"></el-option>
+              </iSelect>
             </template>
             <template v-else>
               <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
@@ -58,7 +65,7 @@
             {{ language("QIANSHOU", '签收') }}
           </iButton>
           <!-- 退回 -->
-          <iButton @click="handleBatchReject">
+          <iButton @click="handleBatchReject(true)">
             {{ language("TUIHUI", '退回') }}
           </iButton>
           <!-- 关闭 -->
@@ -72,30 +79,33 @@
         :lang="true"
         radio 
         @handleSelectionChange="(row)=>selectRow=row" 
-        :tableData='tabelList' 
-        :tableTitle='tableTitle' 
-        v-loading='tabelLoading'
+        :tableData='tableData' 
+        :tableTitle='tableTitle'
+        :tableLoading="false"
         class="aotoTableHeight">
-        <!--<template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
-          {{row[currentProps].desc}}
-        </template>-->
         <template #riseCode="scope">
-          <!-- <span class="flexRow-link"> -->
-            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
+           <!--<span class="flexRow-link"> -->
+           <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
             <!-- <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span> -->
-          <!-- </span>  -->
-        </template>
+          </span>
+       </template>
+       <template #subType="scope">
+          <span>{{ getSubType(scope.row.subType) }}</span>
+       </template>
+       <template #status="scope">
+          <span>{{ getStatus(scope.row.status) }}</span>
+       </template>
       </tablePart>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, outsouringFindBypage)"
-        @current-change="handleCurrentChange($event, outsouringFindBypage)"
+        @size-change="handleSizeChange($event, getOutsouringFindBypage)"
+        @current-change="handleCurrentChange($event, getOutsouringFindBypage)"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -108,54 +118,62 @@
     <!------------------------------------------------------------------------>
     <!--                  退回EPS弹窗                                       --->
     <!------------------------------------------------------------------------>
-    <backDialog ref="backEPS" :mode="mode" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
+    <backDialog ref="backEPS" :mode="mode" :dialogVisible="backDialogVisible" @changeVisible="handleBatchReject(false)" @handleBack="handleBackEPS" />
   </iPage>
 </template>
 <script>
-import { iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon,iDatePicker } from 'rise'
+import { iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon,iDatePicker, iMultiLineInput } from 'rise'
 import headerNav from "@/components/headerNav"
 import backEps from "./components/backEps"
-import { searchForm, searchCloumn, form,tableTitle } from './components/data'
+import { searchForm, form, tableTitle, addType, statusList } from './components/data'
 import { outsouringFindBypage,signByLinie,rejectByLinie,deleteOutSouring,closeOutSouringOrder } from '@/api/outsouringorder'
 import { pageMixins } from "@/utils/pageMixins";
 import tablePart from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import { selectDictByKeys } from "@/api/dictionary";
-import { getBuyers } from '@/api/letterAndLoi/letter';
-import {user} from '@/config'
+import { getDepartmentsCombo } from '@/api/ws2/purchase/investmentList'
+import { user } from '@/config'
 
 // eslint-disable-next-line no-undef
 export default {
   mixins:[pageMixins,tableSortMixins],
-  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,icon, headerNav, backEps },
-  data(){
+  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,iMultiLineInput,icon, headerNav, backEps },
+  data() {
     return {
       backDialogVisible: false,
       baseUrl: process.env.VUE_APP_SOURCING,
-      searchForm:[],
+      searchFormTitle: [],
       form: JSON.parse(JSON.stringify(form)),
       tableTitle: tableTitle,
-      tabelLoading: false,
-      tabelList:[],
+      tableLoading: false,
+      tableData:[],
       selectRow: [],
-      searchCloumn: searchCloumn,
-      mode: 'back'
+      addType: addType,
+      statusList: statusList,
+      mode: 'back',
     }
   },
   created(){
-    // this.initSelectOptions()
-    this.outsouringFindBypage()
+    this.initSelectOptions()
+    this.getOutsouringFindBypage()
   },
   methods:{
     createSignSheet() {
       this.$router.push('/partsign/outsouringorder/addoutsourcing/details')
+    },
+    // 映射采购申请类型
+    getSubType(type) {
+      return this.addType.find(k => k.label === type).key;
+    },
+    // 映射状态值
+    getStatus(status) {
+      return this.statusList.find(k => k.key == status).label;
     },
     //仅看自己
     showOnlyMyselfData(val) {
       this.form.currentPage = 1;
       this.form.pageSize = this.page.pageSize;
       this.form.isOwn = val;
-      this.outsouringFindBypage();
+      this.getOutsouringFindBypage();
     },
     /**
     * @Description: 退回EPS弹窗状态修改
@@ -206,24 +224,22 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.outsouringFindBypage()
+      this.getOutsouringFindBypage()
     },
     /**
      * @description: 获取钢材列表数据。
      * @param {*}
      * @return {*}
      */
-    outsouringFindBypage(){
-      this.tabelLoading = true
+    getOutsouringFindBypage(){
+      this.tableLoading = true
       outsouringFindBypage({...{size:this.page.pageSize,current:this.page.currPage},...this.form}).then(res=>{
-        this.tabelLoading = false;
-        if(res.data) {
-          this.tabelList = res.data.records;
-          this.page.currPage = res.data.current;
-          this.page.pageSize = res.data.size;
-          this.page.totalCount = res.data.total;
-        }
-      }).catch(err=>{this.tabelLoading = false})
+        this.tableLoading = false;
+        this.tableData = JSON.parse(JSON.stringify(res.data.records));
+        this.page.currPage = res.data.current;
+        this.page.pageSize = res.data.size;
+        this.page.totalCount = res.data.total;
+      }).catch(err=>{this.tableLoading = false})
     },
     /**
      * @description: 删除钢材列表数据。
@@ -231,13 +247,13 @@ export default {
      * @return {*}
      */
     handleBatchDelete(){
-      this.tabelLoading = true
+      // this.tableLoading = true
       deleteOutSouring(this.selectRow.map(k => k.riseCode)).then(res=>{
-        this.tabelLoading = false
+        // this.tableLoading = false
         if(+res.code === 200) {
-         this.outsouringFindBypage();
+         this.getOutsouringFindBypage();
         }
-      }).catch(err=>{this.tabelLoading = false})
+      }).catch(err=>{this.tableLoading = false})
     },
      /**
      * @description: 签收
@@ -245,7 +261,7 @@ export default {
      * @return {*}
      */
     handleBatchSingn() {
-      this.tabelLoading = true;
+      // this.tableLoading = true;
       signByLinie({
         beforeLinie: '',
         beforeLinieId: '',
@@ -254,9 +270,9 @@ export default {
           return { riseCode: k.riseCode, sapItem: k.sapItem }
         })
       }).then(res => {
-      this.tabelLoading = false;
+      // this.tableLoading = false;
         if (res.code === '200') {
-          this.outsouringFindBypage()
+          this.getOutsouringFindBypage()
         }
       });
     },
@@ -278,7 +294,7 @@ export default {
             if (res.result) {
               iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
               this.handleBatchReject(false)
-              this.outsouringFindBypage()
+              // this.getOutsouringFindBypage()
             } else {
               iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             }
@@ -298,7 +314,7 @@ export default {
             if (res.result) {
               iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
               this.handleBatchClose(false)
-              this.outsouringFindBypage()
+              // this.getOutsouringFindBypage()
             } else {
               iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             }
@@ -308,22 +324,18 @@ export default {
       }
     },
 
-    getBuyers(roleCode){
-      return new Promise(r=>{
-         getBuyers({roleCode}).then(res=>{r(res.data)}).catch(()=>r({}))
-      })
-    },
+    // 初始化申请部门数据
     async initSelectOptions() {
-      console.warn('asSsSSS')
-      const lineOptions = await this.getBuyers("LINIE") //user.LINLIE
-      const beforBuyer = await this.getBuyers("QQCGY") // user.BEFORBUYER
-      const distKeys = await this.dictkey()
-      this.searchForm = searchForm({...this.translateOptions('LINLIE',lineOptions),...this.translateOptions('BEFORBUYER',beforBuyer), ...distKeys})
+      const distKeys = await this.dictkey();
+      console.log(distKeys)
+      this.searchFormTitle = searchForm( distKeys );
+      console.error(this.searchFormTitle)
     },
 
+    // 获取申请部门参数
     dictkey(){
       return new Promise(r=>{
-          selectDictByKeys([{keys:'NOMINATE_APP_PROCESS_TYPE'},{keys:'MEETING_TYPE'},{keys:'NOMINATE_APP_STATUS_FILING'}]).then(res=>{
+          getDepartmentsCombo().then(res=>{
             r(res.data)
           }).catch(()=>r({}))
       })
@@ -348,7 +360,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.tabelLoading)
+    console.log(this.tableLoading)
   }
 }
 </script>
