@@ -81,7 +81,7 @@ export function uploadUdFile(params) {
   }).then((res) => {
     if (Array.isArray(res.data)) {
       return res
-    } else if (typeof res.data === 'object') {
+    } else if (typeof res?.data === 'object') {
       return {
         ...res,
         data: [res.data],

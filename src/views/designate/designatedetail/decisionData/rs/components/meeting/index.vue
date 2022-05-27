@@ -9,7 +9,7 @@
 
 <template>
   <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{'width': pageWidth + 'px'}">
+    <div class="demo" :style="{'width': pageWidth + 'px'}" v-if="showpdf">
       <div ref="tabTitle" style="padding:1px">
         <slot name="tabTitle"></slot>
       </div>
@@ -237,26 +237,24 @@
             <div class="beizhu">
               备注 Remarks:
               <div class="beizhu-value">
-                <p class="remarkItem" v-for="(item,index) in getRemarkAll" :key="index">{{item}}</p>
+                <p class="remarkItem" v-for="(item,index) in getRemarkAll" :key="index">{{item}}<br/></p>
               </div>
             </div>
             <div ref="other">
               <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
                 汇率：Exchange rate: 
-              汇率：Exchange rate: 
-                汇率：Exchange rate: 
                 <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
                   1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
                 </span>
               </div>
-              <div class="margin-top10" v-else>
+              <div class="padding-top10" v-else>
                 <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
               </div>
             </div>
           </div>
         </iCard>
       </div>
-      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
             <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -301,6 +299,7 @@
     <div class="rsPdfWrapper" :style="{'width':pageWidth + 'px'}">
       <rsPdf
         ref="rsPdf"
+         v-if="showpdf"
         :cardTitle="cardTitle"
         :cardTitleEn="cardTitleEn"
         :isSingle="isSingle"
@@ -322,7 +321,6 @@
         :tableList="tableList"
         :tableHeight="tableHeight"
         :otherPageHeight="otherPageHeight"
-        :hasOtherPage="hasOtherPage"
         :residualRemark="residualRemark"
         :hasLastPage="hasLastPage"
         :prototypeListPageHeight="prototypeListPageHeight"
@@ -332,69 +330,71 @@
           <slot name="tabTitle"></slot>
         </template>
         </rsPdf>
+      <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
     </div>
-    <iCard class="rsCard">
-      <template #header>
-        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-          <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
-        </div>
-        <div class="title">
-          <p>CSC定点推荐 - {{ cardTitle }}</p>
-          <p>{{ cardTitleEn }}</p>
-        </div>
-        <div>
-          <div class="control">
-            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
-            <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+    <div id="hide">
+      <iCard class="rsCard">
+        <template #header>
+          <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
-        </div>
-      </template>
-      <div class="rsTop page-top">
-        <div class="rsTop-left">
-          <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">
-              <p>{{ item.name }}</p><p>{{ item.enName }}</p>
-            </div>
-            <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+          <div class="title">
+            <p>CSC定点推荐 - {{ cardTitle }}</p>
+            <p>{{ cardTitleEn }}</p>
           </div>
-        </div>
-        <div class="rsTop-right">
-          <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
-            <template v-if="Array.isArray(item)">
-              <div class="rsTop-right-item-title">
-                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
-              </div>
-              <div class="rsTop-right-item-value">
-                <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                  {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
-              </div>
-            </template>
-            <template v-else>
-              <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
-                <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
-                  <div v-for="(item,index) in basicData[item.props]" :key="index">
-                      <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
-                        <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
-                        <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
-                      </el-tooltip>
-                  </div>
-                </div>
-                <div class="rsTop-right-item-value" v-else >
-                  <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
-                  <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
-                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
-                </div>
-            </template>
-          </div>
-        </div>
-      </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" border>
-        <template #fsnrGsnrNum="scope">
           <div>
-            <p>{{ scope.row.fsnrGsnrNum }}</p>
-            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            <div class="control">
+              <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
+              <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+            </div>
           </div>
         </template>
+        <div class="rsTop page-top">
+          <div class="rsTop-left">
+            <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+              <div class="rsTop-left-item-title">
+                <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+              </div>
+              <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+            </div>
+          </div>
+          <div class="rsTop-right">
+            <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+              <template v-if="Array.isArray(item)">
+                <div class="rsTop-right-item-title">
+                  <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                </div>
+                <div class="rsTop-right-item-value">
+                  <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                    {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                </div>
+              </template>
+              <template v-else>
+                <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                  <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                    <div v-for="(item,index) in basicData[item.props]" :key="index">
+                        <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                          <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                          <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                        </el-tooltip>
+                    </div>
+                  </div>
+                  <div class="rsTop-right-item-value" v-else >
+                    <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                    <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                    <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                  </div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" border>
+          <template #fsnrGsnrNum="scope">
+            <div>
+              <p>{{ scope.row.fsnrGsnrNum }}</p>
+              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            </div>
+          </template>
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -406,270 +406,271 @@
 					<span>{{ resetLtcData(scope.row.ltcs, 'beginYearReduce') }}</span>
 				</template>
 
-				<template #status="scope">
-					<div v-if="scope.row.status === 'SKDLC'">
-						<p>SKD</p>
-						<p>LC</p>
-					</div>
-					<span v-else>{{ scope.row.status }}</span>
-				</template>
+          <template #status="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>SKD</p>
+              <p>LC</p>
+            </div>
+            <span v-else>{{ scope.row.status }}</span>
+          </template>
 
-				<template #svwCode="scope">
-					<span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-				</template>
-				<!-- <template #demand="scope">
-          <span>{{ scope.row.demand | kFilter }}</span>
-        </template>
-        <template #output="scope">
-          <span>{{ scope.row.output | kFilter }}</span>
-        </template> -->
-				<template #presentPrice="scope">
-					<span>{{ scope.row.presentPrice | toThousands }}</span>
-				</template>
+          <template #svwCode="scope">
+            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+          <!-- <template #demand="scope">
+            <span>{{ scope.row.demand | kFilter }}</span>
+          </template>
+          <template #output="scope">
+            <span>{{ scope.row.output | kFilter }}</span>
+          </template> -->
+          <template #presentPrice="scope">
+            <span>{{ scope.row.presentPrice | toThousands }}</span>
+          </template>
 
-        <template #cfTargetAPrice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
-            <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
+          <template #cfTargetAPrice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
+              <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+          </template>
+
+          <template #cfTargetBPrice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
+              <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+          </template>
+
+          <template #aprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdAPrice | toThousands }}</p>
+              <p>{{ scope.row.aprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{
+              scope.row.skdAPrice | toThousands
+            }}</span>
+            <span v-else>{{ scope.row.aprice | toThousands }}</span>
+          </template>
+          <template #bprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdBPrice | toThousands }}</p>
+              <p>{{ scope.row.bprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{
+              scope.row.skdBPrice | toThousands
+            }}</span>
+            <span v-else>{{ scope.row.bprice | toThousands }}</span>
+          </template>
+
+          <template #investFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared"
+              >
+                <div>
+                  <div>
+                    {{ language('FENTANJINE', '分摊金额') }}：{{
+                      scope.row.moldApportionPrice || '0.00'
+                    }}
+                  </div>
+                  <div>
+                    {{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+                      scope.row.unShareInvestPrice || '0.00'
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p>
+                    <span v-if="scope.row.investFeeIsShared" style="color: red"
+                      >*</span
+                    >
+                    <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                  </p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared"
+              >
+                <div>
+                  <div>
+                    {{ language('FENTANJINE', '分摊金额') }}：{{
+                      scope.row.moldApportionPrice || '0.00'
+                    }}
+                  </div>
+                  <div>
+                    {{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+                      scope.row.unShareInvestPrice || '0.00'
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.investFeeIsShared" style="color: red"
+                    >*</span
+                  >
+                  <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+
+          <template #devFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared"
+              >
+                <div>
+                  <div>
+                    {{ language('FENTANJINE', '分摊金额') }}：{{
+                      scope.row.developApportionPrice || '0.00'
+                    }}
+                  </div>
+                  <div>
+                    {{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+                      scope.row.unShareDevPrice || '0.00'
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                  <p>
+                    <span v-if="scope.row.investFeeIsShared" style="color: red"
+                      >*</span
+                    >
+                    <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                  </p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared"
+              >
+                <div>
+                  <div>
+                    {{ language('FENTANJINE', '分摊金额') }}：{{
+                      scope.row.developApportionPrice || '0.00'
+                    }}
+                  </div>
+                  <div>
+                    {{ language('WEIFENTANJINE', '未分摊金额') }}：{{
+                      scope.row.unShareDevPrice || '0.00'
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.devFeeIsShared" style="color: red"
+                    >*</span
+                  >
+                  <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+          <template #addFee="scope">
+            <span>{{ scope.row.addFee | toThousands }}</span>
+          </template>
+          <template #savingFee="scope">
+            <span>{{ scope.row.savingFee | toThousands }}</span>
+          </template>
+          <template #turnover="scope">
+            <span>{{ scope.row.turnover | toThousands }}</span>
+          </template>
+
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
+        <!-- v-if="isPreview" -->
+        <div class="out-compute">
+          <div style="margin-left:20px">
+            <span style="color: red">*</span><span>代表投资费已分摊</span>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-        </template>
-
-        <template #cfTargetBPrice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
-            <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item&&item.value)"></p>
+            </div>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-        </template>
-
-				<template #aprice="scope">
-					<div v-if="scope.row.status === 'SKDLC'">
-						<p>{{ scope.row.skdAPrice | toThousands }}</p>
-						<p>{{ scope.row.aprice | toThousands }}</p>
-					</div>
-					<span v-else-if="scope.row.status === 'SKD'">{{
-						scope.row.skdAPrice | toThousands
-					}}</span>
-					<span v-else>{{ scope.row.aprice | toThousands }}</span>
-				</template>
-				<template #bprice="scope">
-					<div v-if="scope.row.status === 'SKDLC'">
-						<p>{{ scope.row.skdBPrice | toThousands }}</p>
-						<p>{{ scope.row.bprice | toThousands }}</p>
-					</div>
-					<span v-else-if="scope.row.status === 'SKD'">{{
-						scope.row.skdBPrice | toThousands
-					}}</span>
-					<span v-else>{{ scope.row.bprice | toThousands }}</span>
-				</template>
-
-				<template #investFee="scope">
-					<div v-if="scope.row.status === 'SKDLC'">
-						<el-popover
-							placement="top-start"
-							width="200"
-							trigger="hover"
-							:disabled="!scope.row.investFeeIsShared"
-						>
-							<div>
-								<div>
-									{{ language('FENTANJINE', '分摊金额') }}：{{
-										scope.row.moldApportionPrice || '0.00'
-									}}
-								</div>
-								<div>
-									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
-										scope.row.unShareInvestPrice || '0.00'
-									}}
-								</div>
-							</div>
-							<div slot="reference">
-								<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-								<p>
-									<span v-if="scope.row.investFeeIsShared" style="color: red"
-										>*</span
-									>
-									<span>{{ scope.row.investFee | toThousands(true) }}</span>
-								</p>
-							</div>
-						</el-popover>
-					</div>
-					<span v-else-if="scope.row.status === 'SKD'">
-						<p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-					</span>
-					<span v-else>
-						<el-popover
-							placement="top-start"
-							width="200"
-							trigger="hover"
-							:disabled="!scope.row.investFeeIsShared"
-						>
-							<div>
-								<div>
-									{{ language('FENTANJINE', '分摊金额') }}：{{
-										scope.row.moldApportionPrice || '0.00'
-									}}
-								</div>
-								<div>
-									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
-										scope.row.unShareInvestPrice || '0.00'
-									}}
-								</div>
-							</div>
-							<div slot="reference">
-								<span v-if="scope.row.investFeeIsShared" style="color: red"
-									>*</span
-								>
-								<span>{{ scope.row.investFee | toThousands(true) }}</span>
-							</div>
-						</el-popover>
-					</span>
-				</template>
-
-				<template #devFee="scope">
-					<div v-if="scope.row.status === 'SKDLC'">
-						<el-popover
-							placement="top-start"
-							width="200"
-							trigger="hover"
-							:disabled="!scope.row.devFeeIsShared"
-						>
-							<div>
-								<div>
-									{{ language('FENTANJINE', '分摊金额') }}：{{
-										scope.row.developApportionPrice || '0.00'
-									}}
-								</div>
-								<div>
-									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
-										scope.row.unShareDevPrice || '0.00'
-									}}
-								</div>
-							</div>
-							<div slot="reference">
-								<p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
-								<p>
-									<span v-if="scope.row.investFeeIsShared" style="color: red"
-										>*</span
-									>
-									<span>{{ scope.row.devFee | toThousands(true) }}</span>
-								</p>
-							</div>
-						</el-popover>
-					</div>
-					<span v-else-if="scope.row.status === 'SKD'">
-						<p>{{ scope.row.skdDevFee | toThousands }}</p>
-					</span>
-					<span v-else>
-						<el-popover
-							placement="top-start"
-							width="200"
-							trigger="hover"
-							:disabled="!scope.row.devFeeIsShared"
-						>
-							<div>
-								<div>
-									{{ language('FENTANJINE', '分摊金额') }}：{{
-										scope.row.developApportionPrice || '0.00'
-									}}
-								</div>
-								<div>
-									{{ language('WEIFENTANJINE', '未分摊金额') }}：{{
-										scope.row.unShareDevPrice || '0.00'
-									}}
-								</div>
-							</div>
-							<div slot="reference">
-								<span v-if="scope.row.devFeeIsShared" style="color: red"
-									>*</span
-								>
-								<span>{{ scope.row.devFee | toThousands(true) }}</span>
-							</div>
-						</el-popover>
-					</span>
-				</template>
-				<template #addFee="scope">
-					<span>{{ scope.row.addFee | toThousands }}</span>
-				</template>
-				<template #savingFee="scope">
-					<span>{{ scope.row.savingFee | toThousands }}</span>
-				</template>
-				<template #turnover="scope">
-					<span>{{ scope.row.turnover | toThousands }}</span>
-				</template>
-
-        <template #share="scope">
-          <span>{{ +scope.row.share || 0 }}</span>
-        </template>
-      </tableList>
-      <!-- v-if="isPreview" -->
-      <div class="out-compute">
-        <div style="margin-left:20px">
-          <span style="color: red">*</span><span>代表投资费已分摊</span>
-        </div>
-        <div class="beizhu">
-          备注 Remarks:
-          <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item&&item.value)"></p>
+          <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+            汇率：Exchange rate: 
+            <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+              1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+            </span>
           </div>
-        </div>
-        <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
-          汇率：Exchange rate: 
-          <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-            1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
-          </span>
-        </div>
-        <div v-else>
-          <div class="margin-top10">
-            <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
-          </div>
-        </div>
-      </div>
-    </iCard>
-    <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
-      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
-      <div>
-        <div class="meetingRemark" v-if="isApproval">
-          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+          <div v-else>
+            <div class="margin-top10">
+              <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+            </div>
           </div>
         </div>
-        <div class="meetingRemark" v-else>
-          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
-            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+      </iCard>
+      <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+        <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
+        <div>
+          <div class="meetingRemark" v-if="isApproval">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+            </div>
+          </div>
+          <div class="meetingRemark" v-else>
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+            </div>
           </div>
         </div>
-      </div>
-    </iCard>
-    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
-      <div class="checkList">
-        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
-          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
-          <div v-else class="" >-</div>
-          <div class="checkList-item-info">
-            <span>Dept.:</span>
-            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
-          </div>
-          <div class="checkList-item-info">
-            <span>Date:</span>
-            <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
+      </iCard>
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+        <div class="checkList">
+          <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+            <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+            <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+            <div v-else class="" >-</div>
+            <div class="checkList-item-info">
+              <span>Dept.:</span>
+              <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+            </div>
+            <div class="checkList-item-info">
+              <span>Date:</span>
+              <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </iCard>
-    <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
-      <el-table :data='PrototypeList' class="prototypeList">
-        <template v-for="(items,index) in prototypeTitleList">
-          <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-        </template>
-      </el-table>
-    </iCard>
+      </iCard>
+      <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+        <el-table :data='PrototypeList' class="prototypeList">
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
+    </div>
     <canvas id="myCanvas"></canvas>
   </div>
 </template>
@@ -735,12 +736,13 @@ export default {
 			prototypeListPageHeight: 0,
 			tableHeight: 0,
       otherPageHeight:0,
-      hasOtherPage: false,
       hasLastPage:false,
 			tableList: [],
 			prototypeTableList: [],
       remarkList:[],
-      residualRemark:[]
+      residualRemark:[],
+      showpdf:true,
+      html:''
 		}
 	},
 	filters: {
@@ -861,7 +863,12 @@ export default {
 			return 'CSC Nomination Recommendation - Production Purchasing'
 		},
 		getRemarkAll() {
-			return this.remarkItem.map((item) => item.value).join('\n').split('\n')
+      let result = []
+      for (let i = 0; i < this.remarkItem.length; i++) {
+        const item = this.remarkItem[i];
+        result.push(item.value)
+      }
+			return result.join('\n').split('\n')
 		},
 		isRoutePreview() {
 			return this.$route.query.isPreview == 1
@@ -911,7 +918,7 @@ export default {
         // 独立备注页
         this.otherPageHeight = this.pageHeight - headerHeight - pageTop - pageLogo - this.hasTitle
         if(!this.tableData.length) return
-        let rowList = this.$refs['pdf-table'].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+        let rowList = this.$refs['pdf-table']?.getElementsByClassName('el-table__body-wrapper')[0]?.getElementsByClassName('table-row')||[]
         let arr = []
         let heightSum = 0
         let tableList = []
@@ -930,16 +937,16 @@ export default {
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
         // 备注独立页面内容计算
-        // this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
-        this.hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
-        if(this.hasOtherPage){
+        let hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
+        if(hasOtherPage){
           let itemHeight = 0
           let list = []
           let itemList =[]
           let residualRemark = []
           let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
+          // 备注信息分页计算
           remarkList.forEach((item,i)=>{
-            if(item.offsetHeight<residualHeight - 24){  // 放在表格页剩余空间内
+            if(item.offsetHeight<residualHeight - 24 - beizhuOther){  // 放在表格页剩余空间内
               residualHeight -= item.offsetHeight
               residualRemark.push(this.getRemarkAll[i])
             }else{  // 另起一页
@@ -954,6 +961,11 @@ export default {
               }
             }
           })
+          if(list.length)
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+          this.residualRemark = residualRemark
+          // 签字栏是否分页
           if(itemHeight){
             if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
               this.hasLastPage = true
@@ -961,32 +973,15 @@ export default {
               this.hasLastPage = false
             }
           }else{
-            if(residualHeight < el){
+            if(residualHeight -24 - beizhuOther < el){
               this.hasLastPage = true
             }else{
               this.hasLastPage = false
             }
           }
-          // if(this.otherPageHeight<outEl - 24){ // 需要分页
-          //   let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
-          //   remarkList.forEach((item,i)=>{
-          //     itemHeight+=item.offsetHeight
-          //     if(itemHeight<=this.otherPageHeight - 24 - beizhuOther){ // 上下padding各12
-          //       list.push(this.remarkItem[i])
-          //     }else{
-          //       itemList.push(JSON.parse(JSON.stringify(list)))
-          //       itemHeight=item.offsetHeight
-          //       list = [this.remarkItem[i]]
-          //     }
-          //   })
-          if(list.length)
-          itemList.push(JSON.parse(JSON.stringify(list)))
-          // }else{
-            // itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
-          // }
-          this.remarkList = itemList
-          this.residualRemark = [residualRemark]
         }else{
+          this.remarkList = []
+          this.hasLastPage = false
           this.residualRemark = this.getRemarkAll
         }
     },
@@ -1212,65 +1207,46 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => {
+        this.$nextTick(()=>{
+          this.getHeight()
+        })
+      })
     },
-		/**
-		 * @Description: 获取备注
-		 * @Author: Luoshuang
-		 * @param {*}
-		 * @return {*}
-		 */
-		getRemark() {
-			getRemark(this.nominateId).then((res) => {
-				if (res?.result) {
-					const data = Array.isArray(res.data) ? res.data : []
-					data.forEach((element) => {
-						this.remarks[element.remarkType] = element.remark || ''
-						this.remarkItem = meetingRemark.map((item) => {
-							return { ...item, value: this.remarks[item.remarkType] }
-						})
-					})
-				} else {
-					this.remarks = {}
-					iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-				}
-			})
-		},
 
 		resetLtcData,
 
 		// 获取汇率
 		searchRsPageExchangeRate() {
-		let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
-		searchRsPageExchangeRate(id)
-		.then(res => {
-			if (res.code == 200) {
-			if (this.basicData.currency) {
-				const sourceData = Array.isArray(res.data) ? res.data : []
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          if (this.basicData.currency) {
+            const sourceData = Array.isArray(res.data) ? res.data : []
 
-				this.exchangeRates = sourceData
-				.filter(item => !item.isCurrentVersion)
-				.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+            this.exchangeRates = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
 
-				this.exchangeRates = this.exchangeRates.map(item => {
-				const result = { version: item.exchangeRateVos[0].version }
-				
-				result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+            this.exchangeRates = this.exchangeRates.map(item => {
+            const result = { version: item.exchangeRateVos[0].version }
+            
+            result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
 
-				if (this.exchangeRates.length > 1) {
-					result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
-				} else {
-					result.fsNumsStr = ""
-				}
+            if (this.exchangeRates.length > 1) {
+              result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+            } else {
+              result.fsNumsStr = ""
+            }
 
-				return result
-				})
-			} else {
-				
-			}
-			} else {
-			iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-			}
-		})
+            return result
+            })
+          }
+        } else {
+        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
 		},
 
 		// 汇率显示处理
@@ -1280,7 +1256,7 @@ export default {
 		// 权限获取数据
 		reviewListRs() {
 			this.tableLoading = true
-		
+      this.searchRsPageExchangeRate()
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -1323,7 +1299,6 @@ export default {
           this.tableData = data
           this.projectType = this.basicData.partProjectType || ""
 
-          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []
@@ -1334,15 +1309,24 @@ export default {
       .finally(() => this.tableLoading = false)
 	},
 		
-
     // 导出pdf
     async handleExportPdf() {
       this.fileList = []
       this.loading = true
       this.getHeight()
+      this.WH = []
+      const elList = this.$refs['rsPdf'].$el.getElementsByClassName('pageCard')
+      for (let i = 0; i < elList.length; i++) {
+        const item = elList[i];
+        this.WH.push({
+          width: item.offsetWidth,
+          height: item.offsetHeight
+        })
+      }
+      this.pdfPage = elList.length
+      this.showpdf = false
       this.$nextTick(()=>{
         setTimeout(async () => {
-          let elList = this.$refs['rsPdf'].$el.getElementsByClassName('pageCard')
           if(!elList.length){
             iMessage.warn('请稍等')
             this.loading = false
@@ -1350,14 +1334,12 @@ export default {
           }
           for (let i = 0; i < elList.length; i++) {
             const el = elList[i];
-            el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${elList.length}`;
             await this.getPdfImage({
               dom: el,
               index: i
             })
           }
-          this.uploadUdFile();
-        }, 100)
+        }, 10)
       })
     },
 
@@ -1368,81 +1350,61 @@ export default {
       dom,
       index,
     }) {
-      await html2canvas(dom, {
+      console.time(`index${index}`);
+      let this_ = this
+      let el = this.$refs.contentPdf
+      await html2canvas(el, {
         dpi: 96, //分辨率
-        scale: 1, //设置缩放
+        scale: this.pdfPage > 12 ? 1 : 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: '#ffffff', //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
-      }).then(async (canvas) => {
-        // var contentWidth = canvas.width; //
-        // var contentHeight = canvas.height; //
-        //一页pdf显示html页面生成的canvas高度;
-        // var pageHeight = (contentWidth / 841.89) * 595.28; //
-        //未生成pdf的html页面高度
-        // var leftHeight = contentHeight; //
-        // var ctx = canvas.getContext("2d");
-
-        // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
-        // copyCanvas.width = contentWidth;
-        // copyCanvas.height = pageHeight;
-        // var ctxs = copyCanvas.getContext("2d");
-        await this.getPdfFile(canvas)
-
-        // ctxs.fillStyle = '#FFF'
-        // // 保存每一页的画布, 然后清空canvas
-        // if (leftHeight <= pageHeight) {
-        //   ctxs.fillRect(0,0,contentWidth,pageHeight)
-        //   //   console.log(pageData);
-        //   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
-        //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
-        //   // 截图画布转为file
-        //   await this.getPdfFile(copyCanvas,index)
-        // } else {
-        //   // 分页
-        //   var num = 1;
-        //   while (leftHeight > 0) {
-        //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
-        //     ctxs.fillRect(0,0,contentWidth,pageHeight)
-        //     if(leftHeight <= pageHeight){
-        //       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
-        //     }else{
-        //       var imgData = ctx.getImageData(
-        //         0,
-        //         (num - 1) * pageHeight,
-        //         contentWidth,
-        //         pageHeight
-        //       ); // 截取主画布当前页
-        //     }
-        //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
-        //     // 截图画布转为file
-        //     await this.getPdfFile(copyCanvas,index)
-        //     leftHeight -= pageHeight;
-        //     // //避免添加空白页
-        //     if (leftHeight > 0) {
-        //       num++;
-        //     }
-        // }
-        // }
+        ignoreElements:(el)=>{
+          if(el.id=='hide'){
+            return true
+          }
+          return false
+        },
+        onclone(doc){
+          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
+          let el = doc.getElementById('contentPdf')
+          el.style.width = this_.WH[index].width + 'px'
+          el.style.height = this_.WH[index].height + 'px'
+          el.innerHTML = dom.outerHTML
+        }
+      }).then(canvas => {
+        console.timeEnd(`index${index}`);
+        this.getPdfFile(canvas,index)
       })
     },
 
-    async getPdfFile(copyCanvas, num) {
-      return new Promise((r, j) => {
+    getPdfFile(copyCanvas, num) {
         copyCanvas.toBlob((blob) => {
           //以时间戳作为文件名 实时区分不同文件
           let filename = `${new Date().getTime()}.png`
           let pdfFile = new File([blob], filename, { type: 'image/png' })
-          this.fileList.push({ file: pdfFile, index: num })
-          r(num)
+          uploadUdFile({
+            multifile: pdfFile,
+          }).then((res) => {
+            if (res.code == 200) {
+              // console.log(res.data[0].objectUrl)
+              this.fileList.push({ imageUrl: res.data[0].path, index: num })
+              if(this.fileList.length==this.pdfPage){
+                this.DownloadPdf()
+              }
+            } else {
+              this.$message.error(
+                this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+              )
+            }
+          })
         })
-      })
     },
     // 下载 pdf 文件
     async DownloadPdf() {
       let arr = this.fileList.filter((item) => !item.imageUrl)
       if (arr.length) return
-      const list = this.fileList.map((item) => item.imageUrl)
+      const list = this.fileList.sort((a,b)=>a.index-b.index).map((item) => item.imageUrl)
       await decisionDownloadPdfLogo({
         filePaths: list,
         needLogo: false,
@@ -1451,6 +1413,7 @@ export default {
         height: this.pageHeight,
       }) // 1.2 预留 页脚位置
       this.loading = false
+      this.showpdf = true
     },
 
     // 上传图片
@@ -1480,8 +1443,14 @@ export default {
   display: none;
 }
 .meeting {
-  
-  .demo,.rsCard {
+  .demo{
+    .Application.card {
+        ::v-deep .cardBody {
+        padding: 0px;
+      }
+    }
+  }
+  .demo .rsCard {
     box-shadow: none;
 
     ::v-deep .title {
@@ -1572,10 +1541,6 @@ export default {
 		.cell {
 			padding-left: 3px;
 			padding-right: 3px;
-
-			span {
-				// zoom: 0.88;
-			}
 		}
 	}
 }
@@ -1759,8 +1724,258 @@ export default {
   overflow: hidden;
   position: relative;
   top: 0;
-  
-  .page-logo {
+}
+.page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
+.contentPdf{
+   ::v-deep .rsCard {
+    box-shadow: none;
+
+    .title {
+      font-size: 18px !important; 
+    }
+
+    .cardHeader {
+      padding: 30px 0px;
+    }
+    .cardBody {
+      padding: 0px;
+    }
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
+  ::v-deep .singleSourcing {
+    padding: 8px 12px; 
+    font-size: 16px; 
+    font-weight: 400; 
+    color: rgba(22, 96, 241, 1);
+    border: 1px dashed #1660f1; 
+  }
+  ::v-deep .rsTop {
+    display: flex;
+    .rsTop-left-item-title {
+      white-space: pre-line;
+    }
+    &-left {
+      width: 65%;
+      display: flex;
+      flex-wrap: wrap;
+      &-item {
+        width: 50%;
+        font-size: 12px;
+        display: flex;
+        margin-bottom: 12px;
+        &:last-of-type {
+          margin-bottom: 26px;
+        }
+        &-title {
+          font-weight: bold;
+          width: 40%;
+        }
+        &:nth-of-type(odd) {
+          .rsTop-left-item-title {
+            width: 33%;
+          }
+        }
+        &-value {
+          font-weight: 400;
+          width: 60%;
+        }
+      }
+    }
+    &-right {
+      width: 40%;
+      display: flex;
+      flex-wrap: wrap;
+      border: 1px solid rgba(197, 204, 214, 0.42);
+      border-radius: 5px 5px 0 0;
+      &-item {
+        width: 45%;
+        display: flex;
+        border-bottom: 1px solid rgba(197, 204, 214, 0.42);
+        &:nth-of-type(odd) {
+          width: 55%;
+          border-right: 1px solid rgba(197, 204, 214, 0.42);
+        }
+        &-title {
+          background-color: rgba(22, 96, 241, 0.06);
+          border-right: 1px solid rgba(197, 204, 214, 0.42);
+          padding: 6px 24px;
+          width: 60%;
+          font-weight: bold;
+          // line-height: 29px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        &-value {
+          width: 40%;
+          padding: 6px 24px;
+          // line-height: 29px;
+          background-color: #fff;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        &:nth-of-type(even) {
+          .rsTop-right-item-title {
+            width: 65%;
+          }
+          .rsTop-right-item-value {
+            width: 35%;
+          }
+        }
+      }
+    }
+  }
+
+  ::v-deep .prototypeTable{
+    tr {
+      &:nth-child(even) {
+          background-color: #f7f7ff;
+      }
+    }
+  }
+  ::v-deep .rsTable {
+    &.el-table--group, &.el-table--border{
+      border-color: #ccc;
+    }
+    font-size: 8px;
+    &::before, &::after {
+      background-color: #ccc;
+    }
+    .el-table__fixed::before, .el-table__fixed-right::before{
+      background-color: #ccc;
+    }
+    thead th {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      & > .cell {
+        padding-left: 3px;
+        padding-right: 3px;
+        line-height: 16px;
+        font-size: 12px;
+        p {
+          min-height: 16px;
+        }
+        p + p {
+          margin-top: 8px;
+        }
+      }
+    }
+    
+    tr {
+      td {
+        border-top: 1px solid #ccc;
+        & > .cell{
+          padding-left: 3px;
+          padding-right: 3px;
+        }
+      }
+      &:nth-child(even) {
+          background-color: #f7f7ff;
+      }
+    }
+  }
+  ::v-deep .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px; /*no*/
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+      p{
+        word-break: break-word;
+      }
+    }
+  }
+  ::v-deep .checkDate {
+    .card .cardHeader .title {
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  :v-deep .Application {
+    .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
+    }
+  }
+  ::v-deep .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      max-width: 224px;
+      flex: 1;
+      flex-shrink: 0;
+      width: 224px; 
+      height: 125px; 
+      border-radius: 15px; 
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px; 
+      font-size: 16px; 
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px; 
+          font-weight: bold;
+        }
+      }
+    }
+    &-item:last-child {
+      margin-right: 0;
+    }
+  }
+
+  :v-deep .complete {
+    color: rgb(104, 193, 131);
+  }
+
+  :v-deep .cancel {
+    color: rgb(95, 104, 121);
+  }
+  ::v-deep .pdf-content {
+    & + .pdf-content {
+      margin-top: 20px;
+    }
+  }
+  ::v-deep .pdf-content,
+  ::v-deep .pageCard {
+    .cardHeader {
+      padding-left: 0;
+    }
+    .cardBody {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  ::v-deep .page-logo {
     display: flex;
     justify-content: space-between;
     padding: 10px;

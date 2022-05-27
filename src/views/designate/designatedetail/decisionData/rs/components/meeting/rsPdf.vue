@@ -221,12 +221,13 @@
               <div style="margin-left:20px">
                 <span style="color: red">*</span><span>代表投资费已分摊</span>
               </div>
+              <!-- 最后一页表格，且剩余空间有备注 -->
               <div v-if="index==tableList.length-1 && residualRemark.length">
                 <div>
                   <div class="beizhu">
                     备注 Remarks:
                     <div class="beizhu-value">
-                      <p v-for="(item,index) in residualRemark[0]" :key="index">{{item}}</p>
+                      <p v-for="(item,index) in residualRemark" :key="index">{{item}}<br/></p>
                     </div>
                   </div>
                 </div>
@@ -237,27 +238,30 @@
                   </span>
                 </div>
                 <div v-else>
-                  <div class="margin-top10">
+                  <div class="padding-top10">
                     <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
                   </div>
                 </div>
-                <iCard v-if="!remarkList.length && !showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
-                  <div class="checkList">
-                    <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-                      <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
-                      <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
-                      <div v-else class="" >-</div>
-                      <div class="checkList-item-info">
-                        <span>Dept.:</span>
-                        <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
-                      </div>
-                      <div class="checkList-item-info">
-                        <span>Date:</span>
-                        <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                <!-- hasLastPage为false，remarkList:备注也不分页，签字栏不用另起一页 -->
+                <template v-if="!hasLastPage&&!remarkList.length">
+                  <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                    <div class="checkList">
+                      <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                        <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                        <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                        <div v-else class="" >-</div>
+                        <div class="checkList-item-info">
+                          <span>Dept.:</span>
+                          <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                        </div>
+                        <div class="checkList-item-info">
+                          <span>Date:</span>
+                          <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </iCard>
+                  </iCard>
+                </template>
               </div>
             </div>
             <div class="page-logo">
@@ -274,7 +278,8 @@
         </iCard>
       </div>
     </template>
-    <div v-if="hasOtherPage">
+    <!-- 如果备注有分页 -->
+    <div v-if="remarkList.length">
       <template v-for="(remark,i) in remarkList">
         <div class="pageCard-main" :key="i">
           <slot name="tabTitle"></slot>
@@ -334,7 +339,7 @@
               <div class="beizhu" v-if="remark.length">
                 备注 Remarks:
                 <div class="beizhu-value">
-                  <p v-for="(item,index) in remark" :key="index">{{item}}</p>
+                  <p v-for="(item,index) in remark" :key="index">{{item}}<br/></p>
                 </div>
               </div>
               <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -348,6 +353,7 @@
                   <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
                 </div>
               </div>
+              <!-- hasLastPage为false，签字栏不用另起一页 -->
               <template v-if="!hasLastPage && i==remarkList.length-1">
                 <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                   <div class="checkList">
@@ -382,6 +388,7 @@
         </div>
       </template>
     </div>
+    <!-- hasLastPage为true，签字栏另起一页 -->
     <div v-if="hasLastPage">
       <div class="pageCard-main">
         <slot name="tabTitle"></slot>
@@ -534,7 +541,6 @@ export default {
     prototypeListPageHeight: { type: Number, default: 0 },
     tableList: { type: Array, default: () => [[]] },
     prototypeTableList: { type: Array, default: () => [] },
-    hasOtherPage:{ type: Boolean, default: false },
     hasLastPage:{ type: Boolean, default: false },
   },
   filters: {

@@ -12,7 +12,7 @@
       </iFormGroup>
     </iCard>
     <div class="pdf-item">
-      <div class="pageCard-main rsPdfCard" ref="rsPdfCard">
+      <div class="pageCard-main" ref="rsPdfCard">
         <div ref="tabTitle" style="padding:1px">
           <slot name="tabTitle"></slot>
         </div>
