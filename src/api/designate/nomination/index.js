@@ -152,3 +152,28 @@ export function unbindMtz(params) {
     params,
   })
 }
+
+// 取消定点前校验提示
+export function cancelNominateCheck(params) {
+  return requst({
+    url: `/nominate-apps/cancelNominateCheck`,
+    method: "GET",
+    params,
+  })
+}
+// 查询是否绑定了mtz
+export function bindMtzFlag(params) {
+  return requst({
+    url: `/nominate-apps/bindMtzFlag/${params.nomiId}`,
+    method: "GET",
+    params,
+  })
+}
+// 取消定点
+export function cancelNominate(params) {
+  return requst({
+    url: `/nominate-apps/cancelNominate/${params.nomiId}`,
+    method: "GET",
+    params,
+  })
+}
