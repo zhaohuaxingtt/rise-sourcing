@@ -151,6 +151,7 @@ export default {
     // 角色判断
     role () {
       const deptName = this.$store.state.permission.userInfo.deptDTO.deptNum
+    console.log(this.roleList)
       if (this.roleList.length == 1) {
         const Linie = this.roleList.some(item => item.code == 'LINIE')
         const zycgkzORkzzl = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ' || item.code == 'ZYCGKSXTY')
@@ -249,7 +250,7 @@ export default {
   },
 
   mounted () {
-    console.log(this.role);
+    console.log(this.role,"role=====");
     if (this.pfjgly) {
       this.currentView = 'pfjzfbmsj'
     } else if (this.role == 'CS' || this.role == 'BZ') { // 部门 部长助理||部长
