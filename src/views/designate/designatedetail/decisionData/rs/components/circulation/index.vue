@@ -9,7 +9,7 @@
 
 <template>
   <div class="circulation" ref="circulation" :class="isPreview && 'isPreview'">
-    <div class="demo" ref="demo" v-if="showpdf" :style="{'width': pageWidth + 80 + 'px'}">
+    <div class="demo" ref="demo" v-if="showpdf" :style="{'width': pageWidth + 'px'}">
       <div ref="tabTitle" style="padding:1px">
         <slot name="tabTitle"></slot>
       </div>
@@ -250,7 +250,6 @@
         :checkList="checkList"
         :tableHeight="tableHeight"
         :otherPageHeight="otherPageHeight"
-        :hasOtherPage="hasOtherPage"
         :residualRemark="residualRemark"
         :hasLastPage="hasLastPage"
         :exchangeRate="exchangeRate"
@@ -598,8 +597,7 @@ export default {
       tableLoading: false,
       tableHeight:0,
       otherPageHeight:0,
-      hasLastPage:false,
-      hasOtherPage: false,
+      hasLastPage:false,  // 签字栏是否另起一页
       fileList:[],
       remarkList:[],
       residualRemark:[],
@@ -689,7 +687,7 @@ export default {
         const item = this.remarkItem[i];
         result.push(item.value)
       }
-			return result.join('').split('\n')
+			return result.join('\n').split('\n')
 		},
     // hasTitle(){
     //   return this.$slots.tabTitle && 116 || 0
@@ -712,7 +710,7 @@ export default {
         let outEl = this.$refs.demo.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
         let requireStart = this.$refs.demo.getElementsByClassName('require-start')[0].offsetHeight  // *号提示信息
         // 第一页
-        this.tableHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
+        this.tableHeight = this.pageHeight - headerHeight -computeHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
         // 独立备注页
         this.otherPageHeight = this.pageHeight - headerHeight - pageLogo - this.hasTitle
         let rowList = this.$refs.demo.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
@@ -722,7 +720,7 @@ export default {
         rowList.forEach((item,i)=>{
           heightSum+=item.offsetHeight
           // if(tableList.length==0){
-            if(heightSum<this.tableHeight - tableHeader - computeHeight - requireStart){
+            if(heightSum<this.tableHeight - tableHeader - requireStart){
               arr.push(this.tableData[i])
             }else{
               tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -730,23 +728,24 @@ export default {
               arr = [this.tableData[i]]
             }
         })
-        let residualHeight = this.tableHeight - tableHeader - computeHeight - requireStart - heightSum  // 最后一页表格剩余高度
+        let residualHeight = this.tableHeight - tableHeader - requireStart - heightSum  // 最后一页表格剩余高度
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
-        this.hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
-        if(this.hasOtherPage){
+        let hasOtherPage = residualHeight - el -24 < outEl  // 最后一页不能放下所有备注和签字栏
+        if(hasOtherPage){
           let itemHeight = 0
           let list = []
           let itemList =[]
           let residualRemark = []
           let remarkList = this.$refs.demo.getElementsByClassName('remarkItem')  //备注信息
+          // 备注信息分页计算
           remarkList.forEach((item,i)=>{
             if(item.offsetHeight<residualHeight - 24){  // 放在表格页剩余空间内
               residualHeight -= item.offsetHeight
               residualRemark.push(this.getRemarkAll[i])
             }else{  // 另起一页
               itemHeight+=item.offsetHeight
-              if(itemHeight<=this.otherPageHeight -24 - beizhuOther){ // 上下padding各12
+              if(itemHeight<=this.otherPageHeight -24){ // 上下padding各12
                 list.push(this.getRemarkAll[i])
               }else{
                 if(list.length)
@@ -756,24 +755,27 @@ export default {
               }
             }
           })
+          if(list.length)
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+          this.residualRemark = residualRemark
+          // 签字栏是否分页
           if(itemHeight){
-            if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
+            if(this.otherPageHeight - itemHeight -24 < el){
               this.hasLastPage = true
             }else{
               this.hasLastPage = false
             }
           }else{
-            if(residualHeight < el){
+            if(residualHeight -24 < el){
               this.hasLastPage = true
             }else{
               this.hasLastPage = false
             }
           }
-          if(list.length)
-          itemList.push(JSON.parse(JSON.stringify(list)))
-          this.remarkList = itemList
-          this.residualRemark = [residualRemark]
         }else{
+          this.remarkList = []
+          this.hasLastPage = false
           this.residualRemark = this.getRemarkAll
         }
       },1000)
@@ -1045,8 +1047,6 @@ export default {
         })
       }
       this.pdfPage = elList.length
-      let time = parseInt(this.pdfPage*30/60)
-      this.$message(`本次导出需耗时大约${time}分钟，请耐心等待`);
       this.showpdf = false
       this.$nextTick(()=>{
         setTimeout(async () => {
@@ -1290,6 +1290,16 @@ export default {
 #myCanvas{
   display: none;
 }
+  .demo{
+    ::v-deep .card{
+      .cardHeader{
+        padding: 30px 0px;
+      }
+      .cardBody{
+        padding: 0px;
+      }
+    }
+  }
 .exchangeRageCurrency + .exchangeRageCurrency {
   margin-left: 20px;
 }
@@ -1417,7 +1427,7 @@ export default {
   .beizhu {
     background-color: rgba(22, 96, 241, 0.03);
     // height: 40px;
-    padding: 12px 14px;
+    padding: 12px 14px; /*no*/
     font-weight: bold;
     display: flex;
     &-value {
@@ -1475,7 +1485,13 @@ export default {
     }
   }
 }
-
+.page-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-top: 1px solid #666;
+  }
 .contentPdf{
   ::v-deep .rsCard {
     box-shadow: none;
