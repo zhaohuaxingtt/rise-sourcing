@@ -42,7 +42,7 @@
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'partNum'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot="header">
             <span>{{ $t(items.key) }}</span>
-            <span style="color: red">*</span>
+            <!--<span style="color: red">*</span>-->
           </template>
           <template slot-scope="scope">
             <iInput v-if="canEdit && statusEdit(scope.row)" v-model.trim="scope.row['partNum']" @blur="getPartInfoAsync(scope.row['partNum'], scope.row['sapItem'])"></iInput>
@@ -69,7 +69,7 @@
             <span v-else>{{ scope.row['quantity'] }}</span>
           </template>
         </el-table-column>
-        <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'supplierNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
+        <!--<el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'supplierNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot="header">
             <span>{{ $t(items.key) }}</span>
             <span style="color: red">*</span>
@@ -78,7 +78,7 @@
             <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['supplierInfo']" @blur="getSupplierInfoAsync(scope.row['supplierInfo'], scope.row['sapItem'])"></iInput>
             <span v-else>{{ scope.row['supplierNameZh'] == null || scope.row['supplierNameZh'] == '' ? '' : `${scope.row['supplierSapCode']}-${scope.row['supplierNameZh']}` }}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'factoryName'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot="header">
             <span>{{ $t(items.key) }}</span>

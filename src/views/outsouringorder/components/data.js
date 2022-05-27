@@ -159,107 +159,6 @@ export const tableTitle = [
 ]
 
 
-export const tableTitleOfOutSouringDetail = [
-  {
-    //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-    props: 'item',
-    name: '项次',
-    key: 'MODEL-ORDER.LK_XIANGCI',
-    tooltip: true,
-    minWidth: 40,
-  },
-  {
-    props: 'partType',
-    name: '零件类型',
-    key: 'LK_LINGJIALEIXING',
-    minWidth: 120,
-    tooltip: true,
-  },
-  {
-    props: 'partNum',
-    name: '零件号',
-    key: 'LK_LINGJIANHAO',
-    minWidth: 140,
-    tooltip: false,
-  },
-  {
-    props: 'partNameZh',
-    name: '零件名称',
-    key: 'LK_LINGJIANMINGCHENZHONG',
-    minWidth: 120,
-    tooltip: true,
-  },
-  {
-    props: 'quantity',
-    name: '数量',
-    key: 'MODEL-ORDER.LK_LINGJIANMINGCENG',
-    minWidth: 120,
-    tooltip: true,
-  },
-  {
-    props: 'unitCode',
-    name: '计量单位',
-    key: 'LK_JILIANGDANWEI',
-    minWidth: 120,
-    tooltip: true,
-  },
-  {
-    props: 'procureFactory',
-    name: '采购⼯⼚',
-    key: 'MODEL-ORDER.LK_CAIGOUGONGCHANG',
-    tooltip: true,
-  },
-  {
-    props: 'sopDateNew',
-    name: '交货日期',
-    key: 'LK_JIAOHUORIQI',
-    tooltip: false,
-    minWidth: 130
-  },
-  {
-    props: 'supplierConfirmStatus',
-    name: '需求跟踪号',
-    key: 'LK_XUQIUGENZHONGHAO',
-    tooltip: true
-  },
-  {
-    props: 'operation',
-    name: 'RiSE协议号',
-    key: 'MODEL-ORDER.LK_RISEXIEYIHAO',
-    tooltip: true
-  },
-]
-
-// 变价单-sop调整列表入参默认
-export const ouringDetailForm = {
-  'item': '', //项次
-  'cstBookType': '1', // 台账类型 默认批量
-  'endDate': '', // 结束时间
-  'startDate': '', // 开始时间
-  'supplierConfirmStatus': '',
-  "changPriceId": null, // 变价单号新增默认
-  'partCode': '', //零件编码
-  'procureFactory': '', //采购工厂编码
-  'supplierSapCode': "", //供应商编码
-  'type': 'sop', //申请单类型
-}
-
-
-// 变价单-暂作价form
-export const savebatchform = {
-  changPriceId: '', //变价单Id
-  changePriceCommonItemDtoList: [], //变价单Id
-  name: '',
-  // departmentCode: '',
-  // departmentId: '',
-  // departmentName: '',
-  // submitType: '0',
-  cstBookType: '', //台账类型
-  // isSpareParts: '', //是否配件
-  remarks: '', //变价单备注
-  type: '', //申请单类型   
-}
-
 export const newTableTitle = [
   {
     props: 'sapItem',
@@ -286,7 +185,7 @@ export const newTableTitle = [
     width: 120
   },
   {
-    props: 'partName',
+    props: 'partNameZh',
     name: '零件名称',
     key: 'partsignLanguage.LingJianMingChengZH',
     tooltip: true,

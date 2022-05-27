@@ -4,13 +4,13 @@
       <el-tab-pane name="source">
         <div>
           <div class="pageTitle flex-between-center-center margin-botttom20">
-            <span>{{ fromDetail ? `RiSE编号:  ${baseinfodata.riseCode}` : $t('LK_XIANJIANCAIGOUSHENQING') }}</span>
+            <span>{{ !canEdit ? `RiSE编号:  ${baseinfodata.riseCode}` : $t('LK_XIANJIANCAIGOUSHENQING') }}</span>
             <div class="btnList flex-align-center">
-              <iButton @click="sendToLine" v-if="fromDetail && canEdit && applicationTypeKey">{{ $t('推送采购员') }}</iButton>
-              <iButton @click="exitEditor" v-if="canEdit && applicationTypeKey">{{ $t('LK_TUICHUBIANJI') }}</iButton>
-              <iButton @click="handleSave" v-if="canEdit && applicationTypeKey">{{ $t('LK_BAOCUN') }}</iButton>
-              <iButton @click="handleEdit" v-if="!canEdit && applicationTypeKey && isLatest">{{ $t('LK_BIANJI') }}</iButton>
-              <iButton @click="createOrder" v-if="!canEdit && applicationTypeKey">{{ $t('创建订单') }}</iButton>
+              <iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
+              <iButton @click="exitEditor" v-if="canEdit">{{ $t('LK_TUICHUBIANJI') }}</iButton>
+              <iButton @click="handleSave" v-if="canEdit">{{ $t('LK_BAOCUN') }}</iButton>
+              <iButton @click="handleEdit" v-if="!canEdit && isLatest">{{ $t('LK_BIANJI') }}</iButton>
+              <!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
               <logButton class="margin-left20" @click="lookLog" />
             </div>
           </div>
@@ -21,10 +21,11 @@
                 <div class="row">
                   <div class="col">
                     <iFormItem :label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'" name="test">
-                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.subType" v-if="canEdit" @change="handleTypeChange">
+                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.subType" v-if="canEdit">
                         <el-option v-for="(item, index) in addType" :key="index" :value="item.label" :label="$t(item.key)"></el-option>
                       </iSelect>
-                      <iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>
+                      <iText v-else>{{ getSubType(baseinfodata.subType) }}</iText>
+                      <!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
                     </iFormItem>
                     <iFormItem :label="$t('申请人') + ':'" name="test">
                       <iText>{{ baseinfodata.applyBy }}</iText>
@@ -32,10 +33,10 @@
                   </div>
                   <div class="col">
                     <iFormItem :label="$t('推荐采购员') + ':'" name="test">
-                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.ownerId" v-if="canEdit" @change="handleTypeChange">
+                      <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="baseinfodata.ownerId" v-if="canEdit">
                         <el-option v-for="(item, index) in lineOptiondata" :key="index" :value="item.linieID" :label="$t(item.linieName)"></el-option>
                       </iSelect>
-                      <iText v-else> {{ baseinfodata.ownerName }}</iText>
+                      <iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
                     </iFormItem>
                     <iFormItem :label="$t('申请部门') + ':'" name="test">
                       <iText> {{ baseinfodata.deptNum }}</iText>
@@ -47,12 +48,12 @@
                       <iText v-else> {{ baseinfodata.partPrefix }} </iText>
                     </iFormItem>
                     <iFormItem :label="$t('备注') + ':'" name="test">
-                      <iInput v-model="baseinfodata.remarks" :disabled="state == 1 ? true : false" class="width500"></iInput>
+                      <iInput v-model="baseinfodata.remarks" :disabled="!canEdit" class="width500"></iInput>
                     </iFormItem>
                   </div>
                   <div class="col">
                     <iFormItem :label="$t('状态') + ':'" name="test">
-                      <iText> {{ baseinfodata.status === 'draft' ? '草稿' : '已完成' }} </iText>
+                      <iText> {{ getStatus(baseinfodata.status) }} </iText>
                     </iFormItem>
                     <iFormItem name="test"> </iFormItem>
                   </div>
@@ -67,13 +68,13 @@
                 
               </iFormGroup>
               <div>
-                <iButton @click="insertItem" v-if="canEdit && applicationTypeKey">{{ $t('LK_XINZHENGXIANGCI') }}</iButton>
-                <iButton @click="deleteItem" v-if="canEdit && applicationTypeKey">{{ $t('LK_SHANCHUXIANGCI') }}</iButton>
-                <iButton @click="exportExcel" v-if="applicationTypeKey">{{ $t('LK_DAOCHU') }}</iButton>
-                <upload-button @uploadedCallback="uploadAttachments" v-if="applicationTypeKey" :upload-button-loading="uploadAttachmentsButtonLoading" :data-info="baseinfodata" class="margin-left8" />
+                <iButton @click="insertItem" v-if="canEdit">{{ $t('LK_XINZHENGXIANGCI') }}</iButton>
+                <iButton @click="deleteItem" v-if="canEdit">{{ $t('LK_SHANCHUXIANGCI') }}</iButton>
+                <upload-button @uploadedCallback="uploadAttachments" v-if="canEdit" :upload-button-loading="uploadAttachmentsButtonLoading" :data-info="baseinfodata" class="margin-left8" />
+                <iButton @click="exportExcel" v-if="canEdit" style="margin-left:8px">{{ $t('LK_DAOCHU') }}</iButton>
               </div>
             </div>
-            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange" @handleFactoryChange="handleFactoryChange" open-page-props="id" :index="true" icon-props="recordId" :keystring="keystring"> </tablelist>
+            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId" :keystring="keystring"> </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -89,7 +90,7 @@
 
 <script>
 import { iPage, iButton, iCard, iMessage, iPagination, iFormGroup, iFormItem, iSelect, iText, iUserLog, icon, iInput } from 'rise'
-import { newTableTitle, addType } from '../components/data'
+import { newTableTitle, addType, statusList } from '../components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import tablelist from './components/tablelist'
@@ -120,8 +121,8 @@ export default {
   },
   data() {
     return {
-      applicationTypeKey: '',
-      applicationTypeVal: '',
+      // applicationTypeKey: '',
+      // applicationTypeVal: '',
       tableListData: [], //table数据
       currentListData: [], //table展示数据
       tableLoading: false,
@@ -132,11 +133,12 @@ export default {
       fromGroup: {},
       selectTableData: [],
       addressList: [], //库存地点
-      canEdit: true,
+      canEdit: false,
       addType: addType,
+      statusList: statusList,
       keystring: 0,
       fromItem: false, //是否从项次点击进入
-      fromDetail: false,
+      // fromDetail: false,
       uploadAttachmentsButtonLoading: false,
       baseinfodata: {
         riseCode: '',
@@ -144,8 +146,7 @@ export default {
         applyBy: this.$store.state.permission.userInfo?.nameZh,
         deptNum: this.$store.state.permission.userInfo?.deptDTO.deptNum,
         subType: 'ZN_ONE',
-        status: 'draft',
-        owerId: '',
+        status: '',
       },
       logDialogVisible: false,
       isLatest: true,
@@ -157,7 +158,8 @@ export default {
       this.fromItem = true
     }
     if (this.$route.query.code) {
-      this.fromDetail = true
+      this.canEdit = false;
+      // this.fromDetail = true
       this.baseinfodata.riseCode = this.$route.query.code
       this.getTableListFn()
       this.getTableHaderInfo()
@@ -166,10 +168,11 @@ export default {
       this.isLatest = false
     }
     if (!this.$route.query.item && !this.$route.query.code) {
-      this.applicationTypeKey = addType[0].key
-      this.applicationTypeVal = addType[0].label
-      this.baseinfodata.subType = this.applicationTypeVal
-      this.canEdit = true
+      this.canEdit = true;
+      // this.applicationTypeKey = addType[0].key
+      // this.applicationTypeVal = addType[0].label
+      // this.baseinfodata.subType = this.applicationTypeVal
+      // this.canEdit = true
     }
     this.purchaseFactory()
     this.getProcureGroup()
@@ -178,6 +181,22 @@ export default {
   },
 
   methods: {
+    // 获取采购申请类型
+    getSubType(val){
+      if (val == '' || val == null || this.addType.length == 0) return '';
+      return this.addType.find(l => l.label == val).key;
+      console.log(val, this.addType)
+    },
+    // 获取推荐采购员
+    getLiner(key) {
+      if (key == '' || key == undefined || key == null || this.lineOptiondata.length == 0) return '';
+      return this.lineOptiondata.find(j =>j.linieID == key).linieName;
+    },
+    // 获取采购申请单状态
+    getStatus(status) {
+      if (status == '' || status == undefined || this.statusList.length <= 0) return '';
+      return this.statusList.find(k => k.key == status).label
+    },
     // 获取推荐采购员
     getLineInfo() {
       liniePullDownByDept({
@@ -214,7 +233,7 @@ export default {
       if (this.tableListData.length > 0) {
         let temp = this.tableListData
         for (let i = 0; i < temp.length; i++) {
-          if (temp[i].partType == '' || temp[i].partNum == '' || temp[i].quantity == '' || temp[i].supplierNameZh == '' || temp[i].factoryName == '' || temp[i].deliveryDate == '') {
+          if (temp[i].partType == '' || temp[i].partNameZh == '' || temp[i].unitCode == '' || temp[i].factoryName == '' || temp[i].deliveryDate == '') {
             return iMessage.warn('请输入必填项')
           }
         }
@@ -222,18 +241,29 @@ export default {
       const query = this.tableListData.map((item) => {
         return {
           ...item,
-          subType: this.applicationTypeVal
+          ...this.baseinfodata
+          // subType: this.applicationTypeVal
         }
       })
       saveOrUpdate(query)
         .then((res) => {
-          if (res.code == '200') {
-            this.baseinfodata.riseCode = res.data[0].riseCode
-            this.fromDetail = true
-            this.canEdit = !this.canEdit
-            this.tableListData = []
-            this.getTableListFn()
-            return iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          if (+res.code === 200) {
+              this.baseinfodata.riseCode = res.data[0].riseCode
+              // this.fromDetail = true
+              this.canEdit = false;
+              // this.tableListData = []
+              // this.getTableListFn();
+              // this.getTableHaderInfo();
+              iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+              this.$nextTick(() => {
+                this.$router.push({
+                  path: '/partsign/outsouringorder/addoutsourcing/details',
+                  query: {
+                    code: this.baseinfodata.riseCode,
+                    subType: this.baseinfodata.subType
+                  }
+                });
+              })
           } else {            
             this.canEdit = true;
             return iMessage.error(`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`)
@@ -243,11 +273,11 @@ export default {
     },
     //编辑
     handleEdit() {
-      this.canEdit = !this.canEdit
+      this.canEdit = true;
     },
     //退出编辑
     exitEditor() {
-      this.canEdit = !this.canEdit
+      this.canEdit = false;
       this.getTableList()
     },
     // 发送给采购员
@@ -270,56 +300,13 @@ export default {
         riseCodes: this.baseinfodata.riseCode
       }).then(res => {
         if (res.result) {
-          this.getTableListFn()
-          this.getTableHaderInfo()
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn); 
+          this.getTableListFn();
+          this.getTableHaderInfo();
         }
       })
     },
-    createOrder() {
-      if (this.selectTableData.length == 0) {
-        return iMessage.warn('请先选择数据')
-      }
-      let time = this.selectTableData[0].deliveryDate
-      //采购工厂
-      const procureFactory = this.selectTableData[0].procureFactory
-      const supplierSapCode = this.selectTableData[0].supplierSapCode
-      for (let index = 0; index < this.selectTableData.length; index++) {
-        const item = this.selectTableData[index]
-        if (index != 0 && new Date(time).getTime() > new Date(item.deliveryDate).getTime()) {
-          time = item.deliveryDate
-        }
-        if (supplierSapCode != item.supplierSapCode) {
-          return iMessage.error('请选择相同供应商的数据')
-        }
-        if (procureFactory != item.procureFactory) {
-          return iMessage.error('请选择相同采购工厂的数据')
-        }
-        if (item.contractRiseCode) {
-          return iMessage.error(`项次${item.sapItem}零件${item.partNum}已创建订单${item.contractRiseCode}`)
-        }
-      }
-      const item = this.selectTableData.map((item) => {
-        return item.sapItem
-      })
-      const purchaseInfo = {
-        code: this.baseinfodata.riseCode, //采购申请RiSE编号
-        item, //采购申请RiSE项次
-        procureFactory, //工厂
-        time,
-        supplierSapCode,
-        supplierNameZh: this.selectTableData[0].supplierNameZh
-      }
-      let routeData = this.$router.resolve({
-        path: `/ws2/purchaseorder/PurchaseOrderDetails/0/-1`,
-        query: {
-          // code: this.baseinfodata.riseCode,  //采购申请RiSE编号
-          // item: JSON.stringify(item), //采购申请RiSE项次
-          purchaseInfo: JSON.stringify(purchaseInfo), // 采购申请数据
-          showItem: '0', //拿到的采购申请是否显示 0 不显示 1 显示
-        },
-      })
-      window.open(routeData.href, '_blank')
-    },
+    // 新增項次
     insertItem() {
       if (this.tableListData.length > 0) {
         if (this.page.currPage == 1) {
@@ -340,28 +327,25 @@ export default {
         quantity: '',
         unitCode: '',
         supplierNameZh: '',
-        supplierSapCode: '',
         factoryName: '',
         procureFactory: '',
         procureOrg: '',
         deliveryDate: '',
         storageLocationCode: '',
         requestTraceNo: '',
-        subType: this.applicationTypeVal,
-        type: 'SPR',
+        // subType: this.applicationTypeVal,
+        subType: '',
+        type: 'GPR',
         departmentInfo: {},
+        supplierSapCode:'11138',
+        tmSupplierId:'50001031'
       })
       this.keystring = new Date()
       this.itemNum += 10
       this.getTableList()
     },
-    handleTypeChange(val) {
-      addType.forEach((element) => {
-        if (element.key == val) {
-          this.applicationTypeVal = element.label
-        }
-      })
-    },
+  
+    // 删除项次
     deleteItem() {
       let result = []
       let deleteList = []
@@ -402,19 +386,11 @@ export default {
         }
       })
     },
+    // 獲取選項數據
     handleSelectionChange(val) {
-      this.selectTableData = val
+      this.selectTableData = val;
     },
-    //工厂更改
-    handleFactoryChange(val) {
-      // inventoryLocation({ procureFactory: val })
-      //   .then((res) => {
-      //     if (res.data) {
-      //       this.addressList = res.data;
-      //     }
-      //   })
-      //   .catch((err) => {});
-    },
+
     getLocation() {
       inventoryLocation({
         isSpare: false,
@@ -432,10 +408,6 @@ export default {
         exportExcel(res, `采购申请${this.baseinfodata.riseCode}`)
       })
     },
-    //导入
-    importExcel() {
-      this.baseinfodata.type = this.applicationTypeVal
-    },
   
     // 获取头部信息
     getTableHaderInfo() {
@@ -444,7 +416,7 @@ export default {
       }
       findNormalPrById(params).then(res => {
         if(res.data) {
-          this.baseinfodata = res.data[0];
+          this.baseinfodata = { ...res.data[0] };
         }
       })
     },
@@ -463,14 +435,14 @@ export default {
         .then((res) => {
           this.tableLoading = false
           this.baseinfodata.subType = res.data.records[0].subType
-          const valFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          if (valFlag) {
-            this.applicationTypeVal = addType.find((i) => i.label == res.data.records[0].subType).label
-          }
-          const keyFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          if (keyFlag) {
-            this.applicationTypeKey = addType.find((i) => i.label == res.data.records[0].subType).key
-          }
+          // const valFlag = addType.some((i) => i.label == res.data.records[0].subType)
+          // if (valFlag) {
+          //   this.applicationTypeVal = addType.find((i) => i.label == res.data.records[0].subType).label
+          // }
+          // const keyFlag = addType.some((i) => i.label == res.data.records[0].subType)
+          // if (keyFlag) {
+          //   this.applicationTypeKey = addType.find((i) => i.label == res.data.records[0].subType).key
+          // }
           let itemList = []
           res.data.records.sort(function (a, b) {
             return a.sapItem - b.sapItem
