@@ -152,3 +152,12 @@ export function unbindMtz(params) {
     params,
   })
 }
+
+// 取消定点
+export function cancelNominate(params) {
+  return requst({
+    url: `/nominate-apps/cancelNominate/${params.nomiId}`,
+    method: "GET",
+    params,
+  })
+}

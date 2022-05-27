@@ -102,6 +102,13 @@
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
+          <!-- 取消定点 -->
+          <iButton
+          v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点"
+            @click="cancelNominate"
+          >
+            {{ language("QUXIAODINGDIAN", "取消定点") }}
+          </iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
@@ -229,7 +236,8 @@ import {
   nomiApprovalProcess,
   tranformRecall,
   unbindMtzCheck,
-  unbindMtz
+  unbindMtz,
+  cancelNominate
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -639,6 +647,18 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
       return state
+    },
+    //取消定点 
+    async cancelNominate(){
+      const confirmInfo = await this.$confirm(this.language('这个单据绑定了MTZ申请，请确认，您是否需要将MTZ解绑','这个单据绑定了MTZ申请，请确认，您是否需要将MTZ解绑？'))
+      if(confirmInfo=='confirm'){
+        const state = await this.unbindMtzCheck()
+      }else{
+        
+      }
+      cancelNominate().then(res=>{
+
+      })
     },
   }
 }
