@@ -152,11 +152,7 @@ export default {
     },
     async exportRecord() {
       if(!this.selectTableData.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUSHUJU','请选择需要导出的数据'))
-      let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
-      data.nominateStartTime = Array.isArray(data.nominateTime) ? data.nominateTime[0] : undefined
-      data.nominateEndTime = Array.isArray(data.nominateTime) ? data.nominateTime[1] : undefined
-      delete data.nominateTime
-      data.fsGsNumList = this.selectTableData.map(item=>item.fsnrGsnrNum)
+      let data = this.selectTableData.map(item=>item.fsnrGsnrNum)
 
       this.downloading = true
       await exportNomiRecordExcel(data)
