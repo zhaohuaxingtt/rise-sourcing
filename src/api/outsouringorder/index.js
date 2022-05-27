@@ -112,3 +112,14 @@ export function liniePullDownByDept(parmars) {
   data: parmars
  })
 }
+
+/**
+ * 根据部门信息获取前期采购员
+ */
+export function listByDeptId(params) {
+ return requst({
+  url: '/stock/listByDeptId',
+  method: 'GET',
+  params
+ })
+}

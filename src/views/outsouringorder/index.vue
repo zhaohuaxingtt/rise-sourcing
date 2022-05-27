@@ -69,7 +69,7 @@
             {{ language("TUIHUI", '退回') }}
           </iButton>
           <!-- 关闭 -->
-          <iButton @click="handleBatchClose">
+          <iButton @click="handleBatchClose(true)">
             {{ language("LK_GUANBI", '关闭') }}
           </iButton>
         </div>
@@ -81,23 +81,17 @@
         @handleSelectionChange="(row)=>selectRow=row" 
         :tableData='tableData' 
         :tableTitle='tableTitle'
-        :tableLoading="false"
+        :tableLoading="tableLoading"
         class="aotoTableHeight">
-        <template #riseCode="scope">
-           <!--<span class="flexRow-link"> -->
-           <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
-            <!-- <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span> -->
-          </span>
-       </template>
-       <template #subType="scope">
-          <span>{{ getSubType(scope.row.subType) }}</span>
-       </template>
-       <template #status="scope">
-          <span>{{ getStatus(scope.row.status) }}</span>
-       </template>
+          <template #riseCode="scope">
+            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.riseCode }}</span>
+          </template>
+          <template #subType="scope">
+            <span>{{ getSubType(scope.row.subType) }}</span>
+          </template>
+          <template #status="scope">
+            <span>{{ getStatus(scope.row.status) }}</span>
+          </template>
       </tablePart>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -118,11 +112,12 @@
     <!------------------------------------------------------------------------>
     <!--                  退回EPS弹窗                                       --->
     <!------------------------------------------------------------------------>
-    <backDialog ref="backEPS" :mode="mode" :dialogVisible="backDialogVisible" @changeVisible="handleBatchReject(false)" @handleBack="handleBackEPS" />
+    <backEps ref="backEPS" :mode="mode" :dialogVisible="backDialogVisible" @handleBack="handleBackEPS" @changeVisible="(val) => mode == 'back' ? handleBatchReject(false) : handleBatchClose(false) " />
     <!------------------------------------------------------------------------>
     <!--                  转派                                       --->
     <!------------------------------------------------------------------------>
     <transfer-dialog v-model="showTransfer" @handleTransfer="handleTransfer" ref="transfer" />
+    <turning-point-dialog v-model="showPoint" @handleTurningPoint="handleTurningPoint" ref="turnpoint" />
   </iPage>
 </template>
 <script>
@@ -137,16 +132,15 @@ import tablePart from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { getDepartmentsCombo } from '@/api/ws2/purchase/investmentList'
 import TransferDialog from './components/transferDialog.vue'
-
+import TurningPointDialog from './components/turningPointDialog.vue'
 
 // eslint-disable-next-line no-undef
 export default {
   mixins:[pageMixins,tableSortMixins],
-  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,iMultiLineInput,icon, headerNav, TransferDialog, backEps },
+  components:{ iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iDatePicker, tablePart,iMultiLineInput,icon, headerNav, TurningPointDialog, TransferDialog, backEps },
   data() {
     return {
       backDialogVisible: false,
-      baseUrl: process.env.VUE_APP_SOURCING,
       searchFormTitle: [],
       form: JSON.parse(JSON.stringify(form)),
       tableTitle: tableTitle,
@@ -156,7 +150,8 @@ export default {
       addType: addType,
       statusList: statusList,
       mode: 'back',
-      showTransfer: false
+      showTransfer: false,
+      showPoint: false, //转定点
     }
   },
   created(){
@@ -164,6 +159,7 @@ export default {
     this.getOutsouringFindBypage()
   },
   methods:{
+    // 新建采購申請
     createSignSheet() {
       this.$router.push('/partsign/outsouringorder/addoutsourcing/details')
     },
@@ -193,6 +189,7 @@ export default {
         return
       }
       this.backDialogVisible = visible;
+      console.log(visible);
       this.mode = 'back';
     },
 
@@ -216,8 +213,6 @@ export default {
      * @return {*}
      */
     viewNominationDetail(row) {
-      // // 禁用nominateProcessType编辑
-      // this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
           path: '/partsign/outsouringorder/addoutsourcing/details',
@@ -265,20 +260,7 @@ export default {
      * @return {*}
      */
     handleBatchSingn() {
-      // this.tableLoading = true;
-      signByLinie({
-        beforeLinie: '',
-        beforeLinieId: '',
-        deptId: '',
-        purchasingRequirementChooseList: this.selectRow.map(k => {
-          return { riseCode: k.riseCode, sapItem: k.sapItem }
-        })
-      }).then(res => {
-      // this.tableLoading = false;
-        if (res.code === '200') {
-          this.getOutsouringFindBypage()
-        }
-      });
+      this.showPoint = true;
     },
     /**
      @Description: 退回EPS
@@ -297,8 +279,7 @@ export default {
           rejectByLinie(params).then(res => {
             if (res.result) {
               iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-              this.handleBatchReject(false)
-              // this.getOutsouringFindBypage()
+              this.getOutsouringFindBypage()
             } else {
               iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             }
@@ -317,8 +298,7 @@ export default {
         closeOutSouringOrder(params).then(res => {
             if (res.result) {
               iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-              this.handleBatchClose(false)
-              // this.getOutsouringFindBypage()
+              this.getOutsouringFindBypage()
             } else {
               iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             }
@@ -331,7 +311,7 @@ export default {
     //转派
     handleTransfer(val) {
       let param = val
-      param.normalPrList = this.selectTableData
+      param.normalPrList = this.selectRow
       toOwner(param)
         .then(res => {
           this.$refs.transfer.transferLoading = false
@@ -346,6 +326,29 @@ export default {
         .catch(() => {
           this.$refs.transfer.transferLoading = false
         })
+    },
+
+    //簽收
+    handleTurningPoint(val) {
+      // this.tableLoading = true;
+      signByLinie({
+        ...val,
+        purchasingRequirementChooseList: this.selectRow.map(k => {
+          return { riseCode: k.riseCode, sapItem: k.sapItem }
+        })
+      }).then(res => {
+        // this.tableLoading = false;
+        this.showPoint = false;
+        if (+res.code === 200) {
+          this.getOutsouringFindBypage()
+          return iMessage.success(`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`);
+        } else {
+          return iMessage.error(`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`);
+        }
+      }).catch(err => {
+        this.showPoint = false;
+        return iMessage.error(`${this.$i18n.locale === 'zh' ? err.desZh : err.desEn}`);
+      });
     },
 
     // 初始化申请部门数据
