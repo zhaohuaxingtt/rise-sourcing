@@ -81,7 +81,7 @@ export default {
                     this.$t("LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN")
                 );
             }
-            this.$tools.sleepLoop(100);
+            // this.$tools.sleepLoop(100);
             let data = {
                 deptName: this.department.commodity,
                 deptNum: this.department.commodity,
