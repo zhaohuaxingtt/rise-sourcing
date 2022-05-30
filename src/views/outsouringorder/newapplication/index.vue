@@ -282,6 +282,7 @@ export default {
     //编辑
     handleEdit() {
       this.canEdit = true;
+      this.getTableList()
     },
     //退出编辑
     exitEditor() {

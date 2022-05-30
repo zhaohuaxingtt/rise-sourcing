@@ -65,7 +65,8 @@
           </template>
           <template slot-scope="scope">
             <span v-if="baseinfodata.subType === 'ZN_AGT'" class="openLinkText cursor" @click="viewQuantity(scope.row)">查看</span>
-            <span v-else>{{ scope.row['quantity'] }}</span>
+            <iInput v-else-if="baseinfodata.subType === 'ZN_ONE'" v-model="scope.row['quantity']" placeholder="请输入" />
+            <span  v-else>{{ scope.row['quantity'] }}</span>
           </template>
         </el-table-column>
         <!--<el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'supplierNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
@@ -231,7 +232,6 @@ export default {
     //保存
     handleSaveDetails(data) {
       this.showQuility = false;
-      console.log(data)
       this.detailInfo.normalPrQuantityYears = data;
     },
     // 保存
