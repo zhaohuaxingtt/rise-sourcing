@@ -7,7 +7,13 @@
         append-to-body
     >
         <div class="item-dialog">
-              TableHeight">
+             <tablePart
+                ref="multipleTable"
+                :lang="true"
+                :tableData='initData' 
+                :tableTitle='tbledColumns'
+                :tableLoading="tableLoading"
+                class="aotoTableHeight">
                <template #year="scope">
                     <el-date-picker
                     v-if="canEdit"
@@ -23,7 +29,7 @@
                 </template> 
             </tablePart>
         </div>
-        
+       
     </iDialog>
 </template>
 
