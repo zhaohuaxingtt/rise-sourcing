@@ -286,7 +286,7 @@ module.exports = {
 			},
 			[process.env.VUE_APP_PURCHASE]: {
 				changeOrigin: true,
-				target: 'http://10.173.61.45:8080/executionoperation/web',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/executionoperation/web',
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PURCHASE]: ''
 				}

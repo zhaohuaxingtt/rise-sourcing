@@ -62,11 +62,11 @@
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'quantity'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot="header">
             <span>{{ $t(items.key) }}</span>
-            <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['quantity']"></iInput>
-            <span v-else>{{ scope.row['quantity'] }}</span>
+            <!--<iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['quantity']"></iInput>
+            <span v-else>{{ scope.row['quantity'] }}</span>-->
+            <span class="openLinkText cursor" @click="viewQuantity(scope.row)">查看</span>
           </template>
         </el-table-column>
         <!--<el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'supplierNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
@@ -125,12 +125,14 @@
       </template>
     </el-table>
     <item-dialog @handleSaveDetail="handleSaveDetail" v-model="showItem" :canEdit="canEdit && statusEdit(detailInfo)" :detailInfo="detailInfo" />
+    <quility-dialog v-model="showQuility" :canEdit="canEdit && statusEdit(detailInfo)" :detailInfo="detailInfo" />
   </div>
 </template>
 
 <script>
 import { iInput, iSelect, iDatePicker, iMessage } from 'rise'
 import ItemDialog from '../../components/itemDialog.vue'
+import QuilityDialog from './quilityDialog.vue'
 import { getSupplierInfoQuery } from '@/api/ws2/modelOrder'
 import { validationPart, purchaseGroup } from '@/api/ws2/purchaserequest'
 export default {
@@ -139,6 +141,7 @@ export default {
     iSelect,
     iDatePicker,
     ItemDialog,
+    QuilityDialog
   },
   props: {
     tableData: { type: Array },
@@ -156,6 +159,7 @@ export default {
   data() {
     return {
       showItem: false,
+      showQuility: false,
       detailInfo: {},
       languageExchange: 'zh',
     }
@@ -219,6 +223,11 @@ export default {
         return element
       })
       this.$emit('handleFactoryChange', factoryCode)
+    },
+    // 查看數量
+    viewQuantity(data){
+      this.showQuility = true;
+      this.detailInfo = data;
     },
     //保存
     handleSaveDetail() {

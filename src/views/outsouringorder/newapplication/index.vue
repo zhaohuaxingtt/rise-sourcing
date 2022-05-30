@@ -43,10 +43,19 @@
                     </iFormItem>
                   </div>
                   <div class="col">
-                    <iFormItem :label="$t('零件编号前缀') + ':'" name="test">
-                      <iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
-                      <iText v-else> {{ baseinfodata.partPrefix }} </iText>
-                    </iFormItem>
+                    <div class="row">
+                      <iFormItem name="test" class="demo-dynamic">
+                        <span slot="label">
+                          {{ $t('零件编号前缀') + ':' }}
+                          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="$t('零件號前綴定義: 項目類型(默認為MBCP, 四位)')" placement="top">
+                            <i class="el-icon-warning-outline bule iconSuffix"></i>
+                          </el-tooltip>
+                        </span>
+                        <iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
+                        <iText v-else> {{ baseinfodata.partPrefix }} </iText>
+                      </iFormItem>
+                      
+                    </div>
                     <iFormItem :label="$t('备注') + ':'" name="test">
                       <iInput v-model="baseinfodata.remarks" :disabled="!canEdit" class="width500"></iInput>
                     </iFormItem>
@@ -185,7 +194,6 @@ export default {
     getSubType(val){
       if (val == '' || val == null || this.addType.length == 0) return '';
       return this.addType.find(l => l.label == val).key;
-      console.log(val, this.addType)
     },
     // 获取推荐采购员
     getLiner(key) {
@@ -728,7 +736,8 @@ export default {
       // border-right: 1px solid $color-border;
       margin-right: 10px;
       padding-right: 20px;
-
+      display: flex;
+      flex-direction: column;
       &:last-child {
         margin-right: 0px;
         border-right: none;
