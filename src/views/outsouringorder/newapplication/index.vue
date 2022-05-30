@@ -47,7 +47,7 @@
                       <iFormItem name="test" class="demo-dynamic">
                         <span slot="label">
                           {{ $t('零件编号前缀') + ':' }}
-                          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="$t('零件號前綴定義: 項目類型(默認為MBCP, 四位)')" placement="top">
+                          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="$t('零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001')" placement="top">
                             <i class="el-icon-warning-outline bule iconSuffix"></i>
                           </el-tooltip>
                         </span>

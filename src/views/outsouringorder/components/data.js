@@ -274,7 +274,7 @@ export const addType = [
 
 export const statusList = [
   { key: '-2', label: '草稿' },
-  { key: '-1', label: '退回' },
+  { key: '-1', label: '已退回' },
   { key: '0', label: '待签收' },
   { key: '1', label: '已创建' },
   { key: '2', label: '已关联订单' },

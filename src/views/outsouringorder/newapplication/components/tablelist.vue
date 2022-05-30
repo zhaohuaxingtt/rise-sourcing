@@ -174,7 +174,7 @@ export default {
     },
   },
   created() {
-    console.log(this.languageExchange, this.$store.state)
+
   },
   methods: {
     openDetailPage(val) {

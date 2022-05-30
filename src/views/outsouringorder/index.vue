@@ -90,7 +90,10 @@
             <span>{{ getSubType(scope.row.subType) }}</span>
           </template>
           <template #status="scope">
-            <span>{{ getStatus(scope.row.status) }}</span>
+            <el-tooltip v-if="scope.row.status == '-1'" class="item" effect="light" :content="scope.row.rejectReason != null ? scope.row.rejectReason : $t('原因不详')" placement="top">
+              <iText>{{ getStatus(scope.row.status) }}<icon class="el-icon-warning-outline red" /></iText>
+            </el-tooltip>
+            <span v-else>{{ getStatus(scope.row.status) }}</span>
           </template>
       </tablePart>
       <!------------------------------------------------------------------------>
@@ -396,7 +399,9 @@ export default {
 .openLinkText {
   color: $color-blue;
 }
-
+.red {
+  color: $color-delete;
+}
 .showMe {
     display: flex;
     align-items: center;

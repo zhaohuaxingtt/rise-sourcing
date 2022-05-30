@@ -1,13 +1,20 @@
 <template>
     <iDialog
-        :title="`数量-项次${detailInfo.sapItem}`"
         :visible.sync="value"
         width="40%"
         @close="clearDiolog"
         append-to-body
     >
-        <div class="item-dialog">
-             <tablePart
+        <div class='titlebar' slot="title">
+            <span>{{`数量-项次${detailInfo.sapItem}`}}</span>
+            <iButton class="save">保存</iButton>
+        </div>
+        <div class="item-dialog clearFloat">
+            <div class="floatright bottom20">
+                <iButton>新增</iButton>
+                <iButton>删除</iButton>
+            </div>
+            <tablePart
                 ref="multipleTable"
                 :lang="true"
                 :tableData='initData' 
@@ -25,7 +32,7 @@
                 </template>
                 <template #quantity="scope">
                     <iInput v-if="canEdit" v-model="scope.row.quantity" placeholder="请输入数量"/>
-                    <iText>{{ scope.row.quantity }}</iText>
+                    <iText v-else>{{ scope.row.quantity }}</iText>
                 </template> 
             </tablePart>
         </div>
@@ -40,7 +47,6 @@ import {
   iButton,
   iInput,
   iMessage,
-  iDatePicker
 } from "rise";
 import tablePart from "@/components/iTableSort";
 
@@ -51,12 +57,11 @@ export default {
         iButton,
         iInput,
         tablePart,
-        iDatePicker
     },
     props: {
         value: { type: Boolean, default: false },
         detailInfo: { type: Object, default: () => {} },
-        canEdit: { type: Boolean, default: false },
+        canEdit: { type: Boolean, default: true, require: true },
         isItem: { type: Boolean, default: false },
     },
     data() {
@@ -79,31 +84,11 @@ export default {
                     align: 'center'
                 },
             ],
-            initData: [
-                {
-                    year: new Date().getFullYear(),
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 1,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 2,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 3,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 4,
-                    quantity: 0
-                }
-            ]
+            initData: [ ]
         }
     },
     created() {
+        console.log(this.canEdit, this.detailInfo)
         if(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0) {
             this.initData = [
                 {
@@ -156,6 +141,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.titlebar {
+    >span {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .save {
+        position: relative;
+        top: 0;
+        margin-left: 450px;
+    }
+}
 .item-dialog {
     position: relative;
 
