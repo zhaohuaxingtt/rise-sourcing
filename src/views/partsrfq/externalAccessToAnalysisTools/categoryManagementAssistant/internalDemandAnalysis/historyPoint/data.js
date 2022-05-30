@@ -1,8 +1,8 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-02 10:42:01
- * @LastEditTime: 2021-12-28 19:46:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-30 10:32:16
+ * @LastEditors: zhaohuaxing 5359314+zhaohuaxing@user.noreply.gitee.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\data.js
  */
@@ -48,7 +48,7 @@ export const tableTitle = [
 
 export const tableTitleExport = [
   { props: 'partsId', name: '零件号', key: 'LINGJIANHAO', tooltip: true },
-  { props: 'partsNameZh', name: '零件号名称', key: 'LJMC', tooltip: true },
+  { props: 'partsNameZh', name: '零件名称', key: 'LJMC', tooltip: true },
   { props: 'fsnrGsnrNum', name: 'FSNR/GSNR', key: 'FSCODE', tooltip: true },
   {
     props: 'partProjectType',
@@ -76,12 +76,12 @@ export const tabList = [
     value: 1,
     name: '按定点记录查看',
     key: 'ADDJLCK',
-    permissionKey:"CATEGORY_ASSISTANT_DDLSJL_ADDJLCK"
+    permissionKey: 'CATEGORY_ASSISTANT_DDLSJL_ADDJLCK',
   },
   {
     value: 2,
     name: '按供应商查看',
     key: 'AGYSCK',
-    permissionKey:"CATEGORY_ASSISTANT_DDLSJL_AGYSCK"
+    permissionKey: 'CATEGORY_ASSISTANT_DDLSJL_AGYSCK',
   },
 ]
