@@ -12,7 +12,7 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iSelect v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['partType']">
+            <iSelect v-if="canEdit " v-model="scope.row['partType']">
               <el-option v-for="items in fromGroup.PART_TYPE" :key="items.code" :value="items.code" :label="items.name" />
             </iSelect>
             <span v-else>{{ translatePart(scope.row['partType']) }}</span>
@@ -24,10 +24,10 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iSelect v-if="canEdit && languageExchange == 'en' && statusEdit(scope.row)" v-model="scope.row['unitCode']" @change="handleUnitChange(scope.row, items.code)">
+            <iSelect v-if="canEdit && languageExchange == 'en' " v-model="scope.row['unitCode']" @change="handleUnitChange(scope.row, items.code)">
               <el-option v-for="items in fromGroup.UNIT" :key="items.code" :value="items.code" :label="items.code" />
             </iSelect>
-            <iSelect v-else-if="canEdit && languageExchange == 'zh' && statusEdit(scope.row)" v-model="scope.row['unitCode']" @change="handleUnitChange(scope.row, items.code)">
+            <iSelect v-else-if="canEdit && languageExchange == 'zh' " v-model="scope.row['unitCode']" @change="handleUnitChange(scope.row, items.code)">
               <el-option v-for="items in handleArray(fromGroup.UNIT)" :key="items.code" :value="items.code" :label="items.name" />
             </iSelect>
             <span v-else>{{ scope.row['unitCode'] }}</span>
@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'account'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['account']"></iInput>
+            <iInput v-if="canEdit " v-model="scope.row['account']"></iInput>
             <span v-else>{{ scope.row['account'] }}</span>
           </template>
         </el-table-column>
@@ -45,7 +45,7 @@
             <!--<span style="color: red">*</span>-->
           </template>
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model.trim="scope.row['partNum']" @blur="getPartInfoAsync(scope.row['partNum'], scope.row['sapItem'])"></iInput>
+            <iInput v-if="canEdit " v-model.trim="scope.row['partNum']" @blur="getPartInfoAsync(scope.row['partNum'], scope.row['sapItem'])"></iInput>
             <span v-else>{{ scope.row['partNum'] }}</span>
           </template>
         </el-table-column>
@@ -55,7 +55,7 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model.trim="scope.row['partNameZh']" />
+            <iInput v-if="canEdit " v-model.trim="scope.row['partNameZh']" />
             <span v-else>{{ scope.row['partNameZh'] }}</span>
           </template>
         </el-table-column>
@@ -64,9 +64,8 @@
             <span>{{ $t(items.key) }}</span>
           </template>
           <template slot-scope="scope">
-            <!--<iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['quantity']"></iInput>
-            <span v-else>{{ scope.row['quantity'] }}</span>-->
-            <span class="openLinkText cursor" @click="viewQuantity(scope.row)">查看</span>
+            <span v-if="baseinfodata.subType === 'ZN_AGT'" class="openLinkText cursor" @click="viewQuantity(scope.row)">查看</span>
+            <span v-else>{{ scope.row['quantity'] }}</span>
           </template>
         </el-table-column>
         <!--<el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'supplierNameZh'" :prop="items.props" :label="$t(items.key)" :width="items.width">
@@ -75,7 +74,7 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['supplierInfo']" @blur="getSupplierInfoAsync(scope.row['supplierInfo'], scope.row['sapItem'])"></iInput>
+            <iInput v-if="canEdit " v-model="scope.row['supplierInfo']" @blur="getSupplierInfoAsync(scope.row['supplierInfo'], scope.row['sapItem'])"></iInput>
             <span v-else>{{ scope.row['supplierNameZh'] == null || scope.row['supplierNameZh'] == '' ? '' : `${scope.row['supplierSapCode']}-${scope.row['supplierNameZh']}` }}</span>
           </template>
         </el-table-column>-->
@@ -85,7 +84,7 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iSelect v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['factoryInfo']" @change="handleFactoryChange(scope.row.factoryInfo, scope.row.sapItem)">
+            <iSelect v-if="canEdit " v-model="scope.row['factoryInfo']" @change="handleFactoryChange(scope.row.factoryInfo, scope.row.sapItem)">
               <el-option v-for="items in splitPurchList" :key="items.code" :value="`${items.procureFactory}-${items.factoryName}`" :label="`${items.procureFactory}-${items.factoryName}`" />
             </iSelect>
             <span v-else>{{ scope.row.factoryName == null || scope.row.factoryName == '' ? '' : `${scope.row.procureFactory}-${scope.row.factoryName}` }}</span>
@@ -93,19 +92,19 @@
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'procureGroup'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['procureGroup']" @blur="checkPurchaseGroup(scope.row)"></iInput>
+            <iInput v-if="canEdit " v-model="scope.row['procureGroup']" @blur="checkPurchaseGroup(scope.row)"></iInput>
             <span v-else>{{ scope.row['procureGroup'] }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'requestTraceNo'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot-scope="scope">
-            <iInput v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['requestTraceNo']"></iInput>
+            <iInput v-if="canEdit " v-model="scope.row['requestTraceNo']"></iInput>
             <span v-else>{{ scope.row['requestTraceNo'] }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else-if="items.props == 'storageLocationCode'" :prop="items.props" :label="$t(items.key)" :width="items.width">
           <template slot-scope="scope">
-            <iSelect v-if="canEdit && statusEdit(scope.row)" v-model="scope.row['locationInfo']" @change="departmentChange(scope.row)" value-key="id">
+            <iSelect v-if="canEdit" v-model="scope.row['locationInfo']" @change="departmentChange(scope.row)" value-key="id">
               <el-option v-for="items in addressList" :key="items.id" :value="items" :label="`${items.inventoryLocation}-${items.description}`" />
             </iSelect>
             <span v-else>{{ scope.row.storageLocationDesc }}</span>
@@ -117,15 +116,15 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iDatePicker v-if="canEdit && statusEdit(scope.row)" class="datapicker" format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" v-model="scope.row['deliveryDate']" type="date" />
+            <iDatePicker v-if="canEdit " class="datapicker" format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" v-model="scope.row['deliveryDate']" type="date" />
             <span v-else>{{ scope.row['deliveryDate'] }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align="center" :show-overflow-tooltip="items.tooltip" v-else :label="$t(items.key)" :prop="items.props" :width="items.width"></el-table-column>
       </template>
     </el-table>
-    <item-dialog @handleSaveDetail="handleSaveDetail" v-model="showItem" :canEdit="canEdit && statusEdit(detailInfo)" :detailInfo="detailInfo" />
-    <quility-dialog v-model="showQuility" :canEdit="canEdit && statusEdit(detailInfo)" :detailInfo="detailInfo" />
+    <item-dialog @handleSaveDetail="handleSaveDetail"  v-model="showItem" :canEdit="canEdit " :detailInfo="detailInfo" />
+    <quility-dialog @handleSaveDetail="handleSaveDetails" v-model="showQuility" :canEdit="canEdit " :detailInfo="detailInfo" />
   </div>
 </template>
 
@@ -154,7 +153,7 @@ export default {
     radio: { type: Boolean, default: false }, // 是否单选
     addressList: { type: Array },
     canEdit: { type: Boolean, default: false },
-    keystring: { type: String, default: '' },
+    baseinfodata: { type: Object, default: () => {} },
   },
   data() {
     return {
@@ -230,8 +229,14 @@ export default {
       this.detailInfo = data;
     },
     //保存
+    handleSaveDetails(data) {
+      this.showQuility = false;
+      console.log(data)
+      this.detailInfo.normalPrQuantityYears = data;
+    },
+    // 保存
     handleSaveDetail() {
-      this.showItem = false
+      this.showItem = false;
     },
     // 获取供应商信息
     getSupplierInfoAsync(queryString, index) {
@@ -336,9 +341,9 @@ export default {
         })
         .catch((err) => iMessage.error('请求失败'))
     },
-    statusEdit(row) {
-      return (row.status == '1' || !row.status) && !row.contractRiseCode
-    }
+    // statusEdit(row) {
+    //   return (row.status == '1' || !row.status) && !row.contractRiseCode
+    // }
   },
 }
 </script>

@@ -7,16 +7,17 @@
     >
         <div class='titlebar' slot="title">
             <span>{{`数量-项次${detailInfo.sapItem}`}}</span>
-            <iButton class="save">保存</iButton>
+            <iButton class="save" @click="saveSapItem">保存</iButton>
         </div>
         <div class="item-dialog clearFloat">
-            <div class="floatright bottom20">
-                <iButton>新增</iButton>
-                <iButton>删除</iButton>
+            <div v-if="canEdit" class="floatright margin-bottom20">
+                <iButton @click="increatment">新增</iButton>
+                <iButton @click="deleteItem">删除</iButton>
             </div>
             <tablePart
                 ref="multipleTable"
                 :lang="true"
+                @handleSelectionChange="(row)=>selectRow=row" 
                 :tableData='initData' 
                 :tableTitle='tbledColumns'
                 :tableLoading="tableLoading"
@@ -84,56 +85,67 @@ export default {
                     align: 'center'
                 },
             ],
-            initData: [ ]
+            initData: [ ],
+            selectRow: []
         }
     },
-    created() {
-        console.log(this.canEdit, this.detailInfo)
-        if(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0) {
-            this.initData = [
-                {
-                    year: new Date().getFullYear(),
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 1,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 2,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 3,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 4,
-                    quantity: 0
-                }
-            ];
-        } else {
-            this.initData = this.detailInfo.normalPrQuantityYears;
-        }
-    },
+
     methods: {
         // 关闭弹窗
         clearDiolog() {
         this.$emit("input", false);
         },
-        save() {
-            this.$emit("handleSaveDetail", this.detailInfo);
+        saveSapItem() {
+            this.$emit("handleSaveDetail", this.initData);
         },
         openOrderPage() {
             this.$emit("openOrderPage", this.detailInfo);
         },
-
+        
+        // 新增
+        increatment() {
+            this.initData.unshift({
+                year: '',
+                quantity: ''
+            });
+        },
+        deleteItem() {
+            if(this.selectRow.lengt < 0) return iMessage.warn('请选择删除的项次');
+            console.log(this.selectRow)
+            this.initData=this.initData.splice(this.selectRow)
+        }
     },
     watch: {
         value: function (val) {
             if (val) {
-                // console.log('ssssss')
-
+                console.log(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0 || this.detailInfo.normalPrQuantityYears == undefined)
+                if(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0 || this.detailInfo.normalPrQuantityYears == undefined) {
+                    this.initData = [
+                        {
+                            year: new Date().getFullYear(),
+                            quantity: 0
+                        },
+                        {
+                            year: new Date().getFullYear() + 1,
+                            quantity: 0
+                        },
+                        {
+                            year: new Date().getFullYear() + 2,
+                            quantity: 0
+                        },
+                        {
+                            year: new Date().getFullYear() + 3,
+                            quantity: 0
+                        },
+                        {
+                            year: new Date().getFullYear() + 4,
+                            quantity: 0
+                        }
+                    ];
+                } else {
+                    this.initData = this.detailInfo.normalPrQuantityYears;
+                }
+                this.$forceUpdate();
             }
         },
     },

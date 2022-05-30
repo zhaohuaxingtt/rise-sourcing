@@ -4,7 +4,7 @@
       <el-tab-pane name="source">
         <div>
           <div class="pageTitle flex-between-center-center margin-botttom20">
-            <span>{{ !canEdit ? `RiSE编号:  ${baseinfodata.riseCode}` : $t('LK_XIANJIANCAIGOUSHENQING') }}</span>
+            <span>{{ baseinfodata.riseCode ? `RiSE编号:  ${baseinfodata.riseCode}` : $t('LK_XIANJIANCAIGOUSHENQING') }}</span>
             <div class="btnList flex-align-center">
               <iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
               <iButton @click="exitEditor" v-if="canEdit">{{ $t('LK_TUICHUBIANJI') }}</iButton>
@@ -83,7 +83,7 @@
                 <iButton @click="exportExcel" v-if="canEdit" style="margin-left:8px">{{ $t('LK_DAOCHU') }}</iButton>
               </div>
             </div>
-            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId" :keystring="keystring"> </tablelist>
+            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :baseinfodata= "baseinfodata" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId"> </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -145,7 +145,6 @@ export default {
       canEdit: false,
       addType: addType,
       statusList: statusList,
-      keystring: 0,
       fromItem: false, //是否从项次点击进入
       // fromDetail: false,
       uploadAttachmentsButtonLoading: false,
@@ -178,6 +177,7 @@ export default {
     }
     if (!this.$route.query.item && !this.$route.query.code) {
       this.canEdit = true;
+      this.baseinfodata
       // this.applicationTypeKey = addType[0].key
       // this.applicationTypeVal = addType[0].label
       // this.baseinfodata.subType = this.applicationTypeVal
@@ -348,7 +348,6 @@ export default {
         supplierSapCode:'11138',
         tmSupplierId:'50001031'
       })
-      this.keystring = new Date()
       this.itemNum += 10
       this.getTableList()
     },
