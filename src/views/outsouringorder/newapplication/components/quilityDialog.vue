@@ -21,11 +21,7 @@
                 :tableData='initData' 
                 :tableTitle='tbledColumns'
                 :tableLoading="tableLoading"
-<<<<<<< HEAD
                 class="aotoTableHeight  margin-bottom20">
-=======
-                class="aotoTableHeight margin-bottom20">
->>>>>>> 574bad3753605c43abf714977330de90fcbc6d46
                <template #year="scope">
                    <el-date-picker
                     v-if="canEdit"
@@ -149,13 +145,10 @@ export default {
                 } else {
                     this.initData = this.detailInfo.normalPrQuantityYears;
                 }
-<<<<<<< HEAD
                 this.initData.map(i => {
                     i.year = i.year.toString();
                     return i;
                 });
-=======
->>>>>>> 574bad3753605c43abf714977330de90fcbc6d46
                 this.$forceUpdate();
             }
         },
