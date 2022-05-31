@@ -200,7 +200,7 @@
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <!-- <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
+        <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
           {{ language("ZHUANPAI", "转派") }}
           <el-tooltip 
             effect="light" 
@@ -209,7 +209,7 @@
             placement="top">
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
-        </iButton> -->
+        </iButton>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
