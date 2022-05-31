@@ -78,7 +78,7 @@ export const nomalDetailTitleBlue = [
   {props: 'suppliersNow', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
   {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
-  {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
+  {props: 'quantityNull', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'} // 2022/5/31 CRW-9040 每车用量置空不取值
 ]
 
 export const gsDetailTitleBlue = [
