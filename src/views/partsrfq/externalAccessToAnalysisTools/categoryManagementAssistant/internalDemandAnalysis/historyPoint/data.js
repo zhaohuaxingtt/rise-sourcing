@@ -1,8 +1,8 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-02 10:42:01
- * @LastEditTime: 2022-05-30 10:32:16
- * @LastEditors: zhaohuaxing 5359314+zhaohuaxing@user.noreply.gitee.com
+ * @LastEditTime: 2022-05-31 16:39:33
+ * @LastEditors: zhaohuaxing vinzhao@deloitte.com.cn
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\data.js
  */
@@ -13,7 +13,7 @@ export const tableTitle = [
     props: 'partsId',
     name: '零件号',
     key: 'LINGJIANHAO',
-    name2: '零件号名称',
+    name2: '零件名称',
     key2: 'LJMC',
     tooltip: true,
   },
