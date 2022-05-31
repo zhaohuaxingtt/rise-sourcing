@@ -217,7 +217,10 @@ export default {
         this.lineOptiondata =[];
       })
     },
-
+    //
+    normalPrQuantityYears(data) {
+      this.baseinfodata.normalPrQuantityYears = data;
+    },
     //获取采购工厂列表
     purchaseFactory() {
       purchaseFactory({ firstId: this.firstId, isSparePart: false })
@@ -262,7 +265,7 @@ export default {
           if (+res.code === 200 && !this.$route.query.item && !this.$route.query.code) {
               this.baseinfodata.riseCode = res.data[0].riseCode
               // this.fromDetail = true
-              this.canEdit = false;
+              // this.canEdit = false;
               // this.tableListData = []
               
               iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
@@ -276,7 +279,8 @@ export default {
                 });
               })
           } else if(+res.code === 200 && this.$route.query.code) {
-            this.baseinfodata.riseCode = res.data[0].riseCode
+            this.baseinfodata.riseCode = res.data[0].riseCode;
+            this.canEdit = false;
             this.getTableListFn()
             this.getTableHaderInfo()
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
