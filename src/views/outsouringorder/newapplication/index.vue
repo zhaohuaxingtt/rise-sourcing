@@ -83,7 +83,7 @@
                 <iButton @click="exportExcel" v-if="canEdit" style="margin-left:8px">{{ $t('LK_DAOCHU') }}</iButton>
               </div>
             </div>
-            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :baseinfodata= "baseinfodata" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId"> </tablelist>
+            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :baseinfodata= "baseinfodata" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @normalPrQuantityYears="normalPrQuantityYears"  @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId"> </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -227,6 +227,10 @@ export default {
           }
         })
         .catch((err) => {})
+    },
+    //项次数量信息
+    normalPrQuantityYears(data) {
+      this.baseinfodata.normalPrQuantityYears = data;
     },
     //保存
     handleSave() {
@@ -445,15 +449,9 @@ export default {
       findNormalPrByPage(param)
         .then((res) => {
           this.tableLoading = false
-          this.baseinfodata.subType = res.data.records[0].subType
-          // const valFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          // if (valFlag) {
-          //   this.applicationTypeVal = addType.find((i) => i.label == res.data.records[0].subType).label
-          // }
-          // const keyFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          // if (keyFlag) {
-          //   this.applicationTypeKey = addType.find((i) => i.label == res.data.records[0].subType).key
-          // }
+          this.baseinfodata.subType = res.data.records[0].subType;
+          this.canEdit = false;
+      
           let itemList = []
           res.data.records.sort(function (a, b) {
             return a.sapItem - b.sapItem
@@ -467,25 +465,16 @@ export default {
             })
             this.itemNum = itemList[0] + 10
           }
-          res.data.records.forEach((element) => {
+          res.data.records.map((element) => {
             element.factoryInfo = `${element.procureFactory}-${element.factoryName}`
-            element.supplierInfo = `${element.supplierSapCode}-${element.supplierNameZh}`
             element.locationInfo = {
               inventoryLocation: element.storageLocationCode,
               description: element.storageLocationDesc,
             }
-            if (this.fromItem && element.sapItem == this.$route.query.item) {
-              if (this.$route.query.subType && element.subType == this.$route.query.subType) {
-                this.tableListData.push(element)
-              }
-              if (!this.$route.query.subType) {
-                this.tableListData.push(element)
-              }
-            }
-            if (!this.fromItem) {
-              this.tableListData.push(element)
-            }
-          })
+            return element;
+          });
+          this.tableListData = res.data.records;
+          console.log(this.tableListData)
           this.getTableList()
         })
         .catch(() => {})

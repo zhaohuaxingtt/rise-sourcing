@@ -207,14 +207,6 @@ export const newTableTitle = [
     tooltip: true,
     align: 'center',
   },
-  // {
-  //   props: 'supplierNameZh',
-  //   name: '期望供应商',
-  //   key: 'MODEL-ORDER.LK_QIWANGGONGYINGSHANG',
-  //   tooltip: true,
-  //   align: 'center',
-  //   width: 120
-  // },
   {
     props: 'factoryName',
     name: '采购工厂',
@@ -222,13 +214,6 @@ export const newTableTitle = [
     tooltip: true,
     align: 'center',
   },
-  // {
-  //   props: 'procureGroup',
-  //   name: '采购组',
-  //   key: 'LK_CAIGOUZU',
-  //   tooltip: true,
-  //   align: 'center',
-  // },
   {
     props: 'deliveryDate',
     name: '交货日期',
