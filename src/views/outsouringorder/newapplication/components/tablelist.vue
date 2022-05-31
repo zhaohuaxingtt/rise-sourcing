@@ -65,7 +65,7 @@
           </template>
           <template slot-scope="scope">
             <span v-if="baseinfodata.subType === 'ZN_AGT'" class="openLinkText cursor" @click="viewQuantity(scope.row)">查看</span>
-            <iInput v-else-if="baseinfodata.subType === 'ZN_ONE'" v-model="scope.row['quantity']" placeholder="请输入" />
+            <iInput v-else-if="baseinfodata.subType === 'ZN_ONE' && canEdit" v-model="scope.row['quantity']" placeholder="请输入" />
             <span  v-else>{{ scope.row['quantity'] }}</span>
           </template>
         </el-table-column>
