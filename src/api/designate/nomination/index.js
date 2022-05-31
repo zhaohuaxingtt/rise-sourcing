@@ -172,7 +172,7 @@ export function bindMtzFlag(params) {
 // 取消定点
 export function cancelNominate(params) {
   return requst({
-    url: `/nominate-apps/cancelNominate/${params.nomiId}`,
+    url: `/nominate-apps/cancelNominate`,
     method: "GET",
     params,
   })
