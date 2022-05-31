@@ -23,7 +23,7 @@
                 :tableLoading="tableLoading"
                 class="aotoTableHeight">
                <template #year="scope">
-                    <el-date-picker
+                   <el-date-picker
                     v-if="canEdit"
                     v-model="scope.row.year"
                     type="year"
@@ -85,7 +85,28 @@ export default {
                     align: 'center'
                 },
             ],
-            initData: [ ],
+            initData: [
+                {
+                    year: new Date().getFullYear(),
+                    quantity: 0
+                },
+                {
+                    year: new Date().getFullYear() + 1,
+                    quantity: 0
+                },
+                {
+                    year: new Date().getFullYear() + 2,
+                    quantity: 0
+                },
+                {
+                    year: new Date().getFullYear() + 3,
+                    quantity: 0
+                },
+                {
+                    year: new Date().getFullYear() + 4,
+                    quantity: 0
+                }
+            ],
             selectRow: []
         }
     },
@@ -118,7 +139,6 @@ export default {
     watch: {
         value: function (val) {
             if (val) {
-                console.log(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0 || this.detailInfo.normalPrQuantityYears == undefined)
                 if(this.detailInfo.normalPrQuantityYears == null || this.detailInfo.normalPrQuantityYears.length <= 0 || this.detailInfo.normalPrQuantityYears == undefined) {
                     this.initData = [
                         {
@@ -145,6 +165,7 @@ export default {
                 } else {
                     this.initData = this.detailInfo.normalPrQuantityYears;
                 }
+                console.log(this.initData);
                 this.$forceUpdate();
             }
         },

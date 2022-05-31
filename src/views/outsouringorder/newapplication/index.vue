@@ -48,7 +48,7 @@
                         <span slot="label">
                           {{ $t('零件编号前缀') + ':' }}
                           <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="$t('零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001')" placement="top">
-                            <i class="el-icon-warning-outline bule iconSuffix"></i>
+                            <i class="el-icon-warning-outline yellow iconSuffix"></i>
                           </el-tooltip>
                         </span>
                         <iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
@@ -255,13 +255,12 @@ export default {
       })
       saveOrUpdate(query)
         .then((res) => {
-          if (+res.code === 200) {
+          if (+res.code === 200 && !this.$route.query.item && !this.$route.query.code) {
               this.baseinfodata.riseCode = res.data[0].riseCode
               // this.fromDetail = true
               this.canEdit = false;
               // this.tableListData = []
-              // this.getTableListFn();
-              // this.getTableHaderInfo();
+              
               iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
               this.$nextTick(() => {
                 this.$router.push({
@@ -272,6 +271,11 @@ export default {
                   }
                 });
               })
+          } else if(+res.code === 200 && this.$route.query.code) {
+            this.baseinfodata.riseCode = res.data[0].riseCode
+            this.getTableListFn()
+            this.getTableHaderInfo()
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
           } else {            
             this.canEdit = true;
             return iMessage.error(`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`)
@@ -282,7 +286,6 @@ export default {
     //编辑
     handleEdit() {
       this.canEdit = true;
-      this.getTableList()
     },
     //退出编辑
     exitEditor() {
