@@ -85,28 +85,7 @@ export default {
                     align: 'center'
                 },
             ],
-            initData: [
-                {
-                    year: new Date().getFullYear(),
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 1,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 2,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 3,
-                    quantity: 0
-                },
-                {
-                    year: new Date().getFullYear() + 4,
-                    quantity: 0
-                }
-            ],
+            initData: [],
             selectRow: []
         }
     },
@@ -123,17 +102,18 @@ export default {
             this.$emit("openOrderPage", this.detailInfo);
         },
         
-        // 新增
+        // 新增项次
         increatment() {
             this.initData.unshift({
                 year: '',
                 quantity: ''
             });
         },
+
+        // 删除项次
         deleteItem() {
-            if(this.selectRow.lengt < 0) return iMessage.warn('请选择删除的项次');
-            console.log(this.selectRow)
-            this.initData=this.initData.splice(this.selectRow)
+            if (this.selectRow.lengt < 0) return iMessage.warn('请选择删除的项次');
+            this.initData = this.initData.filter(i => !i.selectedBorder);
         }
     },
     watch: {
@@ -165,7 +145,10 @@ export default {
                 } else {
                     this.initData = this.detailInfo.normalPrQuantityYears;
                 }
-                console.log(this.initData);
+                this.initData.map(i => {
+                    i.year = i.year.toString();
+                    return i;
+                });
                 this.$forceUpdate();
             }
         },

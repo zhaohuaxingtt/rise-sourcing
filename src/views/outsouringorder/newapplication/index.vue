@@ -298,7 +298,8 @@ export default {
     },
     // 发送给采购员
     sendToLine() {
-      sendLine({
+      if(this.tableListData.length <= 0) return iMessage.warn('没有需要推送给采购员数据');
+      sendLinie({
         deptName: this.baseinfodata.deptName,
         deptNum: this.baseinfodata.deptNum,
         normalPrList: this.tableListData.map(l => {
