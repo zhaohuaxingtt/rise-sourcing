@@ -214,10 +214,10 @@ export default {
     },
     //  取消定点
     cancelNominate() {
-      cancelNominate({nominateId:this.nomiId}).then((res) => {
+      cancelNominate({nominateId :this.nomiId}).then((res) => {
         if(res?.code=='200'){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-          tihs.close()
+          this.close()
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
