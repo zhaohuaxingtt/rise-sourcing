@@ -92,7 +92,7 @@ export const gsDetailTitleBlue = [
   {props: 'plannedInvest', name: '计划投资', enName: 'Planned Invest'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price'},
   {props: 'emtermin', name: '送样EM周期', enName: 'EM-Termin'},
-  {props: 'quantity', name: '每车用量', enName: 'Quantity'},
+  {props: 'quantityNull', name: '每车用量', enName: 'Quantity'}, // 2022/5/31 CRW-9040 每车用量置空不取值
   {props: 'vffTbt', name: 'VFF时间', enName: 'VFF TBT'},
   {props: 'pvsTbt', name: 'PVS时间', enName: 'PVS TBT'}
 ]
