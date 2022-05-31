@@ -233,6 +233,8 @@ export default {
     handleSaveDetails(data) {
       this.showQuility = false;
       this.detailInfo.normalPrQuantityYears = data;
+      this.$emit('normalPrQuantityYears', data);
+      // console.log(this.detailInfo.normalPrQuantityYears)
     },
     // 保存
     handleSaveDetail() {

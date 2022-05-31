@@ -83,7 +83,7 @@
                 <iButton @click="exportExcel" v-if="canEdit" style="margin-left:8px">{{ $t('LK_DAOCHU') }}</iButton>
               </div>
             </div>
-            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :baseinfodata= "baseinfodata" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  open-page-props="id" :index="true" icon-props="recordId"> </tablelist>
+            <tablelist :tableData="currentListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :baseinfodata= "baseinfodata" :fromGroup="fromGroup" :splitPurchList="splitPurchList" :canEdit="canEdit" :addressList="addressList" @handleSelectionChange="handleSelectionChange"  @normalPrQuantityYears="normalPrQuantityYears" open-page-props="id" :index="true" icon-props="recordId"> </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -217,7 +217,10 @@ export default {
         this.lineOptiondata =[];
       })
     },
-
+    //
+    normalPrQuantityYears(data) {
+      this.baseinfodata.normalPrQuantityYears = data;
+    },
     //获取采购工厂列表
     purchaseFactory() {
       purchaseFactory({ firstId: this.firstId, isSparePart: false })
@@ -258,7 +261,7 @@ export default {
           if (+res.code === 200 && !this.$route.query.item && !this.$route.query.code) {
               this.baseinfodata.riseCode = res.data[0].riseCode
               // this.fromDetail = true
-              this.canEdit = false;
+              // this.canEdit = false;
               // this.tableListData = []
               
               iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
@@ -272,7 +275,8 @@ export default {
                 });
               })
           } else if(+res.code === 200 && this.$route.query.code) {
-            this.baseinfodata.riseCode = res.data[0].riseCode
+            this.baseinfodata.riseCode = res.data[0].riseCode;
+            this.canEdit = false;
             this.getTableListFn()
             this.getTableHaderInfo()
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
@@ -445,48 +449,11 @@ export default {
       findNormalPrByPage(param)
         .then((res) => {
           this.tableLoading = false
-          this.baseinfodata.subType = res.data.records[0].subType
-          // const valFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          // if (valFlag) {
-          //   this.applicationTypeVal = addType.find((i) => i.label == res.data.records[0].subType).label
-          // }
-          // const keyFlag = addType.some((i) => i.label == res.data.records[0].subType)
-          // if (keyFlag) {
-          //   this.applicationTypeKey = addType.find((i) => i.label == res.data.records[0].subType).key
-          // }
-          let itemList = []
-          res.data.records.sort(function (a, b) {
-            return a.sapItem - b.sapItem
-          })
-          res.data.records.forEach((element) => {
-            itemList.push(element.sapItem)
-          })
-          if (itemList.length > 0) {
-            itemList.sort(function (a, b) {
-              return b - a
-            })
-            this.itemNum = itemList[0] + 10
+          if (+res.code === 200) {
+            this.currentListData = res.data.records;
+            this.page.pageSize = res.data.size;
+            this.page.currentPage = res.data.pages;
           }
-          res.data.records.forEach((element) => {
-            element.factoryInfo = `${element.procureFactory}-${element.factoryName}`
-            element.supplierInfo = `${element.supplierSapCode}-${element.supplierNameZh}`
-            element.locationInfo = {
-              inventoryLocation: element.storageLocationCode,
-              description: element.storageLocationDesc,
-            }
-            if (this.fromItem && element.sapItem == this.$route.query.item) {
-              if (this.$route.query.subType && element.subType == this.$route.query.subType) {
-                this.tableListData.push(element)
-              }
-              if (!this.$route.query.subType) {
-                this.tableListData.push(element)
-              }
-            }
-            if (!this.fromItem) {
-              this.tableListData.push(element)
-            }
-          })
-          this.getTableList()
         })
         .catch(() => {})
     },

@@ -1,6 +1,7 @@
 <template>
-  <iDialog :title="$t('LK_QIANSHOU')" :visible.sync="value" width="25%" @close="clearDiolog" class="point-dialog">
-    <el-form>
+  <iDialog :title="$t('LK_QIANSHOU')" :visible.sync="value" width="28%" @close="clearDiolog" class="point-dialog">
+    <span class="subtitle">签收后系统将自动创建零件采购项目，请选择询价采购员</span>
+    <el-form class="form">
       <el-form-item :label="$t('LK_KESHI')">
         <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="department" @change="selDeptOnChange" value-key="id">
           <el-option :value="item" :label="item.deptNum" v-for="(item, index) in deptList" :key="index" />
@@ -106,6 +107,12 @@ export default {
 .point-dialog {
   ::v-deep .el-dialog__body {
     padding-bottom: 20px !important;
+  }
+  .subtitle {
+    margin-top: 5px;
+  }
+  .form {
+    margin-top: 10px;
   }
 }
 

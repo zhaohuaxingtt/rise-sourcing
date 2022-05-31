@@ -21,7 +21,7 @@
                 :tableData='initData' 
                 :tableTitle='tbledColumns'
                 :tableLoading="tableLoading"
-                class="aotoTableHeight">
+                class="aotoTableHeight margin-bottom20">
                <template #year="scope">
                    <el-date-picker
                     v-if="canEdit"
@@ -165,7 +165,6 @@ export default {
                 } else {
                     this.initData = this.detailInfo.normalPrQuantityYears;
                 }
-                console.log(this.initData);
                 this.$forceUpdate();
             }
         },
