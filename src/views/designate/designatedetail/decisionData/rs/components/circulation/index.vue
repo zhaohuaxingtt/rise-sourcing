@@ -47,12 +47,25 @@
           <template #oldAPrice="scope">
             <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
           </template>
+          
           <template #cfTargetAPrice="scope">
-            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
           </template>
+
           <template #cfTargetBPrice="scope">
-            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.cfTargetSkdBPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.cfTargetBPrice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
           </template>
+
           <template #rw="scope">
             <span>{{ scope.row.rw | toThousands(true) }}</span>
           </template>

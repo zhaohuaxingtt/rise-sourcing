@@ -2,8 +2,8 @@
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
-		? define(['i18n'], factory)
-		: ((global = global || self), factory(window.i18n))
+			? define(['i18n'], factory)
+			: ((global = global || self), factory(window.i18n))
 })(this, function (i18n) {
 	'use strict'
 	const oldLanguage = {
@@ -1026,6 +1026,8 @@
 		LK_QUERENBINGTIJIAO: '确认并提交',
 		LK_LINEQUEREN: 'LINIE确认',
 		LK_LINETUIHUI: 'LINIE退回',
+		LK_XINZHENGXIANGCI: '新增项次',
+		LK_SHANCHUXIANGCI: '删除项次',
 		LK_GUANBI: '关闭',
 		LK_JIHUO: '或',
 		LK_GUANBIDINGDIANXIN: '关闭定点信',
@@ -1200,6 +1202,8 @@
 		LK_TURN: '轮',
 		LK_NONGROUPEDBREAKTIPS: '以下为 {msg} 未分组数据',
 		LK_CAIGOULEIXING: '采购类型',
+		LK_XIANJIANCAIGOUSHENQING: '新建采购申请',
+		LK_LINGJIANLEIXIN: '零件类型',
 		nominationLanguage: {
 			DingDianXiangQing: '定点详情',
 			DingDianGuanLi: '定点管理',
@@ -6389,8 +6393,8 @@
 		YUNSHU: '运输',
 		SHIFOUQUERENSHANCHUSUOXUANJILU: '是否确认删除所选记录？',
 		SOPRIQICUNZAIGAIDONG: 'SOP日期存在改动，请保存后再试',
-		'FASONGCHANPINJINGLI':'发送产品经理',
-		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'仅针对匹配零件号历史进度',
+		'FASONGCHANPINJINGLI': '发送产品经理',
+		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU': '仅针对匹配零件号历史进度',
 		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A价发生变化，是否确认提交？',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)

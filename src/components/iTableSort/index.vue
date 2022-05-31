@@ -148,8 +148,8 @@ import {icon, iMessage} from "rise"
 import iTableHeaderSorter from './iTableHeaderSort'
 // import {iTableHeaderSorter} from "rise"
 import { getUserListMemory, configUserListMemory } from '@/api/tableSort'
-export default{
-  props:{
+export default {
+  props: {
     /**
      * @description: 表格数据
      * @param {*} 数组
@@ -167,7 +167,7 @@ export default{
      * @param {*}
      * @return {*}
      */    
-    tableLoading:{type:Boolean,default:false},
+    tableLoading:{ type:Boolean,default:false },
     /**
      * @description: 是否显示复选框
      * @param {*}
@@ -254,6 +254,7 @@ export default{
     }
   },
   created() {
+    console.log(this.tableData, this.tableTitle)
     this.initTableSettingColumns()
     if (this.permissionKey) {
       this.querySetting()
