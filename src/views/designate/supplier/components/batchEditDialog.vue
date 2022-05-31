@@ -73,7 +73,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 
 import {
-  getPartSupplierList,
+  getPartSupplierListByNominateAppId,
 } from '@/api/designate/suggestion/part' 
 export default {
   components: { iDialog, iButton, iSelect },
@@ -126,14 +126,8 @@ export default {
     getRfqDepartment() {
       this.departmentOption = []
       this.getSupplierLoading = true
-      let params = this.selectSingleData.map(item=>{
-        return {
-          nominateAppId: item.nominateId || this.$store.getters.nomiAppId,
-          rfqId: item.rfqId,
-          fsnrGsnrNum: item.fsnrGsnrNum,
-        }
-      })
-      getPartSupplierList(params)
+      let nominateAppId = this.$store.getters.nomiAppId
+      getPartSupplierListByNominateAppId(nominateAppId)
       .then(res => {
         this.$nextTick(()=>{
           this.$set(this,'departmentOption',res.code == 200 && Array.isArray(res.data) ? res.data : [])
