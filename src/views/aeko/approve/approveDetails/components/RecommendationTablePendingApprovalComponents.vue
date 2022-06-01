@@ -280,6 +280,8 @@ export default {
       this.auditContentStatusDesc = '已审批'
       this.show = false
     }
+    this.page.pageSize = 1
+    this.page.pageSizes = [1,10,20,50,100,300] //每页条数切换
   },
   methods: {
     // 查看mtz变更
@@ -305,7 +307,7 @@ export default {
     loadRecommendData() {
       let recommendationFormPendingApprovalList = this.auditContents.slice(
         (this.page.currPage - 1) * this.page.pageSize,
-        this.page.currPage * this.page.pageSizes
+        this.page.currPage * this.page.pageSize
       )
       this.recommendationFormPendingApprovalList = formatTableData(recommendationFormPendingApprovalList, recommendationList)
     },
