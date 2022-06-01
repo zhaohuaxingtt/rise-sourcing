@@ -67,7 +67,7 @@ export function generateOptions(params, vm=null) {
         const xAxisBottomData = []
         fugroup.forEach(d => {
             xAxisBottomData.push({
-                value: splitStr(d, 4),
+                value: splitStr(d.split('##')[0], 6)+'\n'+d.split('##')[1],
                 textStyle: {
                     color: '#485465',
                     fontSize: 12
