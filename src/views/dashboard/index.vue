@@ -316,7 +316,7 @@ export default {
             freqData: materialGroupOverviewDTO.map(o => o.avgPeriodPercent || 0) || [],
             partsProcureData: materialGroupOverviewDTO.map(o => o.timeRateSum || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
-            fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName} ${o.materialCode}`) || [],
+            fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName}##${o.materialCode}`) || [],  // ## 分隔符
           }
           // 流转状态跟踪
           const circulationData = res.data.circulationOverviewDTO || {}
