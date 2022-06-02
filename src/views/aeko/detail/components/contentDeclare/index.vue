@@ -710,7 +710,7 @@ export default {
       this.dosageDialogVisible = true
     },
     jumpQuotation(row){
-      if(row.buyerId!=this.userInfo.id){
+      if(row.status=='QUOTING'&&row.buyerId!=this.userInfo.id){
         return iMessage.warn(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
       }
       const { quotationId="" } = row;
