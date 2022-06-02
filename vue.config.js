@@ -142,7 +142,7 @@ module.exports = {
 		proxy: {
 			'/eklApi': {
 				// target: 'http://10.122.17.38:8043/riseekl',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/riseekl/',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/riseekl/',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/eklApi': '',
@@ -150,7 +150,7 @@ module.exports = {
 			},
 			'/mtzApi': {
 				// target: 'http://10.122.17.38:8046/mtz',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/mtz',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/mtz',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/mtzApi': '',
@@ -182,7 +182,8 @@ module.exports = {
 			},
 			'/usercenterApi': {
 				// target: 'http://10.122.17.38:8015/usercenter',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+				target:
+					'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
 				changeOrigin: true,
 				logLevel: 'info',
 				pathRewrite: {
@@ -219,7 +220,7 @@ module.exports = {
 			},
 			'/aonApi': {
 				// target: 'http://10.122.17.38:8036/aon/',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/aon/',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/aonApi': '',
@@ -228,17 +229,24 @@ module.exports = {
 			'/partsProcureApi': {
 				// target: 'http://10.122.17.38:8018',
 				target:
-					'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
+					'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/procurementrequirement/',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/partsProcureApi': '',
 				},
 			},
-			'/toolingApi': {
-				target: 'http://10.122.17.38:8022', //	vmsit
+			// '/toolingApi': {
+			// 	target: 'http://10.122.17.38:8022', //	vmsit
+			// 	changeOrigin: true,
+			// 	pathRewrite: {
+			// 		'^/toolingApi': '',
+			// 	},
+			// },
+			[process.env.VUE_APP_TOOLING]: {
+				target: `http://rise-gateway-runtime.apps.vmocp-test.csvw.com/tooling/web`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/toolingApi': '',
+					['^' + process.env.VUE_APP_TOOLING]: '',
 				},
 			},
 			'/newCommonApi': {
@@ -250,7 +258,7 @@ module.exports = {
 			},
 			'/partApi': {
 				// target: 'http://10.122.17.38:8788',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/parts/',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/partApi': '',
@@ -270,11 +278,28 @@ module.exports = {
 					'^/purchaseApply': '',
 				},
 			},
-			'/risemessage': {
-				target: 'http://10.122.17.38:8044/risemessage',
+			[process.env.VUE_APP_MAIL]: {
+				target: `http://rise-gateway-runtime.apps.vmocp-test.csvw.com/risemessage`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/risemessage': '',
+					['^' + process.env.VUE_APP_MAIL]: '',
+				},
+			},
+			[process.env.VUE_APP_PURCHASE]: {
+				changeOrigin: true,
+				target:
+					'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/executionoperation/web',
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PURCHASE]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_BASE_INFO]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `http://rise-nginx-internal.apps.vmocp-test.csvw.com/baseApi`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_BASE_INFO]: '',
 				},
 			},
 			'/fileApi': {
@@ -293,7 +318,7 @@ module.exports = {
 				},
 			},
 			'/baseinfo': {
-				target: 'http://10.122.17.38:8011/baseinfo',
+				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/baseinfo',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/baseinfo': '',
@@ -316,7 +341,8 @@ module.exports = {
 			},
 			'/prApi': {
 				target: 'http://10.122.17.38:8023',
-				target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/partProcureApi/web',
+				target:
+					'http://rise-nginx-internal.apps.vmocp-test.csvw.com/partProcureApi/web',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/prApi': '',
