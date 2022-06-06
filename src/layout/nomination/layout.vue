@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-<iPage>
+<iPage class="page">
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
@@ -156,6 +156,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.page{
+  position: relative;
+}
 .nomination-wraper {
   &.isPreview {
     box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
