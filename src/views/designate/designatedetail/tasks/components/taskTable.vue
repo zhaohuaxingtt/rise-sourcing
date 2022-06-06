@@ -47,7 +47,7 @@
         index
         :selection="!$store.getters.isPreview"
         :tableData="data"
-        :tableTitle="tasksTitle"
+        :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :class="{taskTable: true, edit: editControl}"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_TABLE|表格"
@@ -165,7 +165,7 @@ export default {
   data() {
     return {
       // 单一供应商
-      tasksTitle,
+      tableTitle:JSON.parse(JSON.stringify(tasksTitle)),
       taskStatus,
       tableLoading: false,
       submiting: false,
@@ -324,12 +324,12 @@ export default {
     },
     toggleShowEditCol(state) {
       if (state) {
-        if (!this.tasksTitle.find(o => o.props === 'edit')) {
-          this.tasksTitle.push(this.editColumn)
+        if (!this.tableTitle.find(o => o.props === 'edit')) {
+          this.tableTitle.push(this.editColumn)
         }
       } else {
-        if (this.tasksTitle.find(o => o.props === 'edit')) {
-          this.tasksTitle.pop()
+        if (this.tableTitle.find(o => o.props === 'edit')) {
+          this.tableTitle.pop()
         }
       }
     },
@@ -343,7 +343,7 @@ export default {
         return
       }
       console.log(this.selectedData)
-      excelExport(this.selectedData, this.tasksTitle)
+      excelExport(this.selectedData, this.tableTitle)
     }
   }
 }

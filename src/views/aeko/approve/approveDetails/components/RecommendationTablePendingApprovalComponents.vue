@@ -305,7 +305,7 @@ export default {
     loadRecommendData() {
       let recommendationFormPendingApprovalList = this.auditContents.slice(
         (this.page.currPage - 1) * this.page.pageSize,
-        this.page.currPage * this.page.pageSizes
+        this.page.currPage * this.page.pageSize
       )
       this.recommendationFormPendingApprovalList = formatTableData(recommendationFormPendingApprovalList, recommendationList)
     },

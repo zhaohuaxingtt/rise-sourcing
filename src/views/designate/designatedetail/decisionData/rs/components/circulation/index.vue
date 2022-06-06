@@ -1216,7 +1216,7 @@ export default {
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>item.imageUrl)
       if(arr.length!=this.fileList.length) return
-      const list = this.fileList.map((item)=>item.imageUrl);
+      const list = this.fileList.sort((a,b)=>a.index-b.index).map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.pageWidth, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
       this.showpdf = true
