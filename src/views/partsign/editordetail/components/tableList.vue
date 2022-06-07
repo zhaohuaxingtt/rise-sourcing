@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2022-03-25 14:42:38
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-05-05 11:11:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
