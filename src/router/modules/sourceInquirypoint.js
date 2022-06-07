@@ -8,6 +8,7 @@
  */
 import sourcing from './sourcing'
 import steeldemandcreation from './steeldemandcreation'
+import outsouringorder from './outsouringorder'
 export default [
   {
     path: "/sourceinquirypoint",
@@ -20,7 +21,8 @@ export default [
     redirect: "/sourcing/dashboard",
     children:[
       ...sourcing,
-      ...steeldemandcreation
+      ...steeldemandcreation,
+      ...outsouringorder
     ]
   }
 ]

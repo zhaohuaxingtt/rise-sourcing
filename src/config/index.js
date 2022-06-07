@@ -68,36 +68,40 @@ export const allitemsList = {
   DSLINGJIAN: '1000062'
 }
 // 零件项目类型
-export const partProjTypes = Object.assign(JSON.parse(JSON.stringify(onlyselfProject)),JSON.parse(JSON.stringify(allitemsList)))
+export const partProjTypes = Object.assign(JSON.parse(JSON.stringify(onlyselfProject)), JSON.parse(JSON.stringify(allitemsList)))
 // 扩产能角色tag id，cf提供
 export const BKMROLETAGID = 'KCNGLY'
 //钢材批量采购
 export const STEEL = {
-  STEELONECE:'1000030', //钢材一次性采购
-  STEELALL:'1000040'    //钢材批量采购
+  STEELONECE: '1000030', //钢材一次性采购
+  STEELALL: '1000040'    //钢材批量采购
+}
+export const OutSouring = {
+  subType1: 'ZN_ONE',
+  subType2: 'ZN_AGT',
 }
 //用户角色,由于前期是用tag暂时判断，后期需要替换此处的角色ID
 export const user = {
   //前期采购员
-  BEFORBUYER:9,
+  BEFORBUYER: 9,
   //linie
-  LINLIE:4,
+  LINLIE: 4,
   //扩产能管理员
-  BKMROLETAGID:'KCNGLY',
+  BKMROLETAGID: 'KCNGLY',
   // 前期采购股长
   QQCGGZ: 'QQCGGZ'
 }
 
 //上传文件的hostId
 export const fileType = {
-  JINGLINGHAOBIANG:'125' //仅零件号变更文件类型
+  JINGLINGHAOBIANG: '125' //仅零件号变更文件类型
 }
 
 export const partsType = {
-  PARTSACCS:'A', //总成零件类型
-  NOUMEN:'S', //本体零件
+  PARTSACCS: 'A', //总成零件类型
+  NOUMEN: 'S', //本体零件
   GENERAL: 'P', //普通零件，
-  PROCESSANDASSEMBLY:'L' //加工装配费
+  PROCESSANDASSEMBLY: 'L' //加工装配费
 }
 
 const enums = {
@@ -143,7 +147,7 @@ const enums = {
 
 Object.freeze(enums)
 
-export const getEnumValue = function(fullKey) {
+export const getEnumValue = function (fullKey) {
   try {
     const keys = fullKey.split(/\./)
 
@@ -158,7 +162,7 @@ export const getEnumValue = function(fullKey) {
 }
 
 export const roundsType = {
-  zxjjys:'biddingRound',
-  putongxunjia:'commonRound',
-  zxkb:'bidRound'
+  zxjjys: 'biddingRound',
+  putongxunjia: 'commonRound',
+  zxkb: 'bidRound'
 }

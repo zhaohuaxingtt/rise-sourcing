@@ -14,7 +14,7 @@ const userCenterRequst = axios(process.env.VUE_APP_USER_CENTER_API)
 // type: 01-车型项目 02-零件项目类型  03-RFQ状态  04-轮次类型
 export function getSelectOptions(type) {
   return requst({
-    url: `/rfqs/findBySearches/${ type }`,
+    url: `/rfqs/findBySearches/${type}`,
     method: 'GET'
   })
 }
@@ -31,9 +31,9 @@ export function getKmRfqList(params) {
 // 更新RFQ
 export function updateRfq(params) {
   return requst({
-      url: '/rfqs/updateRfq',
-      method: 'POST',
-      data: params
+    url: '/rfqs/updateRfq',
+    method: 'POST',
+    data: params
   })
 }
 
@@ -51,8 +51,18 @@ export function getCommodityOptions() {
 // 根据Commodity查询Linie
 export function getLinieOptionsByCommodity(params, options) {
   return requst({
-    url: `/purchasing-project-parts/linie/${ params.deptNum }`,
+    url: `/purchasing-project-parts/linie/${params.deptNum}`,
     method: 'GET',
     ...options
+  })
+}
+
+
+// 部门列表条件查询
+export function getDeptListByParam(data) {
+  return userCenterRequst({
+    url: '/api/dept/getDeptListByParam',
+    method: "post",
+    data,
   })
 }
