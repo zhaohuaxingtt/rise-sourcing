@@ -183,9 +183,9 @@
                   </div>
                 </template>
 
-							<template #share="scope">
-								<span>{{ +scope.row.share || 0 }}</span>
-							</template>
+                <template #share="scope">
+                  <span>{{ +scope.row.share || 0 }}</span>
+                </template>
 
                   <template #savingFee="scope">
                     <span>{{ scope.row.savingFee | toThousands(true) }}</span>
@@ -451,23 +451,52 @@ export default {
           background-color: #f7f7ff;
       }
     }
-  }
+//   }
+		.infoWrapper {
+			flex: 1;
+
+			.info {
+				font-size: 13px;
+				display: flex;
+				.label {
+					font-weight: 800;
+				}
+			}
+		}
+	}
+	.pdf-item,
+	.pageCard {
+		::v-deep .cardHeader {
+			padding-left: 0;
+		}
+		::v-deep .cardBody {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+
+	.beizhu {
+		background-color: rgba(22, 96, 241, 0.03);
+		// height: 40px;
+		padding: 12px 14px;
+		font-weight: bold;
+		display: flex;
+		&-value {
+			font-weight: 400;
+			margin-left: 20px;
+		}
+	}
+	.page-logo {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		align-items: center;
+		border-top: 1px solid #666;
+	}
 
   .infos {
     display: flex;
     padding: 0 0 20px;
-
-    .infoWrapper {
-      flex: 1;
-    
-      .info {
-        font-size: 13px;
-        display: flex;
-        .label {
-          font-weight: 800;
-        }
-      }
-    }
   }
   .pdf-item, .pageCard{
     ::v-deep .cardHeader{
@@ -545,7 +574,7 @@ export default {
         }
       }
     }
-    &-item:last-child {
+    &-item:last-child { 
       margin-right: 0;
     }
   }
