@@ -1,5 +1,6 @@
 <template> <!-- 导出RS单决策资料 -->
 <div>
+  <el-progress :percentage="percentage" class="percentage" :show-text="false"></el-progress>
   <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
     <div class="content" id="allMoudles">
       <div class="showPage" ref="showPage">
@@ -191,7 +192,8 @@ export default {
       clickIndex:0,
       loading:false,
       watchPdf:false,
-      showPage: true
+      showPage: true,
+      percentage:"0"
     }
   },
   props:{
@@ -326,6 +328,7 @@ export default {
             return false
           },
         }).then(async (canvas) => {
+          this.changePercentage(j)
           console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)
         }).catch((error)=>{
@@ -352,12 +355,16 @@ export default {
             return false
           },
         }).then(async (canvas) => {
+          this.changePercentage(j)
           console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)
         }).catch((error)=>{
           console.log(error);
         })
       }
+    },
+    changePercentage(j){
+      this.percentage = parseInt((j+1)/this.pageLength*100)
     },
     // 导出pdf
     async handleExportPdf() {
@@ -558,7 +565,7 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
-  position: relative;
+  // position: relative;
 
   .tab-list {
     margin-top:40px
@@ -718,5 +725,12 @@ export default {
       align-items: center;
       border-top: 1px solid #666;
     }
+}
+.percentage{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
 }
 </style>
