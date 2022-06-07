@@ -14,7 +14,8 @@
       <div slot="header" class="headBox">
         <p class="headTitle">{{$t('TPZS.VPFXK')}}</p>
         <!-- 是否显示新建按钮 -->
-        <span v-if="disabled">
+        <!-- v-if="disabled" -->
+        <span>
           <span class="buttonBox" v-if="!editMode">
             <iButton @click="clickAdd" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD">{{$t('TPZS.LK_CREATE')}}</iButton>
             <iButton @click="clickEdit" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_EDIT">{{$t('LK_BIANJI')}}</iButton>
@@ -50,6 +51,8 @@ export default {
   inject: ['getDisabled'],
   computed: {
     disabled() {
+      console.log(this.getDisabled)
+      console.log(this.getDisabled())
       return typeof this.getDisabled === "function" ? this.getDisabled() : false
     }
   },
