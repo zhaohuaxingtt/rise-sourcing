@@ -316,9 +316,6 @@ export default {
     },
     changePercentage(j){
       this.percentage = parseInt((j+1)/this.pageLength*100)
-      if(this.percentage==100){
-        this.percentageText = '下载中，请稍后'
-      }
     },
     async getPdfFile(copyCanvas,index,i=0){
       return new Promise((r,j)=>{
@@ -359,6 +356,9 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       console.time('接口')
+      if(this.percentage==100){
+        this.percentageText = '下载中，请稍后'
+      }
       const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
