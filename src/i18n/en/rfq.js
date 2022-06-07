@@ -5,8 +5,13 @@
  * @LastEditors: YoHo
  * @Description: rfq管理
  */
- export default {
-  XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG : 'The expected target price should not be blank',
-  QIANSHOUSHIJIAN: 'signDate',
-  LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI : 'The part number is insufficient, please add it to 3 digits or more',
+export default {
+	XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG:
+		'The expected target price should not be blank',
+	QIANSHOUSHIJIAN: 'signDate',
+	LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI:
+		'The part number is insufficient, please add it to 3 digits or more',
+	LK_XIANJIANCAIGOUSHENQING: 'Create',
+	LK_XINZHENGXIANGCI: 'New items ',
+	LK_SHANCHUXIANGCI: 'Delete items ',
 }
