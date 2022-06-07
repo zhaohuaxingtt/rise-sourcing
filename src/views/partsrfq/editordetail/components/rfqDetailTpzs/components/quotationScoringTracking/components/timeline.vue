@@ -21,7 +21,7 @@
       <template v-else>
         <template v-for="(itemss,indexs) in items.rfqTimeAxisProgressVOList">
           <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+4.5 * fontSize *(indexs+1)}px`,left:((itemss.doneDay || 1)-1) * 8.8 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
-            <span v-if='iconList_all_times["a"+itemss.taskStatus]'><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
+            <span><icon v-if='iconList_all_times["a"+itemss.taskStatus]' symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
             <span v-if='itemss.planYear && itemss.progressTypeDesc !== "第一轮询价"'>计划:{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
             <span v-if='itemss.doneYear' :class="'color'+itemss.taskStatus">完成:{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>

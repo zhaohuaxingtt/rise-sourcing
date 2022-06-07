@@ -9,10 +9,10 @@
             :placeholder="language('LK_QINGXUANZE','请选择')"
             clearable
           >
-            <el-option
+            <!-- <el-option
               value=""
               :label="language('all','全部') | capitalizeFilter"
-            ></el-option>
+            ></el-option> -->
             <el-option
               :value="items.label"
               :label="items.label"
@@ -24,14 +24,16 @@
         <!-- 部门 -->
         <el-form-item :label="language('nominationSupplier_BuMen','部门')">
           <iSelect
-            v-model="form.department"
+            v-model="form.departmentList"
             :placeholder="language('LK_QINGXUANZE','请选择')"
             clearable
+            multiple
+            collapse-tags
           >
-            <el-option
+            <!-- <el-option
               value=""
               :label="language('all','全部') | capitalizeFilter"
-            ></el-option>
+            ></el-option> -->
             <el-option
               :value="items.value"
               :label="items.value"
@@ -71,7 +73,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 
 import {
-  getPartSupplierList,
+  getPartSupplierListByNominateAppId,
 } from '@/api/designate/suggestion/part' 
 export default {
   components: { iDialog, iButton, iSelect },
@@ -98,10 +100,11 @@ export default {
   data() {
     return {
       form: {
-        department: '',
+        departmentList: '',
         singleReason: '',
         suppliersName:'',
         supplierId:'',
+        sapCode:''
       },
       loading: false,
       controlHeight: 0,
@@ -118,18 +121,13 @@ export default {
     change(){
       let data = this.departmentOption.filter(item=>item.supplierId==this.form.supplierId)
       this.form.suppliersName = data[0].supplierName
+      this.form.sapCode = data[0].sapCode
     },
     getRfqDepartment() {
       this.departmentOption = []
       this.getSupplierLoading = true
-      let params = this.selectSingleData.map(item=>{
-        return {
-          nominateAppId: item.nominateId || this.$store.getters.nomiAppId,
-          rfqId: item.rfqId,
-          fsnrGsnrNum: item.fsnrGsnrNum,
-        }
-      })
-      getPartSupplierList(params)
+      let nominateAppId = this.$store.getters.nomiAppId
+      getPartSupplierListByNominateAppId(nominateAppId)
       .then(res => {
         this.$nextTick(()=>{
           this.$set(this,'departmentOption',res.code == 200 && Array.isArray(res.data) ? res.data : [])
