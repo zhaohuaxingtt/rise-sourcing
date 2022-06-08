@@ -780,9 +780,9 @@ export default {
                 // }
                 this.showExportPdf = true;
                 this.exportLoading = true;
-                // this.$nextTick(()=>{
-                //     this.$refs['exportPdf'].exportPdf();
-                // })
+                this.$nextTick(()=>{
+                    this.$refs['exportPdf'].changePoint();
+                })
             }
         },
 
