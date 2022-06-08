@@ -143,7 +143,7 @@ module.exports = {
 		proxy: {
 			'/eklApi': {
 				// target: 'http://10.122.17.38:8043/riseekl',
-				target: `${BASE_IP}/riseekl/`,
+				target: `${BASE_IP}/riseekl`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/eklApi': '',
@@ -157,24 +157,14 @@ module.exports = {
 					'^/mtzApi': '',
 				},
 			},
-			'/tpInfoApi': {
-				target: 'http://10.122.17.38:8025',
-
-				changeOrigin: true,
-				pathRewrite: {
-					'^/tpInfoApi': '',
-				},
-			},
 			'/commonApi': {
-				target: 'http://10.122.17.38:8014',
+				target: `${BASE_IP}/common`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/commonApi': '',
 				},
 			},
 			'/sourcingApi': {
-				//   供应商
-				// target: 'http://10.122.17.38:8025/sourcing/',
 				target: `${BASE_IP}/sourcing`,
 				changeOrigin: true,
 				pathRewrite: {
@@ -182,45 +172,29 @@ module.exports = {
 				},
 			},
 			'/usercenterApi': {
-				// target: 'http://10.122.17.38:8015/usercenter',
-				target: `${BASE_IP}/usercenter/`,
+				target: `${BASE_IP}/usercenter`,
 				changeOrigin: true,
 				logLevel: 'info',
 				pathRewrite: {
 					'^/usercenterApi': '',
 				},
 			},
-			'/dictionaryApi': {
-				target: 'http://10.122.17.38:8011',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/dictionaryApi': '',
-				},
-			},
 			'/projectApi': {
-				target: 'http://10.122.17.38:8005/projectmgt',
+				target: `${BASE_IP}/projectmgt`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/projectApi': '',
 				},
 			},
 			'/priceledgerApi': {
-				target: 'http://10.122.17.38:8028',
+				target: `${BASE_IP}/priceledger`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/priceledgerApi': '',
 				},
 			},
-			'/supplierApi': {
-				target: 'http://10.122.17.38:8010',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/supplierApi': '',
-				},
-			},
 			'/aonApi': {
-				// target: 'http://10.122.17.38:8036/aon/',
-				target: 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com/aon/',
+				target: `${BASE_IP}/aon`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/aonApi': '',
@@ -248,13 +222,6 @@ module.exports = {
 					['^' + process.env.VUE_APP_TOOLING]: '',
 				},
 			},
-			'/newCommonApi': {
-				target: 'http://10.122.17.38:8034',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/newCommonApi': '',
-				},
-			},
 			'/partApi': {
 				// target: 'http://10.122.17.38:8788',
 				target: `${BASE_IP}/parts/`,
@@ -264,17 +231,10 @@ module.exports = {
 				},
 			},
 			'/approvalApi': {
-				target: 'http://10.122.17.38:8012',
+				target: `${BASE_IP}/approval`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/approvalApi': '',
-				},
-			},
-			'/purchaseApply': {
-				target: 'http://10.122.17.38:8026',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/purchaseApply': '',
 				},
 			},
 			[process.env.VUE_APP_MAIL]: {
@@ -322,11 +282,11 @@ module.exports = {
 				},
 			},
 			'/supplierservice': {
-				target: 'http://10.122.17.38:8010',
+				target: `${BASE_IP}/supplier/overall`,
 				changeOrigin: true,
 			},
 			'/supplier': {
-				target: 'http://10.122.17.38:8017',
+				target: `${BASE_IP}/supplier/overall`,
 				changeOrigin: true,
 			},
 			[process.env.VUE_APP_BIZLOG]: {
