@@ -1,9 +1,9 @@
 <template> <!-- 导出RS单决策资料 -->
 <div>
   <div class="percentage-box">
-    <el-progress :percentage="percentage" type="circle" class="percentage" :show-text="false" stroke-width="15"></el-progress>
+    <el-progress :percentage="percentage" type="circle" color="#1660f1" :show-text="false" stroke-width="15"></el-progress>
     <div class="percentage-text">
-      {{percentageText}}
+      {{percentageText}}{{point}}
     </div>
   </div>
   <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
@@ -190,8 +190,10 @@ export default {
       loading:false,
       watchPdf:false,
       showPage: true,
-      percentage:"0",
+      percentage: 0,
       percentageText:'导出中，请稍后',
+      point:'',
+      interval:null
     }
   },
   props:{
@@ -201,6 +203,17 @@ export default {
     }
   },
   methods: {
+    changePoint(){
+      this.percentageText = '数据请求中，请稍后'
+      this.setPoint()
+    },
+    setPoint(){
+      this.interval = setInterval(()=>{
+        this.point+='.'
+        if(this.point.length==4)
+        this.point = '.'
+      },500)
+    },
     exportPdf() {
       if(this.imgList.length&&!this.watchPdf){
         this.watchPdf = true
@@ -213,6 +226,10 @@ export default {
     
     // 导出pdf
     handleExportPdf() {
+      if(this.interval) clearInterval(this.interval)
+      this.percentageText = '导出中，请稍后';
+      this.point=''
+      this.percentage = "0"
       this.loading = true
       console.time('截图')
       this.fileList = []
@@ -358,12 +375,15 @@ export default {
       console.time('接口')
       if(this.percentage==100){
         this.percentageText = '下载中，请稍后'
+        this.setPoint()
       }
       const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
         console.timeEnd('接口')
         this.loading = false
+      }).finally(()=>{
+        if(this.interval) clearInterval(this.interval)
       })
     },
   }
@@ -562,6 +582,6 @@ export default {
   margin-top: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: rgb(32 160 255);
+  color: #1660f1;
 }
 </style>
