@@ -26,6 +26,7 @@
             </el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, iMultiLineInput } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -98,7 +99,7 @@ import modificationRecordDialog from '@/views/financialTargetPrice/maintenance/c
 import approvalRecordDialog from '@/views/financialTargetPrice/maintenance/components/approvalRecord'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog,approvalRecordDialog,modificationRecordDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog,approvalRecordDialog,modificationRecordDialog, iMultiLineInput},
   data() {
     return {
       tableTitle: tableTitle,

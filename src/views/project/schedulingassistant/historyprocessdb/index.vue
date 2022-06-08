@@ -27,6 +27,7 @@
           </iSelect>
           <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGSHURU', '请输入')" />
           <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGSHURU', '请输入')" />
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -36,13 +37,13 @@
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton, iMessage, iPage } from 'rise'
+import { iSearch, iSelect, iInput, iButton, iMessage, iPage, iMultiLineInput } from 'rise'
 import { searchListPro, searchListPart } from './data'
 import productGroup from './components/productGroup'
 import part from './components/part'
 import { getCarTypePro, getProductGroupAll } from '@/api/project'
 export default {
-  components: { iSearch, iSelect, iInput, iButton, productGroup, part, iPage },
+  components: { iSearch, iSelect, iInput, iButton, productGroup, part, iPage, iMultiLineInput },
   data() {
     return {
       searchParams: {

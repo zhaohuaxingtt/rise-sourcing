@@ -54,6 +54,7 @@
                   </el-option>
                 </iSelect> 
                 <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                 <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput clearable v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
@@ -132,7 +133,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 // import tableList from '@/views/designate/designatedetail/components/tableList'
 import tableList from "@/components/iTableSort";
@@ -157,7 +158,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger, iMultiLineInput},
   data() {
     return {
       // 零件项目类型
