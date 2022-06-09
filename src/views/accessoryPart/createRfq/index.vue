@@ -250,14 +250,15 @@ export default {
       }
       this.changefactoryDialogVisible(true)
     },
-    updateFactory(procureFactory, procureFactoryName) {
+    updateFactory(procureFactory, procureFactoryId, procureFactoryName) {
       // this.pushKey();
       // 复制参数对应key
       const  params = {
         ids: this.selectItems.map(item => item.purchasingProjectId),
         updateInfo: {
           procureFactory: procureFactory,
-          procureFactoryName: procureFactoryName
+          procureFactoryId: procureFactoryId,
+          procureFactoryName: procureFactoryName,
         }
       }
       updateProcureButch(params).then((res) => {
