@@ -430,7 +430,8 @@ export default {
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
           procureFactoryName: factoryItems ? factoryItems.name : null,
-          unit: this.batch.unit
+          unit: this.batch.unit,
+          procureFactoryId:factoryItems ? factoryItems.id : null,
         }
         updateInfo['oldProjectRelations'] = this.oldProjectRelations
         const ids = this.batch.purchaseProjectIds
