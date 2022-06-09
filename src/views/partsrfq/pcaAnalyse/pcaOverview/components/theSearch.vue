@@ -29,13 +29,14 @@
           <el-option v-for="item in formGroup.keywordList" :key="item.id" :label="item.nameZh" :value="item.id">
           </el-option>
         </iSelect>
+        <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="form[item.props]" :title="$t(item.nameLanguage)" />
       </el-form-item>
     </el-form>
   </iSearch>
 </template>
 
 <script>
-import {iSearch, iInput, iText, iSelect} from 'rise';
+import {iSearch, iInput, iText, iSelect, iMultiLineInput} from 'rise';
 import {tableSearch, externalTableSearch} from './data';
 import {getSapUserPageList} from '../../../../../api/usercenter'
 import _ from 'lodash'
@@ -46,6 +47,7 @@ export default {
     iSelect,
     iInput,
     iText,
+    iMultiLineInput
   },
   data() {
     return {

@@ -12,7 +12,8 @@
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
-            <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <!-- <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput> -->
+            <iMultiLineInput v-model="searchForm['partNo']" :title="language('LINGJIANHAO', '零件号')" />
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('RFQHAOMINGCHENG', 'RFQ号-名称')">
             <iInput v-model="searchForm['rfq']" :placeholder="language('QINGSHURU','请输入')"></iInput>
@@ -53,7 +54,7 @@
 </template>
 
 <script>
-import { iDialog, iInput, iButton, iMessage } from 'rise'
+import { iDialog, iInput, iButton, iMessage, iMultiLineInput } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addTableTitle } from './data'
 import { getAllAddPart, savePartsInfo } from '@/api/partsrfq/piAnalysis/index'
@@ -62,7 +63,8 @@ export default {
     iDialog,
     iInput,
     iButton,
-    tableList
+    tableList,
+    iMultiLineInput
   },
   props: {
     value: {
