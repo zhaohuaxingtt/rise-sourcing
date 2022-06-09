@@ -68,7 +68,7 @@ export default {
     },
     handleConfirm() {
       this.loading = true
-      this.$emit('updateFactory', this.factory, this.fromGroup.PURCHASE_FACTORY.find(item => item.id === this.factory).name)
+      this.$emit('updateFactory', this.factory, this.fromGroup.PURCHASE_FACTORY.find(item => item.id === this.factory).id, this.fromGroup.PURCHASE_FACTORY.find(item => item.id === this.factory).name)
     },
     changeLoading(loading) {
       this.loading = loading
