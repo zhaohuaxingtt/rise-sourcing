@@ -367,6 +367,7 @@ export default {
 			}
 			if (this.tableListData.length > 0) {
 				let temp = this.tableListData
+				console.log('save data', temp)
 				for (let i = 0; i < temp.length; i++) {
 					if (
 						temp[i].partType == '' ||
@@ -400,7 +401,7 @@ export default {
 
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.$nextTick(() => {
-							this.$router.push({
+							this.$router.replace({
 								path: '/partsign/outsouringorder/addoutsourcing/details',
 								query: {
 									code: this.baseinfodata.riseCode,

@@ -254,7 +254,7 @@ module.exports = {
 			// 主数据
 			[process.env.VUE_APP_BASE_INFO]: {
 				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
-				target: `${BASE_IP}/baseApi`,
+				target: `${BASE_IP}/baseinfo`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_INFO]: '',
