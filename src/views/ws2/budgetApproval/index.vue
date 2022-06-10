@@ -27,9 +27,10 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('LK_LINGJIANHAO')">
-          <iInput v-model="form['search.partsNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+          <!-- <iInput v-model="form['search.partsNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
-          </iInput>
+          </iInput> -->
+          <iMultiLineInput :title="$t('LK_LINGJIANHAO')" v-model="form['search.partsNum']" />
         </el-form-item>
         <el-form-item :label="$t('MOULDADD.LK_RFQBIANHAO')">
           <iInput v-model="form['search.rfqId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
@@ -173,7 +174,7 @@
 </template>
 
 <script>
-import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
+import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, iMultiLineInput} from 'rise';
 import {excelExport} from '@/utils/filedowLoad'
 import Moment from 'moment'
 import {
@@ -215,7 +216,8 @@ export default {
     reject,
     transfer,
     alertDialog,
-    referenceCarProject
+    referenceCarProject,
+    iMultiLineInput
   },
   data() {
     return {
