@@ -1,6 +1,11 @@
 <template> <!-- 导出RS单决策资料 -->
 <div>
-  <el-progress :percentage="percentage" class="percentage" :show-text="false"></el-progress>
+  <div class="percentage-box">
+    <el-progress :percentage="percentage" type="circle" color="#1660f1" :show-text="false" stroke-width="15"></el-progress>
+    <div class="percentage-text">
+      {{percentageText}}{{point}}
+    </div>
+  </div>
   <div class="exportPdf" ref="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
     <div class="content" id="allMoudles">
       <div class="showPage" ref="showPage">
@@ -84,7 +89,7 @@
         
 
         <div id="html2canvasRs" v-if="showPage">
-          <rs class="module" :nomiData="nomiData">
+          <rs class="module">
             <template #tabTitle>
               <headerTab value="/designate/decisiondata/rs"/>
             </template>
@@ -100,7 +105,7 @@
 
 <script>
 import { iButton, iTabsList, iMessage } from "rise"
-import {nominateAppSDetail,decisionDownloadPdf, decisionDownloadPdfLogo} from "@/api/designate"
+import {decisionDownloadPdfLogo} from "@/api/designate"
 // import rsTitle from "./components/rsTitle"
 import rsTitle from "../title"
 import partList from "./components/partList"
@@ -165,17 +170,9 @@ export default {
         }
       }
     },
-  created() {
-    this.nominateAppId = this.$route.query.desinateId
-    if (!this.nominateAppId) return
-
-    this.nominateAppSDetail()
-  },
   data() {
     return {
       // exportLoading: false,
-      nominateAppId: "", // 定点申请id
-      nomiData: {}, // 定点申请数据
       decisionType,
       transferDom:[
         {DomId:'html2canvasTitle',key:'title'},
@@ -193,7 +190,10 @@ export default {
       loading:false,
       watchPdf:false,
       showPage: true,
-      percentage:"0"
+      percentage: 0,
+      percentageText:'导出中，请稍后',
+      point:'',
+      interval:null
     }
   },
   props:{
@@ -203,14 +203,16 @@ export default {
     }
   },
   methods: {
-    nominateAppSDetail() {
-      nominateAppSDetail({
-        nominateAppId: this.nominateAppId
-      }).then(res => {
-        if (res.code == 200) {
-          this.nomiData = res.data || {}
-        }
-      })
+    changePoint(){
+      this.percentageText = '数据请求中，请稍后'
+      this.setPoint()
+    },
+    setPoint(){
+      this.interval = setInterval(()=>{
+        this.point+='.'
+        if(this.point.length==4)
+        this.point = '.'
+      },500)
     },
     exportPdf() {
       if(this.imgList.length&&!this.watchPdf){
@@ -218,47 +220,16 @@ export default {
         return iMessage.warn('图片加载中，请稍等。。。')
       }
       if(!this.loading)
-      setTimeout(()=>{this.handleExportPdf2()},2000)  // 延迟 2s 渲染 img, canvas 元素
+      setTimeout(()=>{this.handleExportPdf()},2000)  // 延迟 2s 渲染 img, canvas 元素
       return
-    },
-    // 查看所有图片是否上传完毕
-    async checkAllImageUpload(){
-      const { transferDom=[] } = this;
-      const filter = transferDom.filter((item)=>item.imageUrl);
-      if(filter.length == transferDom.length){ // 上传完毕
-        const list = transferDom.map((item)=>item.imageUrl);
-        await decisionDownloadPdf(list).then((res)=>{
-          // this.$emit('changeStatus','exportLoading',false)
-        }).catch((err)=>{
-          // this.$emit('changeStatus','exportLoading',false)
-        })
-      }
-    },
-
-    // 查看所有图片是否生成完毕
-    async checkAllFilesDone(){
-      const { transferDom=[] } = this;
-      const filter = transferDom.filter((item)=>item.pdfFile);
-       if(filter.length == transferDom.length){ // 生成完毕
-        //将转换为formData的canvas图片 上传到服务器
-        transferDom.map((item)=>{
-          uploadUdFile({
-          multifile: item.pdfFile
-        }).then((res=>{
-          if(res.code == 200){
-            item['imageUrl'] = res.data[0].path || '';
-            this.checkAllImageUpload();
-          }else{
-            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        }));
-        })
-        
-       }
     },
     
     // 导出pdf
-    handleExportPdf2() {
+    handleExportPdf() {
+      if(this.interval) clearInterval(this.interval)
+      this.percentageText = '导出中，请稍后';
+      this.point=''
+      this.percentage = "0"
       this.loading = true
       console.time('截图')
       this.fileList = []
@@ -287,7 +258,7 @@ export default {
           console.log('start');
           for (let i = 0; i<this.pageLength; i++) {
             const el = elList[i]
-            await this.getPdfImage2({
+            await this.getPdfImage({
               dom: el,
               WH: pageWH[i],
               j:i
@@ -298,7 +269,7 @@ export default {
     },
     // 截取页面,存入pdf
     // 截取页面,转图片, 上传服务器
-    async getPdfImage2({
+    async getPdfImage({
       //html横向导出pdf
       dom,
       WH,
@@ -306,7 +277,6 @@ export default {
     }) {
       let scale = 2
       const el = this.$refs['pdf-containr']
-      console.time(`img${j}`);
       // canvas 不能通过innerHTML渲染
       if(dom.getElementsByTagName('canvas').length==0){
         dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${j+1} of ${this.pageLength}`;
@@ -329,7 +299,6 @@ export default {
           },
         }).then(async (canvas) => {
           this.changePercentage(j)
-          console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)
         }).catch((error)=>{
           console.log(error);
@@ -356,7 +325,6 @@ export default {
           },
         }).then(async (canvas) => {
           this.changePercentage(j)
-          console.timeEnd(`img${j}`);
           this.getPdfFile(canvas,j)
         }).catch((error)=>{
           console.log(error);
@@ -366,107 +334,6 @@ export default {
     changePercentage(j){
       this.percentage = parseInt((j+1)/this.pageLength*100)
     },
-    // 导出pdf
-    async handleExportPdf() {
-      this.loading = true
-      console.time('截图')
-      this.fileList = []
-      setTimeout(async () => {
-        let elList = this.$refs.showPage.getElementsByClassName('pageCard-main')
-        if(!elList.length){
-          iMessage.warn('请稍等')
-          this.$emit('changeStatus','exportLoading',false)
-          return
-        }
-        let div = document.createElement('div')
-        div.setAttribute('class','pdfItem')
-        let sumHeight = 0
-        let WH = []
-        let list = []
-        let j = 0
-        const pageLength = elList.length
-        this.pageLength = pageLength
-        for (let i = 0; i<pageLength; i++) {
-          const el = elList[0]
-          WH.push({width: el.offsetWidth+'', height: el.offsetHeight+''})
-          if(el.getElementsByClassName('pageNum')[0])
-          el.getElementsByClassName('pageNum')[0].innerHTML = `page ${i+1} of ${pageLength}`;
-          sumHeight+=el.offsetHeight
-          const elDom = el;
-          const itemDom = document.createElement('div')
-          itemDom.style.width = el.offsetWidth +'px'
-          itemDom.style.height = el.offsetHeight + 'px'
-          itemDom.appendChild(elDom)
-          if(sumHeight>=14000/2){
-            this.$refs['pdf-containr'].appendChild(div)
-            list.push(j)
-            j = i
-            sumHeight = el.offsetHeight
-            div = document.createElement('div')
-            div.setAttribute('class','pdfItem')
-          }
-          div.appendChild(itemDom)
-        }
-        list.push(j)
-        this.$refs['pdf-containr'].appendChild(div)
-        let pdfPageList = this.$refs['pdf-containr'].getElementsByClassName('pdfItem')
-        for (let index = 0; index < pdfPageList.length; index++) {
-          const pdfItem = pdfPageList[index];
-          await this.getPdfImage({
-            dom: pdfItem,
-            WH,
-            j:list[index]
-          })
-        }
-      }, 10)
-    },
-    // 截取页面,存入pdf
-    // 截取页面,转图片, 上传服务器
-    async getPdfImage({
-      //html横向导出pdf
-      dom,
-      WH,
-      j
-    }) {
-      let scale = 2
-      console.log('j=>start',j);
-      console.time(`img${j}`);
-      await html2canvas(dom, {
-        // allowTaint:true,
-        dpi: 96, //分辨率
-        scale: scale, //设置缩放
-        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
-        bgcolor: "#ffffff", //应该这样写
-        logging: false, //打印日志用的 可以不加默认为false
-        porxy: ''
-      }).then(async (canvas) => {
-        console.log('j=>end',j);
-        console.timeEnd(`img${j}`);
-        const copyCanvas = document.getElementById("myCanvas");
-        let ctx=canvas.getContext("2d");
-        let height = canvas.height
-        let offsetHeight = 0
-        let i = 0
-        while(height>20){
-          let width = (WH[j+i]?.width || WH[0].width) * scale
-          let pageHeight = (WH[j+i]?.height || WH[0].height) * scale
-          copyCanvas.width = width
-          copyCanvas.height = pageHeight
-          const imgData=ctx.getImageData(0,offsetHeight,width,pageHeight );
-          const ctxs = copyCanvas.getContext("2d");
-          ctxs.putImageData(imgData,0,0);
-          console.log('img=>',j+i+1,',  total=>',WH.length);
-          this.getPdfFile(copyCanvas,j+i)
-          height -= pageHeight
-          offsetHeight+=pageHeight
-          i++
-          ctxs.clearRect(0, 0, width, pageHeight); //清空截图画布
-        }
-      }).catch((error)=>{
-        console.log(error);
-      });
-    },
-
     async getPdfFile(copyCanvas,index,i=0){
       return new Promise((r,j)=>{
         copyCanvas.toBlob((blob) => {
@@ -506,46 +373,17 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       console.time('接口')
+      if(this.percentage==100){
+        this.percentageText = '下载中，请稍后'
+        this.setPoint()
+      }
       const list = this.fileList.sort((a,b)=> a.index - b.index ).map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2}).then(()=>{
         this.$emit('changeStatus','exportLoading',false)
         console.timeEnd('接口')
         this.loading = false
-      })
-    },
-    // 上传图片
-    async uploadUdFile(){
-      this.fileList.map((item)=>{
-        uploadUdFile({
-        multifile: item.file
-        }).then(res=>{
-          if(res.code == 200){
-            item['imageUrl'] = res.data[0].path
-            // console.log(res.data[0].objectUrl);
-            this.$nextTick(()=>{
-              this.DownloadPdf();
-            })
-          }else{
-            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        }).catch(()=>{
-          this.$message.error('PDF 导出失败')
-          uploadUdFile({
-          multifile: item.file
-          }).then(res=>{
-            if(res.code == 200){
-              item['imageUrl'] = res.data[0].path
-              console.log(res.data[0].objectUrl);
-              this.$nextTick(()=>{
-                this.DownloadPdf();
-              })
-            }else{
-              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-            }
-          }).catch(()=>{
-            this.$emit('changeStatus','exportLoading',false)
-          })
-        });
+      }).finally(()=>{
+        if(this.interval) clearInterval(this.interval)
       })
     },
   }
@@ -726,11 +564,24 @@ export default {
       border-top: 1px solid #666;
     }
 }
-.percentage{
-  position: absolute;
+.percentage-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 99999;
+  background: rgba(255,255,255,0.8);
+}
+.percentage-text{
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1660f1;
 }
 </style>
