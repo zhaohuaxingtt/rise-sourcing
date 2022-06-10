@@ -22,6 +22,7 @@
           clearable
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          @input="form.nominateId = numberProcessor(form.nominateId, 0)"
         ></iInput>
       </el-form-item>
       <!-- 零件号 -->
@@ -120,7 +121,7 @@ import { form } from '../data'
 import {
   signSheetStatus
 } from '@/views/designate/home/components/options'
-
+import { numberProcessor } from '@/utils' 
 import {
   iSearch,
   iInput,
@@ -153,6 +154,7 @@ export default {
     this.form = {}
   },
   methods: {
+    numberProcessor,
     sure() {
       this.$emit('search', this.form)
     },
