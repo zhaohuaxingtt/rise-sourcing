@@ -577,6 +577,7 @@
 		watch:{
 			'selectOldParts.selectData':function(res){
 				this.detailData.oldFsnrGsnrNum = res.fsnrGsnrNum
+				this.detailData.oldPurchasingProjectId = res.partProjId
 			},
 			procureFactoryPack(data) {
 				if (this.$refs.procureFactorySelect && this.$refs.procureFactorySelect.$el && this.$refs.procureFactorySelect.$el.querySelector("input")) {
