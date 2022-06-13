@@ -1,815 +1,945 @@
 <template>
-  <div class="generateInvestmentList">
-    <div class="page-head">
-      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
-        <div class="line-divL line-div">
-          <div class="title">All</div>
-          <div class="describe">{{$t('LK_ALLBAAPPLY')}}</div>
-        </div>
-        <div class="line-divR line-div">
-          <icon v-if="tableIndex === 0" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
-          <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
-        </div>
-      </div>
-      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
-        <div class="line-divL line-div">
-          <div class="title">{{tabData.applyCount}}</div>
-          <div class="describe">{{$t('LK_TOBECONFIRMEDBAAPPLY')}}</div>
-        </div>
-        <div class="line-divR line-div">
-          <icon v-if="tableIndex === 1" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
-          <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
-        </div>
-      </div>
-      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
-        <div class="line-divL line-div">
-          <div class="title">{{tabData.amountCount}}</div>
-          <div class="describe">{{$t('LK_TOBECONFIRMEDMONEY')}}</div>
-        </div>
-        <div class="line-divR line-div">
-          <icon v-if="tableIndex === 3" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
-          <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
-        </div>
-      </div>
-    </div>
+	<div class="generateInvestmentList">
+		<div class="page-head">
+			<div
+				class="page-head-flex"
+				v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL"
+				:class="tableIndex === 0 ? 'head-on' : ''"
+				@click="selectHeadTable(0)"
+			>
+				<div class="line-divL line-div">
+					<div class="title">All</div>
+					<div class="describe">{{ $t('LK_ALLBAAPPLY') }}</div>
+				</div>
+				<div class="line-divR line-div">
+					<icon
+						v-if="tableIndex === 0"
+						symbol
+						name="iconsuoyouBAshenqingweixuanzhong"
+						class="openIcon"
+					></icon>
+					<icon
+						v-else
+						symbol
+						name="icondaiquerenBAshenqingzhuijiajineweixuanzhong"
+						class="openIcon"
+					></icon>
+				</div>
+			</div>
+			<div
+				class="page-head-flex"
+				v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY"
+				:class="tableIndex === 1 ? 'head-on' : ''"
+				@click="selectHeadTable(1)"
+			>
+				<div class="line-divL line-div">
+					<div class="title">{{ tabData.applyCount }}</div>
+					<div class="describe">{{ $t('LK_TOBECONFIRMEDBAAPPLY') }}</div>
+				</div>
+				<div class="line-divR line-div">
+					<icon
+						v-if="tableIndex === 1"
+						symbol
+						name="iconsuoyouBAshenqingweixuanzhong"
+						class="openIcon"
+					></icon>
+					<icon
+						v-else
+						symbol
+						name="icondaiquerenBAshenqingzhuijiajineweixuanzhong"
+						class="openIcon"
+					></icon>
+				</div>
+			</div>
+			<div
+				class="page-head-flex"
+				v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY"
+				:class="tableIndex === 3 ? 'head-on' : ''"
+				@click="selectHeadTable(3)"
+			>
+				<div class="line-divL line-div">
+					<div class="title">{{ tabData.amountCount }}</div>
+					<div class="describe">{{ $t('LK_TOBECONFIRMEDMONEY') }}</div>
+				</div>
+				<div class="line-divR line-div">
+					<icon
+						v-if="tableIndex === 3"
+						symbol
+						name="iconsuoyouBAshenqingweixuanzhong"
+						class="openIcon"
+					></icon>
+					<icon
+						v-else
+						symbol
+						name="icondaiquerenBAshenqingzhuijiajineweixuanzhong"
+						class="openIcon"
+					></icon>
+				</div>
+			</div>
+		</div>
 
-    <keep-alive>
-      <div v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
-        <SearchBlock @sure="handleSureBlock" />
+		<keep-alive>
+			<div v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
+				<SearchBlock @sure="handleSureBlock" />
 
-        <iCard>
-          <div class="table-head">
-            <iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
-          </div>
-          <iTableList
-            :tableData="allTableData"
-            :tableTitle="allBAATableHead"
-            :tableLoading="allListLoading"
-            @handleSelectionChange="handleSelectionChange"
-          >
-            <template #detailed="scope">
-              <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-            </template>
-          </iTableList>
-          <div class="unitExplain">
-            <UnitExplain />
-          </div>
-          <iPagination
-            v-update
-            @size-change="handleSizeChange($event, handleSure)"
-            @current-change="handleCurrentChange($event, handleSure)"
-            background
-            :current-page="page.currPage"
-            :page-sizes="page.pageSizes"
-            :page-size="page.pageSize"
-            :layout="page.layout"
-            :total="page.totalCount"
-          />
-        </iCard>
-      </div>
-    </keep-alive>
-    
-    <keep-alive>
-      <div v-if="tableIndex===1" v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY">
-        <iCard>
-          <div class="table-head">
-            <iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
-          </div>
-          <iTableList
-            :tableData="waitTableData"
-            :tableTitle="waitBAATableHead"
-            :tableLoading="waitTableLoading"
-            @handleSelectionChange="handleSelectionChange"
-          >
-            <template #sixBa="scope">
-              A-<div class="iDialog-inputItem">
-                      <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.sixBa" maxlength="5" />
-                    </div>-<div class="iDialog-inputItem">
-                              <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="scope.row.int" />
-                            </div>
-            </template>
-            <template #detailed="scope">
-              <div class="detailed-item">
-                <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
-                <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-              </div>
-            </template>
-          </iTableList>
-          <div class="unitExplain">
-            <UnitExplain />
-          </div>
-          <iPagination
-            v-update
-            @size-change="handleSizeChange($event, getPageData)"
-            @current-change="handleCurrentChange($event, getPageData)"
-            background
-            :current-page="page.currPage"
-            :page-sizes="page.pageSizes"
-            :page-size="page.pageSize"
-            :layout="page.layout"
-            :total="page.totalCount"
-          />
-        </iCard>
-      </div>
-    </keep-alive>
-    
-    <keep-alive>
-      <div v-if="tableIndex===3" v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY">
-        <iCard>
-          <div class="table-head">
-            <iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
-          </div>
-          <iTableList
-            :tableData="waitAddTableData"
-            :tableTitle="waitAddTableHead"
-            :tableLoading="waitAddTableLoading"
-            @handleSelectionChange="handleSelectionChange"
-          >
-            <template #detailed="scope">
-              <div class="detailed-item">
-                <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
-                <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-              </div>
-            </template>
-          </iTableList>
-          <div class="unitExplain">
-            <UnitExplain />
-          </div>
-          <iPagination
-            v-update
-            @size-change="handleSizeChange($event, getPageData)"
-            @current-change="handleCurrentChange($event, getPageData)"
-            background
-            :current-page="page.currPage"
-            :page-sizes="page.pageSizes"
-            :page-size="page.pageSize"
-            :layout="page.layout"
-            :total="page.totalCount"
-          />
-        </iCard>
-      </div>
-    </keep-alive>
-    
-    
-    <!-- 修改A号弹窗 -->
-    <iDialog :visible="visible" @close='clearDiolog' width="22%" top="7vh" z-index="1000" class="iDialog">
-      <template slot="title">
-        <div class="iDialog-head">
-          <div>
-            {{$t('LK_MODIFYANUMBER')}}
-          </div>
-          <Popover
-              width="272"
-              placement="bottom"
-              trigger="hover">
-            <div class="popoverDiv">
-              <p>{{$t('LK_MODIFYANUMBERTXTTIPS')}}</p>
-            </div>
-            <icon symbol name="iconxinxitishi" slot="reference"></icon>
-          </Popover>
-          <div>
-            {{allSelectList.length && allSelectList[0].carTypeName || ''}} {{allSelectList.length && allSelectList[0].localFactoryName || ''}}
-          </div>
-          
-        </div>
-      </template>
+				<iCard>
+					<div class="table-head">
+						<iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
+					</div>
+					<iTableList
+						:tableData="allTableData"
+						:tableTitle="allBAATableHead"
+						:tableLoading="allListLoading"
+						@handleSelectionChange="handleSelectionChange"
+					>
+						<template #detailed="scope">
+							<div class="detailed" @click="openDetails(scope)">
+								{{ $t('LK_DETAILEDTXT') }}
+							</div>
+						</template>
+					</iTableList>
+					<div class="unitExplain">
+						<UnitExplain />
+					</div>
+					<iPagination
+						v-update
+						@size-change="handleSizeChange($event, handleSure)"
+						@current-change="handleCurrentChange($event, handleSure)"
+						background
+						:current-page="page.currPage"
+						:page-sizes="page.pageSizes"
+						:page-size="page.pageSize"
+						:layout="page.layout"
+						:total="page.totalCount"
+					/>
+				</iCard>
+			</div>
+		</keep-alive>
 
-      <div class="iDialog-item">
-        <div>
-          {{$t('LK_PRIMARYAMBER')}}:{{allSelectList.length && allSelectList[0].sixBa || ''}}
-        </div>
-        <div>
-          {{$t('LK_NEWAMBER')}}:A-<div class="iDialog-input">
-                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
-                  </div>-<div class="iDialog-input">
-                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
-                          </div>
-        </div>
-      </div>
+		<keep-alive>
+			<div
+				v-if="tableIndex === 1"
+				v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY"
+			>
+				<iCard>
+					<div class="table-head">
+						<iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
+					</div>
+					<iTableList
+						:tableData="waitTableData"
+						:tableTitle="waitBAATableHead"
+						:tableLoading="waitTableLoading"
+						@handleSelectionChange="handleSelectionChange"
+					>
+						<template #sixBa="scope">
+							A-
+							<div class="iDialog-inputItem">
+								<iInput
+									:placeholder="$t('LK_QINGSHURU')"
+									v-model="scope.row.sixBa"
+									maxlength="5"
+								/>
+							</div>
+							-
+							<div class="iDialog-inputItem">
+								<iInput
+									:placeholder="`INT (${$t('LK_MODIFIABLE')})`"
+									maxlength="3"
+									v-model="scope.row.int"
+								/>
+							</div>
+						</template>
+						<template #detailed="scope">
+							<div class="detailed-item">
+								<div class="detailed" @click="confirmA(scope)">
+									{{ $t('LK_QUEREN') }}
+								</div>
+								<div class="detailed" @click="openDetails(scope)">
+									{{ $t('LK_DETAILEDTXT') }}
+								</div>
+							</div>
+						</template>
+					</iTableList>
+					<div class="unitExplain">
+						<UnitExplain />
+					</div>
+					<iPagination
+						v-update
+						@size-change="handleSizeChange($event, getPageData)"
+						@current-change="handleCurrentChange($event, getPageData)"
+						background
+						:current-page="page.currPage"
+						:page-sizes="page.pageSizes"
+						:page-size="page.pageSize"
+						:layout="page.layout"
+						:total="page.totalCount"
+					/>
+				</iCard>
+			</div>
+		</keep-alive>
 
-      <div class="iDialog-bottom">
-        <iButton @click="iDialogConfirm" :loading="modifyAButtonLoading">{{ $t('LK_QUEDING') }}</iButton>
-      </div>
-    </iDialog>
+		<keep-alive>
+			<div
+				v-if="tableIndex === 3"
+				v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY"
+			>
+				<iCard>
+					<div class="table-head">
+						<iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
+					</div>
+					<iTableList
+						:tableData="waitAddTableData"
+						:tableTitle="waitAddTableHead"
+						:tableLoading="waitAddTableLoading"
+						@handleSelectionChange="handleSelectionChange"
+					>
+						<template #detailed="scope">
+							<div class="detailed-item">
+								<div class="detailed" @click="confirmA(scope)">
+									{{ $t('LK_QUEREN') }}
+								</div>
+								<div class="detailed" @click="openDetails(scope)">
+									{{ $t('LK_DETAILEDTXT') }}
+								</div>
+							</div>
+						</template>
+					</iTableList>
+					<div class="unitExplain">
+						<UnitExplain />
+					</div>
+					<iPagination
+						v-update
+						@size-change="handleSizeChange($event, getPageData)"
+						@current-change="handleCurrentChange($event, getPageData)"
+						background
+						:current-page="page.currPage"
+						:page-sizes="page.pageSizes"
+						:page-size="page.pageSize"
+						:layout="page.layout"
+						:total="page.totalCount"
+					/>
+				</iCard>
+			</div>
+		</keep-alive>
 
-    <!-- 明细 -->
-    <ApplyPopup :visible="detailsdVisible" :title="$t('LK_DETAILEDTXT')" @changeLayer="clearDetailsDiolog">
-      <template slot="table">
-        <iTableList
-          :tableData="detailsTableData"
-          :tableTitle="detailedTableHead"
-          :selection="false"
-          class="table-footerStyle"
-        >
-          <template #rsNum="scope">
-            <a @click="openViewPdf(scope.row)" class="detailed">{{scope.row.rsNum}}</a>
-          </template>
-        </iTableList>
-      </template>
-    </ApplyPopup>
+		<!-- 修改A号弹窗 -->
+		<iDialog
+			:visible="visible"
+			@close="clearDiolog"
+			width="22%"
+			top="7vh"
+			z-index="1000"
+			class="iDialog"
+		>
+			<template slot="title">
+				<div class="iDialog-head">
+					<div>
+						{{ $t('LK_MODIFYANUMBER') }}
+					</div>
+					<Popover width="272" placement="bottom" trigger="hover">
+						<div class="popoverDiv">
+							<p>{{ $t('LK_MODIFYANUMBERTXTTIPS') }}</p>
+						</div>
+						<icon symbol name="iconxinxitishi" slot="reference"></icon>
+					</Popover>
+					<div>
+						{{ (allSelectList.length && allSelectList[0].carTypeName) || '' }}
+						{{
+							(allSelectList.length && allSelectList[0].localFactoryName) || ''
+						}}
+					</div>
+				</div>
+			</template>
 
-    <!-- 确认页面 -->
-    <ApplyPopup :visible="confirmVisible" :title="titleMap[tableIndex]" @changeLayer="clearConfirmDiolog">
-      <template slot="table">
-        <iTableList
-          :tableData="confirmTableData"
-          :tableTitle="confirmTableHead"
-          :selection="false"
-          class="table-footerStyle"
-        >
-          
-        </iTableList>
-      </template>
-      <template slot="btns">
-        <iButton @click="handleConfirm(tableIndex)" :loading="confirmButtonLoding">{{ $t('LK_QUEREN') }}</iButton>
-      </template>
-    </ApplyPopup>
+			<div class="iDialog-item">
+				<div>
+					{{ $t('LK_PRIMARYAMBER') }}:{{
+						(allSelectList.length && allSelectList[0].sixBa) || ''
+					}}
+				</div>
+				<div>
+					{{ $t('LK_NEWAMBER') }}:A-
+					<div class="iDialog-input">
+						<iInput
+							:placeholder="$t('LK_QINGSHURU')"
+							v-model="sixBa"
+							maxlength="5"
+						/>
+					</div>
+					-
+					<div class="iDialog-input">
+						<iInput
+							:placeholder="`INT (${$t('LK_MODIFIABLE')})`"
+							maxlength="3"
+							v-model="int"
+						/>
+					</div>
+				</div>
+			</div>
 
-    <!-- 提示 -->
-    <Tips :visible='tipsVisible' @changeLayer="clearTipsDiolog">
-      <template slot="msg">
-        <div>
-          <span>
-            {{currentScope.localFactoryName}}
-            {{$t('LK_OF')}}
-            {{currentScope.carTypeName}}
-            {{$t('LK_PLEASEINPUTTIPS5')}}
-          </span>
-          <span class="color-txt">
-            {{$t('LK_PLEASEINPUTTIPS6')}}
-          </span>
-          <span>
-            {{$t('LK_PLEASEINPUTTIPS7')}}
-          </span>
-        </div>
-      </template>
-    </Tips>
-  </div>
+			<div class="iDialog-bottom">
+				<iButton @click="iDialogConfirm" :loading="modifyAButtonLoading">{{
+					$t('LK_QUEDING')
+				}}</iButton>
+			</div>
+		</iDialog>
+
+		<!-- 明细 -->
+		<ApplyPopup
+			:visible="detailsdVisible"
+			:title="$t('LK_DETAILEDTXT')"
+			@changeLayer="clearDetailsDiolog"
+		>
+			<template slot="table">
+				<iTableList
+					:tableData="detailsTableData"
+					:tableTitle="detailedTableHead"
+					:selection="false"
+					class="table-footerStyle"
+				>
+					<template #rsNum="scope">
+						<a @click="openViewPdf(scope.row)" class="detailed">{{
+							scope.row.rsNum
+						}}</a>
+					</template>
+				</iTableList>
+			</template>
+		</ApplyPopup>
+
+		<!-- 确认页面 -->
+		<ApplyPopup
+			:visible="confirmVisible"
+			:title="titleMap[tableIndex]"
+			@changeLayer="clearConfirmDiolog"
+		>
+			<template slot="table">
+				<iTableList
+					:tableData="confirmTableData"
+					:tableTitle="confirmTableHead"
+					:selection="false"
+					class="table-footerStyle"
+				>
+				</iTableList>
+			</template>
+			<template slot="btns">
+				<iButton
+					@click="handleConfirm(tableIndex)"
+					:loading="confirmButtonLoding"
+					>{{ $t('LK_QUEREN') }}</iButton
+				>
+			</template>
+		</ApplyPopup>
+
+		<!-- 提示 -->
+		<Tips :visible="tipsVisible" @changeLayer="clearTipsDiolog">
+			<template slot="msg">
+				<div>
+					<span>
+						{{ currentScope.localFactoryName }}
+						{{ $t('LK_OF') }}
+						{{ currentScope.carTypeName }}
+						{{ $t('LK_PLEASEINPUTTIPS5') }}
+					</span>
+					<span class="color-txt">
+						{{ $t('LK_PLEASEINPUTTIPS6') }}
+					</span>
+					<span>
+						{{ $t('LK_PLEASEINPUTTIPS7') }}
+					</span>
+				</div>
+			</template>
+		</Tips>
+	</div>
 </template>
 
 <script>
-import { getBaCount, findListConditoons,
-  listByStatus, updateSixBa, backApprove, getDetail,
-  addSixBa, updateByCarId, confirmDetail
-} from "@/api/ws2/baApproval";
-import { allBAATableHead, waitBAATableHead, waitAddTableHead, detailedTableHead, confirmTableHead } from "./components/data";
-import { tableHeight } from "@/utils/tableHeight";
-import { Popover } from "element-ui"
-import SearchBlock from "./components/searchBlock";
-import { pageMixins } from "@/utils/pageMixins";
-import ApplyPopup from "./components/applyPopup";
-import Tips from "./components/tips";
-import UnitExplain from "./components/unitExplain";
 import {
-  icon,
-  iTableList
-} from '@/components';
+	getBaCount,
+	findListConditoons,
+	listByStatus,
+	updateSixBa,
+	backApprove,
+	getDetail,
+	addSixBa,
+	updateByCarId,
+	confirmDetail,
+} from '@/api/ws2/baApproval'
 import {
-  iMessage,
-  iButton,
-  iCard,
-  iPagination,
-  iDialog,
-  iInput,
-} from "rise";
+	allBAATableHead,
+	waitBAATableHead,
+	waitAddTableHead,
+	detailedTableHead,
+	confirmTableHead,
+} from './components/data'
+import { tableHeight } from '@/utils/tableHeight'
+import { Popover } from 'element-ui'
+import SearchBlock from './components/searchBlock'
+import { pageMixins } from '@/utils/pageMixins'
+import ApplyPopup from './components/applyPopup'
+import Tips from './components/tips'
+import UnitExplain from './components/unitExplain'
+import { icon, iTableList } from '@/components'
+import { iMessage, iButton, iCard, iPagination, iDialog, iInput } from 'rise'
 
 export default {
-  mixins: [tableHeight, pageMixins],
-  components: {
-    icon, iButton, iDialog,
-    SearchBlock, iTableList, iCard,
-    iPagination, iInput, Popover,
-    ApplyPopup, Tips, UnitExplain
-  },
-  data(){
-    return {
-      titleMap: {
-        1: this.$t('LK_CONFIRMANUMBER'),
-        3: this.$t('LK_CONFIRMMONEY')
-      },
-      sixBa: '',
-      int: 'INT',
-      tableIndex: 0,
-      iDialogAddCarTypeProject: false,
-      allTableData: [],
-      allBAATableHead,
-      detailedTableHead,
-      allListLoading: false,
-      waitTableLoading: false,
-      waitAddTableLoading: false,
-      modifyAButtonLoading: false,
-      detailsdVisible: false,
-      visible: false,
-      confirmVisible: false,
-      tipsVisible: false,
-      confirmButtonLoding: false,
-      allSelectList: [],
-      waitSelectList: [],
-      waitAddSelectList: [],
-      waitTableData: [],
-      waitAddTableData: [],
-      detailsTableData: [],
-      confirmTableData: [],
-      confirmTableHead,
-      waitBAATableHead,
-      waitAddTableHead,
-      currentScope: {},
-      tabData: {
-        amountCount: 0,
-        applyCount: 0,
-      },
-      page: {
-        currPage: 1,
-        pageSize: 10,
-      },
-      detailPage: {
-        currPage: 1,
-        pageSize: 10,
-      }
-    }
-  },
+	mixins: [tableHeight, pageMixins],
+	components: {
+		icon,
+		iButton,
+		iDialog,
+		SearchBlock,
+		iTableList,
+		iCard,
+		iPagination,
+		iInput,
+		Popover,
+		ApplyPopup,
+		Tips,
+		UnitExplain,
+	},
+	data() {
+		return {
+			titleMap: {
+				1: this.$t('LK_CONFIRMANUMBER'),
+				3: this.$t('LK_CONFIRMMONEY'),
+			},
+			sixBa: '',
+			int: 'INT',
+			tableIndex: 0,
+			iDialogAddCarTypeProject: false,
+			allTableData: [],
+			allBAATableHead,
+			detailedTableHead,
+			allListLoading: false,
+			waitTableLoading: false,
+			waitAddTableLoading: false,
+			modifyAButtonLoading: false,
+			detailsdVisible: false,
+			visible: false,
+			confirmVisible: false,
+			tipsVisible: false,
+			confirmButtonLoding: false,
+			allSelectList: [],
+			waitSelectList: [],
+			waitAddSelectList: [],
+			waitTableData: [],
+			waitAddTableData: [],
+			detailsTableData: [],
+			confirmTableData: [],
+			confirmTableHead,
+			waitBAATableHead,
+			waitAddTableHead,
+			currentScope: {},
+			tabData: {
+				amountCount: 0,
+				applyCount: 0,
+			},
+			page: {
+				currPage: 1,
+				pageSize: 10,
+			},
+			detailPage: {
+				currPage: 1,
+				pageSize: 10,
+			},
+		}
+	},
 
-  created(){
-    this.getBaCount();
-    this.getPageData();
-  },
+	created() {
+		this.getBaCount()
+		this.getPageData()
+	},
 
-  methods: {
+	methods: {
+		//  rs单号
+		openViewPdf(scope) {
+			// const first = scope.rsNum.slice(0,1);
+			// if (~~first === 5) {
+			const nomiType = scope.nomiType || '1'
+			if (nomiType == '3') {
+				let routeData = this.$router.resolve({
+					path: '/tooling/investmentReport/rsDetails',
+					query: {
+						rsNum: scope.rsNum,
+						pageType: 1,
+					},
+				})
+				window.open(routeData.href, '_blank')
+			} else {
+				const roleList = this.$store.state.permission.userInfo.roleList
+				const isFlag = roleList.some((item) =>
+					['CWMJKZY', 'CWMJKZGZ', 'CWMJKZKZ'].includes(item.code)
+				)
+				console.log('roleListroleListroleList', roleList, isFlag)
+				const url =
+					process.env.VUE_APP_TOOLING +
+					'/baCommodityApply' +
+					'/exportRsFull/' +
+					scope.rsNum +
+					'?flag=' +
+					!isFlag
+				window.open(url)
+			}
+		},
 
-    //  rs单号
-    openViewPdf(scope){
-      const first = scope.rsNum.slice(0,1);
-      if(~~first === 5){
-        let routeData = this.$router.resolve({
-          path: '/tooling/investmentReport/rsDetails',
-          query: {
-            rsNum: scope.rsNum,
-            pageType: 1,
-          },
-        })
-        window.open(routeData.href, '_blank')
-      }else{
-        const roleList = this.$store.state.permission.userInfo.roleList;
-        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
-        console.log('roleListroleListroleList', roleList, isFlag);
-        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
-        window.open(url);
-      }
-    },
+		clearTipsDiolog() {
+			this.tipsVisible = false
+		},
 
-    clearTipsDiolog(){
-      this.tipsVisible = false;
-    },
+		//  确认金额、确认A号
+		handleConfirm(type) {
+			const { currentScope } = this
+			const sixBa = currentScope.sixBa || ''
+			const int = currentScope.int || ''
 
-    //  确认金额、确认A号
-    handleConfirm(type){
-      const { currentScope } = this;
-      const sixBa = currentScope.sixBa || '';
-      const int = currentScope.int || '';
+			const fun = type === 1 ? addSixBa : updateByCarId
+			const data = {
+				approveAmount: currentScope.approveAmount,
+				id: currentScope.id,
+				localFactoryId: currentScope.localFactoryid,
+				tmCartypeProId: currentScope.tmCartypeProId,
+			}
+			const paramMap = {
+				1: {
+					...data,
+					sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
+				},
+				3: {
+					...data,
+				},
+			}
 
-      const fun = type === 1 ? addSixBa : updateByCarId;
-      const data = {
-        approveAmount: currentScope.approveAmount,
-        id: currentScope.id,
-        localFactoryId: currentScope.localFactoryid,
-        tmCartypeProId: currentScope.tmCartypeProId
-      }
-      const paramMap = {
-        1: {
-          ...data,
-          sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
-        },
-        3: {
-          ...data
-        }
-      }
+			this.confirmButtonLoding = true
 
-      this.confirmButtonLoding = true;
+			fun(paramMap[type])
+				.then((res) => {
+					console.log('确认：', res)
+					const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+					if (res.code === '1') {
+						this.confirmVisible = false
+						this.tipsVisible = true
+					} else {
+						if (res.data) {
+							iMessage.success(result)
+							this.confirmVisible = false
+							this.getPageData()
+							this.getBaCount()
+						} else {
+							iMessage.error(result)
+						}
+					}
+					this.confirmButtonLoding = false
+				})
+				.catch((err) => {
+					this.confirmButtonLoding = false
+				})
+		},
 
-      fun(paramMap[type]).then(res => {
-        console.log('确认：', res);
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.code === '1'){
-          this.confirmVisible = false;
-          this.tipsVisible = true;
-        }else{
-          if(res.data){
-            iMessage.success(result);
-            this.confirmVisible = false;
-            this.getPageData();
-            this.getBaCount();
-          }else{
-            iMessage.error(result);
-          }
-          
-        }
-        this.confirmButtonLoding = false;
-      }).catch(err => {
-        this.confirmButtonLoding = false;
-      })
-    },
+		clearDetailsDiolog(visible) {
+			this.detailsdVisible = visible
+		},
 
-    clearDetailsDiolog(visible){
-      this.detailsdVisible = visible;
-    },
+		//  明细
+		openDetails(scope) {
+			getDetail({ id: scope.row.id }).then((res) => {
+				const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+				if (res.data) {
+					this.detailsTableData = res.data
+					this.detailsdVisible = true
+				} else {
+					iMessage.error(result)
+				}
+			})
+		},
 
-    //  明细
-    openDetails(scope){
-      getDetail({id: scope.row.id}).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          this.detailsTableData = res.data;
-          this.detailsdVisible = true;
-        }else{
-          iMessage.error(result);
-        }
-      })
-    },
+		clearConfirmDiolog() {
+			this.confirmVisible = false
+		},
 
-    clearConfirmDiolog(){
-      this.confirmVisible = false;
-    },
+		//  确认A号
+		confirmA(scope) {
+			const { currentScope, tableIndex } = this
+			const sixBa = scope.row.sixBa || ''
+			const int = scope.row.int || ''
+			const pattern = new RegExp(
+				"[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]"
+			)
 
-    //  确认A号
-    confirmA(scope){
-      const { currentScope, tableIndex } = this;
-      const sixBa = scope.row.sixBa || '';
-      const int = scope.row.int || '';
-      const pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]")
-      
-      if(tableIndex === 1){ //  对输入的BA号判断
-        
-        if(sixBa === '' || sixBa.length < 5){
-          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-        }
+			if (tableIndex === 1) {
+				//  对输入的BA号判断
 
-        if(int.length < 3 && int !== ''){
-          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-        }
+				if (sixBa === '' || sixBa.length < 5) {
+					return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'))
+				}
 
-        if(pattern.test(sixBa) || pattern.test(int)){
-          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE1'));
-        }
-      }
+				if (int.length < 3 && int !== '') {
+					return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'))
+				}
 
-      confirmDetail({
-        id: scope.row.id,
-        tmCartypeProId: scope.row.tmCartypeProId
-      }).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          if(this.tableIndex === 1){
-            this.confirmTableData = res.data.map(item => {
-              const baList = item.baNum ? item.baNum.split('-') : []
-              const suffix = baList && baList.length ? `-${baList[baList.length - 1]}` : ''
-              return {
-                ...item,
-                baNumber: item.carTypeName === 'Total' ? '' : (sixBa ? `A-${sixBa}-${int.length === 0 ? 'INT' : int}${suffix}` : sixBa),
-              }
-            });
-          }else if(this.tableIndex === 3){
-            this.confirmTableData = res.data.map(item => ({
-              ...item,
-              baNumber: item.carTypeName === 'Total' ? '' : item.baNum,
-            }));
-          }
-          
-          this.confirmVisible = true;
-          this.currentScope = scope.row;
-        }else{
-          iMessage.error(result);
-        }
-      })
-    },
+				if (pattern.test(sixBa) || pattern.test(int)) {
+					return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE1'))
+				}
+			}
 
-    //  修改A号-确认
-    iDialogConfirm(){
-      const { sixBa, int, allSelectList } = this;
+			confirmDetail({
+				id: scope.row.id,
+				tmCartypeProId: scope.row.tmCartypeProId,
+			}).then((res) => {
+				const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+				if (res.data) {
+					if (this.tableIndex === 1) {
+						this.confirmTableData = res.data.map((item) => {
+							const baList = item.baNum ? item.baNum.split('-') : []
+							const suffix =
+								baList && baList.length ? `-${baList[baList.length - 1]}` : ''
+							return {
+								...item,
+								baNumber:
+									item.carTypeName === 'Total'
+										? ''
+										: sixBa
+										? `A-${sixBa}-${int.length === 0 ? 'INT' : int}${suffix}`
+										: sixBa,
+							}
+						})
+					} else if (this.tableIndex === 3) {
+						this.confirmTableData = res.data.map((item) => ({
+							...item,
+							baNumber: item.carTypeName === 'Total' ? '' : item.baNum,
+						}))
+					}
 
-      if(sixBa === '' || sixBa.length < 5){
-        return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-      }
+					this.confirmVisible = true
+					this.currentScope = scope.row
+				} else {
+					iMessage.error(result)
+				}
+			})
+		},
 
-      if(int.length < 3 && int !== ''){
-        return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-      }
+		//  修改A号-确认
+		iDialogConfirm() {
+			const { sixBa, int, allSelectList } = this
 
-      this.modifyAButtonLoading = true;
+			if (sixBa === '' || sixBa.length < 5) {
+				return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'))
+			}
 
-      const param = {
-        sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
-        tmCartypeProId: allSelectList[0].tmCartypeProId,
-        localFactoryId: allSelectList[0].localFactoryid,
-        id: allSelectList[0].id,
-      }
+			if (int.length < 3 && int !== '') {
+				return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'))
+			}
 
-      updateSixBa(param).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          iMessage.success(result);
-          this.visible = false;
-          this.getBaCount();
-          this.getPageData();
-          this.modifyAButtonLoading = false;
-        }else{
-          iMessage.error(result);
-          this.modifyAButtonLoading = false;
-        }
-      })
+			this.modifyAButtonLoading = true
 
-      
-    },
+			const param = {
+				sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
+				tmCartypeProId: allSelectList[0].tmCartypeProId,
+				localFactoryId: allSelectList[0].localFactoryid,
+				id: allSelectList[0].id,
+			}
 
-    clearDiolog(){
-      this.visible = false;
-    },
+			updateSixBa(param).then((res) => {
+				const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+				if (res.data) {
+					iMessage.success(result)
+					this.visible = false
+					this.getBaCount()
+					this.getPageData()
+					this.modifyAButtonLoading = false
+				} else {
+					iMessage.error(result)
+					this.modifyAButtonLoading = false
+				}
+			})
+		},
 
-    handleSureBlock(form){
-      this.form = form;
-      this.handleSure();
-    },
-    
-    handleSure(){
-      this.allListLoading = true;
-      const param = {
-        ...this.form,
-        current: this.page.currPage,
-        size: this.page.pageSize,
-      }
-      findListConditoons(param).then(res => {
-        this.page.currPage = ~~res.pageNum || 1;
-        this.page.pageSize = ~~res.pageSize || 10;
-        this.page.totalCount = ~~res.total;
-        this.allTableData = res.data;
+		clearDiolog() {
+			this.visible = false
+		},
 
-        this.allListLoading = false;
-      }).catch(err => {
-        this.allListLoading = false;
-      })
-    },
+		handleSureBlock(form) {
+			this.form = form
+			this.handleSure()
+		},
 
-    //  获取顶部tab数量
-    getBaCount(){
-      getBaCount().then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(!res.data){
-          return iMessage.error(result);
-        }
-        this.tabData = res.data;
-      })
-    },
+		handleSure() {
+			this.allListLoading = true
+			const param = {
+				...this.form,
+				current: this.page.currPage,
+				size: this.page.pageSize,
+			}
+			findListConditoons(param)
+				.then((res) => {
+					this.page.currPage = ~~res.pageNum || 1
+					this.page.pageSize = ~~res.pageSize || 10
+					this.page.totalCount = ~~res.total
+					this.allTableData = res.data
 
-    getPageData(){
-      const { tableIndex } = this;
-      const pageMap = {
-        0: 'page',
-        1: 'page',
-        3: 'page',
-      }
-      const dataMap = {
-        0: 'allTableData',
-        1: 'waitTableData',
-        3: 'waitAddTableData',
-      }
-      const loadingMap = {
-        0: 'allListLoading',
-        1: 'waitTableLoading',
-        3: 'waitAddTableLoading',
-      }
-      this[loadingMap[tableIndex]] = true;
-      const param = {
-        statusType: tableIndex,
-        current: this[pageMap[tableIndex]].currPage,
-        size: this[pageMap[tableIndex]].pageSize,
-      }
+					this.allListLoading = false
+				})
+				.catch((err) => {
+					this.allListLoading = false
+				})
+		},
 
-      listByStatus(param).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+		//  获取顶部tab数量
+		getBaCount() {
+			getBaCount().then((res) => {
+				const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+				if (!res.data) {
+					return iMessage.error(result)
+				}
+				this.tabData = res.data
+			})
+		},
 
-        if(res.data){
-          this[dataMap[tableIndex]] = res.data;
-          this[pageMap[tableIndex]] = {
-            currPage: ~~res.pageNum,
-            pageSize: ~~res.pageSize,
-            totalCount: ~~res.total,
-          }
-        }else{
-          iMessage.error(result);
-        }
+		getPageData() {
+			const { tableIndex } = this
+			const pageMap = {
+				0: 'page',
+				1: 'page',
+				3: 'page',
+			}
+			const dataMap = {
+				0: 'allTableData',
+				1: 'waitTableData',
+				3: 'waitAddTableData',
+			}
+			const loadingMap = {
+				0: 'allListLoading',
+				1: 'waitTableLoading',
+				3: 'waitAddTableLoading',
+			}
+			this[loadingMap[tableIndex]] = true
+			const param = {
+				statusType: tableIndex,
+				current: this[pageMap[tableIndex]].currPage,
+				size: this[pageMap[tableIndex]].pageSize,
+			}
 
+			listByStatus(param)
+				.then((res) => {
+					const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
 
-        this[loadingMap[tableIndex]] = false;
-      }).catch(err => {
-        this[loadingMap[tableIndex]] = false;
-      })
-    },
+					if (res.data) {
+						this[dataMap[tableIndex]] = res.data
+						this[pageMap[tableIndex]] = {
+							currPage: ~~res.pageNum,
+							pageSize: ~~res.pageSize,
+							totalCount: ~~res.total,
+						}
+					} else {
+						iMessage.error(result)
+					}
 
-    handleSelectionChange(val){
-      const type = this.tableIndex;
-      const map = {
-        0: 'allSelectList',
-        1: 'waitSelectList',
-        3: 'waitAddSelectList'
-      }
-      this[map[type]] = val;
-    },
+					this[loadingMap[tableIndex]] = false
+				})
+				.catch((err) => {
+					this[loadingMap[tableIndex]] = false
+				})
+		},
 
-    //  退回申请
-    waitApply(type){
-      const map = {
-        0: 'allSelectList',
-        1: 'waitSelectList',
-        3: 'waitAddSelectList'
-      }
-      const list = this[map[type]];
+		handleSelectionChange(val) {
+			const type = this.tableIndex
+			const map = {
+				0: 'allSelectList',
+				1: 'waitSelectList',
+				3: 'waitAddSelectList',
+			}
+			this[map[type]] = val
+		},
 
-      if(!list.length){
-        return iMessage.warn('请选择需要退回的数据！');
-      }
+		//  退回申请
+		waitApply(type) {
+			const map = {
+				0: 'allSelectList',
+				1: 'waitSelectList',
+				3: 'waitAddSelectList',
+			}
+			const list = this[map[type]]
 
-      backApprove({
-        ids: list.map(item => item.id)
-      }).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          iMessage.success(result);
-          this.getPageData();
-          this.getBaCount();
-        }else{
-          iMessage.error(result);
-        }
-      })
+			if (!list.length) {
+				return iMessage.warn('请选择需要退回的数据！')
+			}
 
+			backApprove({
+				ids: list.map((item) => item.id),
+			}).then((res) => {
+				const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+				if (res.data) {
+					iMessage.success(result)
+					this.getPageData()
+					this.getBaCount()
+				} else {
+					iMessage.error(result)
+				}
+			})
+		},
 
-    },
+		//  修改A号
+		modifyA() {
+			if (!this.allSelectList.length) {
+				return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS1'))
+			}
 
-    //  修改A号
-    modifyA(){
-      if(!this.allSelectList.length){
-        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS1'));
-      }
+			if (this.allSelectList.length > 1) {
+				return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS2'))
+			}
 
-      if(this.allSelectList.length > 1){
-        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS2'));
-      }
-      
-      if(!this.allSelectList[0].sixBa || this.allSelectList[0].sixBa === ''){
-        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS3'));
-      }
+			if (!this.allSelectList[0].sixBa || this.allSelectList[0].sixBa === '') {
+				return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS3'))
+			}
 
-      if(this.allSelectList[0].baStatus === "5"){
-        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS4'));
-      }
+			if (this.allSelectList[0].baStatus === '5') {
+				return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS4'))
+			}
 
-      this.visible = true;
-    },
+			this.visible = true
+		},
 
-    selectHeadTable(type){
-      if(this.tableIndex === type){
-        return
-      }
-      this.tableIndex = type;
-      this.allSelectList = [];
-      this.waitSelectList = [];
-      this.waitAddSelectList = [];
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      };
-      this.getPageData();
-    },
-
-    
-  }
+		selectHeadTable(type) {
+			if (this.tableIndex === type) {
+				return
+			}
+			this.tableIndex = type
+			this.allSelectList = []
+			this.waitSelectList = []
+			this.waitAddSelectList = []
+			this.page = {
+				currPage: 1,
+				pageSize: 10,
+			}
+			this.getPageData()
+		},
+	},
 }
 </script>
 
 <style lang="scss" scoped>
-.unitExplain{
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+.unitExplain {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
 }
-.table-footerStyle{
-
-  ::v-deep .el-table__row:nth-last-child(1){
-    color: #000 !important;
-    font-weight: bold !important;
-  }
+.table-footerStyle {
+	::v-deep .el-table__row:nth-last-child(1) {
+		color: #000 !important;
+		font-weight: bold !important;
+	}
 }
-.color-txt{
-  color: #1660F1;
+.color-txt {
+	color: #1660f1;
 }
-.iDialog-inputItem{
-  display: inline-block;
-  width: 80px;
+.iDialog-inputItem {
+	display: inline-block;
+	width: 80px;
 }
-.iDialog{
+.iDialog {
+	.iDialog-bottom {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 25px;
+	}
 
-  .iDialog-bottom{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 25px;
-  }
+	.iDialog-item {
+		font-size: 14px;
 
-  .iDialog-item{
-    font-size: 14px;
+		div:nth-child(1) {
+			margin-bottom: 5px;
+		}
 
-    div:nth-child(1){
-      margin-bottom: 5px;
-    }
+		.iDialog-input {
+			display: inline-block;
+			width: 120px;
+		}
+	}
 
-    .iDialog-input{
-      display: inline-block;
-      width: 120px;
-    }
-  }
+	.iDialog-head {
+		display: flex;
 
-  .iDialog-head{
-    display: flex;
+		& div:nth-child(1) {
+			font-size: 18px;
+			font-weight: bold;
+		}
+		& div:nth-child(3) {
+			width: 175px;
+			color: #333333;
+			font-size: 14px;
+			margin-left: 5px;
+		}
+	}
 
-    & div:nth-child(1){
-      font-size: 18px;
-      font-weight: bold;
-    }
-    & div:nth-child(3){
-      width: 175px;
-      color: #333333;
-      font-size: 14px;
-      margin-left: 5px;
-    }
-  }
+	::v-deep .el-dialog {
+		height: 80% !important;
+		padding-bottom: 10px !important;
+		overflow: auto;
+	}
 
-  ::v-deep .el-dialog{
-    height: 80% !important;
-    padding-bottom: 10px !important;
-    overflow: auto;
-  }
-
-  ::v-deep .el-dialog__header{
-    padding-top: 23px;
-  }
+	::v-deep .el-dialog__header {
+		padding-top: 23px;
+	}
 }
-.detailed-item{
-  display: flex;
-  justify-content: space-between;
+.detailed-item {
+	display: flex;
+	justify-content: space-between;
 }
-.detailed{
-  color: #1663F6;
-  text-decoration: underline;
-  font-family: Arial;
-  cursor: pointer;
+.detailed {
+	color: #1663f6;
+	text-decoration: underline;
+	font-family: Arial;
+	cursor: pointer;
 }
-.table-head{
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+.table-head {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 20px;
 }
-.page-head{
-  display: flex;
-  padding-top: 20px;
-  margin-bottom: 20px;
+.page-head {
+	display: flex;
+	padding-top: 20px;
+	margin-bottom: 20px;
 
-  .head-on{
-    background: linear-gradient(42deg, #1660F1 0%, #76A5FF 100%) !important;
+	.head-on {
+		background: linear-gradient(42deg, #1660f1 0%, #76a5ff 100%) !important;
 
-    .title, .describe{
-      color: #FFFFFF !important;
-    }
-  }
+		.title,
+		.describe {
+			color: #ffffff !important;
+		}
+	}
 
-  .page-head-flex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 70px;
-    flex: 1;
-    height: 160px;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
-    border-radius: 10px;
-    margin-left: 20px;
-    cursor: pointer;
+	.page-head-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 70px;
+		flex: 1;
+		height: 160px;
+		background: #ffffff;
+		box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
+		border-radius: 10px;
+		margin-left: 20px;
+		cursor: pointer;
 
-    .line-div{
-
-      .title{
-        font-size: 60px;
-        font-weight: bold;
-      }
-      .describe{
-        color: #798489;
-        font-size: 16px;
-        margin-top: 7px;
-      }
-      .openIcon{
-        width: 78px;
-        height: 78px;
-      }
-    }
-  }
-  & .page-head-flex:nth-child(1){
-    margin-left: 0;
-  }
+		.line-div {
+			.title {
+				font-size: 60px;
+				font-weight: bold;
+			}
+			.describe {
+				color: #798489;
+				font-size: 16px;
+				margin-top: 7px;
+			}
+			.openIcon {
+				width: 78px;
+				height: 78px;
+			}
+		}
+	}
+	& .page-head-flex:nth-child(1) {
+		margin-left: 0;
+	}
 }
 </style>
