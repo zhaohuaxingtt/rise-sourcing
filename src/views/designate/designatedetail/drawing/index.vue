@@ -15,7 +15,7 @@
         </iButton>
         <!-- 上传 -->
         <iButton v-if="!nominationDisabled && !rsDisabled" @click="uploadVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_UPLOAD|上传">
-          {{ language("strategicdoc_ShangChuan",'上传') }}
+          {{ language("LK_SHANGCHUAN",'上传') }}
         </iButton>
       </div>
     </div>

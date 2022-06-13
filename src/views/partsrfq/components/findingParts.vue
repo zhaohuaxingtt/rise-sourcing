@@ -222,6 +222,7 @@ export default {
       this.$emit("submit");
     },
     sure () {
+      this.page.currPage = 1
       this.pagePart();
     },
     handleSelectionChange (val) {
