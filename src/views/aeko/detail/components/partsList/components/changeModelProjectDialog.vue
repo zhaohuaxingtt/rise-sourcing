@@ -87,6 +87,7 @@ export default {
         })
       }
       changePartProject(params).then(res => {
+        this.$emit('updateList')
         this.clearDialog()
       })
     },

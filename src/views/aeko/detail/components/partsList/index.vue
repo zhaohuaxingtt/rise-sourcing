@@ -145,7 +145,7 @@
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
       <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
-      <changeModelProjectDialog v-if="changeModelProjectVisible" :tableData="selectOptions.cartypeCode" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible" :isAeA='isAeA'/>
+      <changeModelProjectDialog v-if="changeModelProjectVisible" :tableData="selectOptions.cartypeCode" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible" @updateList="updateList" :isAeA='isAeA'/>
   </div>
 </template>
 
@@ -401,6 +401,10 @@ export default {
         changeVisible(type,visible){
           this[type] = visible;
           this.singleAssign= [];
+        },
+        updateList(){
+            this.getSearchList()
+            this.getList()
         },
         // 获取列表
         async getList(){
