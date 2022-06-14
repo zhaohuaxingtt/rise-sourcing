@@ -143,6 +143,7 @@ export default {
       this.$set(this.info,'categoryCode',code)
       this.$set(this.info,'categoryNameZh',this.detailData.categoryName)
       this.$set(this.info,'categoryNameDe',this.detailData.categoryName)
+      this.$set(this.info,'deptCodes',this.detailData.linieDeptName)
       // if (this.isAttach) {
         // materialTitle.forEach(mitem => {
         //   const detailDataLength = Object.keys(this.detailData).length
