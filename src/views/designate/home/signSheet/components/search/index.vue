@@ -19,6 +19,7 @@
       <!-- 申请单号 -->
       <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_NOMINATEID|申请单号">
         <iInput
+          type="number"
           clearable
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
