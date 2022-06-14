@@ -67,7 +67,7 @@
       <iCard class="margin-top20">
         <!-- 按钮区域 -->
         <div v-if="!isLinie && queryFrom != 'check'" class="floatright margin-bottom20">
-                <!-- <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_CHEXINGBIANGEN|车型变更" @click="changeModelProject"> {{isAeA?'车型变更':'车型项目变更'}} </iButton> -->
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_CHEXINGBIANGEN|车型变更" @click="changeModelProject"> {{isAeA?'车型变更':'车型项目变更'}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
@@ -145,7 +145,7 @@
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
       <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
-      <changeModelProjectDialog v-if="changeModelProjectVisible" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible" :isAeA='isAeA'/>
+      <changeModelProjectDialog v-if="changeModelProjectVisible" :tableData="selectOptions.cartypeCode" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible" @updateList="updateList" :isAeA='isAeA'/>
   </div>
 </template>
 
@@ -401,6 +401,10 @@ export default {
         changeVisible(type,visible){
           this[type] = visible;
           this.singleAssign= [];
+        },
+        updateList(){
+            this.getSearchList()
+            this.getList()
         },
         // 获取列表
         async getList(){
