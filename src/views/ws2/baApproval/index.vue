@@ -453,8 +453,10 @@ export default {
 	methods: {
 		//  rs单号
 		openViewPdf(scope) {
-			const first = scope.rsNum.slice(0, 1)
-			if (~~first === 5) {
+			// const first = scope.rsNum.slice(0,1);
+			// if (~~first === 5) {
+			const nomiType = scope.nomiType || '1'
+			if (nomiType == '3') {
 				let routeData = this.$router.resolve({
 					path: '/tooling/investmentReport/rsDetails',
 					query: {
