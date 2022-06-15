@@ -40,7 +40,7 @@ export function searchForm(DEPARTMENTLIST = []) {
 			type: 'select',
 			List: [
 				{ name: '全部', code: '' },
-				{ name: '工序委外一次性采购申请', code: OutSouring.subType1 },
+				{ name: '工序委外一次性', code: OutSouring.subType1 },
 				{ name: '工序委外框架', code: OutSouring.subType2 },
 			],
 			moduleKey: 'subType',
@@ -208,7 +208,7 @@ export const tableTitle = [
 		sortable: true,
 	},
 	{
-		props: 'ownerName',
+		props: 'buyerCode',
 		name: '推荐采购员',
 		key: '推荐采购员',
 		tooltip: true,
@@ -256,7 +256,7 @@ export const newTableTitle = [
 		key: 'partsignLanguage.LingJianMingChengZH',
 		tooltip: true,
 		align: 'center',
-		width: 120,
+		minWidth: 140,
 	},
 	{
 		props: 'quantity',
@@ -264,7 +264,7 @@ export const newTableTitle = [
 		key: 'LK_SHULIANG',
 		tooltip: true,
 		align: 'center',
-		width: 100,
+		width: 70,
 	},
 	{
 		props: 'unitCode',
@@ -272,6 +272,7 @@ export const newTableTitle = [
 		key: 'LK_JILIANGDANWEI',
 		tooltip: true,
 		align: 'center',
+		width: 90,
 	},
 	{
 		props: 'factoryName',
@@ -307,6 +308,7 @@ export const newTableTitle = [
 		key: 'MODEL-ORDER.LK_RISEXIEYIHAO',
 		tooltip: true,
 		align: 'center',
+		width: 160,
 	},
 	// {
 	//   props: 'detail',
@@ -319,7 +321,7 @@ export const newTableTitle = [
 ]
 
 export const addType = [
-	{ label: 'ZN_ONE', key: '工序委外一次性采购申请' },
+	{ label: 'ZN_ONE', key: '工序委外一次性' },
 	{ label: 'ZN_AGT', key: '工序委外框架' },
 ]
 

@@ -1,187 +1,178 @@
 <template>
 	<iPage class="partsprocureHome">
-		<el-tabs v-model="tab" class="tab">
-			<el-tab-pane name="source">
-				<div>
-					<div class="pageTitle flex-between-center-center margin-botttom20">
-						<span>{{
-							baseinfodata.riseCode
-								? `RiSE编号:  ${baseinfodata.riseCode}`
-								: $t('LK_XIANJIANCAIGOUSHENQING')
-						}}</span>
-						<div class="btnList flex-align-center">
-							<iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
-							<iButton @click="exitEditor" v-if="canEdit">{{
-								$t('LK_TUICHUBIANJI')
-							}}</iButton>
-							<iButton @click="handleSave" v-if="canEdit">{{
-								$t('LK_BAOCUN')
-							}}</iButton>
-							<iButton @click="handleEdit" v-if="!canEdit && isLatest">{{
-								$t('LK_BIANJI')
-							}}</iButton>
-							<!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
-							<logButton class="margin-left20" @click="lookLog" />
-						</div>
-					</div>
-					<!--------------------------------------基础信息部分------------------------------------------>
-					<div class="margin-bottom20">
-						<iCard class="card" collapse>
-							<iFormGroup row="1" inline>
-								<div class="row">
-									<div class="col">
-										<iFormItem
-											:label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'"
-											name="test"
-										>
-											<iSelect
-												:placeholder="$t('LK_QINGXUANZE')"
-												v-model="baseinfodata.subType"
-												v-if="canEdit"
-											>
-												<el-option
-													v-for="(item, index) in addType"
-													:key="index"
-													:value="item.label"
-													:label="$t(item.key)"
-												></el-option>
-											</iSelect>
-											<iText v-else>{{
-												getSubType(baseinfodata.subType)
-											}}</iText>
-											<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
-										</iFormItem>
-										<iFormItem :label="$t('申请人') + ':'" name="test">
-											<iText>{{ baseinfodata.applyBy }}</iText>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<iFormItem :label="$t('推荐采购员') + ':'" name="test">
-											<iSelect
-												:placeholder="$t('LK_QINGXUANZE')"
-												v-model="baseinfodata.ownerId"
-												v-if="canEdit"
-											>
-												<el-option
-													v-for="(item, index) in lineOptiondata"
-													:key="index"
-													:value="item.linieID"
-													:label="$t(item.linieName)"
-												></el-option>
-											</iSelect>
-											<iText v-else>
-												{{ getLiner(baseinfodata.ownerId) }}</iText
-											>
-										</iFormItem>
-										<iFormItem :label="$t('申请部门') + ':'" name="test">
-											<iText> {{ baseinfodata.deptNum }}</iText>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<div class="row">
-											<iFormItem name="test" class="demo-dynamic">
-												<span slot="label">
-													{{ $t('零件编号前缀') + ':' }}
-													<el-tooltip
-														effect="light"
-														popper-class="custom-card-tooltip"
-														:content="
-															$t(
-																'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
-															)
-														"
-														placement="top"
-													>
-														<i
-															class="el-icon-warning-outline yellow iconSuffix"
-														></i>
-													</el-tooltip>
-												</span>
-												<iInput
-													v-if="canEdit"
-													v-model="baseinfodata.partPrefix"
-												/>
-												<iText v-else> {{ baseinfodata.partPrefix }} </iText>
-											</iFormItem>
-										</div>
-										<iFormItem :label="$t('备注') + ':'" name="test">
-											<iInput
-												v-model="baseinfodata.remarks"
-												:disabled="!canEdit"
-												class="width500"
-											></iInput>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<iFormItem :label="$t('状态') + ':'" name="test">
-											<iText> {{ getStatus(baseinfodata.status) }} </iText>
-										</iFormItem>
-										<iFormItem name="test"> </iFormItem>
-									</div>
-								</div>
-							</iFormGroup>
-						</iCard>
-					</div>
-					<!-- 列表部分 -->
-					<iCard class="margin-top20 margin-bottom20">
-						<div class="table-top">
-							<iFormGroup row="5" inline :rules="rules"> </iFormGroup>
-							<div>
-								<iButton @click="insertItem" v-if="canEdit">{{
-									$t('LK_XINZHENGXIANGCI')
-								}}</iButton>
-								<iButton @click="deleteItem" v-if="canEdit">{{
-									$t('LK_SHANCHUXIANGCI')
-								}}</iButton>
-								<upload-button
-									@uploadedCallback="uploadAttachments"
-									v-if="canEdit"
-									:upload-button-loading="uploadAttachmentsButtonLoading"
-									:data-info="baseinfodata"
-									class="margin-left8"
-								/>
-								<iButton
-									@click="exportExcel"
-									v-if="canEdit"
-									style="margin-left: 8px"
-									>{{ $t('LK_DAOCHU') }}</iButton
+		<div>
+			<div class="pageTitle flex-between-center-center margin-botttom20">
+				<span>{{
+					baseinfodata.riseCode
+						? `RiSE编号:  ${baseinfodata.riseCode}`
+						: $t('LK_XIANJIANCAIGOUSHENQING')
+				}}</span>
+				<div class="btnList flex-align-center">
+					<iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
+					<iButton @click="exitEditor" v-if="canEdit">{{
+						$t('LK_TUICHUBIANJI')
+					}}</iButton>
+					<iButton @click="handleSave" v-if="canEdit">{{
+						$t('LK_BAOCUN')
+					}}</iButton>
+					<iButton @click="handleEdit" v-if="!canEdit && isLatest">{{
+						$t('LK_BIANJI')
+					}}</iButton>
+					<!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
+					<logButton class="margin-left20" @click="lookLog" />
+				</div>
+			</div>
+			<!--------------------------------------基础信息部分------------------------------------------>
+			<div class="margin-bottom20">
+				<iCard class="card" collapse>
+					<iFormGroup row="1" inline>
+						<div class="row">
+							<div class="col">
+								<iFormItem
+									:label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'"
+									name="test"
 								>
+									<iSelect
+										:placeholder="$t('LK_QINGXUANZE')"
+										v-model="baseinfodata.subType"
+										v-if="canEdit"
+									>
+										<el-option
+											v-for="(item, index) in addType"
+											:key="index"
+											:value="item.label"
+											:label="$t(item.key)"
+										></el-option>
+									</iSelect>
+									<iText v-else>{{ getSubType(baseinfodata.subType) }}</iText>
+									<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
+								</iFormItem>
+								<iFormItem :label="$t('申请人') + ':'" name="test">
+									<iText>{{ baseinfodata.applyBy }}</iText>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<iFormItem :label="$t('推荐采购员') + ':'" name="test">
+									<iSelect
+										:placeholder="$t('LK_QINGXUANZE')"
+										v-model="baseinfodata.ownerId"
+										v-if="canEdit"
+									>
+										<el-option
+											v-for="(item, index) in lineOptiondata"
+											:key="index"
+											:value="item.linieID"
+											:label="$t(item.linieName)"
+										></el-option>
+									</iSelect>
+									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
+								</iFormItem>
+								<iFormItem :label="$t('申请部门') + ':'" name="test">
+									<iText> {{ baseinfodata.applyDeptNo }}</iText>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<div class="row">
+									<iFormItem name="test" class="demo-dynamic">
+										<span slot="label">
+											{{ $t('零件编号前缀') + ':' }}
+											<el-tooltip
+												effect="light"
+												popper-class="custom-card-tooltip"
+												:content="
+													$t(
+														'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
+													)
+												"
+												placement="top"
+											>
+												<i
+													class="el-icon-warning-outline yellow iconSuffix"
+												></i>
+											</el-tooltip>
+										</span>
+										<iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
+										<iText v-else> {{ baseinfodata.partPrefix }} </iText>
+									</iFormItem>
+								</div>
+								<iFormItem :label="$t('备注') + ':'" name="test">
+									<iInput
+										v-model="baseinfodata.remark"
+										:disabled="!canEdit"
+										class="width500"
+									></iInput>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<iFormItem :label="$t('状态') + ':'" name="test">
+									<iText> {{ getStatus(baseinfodata.status) }} </iText>
+								</iFormItem>
+								<iFormItem name="test"> </iFormItem>
 							</div>
 						</div>
-						<tablelist
-							:tableData="currentListData"
-							:tableTitle="tableTitle"
-							:tableLoading="tableLoading"
-							:baseinfodata="baseinfodata"
-							:fromGroup="fromGroup"
-							:splitPurchList="splitPurchList"
-							:canEdit="canEdit"
-							:addressList="addressList"
-							@normalPrQuantityYears="normalPrQuantityYears"
-							@handleSelectionChange="handleSelectionChange"
-							open-page-props="id"
-							:index="true"
-							icon-props="recordId"
-						>
-						</tablelist>
-						<!------------------------------------------------------------------------>
-						<!--                  表格分页                                          --->
-						<!------------------------------------------------------------------------>
-						<iPagination
-							v-update
-							@size-change="handleSizeChange($event, getTableList)"
-							@current-change="handleCurrentChange($event, getTableList)"
-							background
-							:current-page="page.currPage"
-							:page-sizes="page.pageSizes"
-							:page-size="page.pageSize"
-							:layout="page.layout"
-							:total="page.totalCount"
+					</iFormGroup>
+				</iCard>
+			</div>
+			<!-- 列表部分 -->
+			<iCard class="margin-top20 margin-bottom20">
+				<div class="table-top">
+					<iFormGroup row="5" inline :rules="rules"> </iFormGroup>
+					<div>
+						<iButton @click="insertItem" v-if="canEdit">
+							{{ $t('LK_XINZHENGXIANGCI') }}
+						</iButton>
+						<iButton @click="deleteItem" v-if="canEdit">
+							{{ $t('LK_SHANCHUXIANGCI') }}
+						</iButton>
+						<upload-button
+							@uploadedCallback="uploadAttachments"
+							v-if="canEdit"
+							:upload-button-loading="uploadAttachmentsButtonLoading"
+							:data-info="baseinfodata"
+							class="margin-left8"
 						/>
-					</iCard>
+						<iButton
+							@click="exportExcel"
+							v-if="canEdit"
+							style="margin-left: 8px"
+						>
+							{{ $t('LK_DAOCHU') }}
+						</iButton>
+					</div>
 				</div>
-			</el-tab-pane>
-		</el-tabs>
+				<tablelist
+					:tableData="currentListData"
+					:tableTitle="tableTitle"
+					:tableLoading="tableLoading"
+					:baseinfodata="baseinfodata"
+					:fromGroup="fromGroup"
+					:splitPurchList="splitPurchList"
+					:canEdit="canEdit"
+					:addressList="addressList"
+					@normalPrQuantityYears="normalPrQuantityYears"
+					@handleSelectionChange="handleSelectionChange"
+					open-page-props="id"
+					:index="true"
+					icon-props="recordId"
+				>
+				</tablelist>
+				<!------------------------------------------------------------------------>
+				<!--                  表格分页                                          --->
+				<!------------------------------------------------------------------------>
+				<iPagination
+					v-update
+					@size-change="handleSizeChange($event, getTableList)"
+					@current-change="handleCurrentChange($event, getTableList)"
+					background
+					:current-page="page.currPage"
+					:page-sizes="page.pageSizes"
+					:page-size="page.pageSize"
+					:layout="page.layout"
+					:total="page.totalCount"
+				/>
+			</iCard>
+		</div>
+
 		<!--日志-->
 		<iUserLog
 			:show.sync="logDialogVisible"
@@ -264,12 +255,14 @@ export default {
 			// fromDetail: false,
 			uploadAttachmentsButtonLoading: false,
 			baseinfodata: {
-				riseCode: '',
 				type: 'GPR',
 				applyBy: this.$store.state.permission.userInfo?.nameZh,
-				deptNum: this.$store.state.permission.userInfo?.deptDTO.deptNum,
 				subType: 'ZN_ONE',
-				status: '',
+				status: '-2',
+				ownerId: '',
+				partPrefix: '',
+				remark: '',
+				applyDeptNo: this.$store.state.permission.userInfo?.deptDTO.deptNum,
 			},
 			logDialogVisible: false,
 			isLatest: true,
@@ -353,7 +346,7 @@ export default {
 		},
 		//项次数量信息
 		normalPrQuantityYears(data) {
-			this.baseinfodata.normalPrQuantityYears = data
+			// this.baseinfodata.normalPrQuantityYears = data
 		},
 		//保存
 		handleSave() {
@@ -469,20 +462,42 @@ export default {
 						this.tableListData[index] = element
 					})
 				}
-				let temp = this.tableListData[this.tableListData.length - 1]
+
+				const {
+					partType,
+					partNum,
+					quantity,
+					procureFactory,
+					deliveryDate,
+					unitCode,
+					normalPrQuantityYears = [],
+				} = this.tableListData[this.tableListData.length - 1]
+
+				const itemQuantity =
+					this.baseinfodata.subType === 'ZN_ONE'
+						? quantity
+						: normalPrQuantityYears.length
+				console.log({
+					partType,
+					partNum,
+					procureFactory,
+					deliveryDate,
+					unitCode,
+					itemQuantity,
+				})
 				if (
-					temp.partType == '' ||
-					temp.partNum == '' ||
-					temp.quantity == '' ||
-					temp.supplierNameZh == '' ||
-					temp.factoryName == '' ||
-					temp.deliveryDate == '' ||
-					!temp.unitCode
+					!partType ||
+					!partNum ||
+					!procureFactory ||
+					!deliveryDate ||
+					!unitCode ||
+					!itemQuantity
 				) {
 					return iMessage.warn('请输入上一条数据必填项')
 				}
 			}
 			this.tableListData.push({
+				riseCode: this.$route.query.code || '',
 				sapItem: this.itemNum,
 				partType: this.fromGroup.PART_TYPE[0].code,
 				account: '',
@@ -491,17 +506,18 @@ export default {
 				unitCode: '',
 				supplierNameZh: '',
 				factoryName: '',
+				tmFactoryId: '',
 				procureFactory: '',
 				procureOrg: '',
 				deliveryDate: '',
 				storageLocationCode: '',
 				requestTraceNo: '',
 				// subType: this.applicationTypeVal,
-				subType: '',
+				subType: this.baseinfodata.subType,
 				type: 'GPR',
-				departmentInfo: {},
 				supplierSapCode: '11138',
 				tmSupplierId: '50001031',
+				normalPrQuantityYears: [],
 			})
 			this.itemNum += 10
 			this.getTableList()
@@ -509,39 +525,54 @@ export default {
 
 		// 删除项次
 		deleteItem() {
-			let result = []
-			let deleteList = []
+			// let result = []
+			// let deleteList = []
 			if (this.selectTableData.length == 0) {
 				return iMessage.warn('请先选择数据')
 			}
-			this.tableListData.forEach((tableItem) => {
-				let canAdd = true
-				this.selectTableData.forEach((selectItem) => {
-					if (selectItem.sapItem == tableItem.sapItem) {
-						canAdd = false
-					}
-					if (selectItem.riseCode) {
-						deleteList.push(selectItem.purchasingRequirementId)
-					}
+			const remainingItems = this.tableListData.filter(
+				(e) => !this.selectTableData.includes(e)
+			)
+			const itemIds = this.selectTableData.map((e) => e.purchasingRequirementId) // 所有已选中项的ID
+			const existItemIds = itemIds.filter((e) => e) // 数据库在已存在的ID
+			if (!existItemIds.length) {
+				this.tableListData = remainingItems
+				this.currentListData = remainingItems
+			} else {
+				deleteNormalPr(existItemIds).then(() => {
+					this.tableListData = remainingItems
+					this.currentListData = remainingItems
 				})
-				if (canAdd) {
-					result.push(tableItem)
-				}
-			})
-			deleteList = Array.from(new Set(deleteList))
-			if (deleteList.length > 0) {
-				deleteNormalPr(deleteList)
-					.then((res) => {})
-					.catch((err) => {})
 			}
-			this.tableListData = result
-			if (
-				this.tableListData.length < this.page.currPage * 10 &&
-				this.tableListData.length > 10
-			) {
-				this.page.currPage -= 1
-			}
-			this.getTableList()
+			// }
+			// this.tableListData.forEach((tableItem) => {
+			// 	let canAdd = true
+			// 	this.selectTableData.forEach((selectItem) => {
+			// 		if (selectItem.sapItem == tableItem.sapItem) {
+			// 			canAdd = false
+			// 		}
+			// 		if (selectItem.riseCode) {
+			// 			deleteList.push(selectItem.purchasingRequirementId)
+			// 		}
+			// 	})
+			// 	if (canAdd) {
+			// 		result.push(tableItem)
+			// 	}
+			// })
+			// deleteList = Array.from(new Set(deleteList))
+			// if (deleteList.length > 0) {
+			// 	deleteNormalPr(deleteList)
+			// 		.then((res) => {})
+			// 		.catch((err) => {})
+			// }
+			// this.tableListData = result
+			// if (
+			// 	this.tableListData.length < this.page.currPage * 10 &&
+			// 	this.tableListData.length > 10
+			// ) {
+			// 	this.page.currPage -= 1
+			// }
+			// this.getTableList()
 		},
 		//字典
 		getProcureGroup() {

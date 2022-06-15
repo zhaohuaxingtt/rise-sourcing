@@ -48,13 +48,12 @@
 </template>
 
 <script>
-import { iDialog, iText, iButton, iInput, iMessage } from 'rise'
+import { iDialog, iButton, iInput, iMessage } from 'rise'
 import tablePart from '@/components/iTableSort'
 
 export default {
 	components: {
 		iDialog,
-		iText,
 		iButton,
 		iInput,
 		tablePart,
@@ -124,25 +123,26 @@ export default {
 					this.detailInfo.normalPrQuantityYears.length <= 0 ||
 					this.detailInfo.normalPrQuantityYears == undefined
 				) {
+					const startYear = new Date().getFullYear()
 					this.initData = [
 						{
-							year: new Date().getFullYear(),
+							year: startYear,
 							quantity: 0,
 						},
 						{
-							year: new Date().getFullYear() + 1,
+							year: startYear + 1,
 							quantity: 0,
 						},
 						{
-							year: new Date().getFullYear() + 2,
+							year: startYear + 2,
 							quantity: 0,
 						},
 						{
-							year: new Date().getFullYear() + 3,
+							year: startYear + 3,
 							quantity: 0,
 						},
 						{
-							year: new Date().getFullYear() + 4,
+							year: startYear + 4,
 							quantity: 0,
 						},
 					]
