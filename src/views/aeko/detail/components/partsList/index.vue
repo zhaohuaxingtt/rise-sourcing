@@ -66,8 +66,9 @@
     </iSearch>
       <iCard class="margin-top20">
         <!-- 按钮区域 -->
-        <div v-if="!isLinie && queryFrom != 'check'" class="floatright margin-bottom20">
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_CHEXINGBIANGEN|车型变更" @click="changeModelProject"> {{isAeA?'车型变更':'车型项目变更'}} </iButton>
+        <div v-if="queryFrom != 'check'" class="floatright margin-bottom20">
+            <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_CHEXINGBIANGEN|车型变更" @click="changeModelProject"> {{isAeA?'车型变更':'车型项目变更'}} </iButton>
+            <template v-if="!isLinie">
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
@@ -76,6 +77,7 @@
                     <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 </template>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+            </template>
         </div>
         <!-- 表单区域 -->
             <tableList
