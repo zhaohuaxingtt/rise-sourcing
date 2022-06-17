@@ -168,8 +168,8 @@ module.exports = {
 			},
 			[process.env.VUE_APP_BASE_EXECUTIONOPERATION]: {
 				changeOrigin: true,
-				// target: 'http://rise-nginx-internal.apps.vmocp-dev.csvw.com/executionoperation/web',
-				target: `${BASE_IP}/executionoperation/web`,
+				target: 'http://10.160.143.179:8080/executionoperation/web',
+				// target: `${BASE_IP}/executionoperation/web`,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_EXECUTIONOPERATION]: '',
 				},
