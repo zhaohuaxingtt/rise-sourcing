@@ -82,10 +82,10 @@ const mutations = {
 	},
 	SET_USER_INFO(state, data) {
 		state.userInfo = data
+		window.sessionStorage.setItem('userInfo', JSON.stringify(data))
 	},
 	SET_ROLE_INFO(state, data) {
 		state.roleList = data
-		window.sessionStorage.setItem('userInfo', JSON.stringify(data))
 	},
 	SET_WIHTEBTN_LIST(state, data) {
 		state.whiteBtnList = data
