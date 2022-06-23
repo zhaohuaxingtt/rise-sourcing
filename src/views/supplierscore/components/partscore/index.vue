@@ -34,21 +34,152 @@
           :empty-text="language('ZANWUSHUJU', '暂无数据')">
           <el-table-column type="index" align="center" label="#"></el-table-column>
           <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :prop="item.props" :show-overflow-tooltip="true"></el-table-column>
-          <template>
-            <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
+          <template v-if="isFileRfqType">
+            <el-table-column align="center" :label="language('LK_FUJIANPINGFEN','附件评分')">
               <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
                 <template v-if="item.props === 'grade'" #header="scope">
                   <span>{{ scope.column.label }}<i class="required">*</i></span>
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <!-- <iSelect v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade">
-                      <el-option v-for="score in scoreOptions" :key="score.value" :label="score.label" :value="score.value" />
+                    <iSelect v-model="scope.row.grade">
+                      <el-option
+                        v-for="(item, index) in affixGrade"
+                        :key="index"
+                        :value="item.code"
+                        :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
+                      >
+                      </el-option>
                     </iSelect>
-                    <iSelect v-else v-model="scope.row.grade">
-                      <el-option value="合格" :label="language('HEGE', '合格')" />
-                      <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                    </iSelect> -->
+                  </div>
+                  <span v-else>{{ isFileRfqType ? showaffixName(scope.row.grade) : scope.row.grade }}</span>
+                </template>
+                <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
+                  <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                  <span v-else>{{ scope.row[item.props] }}</span>
+                </template>
+                <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                  <span v-else>{{ scope.row.confirmCycle }}</span>
+                </template>
+                <template v-else-if="item.props === 'remark'" v-slot="scope">
+                  <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
+                  <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                  <span v-else>{{ scope.row.memo }}</span>
+                </template>
+                <template v-else v-slot="scope">
+                  <span>{{ scope.row[item.props] }}</span>
+                </template>
+              </el-table-column>
+            </el-table-column>
+          </template>
+          <template v-else>
+            <template v-if="isMQ">
+              <el-table-column align="center" :label="language('ZHILIANGPINGFEN','质量评分')">
+                <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
+                  <template v-if="item.props === 'grade'" #header="scope">
+                    <span>{{ scope.column.label }}<i class="required">*</i></span>
+                  </template>
+                  <template v-if="item.props === 'grade'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <div v-if="editStatus">
+                          <iSelect  v-model="scope.row.grade">
+                            <el-option
+                              v-for="(item, index) in mqGrage"
+                              :key="index"
+                              :value="item.code"
+                              :label="item.nameEn"
+                            >
+                            </el-option>
+                          </iSelect>
+                      </div>
+                      <span v-else>{{ isFileRfqType ? showaffixName(scope.row.grade) : scope.row.grade }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                      <span v-else>{{ scope.row[item.props] }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                      <span v-else>{{ scope.row.confirmCycle }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'remark'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                      <span v-else>{{ scope.row.memo }}</span>
+                    </template>
+                  </template>
+                  <template v-else v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <span>{{ scope.row[item.props] }}</span>
+                    </template>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </template>
+            
+            <template v-if="isEP">
+              <el-table-column align="center" :label="language('JISHUPINGFEN','技术评分')">
+                <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
+                  <template v-if="item.props === 'grade'" #header="scope">
+                    <span>{{ scope.column.label }}<i class="required">*</i></span>
+                  </template>
+                  <template v-if="item.props === 'grade'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <div v-if="editStatus">
+                          <iSelect  v-model="scope.row.grade">
+                            <el-option
+                              v-for="(item, index) in epGrade"
+                              :key="index"
+                              :value="item.code"
+                              :label="item.nameEn"
+                            >
+                            </el-option>
+                          </iSelect>
+                      </div>
+                      <span v-else>{{ isFileRfqType ? showaffixName(scope.row.grade) : scope.row.grade }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                      <span v-else>{{ scope.row[item.props] }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                      <span v-else>{{ scope.row.confirmCycle }}</span>
+                    </template>
+                  </template>
+                  <template v-else-if="item.props === 'remark'" v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                      <span v-else>{{ scope.row.memo }}</span>
+                    </template>
+                  </template>
+                  <template v-else v-slot="scope">
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <span>{{ scope.row[item.props] }}</span>
+                    </template>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </template>
+          </template>
+            <!-- <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
+                <template v-if="item.props === 'grade'" #header="scope">
+                  <span>{{ scope.column.label }}<i class="required">*</i></span>
+                </template>
+                <template v-if="item.props === 'grade'" v-slot="scope">
+                  <div v-if="editStatus">
                     <div v-if="!isFileRfqType">
                       <template v-if="scope.row.rateTag == 'MQ'">
                         <iSelect  v-model="scope.row.grade">
@@ -94,8 +225,6 @@
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
-                  <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
                   <iInput v-if="editStatus" v-model="scope.row.memo"/>
                   <span v-else>{{ scope.row.memo }}</span>
                 </template>
@@ -103,8 +232,7 @@
                   <span>{{ scope.row[item.props] }}</span>
                 </template>
               </el-table-column>
-            </el-table-column>
-          </template>
+            </el-table-column> -->
         </el-table>
       </div>
       <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
@@ -179,7 +307,12 @@ export default {
       }else{
         return deptScoreTableTitle || []
       } 
-      
+    },
+    isMQ(){
+      return this.tableListData.some(item=>item.rateTag=='MQ')
+    },
+    isEP(){
+      return this.tableListData.some(item=>item.rateTag=='EP')
     }
   },
   created() {
