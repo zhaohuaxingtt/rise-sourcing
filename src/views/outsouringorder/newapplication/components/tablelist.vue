@@ -153,7 +153,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<span style="color: red">*</span>
+						<!-- <span style="color: red">*</span> -->
 					</template>
 					<template slot-scope="scope">
 						<span>{{ scope.row['partNameZh'] }}</span>
@@ -503,7 +503,7 @@ export default {
 		},
 		//获取零件数据
 		getPartInfoAsync(queryString, index) {
-			validationPart(queryString).then((res) => {
+			validationPart({ partsNum: queryString }).then((res) => {
 				if (+res?.code !== 200 || res.data == null) {
 					this.tableData = this.tableData.map((element) => {
 						if (element.sapItem == index) {

@@ -136,7 +136,7 @@ module.exports = {
 	//本地server配置
 	devServer: {
 		open: true,
-		host: 'localhost',
+		host: '0.0.0.0',
 		port: 8080,
 		https: false,
 		hot: true,
@@ -169,7 +169,7 @@ module.exports = {
 			},
 			[process.env.VUE_APP_PURCHASE]: {
 				changeOrigin: true,
-				target: 'http://10.160.143.179:8080/executionoperation/web',
+				target: 'http://10.160.253.107:8080/executionoperation/web',
 				// target: `${BASE_IP}/executionoperation/web`,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PURCHASE]: '',
@@ -265,7 +265,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_FIXEDASSETS]: {
-				target: `http://10.122.17.38:8053/`,
+				target: `${BASE_IP}/fixedasset`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_FIXEDASSETS]: '',
@@ -306,6 +306,15 @@ module.exports = {
 			},
 
 			//------------------ 组织 start ----------------------------
+			[process.env.VUE_APP_USER_CENTER_API]: {
+				//   供应商
+				target: `${BASE_IP}/usercenter/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_USER_CENTER_API]: '',
+				},
+			},
+
 			[process.env.VUE_APP_ORGANIZATION]: {
 				//   供应商
 				target: `${BASE_IP}/usercenter/`,
@@ -331,6 +340,15 @@ module.exports = {
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BIZLOG]: '',
+				},
+			},
+			[process.env.VUE_APP_PART]: {
+				target: `${BASE_IP}/parts/web`,
+				// target: `http://${BASE_IP}:8018/parts`,
+				// target: `http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PART]: '',
 				},
 			},
 		},

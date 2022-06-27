@@ -131,7 +131,7 @@ export function searchForm(DEPARTMENTLIST = []) {
 export const form = {
 	applyBy: '',
 	createDate: '',
-	currency: 'RMB',
+	currency: '',
 	currentPage: 1,
 	deptName: '',
 	pageSize: 10,
@@ -151,14 +151,6 @@ export const form = {
 }
 
 export const tableTitle = [
-	{
-		props: 'requestTraceNo',
-		name: '序号',
-		key: '序号',
-		tooltip: true,
-		width: 105,
-		sortable: true,
-	},
 	{
 		props: 'riseCode',
 		name: 'RiSE编号',

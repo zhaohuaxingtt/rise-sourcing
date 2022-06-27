@@ -122,6 +122,7 @@
 				:tableData="tableData"
 				:tableTitle="tableTitle"
 				:tableLoading="tableLoading"
+				index
 				class="aotoTableHeight"
 			>
 				<template #riseCode="scope">

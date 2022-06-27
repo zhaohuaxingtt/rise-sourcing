@@ -35,6 +35,7 @@
 									<iSelect
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.subType"
+										:disabled="$route.query.code"
 										v-if="canEdit"
 									>
 										<el-option
@@ -263,6 +264,7 @@ export default {
 				partPrefix: '',
 				remark: '',
 				applyDeptNo: this.$store.state.permission.userInfo?.deptDTO.deptNum,
+				currency: 'RMB',
 			},
 			logDialogVisible: false,
 			isLatest: true,
@@ -358,20 +360,22 @@ export default {
 					this.tableListData[index] = element
 				})
 			}
-			if (this.tableListData.length > 0) {
-				let temp = this.tableListData
-				console.log('save data', temp)
-				for (let i = 0; i < temp.length; i++) {
-					if (
-						temp[i].partType == '' ||
-						temp[i].partNameZh == '' ||
-						temp[i].unitCode == '' ||
-						temp[i].factoryName == '' ||
-						temp[i].deliveryDate == ''
-					) {
-						return iMessage.warn('请输入必填项')
-					}
-				}
+			// 零件前缀没有，并且零件号为空
+			if (
+				this.tableListData.find((e) => !e.partNum) &&
+				!this.baseinfodata.partPrefix
+			) {
+				return iMessage.warn('请输入零件号')
+			}
+			if (
+				this.tableListData.find(
+					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+				)
+			) {
+				return iMessage.warn('请输入必填项')
+			}
+			if (this.tableListData.find((e) => !e.quantity)) {
+				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
 			}
 			const query = this.tableListData.map((item) => {
 				return {
