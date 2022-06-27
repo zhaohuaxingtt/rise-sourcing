@@ -18,7 +18,7 @@
       <div class="button-box" v-if="!disabled">
         <div class="margin-right10" v-if="!todo">
           <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
-          <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
+          <iButton v-if="editStatus" @click="cancel" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
           <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
         </div>
@@ -171,7 +171,7 @@ export default {
             item.isNoCodeData = true
           }
 
-          return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress })
+          return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress, companyAddressAndCode: item.companyAddressCode+ item.companyAddress })
         })
         
         const baseInfo = this.getbaseInfoData()
@@ -215,6 +215,7 @@ export default {
       })
 
       data.forEach((items,index)=>{
+        items.companyAddressAndCode = items.companyAddressCode+ items.companyAddress
         vmdata.forEach((vmitems,vmindex)=>{
           const obj = {}
           parmars.forEach(item=>{
@@ -319,7 +320,8 @@ export default {
               ...item,
               key: item.code,
               label: `${ item.province }_${ item.city }_${ item.address }`,
-              value: item.code
+              value: item.code,
+              companyAddressAndCode:item.code+item.province+item.city+item.address
             })) : 
             []
         } else {
@@ -329,6 +331,13 @@ export default {
         this.supplierProducePlacesLoading = false
       })
       .catch(() => this.supplierProducePlacesLoading = false)
+    },
+    cancel(){
+      this.editStatus = false
+      console.log(this.tableListData);
+        this.supplierProducePlaces = this.tableListData.map(item => {
+          return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress, companyAddressAndCode: item.companyAddressAndCode })
+        })
     },
     // 保存
     handleSave() {
