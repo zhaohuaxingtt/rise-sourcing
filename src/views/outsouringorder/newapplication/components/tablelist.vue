@@ -180,7 +180,7 @@
 						>
 						<iInput
 							v-else-if="baseinfodata.subType === 'ZN_ONE' && canEdit"
-							v-model="scope.row['quantity']"
+							v-model="scope.row.quantity"
 							placeholder="请输入"
 						/>
 						<span v-else>{{ scope.row['quantity'] }}</span>

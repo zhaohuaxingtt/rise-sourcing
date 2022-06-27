@@ -155,6 +155,11 @@
 					</el-tooltip>
 					<span v-else>{{ getStatus(scope.row.status) }}</span>
 				</template>
+				<template #buyerCode="scope">
+					{{ scope.row.ownerId }}
+					{{ scope.row.ownerId && scope.row.ownerName && '-' }}
+					{{ scope.row.ownerName }}
+				</template>
 			</tablePart>
 			<!------------------------------------------------------------------------>
 			<!--                  表格分页                                          --->

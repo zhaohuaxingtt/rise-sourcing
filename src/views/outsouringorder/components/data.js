@@ -51,6 +51,7 @@ export function searchForm(DEPARTMENTLIST = []) {
 			permissionKey: 'SOURCING_DAYINGZHUANGTAI',
 			type: 'select',
 			List: [
+				{ code: '', name: '全部' },
 				{ code: '-2', name: '草稿' },
 				{ code: '-1', name: '退回' },
 				{ code: '0', name: '待签收' },
@@ -279,6 +280,7 @@ export const newTableTitle = [
 		key: 'LK_JIAOHUORIQI',
 		tooltip: true,
 		align: 'center',
+		width: 110,
 	},
 	{
 		props: 'storageLocationCode',

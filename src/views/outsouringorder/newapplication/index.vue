@@ -2,22 +2,29 @@
 	<iPage class="partsprocureHome">
 		<div>
 			<div class="pageTitle flex-between-center-center margin-botttom20">
-				<span>{{
-					baseinfodata.riseCode
-						? `RiSE编号:  ${baseinfodata.riseCode}`
-						: $t('LK_XIANJIANCAIGOUSHENQING')
-				}}</span>
+				<span>
+					{{
+						baseinfodata.riseCode
+							? `RiSE编号:  ${baseinfodata.riseCode}`
+							: $t('LK_XIANJIANCAIGOUSHENQING')
+					}}
+				</span>
 				<div class="btnList flex-align-center">
-					<iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
-					<iButton @click="exitEditor" v-if="canEdit">{{
-						$t('LK_TUICHUBIANJI')
-					}}</iButton>
-					<iButton @click="handleSave" v-if="canEdit">{{
-						$t('LK_BAOCUN')
-					}}</iButton>
-					<iButton @click="handleEdit" v-if="!canEdit && isLatest">{{
-						$t('LK_BIANJI')
-					}}</iButton>
+					<iButton @click="sendToLine" v-if="canEditable">
+						{{ $t('推送采购员') }}
+					</iButton>
+					<iButton @click="exitEditor" v-if="canEdit && canEditable">
+						{{ $t('LK_TUICHUBIANJI') }}
+					</iButton>
+					<iButton @click="handleSave" v-if="canEdit && canEditable">
+						{{ $t('LK_BAOCUN') }}
+					</iButton>
+					<iButton
+						@click="handleEdit"
+						v-if="!canEdit && isLatest && canEditable"
+					>
+						{{ $t('LK_BIANJI') }}
+					</iButton>
 					<!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
 					<logButton class="margin-left20" @click="lookLog" />
 				</div>
@@ -36,7 +43,7 @@
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.subType"
 										:disabled="$route.query.code"
-										v-if="canEdit"
+										v-if="canEdit && canEditable"
 									>
 										<el-option
 											v-for="(item, index) in addType"
@@ -57,7 +64,7 @@
 									<iSelect
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.ownerId"
-										v-if="canEdit"
+										v-if="canEdit && canEditable"
 									>
 										<el-option
 											v-for="(item, index) in lineOptiondata"
@@ -92,7 +99,10 @@
 												></i>
 											</el-tooltip>
 										</span>
-										<iInput v-if="canEdit" v-model="baseinfodata.partPrefix" />
+										<iInput
+											v-if="canEdit && canEditable"
+											v-model="baseinfodata.partPrefix"
+										/>
 										<iText v-else> {{ baseinfodata.partPrefix }} </iText>
 									</iFormItem>
 								</div>
@@ -119,24 +129,20 @@
 				<div class="table-top">
 					<iFormGroup row="5" inline :rules="rules"> </iFormGroup>
 					<div>
-						<iButton @click="insertItem" v-if="canEdit">
+						<iButton @click="insertItem" v-if="canEdit && canEditable">
 							{{ $t('LK_XINZHENGXIANGCI') }}
 						</iButton>
-						<iButton @click="deleteItem" v-if="canEdit">
+						<iButton @click="deleteItem" v-if="canEdit && canEditable">
 							{{ $t('LK_SHANCHUXIANGCI') }}
 						</iButton>
 						<upload-button
 							@uploadedCallback="uploadAttachments"
-							v-if="canEdit"
+							v-if="canEdit && canEditable"
 							:upload-button-loading="uploadAttachmentsButtonLoading"
 							:data-info="baseinfodata"
 							class="margin-left8"
 						/>
-						<iButton
-							@click="exportExcel"
-							v-if="canEdit"
-							style="margin-left: 8px"
-						>
+						<iButton @click="exportExcel" style="margin-left: 8px">
 							{{ $t('LK_DAOCHU') }}
 						</iButton>
 					</div>
@@ -148,7 +154,7 @@
 					:baseinfodata="baseinfodata"
 					:fromGroup="fromGroup"
 					:splitPurchList="splitPurchList"
-					:canEdit="canEdit"
+					:canEdit="canEdit && canEditable"
 					:addressList="addressList"
 					@normalPrQuantityYears="normalPrQuantityYears"
 					@handleSelectionChange="handleSelectionChange"
@@ -160,7 +166,7 @@
 				<!------------------------------------------------------------------------>
 				<!--                  表格分页                                          --->
 				<!------------------------------------------------------------------------>
-				<iPagination
+				<!-- <iPagination
 					v-update
 					@size-change="handleSizeChange($event, getTableList)"
 					@current-change="handleCurrentChange($event, getTableList)"
@@ -170,7 +176,7 @@
 					:page-size="page.pageSize"
 					:layout="page.layout"
 					:total="page.totalCount"
-				/>
+				/> -->
 			</iCard>
 		</div>
 
@@ -217,7 +223,7 @@ import {
 } from '@/api/ws2/purchaserequest'
 import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
-import { exportExcel } from '@/utils/filedowLoad'
+import { excelExport } from '@/utils/filedowLoad'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -279,26 +285,27 @@ export default {
 			this.canEdit = false
 			// this.fromDetail = true
 			this.baseinfodata.riseCode = this.$route.query.code
-			this.getTableListFn()
+			// this.getTableListFn()
 			this.getTableHaderInfo()
 		}
 		if (this.$route.query.isLatest === 'false') {
 			this.isLatest = false
 		}
+		// 新建的
 		if (!this.$route.query.item && !this.$route.query.code) {
 			this.canEdit = true
-			this.baseinfodata
-			// this.applicationTypeKey = addType[0].key
-			// this.applicationTypeVal = addType[0].label
-			// this.baseinfodata.subType = this.applicationTypeVal
-			// this.canEdit = true
 		}
 		this.purchaseFactory()
 		this.getProcureGroup()
 		this.getLocation()
 		this.getLineInfo()
 	},
-
+	computed: {
+		// 工序委外是否可以编辑
+		canEditable() {
+			return ['-1', '-2'].includes(this.baseinfodata.status)
+		},
+	},
 	methods: {
 		// 获取采购申请类型
 		getSubType(val) {
@@ -355,6 +362,7 @@ export default {
 			if (this.tableListData.length == 0) {
 				return iMessage.warn('请添加数据')
 			}
+			console.log('tableListData', this.tableListData)
 			if (this.page.currPage == 1) {
 				this.currentListData.forEach((element, index) => {
 					this.tableListData[index] = element
@@ -381,7 +389,7 @@ export default {
 				return {
 					...item,
 					...this.baseinfodata,
-					// subType: this.applicationTypeVal
+					quantity: item.quantity,
 				}
 			})
 			saveOrUpdate(query)
@@ -392,9 +400,6 @@ export default {
 						!this.$route.query.code
 					) {
 						this.baseinfodata.riseCode = res.data[0].riseCode
-						// this.fromDetail = true
-						// this.canEdit = false;
-						// this.tableListData = []
 
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.$nextTick(() => {
@@ -409,7 +414,7 @@ export default {
 					} else if (+res.code === 200 && this.$route.query.code) {
 						this.baseinfodata.riseCode = res.data[0].riseCode
 						this.canEdit = false
-						this.getTableListFn()
+						// this.getTableListFn()
 						this.getTableHaderInfo()
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 					} else {
@@ -432,8 +437,27 @@ export default {
 		},
 		// 发送给采购员
 		sendToLine() {
-			if (this.tableListData.length <= 0)
+			if (this.tableListData.length <= 0) {
 				return iMessage.warn('没有需要推送给采购员数据')
+			}
+
+			// 零件前缀没有，并且零件号为空
+			if (
+				this.tableListData.find((e) => !e.partNum) &&
+				!this.baseinfodata.partPrefix
+			) {
+				return iMessage.warn('请输入零件号')
+			}
+			if (
+				this.tableListData.find(
+					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+				)
+			) {
+				return iMessage.warn('请输入必填项')
+			}
+			if (this.tableListData.find((e) => !e.quantity)) {
+				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			}
 			sendLinie({
 				deptName: this.baseinfodata.deptName,
 				deptNum: this.baseinfodata.deptNum,
@@ -453,7 +477,7 @@ export default {
 			}).then((res) => {
 				if (res.result) {
 					iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-					this.getTableListFn()
+					// this.getTableListFn()
 					this.getTableHaderInfo()
 				}
 			})
@@ -604,9 +628,14 @@ export default {
 		},
 		//导出
 		exportExcel() {
-			applyExport(this.baseinfodata.riseCode).then((res) => {
-				exportExcel(res, `采购申请${this.baseinfodata.riseCode}`)
-			})
+			applyExport(this.baseinfodata.riseCode)
+				.then((res) => {
+					excelExport(res, `采购申请${this.baseinfodata.riseCode}`)
+				})
+				.catch((err) => {
+					console.log('exportExcel err', err)
+					iMessage.error(err.desZh || '导出失败')
+				})
 		},
 
 		// 获取头部信息
@@ -617,6 +646,8 @@ export default {
 			findNormalPrById(params).then((res) => {
 				if (res.data) {
 					this.baseinfodata = { ...res.data[0] }
+					this.currentListData = res.data
+					this.tableListData = res.data
 				}
 			})
 		},
@@ -682,7 +713,7 @@ export default {
 				this.canEdit = false
 				this.tableListData = []
 				if (this.baseinfodata.riseCode) {
-					this.getTableListFn()
+					// this.getTableListFn()
 				} else {
 					this.tableListData = msg.data
 					this.getTableList()
