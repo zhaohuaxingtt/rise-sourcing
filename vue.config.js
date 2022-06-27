@@ -192,9 +192,27 @@ module.exports = {
 					['^' + process.env.VUE_APP_BASE_INFO]: '',
 				},
 			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
 			[process.env.VUE_APP_SOURCING]: {
-				target: `${BASE_IP}/sourcing/`,
+				target: `${BASE_IP}/sourcing/web`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',
@@ -317,6 +335,24 @@ module.exports = {
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BIZLOG]: '',
+				},
+			},
+
+			//------------------- projectApi ---------------------
+			[process.env.VUE_APP_PROJECTMGT]: {
+				target: `${BASE_IP}/projectmgt/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PROJECTMGT]: '',
+				},
+			},
+
+			//------------------- prApi ---------------------
+			[process.env.VUE_APP_PR]: {
+				target: `${BASE_IP}/partProcureApi/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PR]: '',
 				},
 			},
 		},

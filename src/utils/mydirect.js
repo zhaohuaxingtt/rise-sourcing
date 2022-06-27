@@ -17,6 +17,7 @@ Vue.directive('permission', {
     // const value = binding.value ? binding.value : binding.expression.trim()
 
     // 修改-----------------------------------
+    return
     if (binding.modifiers.auto && binding.modifiers.array) {
       let removeFlag = false
       if (Array.isArray(binding.value)) {
