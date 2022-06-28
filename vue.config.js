@@ -294,7 +294,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_BASE_UPLOAD_API]: {
-				target: `http://10.122.17.38:8034/`,
+				target: `${BASE_IP}/fileud/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_UPLOAD_API]: '',
