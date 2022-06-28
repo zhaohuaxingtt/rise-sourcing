@@ -191,13 +191,17 @@
 			"
 		/>
 		<!------------------------------------------------------------------------>
-		<!--                  转派                                       --->
+		<!--                     转派                                          --->
 		<!------------------------------------------------------------------------>
 		<transfer-dialog
 			v-model="showTransfer"
+			:transferLoading="transferLoading"
 			@handleTransfer="handleTransfer"
 			ref="transfer"
 		/>
+		<!------------------------------------------------------------------------>
+		<!---                                 签 收                            --->
+		<!------------------------------------------------------------------------>
 		<turning-point-dialog
 			v-model="showPoint"
 			@handleTurningPoint="handleTurningPoint"
@@ -276,6 +280,7 @@ export default {
 			statusList: statusList,
 			mode: 'back',
 			showTransfer: false,
+			transferLoading: false,
 			showPoint: false, //转定点
 		}
 	},
@@ -367,8 +372,6 @@ export default {
 				.then((res) => {
 					this.tableLoading = false
 					this.tableData = JSON.parse(JSON.stringify(res.data.records))
-					this.page.currPage = res.data.current
-					this.page.pageSize = res.data.size
 					this.page.totalCount = res.data.total
 				})
 				.catch((err) => {
@@ -461,22 +464,22 @@ export default {
 		handleTransfer(val) {
 			let param = val
 			param.normalPrList = this.selectRow
+			this.transferLoading = true
 			toOwner(param)
 				.then((res) => {
-					this.$refs.transfer.transferLoading = false
 					if (res.code == '200') {
-						this.getTableListFn()
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.showTransfer = false
+						this.getOutsouringFindBypage()
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 					} else {
-						return iMessage.error(
-							this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-						)
+						return iMessage.error(res.desZh || '转派失败')
 					}
 				})
-				.catch(() => {
-					this.$refs.transfer.transferLoading = false
+				.catch((error) => {
+					console.log(error)
+					iMessage.error(error.desZh || '转派失败')
 				})
+				.finally(() => (this.transferLoading = false))
 		},
 
 		//簽收

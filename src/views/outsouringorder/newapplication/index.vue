@@ -145,6 +145,7 @@
 						<iButton @click="exportExcel" style="margin-left: 8px">
 							{{ $t('LK_DAOCHU') }}
 						</iButton>
+						<!-- <buttonDownload :downloadMethod="exportExcel" /> -->
 					</div>
 				</div>
 				<tablelist
@@ -220,7 +221,8 @@ import {
 } from '@/api/ws2/purchaserequest'
 import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
-import { excelExport } from '@/utils/filedowLoad'
+import { exportExcel } from '@/utils/filedowLoad'
+import buttonDownload from '@/components/buttonDownload'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -236,6 +238,7 @@ export default {
 		uploadButton,
 		iUserLog,
 		iInput,
+		buttonDownload,
 	},
 	data() {
 		return {
@@ -608,7 +611,8 @@ export default {
 		exportExcel() {
 			applyExport(this.baseinfodata.riseCode)
 				.then((res) => {
-					excelExport(res, `采购申请${this.baseinfodata.riseCode}`)
+					console.log('EXPORT EXCEL:', res)
+					exportExcel(res.data, `工序委外${this.baseinfodata.riseCode}`)
 				})
 				.catch((err) => {
 					console.log('exportExcel err', err)
