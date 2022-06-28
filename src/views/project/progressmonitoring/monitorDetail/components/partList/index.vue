@@ -34,7 +34,7 @@
             <icon class="productItem-top-icon2" v-else-if="pro.partStatus != 9 && pro['projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
             <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 9 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
-          <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}  ${pro.buyerId || ''}`}}</span>
+          <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}  ${pro.buyerNum || ''}`}}</span>
         </div> 
         <div class="productItem-bottom">
           <div class="productItem-bottom-text">

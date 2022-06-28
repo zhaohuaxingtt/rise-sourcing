@@ -28,12 +28,13 @@ export default {
     filterable: {type:Boolean,default:false},
     optionType: {type:String,default:'1'},
     disabled: {type:Boolean,default:false},
-    valueType: {type:String,default:'1'}
+    valueType: {type:String,default:'1'},
+    carProjectName: {type:String}
   },
   data() {
     return {
       options: [],
-      data: this.value
+      data: this.carProjectName
     }
   },
   watch: {
@@ -46,10 +47,18 @@ export default {
       this.$emit('input', val)
     },
     value(val) {
-      this.data = val
+      console.log(val);
+      // this.data = val
+    },
+    carProjectName:{
+      deep:true,
+      handler(val){
+        console.log(val);
+      }
     }
   },
   created() {
+    this.data = this.carProjectName
     // 获取所有车型项目
     this.optionType === '1' && this.getCarProjectOptions()
     // 获取当前用户所有未SOP和所有已SOP的车型项目
@@ -62,6 +71,7 @@ export default {
     getCarProjectOptions() {
       getCarTypePro().then(res => {
         if (res?.result) {
+          this.data = this.value
           this.options = res.data.map(item => {
             return {
               ...item,
@@ -75,8 +85,10 @@ export default {
       })
     },
     getCarProjectUserOptions() {
+      console.log(this.data);
       getSelectCarType().then(res => {
         if (res?.result) {
+          this.data = this.value
           this.options = res.data.map(item => {
             return {
               ...item,
@@ -87,6 +99,7 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      console.log(this.value);
       })
     }
   }

@@ -1,187 +1,186 @@
 <template>
 	<iPage class="partsprocureHome">
-		<el-tabs v-model="tab" class="tab">
-			<el-tab-pane name="source">
-				<div>
-					<div class="pageTitle flex-between-center-center margin-botttom20">
-						<span>{{
-							baseinfodata.riseCode
-								? `RiSE编号:  ${baseinfodata.riseCode}`
-								: $t('LK_XIANJIANCAIGOUSHENQING')
-						}}</span>
-						<div class="btnList flex-align-center">
-							<iButton @click="sendToLine">{{ $t('推送采购员') }}</iButton>
-							<iButton @click="exitEditor" v-if="canEdit">{{
-								$t('LK_TUICHUBIANJI')
-							}}</iButton>
-							<iButton @click="handleSave" v-if="canEdit">{{
-								$t('LK_BAOCUN')
-							}}</iButton>
-							<iButton @click="handleEdit" v-if="!canEdit && isLatest">{{
-								$t('LK_BIANJI')
-							}}</iButton>
-							<!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
-							<logButton class="margin-left20" @click="lookLog" />
-						</div>
-					</div>
-					<!--------------------------------------基础信息部分------------------------------------------>
-					<div class="margin-bottom20">
-						<iCard class="card" collapse>
-							<iFormGroup row="1" inline>
-								<div class="row">
-									<div class="col">
-										<iFormItem
-											:label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'"
-											name="test"
-										>
-											<iSelect
-												:placeholder="$t('LK_QINGXUANZE')"
-												v-model="baseinfodata.subType"
-												v-if="canEdit"
-											>
-												<el-option
-													v-for="(item, index) in addType"
-													:key="index"
-													:value="item.label"
-													:label="$t(item.key)"
-												></el-option>
-											</iSelect>
-											<iText v-else>{{
-												getSubType(baseinfodata.subType)
-											}}</iText>
-											<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
-										</iFormItem>
-										<iFormItem :label="$t('申请人') + ':'" name="test">
-											<iText>{{ baseinfodata.applyBy }}</iText>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<iFormItem :label="$t('推荐采购员') + ':'" name="test">
-											<iSelect
-												:placeholder="$t('LK_QINGXUANZE')"
-												v-model="baseinfodata.ownerId"
-												v-if="canEdit"
-											>
-												<el-option
-													v-for="(item, index) in lineOptiondata"
-													:key="index"
-													:value="item.linieID"
-													:label="$t(item.linieName)"
-												></el-option>
-											</iSelect>
-											<iText v-else>
-												{{ getLiner(baseinfodata.ownerId) }}</iText
-											>
-										</iFormItem>
-										<iFormItem :label="$t('申请部门') + ':'" name="test">
-											<iText> {{ baseinfodata.deptNum }}</iText>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<div class="row">
-											<iFormItem name="test" class="demo-dynamic">
-												<span slot="label">
-													{{ $t('零件编号前缀') + ':' }}
-													<el-tooltip
-														effect="light"
-														popper-class="custom-card-tooltip"
-														:content="
-															$t(
-																'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
-															)
-														"
-														placement="top"
-													>
-														<i
-															class="el-icon-warning-outline yellow iconSuffix"
-														></i>
-													</el-tooltip>
-												</span>
-												<iInput
-													v-if="canEdit"
-													v-model="baseinfodata.partPrefix"
-												/>
-												<iText v-else> {{ baseinfodata.partPrefix }} </iText>
-											</iFormItem>
-										</div>
-										<iFormItem :label="$t('备注') + ':'" name="test">
-											<iInput
-												v-model="baseinfodata.remarks"
-												:disabled="!canEdit"
-												class="width500"
-											></iInput>
-										</iFormItem>
-									</div>
-									<div class="col">
-										<iFormItem :label="$t('状态') + ':'" name="test">
-											<iText> {{ getStatus(baseinfodata.status) }} </iText>
-										</iFormItem>
-										<iFormItem name="test"> </iFormItem>
-									</div>
-								</div>
-							</iFormGroup>
-						</iCard>
-					</div>
-					<!-- 列表部分 -->
-					<iCard class="margin-top20 margin-bottom20">
-						<div class="table-top">
-							<iFormGroup row="5" inline :rules="rules"> </iFormGroup>
-							<div>
-								<iButton @click="insertItem" v-if="canEdit">{{
-									$t('LK_XINZHENGXIANGCI')
-								}}</iButton>
-								<iButton @click="deleteItem" v-if="canEdit">{{
-									$t('LK_SHANCHUXIANGCI')
-								}}</iButton>
-								<upload-button
-									@uploadedCallback="uploadAttachments"
-									v-if="canEdit"
-									:upload-button-loading="uploadAttachmentsButtonLoading"
-									:data-info="baseinfodata"
-									class="margin-left8"
-								/>
-								<iButton
-									@click="exportExcel"
-									v-if="canEdit"
-									style="margin-left: 8px"
-									>{{ $t('LK_DAOCHU') }}</iButton
+		<div>
+			<div class="pageTitle flex-between-center-center margin-botttom20">
+				<span>
+					{{
+						baseinfodata.riseCode
+							? `RiSE编号:  ${baseinfodata.riseCode}`
+							: $t('LK_XIANJIANCAIGOUSHENQING')
+					}}
+				</span>
+				<div class="btnList flex-align-center">
+					<iButton @click="sendToLine" v-if="canEditable">
+						{{ $t('推送采购员') }}
+					</iButton>
+					<iButton @click="exitEditor" v-if="canEdit && canEditable">
+						{{ $t('LK_TUICHUBIANJI') }}
+					</iButton>
+					<iButton @click="handleSave" v-if="canEdit && canEditable">
+						{{ $t('LK_BAOCUN') }}
+					</iButton>
+					<iButton
+						@click="handleEdit"
+						v-if="!canEdit && isLatest && canEditable"
+					>
+						{{ $t('LK_BIANJI') }}
+					</iButton>
+					<!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
+					<logButton class="margin-left20" @click="lookLog" />
+				</div>
+			</div>
+			<!--------------------------------------基础信息部分------------------------------------------>
+			<div class="margin-bottom20">
+				<iCard class="card" collapse>
+					<iFormGroup row="1" inline>
+						<div class="row">
+							<div class="col">
+								<iFormItem
+									:label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING') + ':'"
+									name="test"
 								>
+									<iSelect
+										:placeholder="$t('LK_QINGXUANZE')"
+										v-model="baseinfodata.subType"
+										:disabled="$route.query.code"
+										v-if="canEdit && canEditable"
+									>
+										<el-option
+											v-for="(item, index) in addType"
+											:key="index"
+											:value="item.label"
+											:label="$t(item.key)"
+										></el-option>
+									</iSelect>
+									<iText v-else>{{ getSubType(baseinfodata.subType) }}</iText>
+									<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
+								</iFormItem>
+								<iFormItem :label="$t('申请人') + ':'" name="test">
+									<iText>{{ baseinfodata.applyBy }}</iText>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<iFormItem :label="$t('推荐采购员') + ':'" name="test">
+									<iSelect
+										:placeholder="$t('LK_QINGXUANZE')"
+										v-model="baseinfodata.ownerId"
+										v-if="canEdit && canEditable"
+									>
+										<el-option
+											v-for="(item, index) in lineOptiondata"
+											:key="index"
+											:value="item.linieID"
+											:label="$t(item.linieName)"
+										></el-option>
+									</iSelect>
+									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
+								</iFormItem>
+								<iFormItem :label="$t('申请部门') + ':'" name="test">
+									<iText> {{ baseinfodata.applyDeptNo }}</iText>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<div class="row">
+									<iFormItem name="test" class="demo-dynamic">
+										<span slot="label">
+											{{ $t('零件编号前缀') + ':' }}
+											<el-tooltip
+												effect="light"
+												popper-class="custom-card-tooltip"
+												:content="
+													$t(
+														'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
+													)
+												"
+												placement="top"
+											>
+												<i
+													class="el-icon-warning-outline yellow iconSuffix"
+												></i>
+											</el-tooltip>
+										</span>
+										<iInput
+											v-if="canEdit && canEditable"
+											v-model="baseinfodata.partPrefix"
+										/>
+										<iText v-else> {{ baseinfodata.partPrefix }} </iText>
+									</iFormItem>
+								</div>
+								<iFormItem :label="$t('备注') + ':'" name="test">
+									<iInput
+										v-model="baseinfodata.remark"
+										:disabled="!canEdit"
+										class="width500"
+									></iInput>
+								</iFormItem>
+							</div>
+							<div class="col">
+								<iFormItem :label="$t('状态') + ':'" name="test">
+									<iText> {{ getStatus(baseinfodata.status) }} </iText>
+								</iFormItem>
+								<iFormItem name="test"> </iFormItem>
 							</div>
 						</div>
-						<tablelist
-							:tableData="currentListData"
-							:tableTitle="tableTitle"
-							:tableLoading="tableLoading"
-							:baseinfodata="baseinfodata"
-							:fromGroup="fromGroup"
-							:splitPurchList="splitPurchList"
-							:canEdit="canEdit"
-							:addressList="addressList"
-							@normalPrQuantityYears="normalPrQuantityYears"
-							@handleSelectionChange="handleSelectionChange"
-							open-page-props="id"
-							:index="true"
-							icon-props="recordId"
-						>
-						</tablelist>
-						<!------------------------------------------------------------------------>
-						<!--                  表格分页                                          --->
-						<!------------------------------------------------------------------------>
-						<iPagination
-							v-update
-							@size-change="handleSizeChange($event, getTableList)"
-							@current-change="handleCurrentChange($event, getTableList)"
-							background
-							:current-page="page.currPage"
-							:page-sizes="page.pageSizes"
-							:page-size="page.pageSize"
-							:layout="page.layout"
-							:total="page.totalCount"
+					</iFormGroup>
+				</iCard>
+			</div>
+			<!-- 列表部分 -->
+			<iCard class="margin-top20 margin-bottom20">
+				<div class="table-top">
+					<iFormGroup row="5" inline :rules="rules"> </iFormGroup>
+					<div>
+						<iButton @click="insertItem" v-if="canEdit && canEditable">
+							{{ $t('LK_XINZHENGXIANGCI') }}
+						</iButton>
+						<iButton @click="deleteItem" v-if="canEdit && canEditable">
+							{{ $t('LK_SHANCHUXIANGCI') }}
+						</iButton>
+						<upload-button
+							@uploadedCallback="uploadAttachments"
+							v-if="canEdit && canEditable"
+							:upload-button-loading="uploadAttachmentsButtonLoading"
+							:data-info="baseinfodata"
+							class="margin-left8"
 						/>
-					</iCard>
+						<iButton @click="exportExcel" style="margin-left: 8px">
+							{{ $t('LK_DAOCHU') }}
+						</iButton>
+						<!-- <buttonDownload :downloadMethod="exportExcel" /> -->
+					</div>
 				</div>
-			</el-tab-pane>
-		</el-tabs>
+				<tablelist
+					:tableData="tableListData"
+					:tableTitle="tableTitle"
+					:tableLoading="tableLoading"
+					:baseinfodata="baseinfodata"
+					:fromGroup="fromGroup"
+					:splitPurchList="splitPurchList"
+					:canEdit="canEdit && canEditable"
+					:addressList="addressList"
+					@normalPrQuantityYears="normalPrQuantityYears"
+					@handleSelectionChange="handleSelectionChange"
+					open-page-props="id"
+					:index="true"
+					icon-props="recordId"
+				>
+				</tablelist>
+				<!------------------------------------------------------------------------>
+				<!--                  表格分页                                          --->
+				<!------------------------------------------------------------------------>
+				<!-- <iPagination
+					v-update
+					@size-change="handleSizeChange($event, getTableList)"
+					@current-change="handleCurrentChange($event, getTableList)"
+					background
+					:current-page="page.currPage"
+					:page-sizes="page.pageSizes"
+					:page-size="page.pageSize"
+					:layout="page.layout"
+					:total="page.totalCount"
+				/> -->
+			</iCard>
+		</div>
+
 		<!--日志-->
 		<iUserLog
 			:show.sync="logDialogVisible"
@@ -198,13 +197,11 @@ import {
 	iButton,
 	iCard,
 	iMessage,
-	iPagination,
 	iFormGroup,
 	iFormItem,
 	iSelect,
 	iText,
 	iUserLog,
-	icon,
 	iInput,
 } from 'rise'
 import { newTableTitle, addType, statusList } from '../components/data'
@@ -217,7 +214,6 @@ import { dictkey, sendLinie, liniePullDownByDept } from '@/api/outsouringorder'
 import {
 	inventoryLocation,
 	saveOrUpdate,
-	findNormalPrByPage,
 	findNormalPrById,
 	deleteNormalPr,
 	applyExport,
@@ -226,6 +222,7 @@ import {
 import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
 import { exportExcel } from '@/utils/filedowLoad'
+import buttonDownload from '@/components/buttonDownload'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -234,7 +231,6 @@ export default {
 		iCard,
 		tablelist,
 		logButton,
-		iPagination,
 		iFormGroup,
 		iFormItem,
 		iSelect,
@@ -242,13 +238,13 @@ export default {
 		uploadButton,
 		iUserLog,
 		iInput,
+		buttonDownload,
 	},
 	data() {
 		return {
 			// applicationTypeKey: '',
 			// applicationTypeVal: '',
 			tableListData: [], //table数据
-			currentListData: [], //table展示数据
 			tableLoading: false,
 			tableTitle: newTableTitle,
 			tab: 'source',
@@ -264,12 +260,15 @@ export default {
 			// fromDetail: false,
 			uploadAttachmentsButtonLoading: false,
 			baseinfodata: {
-				riseCode: '',
 				type: 'GPR',
 				applyBy: this.$store.state.permission.userInfo?.nameZh,
-				deptNum: this.$store.state.permission.userInfo?.deptDTO.deptNum,
 				subType: 'ZN_ONE',
-				status: '',
+				status: '-2',
+				ownerId: '',
+				partPrefix: '',
+				remark: '',
+				applyDeptNo: this.$store.state.permission.userInfo?.deptDTO.deptNum,
+				currency: 'RMB',
 			},
 			logDialogVisible: false,
 			isLatest: true,
@@ -282,28 +281,27 @@ export default {
 		}
 		if (this.$route.query.code) {
 			this.canEdit = false
-			// this.fromDetail = true
 			this.baseinfodata.riseCode = this.$route.query.code
-			this.getTableListFn()
 			this.getTableHaderInfo()
 		}
 		if (this.$route.query.isLatest === 'false') {
 			this.isLatest = false
 		}
+		// 新建的
 		if (!this.$route.query.item && !this.$route.query.code) {
 			this.canEdit = true
-			this.baseinfodata
-			// this.applicationTypeKey = addType[0].key
-			// this.applicationTypeVal = addType[0].label
-			// this.baseinfodata.subType = this.applicationTypeVal
-			// this.canEdit = true
 		}
 		this.purchaseFactory()
 		this.getProcureGroup()
 		this.getLocation()
 		this.getLineInfo()
 	},
-
+	computed: {
+		// 工序委外是否可以编辑
+		canEditable() {
+			return ['-1', '-2'].includes(this.baseinfodata.status)
+		},
+	},
 	methods: {
 		// 获取采购申请类型
 		getSubType(val) {
@@ -353,37 +351,36 @@ export default {
 		},
 		//项次数量信息
 		normalPrQuantityYears(data) {
-			this.baseinfodata.normalPrQuantityYears = data
+			// this.baseinfodata.normalPrQuantityYears = data
 		},
 		//保存
 		handleSave() {
 			if (this.tableListData.length == 0) {
 				return iMessage.warn('请添加数据')
 			}
-			if (this.page.currPage == 1) {
-				this.currentListData.forEach((element, index) => {
-					this.tableListData[index] = element
-				})
+
+			// 零件前缀没有，并且零件号为空
+			if (
+				this.tableListData.find((e) => !e.partNum) &&
+				!this.baseinfodata.partPrefix
+			) {
+				return iMessage.warn('请输入零件号')
 			}
-			if (this.tableListData.length > 0) {
-				let temp = this.tableListData
-				for (let i = 0; i < temp.length; i++) {
-					if (
-						temp[i].partType == '' ||
-						temp[i].partNameZh == '' ||
-						temp[i].unitCode == '' ||
-						temp[i].factoryName == '' ||
-						temp[i].deliveryDate == ''
-					) {
-						return iMessage.warn('请输入必填项')
-					}
-				}
+			if (
+				this.tableListData.find(
+					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+				)
+			) {
+				return iMessage.warn('请输入必填项')
+			}
+			if (this.tableListData.find((e) => !e.quantity)) {
+				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
 			}
 			const query = this.tableListData.map((item) => {
 				return {
 					...item,
 					...this.baseinfodata,
-					// subType: this.applicationTypeVal
+					quantity: item.quantity,
 				}
 			})
 			saveOrUpdate(query)
@@ -394,13 +391,10 @@ export default {
 						!this.$route.query.code
 					) {
 						this.baseinfodata.riseCode = res.data[0].riseCode
-						// this.fromDetail = true
-						// this.canEdit = false;
-						// this.tableListData = []
 
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.$nextTick(() => {
-							this.$router.push({
+							this.$router.replace({
 								path: '/partsign/outsouringorder/addoutsourcing/details',
 								query: {
 									code: this.baseinfodata.riseCode,
@@ -411,7 +405,6 @@ export default {
 					} else if (+res.code === 200 && this.$route.query.code) {
 						this.baseinfodata.riseCode = res.data[0].riseCode
 						this.canEdit = false
-						this.getTableListFn()
 						this.getTableHaderInfo()
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 					} else {
@@ -434,8 +427,27 @@ export default {
 		},
 		// 发送给采购员
 		sendToLine() {
-			if (this.tableListData.length <= 0)
+			if (this.tableListData.length <= 0) {
 				return iMessage.warn('没有需要推送给采购员数据')
+			}
+
+			// 零件前缀没有，并且零件号为空
+			if (
+				this.tableListData.find((e) => !e.partNum) &&
+				!this.baseinfodata.partPrefix
+			) {
+				return iMessage.warn('请输入零件号')
+			}
+			if (
+				this.tableListData.find(
+					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+				)
+			) {
+				return iMessage.warn('请输入必填项')
+			}
+			if (this.tableListData.find((e) => !e.quantity)) {
+				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			}
 			sendLinie({
 				deptName: this.baseinfodata.deptName,
 				deptNum: this.baseinfodata.deptNum,
@@ -455,7 +467,6 @@ export default {
 			}).then((res) => {
 				if (res.result) {
 					iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-					this.getTableListFn()
 					this.getTableHaderInfo()
 				}
 			})
@@ -463,25 +474,41 @@ export default {
 		// 新增項次
 		insertItem() {
 			if (this.tableListData.length > 0) {
-				if (this.page.currPage == 1) {
-					this.currentListData.forEach((element, index) => {
-						this.tableListData[index] = element
-					})
-				}
-				let temp = this.tableListData[this.tableListData.length - 1]
+				const {
+					partType,
+					partNum,
+					quantity,
+					procureFactory,
+					deliveryDate,
+					unitCode,
+					normalPrQuantityYears = [],
+				} = this.tableListData[this.tableListData.length - 1]
+
+				const itemQuantity =
+					this.baseinfodata.subType === 'ZN_ONE'
+						? quantity
+						: normalPrQuantityYears.length
+				console.log({
+					partType,
+					partNum,
+					procureFactory,
+					deliveryDate,
+					unitCode,
+					itemQuantity,
+				})
 				if (
-					temp.partType == '' ||
-					temp.partNum == '' ||
-					temp.quantity == '' ||
-					temp.supplierNameZh == '' ||
-					temp.factoryName == '' ||
-					temp.deliveryDate == '' ||
-					!temp.unitCode
+					!partType ||
+					!partNum ||
+					!procureFactory ||
+					!deliveryDate ||
+					!unitCode ||
+					!itemQuantity
 				) {
 					return iMessage.warn('请输入上一条数据必填项')
 				}
 			}
 			this.tableListData.push({
+				riseCode: this.$route.query.code || '',
 				sapItem: this.itemNum,
 				partType: this.fromGroup.PART_TYPE[0].code,
 				account: '',
@@ -490,17 +517,18 @@ export default {
 				unitCode: '',
 				supplierNameZh: '',
 				factoryName: '',
+				tmFactoryId: '',
 				procureFactory: '',
 				procureOrg: '',
 				deliveryDate: '',
 				storageLocationCode: '',
 				requestTraceNo: '',
 				// subType: this.applicationTypeVal,
-				subType: '',
+				subType: this.baseinfodata.subType,
 				type: 'GPR',
-				departmentInfo: {},
 				supplierSapCode: '11138',
 				tmSupplierId: '50001031',
+				normalPrQuantityYears: [],
 			})
 			this.itemNum += 10
 			this.getTableList()
@@ -508,39 +536,52 @@ export default {
 
 		// 删除项次
 		deleteItem() {
-			let result = []
-			let deleteList = []
+			// let result = []
+			// let deleteList = []
 			if (this.selectTableData.length == 0) {
 				return iMessage.warn('请先选择数据')
 			}
-			this.tableListData.forEach((tableItem) => {
-				let canAdd = true
-				this.selectTableData.forEach((selectItem) => {
-					if (selectItem.sapItem == tableItem.sapItem) {
-						canAdd = false
-					}
-					if (selectItem.riseCode) {
-						deleteList.push(selectItem.purchasingRequirementId)
-					}
+			const remainingItems = this.tableListData.filter(
+				(e) => !this.selectTableData.includes(e)
+			)
+			const itemIds = this.selectTableData.map((e) => e.purchasingRequirementId) // 所有已选中项的ID
+			const existItemIds = itemIds.filter((e) => e) // 数据库在已存在的ID
+			if (!existItemIds.length) {
+				this.tableListData = remainingItems
+			} else {
+				deleteNormalPr(existItemIds).then(() => {
+					this.tableListData = remainingItems
 				})
-				if (canAdd) {
-					result.push(tableItem)
-				}
-			})
-			deleteList = Array.from(new Set(deleteList))
-			if (deleteList.length > 0) {
-				deleteNormalPr(deleteList)
-					.then((res) => {})
-					.catch((err) => {})
 			}
-			this.tableListData = result
-			if (
-				this.tableListData.length < this.page.currPage * 10 &&
-				this.tableListData.length > 10
-			) {
-				this.page.currPage -= 1
-			}
-			this.getTableList()
+			// }
+			// this.tableListData.forEach((tableItem) => {
+			// 	let canAdd = true
+			// 	this.selectTableData.forEach((selectItem) => {
+			// 		if (selectItem.sapItem == tableItem.sapItem) {
+			// 			canAdd = false
+			// 		}
+			// 		if (selectItem.riseCode) {
+			// 			deleteList.push(selectItem.purchasingRequirementId)
+			// 		}
+			// 	})
+			// 	if (canAdd) {
+			// 		result.push(tableItem)
+			// 	}
+			// })
+			// deleteList = Array.from(new Set(deleteList))
+			// if (deleteList.length > 0) {
+			// 	deleteNormalPr(deleteList)
+			// 		.then((res) => {})
+			// 		.catch((err) => {})
+			// }
+			// this.tableListData = result
+			// if (
+			// 	this.tableListData.length < this.page.currPage * 10 &&
+			// 	this.tableListData.length > 10
+			// ) {
+			// 	this.page.currPage -= 1
+			// }
+			// this.getTableList()
 		},
 		//字典
 		getProcureGroup() {
@@ -568,9 +609,15 @@ export default {
 		},
 		//导出
 		exportExcel() {
-			applyExport(this.baseinfodata.riseCode).then((res) => {
-				exportExcel(res, `采购申请${this.baseinfodata.riseCode}`)
-			})
+			applyExport(this.baseinfodata.riseCode)
+				.then((res) => {
+					console.log('EXPORT EXCEL:', res)
+					exportExcel(res.data, `工序委外${this.baseinfodata.riseCode}`)
+				})
+				.catch((err) => {
+					console.log('exportExcel err', err)
+					iMessage.error(err.desZh || '导出失败')
+				})
 		},
 
 		// 获取头部信息
@@ -581,61 +628,9 @@ export default {
 			findNormalPrById(params).then((res) => {
 				if (res.data) {
 					this.baseinfodata = { ...res.data[0] }
+					this.tableListData = res.data
 				}
 			})
-		},
-		// 获取零件采购项目相关信息
-		getTableListFn() {
-			this.tableLoading = true
-			let param = {
-				pageSize: 100,
-				currentPage: 1,
-				riseCode: this.baseinfodata.riseCode,
-			}
-			if (this.$route.query.sapCode) {
-				param.sapCode = this.$route.query.sapCode
-			}
-			findNormalPrByPage(param)
-				.then((res) => {
-					this.tableLoading = false
-					this.baseinfodata.subType = res.data.records[0].subType
-					this.canEdit = false
-
-					let itemList = []
-					res.data.records.sort(function (a, b) {
-						return a.sapItem - b.sapItem
-					})
-					res.data.records.forEach((element) => {
-						itemList.push(element.sapItem)
-					})
-					if (itemList.length > 0) {
-						itemList.sort(function (a, b) {
-							return b - a
-						})
-						this.itemNum = itemList[0] + 10
-					}
-					res.data.records.map((element) => {
-						element.factoryInfo = `${element.procureFactory}-${element.factoryName}`
-						element.locationInfo = {
-							inventoryLocation: element.storageLocationCode,
-							description: element.storageLocationDesc,
-						}
-						return element
-					})
-					this.tableListData = res.data.records
-					console.log(this.tableListData)
-					this.getTableList()
-				})
-				.catch(() => {})
-		},
-		getTableList() {
-			let temp = cloneDeep(this.tableListData)
-			//获取展示table数据
-			this.currentListData = temp.slice(
-				(this.page.currPage - 1) * 10,
-				(this.page.currPage - 1) * 10 + 10
-			)
-			this.page.totalCount = this.tableListData.length
 		},
 		// 导入回调函数
 		async uploadAttachments(formData) {
@@ -646,7 +641,7 @@ export default {
 				this.canEdit = false
 				this.tableListData = []
 				if (this.baseinfodata.riseCode) {
-					this.getTableListFn()
+					// this.getTableListFn()
 				} else {
 					this.tableListData = msg.data
 					this.getTableList()

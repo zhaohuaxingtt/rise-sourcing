@@ -29,7 +29,7 @@
                   >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
               </el-form-item>
-              <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
+              <el-form-item  :label="$t('LINGJIANCAIGOUXIANGMUHAO')"
                   >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
               </el-form-item>
@@ -44,11 +44,11 @@
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
               </el-form-item>  
-              <el-form-item  :label="language('LK_SAP','供应商SAP号')"
+              <el-form-item  :label="$t('LK_GONGYINGSHANGSAPHAO')"
                  >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
               </el-form-item>
-              <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
+              <el-form-item  :label="$t('LK_GONGYINGSHANGMINGCHENG')"
                  >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>

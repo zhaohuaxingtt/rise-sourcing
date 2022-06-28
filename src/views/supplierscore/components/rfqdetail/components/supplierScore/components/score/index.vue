@@ -47,16 +47,164 @@
             <span>{{ scope.row[item.props] }}</span>
           </template>
         </el-table-column>
-        <template>
-          <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
+        <template v-if="isFileRfqType">
+          <el-table-column align="center" :label="language('LK_FUJIANPINGFEN','附件评分')">
             <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus && hasEditLine(scope.row.id)">
-                  <!-- <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" /> -->
-                  <!-- <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)"> -->
+                  <iSelect v-model="scope.row.rate">
+                    <el-option
+                      v-for="(item, index) in affixGrade"
+                      :key="index"
+                      :value="item.code"
+                      :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
+                    >
+                    </el-option>
+                  </iSelect>
+                </div>
+                <span v-else>{{ showaffixName(scope.row.rate) }}</span>
+              </template>
+              <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
+                <iInput style="width:90%" v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                <span v-else>{{ scope.row[item.props] }}</span>
+              </template>
+              <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                <span v-else>{{ scope.row.confirmCycle }}</span>
+              </template>
+              <template v-else-if="item.props === 'remark'" v-slot="scope">
+                <el-tooltip placement="top" :disabled="!scope.row.memo">
+                  <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
+                  <div>
+                    <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.memo"/>
+                    <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
+                  </div>
+                </el-tooltip>
+              </template>
+              <template v-else v-slot="scope">
+                <span>{{ scope.row[item.props] }}</span>
+              </template>
+            </el-table-column>
+          </el-table-column>
+        </template>
+        <template v-else>
+          <template v-if="isMQ">
+            <el-table-column align="center" :label="language('ZHILIANGPINGFEN','质量评分')">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
+                <template v-if="item.props === 'rate'" #header="scope">
+                  <span>{{ scope.column.label }}<i class="required">*</i></span>
+                </template>
+                <template v-if="item.props === 'rate'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'MQ'">
+                    <div v-if="editStatus && hasEditLine(scope.row.id)">
+                        <iSelect  v-model="scope.row.rate">
+                          <el-option
+                            v-for="(item, index) in mqGrage"
+                            :key="index"
+                            :value="item.code"
+                            :label="item.nameEn"
+                          >
+                          </el-option>
+                        </iSelect>
+                    </div>
+                    <span v-else>{{ scope.row.rate }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'MQ'">
+                    <iInput style="width:90%" v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                    <span v-else>{{ scope.row[item.props] }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'MQ'">
+                    <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                    <span v-else>{{ scope.row.confirmCycle }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'remark'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'MQ'">
+                    <el-tooltip placement="top" :disabled="!scope.row.memo">
+                      <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
+                      <div>
+                        <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.memo"/>
+                        <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
+                      </div>
+                    </el-tooltip>
+                  </template>
+                </template>
+                <template v-else v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'MQ'">
+                    <span>{{ scope.row[item.props] }}</span>
+                  </template>
+                </template>
+              </el-table-column>
+            </el-table-column>
+          </template>
+          <template v-if="isEP">
+            <el-table-column align="center" :label="language('JISHUPINGFEN','技术评分')">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
+                <template v-if="item.props === 'rate'" #header="scope">
+                  <span>{{ scope.column.label }}<i class="required">*</i></span>
+                </template>
+                <template v-if="item.props === 'rate'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'EP'">
+                    <div v-if="editStatus && hasEditLine(scope.row.id)">
+                        <iSelect  v-model="scope.row.rate">
+                          <el-option
+                            v-for="(item, index) in epGrade"
+                            :key="index"
+                            :value="item.code"
+                            :label="item.nameEn"
+                          >
+                          </el-option>
+                        </iSelect>
+                    </div>
+                    <span v-else>{{ scope.row.rate }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'EP'">
+                    <iInput style="width:90%" v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                    <span v-else>{{ scope.row[item.props] }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'EP'">
+                    <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                    <span v-else>{{ scope.row.confirmCycle }}</span>
+                  </template>
+                </template>
+                <template v-else-if="item.props === 'remark'" v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'EP'">
+                    <el-tooltip placement="top" :disabled="!scope.row.memo">
+                      <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
+                      <div>
+                        <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.memo"/>
+                        <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
+                      </div>
+                    </el-tooltip>
+                  </template>
+                </template>
+                <template v-else v-slot="scope">
+                  <template v-if="scope.row.rateTag == 'EP'">
+                    <span>{{ scope.row[item.props] }}</span>
+                  </template>
+                </template>
+              </el-table-column>
+            </el-table-column>
+          </template>
+        </template>
+        <!-- <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
+              <template v-if="item.props === 'rate'" #header="scope">
+                <span>{{ scope.column.label }}<i class="required">*</i></span>
+              </template>
+              <template v-if="item.props === 'rate'" v-slot="scope">
+                <div v-if="editStatus && hasEditLine(scope.row.id)">
                   <div v-if="!isFileRfqType">
                     <template v-if="scope.row.rateTag == 'MQ'">
                       <iSelect  v-model="scope.row.rate">
@@ -80,15 +228,6 @@
                         </el-option>
                       </iSelect>
                     </template>
-                      <!-- <iSelect v-if="scope.row.tagName == 'EP'" v-model="scope.row.rate">
-                      <el-option
-                        v-for="(item, index) in epGrade"
-                        :key="index"
-                        :value="item.code"
-                        :label="item.nameEn"
-                      >
-                      </el-option>
-                    </iSelect> -->
                   </div>
                   <iSelect v-else v-model="scope.row.rate">
                     <el-option
@@ -99,10 +238,6 @@
                     >
                     </el-option>
                   </iSelect>
-                  <!-- <iSelect v-else v-model="scope.row.rate">
-                    <el-option value="合格" :label="language('HEGE', '合格')" />
-                    <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect> -->
                 </div>
                 <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
               </template>
@@ -115,8 +250,6 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
                 <el-tooltip placement="top" :disabled="!scope.row.memo">
                   <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
                   <div>
@@ -129,8 +262,7 @@
                 <span>{{ scope.row[item.props] }}</span>
               </template>
             </el-table-column>
-          </el-table-column>
-        </template>
+          </el-table-column> -->
       </el-table>
     </div>
     <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
@@ -186,15 +318,20 @@ export default {
         return deptScoreTableTitle.filter((item)=>!item.isFileHidden);
       }else{
         return deptScoreTableTitle
-      } 
-      
+      }
+    },
+    isMQ(){
+      return this.tableListData.some(item=>item.rateTag=='MQ')
+    },
+    isEP(){
+      return this.tableListData.some(item=>item.rateTag=='EP')
     }
   },
   created() {
     // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
     //   this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     // }
-    this.getRate()
+    // this.getRate()
 
     
   },
