@@ -260,7 +260,7 @@ export const gsTableTitle = [
   { props: 'share', name: '份额(%)', key: '', minWidth: 70 },
   { props: 'ltc', name:'年降', key: '', minWidth: 100 },
   { props: 'beginYearReduce', name: '年降开始时间', key: '', minWidth: 120 },
-  { props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 115 },
+  { props: 'savingFee', name: '节约值', key: '', minWidth: 115 },
   { props: 'turnover', name: '采购金额', key: '', minWidth: 115 },
   { props: 'remarks', name: '备注', key: '', minWidth: 200 },
 ]
