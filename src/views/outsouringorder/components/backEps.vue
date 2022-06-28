@@ -8,64 +8,78 @@
 -->
 
 <template>
-  <iDialog 
-    :title="mode == 'back' ? language('TUIHUIYUANYIN','退回原因') : $t('关闭原因')"
-    :visible.sync="dialogVisible"
-    @close="clearDialog"
-    width="878px"
-  >
-    <template slot="footer">
-      <iButton @click="handleConfirm" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
-      <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
-    </template>
-    <el-form label-position="top">
-      <el-form-item :label="language('TUIHUILIYOUMIAOSHU','退回理由描述')">
-        <iInput v-model="reasonDescription" :placeholder="language('QINGSHURUCHEXIAOYUANYIN','请输入撤销原因')" type="textarea" :rows="6" resize="none" ></iInput> 
-      </el-form-item>
-    </el-form>
-  </iDialog>
+	<iDialog
+		:title="
+			mode == 'back' ? language('TUIHUIYUANYIN', '退回原因') : $t('关闭原因')
+		"
+		:visible.sync="dialogVisible"
+		@close="clearDialog"
+		width="878px"
+	>
+		<template slot="footer">
+			<iButton @click="handleConfirm" :loading="saveLoading">{{
+				language('BAOCUN', '保存')
+			}}</iButton>
+			<iButton @click="clearDialog">{{ language('QUXIAO', '取消') }}</iButton>
+		</template>
+		<el-form label-position="top">
+			<el-form-item
+				:label="
+					mode == 'back'
+						? language('TUIHUILIYOUMIAOSHU', '退回理由描述')
+						: '关闭理由'
+				"
+			>
+				<iInput
+					v-model="reasonDescription"
+					:placeholder="language('QINGSHURUCHEXIAOYUANYIN', '请输入撤销原因')"
+					type="textarea"
+					:rows="6"
+					resize="none"
+				></iInput>
+			</el-form-item>
+		</el-form>
+	</iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput } from 'rise'
+import { iDialog, iButton, iInput } from 'rise'
 
 export default {
-  components: { iDialog, iButton, iSelect, iInput },
-  props: {
-    dialogVisible: { type: Boolean, default: false },
-    mode: { type: String, default: 'back' }
-  },
-  data() {
-    return {
-      reasonDescription: '',
-      loading: false,
-      saveLoading: false
-    }
-  },
+	components: { iDialog, iButton, iInput },
+	props: {
+		dialogVisible: { type: Boolean, default: false },
+		mode: { type: String, default: 'back' },
+	},
+	data() {
+		return {
+			reasonDescription: '',
+			loading: false,
+			saveLoading: false,
+		}
+	},
 
-  watch: {
-    dialogVisible(val) {
-      if(val) {
-        this.reasonDescription = ''
-      }
-    }
-  },
-  methods: {
-    clearDialog() {
-      this.reasonDescription = ''
-      this.$emit('changeVisible', false)
-    },
-    handleConfirm() {
-      this.saveLoading = true
-      this.$emit('handleBack', this.reasonDescription)
-    },
-    changeSaveLoading(loading) {
-      this.saveLoading = loading
-    }
-  }
+	watch: {
+		dialogVisible(val) {
+			if (val) {
+				this.reasonDescription = ''
+			}
+		},
+	},
+	methods: {
+		clearDialog() {
+			this.reasonDescription = ''
+			this.$emit('changeVisible', false)
+		},
+		handleConfirm() {
+			this.saveLoading = true
+			this.$emit('handleBack', this.reasonDescription)
+		},
+		changeSaveLoading(loading) {
+			this.saveLoading = loading
+		},
+	},
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
