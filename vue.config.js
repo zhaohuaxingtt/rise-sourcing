@@ -335,7 +335,6 @@ module.exports = {
 
 			//------------------- 业务日志 ---------------------
 			[process.env.VUE_APP_BIZLOG]: {
-				// target: `http://10.122.17.38:8013/bizlog`,
 				target: `${BASE_IP}/bizlog/`,
 				changeOrigin: true,
 				pathRewrite: {
@@ -344,11 +343,30 @@ module.exports = {
 			},
 			[process.env.VUE_APP_PART]: {
 				target: `${BASE_IP}/parts/web`,
-				// target: `http://${BASE_IP}:8018/parts`,
-				// target: `http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PART]: '',
+				},
+			},
+			'/aonApi': {
+				target: `${BASE_IP}/aon/`,
+				changeOrigin: true,
+				pathRewrite: {
+					'/aonApi': '',
+				},
+			},
+			'/biddingApi': {
+				target: `${BASE_IP}/bidding/`,
+				changeOrigin: true,
+				pathRewrite: {
+					'/biddingApi': '',
+				},
+			},
+			'/fileApi': {
+				target: `${BASE_IP}/fileud/`,
+				changeOrigin: true,
+				pathRewrite: {
+					'/fileApi': '',
 				},
 			},
 		},
