@@ -14,6 +14,7 @@
     <!---------------------------------------------------------------------->
     <carProject
       :carProjectId="carProject"
+      :carProjectName="carProjectName"
       @handleCarProjectChange="handleCarProjectChange"
       v-permission.auto="PROJECTMGT_PROGRESSMONITORING_CARTYPESCARD|车型项目板块"
      />
