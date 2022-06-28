@@ -40,14 +40,14 @@
       <template v-else>
         <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-if="items.props == 'companyAddress'">
           <template v-slot="scope">
-            <iSelect v-if="!disabled" class="supplierProducePlaces input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)" @change="supplierProducePlacesChange($event, scope.row)">
+            <iSelect v-if="!disabled" class="supplierProducePlaces input-center" v-model="scope.row.companyAddressAndCode" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)" @change="supplierProducePlacesChange($event, scope.row)">
               <el-option
                 v-for="supplierProducePlace in supplierProducePlaces"
                 :key="supplierProducePlace.key"
                 :label="supplierProducePlace.label"
-                :value="supplierProducePlace.value">
-                  <el-tooltip class="item" :disabled="tooltipDisabled" effect="light" :open-delay="200" :content="`${ supplierProducePlace.name }_${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }`" placement="right">
-                    <div class="item">{{ `${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }` }}</div>
+                :value="supplierProducePlace.companyAddressAndCode">
+                  <el-tooltip class="item" :disabled="tooltipDisabled" effect="light" :open-delay="200" :content="`${ supplierProducePlace.name?supplierProducePlace.name+'_':'' }${ supplierProducePlace.province }_${ supplierProducePlace.city }${ supplierProducePlace.address?'_'+supplierProducePlace.address:'' }`" placement="right">
+                    <div class="item">{{ `${ supplierProducePlace.province }_${ supplierProducePlace.city }${ supplierProducePlace.address?'_'+supplierProducePlace.address:'' }` }}</div>
                   </el-tooltip>
               </el-option>
             </iSelect>
@@ -116,10 +116,11 @@ export default {
       this.tooltipDisabled = !status
       this.$emit('supplierProducePlacesVisibleChange', status, row)
     },
-    supplierProducePlacesChange(value, row) {
-      if (value) {
-        const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
-        this.$set(row, "companyAddressCode", value)
+    supplierProducePlacesChange(companyAddressAndCode, row) {
+      if (companyAddressAndCode) {
+        const current = this.supplierProducePlaces.filter(item => item.companyAddressAndCode === companyAddressAndCode)[0]
+        // const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
+        this.$set(row, "companyAddressCode", current.value)
         this.$set(row, "companyAddress", current.label)
         this.$set(row, "isNoCodeData", false)
       } else {
