@@ -148,7 +148,7 @@
 					</div>
 				</div>
 				<tablelist
-					:tableData="currentListData"
+					:tableData="tableListData"
 					:tableTitle="tableTitle"
 					:tableLoading="tableLoading"
 					:baseinfodata="baseinfodata"
@@ -196,13 +196,11 @@ import {
 	iButton,
 	iCard,
 	iMessage,
-	iPagination,
 	iFormGroup,
 	iFormItem,
 	iSelect,
 	iText,
 	iUserLog,
-	icon,
 	iInput,
 } from 'rise'
 import { newTableTitle, addType, statusList } from '../components/data'
@@ -215,7 +213,6 @@ import { dictkey, sendLinie, liniePullDownByDept } from '@/api/outsouringorder'
 import {
 	inventoryLocation,
 	saveOrUpdate,
-	findNormalPrByPage,
 	findNormalPrById,
 	deleteNormalPr,
 	applyExport,
@@ -232,7 +229,6 @@ export default {
 		iCard,
 		tablelist,
 		logButton,
-		iPagination,
 		iFormGroup,
 		iFormItem,
 		iSelect,
@@ -246,7 +242,6 @@ export default {
 			// applicationTypeKey: '',
 			// applicationTypeVal: '',
 			tableListData: [], //table数据
-			currentListData: [], //table展示数据
 			tableLoading: false,
 			tableTitle: newTableTitle,
 			tab: 'source',
@@ -283,9 +278,7 @@ export default {
 		}
 		if (this.$route.query.code) {
 			this.canEdit = false
-			// this.fromDetail = true
 			this.baseinfodata.riseCode = this.$route.query.code
-			// this.getTableListFn()
 			this.getTableHaderInfo()
 		}
 		if (this.$route.query.isLatest === 'false') {
@@ -362,12 +355,7 @@ export default {
 			if (this.tableListData.length == 0) {
 				return iMessage.warn('请添加数据')
 			}
-			console.log('tableListData', this.tableListData)
-			if (this.page.currPage == 1) {
-				this.currentListData.forEach((element, index) => {
-					this.tableListData[index] = element
-				})
-			}
+
 			// 零件前缀没有，并且零件号为空
 			if (
 				this.tableListData.find((e) => !e.partNum) &&
@@ -414,7 +402,6 @@ export default {
 					} else if (+res.code === 200 && this.$route.query.code) {
 						this.baseinfodata.riseCode = res.data[0].riseCode
 						this.canEdit = false
-						// this.getTableListFn()
 						this.getTableHaderInfo()
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 					} else {
@@ -477,7 +464,6 @@ export default {
 			}).then((res) => {
 				if (res.result) {
 					iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-					// this.getTableListFn()
 					this.getTableHaderInfo()
 				}
 			})
@@ -485,12 +471,6 @@ export default {
 		// 新增項次
 		insertItem() {
 			if (this.tableListData.length > 0) {
-				if (this.page.currPage == 1) {
-					this.currentListData.forEach((element, index) => {
-						this.tableListData[index] = element
-					})
-				}
-
 				const {
 					partType,
 					partNum,
@@ -565,11 +545,9 @@ export default {
 			const existItemIds = itemIds.filter((e) => e) // 数据库在已存在的ID
 			if (!existItemIds.length) {
 				this.tableListData = remainingItems
-				this.currentListData = remainingItems
 			} else {
 				deleteNormalPr(existItemIds).then(() => {
 					this.tableListData = remainingItems
-					this.currentListData = remainingItems
 				})
 			}
 			// }
@@ -646,63 +624,9 @@ export default {
 			findNormalPrById(params).then((res) => {
 				if (res.data) {
 					this.baseinfodata = { ...res.data[0] }
-					this.currentListData = res.data
 					this.tableListData = res.data
 				}
 			})
-		},
-		// 获取零件采购项目相关信息
-		getTableListFn() {
-			this.tableLoading = true
-			let param = {
-				pageSize: 100,
-				currentPage: 1,
-				riseCode: this.baseinfodata.riseCode,
-			}
-			if (this.$route.query.sapCode) {
-				param.sapCode = this.$route.query.sapCode
-			}
-			findNormalPrByPage(param)
-				.then((res) => {
-					this.tableLoading = false
-					this.baseinfodata.subType = res.data.records[0].subType
-					this.canEdit = false
-
-					let itemList = []
-					res.data.records.sort(function (a, b) {
-						return a.sapItem - b.sapItem
-					})
-					res.data.records.forEach((element) => {
-						itemList.push(element.sapItem)
-					})
-					if (itemList.length > 0) {
-						itemList.sort(function (a, b) {
-							return b - a
-						})
-						this.itemNum = itemList[0] + 10
-					}
-					res.data.records.map((element) => {
-						element.factoryInfo = `${element.procureFactory}-${element.factoryName}`
-						element.locationInfo = {
-							inventoryLocation: element.storageLocationCode,
-							description: element.storageLocationDesc,
-						}
-						return element
-					})
-					this.tableListData = res.data.records
-					console.log(this.tableListData)
-					this.getTableList()
-				})
-				.catch(() => {})
-		},
-		getTableList() {
-			let temp = cloneDeep(this.tableListData)
-			//获取展示table数据
-			this.currentListData = temp.slice(
-				(this.page.currPage - 1) * 10,
-				(this.page.currPage - 1) * 10 + 10
-			)
-			this.page.totalCount = this.tableListData.length
 		},
 		// 导入回调函数
 		async uploadAttachments(formData) {

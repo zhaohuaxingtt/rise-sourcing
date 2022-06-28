@@ -130,8 +130,8 @@
 						class="openLinkText cursor"
 						@click="viewNominationDetail(scope.row)"
 					>
-						{{ scope.row.riseCode }}</span
-					>
+						{{ scope.row.riseCode }}
+					</span>
 				</template>
 				<template #subType="scope">
 					<span>{{ getSubType(scope.row.subType) }}</span>

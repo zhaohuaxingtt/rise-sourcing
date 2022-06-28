@@ -169,7 +169,7 @@ module.exports = {
 			},
 			[process.env.VUE_APP_PURCHASE]: {
 				changeOrigin: true,
-				target: 'http://10.173.48.112:8080/executionoperation/web',
+				target: 'http://10.173.48.113:8080/executionoperation/web',
 				// target: `${BASE_IP}/executionoperation/web`,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PURCHASE]: '',
