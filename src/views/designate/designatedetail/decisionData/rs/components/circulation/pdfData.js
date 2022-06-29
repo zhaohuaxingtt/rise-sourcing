@@ -163,7 +163,7 @@ export const gsTableTitleSub = [
 		key: '',
 		minWidth: 62,
 	},
-	{ props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 100 },
+	{ props: 'savingFee', name: '节约值', key: '', minWidth: 100 },
 	{ props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
 	{ props: 'remarks', name: '备注', key: '', minWidth: 200 },
 ]
