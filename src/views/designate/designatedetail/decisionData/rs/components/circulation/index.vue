@@ -1111,6 +1111,10 @@ export default {
       console.time(`index${index}`);
       let this_ = this
       let el = this.$refs.contentPdf
+      dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
+      el.style.width = this_.WH[index].width + 'px'
+      el.style.height = this_.WH[index].height + 'px'
+      el.innerHTML = dom.outerHTML
       await html2canvas(el, {
         dpi: 96, //分辨率
         scale: this.pdfPage > 12 ? 1 : 2, //设置缩放
@@ -1123,13 +1127,6 @@ export default {
           }
           return false
         },
-        onclone(doc){
-          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
-          let el = doc.getElementById('contentPdf')
-          el.style.width = this_.WH[index].width + 'px'
-          el.style.height = this_.WH[index].height + 'px'
-          el.innerHTML = dom.outerHTML
-        }
       }).then(canvas => {
         console.timeEnd(`index${index}`);
         this.getPdfFile(canvas,index)
@@ -1550,6 +1547,20 @@ export default {
       }
       &:nth-child(even) {
           background-color: #f7f7ff;
+      }
+      
+      &.suggestionRow {
+        position: relative;
+
+        &::after {
+          content: '';
+          width: 8px;
+          height: 100%;
+          background: #80a269;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
     }
   }
