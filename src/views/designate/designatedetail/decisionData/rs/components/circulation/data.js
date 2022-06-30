@@ -21,7 +21,7 @@ export const nomalDetailTitle = [
   {props: 'buyer', name: '采购员', enName: 'Buyer'},
   {props: 'sop', name: '投产时间', enName: 'SOP'},
   {props: 'epen', name: '工程师', enName: 'EP/EN'},
-  {props: 'carLine', name: '车型', enName: 'Carline'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'}
 ]
 
@@ -154,7 +154,7 @@ export const accessoryTableTitle = [
   // {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
   {props:'partNum',name:'附件零件号', key: "", minWidth: 120, fixed: true },
   {props:'partName',name:'附件零件名称', key: "", minWidth: 110},
-  {props:'carLine',name:'车型', key: "", minWidth: 85},
+  {props:'carTypeName',name:'车型', key: "", minWidth: 85},
   {props:'svwCode',name:'厂商号', key: "", minWidth: 70},
   {props:'supplierName',name:'供应商名称',  key: "", minWidth: 110},
   {props:'prodLocation',name:'产地',  key: "", minWidth: 70},
@@ -200,7 +200,7 @@ export const sparePartTableTitle = [
   {props:'assemblyPartNum',name:'批量零件号', key: "", minWidth: 120, fixed: true},
   {props:'partNum',name:'配件零件号', key: "", minWidth: 120, fixed: true},
   {props:'partName',name:'配件零件名称', key: "", minWidth: 110},
-  {props:'carLine',name:'车型', key: "", minWidth: 85},
+  {props:'carTypeName',name:'车型', key: "", minWidth: 85},
   {props:'svwCode',name:'厂商号', key: "", minWidth: 70},
   {props:'supplierName',name:'供应商名称',  key: "", minWidth: 110},
   {props:'prodLocation',name:'产地',  key: "", minWidth: 70},
@@ -244,7 +244,7 @@ export const gsTableTitle = [
   { props: 'status', name: '供货状态', key: '', minWidth: 90 },
   { props: 'partName', name: '零件名称', key: '', minWidth: 110 },
   { props: 'unit', name: '零件单位', key: '', minWidth: 82 },
-  { props: 'carLine', name: '车型', key: '', minWidth: 70 },
+  { props: 'carTypeName', name: '车型', key: '', minWidth: 70 },
   { props: 'svwCode', name: '厂商号', key: '', minWidth: 70 },
   { props: 'supplierName', name: '供应商名称', key: '', minWidth: 110 },
   { props: 'prodLocation', name: '产地', key: '', minWidth: 70 },
