@@ -266,7 +266,7 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
             <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
