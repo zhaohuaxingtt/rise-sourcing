@@ -23,37 +23,33 @@
       </template>
     </div>
   </div>
-  <template v-for="(child,key) in data.children">
-    <div v-show="data.showChlid" :key="key">
-      <div class="row-item">
-        <div class="first-column-item">
-          <template v-if="child.children">
-            <i class="el-icon-remove-outline icon" v-if="child.showChlid" @click="change(child)"></i>
-            <i class="el-icon-circle-plus-outline icon" v-else  @click="change(child)"></i>
-          </template>
-          <span v-else class="icon"></span>
-          {{child.name}}
-        </div>
-        <div class="column-item" :key="index" v-for="(item,index) in list">
-          <template v-if="(child.rang||[]).includes(item)">
-            <template v-if="child.point">
-              <i class="el-icon-caret-top point" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status&&'point-hui'"></i>
-              <i class="el-icon-caret-top point" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status==1?'point-green':child.status==2?'point-yellow':''"></i>
-            </template>
-            <template v-else>
-              <div class="progress-box">
-                <div class="progress" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status&&'hui'"></div>
-                <div class="progress" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status==1?'green':child.status==2?'yellow':''"></div>
-              </div>
-            </template>
-          </template>
-        </div>
-      </div>
-      <div v-if="child.children&&child.children.length"  v-show="child.showChlid" :key="key">
-        <item :data="childItem" v-for="(childItem,childIndex) in child.children" :key="childIndex"/>
-      </div>
+  <div v-for="(child,key) in data.children" class="row-item" v-show="data.showChlid" :key="key">
+    <div class="first-column-item">
+      <template v-if="child.children">
+        <i class="el-icon-remove-outline icon" v-if="child.showChlid" @click="change(child)"></i>
+        <i class="el-icon-circle-plus-outline icon" v-else  @click="change(child)"></i>
+      </template>
+      <span v-else class="icon"></span>
+      {{child.name}}
     </div>
-  </template>
+    <div class="column-item" :key="index" v-for="(item,index) in list">
+      <template v-if="(child.rang||[]).includes(item)">
+        <template v-if="child.point">
+          <i class="el-icon-caret-top point" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status&&'point-hui'"></i>
+          <i class="el-icon-caret-top point" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status==1?'point-green':child.status==2?'point-yellow':''"></i>
+        </template>
+        <template v-else>
+          <div class="progress-box">
+            <div class="progress" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status&&'hui'"></div>
+            <div class="progress" :style="{width:(child.rang.indexOf(item)==child.rang.length-1)&&child.width||'100%'}" :class="child.status==1?'green':child.status==2?'yellow':''"></div>
+          </div>
+        </template>
+      </template>
+    </div>
+  </div>
+    <div v-if="child.children&&child.children.length"  v-show="child.showChlid" :key="key">
+      <item :data="childItem" v-for="(childItem,childIndex) in child.children" :key="childIndex"/>
+    </div>
 </div>
 </template>
 

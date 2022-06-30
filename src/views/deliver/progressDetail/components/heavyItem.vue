@@ -54,6 +54,7 @@ import Item from "./item.vue";
               rang:['2019-12','2020-01','2020-02',], },
             { name:'1.4 P-muster', point:true, status: 2, rang:['2020-04'], },
             { name:'1.5 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
+            { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
           ]
         },{
           name:"2.0 联系人提交清单",
@@ -67,6 +68,7 @@ import Item from "./item.vue";
             { name:'2.3 Fakom(P-muster)', status: 2, },
             { name:'2.4 P-muster' },
             { name:'2.5 software', status: 1, },
+            { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
           ]
         }
         ],
