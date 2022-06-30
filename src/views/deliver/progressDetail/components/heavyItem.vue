@@ -12,16 +12,18 @@
         {{item}}
       </div>
     </div>
-    <item :data="data" v-for="(data,i) in list" :key="i" :list="header"/>
+    <progress-item />
+    <item :list="list" :key="i" :header="header"/>
   </iCard>
 </template>
 
 <script>
 import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage } from "rise";
 import Item from "./item.vue";
+import progressItem from "./progressItem";
   export default {
     components:{
-      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item
+      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item, progressItem
     },
     data() {
       return {
@@ -49,11 +51,12 @@ import Item from "./item.vue";
           rang:['2019-12'],
           children:[
             { name:'1.1 TM数模数据', status: 2, rang:['2019-12'], },
+            { name:'1.2 TZ图纸数据', status: 1, rang:['2019-12'], },
             { name:'1.2 TZ图纸数据', rang:['2019-12'], },
             { name:'1.3 Fakom(P-muster)', status: 2,
               rang:['2019-12','2020-01','2020-02',], },
             { name:'1.4 P-muster', point:true, status: 2, rang:['2020-04'], },
-            { name:'1.5 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
+            { name:'1.5 software', point:true, status: 1, rang:['2020-01','2020-02'], width:'40%' },
             { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
           ]
         },{
