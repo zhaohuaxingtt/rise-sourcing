@@ -321,7 +321,7 @@ module.exports = {
 
 			[process.env.VUE_APP_USER_CENTER]: {
 				// target: `http://10.122.17.38:8015/usercenter/`,
-				target: `${BASE_IP}/usercenter/web`,
+				target: `${BASE_IP}/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_USER_CENTER]: '',
@@ -355,6 +355,15 @@ module.exports = {
 					['^' + process.env.VUE_APP_PR]: '',
 				},
 			},
+
+      // ------------------ 上传 ----------------------------
+      [process.env.VUE_APP_FILEAPI]: {
+        target: `${BASE_IP}/fileud`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_FILEAPI]: ''
+        }
+      },
 		},
 	},
 }
