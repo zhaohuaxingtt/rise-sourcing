@@ -282,7 +282,7 @@ export default{
       //     this.$emit('handleSelectionChange',val)
       //   }
       // }else{
-        // this.$emit('handleSelectionChange',val)
+        this.$emit('handleSelectionChange',val)
       // }
       this.$emit('selection-change',val)
     },
