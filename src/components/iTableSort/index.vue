@@ -310,6 +310,11 @@ export default{
         })
         //修改当前行状态
         this.$refs.moviesTable.toggleRowSelection(row,!selectdBorder)
+        if(!selectdBorder){
+          this.$emit('handleSelectionChange',[row])
+        }else{
+          this.$emit('handleSelectionChange',[])
+        }
       }
       this.$set(row,'selectedBorder',!selectdBorder)
       this.$emit('selection-change',{selection,row})
