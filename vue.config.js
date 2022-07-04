@@ -349,7 +349,7 @@ module.exports = {
 
 			//------------------- prApi ---------------------
 			[process.env.VUE_APP_PR]: {
-				target: `${BASE_IP}/partProcureApi/web`,
+				target: `${BASE_IP}/procurementrequirement/web/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PR]: '',
@@ -362,6 +362,23 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_FILEAPI]: ''
+        }
+      },
+
+      // ------------------ 零件服务 ----------------------------
+      [process.env.VUE_APP_PART]: {
+        target: `${BASE_IP}/parts`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART]: ''
+        }
+      },
+      // ------------------ 零件服务 api ----------------------------
+      [process.env.VUE_APP_PART_API]: {
+        target: `${BASE_IP}/parts`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART_API]: ''
         }
       },
 		},
