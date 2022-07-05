@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-<iPage class="page">
+<iPage class="page" :class="isPreview==='1'?'no-padding':''">
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
@@ -156,6 +156,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.no-padding{
+  padding: 0;
+  .isPreview{
+    min-height: 100%;
+  }
+}
 .page{
   position: relative;
 }
