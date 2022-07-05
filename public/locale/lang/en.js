@@ -5175,7 +5175,7 @@
 		LK_AEKO_NEIRONGZHUANGTAI: 'Content Sattus',
 		XUANZEFENPAICAIGOUYUAN: 'Select buyer to assign',
 		QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI:
-			'Please part whose content status is "to-be statement", "Quoting" or "Quoted" to reset',
+			'Please part whose content status is "to-be statement", "Quoting" or "Quoted" or "Bound" to reset',
 		CAOZUOREN: 'Operator',
 		QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN:
 			'Please select part whose content status is "to-be statement"  to switch',
