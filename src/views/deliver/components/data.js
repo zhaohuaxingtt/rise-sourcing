@@ -59,6 +59,19 @@ export const COMFIRMTAB = [
   }
 ]
 
+export const tableTitle = [
+  { props: "col1", name: "车型项目", key: "", tooltip: true, width:120 },
+  { props: "col2", name: "RFQ", key: "", tooltip: true, width:120 },
+  { props: "col3", name: "材料组编号", key: "", tooltip: true, width:120 },
+  { props: "col4", name: "零件号", key: "", tooltip: true, width:120 },
+  { props: "col5", name: "零件名称", key: "", tooltip: true, width:120 },
+  { props: "col6", name: "零件类型", key: "", tooltip: true, width:120 },
+  { props: "col7", name: "Soll", key: "", tooltip: true, width:120 },
+  { props: "col8", name: "延迟级别", key: "", tooltip: true, width:180 },
+  { props: "col9", name: "延迟原因备注", key: "", tooltip: true, minWidth:120 },
+  { props: "col10", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
+]
+
 export const searchList = [
   {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
   {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'input'},
@@ -78,10 +91,20 @@ export const delayAnalysisSearchList = [
   {prop:'prop10',label:'供应商',key:'GONGYINGSHANG',type:'input' },
 
 ]
+
 export const progressDetailSearchList = [
   {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions' },
   {prop:'part',label:'零件',key:'LINGJIAN',type:'select', selectOption:'partList' },
   {prop:'supplier',label:'供应商',key:'GONGYINGSHANG',type:'select', selectOption:'supplierList' },
+]
 
-
+export const kickOffSearchList = [
+  {prop:'prop1',label:'车型项目',key:'',type:'input'},
+  {prop:'prop2',label:'材料组',key:'',type:'input'},
+  {prop:'prop3',label:'RFQ',key:'',type:'input'},
+  {prop:'prop4',label:'零件号',key:'',type:'input'},
+  {prop:'prop5',label:'零件名称',key:'',type:'input'},
+  {prop:'prop6',label:'零件类型',key:'',type:'select', selectOption:'partTypeOptions'},
+  {prop:'prop7',label:'供应商',key:'',type:'input'},
+  {prop:'prop8',label:'进度状态',key:'',type:'select', selectOption:'proessOptions'},
 ]

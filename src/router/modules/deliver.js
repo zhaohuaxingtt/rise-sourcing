@@ -43,7 +43,16 @@ export default [
           activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/progressDetail"),
-      }
+      },
+      {
+        path: "kickoff",
+        name: "kickoff",
+        meta: {
+          title: "送样管理-kickoff",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/overview/components/kickOff"),
+      },
     ]
   }
 ]

@@ -1,5 +1,5 @@
 <template>
-  <iCard title="延迟级别汇总">
+  <iCard title="Offen类型汇总">
     <div ref="charts" class="charts"></div>
   </iCard>
 </template>
@@ -31,15 +31,15 @@ import { iCard } from "rise";
               containLabel: true
             },
             xAxis: {
-              type: 'value',
+              type: 'category',
+              data:['No Test Requirement','No BF','No kickoff'],
               name:'count',
                 max:function(val){
                 return parseInt(val.max*1.2)
                 }
             },
             yAxis: {
-              type: 'category',
-              data:['重度延迟','中度延迟','轻度延迟'],
+              type: 'value',
               axisTick:{
                 show:false
               }
@@ -48,7 +48,7 @@ import { iCard } from "rise";
               {
                 name: '重度延迟',
                 type: 'bar',
-                data: [1,10,15],
+                data: [5,3,2],
                 label:{
                   show:true
                 }
