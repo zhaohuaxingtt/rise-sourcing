@@ -294,7 +294,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_BASE_UPLOAD_API]: {
-				target: `http://10.122.17.38:8034/`,
+				target: `${BASE_IP}/fileud/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_UPLOAD_API]: '',
@@ -349,12 +349,38 @@ module.exports = {
 
 			//------------------- prApi ---------------------
 			[process.env.VUE_APP_PR]: {
-				target: `${BASE_IP}/partProcureApi/web`,
+				target: `${BASE_IP}/procurementrequirement/web/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PR]: '',
 				},
 			},
+
+      // ------------------ 上传 ----------------------------
+      [process.env.VUE_APP_FILEAPI]: {
+        target: `${BASE_IP}/fileud`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_FILEAPI]: ''
+        }
+      },
+
+      // ------------------ 零件服务 ----------------------------
+      [process.env.VUE_APP_PART]: {
+        target: `${BASE_IP}/parts`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART]: ''
+        }
+      },
+      // ------------------ 零件服务 api ----------------------------
+      [process.env.VUE_APP_PART_API]: {
+        target: `${BASE_IP}/parts`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART_API]: ''
+        }
+      },
 		},
 	},
 }
