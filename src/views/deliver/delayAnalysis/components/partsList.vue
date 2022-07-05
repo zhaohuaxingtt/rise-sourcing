@@ -16,8 +16,8 @@
         <!-- 延迟级别 -->
         <template #col8="scope">
           <div class="table-item-aeko">
-            <icon class="margin-right5 font24 top-icon" symbol :name="showIcon(scope.row.status)"></icon>
-            <span class="link" >{{scope.row.col8}}</span>
+            <icon class="margin-right5 font20" symbol name="iconyouxianji-hongdeng"></icon>
+            <span >{{scope.row.col8}}</span>
           </div>
         </template>
 
@@ -84,16 +84,19 @@ import { pageMixins } from "@/utils/pageMixins";
 
       },
       showIcon(status){
+        let result = ''
         switch(status){
           case 1:
-            return 'iconAEKO_TOP';
+            result = 'iconyouxianji-landeng'
+            break
           case 2:
-            return 'yellow';
+            result =  'iconyouxianji-huangdeng';
+            break
           case 3:
-            return 'red';
-          default:
-            return ''
+            result =  'iconyouxianji-hongdeng';
+            break
         }
+        return result
       }
     }
   }

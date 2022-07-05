@@ -3,7 +3,7 @@
     <projectTop />
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false"></search>
     <chartsItem/>
-    <partsList/>
+    <partsList class="margin-top20"/>
   </iPage>
 </template>
 
