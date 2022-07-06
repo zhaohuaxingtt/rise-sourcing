@@ -2970,7 +2970,7 @@
     NINGHAIWEIXUANZESHUJU: '您当前还未选择列表文件，请选择后重试！',
     QUANXUAN: '全选',
     QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI:
-      '请选择内容状态为待表态、报价中、已报价的零件进行重置',
+      '请选择内容状态为待表态、报价中、已报价、已绑定的零件进行重置',
     DIQU: '地区',
     FANHUIFENXIKU: '返回分析库',
     SHOUGONGSHURU: '手工输入',

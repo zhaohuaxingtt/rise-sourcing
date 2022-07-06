@@ -94,7 +94,7 @@ export default{
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
 
           this.$nextTick(()=>{
-            this.$refs.tableList.setfixElement()
+            this.$refs.tableList?.setfixElement()
           })
         }
 

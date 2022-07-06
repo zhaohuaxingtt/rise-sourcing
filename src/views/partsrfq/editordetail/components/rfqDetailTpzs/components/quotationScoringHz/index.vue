@@ -173,7 +173,11 @@ export default{
     }
   },
   created(){
-    this.layout = this.getLayoutDetaultNumber()
+    if(this.isRoutePreview){
+      this.layout = '2'
+    }else{
+      this.layout = this.getLayoutDetaultNumber()
+    }
     this.searchABPageExchangeRate()
   },
   mounted(){
