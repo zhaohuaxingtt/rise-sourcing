@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
 -->
 <template>
-<div>
+<div :class="isRoutePreview?'isRoutePreview':''">
   <slot name="tabTitle"></slot>
   <iCard v-permission.auto="SOURCING_NOMINATION_ATTATCH_ABPRICE|决策资料-abprice">
       <fsandsupplier preview></fsandsupplier>
@@ -19,6 +19,11 @@ import {iCard} from 'rise'
 import fsandsupplier from './components/extend'
 export default{
   components:{fsandsupplier,iCard},
+  computed:{
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+  },
   methods:{
     getbaseInfoData(){
       return {}
@@ -26,3 +31,12 @@ export default{
   }
 }
 </script>
+<style lang="scss" scoped>
+.isRoutePreview{
+  ::v-deep .card{
+    .cardBody{
+      padding-top: 0;
+    }  
+  }
+}
+</style>
