@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_USER_CENTER)
+const requst = axios(process.env.VUE_APP_USER_CENTER + '/web')
 const requst1 = axios(process.env.VUE_APP_USER_CENTER_API)
 
 

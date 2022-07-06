@@ -267,21 +267,24 @@ export default {
      * @return {*}
      */    
     handleSelectionChange(val){
-      if (this.radio) {
-        if (val.length > 1) {
-          //取出最后val的最后一个返回出来
-          var duoxuans=val.pop();
-          this.handleSelectArr=val.pop();
-          //清除所有选中
-          this.$refs.moviesTable.clearSelection()
-          //给最后一个加上选中
-          this.$refs.moviesTable.toggleRowSelection(duoxuans)
-        } else {
-          this.$emit('handleSelectionChange',val)
-        }
-      }else{
+      // if (this.radio) {
+      //   if (val.length > 1) {
+      //     //取出最后val的最后一个返回出来
+      //     var duoxuans=val.pop();
+      //     this.handleSelectArr=val.pop();
+      //     //清除所有选中
+      //     this.$refs.moviesTable.clearSelection()
+      //     //给最后一个加上选中
+      //     this.tableData.map(row=>{
+      //       this.$set(row,'selectedBorder',false)
+      //     })
+      //     this.$refs.moviesTable.toggleRowSelection(duoxuans,true)
+      //   } else {
+      //     this.$emit('handleSelectionChange',val)
+      //   }
+      // }else{
         this.$emit('handleSelectionChange',val)
-      }
+      // }
       this.$emit('selection-change',val)
     },
     /**
@@ -300,6 +303,20 @@ export default {
      */    
     handleSelect(selection,row){
       const selectdBorder = row.selectedBorder
+      if(this.radio){
+        //清除所有选中
+        this.$refs.moviesTable.clearSelection()
+        this.tableData.map(row=>{
+          this.$set(row,'selectedBorder',false)
+        })
+        //修改当前行状态
+        this.$refs.moviesTable.toggleRowSelection(row,!selectdBorder)
+        if(!selectdBorder){
+          this.$emit('handleSelectionChange',[row])
+        }else{
+          this.$emit('handleSelectionChange',[])
+        }
+      }
       this.$set(row,'selectedBorder',!selectdBorder)
       this.$emit('selection-change',{selection,row})
     },
