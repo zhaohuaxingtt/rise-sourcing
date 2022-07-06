@@ -39,7 +39,7 @@
 <script>
 import { iDialog, iSelect, iButton, iMessage } from "rise";
 import tableList from "@/components/iTableSort";
-import { changePartProject, productFamilyCartTypeAndCarTypePro } from "@/api/aeko/detail/partsList.js"
+import { changePartProject, cartypeProByCondition, cartypeListByCondition } from "@/api/aeko/detail/partsList.js"
 export default {
   props: {
     dialogVisible: { type: Boolean, default: false },
@@ -94,10 +94,16 @@ export default {
     async getOptions(ev, index, row) {
       if (ev&&!row.options.length) {
         this.loading = true
-        const res = await productFamilyCartTypeAndCarTypePro({ productCode: [row.pid] })
+        const res = this.isAeA ? await cartypeListByCondition({ productCode: row.pid }) : await cartypeProByCondition({ productCode: row.pid })
         if (res?.code == 200) {
-          let option = this.isAeA ? { value: (this.$i18n.locale === "zh" ? res.data[0].cartypeVo.productNameZh:res.data[0].cartypeVo.productNameEn)||res.data[0].cartypeVo.modelNameZh } : { value: this.$i18n.locale === "zh" ? res.data[0].cartypeProVo.cartypeProjectZh : res.data[0].cartypeProVo.cartypeProjectEn  }
-          row.options = [option]
+          let option = res.data.map(item=>{
+            return this.isAeA ? {
+              value: (this.$i18n.locale === "zh" ? item.productNameZh : item.productNameEn) || item.cartypeProjectDe
+            }:{
+              value: (this.$i18n.locale === "zh" ? item.cartypeProjectZh : item.cartypeProjectEn) || item.cartypeProjectDe
+            }
+          })
+          row.options = option
         }
         this.tableList.splice(index, 1, row)
         this.$nextTick(()=>{
