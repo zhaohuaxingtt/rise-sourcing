@@ -374,7 +374,7 @@ module.exports = {
 
       // ------------------ 零件服务 ----------------------------
       [process.env.VUE_APP_PART]: {
-        target: `${BASE_IP}/parts`,
+        target: `${BASE_IP}/parts/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_PART]: ''
@@ -382,7 +382,7 @@ module.exports = {
       },
       // ------------------ 零件服务 api ----------------------------
       [process.env.VUE_APP_PART_API]: {
-        target: `${BASE_IP}/parts`,
+        target: `${BASE_IP}/parts/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_PART_API]: ''
