@@ -7,7 +7,6 @@
 					<template #header>
 						<div class="title">
 							<p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
-							9999999999999999999999999
 						</div>
 					</template>
 					<div class="pdf-content">
