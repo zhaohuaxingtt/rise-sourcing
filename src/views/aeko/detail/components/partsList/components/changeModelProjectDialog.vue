@@ -98,7 +98,7 @@ export default {
         if (res?.code == 200) {
           let option = res.data.map(item=>{
             return this.isAeA ? {
-              value: (this.$i18n.locale === "zh" ? item.productNameZh : item.productNameEn) || item.cartypeProjectDe
+              value: item.modelNameZh
             }:{
               value: (this.$i18n.locale === "zh" ? item.cartypeProjectZh : item.cartypeProjectEn) || item.cartypeProjectDe
             }
