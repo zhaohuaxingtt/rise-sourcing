@@ -10,6 +10,8 @@
   <div class="conent">
     <div class="selsTable">
       <el-table 
+        border
+        :stripe="false"
         tooltip-effect="light"
         :height="height"
         :data="tableData"
@@ -507,6 +509,13 @@ export default{
     ::v-deep.tuijianSupplier{
       border-bottom: 2px solid blue;
     }
+    
+    ::v-deep tr:nth-child(even){
+      background-color: #FFFFFF;
+    }
+    ::v-deep .el-table__row{
+      height: unset !important;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;
@@ -551,6 +560,9 @@ export default{
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
       height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+      }
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
@@ -579,8 +591,8 @@ export default{
       }
     }
     ::v-deep.leftRightBorder{
-      border-left: 1px solid #C5CCD6;
-      border-right: 1px solid #C5CCD6;
+      border-left: 1px solid #EBEEF5;
+      border-right: 1px solid #EBEEF5;
     }
     ::v-deep .bgcoor{
       background: #f5f7fa;
@@ -590,7 +602,7 @@ export default{
       }
     }
     ::v-deep .rightBorder{
-      border-right: 1px solid #C5CCD6;
+      border-right: 1px solid #EBEEF5;
       position: relative;
     }
     ::v-deep .is-sortable{
@@ -614,7 +626,7 @@ export default{
   .headerContent{
     position: absolute;
     top: 0px;
-    left: -1px;
+    left: 0px;
     height: 0px;
     width: 0px;
     .c{
@@ -623,7 +635,7 @@ export default{
       z-index: 123;
       bottom: -1px;
       left:0PX;
-      border: 1px solid #C5CCD6;
+      border: 1px solid #EBEEF5;
       border-bottom: none;
       border-left:none;
       border-top-right-radius: 5px;
@@ -637,28 +649,28 @@ export default{
         word-break: break-all;
       }
       ul{
-        border-right: 1px solid #C5CCD6;
-        border-top: 1px solid #C5CCD6;
+        border-right: 1px solid #EBEEF5;
+        border-top: 1px solid #EBEEF5;
         &:nth-child(2){
           overflow: hidden;
         }
         &:first-child{
-          border-top-right-radius: 3px;
-          overflow: hidden;
-          border-right: 0px;
-          border: none;
-          width: 0px;
+          // border-top-right-radius: 3px;
+          // overflow: hidden;
+          // border-right: 0px;
+          // border: none;
+          // width: 0px;
           li{
-            border-right: 1px solid #C5CCD6;
+            border-right: 1px solid #EBEEF5;
             &:first-child{
               background-color:white;
               border:none;
-              border-right: 1px solid #C5CCD6;
+              border-right: 1px solid #EBEEF5;
             }
           }
         }
         li{
-          border-bottom: 1px solid #C5CCD6;
+          border-bottom: 1px solid #EBEEF5;
           height: 38px;
           &:last-child{
             border-bottom: none;
@@ -709,13 +721,13 @@ export default{
                 position: absolute;
                 bottom: -1.8px;
                 right: 1.6px;
-                border: 1px solid #C5CCD6;
+                border: 1px solid #EBEEF5;
                 border-bottom: none;
                 border-top-left-radius: 10px;
                 overflow: hidden;
                 min-width: 70px;
                 li{
-                    border-bottom: 1px solid #C5CCD6;
+                    border-bottom: 1px solid #EBEEF5;
                     line-height: 38px;
                     height: 38px;
                     padding: 0px 5px;
