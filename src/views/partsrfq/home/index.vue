@@ -25,18 +25,23 @@
               v-permission.auto="PARTSRFQ_SEARCHBOX|零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称">
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
               </el-form-item> -->
-               <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
+               <el-form-item :label="language('LK_LINGJIANHAO','零件号')"
                   >
-                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
+                <!-- <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput> -->
+                <iMultiLineInput v-model="form.partNum" :title="language('LK_LINGJIANHAO','零件号')" />
               </el-form-item>
-              <el-form-item  :label="$t('LINGJIANCAIGOUXIANGMUHAO')"
-                  >
+              <el-form-item  :label="language('LK_LINGJIANMINGCHENG','零件名称')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partName"></iInput>
+              </el-form-item>
+              <el-form-item  :label="$t('LINGJIANCAIGOUXIANGMUHAO')">
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
               </el-form-item>
-              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
-                  >
-                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqIdVague"></iInput>
-              </el-form-item>    
+              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqId"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('RFQMINGCHENG','RFQ名称')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.rfqName"></iInput>
+              </el-form-item>
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
                 >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
@@ -248,7 +253,7 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
+import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon, iMultiLineInput} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import headerNav from "@/components/headerNav"
 // import tablelist from "pages/partsrfq/components/tablelist";
@@ -293,7 +298,8 @@ export default {
     nominateTypeDialog,
     assignInquiryBuyerDialog,
     headerNav,
-    buttonTableSetting
+    buttonTableSetting,
+    iMultiLineInput
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins,tableSortMixins],
   data() {
@@ -305,8 +311,11 @@ export default {
       diologAssignmentOfScroingTasks: false,
       form: {
         searchConditions: '',
+        rfqId:'',
+        rfqName:'',
         carType: '',
         partType: '',
+        partName:'',
         rfqStatus: '',
         car: '',
         modelCode: '',
