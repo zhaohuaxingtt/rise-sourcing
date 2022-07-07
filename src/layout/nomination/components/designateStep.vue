@@ -9,7 +9,7 @@
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
                 <div class="title-text margin-left10">
-                    <p>{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></p>
+                    <p>{{$t('nominationLanguage_DingDianGuanLi')}}: <span class="desinateId">{{desinateId}}</span></p>
                     <p v-if="!!mtzApplyId">
                         <span class="padding-left5 padding-right5">-</span>
                         <span class="mtzNum" @click="toMtzDetail">MTZ{{ mtzApplyId }}</span>
@@ -22,7 +22,7 @@
                         </el-popover>
                     </p>
                 </div>
-                <span class="select-text margin-left14">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
+                <span class="select-text margin-left14">{{language('nominationLanguage_DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"

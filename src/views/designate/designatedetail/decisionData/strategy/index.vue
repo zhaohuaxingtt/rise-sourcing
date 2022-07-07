@@ -11,7 +11,7 @@
   <iCard :title="language('OVERVIEWS','Overviews')">
     <div class="control">
       <div class="flex-align-center">
-        <span class="label">材料组</span>
+        <span class="">{{$t('CHAILIAOZU')}}</span>
         <iSelect v-model="categoryCode" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+items.categoryName"></el-option> 
         </iSelect>
