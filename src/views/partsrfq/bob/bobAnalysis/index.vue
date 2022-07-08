@@ -20,26 +20,26 @@
                 <span style="font-size:12px">{{ remark }}</span>
               </div>
               <div v-if="remark"
-                   class="margin-left40 remark2">备注：{{ remark }}</div>
+                   class="margin-left40 remark2">{{$t('备注')}}:{{ remark }}</div>
             </div>
           </div>
           <div>
             <template v-if="!isPreview">
               <iButton v-show="!allExpand"
-                       @click="handleAllCollapse(true)">全部展开</iButton>
+                       @click="handleAllCollapse(true)">{{$t('MODEL-ORDER.LK_QUANBUZHANKAI')}}</iButton>
               <iButton v-show="allExpand"
-                       @click="handleAllCollapse(false)">全部收回</iButton>
+                       @click="handleAllCollapse(false)">{{$t('MODEL-ORDER.LK_QUANBUSHOUQI')}}</iButton>
               <template v-if="!onGroupingModel">
-                <iButton @click="remarks">备注</iButton>
-                <iButton @click="reduction">还原</iButton>
+                <iButton @click="remarks">{{$t('备注')}}</iButton>
+                <iButton @click="reduction">{{$t('HUANYUAN')}}</iButton>
                 <iButton @click="onGroupingModel = true"
-                         v-if="!onGroupingModel">数据分组</iButton>
-                <iButton @click="down">导出</iButton>
+                         v-if="!onGroupingModel">{{$t('SHUJUFENZU')}}</iButton>
+                <iButton @click="down">{{$t('导出')}}</iButton>
               </template>
               <template v-else>
-                <iButton @click="clear">移除</iButton>
-                <iButton @click="saveGroup">保存分组</iButton>
-                <iButton @click="cancelGroupMode">取消</iButton>
+                <iButton @click="clear">{{$t('YICHU')}}</iButton>
+                <iButton @click="saveGroup">{{$t('BAOCUNFENZU')}}</iButton>
+                <iButton @click="cancelGroupMode">{{$t('QUXIAO')}}</iButton>
               </template>
             </template>
           </div>
@@ -64,82 +64,84 @@
         <div class="flex tabeleList"
              ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
-            <div v-for="(item, index) in tableListData"
-                 :key="index"
-                 style="display: flex;flex-flow: row nowrap;width: 100%;"
-                 :class="decideRowClass(item, index)"
-                 v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
-                 :id="item.id"
-                 :root-id="item.rootId"
-                 :parent-id="item.parentId"
-                 :ref="!item.parentId ? item.id : ''">
-              <template v-if="item.isBreakLine">
-                <span class="table-cell"
-                      style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
-                  {{ $t('LK_NONGROUPEDBREAKTIPS', { msg: item.title }) }}
-                </span>
-              </template>
-              <template v-else>
-                <div :class="['table-cell', showCollapseOutLine(item)]"
-                     :style="{ 'padding-left': 20 * item.level + 'px', 'justify-content': 'flex-start', width: '20%' }">
-                  <i v-if="item.hasChild"
-                     :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
-                     style="cursor: pointer;padding-right: 4px;"
-                     @click="handleCollapse(item, item.expanded)"></i>
-                  <template v-if="item.matchId > 0 && !onPreview&& onGroupingModel">
-                    <template v-if="onEditLabels.indexOf(item.id) < 0">
-                      <span :style="{ 'font-weight': item.matchId > 0 ? 'bold' : '' }">{{ item.title }}</span>
-                      <i class="el-icon-edit"
-                         style="cursor: pointer;margin-left: 10px;"
-                         @click.stop="changeToEditMode(item.id)"></i>
-                    </template>
-                    <el-input v-else
-                              v-model="item.title">
-                      <template slot="append">
-                        <i class="el-icon-check"
-                           @click.stop="updateGroupedLabel(item)"
-                           style="cursor: pointer;"></i>
+            <template v-for="(item, index) in tableListData">
+              <div 
+                  :key="index"
+                  style="display: flex;flex-flow: row nowrap;width: 100%;"
+                  :class="decideRowClass(item, index)"
+                  v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
+                  :id="item.id"
+                  :root-id="item.rootId"
+                  :parent-id="item.parentId"
+                  :ref="!item.parentId ? item.id : ''">
+                <template v-if="item.isBreakLine">
+                  <span class="table-cell"
+                        style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
+                    {{ $t('LK_NONGROUPEDBREAKTIPS', { msg: item.title }) }}
+                  </span>
+                </template>
+                <template v-else>
+                  <div :class="['table-cell', showCollapseOutLine(item)]"
+                      :style="{ 'padding-left': 20 * item.level + 'px', 'justify-content': 'flex-start', width: '20%' }">
+                    <i v-if="item.hasChild"
+                      :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
+                      style="cursor: pointer;padding-right: 4px;"
+                      @click="handleCollapse(item, item.expanded)"></i>
+                    <template v-if="item.matchId > 0 && !onPreview&& onGroupingModel">
+                      <template v-if="onEditLabels.indexOf(item.id) < 0">
+                        <span :style="{ 'font-weight': item.matchId > 0 ? 'bold' : '' }">{{ item.title }}</span>
+                        <i class="el-icon-edit"
+                          style="cursor: pointer;margin-left: 10px;"
+                          @click.stop="changeToEditMode(item.id)"></i>
                       </template>
-                    </el-input>
-                  </template>
-                  <template v-else>
-                    <span :title="item.title"
-                          class="title-cell"
-                          :style="{ 'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold' : '' }">
-                      {{ item.title }}
-                    </span>
-                  </template>
-                </div>
-                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                     v-for="(title, titleIdx) in tableTitle"
-                     :key="titleIdx"
-                     :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
-                  <el-checkbox v-show="onGroupingModel"
-                               v-if="item.groupKey && item['label#' + titleIdx]"
-                               style="margin-right: 10px;"
-                               v-model="item['checked#' + titleIdx]"
-                               @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                  {{
-                    item['label#' + titleIdx] == 'false'
-                      ? $t('nominationLanguage.No')
-                      : item['label#' + titleIdx] == 'true'
-                      ? $t('nominationLanguage.Yes')
-                      : formatIfNumber(item['label#' + titleIdx])
-                  }}
-                </div>
-              </template>
-            </div>
+                      <el-input v-else
+                                v-model="item.title">
+                        <template slot="append">
+                          <i class="el-icon-check"
+                            @click.stop="updateGroupedLabel(item)"
+                            style="cursor: pointer;"></i>
+                        </template>
+                      </el-input>
+                    </template>
+                    <template v-else>
+                      <span :title="item.title"
+                            class="title-cell"
+                            :style="{ 'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold' : '' }">
+                        {{ item.title }}
+                      </span>
+                    </template>
+                  </div>
+                  <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                      v-for="(title, titleIdx) in tableTitle"
+                      :key="titleIdx"
+                      :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
+                    <el-checkbox v-show="onGroupingModel"
+                                v-if="item.groupKey && item['label#' + titleIdx]"
+                                style="margin-right: 10px;"
+                                v-model="item['checked#' + titleIdx]"
+                                @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+                    {{
+                      item['label#' + titleIdx] == 'false'
+                        ? $t('nominationLanguage.No')
+                        : item['label#' + titleIdx] == 'true'
+                        ? $t('nominationLanguage.Yes')
+                        : formatIfNumber(item['label#' + titleIdx])
+                    }}
+                  </div>
+                </template>
+              </div>
+            </template>
           </div>
         </div>
       </div>
       <iDialog :visible.sync="groupToDialogVisible"
-               title="分组至"
+               :title="$t('FENZUZHI')"
                width="20%">
         <el-form>
-          <el-form-item label="分组至">
+          <el-form-item :label="$t('FENZUZHI')">
             <el-select v-model="selectGroupName"
                        clearable
-                       placeholder="请选择"
+                       :placeholder="$t('QINGXUANZE')"
                        value-key="matchId">
               <el-option v-for="item in groupNameOptions"
                          :key="item.matchId"
@@ -151,7 +153,7 @@
         <span slot="footer"
               class="dialog-footer">
           <el-button type="primary"
-                     @click="groupToList">确 定</el-button>
+                     @click="groupToList">{{$t('QUEDING')}}</el-button>
         </span>
       </iDialog>
       <remarkDialog :visible="remarkDialogVisible"

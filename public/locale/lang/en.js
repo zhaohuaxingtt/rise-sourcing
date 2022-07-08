@@ -3787,6 +3787,7 @@
 		QINGXUANZECHANPINZU: 'Please choose',
 		QINGGOUXUANXUYAOFASONGDESHUJU: 'Please select data to send',
 		QUANXUAN: 'Select all',
+		QUANBUXUAN: 'Select none',
 		XIANGMUJINDUJIANKONG: 'Project Progress Monitor',
 		XIANGMUJINDUBAOGAO: 'Project Progress Report',
 		FENGXIANYUJINGPEIZHI: 'Risk Prewarning Config.',

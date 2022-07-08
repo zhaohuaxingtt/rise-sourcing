@@ -65,7 +65,7 @@
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
       <div v-if="previewItems">
         <iframe class="iframe" width="100%" v-if='previewItems && JSON.parse(previewItems).reportLink' :src="`${ JSON.parse(previewItems).reportLink }#view=fith`" frameborder="0"></iframe>
-        <div v-else>抱歉当前类型暂无预览文件</div>
+        <div v-else>{{language('ZANWUYULAN','抱歉当前类型暂无预览文件')}}</div>
       </div>
     </div>
     <template v-else-if='typeSelect == "QT"'>

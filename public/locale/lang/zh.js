@@ -2969,6 +2969,7 @@
     XUANJIACAIGOUYUAN: '询价采购员',
     NINGHAIWEIXUANZESHUJU: '您当前还未选择列表文件，请选择后重试！',
     QUANXUAN: '全选',
+    QUANBUXUAN: '全不选',
     QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI:
       '请选择内容状态为待表态、报价中、已报价、已绑定的零件进行重置',
     DIQU: '地区',
