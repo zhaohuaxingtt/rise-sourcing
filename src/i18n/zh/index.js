@@ -8,4 +8,5 @@
 import menus from './menus'
 import rfq from "./rfq";
 import aeko from "./aeko";
-export default { ...menus, ...rfq, ...aeko }
+import newField from "./newField";
+export default { ...menus, ...rfq, ...aeko, ...newField }
