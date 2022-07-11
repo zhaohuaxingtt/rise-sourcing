@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_USER_CENTER)
+const requst = axios(process.env.VUE_APP_USER_CENTER + '/web')
 
 // 获取保存的表头
 export function getUserListMemory(data){

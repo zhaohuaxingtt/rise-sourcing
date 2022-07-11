@@ -16,7 +16,7 @@
                     workspaceId: process.env.NODE_ENV !== 'production' ? '876776a9-f959-442e-a011-b4bade0dd862' : 'c272ae69-a6b4-4407-bd0e-f67953de36ce',
                     reportId: process.env.NODE_ENV !== 'production' ? 'f3fe9132-dda7-4a9e-81ff-eac032974cfe' : '02151d5a-899c-4880-93af-20a6efe8765b',
                     datasets: process.env.NODE_ENV !== 'production' ? ['4b849a8e-6f67-4fab-a6ab-7f41919780b9'] : ['61525451-7923-46ca-bee0-6c3dfb969b6f'],
-                    username: this.username,
+                    username: this.$store.state.permission.userInfo.id,
                     roles: ['dept_permission'],
                 },
             }

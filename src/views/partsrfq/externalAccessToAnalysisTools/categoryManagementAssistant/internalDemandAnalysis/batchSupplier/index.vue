@@ -220,10 +220,8 @@ export default {
     },
     // 供应商360
     onJump360 () {
-      console.log(process.env.NODE_ENV)
-      let baseUrl = process.env.NODE_ENV == 'dev' ? 'http://10.122.17.38' : process.env.NODE_ENV != 'production' ? process.env.VUE_APP_HOST : 'http://rise-nginx-internal.apps.vmocp-test.csvw.com'
+      let baseUrl =  process.env.VUE_APP_HOST
       window.open(baseUrl + '/portal/#/supplier/supplierList')
-      // window.open('http://10.122.17.38/portal/#/supplier/supplierList')
     },
     // 获取财报iframeurl
     getPowerBiUrl () {

@@ -71,6 +71,7 @@ export default {
 <style lang="scss" scoped>
 .nomicharts {
   width: 100%;
+  z-index: 1;
   min-height: 500px;
   ::v-deep.cardBody {
     padding: 20px 15px;

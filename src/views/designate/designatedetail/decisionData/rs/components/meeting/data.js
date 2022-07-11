@@ -20,7 +20,7 @@ export const nomalDetailTitle = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -40,7 +40,7 @@ export const nomalDetailTitleGS = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -59,7 +59,7 @@ export const nomalDetailTitlePF = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -178,7 +178,7 @@ export const gsTableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 66},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 88},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "", minWidth: 60},
-  {props:'carLine',name:'车型', enName: 'Carline', key: "", minWidth: 60},
+  {props:'carTypeName',name:'车型', enName: 'Car Type Name', key: "", minWidth: 60},
   {props:'presentPrice',name:'现供价格', enName: 'Current Price', key: "", minWidth: 90},
   {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 68},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 80 },
