@@ -6,6 +6,7 @@
   import * as pbi from 'powerbi-client';
 
   export default {
+    props:['username'],
     data() {
       return {
         formData: {
@@ -14,8 +15,8 @@
           clientSecret: '6cpyeTY~dAmL-Uub2X8Om30Mm2EUk-d.TS',
           workspaceId: process.env.NODE_ENV !== 'production' ? '876776a9-f959-442e-a011-b4bade0dd862' : 'c272ae69-a6b4-4407-bd0e-f67953de36ce',
           reportId: process.env.NODE_ENV !== 'production' ? 'bcf59da6-3518-4db7-bffc-cf5d434d34ae' : '9b62a0e4-8ef9-425f-a862-e0c9325a63ba',
-          datasets: [],
-          username: '',
+          datasets: process.env.NODE_ENV !== 'production' ? ['c00c0ef7-778c-41ee-8960-90e504abd70b']:['e758e837-7712-4298-9c3c-f2a9dcebeb84'],
+          username: "",
           roles: [],
         },
       };
