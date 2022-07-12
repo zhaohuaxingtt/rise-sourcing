@@ -24,5 +24,6 @@
   SHUJUFENZU:'Data grouping',
   YICHU:'Remove',
   BAOCUNFENZU:'Save grouping',
-  FENZUZHI:'Group to'
+  FENZUZHI:'Group to',
+  DAITIANJIA:'To add'
 }

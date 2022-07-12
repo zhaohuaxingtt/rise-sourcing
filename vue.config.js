@@ -381,6 +381,14 @@ module.exports = {
           ['^' + process.env.VUE_APP_PART_API]: ''
         }
       },
+      // ------------------ 零件服务 api ----------------------------
+      [process.env.VUE_APP_POWEBI_KPI]: {
+        target: `${BASE_IP}/aon/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_POWEBI_KPI]: ''
+        }
+      },
 		},
 	},
 }

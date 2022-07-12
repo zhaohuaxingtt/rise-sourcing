@@ -151,6 +151,7 @@
                            :maxData="maxData"
                            :type="bobType"
                            :by="chartType"
+                           :supplierList="supplierList"
                            @select="showSelect"
                            @type-changed="bobTypeChanged" />
               </div>
@@ -158,6 +159,7 @@
                        :maxData="maxData"
                        :isPreview="isPreview"
                        preview
+                      :supplierList="supplierList"
                        @del="delOut"
                        @change="changeOut"
                        @find-part="findPart"
@@ -191,6 +193,7 @@
                        :formUpdata="formUpdata"
                        :propSchemeId="analysisSchemeId"
                        :propGroupId="groupId"
+                       :supplierList="supplierList"
                        @groupToList="groupToList"
                        :isPreview="isPreview"></bobAnalysis>
         </el-col>
@@ -318,7 +321,7 @@ export default {
       dialogVisible: false,
       analysisSave: false,
       reportSave: false,
-      anchorList: [{zh:'原材料/散件成本',i18n:'YUANCAILIAOSANJIANCHENGBEN'}, {zh:'制造成本',i18n:'ZHIZAOCHENGBEN'}, {zh:'报废成本',i18n:'BAOFEICHENGBEN'}, {zh:'管理费用',i18n:'GUANLIFEI'}, {zh:'其他费用',i18n:'QITAFEIYONG'}, {zh:'利润',i18n:'LIRUN'}],
+      anchorList: [{zh:'原材料/散件成本',i18n:'YUANCAILIAOSANJIANCHENGBEN'}, {zh:'制造成本',i18n:'ZHIZAOCHENGBEN'}, {zh:'报废成本',i18n:'BAOFEICHENGBEN'}, {zh:'管理费用',i18n:'GUANLIFEI'}, {zh:'其他费用',i18n:'LK_QITAFEIYONG'}, {zh:'利润',i18n:'LIRUN'}],
       current: null,
       isCover: true,
       label: '',

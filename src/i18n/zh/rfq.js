@@ -24,5 +24,6 @@
   SHUJUFENZU:'数据分组',
   YICHU: '移除',
   BAOCUNFENZU:'保存分组',
-  FENZUZHI:'分组至'
+  FENZUZHI:'分组至',
+  DAITIANJIA:'待添加'
 }

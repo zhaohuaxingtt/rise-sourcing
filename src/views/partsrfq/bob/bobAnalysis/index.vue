@@ -53,12 +53,12 @@
                :key="index"
                class="partCell"
                :style="{ 'font-weight': 'bold', width: 'calc(80% / ' + tableTitle.length + ')' }">
-            <p style="margin:0 auto">{{ spiltStr(item.title)?spiltStr(item.title)[0]:item.title}}</p>
-            <el-tooltip placement="top">
+            <p style="margin:0 auto">{{ spiltStr(item.value)?spiltStr(item.value):item.title}}</p>
+            <!-- <el-tooltip placement="top">
               <p slot="content"
-                 effect="light">{{ spiltStr(item.title)?spiltStr(item.title)[1]:item.title }}</p>
-              <p class="partCell">{{ spiltStr(item.title)?spiltStr(item.title)[1]:''}}</p>
-            </el-tooltip>
+                 effect="light">{{ spiltStr(item.value)?spiltStr(item.value)[1]:item.title }}</p>
+              <p class="partCell">{{ spiltStr(item.value)?spiltStr(item.value)[1]:''}}</p>
+            </el-tooltip> -->
           </div>
         </div>
         <div class="flex tabeleList"
@@ -225,6 +225,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    supplierList: {
+      type: Array,
+      default:()=>[]
+    }
   },
   data () {
     return {
@@ -270,9 +274,14 @@ export default {
   computed: {
     spiltStr () {
       return function (val) {
-        if (val.indexOf('<br/>') > -1) {
-          return val.split('<br/>')
-        }
+        let supplier = this.supplierList.find((item)=>item.supplierId==val)
+        let supplierName = ''
+        if(supplier)
+        supplierName = this.$i18n.locale === 'zh' ? supplier.shortNameZh : supplier.shortNameEn
+        // if (supplierName.indexOf('<br/>') > -1) {
+        //   return supplierName.split('<br/>')
+        // }
+        return supplierName
       }
     }
   },
@@ -542,6 +551,8 @@ export default {
             if (allDatas.code && allDatas.code !== '200') return iMessage.error(allDatas.desZh)
             this.tableList = allDatas;
             this.tableTitle = this.tableList.title.filter((item) => item.title);
+            console.log(this.tableList);
+            console.log(this.tableTitle);
             this.reContructData();
             this.$nextTick(() => {
               this.onDataLoading = false;
