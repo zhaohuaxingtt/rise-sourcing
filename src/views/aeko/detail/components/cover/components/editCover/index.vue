@@ -393,16 +393,16 @@ export default {
                 })
                 // this.submitCover(data);
 
-                // this.$confirm(
-                //   this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。'),
-                //   this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
-                //   ).then(()=>{
-                //     this.submitCover(data);
-                //   }).catch(()=>{
-                //     this.btnLoading = false;
-                //   })
               }else{
-                this.submitCover(data);
+                this.$confirm(
+                  'Aeko '+ this.aekoInfo.aekoCode+ ' ' +this.language('SHIFOUJINTJIAOFENGMIANBIAOTAI','内容表态尚未提交，是否确认仅提交封面表态'),
+                  this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
+                  ).then(()=>{
+                    this.submitCover(data);
+                  }).catch(()=>{
+                    this.btnLoading = false;
+                  })
+                // this.submitCover(data);
               }
             }else{
               this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
