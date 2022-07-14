@@ -72,6 +72,11 @@ export const tableTitle = [
   { props: "col10", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
 ]
 
+export const shuttleTableTitle = [
+  { props: "col1", name: "材料组名称", key: "", tooltip: true, minWidth:120 },
+  { props: "col2", name: "材料组号", key: "", tooltip: true, minWidth:120 },
+]
+
 export const searchList = [
   {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
   {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'input'},

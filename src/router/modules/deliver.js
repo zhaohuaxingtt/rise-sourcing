@@ -53,6 +53,16 @@ export default [
         },
         component: () => import("@/views/deliver/overview/components/kickOff"),
       },
+      {
+        path: "shuttle",
+        name: "shuttle",
+        meta: {
+          title: "送样管理-shuttle",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/components/shuttle"),
+      },
+      
     ]
   }
 ]
