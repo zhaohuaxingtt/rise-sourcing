@@ -84,10 +84,6 @@ export default {
       allTableHead,
       allTableLoading: false,
       selectTableList: [],
-      page: {
-        currPage: 1,
-        pageSize: 10,
-      },
       form: _.cloneDeep(bmApplyForm),
     }
   },
@@ -156,8 +152,6 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           this.allTableList = res.data;
-          this.page.currPage = res.pageNum;
-          this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total;
         }else{
           iMessage.error(result);
@@ -170,10 +164,6 @@ export default {
     },
 
     allSerch(data){
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      },
       this.form = data;
       this.getPageData();
     },
