@@ -1,6 +1,6 @@
 <template>
   <div class="timeline" ref="timeline">
-    <iCard class="timelineCard rsPdfCard table-row" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
+    <iCard class="timelineCard rsPdfCard table-row" v-for="(data, $index) in dataGroup" :key="$index" :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe">
       <div class="content">
         <div>
           <div v-for="(node, $nodeIndex) in (Array.isArray(data.nomiTimeAxisGroup) ? data.nomiTimeAxisGroup : [])"
@@ -23,7 +23,7 @@
                v-for="(supplier, $supplierIndex) in (Array.isArray(data.nomiTimeAxisSupplierResultVOList) ? data.nomiTimeAxisSupplierResultVOList : [])"
                :key="$supplierIndex">
             <div class="title">
-              <div class="name">{{ supplier.supplierName }}</div>
+              <div class="name">{{ $i18n.locale === 'zh' ? supplier.supplierName : supplier.supplierNameEn }}</div>
               <div class="step">
                 <supplierStep :symbol="false" :supplierData="supplier.nomiTimeAxisSuppliers"/>
               </div>
@@ -63,7 +63,7 @@
         <div class="pageCard-main rsPdfCard" :key="i">
           <slot name="tabTitle"></slot>
           <div :style="{'height': cntentHeight + 'px'}">
-          <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
+          <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe">
             <div class="content">
               <div>
                 <div v-for="(node, $nodeIndex) in (Array.isArray(data.nomiTimeAxisGroup) ? data.nomiTimeAxisGroup : [])"
@@ -86,7 +86,7 @@
                     v-for="(supplier, $supplierIndex) in (Array.isArray(data.nomiTimeAxisSupplierResultVOList) ? data.nomiTimeAxisSupplierResultVOList : [])"
                     :key="$supplierIndex">
                   <div class="title">
-                    <div class="name">{{ supplier.supplierName }}</div>
+                    <div class="name">{{ $i18n.locale === 'zh' ? supplier.supplierName : supplier.supplierNameEn }}</div>
                     <div class="step">
                       <supplierStep :symbol="false" :supplierData="supplier.nomiTimeAxisSuppliers"/>
                     </div>
