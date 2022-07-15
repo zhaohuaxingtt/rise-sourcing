@@ -19,5 +19,5 @@ export default {
   XUANZEZHUANPAIDECAIGOUYUAN: '请选择转派的采购员',
   FENGMIANTISHIXINXI: '封面无须再进行提交，如需修改，请先【撤回】或者联系AEKO管理员【解冻】后再修改提交',
   BITIANXIANGBUNENGWEIKONG: '必填项不能为空',
-  SHIFOUJINTJIAOFENGMIANBIAOTAI: '内容表态尚未提交，是否确认仅提交封面表态'
+  SHIFOUJINTJIAOFENGMIANBIAOTAI: '内容表态尚未提交，是否确认仅提交封面表态（如无需内容表态审批，请直接点击确认按钮）'
 }
