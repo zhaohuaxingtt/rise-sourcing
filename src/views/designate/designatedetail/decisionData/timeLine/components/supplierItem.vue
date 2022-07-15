@@ -6,7 +6,7 @@
 
 <template>
     <div class="supplierItem flex padding-bottom50">
-        <span class="title">{{supplierData.supplierName || '-'}}</span>
+        <span class="title">{{ $i18n.locale == 'zh' ? supplierData.supplierName : supplierData.supplierNameEn || '-'}}</span>
         <div>
             <ul class="title-line flex">
                 <li class="flex" v-for="(item,index) in supplierData.nomiTimeAxisSuppliers" :key="'titleLine_'+index">
