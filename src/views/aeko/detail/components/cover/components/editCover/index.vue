@@ -395,7 +395,7 @@ export default {
 
               }else{
                 this.$confirm(
-                  'Aeko '+ this.aekoInfo.aekoCode+ ' ' +this.language('SHIFOUJINTJIAOFENGMIANBIAOTAI','内容表态尚未提交，是否确认仅提交封面表态'),
+                  'Aeko '+ this.aekoInfo.aekoCode+ ' ' +this.language('SHIFOUJINTJIAOFENGMIANBIAOTAI','内容表态尚未提交，是否确认仅提交封面表态（如无需内容表态审批，请直接点击确认按钮）'),
                   this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
                   ).then(()=>{
                     this.submitCover(data);
