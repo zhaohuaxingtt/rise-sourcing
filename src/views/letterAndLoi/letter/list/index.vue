@@ -212,6 +212,11 @@ export default {
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];
             }
+            if(searchParams.status){
+                data.status = searchParams.status.split(',')
+            }else{
+                data.status = []
+            }
             await getLetterList({
                 ...searchParams,
                 ...data,
@@ -220,7 +225,6 @@ export default {
                 res.data.records.forEach(val=> {
                     val.nominateDate = this.getYearMonth(val.nominateDate) === 'undefined' ? '' : this.getYearMonth(val.nominateDate)
                 })
-                console.log('res.data',res.data);
                 const {code,data={}} = res;
                 if(code==200){
                    const {records=[],total} = data;
