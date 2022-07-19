@@ -18,7 +18,7 @@ export const contentDeclareQueryForm = {
 }
 
 export const contentDeclareTableTitle = [
-  { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "90" },
+  // { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "90" },
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100", isExport: true },
   { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100", isExport: true },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true, isExport: true },
@@ -51,7 +51,7 @@ export const contentDeclareTableTitle = [
   { props: "priceUnit", name: "价格单位", key: "LK_AEKO_SELECT_JIAGEDANWEI", tooltip: true, isHidden: true, width: 90 },
   { props: "measureUnit", name: "计量单位", key: "LK_AEKO_SELECT_JILIANGDANWEI", tooltip: true, isHidden: true, width: 90 },
   { props: "isReplace", name: "是否代报价", key: "LK_AEKO_SELECT_SHIFOUDAIBAOJIA", tooltip: true, width: 100, isHidden: true },
-  // { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", width: "90" },
+  { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", width: "90" },
 ]
 
 export const hidenTableTitle = [
