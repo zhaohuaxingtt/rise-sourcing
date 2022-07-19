@@ -259,13 +259,13 @@ export default {
         deep:true,
         immediate: true,
         handler(val){
-          // this.basicTitle = BaicFrom(val?true:false)
-          // this.rules = fromRules(this,val?true:false)
-          this.basicTitle = BaicFrom()
-          this.rules = fromRules(this)
+          this.basicTitle = BaicFrom(val?true:false)
+          this.rules = fromRules(this,val?true:false)
+          // this.basicTitle = BaicFrom()
+          // this.rules = fromRules(this)
           this.tableTitle.forEach(item=>{
-            // item.require = val?true:false
-            item.require = true
+            item.require = val?true:false
+            // item.require = true
           })
         }
       },
