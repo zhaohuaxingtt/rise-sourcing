@@ -112,12 +112,11 @@ export default {
     },
   },
   watch: {
-    nomiId: {
-      immediate: true,
-      handler(val) {
+    visible(val) {
+      if(val) {
         this.cancelNominateCheck();
-      },
-    },
+      }
+    }
   },
   methods: {
     close() {
