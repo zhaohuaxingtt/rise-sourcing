@@ -214,6 +214,7 @@ import moment from 'moment'
 export default{
   components:{icon},
   props:{
+    height: {type: Number, default:700},
     tableData:{
       type:Array,
       default:()=>[]
@@ -558,6 +559,13 @@ export default{
       white-space: nowrap !important;
     }
     ::v-deep.el-table__body-wrapper{
+      overflow:visible;
+      height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+      }
+    }
+    ::v-deep.el-table__fixed-body-wrapper{
       overflow:visible;
       height:auto!important;
       td{
