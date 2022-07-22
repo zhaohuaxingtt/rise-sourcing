@@ -99,7 +99,9 @@
                         <li v-else :key='indexss'>
                           <span>
                             {{itemsss.rateEn}}
-                          <br v-if='itemsss.rateEn && itemsss.rate' />      
+                          </span>
+                          <br v-if='itemsss.rateEn && itemsss.rate' />
+                          <span>
                             {{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
