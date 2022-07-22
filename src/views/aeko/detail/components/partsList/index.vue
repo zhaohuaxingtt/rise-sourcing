@@ -227,7 +227,8 @@ export default {
         isShowAddPart(){
             const {aekoInfo={}} = this;
             const {aekoStatus='',sourse=''} = aekoInfo;
-            return  sourse!=='TCM' && aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
+            return  aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
+            // return  sourse!=='TCM' && aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
         },
         isAeA(){
             return this.aekoInfo.aekoType == 'AeA'

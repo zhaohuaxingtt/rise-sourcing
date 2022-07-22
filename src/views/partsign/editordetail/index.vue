@@ -13,7 +13,7 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission.auto='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON|转派'>{{ language('LK_ZHUANPAI','转派') }}</iButton>
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="save" v-permission.auto="PARTSIGN_EDITORDETAIL_SIGNBUTTON|签收">{{ language('LK_QIANSHOU','签收') }}</iButton>
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
-        <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
+        <!-- <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton> -->
         <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
         <iLoger v-if="partDetails" :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="logBizId" credentials isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="新件信息单详情页" @onTypeChange="onTypeChange" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>

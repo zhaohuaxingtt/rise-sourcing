@@ -307,6 +307,7 @@ export function fixNumber(str, precision = 2) {
   return fixstr.join(".");
 }
 export function floatFixNum(num, minFixed = 2, maxFixed = 4) {
+  if(num&&num.includes(',')) return num
   return fixNumber(floatNum(num, parseInt(minFixed), parseInt(maxFixed)), parseInt(minFixed))
 }
 
