@@ -319,7 +319,7 @@ export default{
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
-          rfqId:this.$route.query.id,
+          rfqId:this.$route.query.id||items.rfqId,
           round:items.round,
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
