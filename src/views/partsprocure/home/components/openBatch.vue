@@ -76,6 +76,13 @@ export default {
       this.$emit('changeVisible', false)
     },
     apply() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.7)'
+      });
+
       let yearOutputDTOsdata = []
       let templateTableList = cloneDeep(this.tableListData)|| []
       templateTableList.forEach(val => {
@@ -89,6 +96,7 @@ export default {
       })
 
       if(this.tableListData[0].startyear == '') {
+        loading.close();
         return iMessage.warn(
           this.language(
             "LK_NINSHANGWEISHURUKAISHINIANFEN",
@@ -96,21 +104,24 @@ export default {
           )
         )
       } else{
-          let batchMaintainOutPutPlanDTO  = {}
-          batchMaintainOutPutPlanDTO.purchasingProjectIds = this.openPlanItemsIds
-          batchMaintainOutPutPlanDTO.yearOutputDTOs = yearOutputDTOsdata
-          batchMaintainOutPutPlan(batchMaintainOutPutPlanDTO).then(res=>{
-            if(res.code === '200') {
-              iMessage.success(
-                this.language(
-                  'LK_CAOZUOCHENGGONG','操作成功'
-                )
+        let batchMaintainOutPutPlanDTO  = {}
+        batchMaintainOutPutPlanDTO.purchasingProjectIds = this.openPlanItemsIds
+        batchMaintainOutPutPlanDTO.yearOutputDTOs = yearOutputDTOsdata
+        batchMaintainOutPutPlan(batchMaintainOutPutPlanDTO).then(res=>{
+          loading.close();
+          if(res.code === '200') {
+            iMessage.success(
+              this.language(
+                'LK_CAOZUOCHENGGONG','操作成功'
               )
-              this.$emit('initTable')
-              this.clearDiolog()
-            } else {
-              iMessage.error(res.desZh)
-            }
+            )
+            this.$emit('initTable')
+            this.clearDiolog()
+          } else {
+            iMessage.error(res.desZh)
+          }
+        }).catch(red=>{
+          loading.close();
         })
       }
 
