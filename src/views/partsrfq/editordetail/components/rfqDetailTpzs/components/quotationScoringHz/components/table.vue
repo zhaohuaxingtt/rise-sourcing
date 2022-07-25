@@ -320,7 +320,8 @@ export default{
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id||items.rfqId,
-          round:items.round,
+          // round:items.round,
+          round:items[index+'round'],
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,
