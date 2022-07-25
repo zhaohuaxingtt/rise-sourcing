@@ -308,7 +308,23 @@
 								<p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
 							</div>
 						</template>
-						<div :style="{ height: otherPageHeight + 'px' }">
+						<div class="infos">
+							<div
+								class="infoWrapper"
+								v-for="(info, $index) in infos"
+								:key="$index"
+							>
+								<div class="info">
+									<span class="label">{{ info.name }}：</span>
+									<span
+										v-if="info.props === 'exchange'"
+										v-html="exchangeRate"
+									></span>
+									<div v-else>{{ basicData[info.props] }}</div>
+								</div>
+							</div>
+						</div>
+						<div :style="{ height: tableHeight + 'px' }">
 							<div class="beizhu">
 								备注 Remarks:
 								<div class="beizhu-value">
@@ -391,7 +407,23 @@
 							<p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
 						</div>
 					</template>
-					<div :style="{ height: otherPageHeight + 'px' }">
+					<div class="infos">
+						<div
+							class="infoWrapper"
+							v-for="(info, $index) in infos"
+							:key="$index"
+						>
+							<div class="info">
+								<span class="label">{{ info.name }}：</span>
+								<span
+									v-if="info.props === 'exchange'"
+									v-html="exchangeRate"
+								></span>
+								<div v-else>{{ basicData[info.props] }}</div>
+							</div>
+						</div>
+					</div>
+					<div :style="{ height: tableHeight + 'px' }">
 						<iCard
 							class="checkDate rsCard Application"
 							:title="`Application Date：${dateFilter(
