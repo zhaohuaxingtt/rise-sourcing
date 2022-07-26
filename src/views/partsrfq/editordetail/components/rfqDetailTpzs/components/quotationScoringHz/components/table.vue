@@ -45,7 +45,7 @@
             v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
             :key="index"
             :label="item.i18n ? $t(item.i18n) : item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
             :sortable='"custom"'
@@ -60,7 +60,7 @@
             :fixed='item.fixed'
             :key="index"
             :label="item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
           >
@@ -243,22 +243,31 @@ export default{
     }
   },
   computed:{
-    cWidth(){
-      const indexTabs = this.tableTitle.findIndex(i=>i.props == "headerEbr")
-      return this.tableTitle.reduce((a,b,index)=>{
-        if(index > indexTabs) {
-          return a+parseFloat(b.width)
-        }else{
-          return a
-        }
-      },0) + 'px'
-    },
+    // cWidth(){
+    //   const indexTabs = this.tableTitle.findIndex(i=>i.props == "headerEbr")
+    //   return this.tableTitle.reduce((a,b,index)=>{
+    //     if(index > indexTabs) {
+    //       return a+parseFloat(b.width)
+    //     }else{
+    //       return a
+    //     }
+    //   },0) + 'px'
+    //   return document.getElementsByClassName('c')[0].style.width = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
+    // },
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
     },
     isPreview(){
         return this.$store.getters.isPreview;
     }
+  },
+  data() {
+    return {
+      cWidth: ''
+    }
+  },
+  mounted(){
+    this.cWidth = document.getElementsByClassName('c')[0].style.width = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
   },
   methods:{
     setfixElement(){
@@ -427,7 +436,10 @@ export default{
      */
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
-        return 'rightBorder'
+        return 'EBR rightBorder'
+      }
+      if(column.label == ''){
+        return 'hiddleBorder'
       }
       //判断是否是推荐供应商
       if(this.tuijianSuplier(column.property,row)){
@@ -613,6 +625,9 @@ export default{
       border-right: 1px solid #EBEEF5;
       position: relative;
     }
+    ::v-deep .hiddleBorder{
+      border-right: 0px;
+    }
     ::v-deep .is-sortable{
       .cell{
           display: flex;
@@ -646,7 +661,7 @@ export default{
       border: 1px solid #EBEEF5;
       border-bottom: none;
       border-left:none;
-      border-top-right-radius: 5px;
+      // border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
       border-top: none;
@@ -729,9 +744,9 @@ export default{
                 position: absolute;
                 bottom: -1.8px;
                 right: 1.6px;
-                border: 1px solid #EBEEF5;
+                border-left: 1px solid #EBEEF5;
                 border-bottom: none;
-                border-top-left-radius: 10px;
+                // border-top-left-radius: 10px;
                 overflow: hidden;
                 min-width: 70px;
                 li{
