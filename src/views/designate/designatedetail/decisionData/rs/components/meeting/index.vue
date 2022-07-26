@@ -106,20 +106,20 @@
             </template>
 
             <template #cfTargetAPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
             </template>
 
             <template #cfTargetBPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
             </template>
 
@@ -428,20 +428,20 @@
           </template>
 
           <template #cfTargetAPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
           </template>
 
           <template #cfTargetBPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
           </template>
 
