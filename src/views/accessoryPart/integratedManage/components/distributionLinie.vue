@@ -12,14 +12,14 @@
     :title="language('FENPEILinie','分配Linie')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="600px"
+    width="400px"
   >
     <template slot="footer">
       <iButton @click="handleConfirm" :loading="loading">{{language('QUEREN','确认')}}</iButton>
       <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form class="elForm">
-      <el-form-item :label="language('QINGXUANZELINIEKESHI','请选择linie科室')">
+      <!-- <el-form-item :label="language('QINGXUANZELINIEKESHI','请选择linie科室')">
         <iSelect v-model="queryLinieDept" value-key="id"   @change="changeUserDept">
           <el-option
             v-for="item in deptOptions"
@@ -28,7 +28,7 @@
             :value="item">
           </el-option>
         </iSelect> 
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item :label="language('QINGXUANZELINIE','请选择linie')">
         <iSelect v-model="queryLinie"  value-key="id"    @change="changeUser">
           <el-option
@@ -45,7 +45,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { listLinieDept, listUserByDepartIdAndRoleCode, updateCsfOrLinie } from '@/api/accessoryPart/index'
+import { listLinieDept, listUserByDepartIdAndRoleCode, updateCsfOrLinie, listUserByFunctionType } from '@/api/accessoryPart/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -81,7 +81,7 @@ export default {
     }
   },
   created() {
-    this.getPurchaseDeptOptions()
+    this.getBuyer()
     // const params = {
     //   tag: '26'
     // }
@@ -94,6 +94,11 @@ export default {
     // })
   },
   methods: {
+    getBuyer(){
+      listUserByFunctionType(1).then(res=>{
+        this.linieOptions = res.data || []
+      })
+    },
      getPurchaseDeptOptions() {
       listLinieDept().then(res=>{
         this.deptOptions = res.data || []
@@ -151,6 +156,7 @@ export default {
     changeUser(val) {
       this.linieUpdata.linieId = val.id
       this.linieUpdata.linieName = val.nameZh
+      this.linieUpdata.linieDept = val.deptDTO.id
     }
   }
 }
@@ -160,5 +166,8 @@ export default {
   .elForm{
     display: flex;
     justify-content: space-around;
+    ::v-deep .el-form-item{
+      width: 100%;
+    }
   }
 </style>
