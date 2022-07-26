@@ -61,7 +61,7 @@
         <quotationScoringEcartsCard :rfqInfoData="rfqInfoData" id="card4" ref='quotationScoringEcartsCard'
                                     v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
         <iCard  @handleTitle="addFile($event,4,'报价趋势',1)"
-               :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="language('LK_BAOJIAQS','报价趋势')"
                v-else
                class="margin-top20"
                @handleCollapse="handleCollapse($event,'4')"
