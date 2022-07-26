@@ -18,5 +18,6 @@ export default {
   TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI: 'Multiple original part rows associated with the same part will be assigned together',
   XUANZEZHUANPAIDECAIGOUYUAN: 'Please select the assigned buyer',
   FENGMIANTISHIXINXI: 'The cover does not need to be submitted again. If you need to modify it, please [withdraw] or contact the AEKO administrator [unfreeze] before modifying and submitting',
-  BITIANXIANGBUNENGWEIKONG: 'The required item cannot be empty'
+  BITIANXIANGBUNENGWEIKONG: 'The required item cannot be empty',
+  SHIFOUJINTJIAOFENGMIANBIAOTAI: 'The content statement has not been submitted yet. Are you sure to submit only the cover statement? (If the approval of the content statement is not required, please directly click the confirm button.)'
 }
