@@ -17,7 +17,11 @@
         <div class="error" v-else>{{language('CHECKNOPASS','无法取消定点！')}}</div>
       </div>
       <div style="height: 300px">
-        <div class="content" v-loading="loading">
+        <div class="content"
+             v-loading="loading" 
+             :element-loading-text="language('JIAZAIZHONG', '加载中')" 
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.0)">
           <div
             class="content-item"
             v-for="(item, key) in statusList"
@@ -112,12 +116,11 @@ export default {
     },
   },
   watch: {
-    nomiId: {
-      immediate: true,
-      handler(val) {
+    visible(val) {
+      if(val) {
         this.cancelNominateCheck();
-      },
-    },
+      }
+    }
   },
   methods: {
     close() {
