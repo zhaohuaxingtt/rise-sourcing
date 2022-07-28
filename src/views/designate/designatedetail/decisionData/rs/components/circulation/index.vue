@@ -902,14 +902,14 @@ export default {
 				return gsTableTitle
 			} else if (this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI) {
 				// 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
-				const tableTitle = cloneDeep(nomalTableTitleSub) //
+				const tableTitle = cloneDeep(nomalTableTitle) //
 				tableTitle.map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
 				})
 				return tableTitle
 			}
-
-			return nomalTableTitle
+			// 默认不显示原零件号
+			return nomalTableTitle.filter((item)=>item.props != 'partNum')
 		},
 		tableTitleSub() {
 			if (this.projectType === partProjTypes.PEIJIAN) {
@@ -929,7 +929,8 @@ export default {
 				})
 				return tableTitle
 			}
-			return nomalTableTitleSub
+			// 默认不显示原零件号
+			return nomalTableTitleSub.filter((item)=>item.props != 'partNum')
 		},
 		pageWidth() {
 			// 多加2px 避免出现滚动条
