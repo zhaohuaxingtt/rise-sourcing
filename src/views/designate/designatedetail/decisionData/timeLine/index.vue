@@ -13,7 +13,7 @@
                 <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_SHOW|展示">{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
             <span v-else>
-                <iButton v-if="!nominationDisabled && !rsDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_EDIT|timeline-编辑" v-if="!nominationDisabled && !rsDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
             </span>
         </div>
         <div v-for="(item,index) in detailData" :key="'timeLine_'+index">

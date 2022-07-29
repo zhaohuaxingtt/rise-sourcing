@@ -28,7 +28,7 @@
           <iButton v-permission.auto="PARTSRFQ_PARTDETAILLIST_LINGJIANMUBIAOJIA_DAOCHU|零件目标价-导出" @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>
-          <iButton v-if="!disabled" @click="openDialog">{{
+          <iButton v-if="!disabled" @click="openDialog" v-permission.auto="PARTSRFQ_PARTDETAILLIST_APPLYLINGJIANMUBIAOJIA|申请零件目标价">{{
             language("LK_SHENQINGMUBIAOJIA", "申请目标价")
           }}</iButton>
         </template>
