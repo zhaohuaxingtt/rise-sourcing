@@ -395,6 +395,7 @@
 					</div>
 					<div class="btnWrapper">
 						<iButton
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EDIT|RS单编辑"
 							v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview"
 							@click="editStatus = true"
 							>{{ language('BIANJI', '编辑') }}</iButton
@@ -415,6 +416,7 @@
 							:loading="loading"
 							:disabled="disabled"
 							v-if="!isRoutePreview && !isApproval"
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT|RS单导出"
 							@click="handleExportPdf"
 						>
 							{{ language('DAOCHURSDAN', '导出RS单') }}
@@ -635,6 +637,7 @@
 						<iButton
 							v-if="!isRoutePreview && !isApproval && !isEdit"
 							@click="handleEdit"
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_REMARK_EDIT|RS单备注编辑"
 							>{{ language('BIANJI', '编辑') }}</iButton
 						>
 						<template v-else>
@@ -721,10 +724,13 @@
 					<Upload
 						hideTip
 						@on-success="upLoadsucess"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_UPLOAD|RS单上传附件"
 						class="margin-right10"
 					></Upload>
-					<iButton @click="downloadFile">下载</iButton>
-					<iButton @click="deleteFile">删除</iButton>
+					<iButton @click="downloadFile"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_DOWN|RS单附件下载">下载</iButton>
+					<iButton @click="deleteFile"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_DELETE|RS单附件删除">删除</iButton>
 				</div>
 				<tableList
 					:tableTitle="fileTableTitle"
