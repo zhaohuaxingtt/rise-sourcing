@@ -19,8 +19,18 @@
       <!-- <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton> -->
     </template>
     <el-form>
+      <el-form-item :label="language('QINGXUANZEKESHI','请选择科室')">
+        <iSelect v-model="deptCode" value-key="id"   @change="getUserList" :loading="deptLoading">
+          <el-option
+            v-for="item in deptOptions"
+            :key="item.code"
+            :label="item.deptNum"
+            :value="item.code">
+          </el-option>
+        </iSelect> 
+      </el-form-item>
       <el-form-item :label="type === '1' ? language('MUBIAOXUNJIACAIGOUYUAN','目标询价采购员') : language('MUBIAOLINIE','目标LINIE')">
-        <iSelect v-model="userId" filterable>
+        <iSelect v-model="userId" filterable :loading="linieLoading">
           <el-option
             v-for="item in userOptions"
             :key="item.value"
@@ -35,7 +45,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { getRfqUserInfoList } from '@/api/partsrfq/home'
+import { getRfqUserInfoList, getRfqDeptList } from '@/api/partsrfq/home'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -47,25 +57,38 @@ export default {
     return {
       userId: '',
       userOptions: [],
-      loading: false
+      deptOptions:[],
+      loading: false,
+      deptCode:"",
+      deptLoading:false,
+      linieLoading:false,
     }
   },
   watch: {
     dialogVisible(val) {
       if (val) {
         this.userId = ''
-        this.getUserList()
+        this.getRfqDeptList()
       }
     }
   },
   methods: {
+    getRfqDeptList(){
+      this.deptLoading = true
+      getRfqDeptList().then(res=>{
+        this.deptOptions = res.data
+        this.deptLoading = false
+      })
+    },
     getUserList() {
-      getRfqUserInfoList(this.type === '1' ? '0' : '1').then(res => {
+      this.linieLoading = true
+      getRfqUserInfoList(this.deptCode).then(res => {
         if (res.result) {
           this.userOptions = res.data?.map(item => {return {value:item.code, label:item.name}})
         } else {
           this.userOptions = []
         }
+        this.linieLoading = false
       })
     },
     clearDialog() {

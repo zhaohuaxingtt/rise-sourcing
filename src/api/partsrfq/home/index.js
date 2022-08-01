@@ -214,6 +214,14 @@ export function getRfqUserInfoList(userType) {
     })
 }
 
+// 获取科室
+export  function getRfqDeptList() {
+    return requst({
+        url: '/getRfqDeptList',
+        method: 'GET'
+    })
+}
+
 // 转派rfq
 export function transferRfq(params) {
     return requst({
