@@ -7,7 +7,7 @@
         <el-option
             :key="item.supplierId"
             :value="item.supplierId"
-            :label="item.supplierName"
+            :label="$i18n.locale == 'zh' ? item.supplierName: item.supplierNameDe"
             v-for="item of dataInfo.supplierList"
         />
       </iSelect>
