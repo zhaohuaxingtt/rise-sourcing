@@ -7,7 +7,7 @@
 
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_PR)
-const requst_part = axios(process.env.VUE_APP_PARTSPROCURE_API) // 零件服务
+const requst_part = axios(process.env.VUE_APP_PART_API) // 零件服务
 
 // 零件清单分页查询  
 export function getPartPage(data) {
@@ -131,6 +131,24 @@ export function changePartProject(data) {
 export function productFamilyCartTypeAndCarTypePro(data) {
   return requst_part({
     url: '/api/productFamilyCartTypeAndCarTypePro',
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取车型项目
+export function cartypeProByCondition(data) {
+  return requst_part({
+    url: '/api/cartypeProByCondition',
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取车型
+export function cartypeListByCondition(data) {
+  return requst_part({
+    url: '/api/cartypeListByCondition',
     method: 'POST',
     data,
   })

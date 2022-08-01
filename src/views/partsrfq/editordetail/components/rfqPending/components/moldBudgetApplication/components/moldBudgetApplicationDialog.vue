@@ -134,7 +134,10 @@ export default {
       //return item
       //})
       const mouldBudgets = this.selectTableData
-      
+      // 处理输入的千分位数字
+      mouldBudgets.forEach(item=>{
+        item.budget = item.budget && item.budget.replaceAll(',','').replaceAll('，','')
+      })
       const res = await patchMouldBudgetSubmit(
         mouldBudgets
       );

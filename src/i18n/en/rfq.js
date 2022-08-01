@@ -5,8 +5,23 @@
  * @LastEditors: YoHo
  * @Description: rfq管理
  */
- export default {
-  XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG : 'The expected target price should not be blank',
-  QIANSHOUSHIJIAN: 'signDate',
-  LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI : 'The part number is insufficient, please add it to 3 digits or more',
+export default {
+	XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG:
+		'The expected target price should not be blank',
+	QIANSHOUSHIJIAN: 'signDate',
+	LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI:
+		'The part number is insufficient, please add it to 3 digits or more',
+	LK_XIANJIANCAIGOUSHENQING: 'Create',
+	LK_XINZHENGXIANGCI: 'New items ',
+	LK_SHANCHUXIANGCI: 'Delete items ',
+	QUXIAODINGDIANTIAOJIANJIANCHA: 'Cancel the fixed point condition check',
+	QINGXUANZEYIDINGDIANZHUANGTAIDESHUJUJINXINGCAOZUO:
+		'Please select the fixed state data to operate!',
+	CHECKNOPASS: 'Unable to cancel the fixed point!',
+	CHECKPASS:
+		'Check passed, you can cancel the fixed point, whether to confirm the canceled fixed point',
+	MTZTIP:
+		'This document is bound to MTZ application. Please confirm whether you need to unbind MTZ.',
+	JIEBANGMTZ: 'Unbind, MTZ keep fixed point',
+	BUJIEBANGMTZ: 'Do not unbind, MTZ cancels the fixed point',
 }

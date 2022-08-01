@@ -102,7 +102,9 @@
                         <li v-else :key='indexss'>
                           <span>
                             {{itemsss.rateEn}}
-                          <br v-if='itemsss.rateEn && itemsss.rate' />      
+                          </span>
+                          <br v-if='itemsss.rateEn && itemsss.rate' />
+                          <span>
                             {{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
@@ -332,8 +334,9 @@ export default{
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
-          rfqId:this.$route.query.id,
-          round:items.round,
+          rfqId:this.$route.query.id||items.rfqId,
+          // round:items.round,
+          round:items[index+'round'],
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,
