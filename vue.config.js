@@ -388,6 +388,22 @@ module.exports = {
           ['^' + process.env.VUE_APP_PART_API]: ''
         }
       },
+      // ------------------ aonApi ----------------------------
+      [process.env.VUE_APP_POWEBI_KPI]: {
+        target: `${BASE_IP}`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_POWEBI_KPI]: ''
+        }
+      },
+      // ------------------ TP服务 api ----------------------------
+      [process.env.VUE_APP_PARTS]: {
+        target: `${BASE_IP}/sourcing/web`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PARTS]: ''
+        }
+      },
 		},
 	},
 }
