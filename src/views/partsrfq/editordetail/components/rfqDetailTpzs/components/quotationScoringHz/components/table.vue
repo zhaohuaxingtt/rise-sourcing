@@ -215,7 +215,7 @@ import moment from 'moment'
 export default{
   components:{icon},
   props:{
-    height: {type: Number, default:700},
+    height: {type: Number, default:''},
     tableData:{
       type:Array,
       default:()=>[]
@@ -253,7 +253,6 @@ export default{
           return a
         }
       },0) + 'px'
-      return document.getElementsByClassName('c')[0].style.width = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
     },
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
@@ -262,44 +261,12 @@ export default{
         return this.$store.getters.isPreview;
     }
   },
-  watch:{
-    tableData(val){
-      if(val){
-        console.log(val)
-        // this.computedWidth()
-      }
-    }
-  },
   data() {
     return {
-      // cWidth: '',
       ebrWidth: ''
     }
   },
-  updated(){
-    // this.computedWidth()
-  },
-  mounted(){
-  },
   methods:{
-    computedWidth(){
-      if(document.getElementsByClassName('c')[0])
-      this.cWidth = document.getElementsByClassName('c')[0].style.width = document.getElementsByClassName('selsTable')[0].clientWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].clientWidth + 'px'
-      // if(document.getElementsByClassName('c')[0])
-      // this.ebrWidth = document.getElementsByClassName('EBR')[0].clientWidth
-      // console.log(document.getElementsByClassName('EBR'));
-      // if(document.getElementsByClassName('EBR')[0])
-      // console.log(document.getElementsByClassName('EBR')[0].clientWidth);
-    },
-    // computedWidth(){
-    //   if(document.getElementsByClassName('c')[0])
-    //   this.cWidth = document.getElementsByClassName('c')[0].style.width = document.getElementsByClassName('selsTable')[0].clientWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].clientWidth + 'px'
-    //   // if(document.getElementsByClassName('c')[0])
-    //   // this.ebrWidth = document.getElementsByClassName('EBR')[0].clientWidth
-    //   // console.log(document.getElementsByClassName('EBR'));
-    //   // if(document.getElementsByClassName('EBR')[0])
-    //   // console.log(document.getElementsByClassName('EBR')[0].clientWidth);
-    // },
     setfixElement(){
       try {
         const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
@@ -318,9 +285,8 @@ export default{
         box.appendChild(ulDom)
         this.$nextTick(()=>{
           setTimeout(()=>{
-            // this.computedWidth()
-            // ulDom.style.width = this.ebrWidth + 'px'
-          },100)
+            ulDom.style.width = document.getElementsByClassName('EBR')[0].clientWidth + 'px'
+          },200)
         })
       } catch (error) {
         console.warn(error)
@@ -715,18 +681,20 @@ export default{
           overflow: hidden;
         }
         &:first-child{
+          border: 0px;
           // border-top-right-radius: 3px;
           // overflow: hidden;
           // border-right: 0px;
           // border: none;
           // width: 0px;
           li{
-            border-right: 1px solid #EBEEF5;
-            &:first-child{
-              background-color:white;
-              border:none;
-              border-right: 1px solid #EBEEF5;
-            }
+            border:0px;
+            // border-right: 1px solid #EBEEF5;
+            // &:first-child{
+            //   background-color:white;
+            //   border:none;
+            //   border-right: 1px solid #EBEEF5;
+            // }
           }
         }
         li{
@@ -744,6 +712,9 @@ export default{
       }
       .lastChild{
         flex: 1;
+        &:first-child{
+          border: 0px;
+        }
         &:last-child{
           border-right: 0px;
         }
@@ -759,7 +730,7 @@ export default{
     padding-top: 200px;
     overflow-x: scroll;
     ::v-deep.el-table__fixed{
-          height: 97%!important;
+          height: calc(100% - 20px) !important;;
           bottom: -1px;
           padding-top: 200px;
           box-sizing: border-box;
@@ -776,16 +747,19 @@ export default{
               right: -1px;
               height: 0px;
               width: 0px;
-              top: -1px;
+              top: 0px;
               ul{
+                width: 100%;
                 position: absolute;
                 bottom: -1.8px;
                 right: 1.6px;
                 border-left: 1px solid #EBEEF5;
+                border-top: 1px solid #EBEEF5;
+                border-right: 1px solid #EBEEF5;
                 border-bottom: none;
                 // border-top-left-radius: 10px;
                 overflow: hidden;
-                min-width: 70px;
+                // min-width: 70px;
                 // width: 100%;
                 li{
                     border-bottom: 1px solid #EBEEF5;
