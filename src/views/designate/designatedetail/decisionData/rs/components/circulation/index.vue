@@ -1004,10 +1004,12 @@ export default {
 					headerHeight -
 					computeHeight -
 					pageLogo -
+					el -
 					this.hasTitle // 表格区域高度, 用div支撑空间
 				// 独立备注页
 				this.otherPageHeight =
-					this.pageHeight - headerHeight - pageLogo - this.hasTitle
+					this.pageHeight - headerHeight -
+					computeHeight - pageLogo - this.hasTitle
 				let rowList = this.$refs.demo
 					.getElementsByClassName('mainTable')[0]
 					.getElementsByClassName('el-table__body-wrapper')[0]
@@ -1046,7 +1048,7 @@ export default {
 						} else {
 							// 另起一页
 							itemHeight += item.offsetHeight
-							if (itemHeight <= this.otherPageHeight - 24) {
+							if (itemHeight <= this.otherPageHeight - el - 24) {
 								// 上下padding各12
 								list.push(this.getRemarkAll[i])
 							} else {
@@ -1060,19 +1062,19 @@ export default {
 					this.remarkList = itemList
 					this.residualRemark = residualRemark
 					// 签字栏是否分页
-					if (itemHeight) {
-						if (this.otherPageHeight - itemHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					} else {
-						if (residualHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					}
+					// if (itemHeight) {
+					// 	if (this.otherPageHeight - itemHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// } else {
+					// 	if (residualHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// }
 				} else {
 					this.remarkList = []
 					this.hasLastPage = false
