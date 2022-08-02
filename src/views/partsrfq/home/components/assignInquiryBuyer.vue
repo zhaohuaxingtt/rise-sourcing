@@ -20,7 +20,7 @@
     </template>
     <el-form>
       <el-form-item :label="language('QINGXUANZEKESHI','请选择科室')">
-        <iSelect v-model="deptCode" value-key="id"   @change="getUserList" :loading="deptLoading">
+        <iSelect v-model="deptCode" value-key="id"   @change="getUserList" clearable :loading="deptLoading">
           <el-option
             v-for="item in deptOptions"
             :key="item.code"
@@ -78,6 +78,7 @@ export default {
       getRfqDeptList().then(res=>{
         this.deptOptions = res.data
         this.deptLoading = false
+        this.getUserList()
       })
     },
     getUserList() {
