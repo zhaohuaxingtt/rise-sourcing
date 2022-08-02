@@ -16,16 +16,16 @@
           workspaceId: process.env.NODE_ENV !== 'production' ? '876776a9-f959-442e-a011-b4bade0dd862' : 'c272ae69-a6b4-4407-bd0e-f67953de36ce',
           reportId: process.env.NODE_ENV !== 'production' ? '06bfe2a1-4814-4dd6-a9ec-1687aa896d06' : '7e28d312-12ae-42b1-89b9-86933a2dfe81',
           datasets: process.env.NODE_ENV !== 'production' ? ['b331bdd5-e6c6-4a4c-922a-0099058cf3f3'] : ['4d117119-0f4a-4c4c-86cc-3a7d5955171c'],
-          username: this.username,
+          username: this.$store.state.permission.userInfo.id,
           roles: ['dept_permission'],
         },
       };
     },
     mounted() {
-      let roleList = this.$store.state.permission.userInfo.roleList
-      if (roleList.some(item => item.code == 'PFJYJGLY')) {
-        this.formData.username = '0'
-      }
+      // let roleList = this.$store.state.permission.userInfo.roleList
+      // if (roleList.some(item => item.code == 'PFJYJGLY')) {
+      //   this.formData.username = '0'
+      // }
       this.$emit('getData', this.formData)
     },
 
