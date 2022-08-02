@@ -10,6 +10,7 @@ export default {
 		'新申请目标价，期望目标价不能为空',
 	QIANSHOUSHIJIAN: '签收时间',
 	LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI: '查询零件号不足,请补充至3位或以上',
+	QINGXUANZEKESHI: '请选择科室',
 	LK_XIANJIANCAIGOUSHENQING: 'New Purchase Application',
 	LK_XINZHENGXIANGCI: '新增项次',
 	LK_SHANCHUXIANGCI: '删除项次',

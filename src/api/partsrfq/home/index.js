@@ -209,7 +209,15 @@ export function partLogisticByFs(params){
 // 获取用户列表 userType- 0是采购员,1是linie
 export function getRfqUserInfoList(userType) {
     return requst({
-        url: `/getRfqUserList/${userType}`,
+        url: `/getRfqUserList${userType?'/'+userType:''}`,
+        method: 'GET'
+    })
+}
+
+// 获取科室
+export  function getRfqDeptList() {
+    return requst({
+        url: '/getRfqDeptList',
         method: 'GET'
     })
 }

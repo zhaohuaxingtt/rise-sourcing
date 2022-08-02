@@ -219,3 +219,11 @@ export function getFiles(params) {
       method: 'get'
   })
 }
+
+// 获取采购员下拉 0:获取询价采购员, 1:获取LINIE采购员
+export function listUserByFunctionType(num) {
+  return requst({
+    url: `/tp-records/accessoryInfo/listUserByFunctionType/${num}`,
+    method: 'GET',
+  })
+}
