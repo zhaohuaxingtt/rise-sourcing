@@ -46,7 +46,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { listUserByDepartIdAndRoleCode , listDepartByTag, updateCsfOrLinie, listUserByFunctionType} from '@/api/accessoryPart/index'
+import { listUserByDepartIdAndRoleCode , listDepartByTag, updateCsfOrLinie, listUserByDepartId, listUserByFunctionType } from '@/api/accessoryPart/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -109,7 +109,8 @@ export default {
         deptId : val,
         roleCode : "PJCGY",
       }
-      listUserByDepartIdAndRoleCode(data).then(res=>{
+      listUserByDepartId(data).then(res=>{
+      // listUserByDepartIdAndRoleCode(data).then(res=>{
         this.purchaseBuyerOptions = res.data || []
       })
     },

@@ -75,7 +75,7 @@ export default {
       const newData = []
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i]
-        console.log(element.getAttribute('data-id'))
+        // console.log(element.getAttribute('data-id'))
         const item = this.dataSource.find((e) => {
           const itemName = e.i18n ? this.language(e.i18n) : e.label
           return itemName === element.getAttribute('data-id')
