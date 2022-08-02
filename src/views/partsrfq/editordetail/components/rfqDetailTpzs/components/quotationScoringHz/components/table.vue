@@ -69,7 +69,7 @@
             <template slot="header" slot-scope="scope">
               <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
               <div class="headerContent" v-if='scope.column.label == ""'>
-                <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
+                <div class="c" :style="{width:cWidth,minWidth:minWidth}" v-if='ratingList.firstTile.length > 0'>
                   <ul style="width:0px">
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
@@ -263,7 +263,8 @@ export default{
   },
   data() {
     return {
-      ebrWidth: ''
+      ebrWidth: '',
+      minWidth: ''
     }
   },
   methods:{
@@ -285,8 +286,11 @@ export default{
         box.appendChild(ulDom)
         this.$nextTick(()=>{
           setTimeout(()=>{
-            ulDom.style.width = document.getElementsByClassName('EBR')[0].clientWidth + 'px'
-          },200)
+            if(ulDom){
+              this.minWidth = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
+              ulDom.style.width = document.getElementsByClassName('EBR')[0].clientWidth + 'px'
+            }
+          },280)
         })
       } catch (error) {
         console.warn(error)
