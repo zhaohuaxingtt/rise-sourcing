@@ -6389,6 +6389,9 @@
 		'FASONGCHANPINJINGLI':'',
 		'JINZHENDUIPIPEILINGJIANHAOLISHIJINDU':'',
 		AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A price change, whether to confirm the submission？',
+		"零件进度报告":"零件进度报告-en",
+		"材料成本报告":"材料成本报告-en",
+		"项目管理绩效分析":"项目管理绩效分析-en",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

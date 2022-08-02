@@ -24,7 +24,7 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { TAB } from "./data"
+import { TAB,navList } from "./data"
 import logButton from "@/components/logButton"
 import iLog from '@/views/project/log'
 import iLoger from 'rise/web/components/iLoger'
@@ -47,7 +47,7 @@ export default {
   props: {
     // eslint-disable-next-line no-undef
     navList: {type:Array, default: _.cloneDeep(TAB)},
-    subNavList: {type:Array}
+    subNavList: {type:Array,default: _.cloneDeep(navList)}
   },
   computed: {
     isProgressConfirm() {

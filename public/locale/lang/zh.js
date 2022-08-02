@@ -6393,6 +6393,9 @@
     FASONGCHANPINJINGLI: '发送产品经理',
     JINZHENDUIPIPEILINGJIANHAOLISHIJINDU: '仅针对匹配零件号历史进度',
     AJIAFASHENGBIANHUASHIFOUQUERENTIJIAO: 'A价发生变化，是否确认提交？',
+    "零件进度报告":"零件进度报告-zh",
+		"材料成本报告":"材料成本报告-zh",
+		"项目管理绩效分析":"项目管理绩效分析-zh",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })

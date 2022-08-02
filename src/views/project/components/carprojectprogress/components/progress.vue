@@ -29,6 +29,7 @@
           <span class="stepItem-box-title">{{item.label}}</span>
           <span class="stepItem-box-week">{{item.week}}</span>
         </div>
+        <div class="project-progress-line">
           <!-- 正在进行中 -->
           <template v-if="index === nodeList.length - 1"></template>
           <!-- <icon v-else-if="item.isDone == 1 && nodeList[index+1].isDone == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon> -->
@@ -39,6 +40,7 @@
           <!-- 未完成 -->
           <!-- <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="step-between-icon"></icon> -->
           <span v-else v-html="svgList['iconchanpinzupaicheng_weijinhang']" class="step-between-icon"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -71,7 +73,9 @@ export default {
         { label: 'SOP', date: '2021-09-01', value: 'pepSopWk', status: 'pepSopStatus' },
         { label: 'ME', date: '2021-12-01', value: 'pepMeWk', status: 'pepMeStatus' }
       ],
-      nodeList: [],
+      nodeList: [
+        {isDone:1,label:"VFF"},
+      ],
       svgList: {
         'iconchanpinzupaicheng_weijinhang': '<svg t="1631758281435" class="icon" viewBox="0 0 52224 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="56908" width="100%" height="100"><path d="M51712 1024h-2048a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2048a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-5120 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072A512 512 0 0 1 6144 512a512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072A512 512 0 0 1 0 512 512 512 0 0 1 512 0h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#CED4E1" p-id="56909"></path></svg>',
         'iconchanpinzupaicheng_yiwancheng': '<svg t="1631758321224" class="icon" viewBox="0 0 25600 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="66516" width="100%" height="100"><path d="M25108.07552 1024H492.65152A502.272 502.272 0 0 1 0.10752 512a502.272 502.272 0 0 1 492.544-512h24615.424A502.272 502.272 0 0 1 25600.10752 512a502.272 502.272 0 0 1-492.032 512z" fill="#1660F1" p-id="66517"></path></svg>',
@@ -107,15 +111,17 @@ export default {
         if (res?.result) {
           this.carProjectInfo = res.data
           this.nodeList = this.progressList.reduce((accu, curr) => {
-            if (!res.data[curr.value]) {
-              return accu
-            }
+            // if (!res.data[curr.value]) {
+            //   return accu
+            // }
             return [...accu, {
               ...curr,
               week: res.data[curr.value],
-              isDone: res.data[curr.status]
+              isDone: 1
             }]
           },[])
+
+          console.log(this.nodeList);
           this.$emit('changeSopStatus', moment(res.data.pepSop).isBefore(moment()))
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -130,6 +136,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.project-progress-line{
+  display: flex;
+  justify-content: center;
+  width:100%;
+  height:100%;
+}
 .carProject {
   display: flex;
   align-items: center;
@@ -189,9 +201,8 @@ export default {
       }
       .step-between-icon {
         height: 8px;
-        width: calc(100% - 85px);
+        width: calc(100% - 64px);
         position: absolute;
-        right: 0;
         top: 14px;
         ::v-deep .icon {
           height: 10px;
