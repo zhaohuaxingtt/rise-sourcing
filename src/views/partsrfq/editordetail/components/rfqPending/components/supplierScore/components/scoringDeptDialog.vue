@@ -14,7 +14,7 @@
           </iSelect>
         </template>
         <template #rateDepartNum="scope">
-          <iSelect v-if="scope.row.rateTag" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus || customAction" @change="handleClearCoordinatorAndRater($event, scope.row)">
+          <iSelect v-if="scope.row.rateTag" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus" @change="handleClearCoordinatorAndRater($event, scope.row)">
             <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] ? Object.values(deptMap[scope.row.rateTag]) : []" :key="$index" :label="item.label" :value="item.value"></el-option>
           </iSelect>
         </template>
@@ -75,14 +75,14 @@ export default {
     },
   },
   created() {
-    if (this.customAction) {
-      this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
-    } else {
+    // if (this.customAction) {
+    //   this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
+    // } else {
       if (!this.visible) return
       if(!this.$route.query.id) return
       this.getRfqRateDepartsData()
       this.getAllDeptTag()
-    }
+    // }
   },
   data() {
     return {
