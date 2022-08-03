@@ -161,6 +161,7 @@ export default {
       this.purchaseUpdata.csfuserId = val.id
       this.purchaseUpdata.csfuserName = val.nameZh
       this.purchaseUpdata.csfDept = val.deptDTO.id
+      this.purchaseUpdata.csfDeptName = val.deptDTO.deptNum
       console.log(val);
     }
   }

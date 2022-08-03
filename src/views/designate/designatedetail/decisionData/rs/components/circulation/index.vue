@@ -395,6 +395,7 @@
 					</div>
 					<div class="btnWrapper">
 						<iButton
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EDIT|RS单编辑"
 							v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview"
 							@click="editStatus = true"
 							>{{ language('BIANJI', '编辑') }}</iButton
@@ -415,6 +416,7 @@
 							:loading="loading"
 							:disabled="disabled"
 							v-if="!isRoutePreview && !isApproval"
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT|RS单导出"
 							@click="handleExportPdf"
 						>
 							{{ language('DAOCHURSDAN', '导出RS单') }}
@@ -635,6 +637,7 @@
 						<iButton
 							v-if="!isRoutePreview && !isApproval && !isEdit"
 							@click="handleEdit"
+							v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_REMARK_EDIT|RS单备注编辑"
 							>{{ language('BIANJI', '编辑') }}</iButton
 						>
 						<template v-else>
@@ -721,10 +724,13 @@
 					<Upload
 						hideTip
 						@on-success="upLoadsucess"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_UPLOAD|RS单上传附件"
 						class="margin-right10"
 					></Upload>
-					<iButton @click="downloadFile">下载</iButton>
-					<iButton @click="deleteFile">删除</iButton>
+					<iButton @click="downloadFile"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_DOWN|RS单附件下载">下载</iButton>
+					<iButton @click="deleteFile"
+						v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_FILE_DELETE|RS单附件删除">删除</iButton>
 				</div>
 				<tableList
 					:tableTitle="fileTableTitle"
@@ -998,10 +1004,12 @@ export default {
 					headerHeight -
 					computeHeight -
 					pageLogo -
+					el -
 					this.hasTitle // 表格区域高度, 用div支撑空间
 				// 独立备注页
 				this.otherPageHeight =
-					this.pageHeight - headerHeight - pageLogo - this.hasTitle
+					this.pageHeight - headerHeight -
+					computeHeight - pageLogo - this.hasTitle
 				let rowList = this.$refs.demo
 					.getElementsByClassName('mainTable')[0]
 					.getElementsByClassName('el-table__body-wrapper')[0]
@@ -1040,7 +1048,7 @@ export default {
 						} else {
 							// 另起一页
 							itemHeight += item.offsetHeight
-							if (itemHeight <= this.otherPageHeight - 24) {
+							if (itemHeight <= this.otherPageHeight - el - 24) {
 								// 上下padding各12
 								list.push(this.getRemarkAll[i])
 							} else {
@@ -1054,19 +1062,19 @@ export default {
 					this.remarkList = itemList
 					this.residualRemark = residualRemark
 					// 签字栏是否分页
-					if (itemHeight) {
-						if (this.otherPageHeight - itemHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					} else {
-						if (residualHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					}
+					// if (itemHeight) {
+					// 	if (this.otherPageHeight - itemHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// } else {
+					// 	if (residualHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// }
 				} else {
 					this.remarkList = []
 					this.hasLastPage = false
