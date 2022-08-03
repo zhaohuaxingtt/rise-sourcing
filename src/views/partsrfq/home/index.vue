@@ -613,6 +613,7 @@ export default {
             graderName: item.rater,
             coordinator: item.coordinator,
             coordinatorId: item.coordinatorId,
+            id: item.id
       }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {
