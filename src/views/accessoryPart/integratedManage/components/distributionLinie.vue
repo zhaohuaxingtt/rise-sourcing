@@ -158,6 +158,7 @@ export default {
       this.linieUpdata.linieId = val.id
       this.linieUpdata.linieName = val.nameZh
       this.linieUpdata.linieDept = val.deptDTO.id
+      this.linieUpdata.linieDeptName = val.deptDTO.deptNum
     }
   }
 }

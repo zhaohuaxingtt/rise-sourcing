@@ -336,7 +336,7 @@
       <iCard class="rsCard">
         <template #header>
           <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+            <iButton @click="handleExportPdf" :loading="loading" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT|RS单导出">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
           <div class="title">
             <p>CSC定点推荐 - {{ cardTitle }}</p>

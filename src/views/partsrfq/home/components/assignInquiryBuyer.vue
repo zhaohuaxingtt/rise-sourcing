@@ -83,7 +83,7 @@ export default {
     },
     getUserList() {
       this.linieLoading = true
-      getRfqUserInfoList(this.deptCode).then(res => {
+      getRfqUserInfoList({deptId:this.deptCode}).then(res => {
         if (res.result) {
           this.userOptions = res.data?.map(item => {return {value:item.code, label:item.name}})
         } else {
