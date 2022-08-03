@@ -79,6 +79,7 @@ export default {
 			return this[`${this.type}NavListLeft`] || []
 		},
 		heaederSubMenu() {
+			console.log(this.type, this.group, this[`${this.type}ThirdMenu`])
 			return this[`${this.type}ThirdMenu`]
 				.filter((i) => i.group == this.group)
 				.map((item, index) => {
