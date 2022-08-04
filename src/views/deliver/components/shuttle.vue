@@ -13,7 +13,7 @@
             ></iInput>
           </div>
         </div>
-        <tableList class="table" :tableData="tableData" :tableTitle="tableTitle" max-height="600px">
+        <tableList class="table" :tableData="allTableData" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange" max-height="600px">
 
         </tableList>
       </iCard>
@@ -39,7 +39,7 @@
 
 <script>
 import { iPage, iCard, iInput } from "rise";
-import tableList from "@/components/iTableSort";
+import tableList from "./shuttleTable.vue";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { shuttleTableTitle as tableTitle } from "./data.js";
 
@@ -51,7 +51,7 @@ export default {
       leftSearch: "",
       rightSearch: "",
       tableTitle,
-      tableData:[
+      allTableData:[
         {
           col1:'TEST'
         },{
@@ -89,10 +89,18 @@ export default {
         },{
           col1:'TEST11'
         },
-      ]
+      ],
     };
   },
+  computed:{
+    tableList(){
+      return this.allTableData.filter(item=>item.selectBorder)
+    }
+  },
   methods: {
+    handleSelectionChange(){
+
+    },
     leftChange() {},
     rightChange() {},
   },
