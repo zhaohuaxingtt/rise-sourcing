@@ -164,7 +164,8 @@ export default {
             value: item.id,
             key: item.id
           }))
-          if(!raterList.map(i=>i.value).includes(data.raterId)){
+          console.log('data.raterId=>',data.raterId);
+          if(data.raterId&&!raterList.map(i=>i.value).includes(data.raterId)){
             raterList.push({
               ...data,
               label: data.rater,
@@ -179,7 +180,7 @@ export default {
             value: item.id,
             key: item.id
           }))
-          if(!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
+          if(data.coordinatorId&&!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
             coordinatorList.push({
               ...data,
               label: data.coordinator,
