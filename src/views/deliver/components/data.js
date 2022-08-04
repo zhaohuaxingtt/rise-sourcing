@@ -73,8 +73,24 @@ export const tableTitle = [
 ]
 
 export const shuttleTableTitle = [
-  { props: "col1", name: "材料组名称", key: "", tooltip: true, minWidth:120 },
-  { props: "col2", name: "材料组号", key: "", tooltip: true, minWidth:120 },
+  {
+    type: 'selection',
+    width: 50
+  },
+  {
+    prop: 'col1',
+    label: '材料组名称',
+    i18n: '材料组名称',
+    type: 'expanded',
+    minWidth: 200,
+    align: 'left'
+  },{
+    prop: 'col2',
+    label: '材料组号',
+    i18n: '材料组号',
+    minWidth: 200,
+    align: 'center'
+  },
 ]
 
 export const searchList = [

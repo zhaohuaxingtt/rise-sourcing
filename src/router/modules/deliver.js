@@ -60,7 +60,7 @@ export default [
           title: "送样管理-shuttle",
           activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
-        component: () => import("@/views/deliver/components/shuttle"),
+        component: () => import("@/views/deliver/shuttle"),
       },
       
     ]

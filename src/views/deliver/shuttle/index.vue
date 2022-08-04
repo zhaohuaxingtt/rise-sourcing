@@ -13,9 +13,22 @@
             ></iInput>
           </div>
         </div>
-        <tableList class="table" :tableData="allTableData" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange" max-height="600px">
-
-        </tableList>
+        <Item :list="allTableData" :header="tableTitle"/>
+        <tableList
+          v-if="tableTitle.length > 0"
+          row-key="id"
+          :height="tableHeight||500"
+          ref="functionMenu"
+          custom-selection
+          :loading="tableLoading||false"
+          :data="allTableData"
+          :columns="tableTitle"
+          :tree-expand="tableExpanded"
+          :default-selected-rows="defaultSelectedRows||[]"
+          highlight-current-row
+          @handle-selection-change="handleSelectionChange"
+          @row-click="handleRowClick"
+        />
       </iCard>
       <div class="shuttle-btn-box">
         <i class="el-icon-caret-left font64"></i>
@@ -40,66 +53,59 @@
 <script>
 import { iPage, iCard, iInput } from "rise";
 import tableList from "./shuttleTable.vue";
+import Item from "./item.vue";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import { shuttleTableTitle as tableTitle } from "./data.js";
+import { shuttleTableTitle as tableTitle } from "../components/data.js";
 
 export default {
-  components: { iPage, iCard, iInput, tableList },
+  components: { iPage, iCard, iInput, tableList, Item },
   mixins: [tableSortMixins],
   data() {
     return {
       leftSearch: "",
       rightSearch: "",
       tableTitle,
-      allTableData:[
+      tableExpanded: { expandKey: 'name', childrenKey: 'menuList' },
+      allTableData: [
         {
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST'
-        },{
-          col1:'TEST11'
-        },{
-          col1:'TEST11'
-        },{
-          col1:'TEST11'
-        },{
-          col1:'TEST11'
-        },{
-          col1:'TEST11'
-        },{
-          col1:'TEST11'
+          col1: "TEST",
+          col2: "TEST2",
+          id: 1,
         },
+        {
+          col1: "TEST",
+          col2: "TEST2",
+          id: 2,
+          children:[
+            {
+              col1:'child-1',
+              col2: "child-2",
+              id:5
+            }
+          ]
+        },
+        {
+          col1: "TEST",
+          col2: "TEST2",
+          id: 3,
+        },
+        {
+          col1: "TEST",
+          col2: "TEST2",
+          id: 4,
+        }
       ],
     };
   },
-  computed:{
-    tableList(){
-      return this.allTableData.filter(item=>item.selectBorder)
-    }
+  computed: {
+    tableList() {
+      return this.allTableData.filter((item) => item.selectBorder);
+    },
   },
   methods: {
-    handleSelectionChange(){
-
+    handleSelectionChange() {},
+    handleRowClick(row) {
+      this.$emit('set-resource-parent', row)
     },
     leftChange() {},
     rightChange() {},
@@ -130,7 +136,7 @@ export default {
     width: 50%;
     height: 100%;
     min-height: 500px;
-    ::v-deep .cardBody{
+    ::v-deep .cardBody {
       height: calc(100% - 86px);
     }
     .search {
@@ -142,7 +148,7 @@ export default {
         width: 100%;
       }
     }
-    .table{
+    .table {
       height: calc(100% - 40px);
     }
   }
