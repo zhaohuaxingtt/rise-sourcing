@@ -62,6 +62,15 @@ export default [
         },
         component: () => import("@/views/deliver/shuttle"),
       },
+      {
+        path: "activity",
+        name: "activity",
+        meta: {
+          title: "送样管理-activity",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/activity"),
+      },
       
     ]
   }
