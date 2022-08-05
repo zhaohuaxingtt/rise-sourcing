@@ -7,7 +7,7 @@
  * @metaParams: hideTabLV3 隐藏三级导航
  *
  */
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 // 抽取定点申请 - 决策资料所有页面，兼容预览，不含公共layout
 const nominationpages = [
   {
@@ -248,7 +248,7 @@ export default [
           title: '签字单导航',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
-        component: () =>import('@/views/designate/home/signSheet/components/headerNav/index'),
+        component: () => import('@/views/designate/home/signSheet/components/headerNav/index'),
         // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
         children: [
           {
