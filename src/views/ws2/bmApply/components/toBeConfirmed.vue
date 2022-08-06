@@ -21,9 +21,9 @@
           </iSelect>
         </div>
         <div>
-          <iButton @click="confirmApply" :loading="confirmApplyLoading">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
-          <iButton @click="toVoid" :loading="bmCancelLoading">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
-          <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+          <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
+          <iButton @click="toVoid" :loading="bmCancelLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED_INVALID">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
+          <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </div>
         
       </div>
