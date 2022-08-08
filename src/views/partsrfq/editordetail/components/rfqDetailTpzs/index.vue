@@ -94,14 +94,14 @@
                  name="two"
                  label="专项分析工具"
                  v-if="hasPermission('RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU123')"
-                 v-permission.dynamic.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU123">
+                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU123">
       <gather />
     </el-tab-pane>
     <el-tab-pane lazy
                  name="three"
                  label="谈判基本信息"
                  v-if="hasPermission('RFQ_DETAIL_TIPS_TANPANJIBENXINXI')"
-                 v-permission.dynamic.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI">
+                 v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI">
       <negotiateBasicInfor :rfqInfoData="rfqInfoData"></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
