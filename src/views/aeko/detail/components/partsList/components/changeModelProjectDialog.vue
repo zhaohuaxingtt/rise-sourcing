@@ -6,47 +6,26 @@
  * @Description: 等待接口完善
 -->
 <template>
-  <iDialog
-    :visible.sync="dialogVisible"
-    @close="clearDialog"
-  >
+  <iDialog :visible.sync="dialogVisible" @close="clearDialog">
     <template #title>
-      <p class="title">{{isAeA?'车型变更':'车型项目变更'}}</p>
+      <p class="title">{{ isAeA ? '车型变更' : '车型项目变更' }}</p>
       <div class="control">
         <iButton @click="save">{{ language("QUEREN", "确认") }}</iButton>
         <!-- <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton> -->
       </div>
     </template>
     <div>
-      <el-table ref="table" :data="tableData" class="padding-bottom20">
-        <el-table-column
-          label="PID"
-          prop="PID"
-          align="center"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          :label="isAeA?'现有车型':'现有车型项目'"
-          prop="col1"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="PID" prop="col2" align="center">
+      <el-table ref="table" :data="tableList" class="padding-bottom20">
+        <el-table-column label="PID" prop="pid" align="center" width="100"></el-table-column>
+        <el-table-column :label="isAeA ? '现有车型' : '现有车型项目'" prop="projOldName" align="center"></el-table-column>
+        <el-table-column prop="projName" align="center">
           <template slot="header">
-            {{isAeA?'变更车型':'变更车型项目'}} <span class="required">*</span>
+            {{ isAeA ? '变更车型' : '变更车型项目' }} <span class="required">*</span>
           </template>
           <template slot-scope="scope">
-            <iSelect
-              v-model="scope.row.col2"
-              clearable
-              @visible-change="getOptions(scope.$index,scope.row)"
-              :placeholder="language('QINGXUANZE', '请选择')"
-            >
+            <iSelect v-model="scope.row.projName" clearable :loading="loading" @visible-change="getOptions($event, scope.$index, scope.row)" :placeholder="language('QINGXUANZE', '请选择')">
               <template v-for="item in scope.row.options || []">
-                <el-option
-                  :key="item.key || item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                <el-option :key="item.value" :value="item.value">
                 </el-option>
               </template>
             </iSelect>
@@ -60,10 +39,12 @@
 <script>
 import { iDialog, iSelect, iButton, iMessage } from "rise";
 import tableList from "@/components/iTableSort";
+import { changePartProject, cartypeProByCondition, cartypeListByCondition } from "@/api/aeko/detail/partsList.js"
 export default {
   props: {
     dialogVisible: { type: Boolean, default: false },
     isAeA: { type: Boolean, default: false },
+    tableData: { type: Array, default: () => [] }
   },
   components: {
     iDialog,
@@ -73,49 +54,63 @@ export default {
   },
   data() {
     return {
-      tableData: [],
-    };
+      tableList: [],
+      loading:false
+    }
   },
   created() {
-    this.getList();
+    this.tableList = JSON.parse(JSON.stringify(this.tableData)).map(item => {
+      return {
+        pid: item.id,
+        projOldName: item.name,
+        projName: item.name,
+        options:[]
+      }
+    })
   },
   methods: {
     clearDialog() {
       this.$emit("changeVisible", "changeModelProjectVisible", false);
     },
     save() {
-      let arr = this.tableData.filter((item) => !item.col2.trim());
+      const { requirementAekoId = '', } = this.$route.query;
+      let arr = this.tableList.filter((item) => !item.projName.trim());
       if (arr.length) return iMessage.error("请维护必填项");
+      let params = {
+        requirementAekoId,
+        carModelDTOS: this.tableList.map(item=>{
+          return {
+            pid:item.pid,
+            projId:'',
+            projName:item.projName
+          }
+        })
+      }
+      changePartProject(params).then(res => {
+        this.$emit('updateList')
+        this.clearDialog()
+      })
     },
-    // reset() {
-    //   this.getList();
-    //   this.tableData.forEach((item) => {
-    //     item.col2 = item.col1;
-    //   });
-    // },
-    getList() {
-      this.tableData = [
-        {
-          PID: "PID-TEST",
-          col1: "123",
-        },
-      ];
+    async getOptions(ev, index, row) {
+      if (ev&&!row.options.length) {
+        this.loading = true
+        const res = this.isAeA ? await cartypeListByCondition({ productCode: row.pid }) : await cartypeProByCondition({ productCode: row.pid })
+        if (res?.code == 200) {
+          let option = res.data.map(item=>{
+            return this.isAeA ? {
+              value: item.modelNameZh
+            }:{
+              value: (this.$i18n.locale === "zh" ? item.cartypeProjectZh : item.cartypeProjectEn) || item.cartypeProjectDe
+            }
+          })
+          row.options = option
+        }
+        this.tableList.splice(index, 1, row)
+        this.$nextTick(()=>{
+          this.loading = false
+        })
+      }
     },
-    getOptions(index,row){
-      row.options = [
-            {
-              key: "1",
-              value: "test",
-              label: "test",
-            },
-            {
-              key: "12",
-              value: "123",
-              label: "123test",
-            },
-          ],
-      this.tableData.splice(index,1,row)
-    }
   },
 };
 </script>
@@ -123,18 +118,21 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .el-dialog__header {
   position: relative;
-  .title{
+
+  .title {
     font-size: 18px;
     font-weight: bold;
     line-height: 25px;
   }
 }
+
 .control {
   position: absolute;
   top: 50%;
   right: 94px;
   transform: translate(0, -50%);
 }
+
 .required {
   font-size: 14px;
   color: red;

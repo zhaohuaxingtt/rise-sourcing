@@ -289,6 +289,7 @@ import { TP_INFO_STATUS } from "./components/data"
 import {setPretreatmentParams} from '@/utils/tool'
 import headerNav from '@/components/headerNav'
 import buttonTableSetting from '@/components/buttonTableSetting'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -333,6 +334,7 @@ export default {
     })
     
     this.getSelectOptions();
+    this.getCarTypeSop()
     this.getTableList();
     this.getInquiryBuyerListFn()
     this.updateNavList
@@ -437,7 +439,6 @@ export default {
     },
     getSelectOptions() {
       const types = [
-        "CAR_TYPE_PRO",
         "TP_INFO_STATUS",
         "TP_INFO_TYPE",
         "TP_ATTACHEMENT_STATUS",
@@ -446,6 +447,26 @@ export default {
       selectDictByKeyss(types).then((res) => {
         this.fromGroup = res.data;
       });
+    },
+    
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop().then(res => {
+        if (res.code === '200') {
+          this.$set(
+            this.fromGroup,
+            "CAR_TYPE_PRO",
+            Array.isArray(res.data) ?
+              res.data.map(item => ({
+                id: item.id,
+                code: item.cartypeProCode,
+                name: item.cartypeProName,
+                value: item.cartypeProName
+              })) :
+              []
+          )
+        }
+      })
     },
     openPage(val) {
       // local.set(

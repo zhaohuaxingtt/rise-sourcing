@@ -2162,7 +2162,7 @@
 		nominationLanguage_DongJieRiQi: 'Suspended Date',
 		nominationLanguage_XingMuLeiXing: 'Proj. Type',
 		nominationLanguage_HuiYi: 'Meeting',
-		'nominationLanguage.DINGDIANSHENQINGLEIXING': 'App. Type',
+		'nominationLanguage_DINGDIANSHENQINGLEIXING': 'App. Type',
 		XINJIANQIANZIDAN: 'Create new signing sheet',
 		FUHEJIEZHIQIZHIRIQI: 'Check Period',
 		LK_QIANZIDAN: 'Signing Sheet',
@@ -4185,7 +4185,7 @@
 		CHEXINGDALEI: 'Carline',
 		LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG:
 			'Single Sourcing in this Nomi. App.',
-		'nominationLanguage.RFQANDLINGJIANQINGDAN': 'RFQ & Part List',
+		'nominationLanguage_RFQANDLINGJIANQINGDAN': 'RFQ & Part List',
 		LINGJIANHAO: 'Part No.',
 		CFMUBIAOJIA: 'CF Target',
 		LK_DENGDAI: 'Pending',
@@ -4374,12 +4374,12 @@
 		BIDDING_TICHULIYOU: 'Kickout Reason',
 		BIDDING_FSGSSPNO: 'FS/GS/SP No.',
 		BIDDING_BAOZHUANGFEI: 'Pkg. Fee',
-		'nominationLanguage.DingDianGuanLi': 'Nomi. Mgmt.',
-		'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG':
+		'nominationLanguage_DingDianGuanLi': 'Nomi. Mgmt.',
+		'nominationLanguage_GONGYINGSHANGANDDANYIGONGYINGSHANG':
 			'Supplier & Single Sourcing',
-		'nominationLanguage.DINGDIANJIANYI': 'Nomi. Recommendation',
-		'nominationLanguage.SHENPIRENANDSHENPIJILU': 'Approver & Approval Record',
-		'nominationLanguage.JUECEZILIAO': 'Recommendation Material',
+		'nominationLanguage_DINGDIANJIANYI': 'Nomi. Recommendation',
+		'nominationLanguage_SHENPIRENANDSHENPIJILU': 'Approver & Approval Record',
+		'nominationLanguage_JUECEZILIAO': 'Recommendation Material',
 		nextSure:
 			'Are you sure you want to take the next step? Make sure the data is fully saved',
 		XUANZEHUIYIJIEGUO: 'Please select meeting conclusion',
@@ -5175,7 +5175,7 @@
 		LK_AEKO_NEIRONGZHUANGTAI: 'Content Sattus',
 		XUANZEFENPAICAIGOUYUAN: 'Select buyer to assign',
 		QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI:
-			'Please part whose content status is "to-be statement", "Quoting" or "Quoted" to reset',
+			'Please part whose content status is "to-be statement", "Quoting" or "Quoted" or "Bound" to reset',
 		CAOZUOREN: 'Operator',
 		QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN:
 			'Please select part whose content status is "to-be statement"  to switch',

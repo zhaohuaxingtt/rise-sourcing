@@ -128,9 +128,12 @@ export default {
       } else if (partNum) {
         this.keyword = partNum;
       }
+
+      // console.log(this.$store.state);
       const pms = {
         isInsideEnter: this.$store.state.rfq.entryStatus ? true : false,
-        rfq: this.$store.state.rfq.rfqId,
+        // rfq: this.$store.state.rfq.rfqId,
+        rfq: this.$store.state.rfq.rfqId?this.$store.state.rfq.rfqId:0,
         materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
       };

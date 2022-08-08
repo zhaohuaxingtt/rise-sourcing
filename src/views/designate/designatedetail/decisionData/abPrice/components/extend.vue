@@ -90,11 +90,11 @@ export default{
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
-          this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
+          this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList, this.layout==1)]
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
 
           this.$nextTick(()=>{
-            this.$refs.tableList.setfixElement()
+            this.$refs.tableList?.setfixElement()
           })
         }
 

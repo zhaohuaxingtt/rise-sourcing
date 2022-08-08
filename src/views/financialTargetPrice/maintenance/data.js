@@ -20,6 +20,7 @@ export const tableTitle = [
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100, sortable: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
+  {props:'applyStatusDesc',name:'申请状态', key: "SHENQINGZHUANGTAI", tooltip: true, width: 110, sortable: true},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 110, sortable: true},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 110, sortable: true},

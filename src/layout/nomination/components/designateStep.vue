@@ -9,7 +9,7 @@
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
                 <div class="title-text margin-left10">
-                    <p>{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></p>
+                    <p>{{$t('nominationLanguage_DingDianGuanLi')}}: <span class="desinateId">{{desinateId}}</span></p>
                     <p v-if="!!mtzApplyId">
                         <span class="padding-left5 padding-right5">-</span>
                         <span class="mtzNum" @click="toMtzDetail">MTZ{{ mtzApplyId }}</span>
@@ -22,7 +22,7 @@
                         </el-popover>
                     </p>
                 </div>
-                <span class="select-text margin-left14">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
+                <span class="select-text margin-left14">{{language('nominationLanguage_DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"
@@ -38,7 +38,7 @@
                 <iButton v-if="!nominationDisabled && !rsDisabled && !submitDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
                 <!-- <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton> -->
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
-                <iButton v-if="isDecision && showDecision" :loading="exportLoading" @click="exportPdf">{{language('DAOCHUPDF','导出PDF')}}</iButton>
+                <iButton v-if="isDecision && showDecision" v-permission.auto="NOMINATION_MENU_EXPORTPDF|导出PDF" :loading="exportLoading" @click="exportPdf">{{language('DAOCHUPDF','导出PDF')}}</iButton>
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
                 <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
@@ -780,9 +780,9 @@ export default {
                 // }
                 this.showExportPdf = true;
                 this.exportLoading = true;
-                // this.$nextTick(()=>{
-                //     this.$refs['exportPdf'].exportPdf();
-                // })
+                this.$nextTick(()=>{
+                    this.$refs['exportPdf'].changePoint();
+                })
             }
         },
 

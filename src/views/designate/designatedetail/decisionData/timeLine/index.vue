@@ -13,14 +13,14 @@
                 <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_SHOW|展示">{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
             <span v-else>
-                <iButton v-if="!nominationDisabled && !rsDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_EDIT|timeline-编辑" v-if="!nominationDisabled && !rsDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
             </span>
         </div>
         <div v-for="(item,index) in detailData" :key="'timeLine_'+index">
             <!-- 编辑状态 -->
             <div v-if="isEdit">
                 <!--  -->
-                <iCard collapse :title="item.materialGroupName"  class="timeLine-card">
+                <iCard collapse :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe"  class="timeLine-card">
                     <ul class="timeLine-edit-list">
                         <li class="flex-between-center margin-bottom20" v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup" :key="'groupNodeEdit_'+groupNodeIndex">
                             <span class="show-icon" @click="showLine(groupNodeIndex,item.nomiTimeAxisGroup)">
@@ -45,7 +45,7 @@
             </div>
             <!-- 展示状态 -->
             <div v-else>
-                <iCard collapse :title="item.materialGroupName" class="timeLine-card">
+                <iCard collapse :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe" class="timeLine-card">
                     <template v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup">
                         <!-- :stepIndex='2' -->
                         <groupStep 
@@ -62,7 +62,7 @@
                     
                     <!-- 供应商card -->
                     <div class="supplier-list" v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex">
-                        <iCard collapse :title="supplierItem.supplierName" class="supplier-item">
+                        <iCard collapse :title="$i18n.locale === 'zh' ? supplierItem.supplierName : supplierItem.supplierNameEn" class="supplier-item">
                             <template slot="header-control" >
                                 <supplierStep :supplierData="supplierItem.nomiTimeAxisSuppliers"/>
                             </template>

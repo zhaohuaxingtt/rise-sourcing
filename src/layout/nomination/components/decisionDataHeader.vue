@@ -260,6 +260,7 @@ export default {
                 cursor: pointer;
             }
         &.preview-header{
+            padding: 0 30px;
             background-color: #fff;
             // box-shadow: $btn-box-shadow;
             border-top-left-radius: 6px;

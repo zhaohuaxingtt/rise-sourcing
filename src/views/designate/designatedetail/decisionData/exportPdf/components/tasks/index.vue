@@ -150,7 +150,7 @@ export default {
   data() {
     return {
       content: "",
-      tableTitle: tasksTitle,
+      tableTitle: '',
       tableListData: [],
       cntentHeight: 0,
       tableList: [],
@@ -158,11 +158,10 @@ export default {
     };
   },
   created() {
-    // this.tableTitle.push({
-    //   props: "show",
-    //   name: "Hide/Unhide",
-    // });
-    this.tableTitle.unshift({ props: 'index', name: '序号', key: 'LK_XUHAO', width: 80 })
+    this.tableTitle = [
+      { props: 'index', name: '序号', key: 'LK_XUHAO', width: 80 },
+      ...tasksTitle
+    ]
     this.getBackgroundAndObjectiveInfo();
     this.getNominateTaskList();
   },

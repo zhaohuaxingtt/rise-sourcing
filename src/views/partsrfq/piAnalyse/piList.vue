@@ -40,8 +40,8 @@
       <!-- :title="language('PIFENXIKU', 'Price Index分析库')" -->
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('PIFENXIKU', 'Price Index分析库')}}</span>
-        <div class="floatright"
-             v-if="disabled">
+        <!-- v-if="disabled" -->
+        <div class="floatright">
           <div v-if="!editMode">
             <iButton @click="clickRawMaterial" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_YCLJGZL">{{
               language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")

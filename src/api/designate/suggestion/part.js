@@ -27,6 +27,14 @@ export function getPartSupplierList(data) {
   })
 }
 
+// 获取批量编辑零件供应商
+export function getPartSupplierListByNominateAppId(nominateAppId) {
+  return requst({
+      url: `/rs/suppliers/${nominateAppId}`,
+      method: "GET",
+  })
+}
+
 // 定点建议更新
 export function updateSuggestion(data) {
   return requst({

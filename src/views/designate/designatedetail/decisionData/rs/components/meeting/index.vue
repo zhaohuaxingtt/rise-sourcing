@@ -106,20 +106,20 @@
             </template>
 
             <template #cfTargetAPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
             </template>
 
             <template #cfTargetBPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
             </template>
 
@@ -247,14 +247,14 @@
                   1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
                 </span>
               </div>
-              <div class="margin-top10" v-else>
+              <div class="padding-top10" v-else>
                 <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
               </div>
             </div>
           </div>
         </iCard>
       </div>
-      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
             <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -321,7 +321,6 @@
         :tableList="tableList"
         :tableHeight="tableHeight"
         :otherPageHeight="otherPageHeight"
-        :hasOtherPage="hasOtherPage"
         :residualRemark="residualRemark"
         :hasLastPage="hasLastPage"
         :prototypeListPageHeight="prototypeListPageHeight"
@@ -337,7 +336,7 @@
       <iCard class="rsCard">
         <template #header>
           <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+            <iButton @click="handleExportPdf" :loading="loading" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT|RS单导出">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
           <div class="title">
             <p>CSC定点推荐 - {{ cardTitle }}</p>
@@ -429,20 +428,20 @@
           </template>
 
           <template #cfTargetAPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
           </template>
 
           <template #cfTargetBPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
           </template>
 
@@ -737,7 +736,6 @@ export default {
 			prototypeListPageHeight: 0,
 			tableHeight: 0,
       otherPageHeight:0,
-      hasOtherPage: false,
       hasLastPage:false,
 			tableList: [],
 			prototypeTableList: [],
@@ -870,7 +868,7 @@ export default {
         const item = this.remarkItem[i];
         result.push(item.value)
       }
-			return result.join('').split('\n')
+			return result.join('\n').split('\n')
 		},
 		isRoutePreview() {
 			return this.$route.query.isPreview == 1
@@ -939,16 +937,16 @@ export default {
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
         // 备注独立页面内容计算
-        // this.hasOtherPage = (this.tableHeight - tableHeader - el - requireStart - heightSum) < outEl
-        this.hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
-        if(this.hasOtherPage){
+        let hasOtherPage = residualHeight - el < outEl  // 最后一页不能放下所有备注和签字栏
+        if(hasOtherPage){
           let itemHeight = 0
           let list = []
           let itemList =[]
           let residualRemark = []
           let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
+          // 备注信息分页计算
           remarkList.forEach((item,i)=>{
-            if(item.offsetHeight<residualHeight - 24){  // 放在表格页剩余空间内
+            if(item.offsetHeight<residualHeight - 24 - beizhuOther){  // 放在表格页剩余空间内
               residualHeight -= item.offsetHeight
               residualRemark.push(this.getRemarkAll[i])
             }else{  // 另起一页
@@ -963,6 +961,11 @@ export default {
               }
             }
           })
+          if(list.length)
+          itemList.push(JSON.parse(JSON.stringify(list)))
+          this.remarkList = itemList
+          this.residualRemark = residualRemark
+          // 签字栏是否分页
           if(itemHeight){
             if(this.otherPageHeight - itemHeight -24 - beizhuOther < el){
               this.hasLastPage = true
@@ -970,32 +973,15 @@ export default {
               this.hasLastPage = false
             }
           }else{
-            if(residualHeight < el){
+            if(residualHeight -24 - beizhuOther < el){
               this.hasLastPage = true
             }else{
               this.hasLastPage = false
             }
           }
-          // if(this.otherPageHeight<outEl - 24){ // 需要分页
-          //   let remarkList = document.getElementsByClassName('demo')[0].getElementsByClassName('remarkItem')  //备注信息
-          //   remarkList.forEach((item,i)=>{
-          //     itemHeight+=item.offsetHeight
-          //     if(itemHeight<=this.otherPageHeight - 24 - beizhuOther){ // 上下padding各12
-          //       list.push(this.remarkItem[i])
-          //     }else{
-          //       itemList.push(JSON.parse(JSON.stringify(list)))
-          //       itemHeight=item.offsetHeight
-          //       list = [this.remarkItem[i]]
-          //     }
-          //   })
-          if(list.length)
-          itemList.push(JSON.parse(JSON.stringify(list)))
-          // }else{
-            // itemList.push(JSON.parse(JSON.stringify(this.remarkItem)))
-          // }
-          this.remarkList = itemList
-          this.residualRemark = [residualRemark]
         }else{
+          this.remarkList = []
+          this.hasLastPage = false
           this.residualRemark = this.getRemarkAll
         }
     },
@@ -1338,8 +1324,6 @@ export default {
         })
       }
       this.pdfPage = elList.length
-      let time = parseInt(this.pdfPage*30/60)
-      this.$message(`本次导出需耗时大约${time}分钟，请耐心等待`);
       this.showpdf = false
       this.$nextTick(()=>{
         setTimeout(async () => {
@@ -1459,7 +1443,13 @@ export default {
   display: none;
 }
 .meeting {
-  
+  .demo{
+    .Application.card {
+        ::v-deep .cardBody {
+        padding: 0px;
+      }
+    }
+  }
   .demo .rsCard {
     box-shadow: none;
 

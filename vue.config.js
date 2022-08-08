@@ -12,6 +12,9 @@ const postcss = px2rem({
 })
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
+
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
 	outputDir: 'dist',
@@ -140,188 +143,260 @@ module.exports = {
 		hot: true,
 		clientLogLevel: 'none',
 		proxy: {
-			'/eklApi': {
-				// target: 'http://10.122.17.38:8043/riseekl',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/riseekl/',
+			// ------------------ Mock end ------------------------------
+			// ------------------ 树形图 start ----------------------------
+			[process.env.VUE_APP_MATERIEL]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/riseprocsApi`,
+				target: `${BASE_IP}/riseprocs/`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/eklApi': '',
+					['^' + process.env.VUE_APP_MATERIEL]: '',
 				},
 			},
-			'/mtzApi': {
-				// target: 'http://10.122.17.38:8046/mtz',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/mtz',
+			[process.env.VUE_APP_PRICELEDGER]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/priceledgerApi`,
+				target: `${BASE_IP}/priceledger`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/mtzApi': '',
+					['^' + process.env.VUE_APP_PRICELEDGER]: '',
 				},
 			},
-			'/tpInfoApi': {
-				target: 'http://10.122.17.38:8025',
+			[process.env.VUE_APP_COMMON]: {
+				target: `${BASE_IP}/common`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_COMMON]: '',
+				},
+			},
+			[process.env.VUE_APP_BASE_EXECUTIONOPERATION]: {
+				changeOrigin: true,
+				// target: 'http://rise-nginx-internal.apps.vmocp-dev.csvw.com/executionoperation/web',
+				target: `${BASE_IP}/executionoperation/web`,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_BASE_EXECUTIONOPERATION]: '',
+				},
+			},
+			[process.env.VUE_APP_AEKO]: {
+				target: `${BASE_IP}/procurementrequirement`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_AEKO]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_BASE_INFO]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_BASE_INFO]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
+			[process.env.VUE_APP_SOURCING]: {
+				target: `${BASE_IP}/sourcing/web`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/tpInfoApi': '',
+					['^' + process.env.VUE_APP_SOURCING]: '',
 				},
 			},
-			'/commonApi': {
-				target: 'http://10.122.17.38:8014',
+
+			// ------------------ 合同管理  api ----------------------------
+			[process.env.VUE_APP_CONTRACT]: {
+				target: `${BASE_IP}/contract/web`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/commonApi': '',
+					['^' + process.env.VUE_APP_CONTRACT]: '',
 				},
 			},
-			'/sourcingApi': {
+
+			// ------------------ ekl api ----------------------------
+			[process.env.VUE_APP_EKLAPI]: {
+				target: `${BASE_IP}/riseekl/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_EKLAPI]: '',
+				},
+			},
+
+			[process.env.VUE_APP_MODELCAR]: {
+				target: `${BASE_IP}/tooling/car/package`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_MODELCAR]: '',
+				},
+			},
+			[process.env.VUE_APP_TOOLING]: {
+				target: `${BASE_IP}/tooling/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_TOOLING]: '',
+				},
+			},
+			[process.env.VUE_APP_KPI]: {
+				target: `${BASE_IP}/supplier/overall/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_KPI]: '',
+				},
+			},
+
+			[process.env.VUE_APP_APPROVAL]: {
+				target: `${BASE_IP}/approval`,
+				// target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/approvalApi',
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_APPROVAL]: '',
+				},
+			},
+
+			[process.env.VUE_APP_FIXEDASSETS]: {
+				target: `http://10.122.17.38:8053/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_FIXEDASSETS]: '',
+				},
+			},
+
+			[process.env.VUE_APP_MAIL]: {
+				target: `${BASE_IP}/risemessage`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_MAIL]: '',
+				},
+			},
+
+			[process.env.VUE_APP_OKM]: {
+				// target: `http://10.122.17.38:8040/okm/web/okm`,
+				target: `${BASE_IP}/okm/web/okm`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_OKM]: '',
+				},
+			},
+
+			[process.env.VUE_APP_BASE_UPLOAD_API]: {
+				target: `${BASE_IP}/fileud/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_BASE_UPLOAD_API]: '',
+				},
+			},
+
+			[process.env.VUE_APP_MTZ]: {
+				target: `${BASE_IP}/mtz`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_MTZ]: '',
+				},
+			},
+
+			//------------------ 组织 start ----------------------------
+			[process.env.VUE_APP_ORGANIZATION]: {
 				//   供应商
-				// target: 'http://10.122.17.38:8025/sourcing/',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing',
+				target: `${BASE_IP}/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/sourcingApi': '',
+					['^' + process.env.VUE_APP_ORGANIZATION]: '',
 				},
 			},
-			'/usercenterApi': {
-				// target: 'http://10.122.17.38:8015/usercenter',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
-				changeOrigin: true,
-				logLevel: 'info',
-				pathRewrite: {
-					'^/usercenterApi': '',
-				},
-			},
-			'/dictionaryApi': {
-				target: 'http://10.122.17.38:8011',
+
+			[process.env.VUE_APP_USER_CENTER]: {
+				// target: `http://10.122.17.38:8015/usercenter/`,
+				target: `${BASE_IP}/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/dictionaryApi': '',
+					['^' + process.env.VUE_APP_USER_CENTER]: '',
 				},
 			},
-			'/projectApi': {
-				target: 'http://10.122.17.38:8005/projectmgt',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/projectApi': '',
-				},
-			},
-			'/priceledgerApi': {
-				target: 'http://10.122.17.38:8028',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/priceledgerApi': '',
-				},
-			},
-			'/supplierApi': {
-				target: 'http://10.122.17.38:8010',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/supplierApi': '',
-				},
-			},
-			'/aonApi': {
-				// target: 'http://10.122.17.38:8036/aon/',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/aonApi': '',
-				},
-			},
-			'/partsProcureApi': {
-				// target: 'http://10.122.17.38:8018',
-				target:
-					'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/partsProcureApi': '',
-				},
-			},
-			'/toolingApi': {
-				target: 'http://10.122.17.38:8022', //	vmsit
-				changeOrigin: true,
-				pathRewrite: {
-					'^/toolingApi': '',
-				},
-			},
-			'/newCommonApi': {
-				target: 'http://10.122.17.38:8034',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/newCommonApi': '',
-				},
-			},
-			'/partApi': {
-				// target: 'http://10.122.17.38:8788',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/partApi': '',
-				},
-			},
-			'/approvalApi': {
-				target: 'http://10.122.17.38:8012',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/approvalApi': '',
-				},
-			},
-			'/purchaseApply': {
-				target: 'http://10.122.17.38:8026',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/purchaseApply': '',
-				},
-			},
-			'/risemessage': {
-				target: 'http://10.122.17.38:8044/risemessage',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/risemessage': '',
-				},
-			},
-			'/fileApi': {
-				target: 'http://10.122.17.38:8034',
-				target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/fileud/',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/fileApi': '',
-				},
-			},
-			'/biddingApi': {
-				target: 'http://10.122.17.38:8056/bidding',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/biddingApi': '',
-				},
-			},
-			'/baseinfo': {
-				target: 'http://10.122.17.38:8011/baseinfo',
-				changeOrigin: true,
-				pathRewrite: {
-					'^/baseinfo': '',
-				},
-			},
-			'/supplierservice': {
-				target: 'http://10.122.17.38:8010',
-				changeOrigin: true,
-			},
-			'/supplier': {
-				target: 'http://10.122.17.38:8017',
-				changeOrigin: true,
-			},
+
+			//------------------- 业务日志 ---------------------
 			[process.env.VUE_APP_BIZLOG]: {
-				target: `http://10.122.17.38:8013/bizlog`,
+				// target: `http://10.122.17.38:8013/bizlog`,
+				target: `${BASE_IP}/bizlog/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BIZLOG]: '',
 				},
 			},
-			'/prApi': {
-				target: 'http://10.122.17.38:8023',
-				target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/partProcureApi/web',
+
+			//------------------- projectApi ---------------------
+			[process.env.VUE_APP_PROJECTMGT]: {
+				target: `${BASE_IP}/projectmgt/web`,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/prApi': '',
+					['^' + process.env.VUE_APP_PROJECTMGT]: '',
 				},
 			},
+
+			//------------------- prApi ---------------------
+			[process.env.VUE_APP_PR]: {
+				target: `${BASE_IP}/procurementrequirement/web/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PR]: '',
+				},
+			},
+
+      // ------------------ 上传 ----------------------------
+      [process.env.VUE_APP_FILEAPI]: {
+        target: `${BASE_IP}/fileud`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_FILEAPI]: ''
+        }
+      },
+
+      // ------------------ 零件服务 ----------------------------
+      [process.env.VUE_APP_PART]: {
+        target: `${BASE_IP}/parts/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART]: ''
+        }
+      },
+      // ------------------ 零件服务 api ----------------------------
+      [process.env.VUE_APP_PART_API]: {
+        target: `${BASE_IP}/parts/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PART_API]: ''
+        }
+      },
+      // ------------------ aonApi ----------------------------
+      [process.env.VUE_APP_POWEBI_KPI]: {
+        target: `${BASE_IP}`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_POWEBI_KPI]: ''
+        }
+      },
+      // ------------------ TP服务 api ----------------------------
+      [process.env.VUE_APP_PARTS]: {
+        target: `${BASE_IP}/sourcing/web`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_PARTS]: ''
+        }
+      },
 		},
 	},
 }

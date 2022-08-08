@@ -138,6 +138,13 @@ export default {
     },
     // 设置特定材料组数据，目前只有附件类型
     async setAttachMaterialGroup(categoryCode=null, stuffCode=null) {
+      if(this.isAttach){
+        // this.info['categoryCode'] = categoryCode || this.detailData.categoryCode || ''  // 附件类型固定显示 基础信息里的材料组编号 9999
+        let code = categoryCode || this.detailData.categoryCode || ''  // 附件类型固定显示 基础信息里的材料组编号 9999
+        this.$set(this.info,'categoryCode',code)
+        this.$set(this.info,'categoryNameZh',this.detailData.categoryName)
+        this.$set(this.info,'categoryNameDe',this.detailData.categoryName)
+      }
       // if (this.isAttach) {
         // materialTitle.forEach(mitem => {
         //   const detailDataLength = Object.keys(this.detailData).length
@@ -176,7 +183,9 @@ export default {
           
           this.loading = false
         })
-        .catch(() => (this.loading = false))
+        .catch(() => (this.loading = false)).finally(()=>{
+          this.setAttachMaterialGroup(categoryCode, stuffCode)
+        })
     },
     // 设置工艺组
     setMaterialGroup() {

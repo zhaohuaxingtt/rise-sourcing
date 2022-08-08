@@ -39,9 +39,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{language('LK_ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible" v-permission.auto="FINANCIALTARGETPRICE_QUERY_ASSIGN|财务目标价管理-目标价查询-指派">{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" v-permission.auto="FINANCIALTARGETPRICE_QUERY_EXPORT|财务目标价管理-目标价查询-导出">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
