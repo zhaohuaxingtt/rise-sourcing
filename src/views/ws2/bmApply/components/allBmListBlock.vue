@@ -3,7 +3,7 @@
     <SearchBlock @sure="allSerch" />
       <iCard>
         <div class="table-head">
-          <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+          <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </div>
         <iTableList
           :tableData="allTableList"
@@ -84,10 +84,6 @@ export default {
       allTableHead,
       allTableLoading: false,
       selectTableList: [],
-      page: {
-        currPage: 1,
-        pageSize: 10,
-      },
       form: _.cloneDeep(bmApplyForm),
     }
   },
@@ -156,8 +152,6 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           this.allTableList = res.data;
-          this.page.currPage = res.pageNum;
-          this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total;
         }else{
           iMessage.error(result);
@@ -170,10 +164,6 @@ export default {
     },
 
     allSerch(data){
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      },
       this.form = data;
       this.getPageData();
     },

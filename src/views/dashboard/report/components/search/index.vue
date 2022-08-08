@@ -140,7 +140,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: 'DEFAULT',
+        order: '',
         partNum: '',
         rfqId: '',
       },
@@ -149,11 +149,11 @@ export default {
       // options
       options: {
         SORT: [
-          {
-            code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
-          },
+          // {
+          //   code: 'DEFAULT',
+          //   name: '',
+          //   key: ''
+          // },
           {
             code: 'TASK_STATUS',
             name: '按任务状态',

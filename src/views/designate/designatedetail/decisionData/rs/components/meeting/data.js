@@ -20,7 +20,7 @@ export const nomalDetailTitle = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -40,7 +40,7 @@ export const nomalDetailTitleGS = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -59,7 +59,7 @@ export const nomalDetailTitlePF = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
-  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
@@ -78,7 +78,7 @@ export const nomalDetailTitleBlue = [
   {props: 'suppliersNow', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
   {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
-  {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
+  {props: 'quantityNull', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'} // 2022/5/31 CRW-9040 每车用量置空不取值
 ]
 
 export const gsDetailTitleBlue = [
@@ -92,7 +92,7 @@ export const gsDetailTitleBlue = [
   {props: 'plannedInvest', name: '计划投资', enName: 'Planned Invest'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price'},
   {props: 'emtermin', name: '送样EM周期', enName: 'EM-Termin'},
-  {props: 'quantity', name: '每车用量', enName: 'Quantity'},
+  {props: 'quantityNull', name: '每车用量', enName: 'Quantity'}, // 2022/5/31 CRW-9040 每车用量置空不取值
   {props: 'vffTbt', name: 'VFF时间', enName: 'VFF TBT'},
   {props: 'pvsTbt', name: 'PVS时间', enName: 'PVS TBT'}
 ]
@@ -178,7 +178,7 @@ export const gsTableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 66},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 88},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "", minWidth: 60},
-  {props:'carLine',name:'车型', enName: 'Carline', key: "", minWidth: 60},
+  {props:'carTypeName',name:'车型', enName: 'Car Type Name', key: "", minWidth: 60},
   {props:'presentPrice',name:'现供价格', enName: 'Current Price', key: "", minWidth: 90},
   {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 68},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 80 },

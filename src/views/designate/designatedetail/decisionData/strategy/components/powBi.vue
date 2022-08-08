@@ -65,7 +65,8 @@ export default{
     renderBi(code){
       console.log('初始化的code为：',code)
       var report = this.powerbi.embed(this.reportContainer, this.config);
-      report.on("loaded", async function () {
+      report.off("loaded");
+      report.on("loaded", ()=> {
       //设置参数
       var	filter_parameter = {
               $schema: "http://powerbi.com/product/schema#basic",
@@ -75,13 +76,12 @@ export default{
               },
               operator: "In",
               values: [code+''],
-              filterType: models.FilterType.BasicFilter,
+              filterType: pbi.models.FilterType.BasicFilter,
               requireSingleSelection: false
         };
         //设置筛选器
         report.setFilters([filter_parameter]);
       });
-      report.off("loaded");
       document.getElementsByTagName('iframe')[0].style.border = 'none'
     }
   }

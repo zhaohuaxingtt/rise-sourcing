@@ -12,7 +12,7 @@
     <div class="clearFloat" slot="header-control">
       <div class="titleSearch">
         <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-        <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled" />
+        <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" :cartypeProName="cartypeProName" @change="handleCarProjectChange" :disabled="disabled" />
       </div>
     </div>
     <div class="projectProgressCard-content" >
@@ -31,6 +31,7 @@ export default {
   components: { iCard, carEmpty, carProject, carProjectSelect },
   props: {
     carProjectId: {type:String},
+    carProjectName: {type:String},
     disabled: {type:Boolean, default:false},
     collapse: {type:Boolean, default:true}
   },

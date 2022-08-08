@@ -38,9 +38,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="handleApprove" >{{language('PIZHUN','批准')}}</iButton>
+          <iButton @click="handleApprove" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_APPROVAL|财务目标价管理-目标价审批-批准">{{language('PIZHUN','批准')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_EXPORT|财务目标价管理-目标价审批-导出">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
