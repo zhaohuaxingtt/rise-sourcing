@@ -13,7 +13,7 @@
             ></iInput>
           </div>
         </div>
-        <Item :list="allTableData" :header="tableTitle"/>
+        <rowList :rowData="allTableData" :header="tableTitle"/>
         <tableList
           v-if="tableTitle.length > 0"
           row-key="id"
@@ -53,12 +53,12 @@
 <script>
 import { iPage, iCard, iInput } from "rise";
 import tableList from "./shuttleTable.vue";
-import Item from "./item.vue";
+import rowList from "./rowList";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { shuttleTableTitle as tableTitle } from "../components/data.js";
 
 export default {
-  components: { iPage, iCard, iInput, tableList, Item },
+  components: { iPage, iCard, iInput, tableList, rowList },
   mixins: [tableSortMixins],
   data() {
     return {
