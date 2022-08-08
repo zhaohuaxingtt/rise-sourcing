@@ -238,7 +238,6 @@ import {
   tranformRecall,
   unbindMtzCheck,
   unbindMtz,
-  cancelNominate
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
