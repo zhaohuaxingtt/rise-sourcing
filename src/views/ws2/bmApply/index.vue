@@ -74,7 +74,7 @@
     <!-- BM单流水号弹窗 -->
     <BmPopup :visible="bmVisible" @changeLayer="() => this.bmVisible = false" :title="`${$t('LK_BMDANLIUSHUIHAO')}：${bmNumber}`">
       <template slot="btns">
-        <iButton :loading="saveLoading" @click="save">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+        <iButton :loading="saveLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_SAVE" @click="save">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
         
       </template>
 
