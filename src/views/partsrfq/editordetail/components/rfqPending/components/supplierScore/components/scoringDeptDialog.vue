@@ -165,14 +165,14 @@ export default {
             key: item.id
           }))
           console.log('data.raterId=>',data.raterId);
-          if(data.raterId&&!raterList.map(i=>i.value).includes(data.raterId)){
-            raterList.push({
-              ...data,
-              label: data.rater,
-              value: data.raterId,
-              key: data.raterId
-            })
-          }
+          // if(data.raterId&&!raterList.map(i=>i.value).includes(data.raterId)){
+          //   raterList.push({
+          //     ...data,
+          //     label: data.rater,
+          //     value: data.raterId,
+          //     key: data.raterId
+          //   })
+          // }
           // 协调人
           let coordinatorList = res.data.coordinatorList.map(item => ({
             ...item,
@@ -180,14 +180,14 @@ export default {
             value: item.id,
             key: item.id
           }))
-          if(data.coordinatorId&&!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
-            coordinatorList.push({
-              ...data,
-              label: data.coordinator,
-              value: data.coordinatorId,
-              key: data.coordinatorId
-            })
-          }
+          // if(data.coordinatorId&&!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
+          //   coordinatorList.push({
+          //     ...data,
+          //     label: data.coordinator,
+          //     value: data.coordinatorId,
+          //     key: data.coordinatorId
+          //   })
+          // }
           this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", raterList)
           this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", coordinatorList)
         } else {
