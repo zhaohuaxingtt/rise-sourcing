@@ -474,6 +474,15 @@ export function permissionArray(permissionKey, list) {
   )
 }
 
+
+/**
+ * 检查是否包含permissionKey权限
+ * @param {*} permissionKey
+ */
+ export function hasPermission(permissionKey) {
+  return store.state.permission.whiteBtnList[permissionKey]
+}
+
 // 树转数组
 export function treeToArray(tree, childrenKey, res) {
   res = res || []
