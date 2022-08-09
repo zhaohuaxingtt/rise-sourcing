@@ -103,8 +103,8 @@
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
           <!-- 取消定点 -->
-          <!-- v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点" -->
           <iButton
+            v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点"
             @click="cancelNominate"
           >
             {{ language("QUXIAODINGDIAN", "取消定点") }}
@@ -238,7 +238,6 @@ import {
   tranformRecall,
   unbindMtzCheck,
   unbindMtz,
-  
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'

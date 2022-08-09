@@ -1,5 +1,5 @@
 <template>
-  <div class="content" ref="reTitle">
+  <div class="content" ref="reTitle"  v-permission.auto="SOURCING_NOMINATION_ATTATCH_TITLE|决策资料-title">
     <iCard class="rsTitle pageCard rsPdfCard" title="Title">
       <iFormGroup row="1">
         <div class="col">
