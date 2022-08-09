@@ -177,6 +177,14 @@ export function listUserByDepartIdAndRoleCode(data) {
   })
 }
 
+// 根据部门id获取采购员
+export function listUserByDepartId(data) {
+  return requst({
+    url: `/tp-records/accessoryInfo/listUserByDepartId/${ data.deptId }`,
+    method: 'GET',
+  })
+}
+
 // 获取所有linie部门
 export function listLinieDept() {
   return requst({

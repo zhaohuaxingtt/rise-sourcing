@@ -10,6 +10,9 @@
   <div class="conent">
     <div class="selsTable">
       <el-table 
+        ref="table"
+        border
+        :stripe="false"
         tooltip-effect="light"
         :height="height"
         :data="tableData"
@@ -43,7 +46,7 @@
             v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
             :key="index"
             :label="item.i18n ? $t(item.i18n) : item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
             :sortable='"custom"'
@@ -58,7 +61,7 @@
             :fixed='item.fixed'
             :key="index"
             :label="item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
           >
@@ -66,7 +69,7 @@
             <template slot="header" slot-scope="scope">
               <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
               <div class="headerContent" v-if='scope.column.label == ""'>
-                <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
+                <div class="c" :style="{width:cWidth,minWidth:minWidth}" v-if='ratingList.firstTile.length > 0'>
                   <ul style="width:0px">
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
@@ -214,6 +217,7 @@ import moment from 'moment'
 export default{
   components:{icon},
   props:{
+    height: {type: Number, default:''},
     tableData:{
       type:Array,
       default:()=>[]
@@ -259,10 +263,17 @@ export default{
         return this.$store.getters.isPreview;
     }
   },
+  data() {
+    return {
+      ebrWidth: '',
+      minWidth: ''
+    }
+  },
   methods:{
     setfixElement(){
       try {
         const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
+        console.log([needRemovebox])
         if(needRemovebox){
           needRemovebox.parentNode.removeChild(needRemovebox)
         }
@@ -275,6 +286,14 @@ export default{
         ulDom.innerHTML = `<ul>${str}</ul>`
         ulDom.setAttribute('class','rateList')
         box.appendChild(ulDom)
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            if(ulDom){
+              this.minWidth = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
+              ulDom.style.width = document.getElementsByClassName('EBR')[0].clientWidth + 'px'
+            }
+          },280)
+        })
       } catch (error) {
         console.warn(error)
       }
@@ -394,7 +413,7 @@ export default{
      */
     headerClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR'){
-        return 'rightBorder'
+        return 'EBR rightBorder'
       }
       if(this.vm.reRenderLastChild.name == column.label){
         return 'rightBorder'
@@ -428,6 +447,9 @@ export default{
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
+      }
+      if(column.label == ''){
+        return 'hiddleBorder'
       }
       //判断是否是推荐供应商
       if(this.tuijianSuplier(column.property,row)){
@@ -510,6 +532,13 @@ export default{
     ::v-deep.tuijianSupplier{
       border-bottom: 2px solid blue;
     }
+    
+    ::v-deep tr:nth-child(even){
+      background-color: #FFFFFF;
+    }
+    ::v-deep .el-table__row{
+      height: unset !important;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;
@@ -554,6 +583,16 @@ export default{
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
       height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+      }
+    }
+    ::v-deep.el-table__fixed-body-wrapper{
+      overflow:visible;
+      height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+      }
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
@@ -582,8 +621,8 @@ export default{
       }
     }
     ::v-deep.leftRightBorder{
-      border-left: 1px solid #C5CCD6;
-      border-right: 1px solid #C5CCD6;
+      border-left: 1px solid #EBEEF5;
+      border-right: 1px solid #EBEEF5;
     }
     ::v-deep .bgcoor{
       background: #f5f7fa;
@@ -593,8 +632,11 @@ export default{
       }
     }
     ::v-deep .rightBorder{
-      border-right: 1px solid #C5CCD6;
+      border-right: 1px solid #EBEEF5;
       position: relative;
+    }
+    ::v-deep .hiddleBorder{
+      border-right: 0px;
     }
     ::v-deep .is-sortable{
       .cell{
@@ -617,7 +659,7 @@ export default{
   .headerContent{
     position: absolute;
     top: 0px;
-    left: -1px;
+    left: 0px;
     height: 0px;
     width: 0px;
     .c{
@@ -626,10 +668,10 @@ export default{
       z-index: 123;
       bottom: -1px;
       left:0PX;
-      border: 1px solid #C5CCD6;
+      border: 1px solid #EBEEF5;
       border-bottom: none;
       border-left:none;
-      border-top-right-radius: 5px;
+      // border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
       border-top: none;
@@ -640,28 +682,30 @@ export default{
         word-break: break-all;
       }
       ul{
-        border-right: 1px solid #C5CCD6;
-        border-top: 1px solid #C5CCD6;
+        border-right: 1px solid #EBEEF5;
+        border-top: 1px solid #EBEEF5;
         &:nth-child(2){
           overflow: hidden;
         }
         &:first-child{
-          border-top-right-radius: 3px;
-          overflow: hidden;
-          border-right: 0px;
-          border: none;
-          width: 0px;
+          border: 0px;
+          // border-top-right-radius: 3px;
+          // overflow: hidden;
+          // border-right: 0px;
+          // border: none;
+          // width: 0px;
           li{
-            border-right: 1px solid #C5CCD6;
-            &:first-child{
-              background-color:white;
-              border:none;
-              border-right: 1px solid #C5CCD6;
-            }
+            border:0px;
+            // border-right: 1px solid #EBEEF5;
+            // &:first-child{
+            //   background-color:white;
+            //   border:none;
+            //   border-right: 1px solid #EBEEF5;
+            // }
           }
         }
         li{
-          border-bottom: 1px solid #C5CCD6;
+          border-bottom: 1px solid #EBEEF5;
           height: 38px;
           &:last-child{
             border-bottom: none;
@@ -675,6 +719,9 @@ export default{
       }
       .lastChild{
         flex: 1;
+        &:first-child{
+          border: 0px;
+        }
         &:last-child{
           border-right: 0px;
         }
@@ -690,7 +737,7 @@ export default{
     padding-top: 200px;
     overflow-x: scroll;
     ::v-deep.el-table__fixed{
-          height: 97%!important;
+          height: calc(100% - 20px) !important;;
           bottom: -1px;
           padding-top: 200px;
           box-sizing: border-box;
@@ -707,18 +754,22 @@ export default{
               right: -1px;
               height: 0px;
               width: 0px;
-              top: -1px;
+              top: 0px;
               ul{
+                width: 100%;
                 position: absolute;
                 bottom: -1.8px;
                 right: 1.6px;
-                border: 1px solid #C5CCD6;
+                border-left: 1px solid #EBEEF5;
+                border-top: 1px solid #EBEEF5;
+                border-right: 1px solid #EBEEF5;
                 border-bottom: none;
-                border-top-left-radius: 10px;
+                // border-top-left-radius: 10px;
                 overflow: hidden;
-                min-width: 70px;
+                // min-width: 70px;
+                // width: 100%;
                 li{
-                    border-bottom: 1px solid #C5CCD6;
+                    border-bottom: 1px solid #EBEEF5;
                     line-height: 38px;
                     height: 38px;
                     padding: 0px 5px;
