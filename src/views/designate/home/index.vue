@@ -102,6 +102,13 @@
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
+          <!-- 取消定点 -->
+          <iButton
+            v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点"
+            @click="cancelNominate"
+          >
+            {{ language("QUXIAODINGDIAN", "取消定点") }}
+          </iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
@@ -199,6 +206,7 @@
 
     <!-- sel确认弹窗 -->
     <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
+    <cancelNominateDialog :visible.sync="cancelNominateDialogVisibal" :nomiId="nomiId" />
     <!-- 撤回弹窗 -->
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
     <!-- 新建定点申请弹窗 -->
@@ -229,11 +237,12 @@ import {
   nomiApprovalProcess,
   tranformRecall,
   unbindMtzCheck,
-  unbindMtz
+  unbindMtz,
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 import selDialog from './components/selDialog'
+import cancelNominateDialog from './components/cancelNominateDialog'
 import revokeDialog from './components/revokeDialog'
 import rfqDialog from './components/rfqDialog'
 
@@ -265,6 +274,8 @@ export default {
       // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
       selDialogVisibal: false,
+      nomiId:'',
+      cancelNominateDialogVisibal: false,
       tranformRecallLoading: false,
       showRevokeDialog: false,
       // 新建定点申请单
@@ -288,7 +299,8 @@ export default {
     rfqDialog,
     icon,
     dialogTableTips,
-    buttonTableSetting
+    buttonTableSetting,
+    cancelNominateDialog
   },
   mounted() {
     this.getFetchData()
@@ -639,6 +651,14 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
       return state
+    },
+    //取消定点 
+    async cancelNominate(){
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
+      const item = this.selectTableData[0]
+      if(item.applicationStatus!='NOMINATE') return iMessage.warn(this.language("QINGXUANZEYIDINGDIANZHUANGTAIDESHUJUJINXINGCAOZUO","请选择已定点状态的数据进行操作！"))
+      this.nomiId = item.id
+      this.cancelNominateDialogVisibal = true
     },
   }
 }
