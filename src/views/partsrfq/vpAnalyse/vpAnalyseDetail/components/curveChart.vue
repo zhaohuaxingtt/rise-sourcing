@@ -57,6 +57,11 @@ export default {
   data() {
     return {};
   },
+  watch:{
+    '$i18n.locale':(val)=>{
+      this.initEcharts();
+    }
+  },
   methods: {
     setBg(data) {
       return {
