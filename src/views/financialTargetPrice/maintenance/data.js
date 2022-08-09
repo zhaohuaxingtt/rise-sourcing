@@ -17,7 +17,7 @@ export const tableTitle = [
   {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true, sortable: true},
   {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true, sortable: true},
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100, sortable: true},
-  {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100, sortable: true},
+  {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 100, sortable: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
   {props:'applyStatusDesc',name:'申请状态', key: "SHENQINGZHUANGTAI", tooltip: true, width: 110, sortable: true},
