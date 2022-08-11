@@ -1733,7 +1733,7 @@ export default {
     border-top: 1px solid #666;
   }
 .contentPdf{
-   ::v-deep .rsCard {
+  ::v-deep .rsCard {
     box-shadow: none;
 
     .title {
@@ -1918,6 +1918,9 @@ export default {
         font-size: 13px !important;
       }
     }
+    .complete {
+      color: rgb(104, 193, 131);
+    }
   }
   ::v-deep .checkList {
     display: flex;
@@ -1953,9 +1956,6 @@ export default {
     }
   }
 
-  :v-deep .complete {
-    color: rgb(104, 193, 131);
-  }
 
   :v-deep .cancel {
     color: rgb(95, 104, 121);

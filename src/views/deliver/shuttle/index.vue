@@ -13,22 +13,7 @@
             ></iInput>
           </div>
         </div>
-        <rowList :rowData="allTableData" :header="tableTitle"/>
-        <tableList
-          v-if="tableTitle.length > 0"
-          row-key="id"
-          :height="tableHeight||500"
-          ref="functionMenu"
-          custom-selection
-          :loading="tableLoading||false"
-          :data="allTableData"
-          :columns="tableTitle"
-          :tree-expand="tableExpanded"
-          :default-selected-rows="defaultSelectedRows||[]"
-          highlight-current-row
-          @handle-selection-change="handleSelectionChange"
-          @row-click="handleRowClick"
-        />
+        <item :rowData="allTableData" :header="tableTitle"/>
       </iCard>
       <div class="shuttle-btn-box">
         <i class="el-icon-caret-left font64"></i>
@@ -52,14 +37,11 @@
 
 <script>
 import { iPage, iCard, iInput } from "rise";
-import tableList from "./shuttleTable.vue";
-import rowList from "./rowList";
-import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import item from "./item";
 import { shuttleTableTitle as tableTitle } from "../components/data.js";
 
 export default {
-  components: { iPage, iCard, iInput, tableList, rowList },
-  mixins: [tableSortMixins],
+  components: { iPage, iCard, iInput, item },
   data() {
     return {
       leftSearch: "",

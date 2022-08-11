@@ -74,10 +74,6 @@ export const tableTitle = [
 
 export const shuttleTableTitle = [
   {
-    type: 'selection',
-    width: 50
-  },
-  {
     prop: 'col1',
     label: '材料组名称',
     i18n: '材料组名称',
