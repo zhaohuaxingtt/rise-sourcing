@@ -93,13 +93,15 @@
     <el-tab-pane 
                  name="two"
                  label="专项分析工具"
-                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
+                 v-if="hasPermission('RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU')"
+                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU">
       <gather />
     </el-tab-pane>
     <el-tab-pane lazy
                  name="three"
                  label="谈判基本信息"
-                 v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI|谈判基本信息">
+                 v-if="hasPermission('RFQ_DETAIL_TIPS_TANPANJIBENXINXI')"
+                 v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI">
       <negotiateBasicInfor :rfqInfoData="rfqInfoData"></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
@@ -115,6 +117,7 @@ import { icardData } from './components/data'
 import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 import {  downloadPdfMixins } from '@/utils/pdf'
+import { hasPermission } from "@/utils";
 import { udMutilfiles, reportAdd } from '@/api/partsrfq/reportList/index'
 export default {
   mixins: [downloadPdfMixins],
@@ -145,7 +148,7 @@ export default {
     }
   },
   methods: {
-      
+    hasPermission,
     handleTabClick (target) {
       this.activityTabIndex = target.name
     },
