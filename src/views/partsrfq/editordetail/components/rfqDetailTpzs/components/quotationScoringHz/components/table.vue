@@ -149,9 +149,19 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+                <div class="tag">
+                  <el-tooltip content="Bottom center" placement="bottom" effect="light">
+                    <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
+                  </el-tooltip>
+                </div>
+                <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+                  <div class="tag">
+                    <el-tooltip content="Bottom center" placement="bottom" effect="light">
+                      <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
+                    </el-tooltip>
+                  </div>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "skdAPrice"'>
@@ -546,6 +556,24 @@ export default{
         white-space:pre-line!important;
         text-align: center;
       }
+      .tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        background: #54b88e;
+        transform: translate3d(50%, -50%, 0) rotate(-135deg);
+        .icon{
+          transform: rotate(135deg) scale(0.8);
+          display: inline-block;
+          color: white;
+          overflow: unset;
+          height: 17px;
+          width: 17px;
+          font-size: 8px;
+        }
+      }
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
@@ -584,6 +612,7 @@ export default{
       height:auto!important;
       td{
         border-bottom: 1px solid #ebeef5;
+        overflow: hidden;
       }
     }
     ::v-deep.el-table__fixed-body-wrapper{
