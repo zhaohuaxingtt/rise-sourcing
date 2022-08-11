@@ -537,6 +537,8 @@ export default {
               this.$message({
                 dangerouslyUseHTMLString: true,
                 type: "error",
+                duration: 10000, // error 错误提示显示10秒
+                showClose: true,
                 message: Array.isArray(res.data.messageList) ? res.data.messageList.reduce((acc, cur, index) => {
                   return acc + `<p>${ this.$i18n.locale === "zh" ? cur.zhMsg : cur.engMsg }</p>${ index != res.data.messageList.length - 1 ? '<br/>' : '' }`
                 }, "") : "Error"
