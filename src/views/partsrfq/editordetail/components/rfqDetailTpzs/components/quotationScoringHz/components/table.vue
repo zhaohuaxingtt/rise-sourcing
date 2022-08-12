@@ -149,19 +149,14 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                <div class="tag">
-                  <el-tooltip content="Bottom center" placement="bottom" effect="light">
+                <div class="tag" v-if="scope.row.tpl">
+                  <el-tooltip :content="language('TONGPILIANG','同批量')" placement="bottom" effect="light">
                     <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
                   </el-tooltip>
                 </div>
                 <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                  <div class="tag">
-                    <el-tooltip content="Bottom center" placement="bottom" effect="light">
-                      <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
-                    </el-tooltip>
-                  </div>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "skdAPrice"'>
