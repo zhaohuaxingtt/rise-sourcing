@@ -13,11 +13,11 @@
             ></iInput>
           </div>
         </div>
-        <item :rowData="allTableData" :header="tableTitle"/>
+        <item :rowData="leftTableData" :header="tableTitle" :key="left"/>
       </iCard>
       <div class="shuttle-btn-box">
-        <i class="el-icon-caret-left font64"></i>
-        <i class="el-icon-caret-right font64"></i>
+        <i class="el-icon-caret-right font64" @click="toRight"></i>
+        <i class="el-icon-caret-left font64" @click="toLeft"></i>
       </div>
       <iCard class="shuttle-item" title="HeavyItem清单">
         <div class="search">
@@ -30,6 +30,7 @@
             ></iInput>
           </div>
         </div>
+        <item :rowData="rightTableData" :header="tableTitle" key="right"/>
       </iCard>
     </div>
   </iPage>
@@ -48,6 +49,8 @@ export default {
       rightSearch: "",
       tableTitle,
       tableExpanded: { expandKey: 'name', childrenKey: 'menuList' },
+      leftTableData:[],
+      rightTableData:[],
       allTableData: [
         {
           col1: "TEST",
@@ -63,7 +66,11 @@ export default {
               col1:'child-1',
               col2: "child-2",
               id:5
-            }
+            },{
+              col1:'child-1',
+              col2: "child-2",
+              id:6
+            },
           ]
         },
         {
@@ -80,11 +87,60 @@ export default {
     };
   },
   computed: {
-    tableList() {
-      return this.allTableData.filter((item) => item.selectBorder);
-    },
+    rightTableData() {
+      let result = []
+      this.allTableData.forEach(item=>{
+        const item_ = JSON.parse(JSON.stringify(item))
+        if(item_.check || item_.isIndeterminate){
+          if(item_.children){
+            let children = []
+            item_.children.forEach((child_)=>{
+              if(child_.check){
+                children.push(child_)
+              }
+            })
+            item_.children = children
+          }
+          result.push(item_)
+        }
+      })
+      console.log(result);
+      return result
+    }
+  },
+  created(){
+    this.leftTableData = JSON.parse(JSON.stringify(this.allTableData));
+    this.getRightTable()
   },
   methods: {
+    toRight(){
+      this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
+      this.getRightTable()
+    },
+    toLeft(){
+      this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
+      this.getRightTable()
+    },
+    getRightTable(){
+      let result = []
+      this.allTableData.forEach(item=>{
+        const item_ = JSON.parse(JSON.stringify(item))
+        if(item_.check || item_.isIndeterminate){
+          if(item_.children){
+            let children = []
+            item_.show = false
+            item_.children.forEach((child_)=>{
+              if(child_.check){
+                children.push(child_)
+              }
+            })
+            item_.children = children
+          }
+          result.push(item_)
+        }
+      })
+      this.rightTableData = result
+    },
     handleSelectionChange() {},
     handleRowClick(row) {
       this.$emit('set-resource-parent', row)

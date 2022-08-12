@@ -11,7 +11,7 @@
         <div class="row-list">
           <el-checkbox :indeterminate="item.isIndeterminate" v-model="item.check" @change="itemCheckChange($event,item,index)"></el-checkbox>
           <div class="column-item">
-            <span v-if="item.children" @click="changeOpen(item,index)">
+            <span v-if="item.children" @click="changeOpen(item)">
               <icon v-if="item.show" symbol name="iconliebiaoshouqilishishuju" />
               <icon v-else-if="!item.show" symbol name="iconliebiaozhankailishishuju" />
             </span>
@@ -60,53 +60,13 @@ import { icon } from "rise";
     },
     data() {
       return {
-        isIndeterminate: false,
         checkAll:false,
-        checkedCities:[],
-        data: [
-          {
-            col1:'row-col1',
-            col2:'row-col2',
-            id:1,
-            children:[
-              {
-                col1:'row-col1-1',
-                col2:'row-col1-2',
-                id:2
-              },{
-                col1:'row-col1-3',
-                col2:'row-col1-4',
-                id:4,
-            children:[
-              {
-                col1:'row-col1-1',
-                col2:'row-col1-2',
-                id:2
-              },{
-                col1:'row-col1-3',
-                col2:'row-col1-4',
-                id:4
-              },
-            ]
-              },
-            ]
-          },{
-            col1:'row-col2',
-            col2:'row-col2',
-            id:3,
-            children:[
-              {
-                col1:'row-col1-1',
-                col2:'row-col1-2',
-                id:2
-              },{
-                col1:'row-col1-3',
-                col2:'row-col1-4',
-                id:4
-              },
-            ]
-          }
-        ]
+        checkedCities:[]
+      }
+    },
+    computed:{
+      isIndeterminate(){
+        return this.checkIsIndeterminate(this.rowData)
       }
     },
     methods:{
@@ -121,60 +81,53 @@ import { icon } from "rise";
       checkData(data,result=[],check=null){
         if(Array.isArray(data)){
           data.forEach(item=>{
-              if(check!=null){
-                item.check = check
-              }
-              else{
-                result.push(!!item.check)
-              }
-              if(item.children&&item.children.length){
-                this.checkData(item.children, result , check)
-              }
+            if(check!=null){
+              this.$set(item,'isIndeterminate',false)
+              this.$set(item,'check',check)
+            }
+            else{
+              result.push(!!item.check)
+            }
+            if(item.children&&item.children.length){
+              this.checkData(item.children, result , check)
+            }
           })
         }
         return result
       },
-      changeOpen(item,index){
+      changeOpen(item){
+        console.log(item);
         this.$set(item, 'show', !item.show)
-        // this.data = this.data.map((item,i)=>{
-        //   if(i==index){
-        //     item.show = !item.show
-        //   }
-        //   return item
-        // })
-        // console.log(this.data);
       },
       checkChange(val){
-        this.isIndeterminate = false
         this.checkData(this.rowData,[],val)
       },
-      itemCheckChange(val,item,index) {
+      itemCheckChange(val,item) {
         if(item.children){
+          this.$set(item, 'isIndeterminate', false)
           item.children.forEach(child=>{
             if(val)
-            child.check = true
+              this.$set(child,'check',true)
             else
-            child.check = false
+            this.$set(child,'check',false)
           })
         }
-        this.isIndeterminate = this.checkIsIndeterminate(this.rowData)
       },
-      childCheckChange(val,item,index){
+      childCheckChange(val,item){
         if(val){
           let isIndeterminate = item.children.some(child=>!child.check)
-          item.isIndeterminate = isIndeterminate
+          this.$set(item, 'isIndeterminate', isIndeterminate)
           if(isIndeterminate){
-            item.check = false
+            this.$set(item,'check',false)
           }else{
-            item.check = true
+            this.$set(item,'check',true)
           }
         }else{
           let isIndeterminate = item.children.some(child=>child.check)
           item.isIndeterminate = isIndeterminate
-          item.check = false
+          this.$set(item, 'isIndeterminate', isIndeterminate)
+          this.$set(item,'check',false)
         }
-        this.$set(this.rowData,index,item)
-        this.isIndeterminate = this.checkIsIndeterminate(this.rowData)
       }
     }
   }
