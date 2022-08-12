@@ -149,7 +149,7 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                <div class="tag" v-if="scope.row.tpl">
+                <div class="tag" v-if="scope.row.isOriginprice">
                   <el-tooltip :content="language('TONGPILIANG','同批量')" placement="bottom" effect="light">
                     <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
                   </el-tooltip>
