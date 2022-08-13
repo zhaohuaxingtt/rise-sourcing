@@ -293,7 +293,6 @@ export default {
 		}
 		this.purchaseFactory()
 		this.getProcureGroup()
-		this.getLocation()
 		this.getLineInfo()
 	},
 	computed: {
@@ -373,8 +372,21 @@ export default {
 			) {
 				return iMessage.warn('请输入必填项')
 			}
-			if (this.tableListData.find((e) => !e.quantity)) {
+			// 一次性
+			if(this.baseinfodata.subType == 'ZN_ONE'){
+				if (this.tableListData.find((e) => !e.quantity)) {
 				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			}
+			}else{
+				// 框架
+				let flag = false
+				// 至少有一条数据不为空
+				this.tableListData.forEach(item=>{
+					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity )
+				})
+				if (flag) {
+					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
+				}
 			}
 			const query = this.tableListData.map((item) => {
 				return {
@@ -423,7 +435,7 @@ export default {
 		//退出编辑
 		exitEditor() {
 			this.canEdit = false
-			this.getTableList()
+			// this.getTableList()
 		},
 		// 发送给采购员
 		sendToLine() {
@@ -531,7 +543,7 @@ export default {
 				normalPrQuantityYears: [],
 			})
 			this.itemNum += 10
-			this.getTableList()
+			// this.getTableList()
 		},
 
 		// 删除项次
@@ -595,18 +607,6 @@ export default {
 		handleSelectionChange(val) {
 			this.selectTableData = val
 		},
-
-		getLocation() {
-			inventoryLocation({
-				isSpare: false,
-			})
-				.then((res) => {
-					if (res.data) {
-						this.addressList = res.data
-					}
-				})
-				.catch((err) => {})
-		},
 		//导出
 		exportExcel() {
 			applyExport(this.baseinfodata.riseCode)
@@ -644,7 +644,7 @@ export default {
 					// this.getTableListFn()
 				} else {
 					this.tableListData = msg.data
-					this.getTableList()
+					// this.getTableList()
 				}
 				if (msg.desZh == null || msg.desZh == '') {
 					return iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
