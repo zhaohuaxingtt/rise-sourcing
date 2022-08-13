@@ -129,7 +129,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<!--<span style="color: red">*</span>-->
+						<span style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
 						<iInput
@@ -170,6 +170,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
+						<span v-if="baseinfodata.subType === 'ZN_ONE'" style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
 						<span
@@ -279,6 +280,7 @@
 					<template slot-scope="scope">
 						<iSelect
 							v-if="canEdit"
+							:disabled="!scope.row.procureFactory"
 							v-model="scope.row['storageLocationCode']"
 							@change="
 								(inventoryLocation) =>
@@ -287,7 +289,7 @@
 							value-key="id"
 						>
 							<el-option
-								v-for="items in addressList"
+								v-for="items in scope.row.addressList"
 								:key="items.id"
 								:value="items.inventoryLocation"
 								:label="`${items.inventoryLocation}-${items.description}`"
@@ -352,7 +354,7 @@ import { iInput, iSelect, iDatePicker, iMessage } from 'rise'
 import ItemDialog from '../../components/itemDialog.vue'
 import QuilityDialog from './quilityDialog.vue'
 import { getSupplierInfoQuery } from '@/api/ws2/modelOrder'
-import { validationPart, purchaseGroup } from '@/api/ws2/purchaserequest'
+import { validationPart, purchaseGroup, inventoryLocation } from '@/api/ws2/purchaserequest'
 export default {
 	components: {
 		iInput,
@@ -393,6 +395,17 @@ export default {
 	},
 	created() {},
 	methods: {
+
+		getLocation(purchaseFactory,row) {
+			inventoryLocation({
+				isSpare: false,
+				procureFactory:purchaseFactory
+			})
+				.then((res) => {
+					this.$set(row,'addressList',res.data||[])
+				})
+				.catch((err) => {})
+		},
 		openDetailPage(val) {
 			this.showItem = true
 			this.detailInfo = val
@@ -430,6 +443,10 @@ export default {
 				row.factoryName = factory.factoryName
 				row.tmFactoryId = factory.id
 			}
+			this.$set(row,'storageLocationCode','')
+			console.log(procureFactory);
+			console.log(factory);
+			this.getLocation(procureFactory,row)
 			this.$emit('handleFactoryChange', procureFactory)
 			/* let data = val.split('-')
 			let factoryCode
