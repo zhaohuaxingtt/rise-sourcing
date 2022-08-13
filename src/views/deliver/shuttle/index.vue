@@ -13,7 +13,14 @@
             ></iInput>
           </div>
         </div>
-        <item :rowData="leftTableData" :header="tableTitle" :key="left"/>
+        <!-- <item :rowData="leftTableData" :header="tableTitle" :key="left"/> -->
+        <shuttleTable :data="leftTableData" :columns="tableTitle" :rowKey="'id'"
+      v-if="leftTableData.length > 0"
+      row-key="id"
+      ref="functionMenu"
+      custom-selection
+      :tree-expand="tableExpanded"
+      highlight-current-row />
       </iCard>
       <div class="shuttle-btn-box">
         <i class="el-icon-caret-right font64" @click="toRight"></i>
@@ -39,16 +46,17 @@
 <script>
 import { iPage, iCard, iInput } from "rise";
 import item from "./item";
+import shuttleTable from "./shuttleTable";
 import { shuttleTableTitle as tableTitle } from "../components/data.js";
 
 export default {
-  components: { iPage, iCard, iInput, item },
+  components: { iPage, iCard, iInput, item, shuttleTable },
   data() {
     return {
       leftSearch: "",
       rightSearch: "",
       tableTitle,
-      tableExpanded: { expandKey: 'name', childrenKey: 'menuList' },
+      tableExpanded: { expandKey: 'col1', childrenKey: 'children' },
       leftTableData:[],
       rightTableData:[],
       allTableData: [
@@ -65,10 +73,11 @@ export default {
             {
               col1:'child-1',
               col2: "child-2",
-              id:5
+              id:5,
             },{
               col1:'child-1',
               col2: "child-2",
+              // visible:true,
               id:6
             },
           ]

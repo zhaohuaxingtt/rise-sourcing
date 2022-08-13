@@ -73,6 +73,12 @@ export const tableTitle = [
 ]
 
 export const shuttleTableTitle = [
+  { type: 'customSelection', width: 50 },
+  {
+    type: 'fullIndex',
+    width: 80,
+    align: 'left'
+  },
   {
     prop: 'col1',
     label: '材料组名称',
