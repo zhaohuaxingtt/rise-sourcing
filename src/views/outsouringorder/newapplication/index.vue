@@ -374,15 +374,15 @@ export default {
 			}
 			// 一次性
 			if(this.baseinfodata.subType == 'ZN_ONE'){
-				if (this.tableListData.find((e) => !e.quantity)) {
+				if (this.tableListData.find((e) => e.quantity>0)) {
 				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
 			}
+			// 框架
 			}else{
-				// 框架
 				let flag = false
 				// 至少有一条数据不为空
 				this.tableListData.forEach(item=>{
-					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity )
+					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity>0 )
 				})
 				if (flag) {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
@@ -390,8 +390,8 @@ export default {
 			}
 			const query = this.tableListData.map((item) => {
 				return {
-					...item,
 					...this.baseinfodata,
+					...item,
 					quantity: item.quantity,
 				}
 			})
@@ -628,7 +628,10 @@ export default {
 			findNormalPrById(params).then((res) => {
 				if (res.data) {
 					this.baseinfodata = { ...res.data[0] }
-					this.tableListData = res.data
+					this.tableListData = res.data.map(item=>{
+						item.storageLocation = item.storageLocationCode&&(item.storageLocationCode+'-'+item.storageLocationDesc)||''
+						return item
+					})
 				}
 			})
 		},
