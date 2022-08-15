@@ -38,6 +38,7 @@
 					<iInput
 						v-if="canEdit"
 						v-model="scope.row.quantity"
+						@input="handleInput($event, scope.row)"
 						placeholder="请输入数量"
 					/>
 					<span v-else>{{ scope.row.quantity }}</span>
@@ -50,6 +51,7 @@
 <script>
 import { iDialog, iButton, iInput, iMessage } from 'rise'
 import tablePart from '@/components/iTableSort'
+import { numberProcessor } from "@/utils";
 
 export default {
 	components: {
@@ -100,6 +102,10 @@ export default {
 		openOrderPage() {
 			this.$emit('openOrderPage', this.detailInfo)
 		},
+		// 限制输入数值
+    handleInput(value, row) {
+      this.$set(row, "quantity", numberProcessor(value, 2));
+    },
 
 		// 新增项次
 		increatment() {
