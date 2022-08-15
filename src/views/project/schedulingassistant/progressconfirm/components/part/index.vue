@@ -25,6 +25,7 @@
           <carProjectSelect v-else-if="item.type === 'carProjectSelect'" v-model="searchParams[item.value]" :filterable="item.filterable" />
           <!--------------字典下拉----------------------->
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { iSearch, iInput, iButton } from 'rise'
+import { iSearch, iInput, iButton, iMultiLineInput } from 'rise'
 import confirmTable from '../confirmTable'
 import { tableTitleNomi, tableTitleKickoff, searchList } from './data'
 import fsSelect from '@/views/project/components/commonSelect/fsSelect'
@@ -67,7 +68,7 @@ import iDicoptions from 'rise/web/components/iDicoptions'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
 import { roleMixins } from "@/utils/roleMixins";
 export default {
-  components: { fsConfirm, confirmTable, iSearch, iInput, iButton, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions },
+  components: { fsConfirm, confirmTable, iSearch, iInput, iButton, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, iMultiLineInput },
   mixins: [roleMixins],
   data() {
     return {

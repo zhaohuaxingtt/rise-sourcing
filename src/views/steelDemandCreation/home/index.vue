@@ -17,6 +17,7 @@
               <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
               <iInput clearable v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
+            <iMultiLineInput v-else-if="items.type === 'multiLineInput'" v-model="form[items.moduleKey]" :title="language(items.i18nKey,items.i18nName)" />
             <template v-else>
               <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
                 <el-option v-for="(item,i) in items.List" :key='i' :label="item.name" :value="item.code"></el-option>
@@ -76,7 +77,7 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
+import {iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon,iMultiLineInput} from 'rise'
 import headerNav from "@/components/headerNav"
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
@@ -92,7 +93,7 @@ import {getToken} from '@/utils'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins,tableSortMixins],
-  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav,buttonTableSetting},
+  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, iMultiLineInput, headerNav,buttonTableSetting},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()

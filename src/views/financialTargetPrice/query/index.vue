@@ -27,6 +27,7 @@
           </iSelect> 
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, iMultiLineInput } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -102,7 +103,7 @@ import moment from 'moment'
 import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
   mixins: [pageMixins],
-  components: {iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
+  components: {iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch, iMultiLineInput, modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,

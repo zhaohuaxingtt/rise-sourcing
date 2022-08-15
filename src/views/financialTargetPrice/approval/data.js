@@ -38,7 +38,7 @@ export const tableMockData = [
 export const searchList = [
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_RFQNUM|财务目标价管理-目标价审批-RFQ编号'},
   {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_APPROVAL_FSNUM|财务目标价管理-目标价审批-FSGSNO'},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNUM|财务目标价管理-目标价审批-零件号'},
+  {value: 'partNum', label: '零件号', type: 'multiLineInput', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNUM|财务目标价管理-目标价审批-零件号'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNAME|财务目标价管理-目标价审批-零件名称'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER',permission: 'FINANCIALTARGETPRICE_APPROVAL_CF|财务目标价管理-目标价审批-CF'},
   {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE',permission: 'FINANCIALTARGETPRICE_APPROVAL_LINIE|财务目标价管理-目标价审批-LINIE'},

@@ -53,7 +53,7 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       i18nName:'零件号',
       i18nKey:'LINGJIANHAO',
       permissionKey:'SOURCING_LINGJIANHAO',
-      type:'input',
+      type:'multiLineInput',
       List:[],
       moduleKey:'partNum'
     },

@@ -43,7 +43,7 @@ export const tableTitleKickoff = [
 
 export const searchList = [
   {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'carProjectSelect', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input'},
+  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'multiLineInput'},
   {value: 'confirmStatus', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'selectDict', selectOption: 'PART_SCHEDULE_CONFIRM_STATUS'},
   {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions',hidden:true,},
   {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'productPurchaserSelect', filterable: true, selectOption: 'purchaseOptions'}

@@ -80,7 +80,8 @@
 
       <!-- 零件号 -->
       <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['behalfPartsNum']" ></iInput>
+        <!-- <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['behalfPartsNum']" ></iInput> -->
+        <iMultiLineInput v-model="form['behalfPartsNum']" :title="$t('LK_SPAREPARTSNUMBER')" />
       </el-form-item>
 
        <!-- 申请日期起止 -->
@@ -148,14 +149,15 @@ import {
   iMessage,
   iSelect,
   iInput,
-  iButton
+  iButton,
+  iMultiLineInput
 } from "rise";
 import Moment from 'moment';
 import _ from 'lodash';
 
 export default {
   components: {
-    iSearch, iSelect, iInput
+    iSearch, iSelect, iInput, iMultiLineInput
   },
   data(){
     return {
