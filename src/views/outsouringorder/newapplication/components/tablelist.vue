@@ -182,6 +182,7 @@
 						<iInput
 							v-else-if="baseinfodata.subType === 'ZN_ONE' && canEdit"
 							v-model="scope.row.quantity"
+							@input="handleInput($event, scope.row)"
 							placeholder="请输入"
 						/>
 						<span v-else>{{ scope.row['quantity'] }}</span>
@@ -281,7 +282,8 @@
 						<iSelect
 							v-if="canEdit"
 							:disabled="!scope.row.procureFactory"
-							v-model="scope.row['storageLocationCode']"
+							v-model="scope.row.storageLocation"
+							@visible-change="visibleChange($event,scope.row)"
 							@change="
 								(inventoryLocation) =>
 									departmentChange(inventoryLocation, scope.row)
@@ -291,7 +293,7 @@
 							<el-option
 								v-for="items in scope.row.addressList"
 								:key="items.id"
-								:value="items.inventoryLocation"
+								:value="`${items.inventoryLocation}-${items.description}`"
 								:label="`${items.inventoryLocation}-${items.description}`"
 							/>
 						</iSelect>
@@ -354,6 +356,7 @@ import { iInput, iSelect, iDatePicker, iMessage } from 'rise'
 import ItemDialog from '../../components/itemDialog.vue'
 import QuilityDialog from './quilityDialog.vue'
 import { getSupplierInfoQuery } from '@/api/ws2/modelOrder'
+import { numberProcessor } from "@/utils";
 import { validationPart, purchaseGroup, inventoryLocation } from '@/api/ws2/purchaserequest'
 export default {
 	components: {
@@ -395,7 +398,10 @@ export default {
 	},
 	created() {},
 	methods: {
-
+		// 限制输入数值
+    handleInput(value, row) {
+      this.$set(row, "quantity", numberProcessor(value, 2));
+    },
 		getLocation(purchaseFactory,row) {
 			inventoryLocation({
 				isSpare: false,
@@ -444,8 +450,8 @@ export default {
 				row.tmFactoryId = factory.id
 			}
 			this.$set(row,'storageLocationCode','')
-			console.log(procureFactory);
-			console.log(factory);
+			this.$set(row,'storageLocationDesc','')
+			this.$set(row,'storageLocation','')
 			this.getLocation(procureFactory,row)
 			this.$emit('handleFactoryChange', procureFactory)
 			/* let data = val.split('-')
@@ -560,12 +566,19 @@ export default {
 				return ''
 			}
 		},
-		departmentChange(inventoryLocation, row) {
-			const location = this.addressList.find(
-				(e) => e.inventoryLocation === inventoryLocation
-			)
-			if (location) {
-				row.storageLocationDesc = location.description
+		departmentChange(item, row) {
+			// const location = row.addressList.find(
+			// 	(e) => e.inventoryLocation === inventoryLocation
+			// )
+			if (item) {
+				this.$set(row,'storageLocationCode',item.split('-')[0])
+				this.$set(row,'storageLocationDesc',item.split('-')[1])
+			}
+		},
+		// 展开库存下拉时查询下拉数据
+		visibleChange(visible,row){
+			if(visible&&!row.addressList){
+				this.getLocation(row.procureFactory,row)
 			}
 		},
 		handleUnitChange(val, status) {
