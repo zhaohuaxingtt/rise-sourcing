@@ -61,7 +61,6 @@
 						module_obj_ae: '零件采购项目', 
 						bizId_obj_ae: 'projectId', 
 						queryParams:['bizId_obj_ae']}"
-					credentials
 					isPage
 					isUser
 					class="margin-left20"
