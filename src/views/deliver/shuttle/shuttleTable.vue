@@ -470,7 +470,9 @@ export default {
       this.virtualListConfig.total = this.data.length
       this.virtualListConfig.pages = Math.ceil(this.data.length / 20)
       if (this.treeExpand) {
+        // 树形数据转为list数据，通过visible控制显示隐藏
         this.tableData = this.getTreeTableData(this.data)
+        console.log(this.tableData);
         /****************** 20211130 如果有默认的，先emit */
         /* if (this.defaultSelectedRows) {
           this.selectedRows = this.tableData.filter((e) =>
@@ -507,6 +509,8 @@ export default {
           const checkedRootNums = this.data.filter((e) =>
             this.defaultCheckedKeys.includes(e[this.rowKey])
           )
+          console.log(checkedRootNums);
+          this.indeterminateAll = false
           if (checkedRootNums.length) {
             this.indeterminateAll = true
           }
@@ -592,8 +596,8 @@ export default {
 
       return res
     },
+    // 通过单击事件，修改tableData中对应child的visible的值
     handleCellClick(row, column) {
-      // console.log(row,column,'=====');
       if (!this.emitLabel.includes(column.label)) {
         if (this.isCustomSelection) {
           console.log('QWQ')
@@ -720,6 +724,7 @@ export default {
       return true
     },
     handleSelect(selection, row) {
+      console.log(selection);
       this.$emit('select', selection, row)
     },
     handleAllSelect(selection) {

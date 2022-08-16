@@ -15,12 +15,12 @@
         </div>
         <!-- <item :rowData="leftTableData" :header="tableTitle" :key="left"/> -->
         <shuttleTable :data="leftTableData" :columns="tableTitle" :rowKey="'id'"
-      v-if="leftTableData.length > 0"
-      row-key="id"
-      ref="functionMenu"
-      custom-selection
-      :tree-expand="tableExpanded"
-      highlight-current-row />
+          row-key="id"
+          ref="functionMenu"
+          custom-selection
+          @handle-selection-change="handleSelectionChangeLeft"
+          :tree-expand="tableExpanded"
+          highlight-current-row />
       </iCard>
       <div class="shuttle-btn-box">
         <i class="el-icon-caret-right font64" @click="toRight"></i>
@@ -37,7 +37,14 @@
             ></iInput>
           </div>
         </div>
-        <item :rowData="rightTableData" :header="tableTitle" key="right"/>
+        <!-- <item :rowData="rightTableData" :header="tableTitle" key="right"/> -->
+        <shuttleTable :data="rightTableData" :columns="tableTitle" :rowKey="'id'"
+          row-key="id"
+          ref="functionMenu"
+          custom-selection
+          :tree-expand="tableExpanded"
+          @handle-selection-change="handleSelectionChangeRight"
+          highlight-current-row />
       </iCard>
     </div>
   </iPage>
@@ -93,6 +100,9 @@ export default {
           id: 4,
         }
       ],
+      rightTableData:[],
+      selectDataLeft:[],
+      selectDataRight:[]
     };
   },
   computed: {
@@ -100,11 +110,11 @@ export default {
       let result = []
       this.allTableData.forEach(item=>{
         const item_ = JSON.parse(JSON.stringify(item))
-        if(item_.check || item_.isIndeterminate){
+        if(item_.position=='right'){
           if(item_.children){
             let children = []
             item_.children.forEach((child_)=>{
-              if(child_.check){
+              if(child_.position=='right'){
                 children.push(child_)
               }
             })
@@ -122,18 +132,56 @@ export default {
     this.getRightTable()
   },
   methods: {
-    toRight(){
-      this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
-      this.getRightTable()
+    // 左侧选中数据
+    handleSelectionChangeLeft(val,result){
+      this.selectDataLeft = val
     },
+    // 右侧选中数据
+    handleSelectionChangeRight(val,result){
+      this.selectDataRight = val
+    },
+    // 同步左侧选中数据到右侧中
+    toRight(){
+      let rightTableData = JSON.parse(JSON.stringify(this.rightTableData))
+      let rightIdList = rightTableData.map(child=>child.id)
+      this.selectDataLeft.forEach(item=>{
+          if(!rightIdList.includes(item.id)){
+            rightTableData.push(item)
+          }
+      })
+      this.rightTableData = JSON.parse(JSON.stringify(rightTableData))
+      // this.getRightTable()
+    },
+    
     toLeft(){
-      this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
-      this.getRightTable()
+      console.log(this.selectDataRight);
+      let rightTableData = JSON.parse(JSON.stringify(this.rightTableData))
+      // this.rightTableData = 
+      this.selectDataRight.forEach(item=>{
+        if(!item.isIndeterminate){
+          rightTableData.forEach((child,index)=>{
+            if(child.id===item.id){
+              rightTableData.splice(index,1)
+            }
+          })
+        }
+      })
+      this.rightTableData = JSON.parse(JSON.stringify(rightTableData))
+      // this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
+      // this.getRightTable()
     },
     getRightTable(){
+      this.rightTableData = JSON.parse(JSON.stringify(this.selectDataLeft)).map(item=>{
+        item.checked = false;
+        item.expanded = false
+        item.visible = item.uniqueId.split('-').length>1?false:true;
+        return item
+      })
+      return
       let result = []
       this.allTableData.forEach(item=>{
         const item_ = JSON.parse(JSON.stringify(item))
+        console.log(item_);
         if(item_.check || item_.isIndeterminate){
           if(item_.children){
             let children = []
@@ -150,7 +198,6 @@ export default {
       })
       this.rightTableData = result
     },
-    handleSelectionChange() {},
     handleRowClick(row) {
       this.$emit('set-resource-parent', row)
     },
