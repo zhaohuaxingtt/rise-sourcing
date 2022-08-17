@@ -5,11 +5,10 @@ export const searchList = [
 ]
 
 export const tableTitle = [
-  { props: "col1", name: "节点(Activity)序号", key: "", tooltip: true, width:120 },
+  { props: "col1", name: "节点(Activity)序号", key: "", tooltip: true, width:160 },
   { props: "col2", name: "节点(Activity)", key: "", tooltip: true, minWidth:120 },
   { props: "col3", name: "节点(Activity)类型", key: "", tooltip: true, minWidth:120 },
   { props: "col4", name: "扩展节点", key: "", tooltip: true, minWidth:120 },
   { props: "col5", name: "Soll", key: "", tooltip: true, width:120 },
   { props: "col6", name: "lst", key: "", tooltip: true, width:120 },
-  { props: "col7", name: "操作", key: "", tooltip: true, width:120 },
 ]
