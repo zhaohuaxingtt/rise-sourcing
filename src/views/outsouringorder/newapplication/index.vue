@@ -374,9 +374,9 @@ export default {
 			}
 			// 一次性
 			if(this.baseinfodata.subType == 'ZN_ONE'){
-				if (this.tableListData.find((e) => e.quantity>0)) {
-				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
-			}
+				if (!this.tableListData.find((e) => e.quantity>0)) {
+					return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+				}
 			// 框架
 			}else{
 				let flag = false
