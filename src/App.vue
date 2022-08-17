@@ -30,4 +30,17 @@ export default {
   overflow: hidden;
   background-color: $color-background;
 }
+.watermark{
+  display: flex;
+  width: 100%;
+  flex-flow: column;
+  text-align: center;
+  .watermark-item{
+    width: 100%;
+    text-align: center;
+    span{
+      padding: 0 5px;
+    }
+  }
+}
 </style>

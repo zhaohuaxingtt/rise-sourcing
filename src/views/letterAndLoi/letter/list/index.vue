@@ -19,6 +19,7 @@
                   </el-option>  
                 </iSelect> 
                 <iDatePicker clearable class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.props]" :title="language(item.labelKey,item.label)" />
                 <iInput clearable :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
@@ -116,7 +117,8 @@ import {
     iButton,
     iMessage,
     iCard,
-    icon
+    icon,
+    iMultiLineInput
 } from 'rise';
 import {
     letterListSearch,
@@ -156,6 +158,7 @@ export default {
         closeLetterDialog,
         iCard,
         icon,
+        iMultiLineInput,
         buttonTableSetting
     },
     data(){

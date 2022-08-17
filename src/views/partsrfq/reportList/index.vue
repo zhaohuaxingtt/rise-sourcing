@@ -30,6 +30,7 @@
                        v-for="item in fromGroup[item.select]"
                        :key="item.code"></el-option>
           </iSelect>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchCriteria[item.props]" :title="item.key?$t(item.key):item.name" />
           <iInput v-else
                   :placeholder="$t(item.placeholder)"
                   v-model="searchCriteria[item.props]"
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { iPage, iSelect, iInput, iButton, iSearch, iMessage } from 'rise'
+import { iPage, iSelect, iInput, iButton, iSearch, iMessage, iMultiLineInput } from 'rise'
 import { search } from './components/data'
 import { selectDictByKeys } from '@/api/dictionary'
 import specialTools from './components/specialTools'
@@ -94,6 +95,7 @@ export default {
     quotationAnalysis,
     negotiationBasic,
     exportReport,
+    iMultiLineInput
   },
   data() {
     return {

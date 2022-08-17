@@ -14,11 +14,12 @@
     <el-form>
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')" v-permission.auto="SOURCING_NOMINATION_PARTNUM|零件号">
-        <iInput
+        <!-- <iInput
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
-        ></iInput>
+        ></iInput> -->
+        <iMultiLineInput v-model="form.partNum" :title="language('nominationLanguage_LingJianHao', '零件号')" />
       </el-form-item>
       <!-- 申请单号 -->
       <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')" v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号">
@@ -203,7 +204,8 @@ import {setPretreatmentParams} from '@/utils/tool'
 import {
   iSearch,
   iInput,
-  iSelect
+  iSelect,
+  iMultiLineInput
 } from "rise";
 import { numberProcessor } from '@/utils' 
 
@@ -222,6 +224,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    iMultiLineInput
     // iDicoptions
   },
   mounted() {

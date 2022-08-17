@@ -93,8 +93,8 @@
     <el-tab-pane 
                  name="two"
                  label="专项分析工具"
-                 v-if="hasPermission('RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU123')"
-                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU123">
+                 v-if="hasPermission('RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU')"
+                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU">
       <gather />
     </el-tab-pane>
     <el-tab-pane lazy
