@@ -193,6 +193,14 @@ export const tableTitle = [
 		sortable: true,
 	},
 	{
+		props: 'nominationStatus',
+		name: '一次性定点状态',
+		key: '一次性定点状态',
+		tooltip: true,
+		width: 160,
+		sortable: true,
+	},
+	{
 		props: 'createDate',
 		name: '生成时间',
 		key: '生成时间',

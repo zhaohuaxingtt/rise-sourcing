@@ -60,7 +60,11 @@
 								</iFormItem>
 							</div>
 							<div class="col">
-								<iFormItem :label="$t('推荐采购员') + ':'" name="test">
+								<iFormItem :label="$t('推荐采购员') + ':'" name="test" :require="true">
+									<span slot="label">
+										<span style="color: red">*</span>
+										{{$t('推荐采购员') + ':'}}
+									</span>
 									<iSelect
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.ownerId"
@@ -439,6 +443,9 @@ export default {
 		},
 		// 发送给采购员
 		sendToLine() {
+			if (!this.baseinfodata.ownerId) {
+				return iMessage.warn('请选择需要推荐的采购员')
+			}
 			if (this.tableListData.length <= 0) {
 				return iMessage.warn('没有需要推送给采购员数据')
 			}

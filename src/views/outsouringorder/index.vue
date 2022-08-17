@@ -155,6 +155,9 @@
 					</el-tooltip>
 					<span v-else>{{ getStatus(scope.row.status) }}</span>
 				</template>
+				<template #nominationStatus="scope">
+					<span>{{ scope.row["nominationStatus"] == '1' ? '已转定点' : scope.row["nominationStatus"] == 2 ? '已定点' : '未发起转定点' }}</span>
+				</template>
 				<template #buyerCode="scope">
 					{{ scope.row.ownerId }}
 					{{ scope.row.ownerId && scope.row.ownerName && '-' }}
