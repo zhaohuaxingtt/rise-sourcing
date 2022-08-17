@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\store\module\permission.js
  */
 import { getUserInfoByToken, getSystemMeun } from '@/api/usercenter'
-
+import { watermark } from '@/utils'
 const routerLayout = () => import('@/layout/default.vue')
 const getVuerouter = function(router) {
   const res = []
@@ -146,6 +146,10 @@ const actions = {
             commit('SET_ROLE_INFO', [])
             reject({})
           }
+          watermark()
+          window.addEventListener('resize',(a,b)=>{
+            watermark()
+          })
         })
         .catch((err) => {
           commit('SET_USER_INFO', {})
