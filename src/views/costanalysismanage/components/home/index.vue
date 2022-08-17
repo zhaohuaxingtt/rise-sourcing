@@ -59,10 +59,11 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_PARTNUM|零件号">
-          <iInput
+          <!-- <iInput
             v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
-          ></iInput>
+          ></iInput> -->
+          <iMultiLineInput v-model="form.partNum" :title="language('LINGJIANHAO', '零件号')" />
         </el-form-item>
         <el-form-item :label="language('LINGJIANMING', '零件名')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_PARTNANE|零件名">
           <iInput
@@ -207,7 +208,7 @@
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage, iMultiLineInput } from "rise"
 import headerNav from "@/components/headerNav"
 import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -237,7 +238,8 @@ export default {
     cbdDialog,
     iNavMvp,
     iPage,
-    headerNav
+    headerNav,
+    iMultiLineInput
   },
   mixins: [ filters, pageMixins ],
   computed: {

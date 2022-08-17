@@ -11,7 +11,8 @@
     <iSearch  :icon="false" @reset="handleSearchReset" @sure="handleSubmitSearch">
       <el-form :model="searchForm">
         <el-form-item :label="item.key?$t(item.key):item.name" v-for="(item,index) in searchData" :key="index">
-          <iInput class="margin-top6" v-model="searchForm[item.props]" :disabled="isDisabled(item.props)"></iInput>
+          <iInput class="margin-top6" v-if="item.type=='input'" v-model="searchForm[item.props]" :disabled="isDisabled(item.props)"></iInput>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchForm[item.props]" :title="item.key?$t(item.key):item.name" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -19,11 +20,11 @@
 </template>
 
 <script>
-import {iSearch, iInput} from 'rise'
+import {iSearch, iInput, iMultiLineInput} from 'rise'
 import {search} from './data'
 export default {
   name: 'analysisSearch',
-  components: {iSearch, iInput},
+  components: {iSearch, iInput, iMultiLineInput},
   data () {
     return {
       searchData: search,

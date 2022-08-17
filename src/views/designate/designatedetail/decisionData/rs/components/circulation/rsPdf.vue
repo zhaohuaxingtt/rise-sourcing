@@ -236,7 +236,7 @@
 									</div>
 								</div>
 								<!-- hasLastPage为false，签字栏不用另起一页 -->
-								<iCard
+								<!-- <iCard
 									v-if="!hasLastPage && !remarkList.length"
 									class="checkDate rsCard Application"
 									:title="`Application Date：${dateFilter(
@@ -275,7 +275,7 @@
 											</div>
 										</div>
 									</div>
-								</iCard>
+								</iCard> -->
 							</div>
 						</div>
 						<iCard

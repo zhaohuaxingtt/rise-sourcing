@@ -17,6 +17,7 @@
               <iInput clearable v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
               <iInput clearable v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
+            <iMultiLineInput v-else-if="items.type === 'multiLineInput'" v-model="form[items.moduleKey]" :title="language(items.i18nKey,items.i18nName)" />
             <template v-else>
               <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
                 <el-option v-for="(item,i) in items.List" :key='i' :label="item.name" :value="item.code"></el-option>
@@ -35,8 +36,8 @@
           <iButton @click="downloadTemplate" v-permission.auto="SOURCING_STEELDEMANCREATION_BATCHDOWNLOADTEMPLATE|下载批量模板">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
           <el-upload class="uploadfile margin-left10" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}/steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne" v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEONCE|上传文件一次性">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
           <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile margin-left10" :headers="{'token':getToken()}" :action="`${baseUrl}/steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEBATCH|上传文件批量">{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
-          <iButton class="margin-left10" @click="print(1)" :loading='printLoadingOne' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTONCE|打印定点流转单一次性">{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
-          <iButton @click="print(2)" :loading='printLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTBATCH|打印定点流转单批量">{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
+          <!-- <iButton class="margin-left10" @click="print(1)" :loading='printLoadingOne' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTONCE|打印定点流转单一次性">{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton> -->
+          <iButton @click="print(2)" :loading='printLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTBATCH|打印定点流转单批量">{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单')}}</iButton>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
@@ -76,7 +77,7 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
+import {iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon,iMultiLineInput} from 'rise'
 import headerNav from "@/components/headerNav"
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
@@ -92,7 +93,7 @@ import {getToken} from '@/utils'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins,tableSortMixins],
-  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav,buttonTableSetting},
+  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, iMultiLineInput, headerNav,buttonTableSetting},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()

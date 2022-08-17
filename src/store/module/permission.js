@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\store\module\permission.js
  */
 import { getUserInfoByToken, getSystemMeun } from '@/api/usercenter'
-
+import { watermark } from '@/utils'
 const routerLayout = () => import('@/layout/default.vue')
 const getVuerouter = function (router) {
 	const res = []
@@ -108,68 +108,72 @@ function mergeMenuToresouce(resouce, menuList) {
 	}
 }
 const actions = {
-	// 通过异步方式获取菜单。
-	getPermissinInfo({ commit }) {
-		return new Promise((r, j) => {
-			getSystemMeun()
-				.then((res) => {
-					if (res.code == 200 && res.data) {
-						commit('SET_MENU_LIST', initMeun(res.data.menuList))
-						mergeMenuToresouce(res.data.resourceList, res.data.menuList)
-						commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
-						r(res.data.menuList || [])
-					} else {
-						commit('SET_MENU_LIST', [])
-						commit('SET_WIHTEBTN_LIST', [])
-						j()
-					}
-				})
-				.catch((err) => {
-					commit('SET_MENU_LIST', [])
-					commit('SET_WIHTEBTN_LIST', [])
-					j()
-				})
-		})
-	},
-	userInfoByToken({ commit }) {
-		//根据token获取用户信息
-		// eslint-disable-next-line no-debugger
-		return new Promise((resole, reject) => {
-			getUserInfoByToken()
-				.then((res) => {
-					// eslint-disable-next-line no-debugger
-					if (res.code == 200 && res.data) {
-						commit('SET_USER_INFO', res.data)
-						commit('SET_ROLE_INFO', translateUserRole(res.data))
-						resole(res.data)
-					} else {
-						commit('SET_USER_INFO', {})
-						commit('SET_ROLE_INFO', [])
-						reject({})
-					}
-				})
-				.catch((err) => {
-					commit('SET_USER_INFO', {})
-					commit('SET_ROLE_INFO', [])
-					reject(err)
-				})
-		})
-	},
-	setUserInfo({ commit }, data) {},
-	loginOut({ commit }) {
-		commit('SET_MENU_LIST', [])
-	},
-	refreshToken() {},
-	uploadResource({ commit, state }, resource) {
-		const template = JSON.parse(JSON.stringify(state.resourceList))
-		commit('SET_RESOURCE', [
-			...template,
-			...[{ name: resource[1], permissionKey: resource[0], type: 2 }],
-		])
-	},
-	clearResource({ commit }) {
-		commit('SET_RESOURCE', [])
-	},
+  // 通过异步方式获取菜单。
+  getPermissinInfo({ commit }) {
+    return new Promise((r, j) => {
+      getSystemMeun()
+        .then((res) => {
+          if (res.code == 200 && res.data) {
+            commit('SET_MENU_LIST', initMeun(res.data.menuList))
+            mergeMenuToresouce(res.data.resourceList, res.data.menuList)
+            commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
+            r(res.data.menuList || [])
+          } else {
+            commit('SET_MENU_LIST', [])
+            commit('SET_WIHTEBTN_LIST', [])
+            j()
+          }
+        })
+        .catch((err) => {
+          commit('SET_MENU_LIST', [])
+          commit('SET_WIHTEBTN_LIST', [])
+          j()
+        })
+    })
+  },
+  userInfoByToken({ commit }) {
+    //根据token获取用户信息
+    // eslint-disable-next-line no-debugger
+    return new Promise((resole, reject) => {
+      getUserInfoByToken()
+        .then((res) => {
+          // eslint-disable-next-line no-debugger
+          if (res.code == 200 && res.data) {
+            commit('SET_USER_INFO', res.data)
+            commit('SET_ROLE_INFO', translateUserRole(res.data))
+            resole(res.data)
+          } else {
+            commit('SET_USER_INFO', {})
+            commit('SET_ROLE_INFO', [])
+            reject({})
+          }
+          watermark()
+          window.addEventListener('resize',(a,b)=>{
+            watermark()
+          })
+        })
+        .catch((err) => {
+          commit('SET_USER_INFO', {})
+          commit('SET_ROLE_INFO', [])
+          reject(err)
+        })
+    })
+  },
+  setUserInfo({ commit }, data) {},
+  loginOut({ commit }) {
+    commit('SET_MENU_LIST', [])
+  },
+  refreshToken() {},
+  uploadResource({ commit, state }, resource) {
+    const template = JSON.parse(JSON.stringify(state.resourceList))
+    commit('SET_RESOURCE', [
+      ...template,
+      ...[{ name: resource[1], permissionKey: resource[0], type: 2 }],
+    ])
+  },
+  clearResource({ commit }) {
+    commit('SET_RESOURCE', [])
+  },
 }
 const getters = {}
 export default {
