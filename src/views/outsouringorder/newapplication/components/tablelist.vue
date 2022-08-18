@@ -434,12 +434,16 @@ export default {
 			}
 		},
 		handleArray(ary) {
-			ary.map((item, index) => {
-				if (item.code == 'PC') {
-					ary.unshift(ary.splice(index, 1))
-				}
-			})
-			return ary.flat()
+			if(ary){
+				ary.map((item, index) => {
+					if (item.code == 'PC') {
+						ary.unshift(ary.splice(index, 1))
+					}
+				})
+				return ary.flat()
+			}else{
+				return []
+			}
 		},
 		handleFactoryChange(procureFactory, row) {
 			const factory = this.splitPurchList.find(
