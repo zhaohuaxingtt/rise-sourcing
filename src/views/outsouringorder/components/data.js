@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
 import { OutSouring } from '@/config'
-export function searchForm(DEPARTMENTLIST = []) {
+export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 	return [
 		{
 			i18nName: 'RiSE编号',
@@ -66,9 +66,10 @@ export function searchForm(DEPARTMENTLIST = []) {
 			i18nName: '采购工厂',
 			i18nKey: 'LK_CAIGOUGONGCHANG',
 			permissionKey: 'SOURCING_LINGJIANHAO',
-			type: 'input',
-			List: [],
+			type: 'select1',
+			List: PURCHASE_FACTORY,
 			moduleKey: 'procureFactory',
+			format:{value:'code',label:'name'},
 		},
 		{
 			i18nName: '采购员',
@@ -98,9 +99,10 @@ export function searchForm(DEPARTMENTLIST = []) {
 			i18nName: '申请部门',
 			i18nKey: '申请部门',
 			permissionKey: 'SOURCING_ZHUANYECAIGOUYUAN',
-			type: 'linieName',
+			type: 'select1',
 			List: DEPARTMENTLIST,
 			moduleKey: 'linieName',
+			format:{value:'deptId',label:'commodity'},
 		},
 		{
 			i18nName: '申请日期起',

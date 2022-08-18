@@ -45,7 +45,7 @@
 								v-model="form['partNum']"
 							></iMultiLineInput>
 						</template>
-						<template v-else-if="items.type == 'linieName'">
+						<template v-else-if="items.type == 'select1'">
 							<iSelect
 								clearable
 								v-model="form[items.moduleKey]"
@@ -54,8 +54,8 @@
 								<el-option
 									v-for="(item, i) in items.List"
 									:key="i"
-									:label="item.commodity"
-									:value="item.deptId"
+									:label="item[items.format.label]"
+									:value="item[items.format.value]"
 								></el-option>
 							</iSelect>
 						</template>
@@ -159,9 +159,7 @@
 					<span>{{ scope.row["nominationStatus"] == '1' ? '已转定点' : scope.row["nominationStatus"] == 2 ? '已定点' : '未发起转定点' }}</span>
 				</template>
 				<template #buyerCode="scope">
-					{{ scope.row.ownerId }}
-					{{ scope.row.ownerId && scope.row.ownerName && '-' }}
-					{{ scope.row.ownerName }}
+					{{ scope.row.ownerName || scope.row.ownerId ||  '-' }}
 				</template>
 			</tablePart>
 			<!------------------------------------------------------------------------>
@@ -236,6 +234,7 @@ import {
 	statusList,
 } from './components/data'
 import {
+	dictkey,
 	outsouringFindBypage,
 	signByLinie,
 	rejectByLinie,
@@ -518,12 +517,15 @@ export default {
 
 		// 初始化申请部门数据
 		async initSelectOptions() {
-			const distKeys = await this.dictkey()
-			this.searchFormTitle = searchForm(distKeys)
+			const DEPARTMENTLIST = await this.getDepartmentsCombo()
+			const { data={} } = await this.dictkey()
+			console.log(data);
+			const { PURCHASE_FACTORY=[] } = data
+			this.searchFormTitle = searchForm(DEPARTMENTLIST, PURCHASE_FACTORY)
 		},
 
 		// 获取申请部门参数
-		dictkey() {
+		getDepartmentsCombo(){
 			return new Promise((r) => {
 				getDepartmentsCombo()
 					.then((res) => {
@@ -532,6 +534,11 @@ export default {
 					.catch(() => r({}))
 			})
 		},
+		// 查询下拉数据
+		dictkey() {
+			return dictkey()
+		},
+		
 
 		// 重置
 		reset() {

@@ -10,7 +10,7 @@
 					}}
 				</span>
 				<div class="btnList flex-align-center">
-					<iButton @click="sendToLine" v-if="canEditable">
+					<iButton @click="sendToLine" v-if="!canEdit && canEditable">
 						{{ $t('推送采购员') }}
 					</iButton>
 					<iButton @click="exitEditor" v-if="canEdit && canEditable">
@@ -392,10 +392,13 @@ export default {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
 				}
 			}
+			console.log(this.baseinfodata);
+			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
 			const query = this.tableListData.map((item) => {
 				return {
-					...this.baseinfodata,
 					...item,
+					ownerName:this.baseinfodata.ownerName,
+					ownerId:this.baseinfodata.ownerId,
 					quantity: item.quantity,
 				}
 			})
@@ -464,8 +467,21 @@ export default {
 			) {
 				return iMessage.warn('请输入必填项')
 			}
-			if (this.tableListData.find((e) => !e.quantity)) {
-				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			// 一次性
+			if(this.baseinfodata.subType == 'ZN_ONE'){
+				if (!this.tableListData.find((e) => e.quantity>0)) {
+					return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+				}
+			// 框架
+			}else{
+				let flag = false
+				// 至少有一条数据不为空
+				this.tableListData.forEach(item=>{
+					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity>0 )
+				})
+				if (flag) {
+					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
+				}
 			}
 			sendLinie({
 				deptName: this.baseinfodata.deptName,
@@ -529,7 +545,8 @@ export default {
 			this.tableListData.push({
 				riseCode: this.$route.query.code || '',
 				sapItem: this.itemNum,
-				partType: this.fromGroup.PART_TYPE[0].code,
+				// partType: this.fromGroup.PART_TYPE[0].code,	//默认添加 L 类型的
+				partType: 'L',
 				account: '',
 				partNum: '',
 				quantity: '',
