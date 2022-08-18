@@ -136,11 +136,11 @@
 						placement="top"
 					>
 						<iText
-							>{{ getStatus(scope.row.status)
+							>{{ getStatus(scope.row.status,scope.row.nominationStatus)
 							}}<icon class="el-icon-warning-outline red"
 						/></iText>
 					</el-tooltip>
-					<span v-else>{{ getStatus(scope.row.status) }}</span>
+					<span v-else>{{ getStatus(scope.row.status,scope.row.nominationStatus) }}</span>
 				</template>
 				<template #nominationStatus="scope">
 					<span>{{ scope.row["nominationStatus"] == '1' ? language('YIZHUANDINGDIAN','已转定点') : scope.row["nominationStatus"] == 2 ? language('YDD','已定点') : language('WEIFAQIZHUANDINGDIAN','未发起转定点') }}</span>
@@ -221,7 +221,6 @@ import {
 	statusList,
 } from './components/data'
 import {
-	dictkey,
 	outsouringFindBypage,
 	signByLinie,
 	rejectByLinie,
@@ -236,6 +235,8 @@ import { getDepartmentsCombo } from '@/api/ws2/purchase/investmentList'
 import TransferDialog from './components/transferDialog.vue'
 import TurningPointDialog from './components/turningPointDialog.vue'
 import { getDictByCode } from '@/api/dictionary'
+import { purchaseFactory } from '@/api/partsprocure/editordetail'
+import language from '@/utils/language'
 
 // eslint-disable-next-line no-undef
 export default {
@@ -297,8 +298,14 @@ export default {
 			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 映射状态值
-		getStatus(status) {
+		getStatus(status,nominationStatus) {
 			let item = this.selectOptions.statusOption.find((k) => k.code == status)
+			if(status=='1'){
+				if(nominationStatus=='2'){
+					return language('LK_YIDINGDIAN','已定点')
+				}
+					return language('LK_YIQIANSHOU','已签收')
+			}
 			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		//仅看自己
@@ -512,9 +519,7 @@ export default {
 		// 初始化申请部门数据
 		async initSelectOptions() {
 			// const DEPARTMENTLIST = await this.getDepartmentsCombo()
-			const { data={} } = await this.dictkey()
-			const { PURCHASE_FACTORY=[] } = data
-			this.selectOptions.procureFactoryOption = PURCHASE_FACTORY
+			this.dictkey()
 			// this.searchFormTitle = searchForm([], PURCHASE_FACTORY)
 		},
 
@@ -530,7 +535,23 @@ export default {
 		},
 		// 查询下拉数据
 		dictkey() {
-			return getDictByCode('PURCHASE_FACTORY')
+			// 获取采购工厂
+			purchaseFactory({isSparePart:0}).then(res=>{
+				if(res.data){
+					this.selectOptions.procureFactoryOption = res.data.map(item=>{
+						let obj = {
+							code: item.procureFactory,
+							name: item.factoryName,
+							nameEn: item.factoryNameEn,
+						}
+						return obj
+					})
+				}
+			})
+			// 获取状态下拉框
+			getDictByCode('OUT_SOURCING_STATUS').then(res=>{
+				this.selectOptions.statusOption = res.data[0].subDictResultVo
+			})
 		},
 		
 
