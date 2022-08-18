@@ -78,19 +78,7 @@
 					</template>
 					<template slot-scope="scope">
 						<iSelect
-							v-if="canEdit && languageExchange == 'en'"
-							v-model="scope.row['unitCode']"
-							@change="handleUnitChange(scope.row, items.code)"
-						>
-							<el-option
-								v-for="items in fromGroup.UNIT"
-								:key="items.code"
-								:value="items.code"
-								:label="items.code"
-							/>
-						</iSelect>
-						<iSelect
-							v-else-if="canEdit && languageExchange == 'zh'"
+							v-if="canEdit"
 							v-model="scope.row['unitCode']"
 							@change="handleUnitChange(scope.row, items.code)"
 						>
@@ -98,7 +86,7 @@
 								v-for="items in handleArray(fromGroup.UNIT)"
 								:key="items.code"
 								:value="items.code"
-								:label="items.name"
+								:label="$i18n.locale == 'zh' ? items.name : (items.nameEn || items.code)"
 							/>
 						</iSelect>
 						<span v-else>{{ scope.row['unitCode'] }}</span>
@@ -384,18 +372,9 @@ export default {
 			showItem: false,
 			showQuility: false,
 			detailInfo: {},
-			languageExchange: 'zh',
 		}
 	},
 	inject: ['vm'],
-	watch: {
-		'$i18n.locale': {
-			handler(newVal, oldVal) {
-				this.languageExchange = newVal
-			},
-			deep: true,
-		},
-	},
 	created() {},
 	methods: {
 		// 限制输入数值

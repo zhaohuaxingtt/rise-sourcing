@@ -5,13 +5,13 @@
 				<span>
 					{{
 						baseinfodata.riseCode
-							? `RiSE编号:  ${baseinfodata.riseCode}`
+							? ($t('MODEL-ORDER.LK_RISEBIANHAO') + ':' + baseinfodata.riseCode)
 							: $t('LK_XIANJIANCAIGOUSHENQING')
 					}}
 				</span>
 				<div class="btnList flex-align-center">
 					<iButton @click="sendToLine" v-if="!canEdit && canEditable">
-						{{ $t('推送采购员') }}
+						{{ $t('TUISONGCAIGOUYUAN') }}
 					</iButton>
 					<iButton @click="exitEditor" v-if="canEdit && canEditable">
 						{{ $t('LK_TUICHUBIANJI') }}
@@ -48,22 +48,22 @@
 										<el-option
 											v-for="(item, index) in addType"
 											:key="index"
-											:value="item.label"
-											:label="$t(item.key)"
+											:value="item.code"
+											:label="$i18n.locale == 'zh' ? item.name : item.nameEn"
 										></el-option>
 									</iSelect>
 									<iText v-else>{{ getSubType(baseinfodata.subType) }}</iText>
 									<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
 								</iFormItem>
-								<iFormItem :label="$t('申请人') + ':'" name="test">
+								<iFormItem :label="$t('LK_SHENQINGREN') + ':'" name="test">
 									<iText>{{ baseinfodata.applyBy }}</iText>
 								</iFormItem>
 							</div>
 							<div class="col">
-								<iFormItem :label="$t('推荐采购员') + ':'" name="test" :require="true">
+								<iFormItem :label="$t('TUIJIANCAIGOUYUAN') + ':'" name="test" :require="true">
 									<span slot="label">
 										<span style="color: red">*</span>
-										{{$t('推荐采购员') + ':'}}
+										{{$t('TUIJIANCAIGOUYUAN') + ':'}}
 									</span>
 									<iSelect
 										:placeholder="$t('LK_QINGXUANZE')"
@@ -74,12 +74,12 @@
 											v-for="(item, index) in lineOptiondata"
 											:key="index"
 											:value="item.linieID"
-											:label="$t(item.linieName)"
+											:label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
 										></el-option>
 									</iSelect>
 									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
 								</iFormItem>
-								<iFormItem :label="$t('申请部门') + ':'" name="test">
+								<iFormItem :label="$t('SHENQINGBUMEN') + ':'" name="test">
 									<iText> {{ baseinfodata.applyDeptNo }}</iText>
 								</iFormItem>
 							</div>
@@ -87,14 +87,12 @@
 								<div class="row">
 									<iFormItem name="test" class="demo-dynamic">
 										<span slot="label">
-											{{ $t('零件编号前缀') + ':' }}
+											{{ $t('LINGJIANBIANHAOQIANZHUI') + ':' }}
 											<el-tooltip
 												effect="light"
 												popper-class="custom-card-tooltip"
 												:content="
-													$t(
-														'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
-													)
+													$t('LINGJIANBIANHAOQIANZHUIDINGYI')
 												"
 												placement="top"
 											>
@@ -110,7 +108,7 @@
 										<iText v-else> {{ baseinfodata.partPrefix }} </iText>
 									</iFormItem>
 								</div>
-								<iFormItem :label="$t('备注') + ':'" name="test">
+								<iFormItem :label="$t('remarks') + ':'" name="test">
 									<iInput
 										v-model="baseinfodata.remark"
 										:disabled="!canEdit"
@@ -119,7 +117,7 @@
 								</iFormItem>
 							</div>
 							<div class="col">
-								<iFormItem :label="$t('状态') + ':'" name="test">
+								<iFormItem :label="$t('STATUS') + ':'" name="test">
 									<iText> {{ getStatus(baseinfodata.status) }} </iText>
 								</iFormItem>
 								<iFormItem name="test"> </iFormItem>
@@ -227,6 +225,7 @@ import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
 import { exportExcel } from '@/utils/filedowLoad'
 import buttonDownload from '@/components/buttonDownload'
+import language from '@/utils/language'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -309,7 +308,8 @@ export default {
 		// 获取采购申请类型
 		getSubType(val) {
 			if (val == '' || val == null || this.addType.length == 0) return ''
-			return this.addType.find((l) => l.label == val).key
+			let item = this.addType.find((l) => l.code == val)
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
 		getLiner(key) {
@@ -318,15 +318,19 @@ export default {
 				key == undefined ||
 				key == null ||
 				this.lineOptiondata.length == 0
-			)
+			){
 				return ''
-			return this.lineOptiondata.find((j) => j.linieID == key).linieName
+			}
+			let item = this.lineOptiondata.find((j) => j.linieID == key)
+			return this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn
 		},
 		// 获取采购申请单状态
 		getStatus(status) {
-			if (status == '' || status == undefined || this.statusList.length <= 0)
+			if (status == '' || status == undefined || this.statusList.length <= 0){
 				return ''
-			return this.statusList.find((k) => k.key == status).label
+			}
+			let item = this.statusList.find((k) => k.code == status)
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
 		getLineInfo() {
@@ -367,14 +371,14 @@ export default {
 				this.tableListData.find((e) => !e.partNum) &&
 				!this.baseinfodata.partPrefix
 			) {
-				return iMessage.warn('请输入零件号')
+				return iMessage.warn(language('LK_QINGSHURULINGJIANHAO','请输入零件号'))
 			}
 			if (
 				this.tableListData.find(
 					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
 				)
 			) {
-				return iMessage.warn('请输入必填项')
+				return iMessage.warn(language('QINGSHURUBITIANXIANG','请输入必填项'))
 			}
 			// 一次性
 			if(this.baseinfodata.subType == 'ZN_ONE'){
@@ -392,7 +396,6 @@ export default {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
 				}
 			}
-			console.log(this.baseinfodata);
 			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
 			const query = this.tableListData.map((item) => {
 				return {
@@ -458,14 +461,14 @@ export default {
 				this.tableListData.find((e) => !e.partNum) &&
 				!this.baseinfodata.partPrefix
 			) {
-				return iMessage.warn('请输入零件号')
+				return iMessage.warn(language('LK_QINGSHURULINGJIANHAO','请输入零件号'))
 			}
 			if (
 				this.tableListData.find(
 					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
 				)
 			) {
-				return iMessage.warn('请输入必填项')
+				return iMessage.warn(language('QINGSHURUBITIANXIANG','请输入必填项'))
 			}
 			// 一次性
 			if(this.baseinfodata.subType == 'ZN_ONE'){
@@ -523,14 +526,6 @@ export default {
 					this.baseinfodata.subType === 'ZN_ONE'
 						? quantity
 						: normalPrQuantityYears.length
-				console.log({
-					partType,
-					partNum,
-					procureFactory,
-					deliveryDate,
-					unitCode,
-					itemQuantity,
-				})
 				if (
 					!partType ||
 					!partNum ||
@@ -636,11 +631,11 @@ export default {
 			applyExport(this.baseinfodata.riseCode)
 				.then((res) => {
 					console.log('EXPORT EXCEL:', res)
-					exportExcel(res.data, `工序委外${this.baseinfodata.riseCode}`)
+					exportExcel(res.data, `${language('LK_GONGXUWEIWAI','工序委外')}${this.baseinfodata.riseCode}`)
 				})
 				.catch((err) => {
 					console.log('exportExcel err', err)
-					iMessage.error(err.desZh || '导出失败')
+					iMessage.error(err.desZh || language('NEWS_DAOCHUSHIBAI','导出失败'))
 				})
 		},
 
@@ -689,7 +684,7 @@ export default {
 				this.uploadAttachmentsButtonLoading = false
 				return iMessage.error(
 					msg.desZh == null
-						? '导入失败'
+						? language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败')
 						: this.$i18n.locale === 'zh'
 						? msg.desZh
 						: msg.desEn
