@@ -74,7 +74,7 @@
 											v-for="(item, index) in lineOptiondata"
 											:key="index"
 											:value="item.linieID"
-											:label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
+											:label="item.linieID +'-'+ ($i18n.locale == 'zh' ? item.linieName : item.linieNameEn)"
 										></el-option>
 									</iSelect>
 									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
@@ -322,7 +322,7 @@ export default {
 				return ''
 			}
 			let item = this.lineOptiondata.find((j) => j.linieID == key)
-			return this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn
+			return item.linieID +'-'+ (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 		},
 		// 获取采购申请单状态
 		getStatus(status) {
@@ -348,7 +348,7 @@ export default {
 		},
 		//获取采购工厂列表
 		purchaseFactory() {
-			purchaseFactory({ firstId: this.firstId, isSparePart: false })
+			purchaseFactory({ isSparePart: false })
 				.then((res) => {
 					if (res.data) {
 						this.splitPurchList = res.data
