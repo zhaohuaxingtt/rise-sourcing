@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iSelect :filterable="filterable" v-model="data" :placeholder="language('QINGXUANZE', '请选择')" @change="change" :disabled="disabled">
+  <iSelect :filterable="filterable" :multiple="multiple" v-model="data" :placeholder="language('QINGXUANZE', '请选择')" @change="change" :disabled="disabled">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -21,11 +21,13 @@
 <script>
 import { iMessage, iSelect } from 'rise'
 import { getCarTypePro, getSelectCarType } from '@/api/project'
+import { getDefaultCarTypePro } from '@/api/project/projectprogressreport'
 export default {
   components: { iSelect },
   props: {
     value: {type:String},
     filterable: {type:Boolean,default:false},
+    multiple: {type:Boolean,default:false},
     optionType: {type:String,default:'1'},
     disabled: {type:Boolean,default:false},
     valueType: {type:String,default:'1'},
@@ -63,8 +65,15 @@ export default {
     this.optionType === '1' && this.getCarProjectOptions()
     // 获取当前用户所有未SOP和所有已SOP的车型项目
     this.optionType === '2' && this.getCarProjectUserOptions()
+
+    this.defaultCar();
   },
   methods: {
+    defaultCar(){
+      getDefaultCarTypePro().then(res=>{
+        console.log(res);
+      })
+    },
     change(val) {
       this.$emit('change', val, this.options.find(item => item.value === val).label)
     },
@@ -79,6 +88,9 @@ export default {
               label: item.cartypeProName
             }
           })
+
+
+          console.log(this.options);
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }

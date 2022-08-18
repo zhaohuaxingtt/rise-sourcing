@@ -74,7 +74,7 @@ export default {
         { label: 'ME', date: '2021-12-01', value: 'pepMeWk', status: 'pepMeStatus' }
       ],
       nodeList: [
-        {isDone:1,label:"VFF"},
+        // {isDone:1,label:"VFF"},
       ],
       svgList: {
         'iconchanpinzupaicheng_weijinhang': '<svg t="1631758281435" class="icon" viewBox="0 0 52224 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="56908" width="100%" height="100"><path d="M51712 1024h-2048a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2048a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-5120 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072a512 512 0 0 1-512-512 512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072A512 512 0 0 1 6144 512a512 512 0 0 1 512-512h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z m-6144 0h-3072A512 512 0 0 1 0 512 512 512 0 0 1 512 0h3072a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#CED4E1" p-id="56909"></path></svg>',
@@ -111,13 +111,14 @@ export default {
         if (res?.result) {
           this.carProjectInfo = res.data
           this.nodeList = this.progressList.reduce((accu, curr) => {
-            // if (!res.data[curr.value]) {
-            //   return accu
-            // }
+            if (!res.data[curr.value]) {
+              return accu
+            }
             return [...accu, {
               ...curr,
               week: res.data[curr.value],
-              isDone: 1
+              // isDone: 1,
+              isDone: res.data[curr.status]
             }]
           },[])
 
@@ -136,12 +137,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.project-progress-line{
-  display: flex;
-  justify-content: center;
-  width:100%;
-  height:100%;
-}
+// .project-progress-line{
+//   display: flex;
+//   justify-content: center;
+//   width:100%;
+//   height:100%;
+// }
 .carProject {
   display: flex;
   align-items: center;
@@ -201,7 +202,9 @@ export default {
       }
       .step-between-icon {
         height: 8px;
-        width: calc(100% - 64px);
+        width: calc(100% - 85px);
+        // width: calc(100% - 64px);
+        right: 0;
         position: absolute;
         top: 14px;
         ::v-deep .icon {

@@ -14,6 +14,7 @@ const postcss = px2rem({
 require('events').EventEmitter.defaultMaxListeners = 0
 
 const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
