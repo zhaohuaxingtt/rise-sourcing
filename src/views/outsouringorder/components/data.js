@@ -7,8 +7,7 @@
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
 import { OutSouring } from '@/config'
-export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
-	return [
+export const searchForm  = [
 		{
 			i18nName: 'RiSE编号',
 			i18nKey: 'MODEL-ORDER.LK_RISEBIANHAO',
@@ -38,6 +37,7 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			i18nKey: 'MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING',
 			permissionKey: 'SOURCING_LINGJIANCAIGOUXIANGMULEIX',
 			type: 'select',
+			selectOptions:'subTypeOption',
 			List: [
 				{ name: '全部', code: '' },
 				{ name: '工序委外一次性', code: OutSouring.subType1 },
@@ -50,24 +50,15 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			i18nKey: 'LK_ZHUANGTAI',
 			permissionKey: 'SOURCING_DAYINGZHUANGTAI',
 			type: 'select',
-			List: [
-				{ code: '', name: '全部' },
-				{ code: '-2', name: '草稿' },
-				{ code: '-1', name: '退回' },
-				{ code: '0', name: '待签收' },
-				{ code: '1', name: '已创建' },
-				{ code: '2', name: '已关联订单' },
-				{ code: '3', name: '订单已推送' },
-				{ code: '4', name: '已关闭' },
-			],
+			selectOptions:'statusOption',
 			moduleKey: 'status',
 		},
 		{
 			i18nName: '采购工厂',
 			i18nKey: 'LK_CAIGOUGONGCHANG',
 			permissionKey: 'SOURCING_LINGJIANHAO',
-			type: 'select1',
-			List: PURCHASE_FACTORY,
+			type: 'select',
+			selectOptions:'procureFactoryOption',
 			moduleKey: 'procureFactory',
 			format:{value:'code',label:'name'},
 		},
@@ -76,7 +67,6 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			i18nKey: '采购员',
 			permissionKey: 'SOURCING_LINGJIANMINGCZH',
 			type: 'input',
-			List: [],
 			moduleKey: 'buyerName',
 		},
 		{
@@ -84,7 +74,6 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			i18nKey: '科室',
 			permissionKey: 'SOURCING_FSNRGSNR',
 			type: 'input',
-			List: [],
 			moduleKey: 'deptName',
 		},
 		{
@@ -92,29 +81,26 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			i18nKey: 'SHENQINGREN',
 			permissionKey: 'SOURCING_XUNJIACAIGOUYUAN',
 			type: 'input',
-			List: [],
 			moduleKey: 'applyBy',
 		},
 		{
 			i18nName: '申请部门',
-			i18nKey: '申请部门',
+			i18nKey: 'SHENQINGBUMEN',
 			permissionKey: 'SOURCING_ZHUANYECAIGOUYUAN',
-			type: 'select1',
-			List: DEPARTMENTLIST,
+			type: 'input',
 			moduleKey: 'linieName',
 			format:{value:'deptId',label:'commodity'},
 		},
 		{
 			i18nName: '申请日期起',
-			i18nKey: '申请日期起',
+			i18nKey: 'SHENQINGRIQIQI',
 			permissionKey: 'SOURCING_LIUCHENGLEIX',
 			type: 'datepicker',
-			List: [],
 			moduleKey: 'startDate',
 		},
 		{
 			i18nName: '申请日期止',
-			i18nKey: '申请日期止',
+			i18nKey: 'SHENQINGRIQIZHI',
 			permissionKey: 'SOURCING_HUIYILEIXING',
 			type: 'datepicker',
 			List: [],
@@ -129,7 +115,6 @@ export function searchForm(DEPARTMENTLIST = [], PURCHASE_FACTORY = []) {
 			moduleKey: 'detail',
 		},
 	]
-}
 
 export const form = {
 	applyBy: '',
@@ -157,7 +142,7 @@ export const tableTitle = [
 	{
 		props: 'riseCode',
 		name: 'RiSE编号',
-		key: 'RiSE编号',
+		key: 'MODEL-ORDER.LK_RISEBIANHAO',
 		tooltip: true,
 		minWidth: 180,
 		sortable: true,
@@ -165,7 +150,7 @@ export const tableTitle = [
 	{
 		props: 'subType',
 		name: '采购申请类型',
-		key: '采购申请类型',
+		key: 'MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING',
 		tooltip: true,
 		width: 180,
 		sortable: true,
@@ -173,7 +158,7 @@ export const tableTitle = [
 	{
 		props: 'applyBy',
 		name: '申请人',
-		key: '申请人',
+		key: 'LK_SHENQINGREN',
 		width: 120,
 		tooltip: true,
 		sortable: true,
@@ -181,7 +166,7 @@ export const tableTitle = [
 	{
 		props: 'applyDeptNo',
 		name: '申请部门',
-		key: '申请部门',
+		key: 'SHENQINGBUMEN',
 		width: 120,
 		tooltip: true,
 		sortable: true,
@@ -189,7 +174,7 @@ export const tableTitle = [
 	{
 		props: 'status',
 		name: '状态',
-		key: '状态',
+		key: 'STATUS',
 		tooltip: true,
 		width: 120,
 		sortable: true,
@@ -197,7 +182,7 @@ export const tableTitle = [
 	{
 		props: 'nominationStatus',
 		name: '一次性定点状态',
-		key: '一次性定点状态',
+		key: 'MODEL-ORDER.LK_YICIXINGDINGDIANZHUANGTAI',
 		tooltip: true,
 		width: 160,
 		sortable: true,
@@ -205,7 +190,7 @@ export const tableTitle = [
 	{
 		props: 'createDate',
 		name: '生成时间',
-		key: '生成时间',
+		key: 'MODEL-ORDER.LK_SHENQINGSHIJIAN',
 		width: 120,
 		tooltip: true,
 		sortable: true,
@@ -213,7 +198,7 @@ export const tableTitle = [
 	{
 		props: 'buyerCode',
 		name: '推荐采购员',
-		key: '推荐采购员',
+		key: 'TUIJIANCAIGOUYUAN',
 		tooltip: true,
 		minWidth: 120,
 		sortable: true,
@@ -221,7 +206,7 @@ export const tableTitle = [
 	{
 		props: 'remark',
 		name: '备注',
-		key: '备注',
+		key: 'remarks',
 		tooltip: true,
 		width: 300,
 		sortable: true,
@@ -248,7 +233,7 @@ export const newTableTitle = [
 	{
 		props: 'partNum',
 		name: '零件号',
-		key: 'partsprocure.LingJianHao',
+		key: 'LK_SPAREPARTSNUMBER',
 		tooltip: true,
 		align: 'center',
 		width: 120,
@@ -256,7 +241,7 @@ export const newTableTitle = [
 	{
 		props: 'partNameZh',
 		name: '零件名称',
-		key: 'partsignLanguage.LingJianMingChengZH',
+		key: 'LK_JILIANGDANWEI',
 		tooltip: true,
 		align: 'center',
 		minWidth: 140,
@@ -325,16 +310,16 @@ export const newTableTitle = [
 ]
 
 export const addType = [
-	{ label: 'ZN_ONE', key: '工序委外一次性' },
-	{ label: 'ZN_AGT', key: '工序委外框架' },
+	{ code: 'ZN_ONE', name: '工序委外一次性', nameEn: 'ZN_ONE' },
+	{ code: 'ZN_AGT', name: '工序委外框架', nameEn: 'ZN_AGT' },
 ]
 
 export const statusList = [
-	{ key: '-2', label: '草稿' },
-	{ key: '-1', label: '已退回' },
-	{ key: '0', label: '待签收' },
-	{ key: '1', label: '已创建' },
-	{ key: '2', label: '已关联订单' },
-	{ key: '3', label: '订单已推送' },
-	{ key: '4', label: '已关闭' },
+	{ code: '-2', name: '草稿', nameEn: 'Draft' },
+	{ code: '-1', name: '已退回', nameEn: '已退回' },
+	{ code: '0', name: '待签收', nameEn: '待签收' },
+	{ code: '1', name: '已创建', nameEn: '已创建' },
+	{ code: '2', name: '已关联订单', nameEn: '已关联订单' },
+	{ code: '3', name: '订单已推送', nameEn: '订单已推送' },
+	{ code: '4', name: '已关闭', nameEn: '已关闭' },
 ]
