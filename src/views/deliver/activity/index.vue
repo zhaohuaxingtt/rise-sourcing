@@ -20,45 +20,44 @@
             <template slot="header" slot-scope="scope">
               <span>{{ item.name }}</span>
               <template v-if="item.props == 'col3'">
-                <el-popover placement="right" width="400" trigger="click">
-                  <el-table :data="gridData">
-                    <el-table-column
-                      width="150"
-                      property="date"
-                      label="日期"
-                    ></el-table-column>
-                    <el-table-column
-                      width="100"
-                      property="name"
-                      label="姓名"
-                    ></el-table-column>
-                    <el-table-column
-                      width="300"
-                      property="address"
-                      label="地址"
-                    ></el-table-column>
-                  </el-table>
+                <el-popover placement="bottom" width="auto" trigger="click">
+                  <div>
+                    <p>
+                      <icon
+                        symbol
+                        name="icontishi-cheng"
+                      />节点(Activity)类型</p>
+                    <p>Note</p>
+                    <p>ank</p>
+                  </div>
                   <icon
                     slot="reference"
                     @click="addItem(scope.row, scope.$index)"
                     symbol
-                    name="iconliebiaozhankailishishuju"
+                    name="icontishi-cheng"
                   />
                 </el-popover>
               </template>
             </template>
             <template slot-scope="scope">
-              <span>{{ scope.row[item.props] }}</span>
+              <template  v-if="item.props == 'col3'">
+                <iSelect clearable v-model="scope.row[item.prop]"
+                  :placeholder="language('QINGXUANZE', '请选择')">
+                  <el-option v-for="item in typeList || []" :key="item.value" :label="$i18n.locale=='zh' ? item.name : item.nameEn" :value="item.value">
+                  </el-option>
+                </iSelect>
+              </template>
+              <span v-else>{{ scope.row[item.props] }}</span>
               <el-popover placement="right" width="auto" trigger="click" @hide="clear" v-model="scope.row.visible" v-if="item.props == 'col1'">
                 <div>
                   <div class="flex-item">
                     <div>在上方插入</div>
-                    <div class="padding"><iInput v-model="topNum" @keydown.enter.native="addItem(scope.row, scope.$index, 'top')" /></div>
+                    <div class="padding"><iInput v-model="topNum" @keydown.enter.native="addItem(scope.$index, 'top')" /></div>
                     <div>行</div>
                   </div>
                   <div class="flex-item">
                     <div>在上方插入</div>
-                    <div class="padding"><iInput v-model="bottomNum" @keydown.enter.native="addItem(scope.row, scope.$index, 'bottom')" /></div>
+                    <div class="padding"><iInput v-model="bottomNum" @keydown.enter.native="addItem(scope.$index, 'bottom')" /></div>
                     <div>行</div>
                   </div>
                 </div>
@@ -78,7 +77,9 @@
           :min-width="120"
           :width="120"
         >
-          <iButton type="text">删除</iButton>
+          <template slot-scope="scope">
+            <iButton type="text" @click="deleteItem(scope.$index)">删除</iButton>
+          </template>
         </el-table-column>
       </el-table>
     </iCard>
@@ -86,7 +87,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iInput, iButton, icon } from "rise";
+import { iPage, iCard, iInput, iSelect, iButton, icon } from "rise";
 import search from "../components/search";
 import { searchList, tableTitle } from "./data.js";
 import tableList from "@/components/iTableSort";
@@ -95,6 +96,7 @@ export default {
     iPage,
     iCard,
     iInput,
+    iSelect,
     iButton,
     icon,
     search,
@@ -129,7 +131,7 @@ export default {
         {
           col1: "1.0",
           col2: "2.0",
-          col3: "3.0",
+          col3: "point",
           col4: "4.0",
           col5: "5.0",
           col6: "6.0",
@@ -137,7 +139,7 @@ export default {
         {
           col1: "1.0",
           col2: "2.0",
-          col3: "3.0",
+          col3: "slot",
           col4: "4.0",
           col5: "5.0",
           col6: "6.0",
@@ -146,15 +148,30 @@ export default {
       tableTitle,
       topNum: "",
       bottomNum: "",
+      typeList:[
+        {
+          value: 'point',
+          name: 'Point',
+          nameEn: 'Point'
+        },{
+          value: 'slot',
+          name: 'Slot',
+          nameEn: 'Slot'
+        },
+      ]
     };
   },
   methods: {
-    addItem(row, index, type='top') {
+    addItem(index, type='top') {
       let tableListData = JSON.parse(JSON.stringify(this.tableListData))
       if(type=='top'){
-        tableListData.splice(index,0,{})
+        for (let i = 0; i < this.topNum; i++) {
+          tableListData.splice(index,0,{})
+        }
       }else{
-        tableListData.splice(1+index,0,{})
+        for (let i = 0; i < this.bottomNum; i++) {
+          tableListData.splice(1+index,0,{})
+        }
       }
       this.tableListData = tableListData.map(item=>{
         item.visible = false
@@ -163,7 +180,10 @@ export default {
       console.log(index);
       console.log(this.tableListData);
     },
-    delete(row, rowIndex) {},
+    deleteItem(index) {
+      console.log(index);
+      this.tableListData.splice(index,1)
+    },
     clear(){
       this.topNum = ''
       this.bottomNum = ''
