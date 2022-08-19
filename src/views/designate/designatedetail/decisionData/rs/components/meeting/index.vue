@@ -1116,6 +1116,7 @@ export default {
      * @return {*}
      */    
     init() {
+      this.loading = true
       // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
       if (this.isAuth || this.isApproval) {
         this.reviewListRs()
@@ -1181,6 +1182,7 @@ export default {
       })
       .finally(() => {
         this.tableLoading = false
+        this.loading = false
         this.$nextTick(()=>{
           this.getHeight()
         })
@@ -1306,7 +1308,10 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
-      .finally(() => this.tableLoading = false)
+      .finally(() => {
+        this.tableLoading = false
+        this.loading = false
+      })
 	},
 		
     // 导出pdf
