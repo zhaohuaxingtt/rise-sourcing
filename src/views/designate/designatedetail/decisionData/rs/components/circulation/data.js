@@ -53,7 +53,7 @@ export const infos = [
 
 // 生产
 export const nomalTableTitle = [
-  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 90, fixed: true },
+  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 95, fixed: true },
   { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
   { props: 'partNum', name: '原零件号', key: '', minWidth: 95 }, // 12/24 业务说取partNum
   { props: 'oldAPrice', name: '原A价', key: '', minWidth: 100 },
@@ -239,7 +239,7 @@ export const sparePartTableTitle = [
 // ]
 
 export const gsTableTitle = [
-  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 90, fixed: true },
+  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 100, fixed: true },
   { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
   { props: 'status', name: '供货状态', key: '', minWidth: 90 },
   { props: 'partName', name: '零件名称', key: '', minWidth: 110 },
