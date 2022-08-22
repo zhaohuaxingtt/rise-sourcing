@@ -360,7 +360,7 @@ export default {
 		normalPrQuantityYears(data) {
 			// this.baseinfodata.normalPrQuantityYears = data
 		},
-		//保存
+		//保存前校验
 		handleSave() {
 			if (this.tableListData.length == 0) {
 				return iMessage.warn('请添加数据')
@@ -373,6 +373,7 @@ export default {
 			) {
 				return iMessage.warn(language('LK_QINGSHURULINGJIANHAO','请输入零件号'))
 			}
+			// 校验行内非空项
 			if (
 				this.tableListData.find(
 					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
@@ -397,46 +398,73 @@ export default {
 				}
 			}
 			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
+			let reg = /^MBCP\d{5}$/
+			if(!reg.test(this.baseinfodata.partPrefix)&&this.baseinfodata.partPrefix){
+				return iMessage.warn(language('LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI','请填写规范的零件编号前缀'))
+			}else{
+				if(this.tableListData.find((e) => !e.partNum)){
+					this.$confirm(this.language('LK_QUERENSHIYONGLINGJIANHAOQIANZHUISHENGCHENGXINDELINGJIANHAO','确认使用零件号前缀生成新的零件号？'), this.language('LK_NOTICE','温馨提示'), {
+						type: 'warning',
+						distinguishCancelAndClose: true,
+						confirmButtonText: this.language('LK_QUEREN','确认'),
+						cancelButtonText: this.language('LK_QUXIAO','取消'),
+					})
+					.then(() => {
+						this.saveOrUpdate()
+					})
+					.catch(action => {
+						if(action === 'cancel') {
+							// 生成定点申请单
+						}
+					});
+				}else{
+					this.saveOrUpdate()
+				}
+			}
+		},
+		// 保存
+		saveOrUpdate(){
 			const query = this.tableListData.map((item) => {
 				return {
 					...item,
 					ownerName:this.baseinfodata.ownerName,
 					ownerId:this.baseinfodata.ownerId,
+					partPrefix: this.baseinfodata.partPrefix,
 					quantity: item.quantity,
 				}
 			})
 			saveOrUpdate(query)
-				.then((res) => {
-					if (
-						+res.code === 200 &&
-						!this.$route.query.item &&
-						!this.$route.query.code
-					) {
-						this.baseinfodata.riseCode = res.data[0].riseCode
+			.then((res) => {
+				if (
+					+res.code === 200 &&
+					!this.$route.query.item &&
+					!this.$route.query.code
+				) {
+					this.baseinfodata.riseCode = res.data[0].riseCode
 
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-						this.$nextTick(() => {
-							this.$router.replace({
-								path: '/partsign/outsouringorder/addoutsourcing/details',
-								query: {
-									code: this.baseinfodata.riseCode,
-									subType: this.baseinfodata.subType,
-								},
-							})
+					iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+					this.$nextTick(() => {
+						this.$router.replace({
+							path: '/partsign/outsouringorder/addoutsourcing/details',
+							query: {
+								code: this.baseinfodata.riseCode,
+								subType: this.baseinfodata.subType,
+							},
 						})
-					} else if (+res.code === 200 && this.$route.query.code) {
-						this.baseinfodata.riseCode = res.data[0].riseCode
-						this.canEdit = false
-						this.getTableHaderInfo()
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-					} else {
-						this.canEdit = true
-						return iMessage.error(
-							`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`
-						)
-					}
-				})
-				.catch((err) => {})
+					})
+				} else if (+res.code === 200 && this.$route.query.code) {
+					this.baseinfodata.riseCode = res.data[0].riseCode
+					this.canEdit = false
+					this.getTableHaderInfo()
+					iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+				} else {
+					this.canEdit = true
+					return iMessage.error(
+						`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`
+					)
+				}
+			})
+			.catch((err) => {})
 		},
 		//编辑
 		handleEdit() {
@@ -502,6 +530,7 @@ export default {
 				}),
 				ownerId: this.baseinfodata.ownerId,
 				riseCodes: this.baseinfodata.riseCode,
+				partPrefix: this.baseinfodata.partPrefix,
 			}).then((res) => {
 				if (res.result) {
 					iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
