@@ -424,7 +424,9 @@ export default {
 		},
 		// 保存
 		saveOrUpdate(){
-			const query = this.tableListData.map((item) => {
+			const tableListData = JSON.parse(JSON.stringify(this.tableListData))
+			const query = tableListData.map((item) => {
+				delete item.addressList
 				return {
 					...item,
 					ownerName:this.baseinfodata.ownerName,
