@@ -322,6 +322,7 @@ export default {
 				return ''
 			}
 			let item = this.lineOptiondata.find((j) => j.linieID == key)
+			this.baseinfodata.ownerName = (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 			return item.linieID +'-'+ (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 		},
 		// 获取采购申请单状态
@@ -397,7 +398,6 @@ export default {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
 				}
 			}
-			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
 			let reg = /^MBCP\d{5}$/
 			if(!reg.test(this.baseinfodata.partPrefix)&&this.baseinfodata.partPrefix){
 				return iMessage.warn(language('LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI','请填写规范的零件编号前缀'))
