@@ -183,8 +183,8 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"developmentCostShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"])) }}RMB</div>
+                    <div>分摊：{{ ttoShow(scope.row[getPorpsNumber(item.props)+"developmentCostShare"])}}RMB</div>
                   </template>
                   <span>{{ttoShow(scope.row[item.props])}}</span>
                 </el-tooltip>
@@ -196,12 +196,12 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"])) }}RMB</div>
+                    <div>分摊：{{ttoShow(scope.row[getPorpsNumber(item.props)+"toolingShare"])}}RMB</div>
                   </template>
-                  <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                  <span>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 </el-tooltip>
-                <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                <span v-else>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 <!-- <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span> -->
                 <span style="color:red;" v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>*</span>
               </template>
