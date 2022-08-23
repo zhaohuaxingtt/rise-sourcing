@@ -241,7 +241,7 @@ export const newTableTitle = [
 	{
 		props: 'partNameZh',
 		name: '零件名称',
-		key: 'LK_JILIANGDANWEI',
+		key: 'LINGJIANMINGCHEN',
 		tooltip: true,
 		align: 'center',
 		minWidth: 140,

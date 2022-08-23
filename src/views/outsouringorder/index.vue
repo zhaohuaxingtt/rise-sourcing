@@ -310,8 +310,6 @@ export default {
 		},
 		//仅看自己
 		showOnlyMyselfData(val) {
-			this.form.currentPage = 1
-			this.form.pageSize = this.page.pageSize
 			this.form.isOwn = val
 			this.getOutsouringFindBypage()
 		},
@@ -369,8 +367,8 @@ export default {
 		getOutsouringFindBypage() {
 			this.tableLoading = true
 			outsouringFindBypage({
-				...{ size: this.page.pageSize, current: this.page.currPage },
 				...this.form,
+				...{ size: this.page.pageSize, currentPage: this.page.currPage },
 			})
 				.then((res) => {
 					this.tableLoading = false
@@ -557,10 +555,7 @@ export default {
 
 		// 重置
 		reset() {
-			Object.keys(this.form).forEach((element) => {
-				this.form[element] = ''
-			})
-			this.form.showSelf = true
+			this.form = JSON.parse(JSON.stringify(form)),
 			this.sure()
 		},
 		// 查询按钮
@@ -572,6 +567,11 @@ export default {
 		handleBatchTransation() {
 			if (this.selectRow.length == 0) {
 				return iMessage.warn('请先选择数据')
+			}
+			if(this.selectRow.find(item=>{
+				return !(item.status == 0 || item.status == 1)
+			})){
+				return iMessage.warn('只能转派，待签收，已签署状态的数据')
 			}
 			this.showTransfer = true
 		},
