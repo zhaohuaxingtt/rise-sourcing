@@ -322,6 +322,7 @@ export default {
 				return ''
 			}
 			let item = this.lineOptiondata.find((j) => j.linieID == key)
+			this.baseinfodata.ownerName = (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 			return item.linieID +'-'+ (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 		},
 		// 获取采购申请单状态
@@ -396,11 +397,6 @@ export default {
 				if (flag) {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
 				}
-			}
-			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
-			if(this.baseinfodata.ownerName.includes('-')){
-				let arr = this.baseinfodata.ownerName.split('-')
-				this.baseinfodata.ownerName = arr[arr.length-1]
 			}
 			let reg = /^MBCP\d{5}$/
 			if(!reg.test(this.baseinfodata.partPrefix)&&this.baseinfodata.partPrefix){
