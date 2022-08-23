@@ -294,10 +294,16 @@ export default {
       //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
       //   return
       // }
-      // // eslint-disable-next-line no-undef
-      if(this.selectParts.find(item=>item.state == 'ACCEPTED')){
-        return iMessage.warn(this.language('YIJINGQIANSHOUDESHUJUBUNENGZAIFENPEI','已经签收的数据不能再分配'))
+      let arr = []
+      this.selectParts.forEach(item=>{
+        if(item.state == 'ACCEPTED'){
+          arr.push(item.partNum)
+        }
+      })
+      if(arr.length){
+        return iMessage.warn(this.language('LINGJIANHAO','零件号')+arr.join(',')+this.language('YIQIANSHOUQZPJGLYMJXFPCGYDCZ','已签收，请至配件管理页面进行分配采购员的操作'))
       }
+        // // eslint-disable-next-line no-undef
       const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
       // eslint-disable-next-line no-undef
       this.selectliniePartId = _.uniq(this.selectParts.map(item => item.id))      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
@@ -317,8 +323,14 @@ export default {
       //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
       //   return
       // }
-      if(this.selectParts.find(item=>item.state == 'ACCEPTED')){
-        return iMessage.warn(this.language('YIJINGQIANSHOUDESHUJUBUNENGZAIFENPEI','已经签收的数据不能再分配'))
+      let arr = []
+      this.selectParts.forEach(item=>{
+        if(item.state == 'ACCEPTED'){
+          arr.push(item.partNum)
+        }
+      })
+      if(arr.length){
+        return iMessage.warn(this.language('LINGJIANHAO','零件号')+arr.join(',')+this.language('YIQIANSHOUQZPJGLYMJXFPCGYDCZ','已签收，请至配件管理页面进行分配采购员的操作'))
       }
   // eslint-disable-next-line no-undef
       const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
