@@ -1765,6 +1765,11 @@ export default {
 				padding-left: 6px;
 				padding-right: 6px;
 			}
+			&:first-child {
+					.cell {
+						padding: 0 0 0 8px; /*no*/
+					}
+				}
 		}
 
 		::v-deep tr {
