@@ -22,5 +22,6 @@ export default {
 	MTZTIP: '这个单据绑定了MTZ申请，请确认，您是否需要将MTZ解绑',
 	JIEBANGMTZ: '解绑，MTZ保持定点',
 	BUJIEBANGMTZ: '不解绑，MTZ取消定点',
-	TONGPILIANG: '同批量'
+	TONGPILIANG: '同批量',
+	YIQIANSHOUQZPJGLYMJXFPCGYDCZ: '已签收，请至配件管理页面进行分配采购员的操作'
 }
