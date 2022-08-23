@@ -398,6 +398,10 @@ export default {
 				}
 			}
 			this.baseinfodata.ownerName = this.getLiner(this.baseinfodata.ownerId)
+			if(this.baseinfodata.ownerName.includes('-')){
+				let arr = this.baseinfodata.ownerName.split('-')
+				this.baseinfodata.ownerName = arr[arr.length-1]
+			}
 			let reg = /^MBCP\d{5}$/
 			if(!reg.test(this.baseinfodata.partPrefix)&&this.baseinfodata.partPrefix){
 				return iMessage.warn(language('LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI','请填写规范的零件编号前缀'))
