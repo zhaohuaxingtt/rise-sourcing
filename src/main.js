@@ -16,7 +16,7 @@ import '@/assets/style/global/index.scss'
 import './permission'
 import './i18n'
 import Vue from 'vue'
-import { iTable } from 'rise'
+import { iTable, iMessage } from 'rise'
 // import AmapVue from '@amap/amap-vue'
 import './utils/mydirect'
 import './globalComponnets'
@@ -34,6 +34,7 @@ Promise.all([
 
 Vue.component(iTable.name, iTable)
 Vue.prototype.$echarts = echarts()
+Vue.prototype.$message = iMessage
 
 new Vue({
 	router,
