@@ -117,7 +117,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<span style="color: red">*</span>
+						<span v-if="!baseinfodata.partPrefix" style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
 						<iInput
@@ -141,10 +141,16 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<!-- <span style="color: red">*</span> -->
+						<span style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
-						<span>{{ scope.row['partNameZh'] }}</span>
+						<iInput
+							v-if="!scope.row['partNum'] && canEdit"
+							v-model="scope.row.partNameZh"
+							:disabled="scope.row.partNum!=''"
+							placeholder="请输入"
+						/>
+						<span v-else>{{ scope.row['partNameZh'] }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column

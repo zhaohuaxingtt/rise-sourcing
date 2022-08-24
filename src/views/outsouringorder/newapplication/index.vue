@@ -377,7 +377,7 @@ export default {
 			// 校验行内非空项
 			if (
 				this.tableListData.find(
-					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+					(e) => !e.type || !e.unitCode || !e.partNameZh || !e.procureFactory || !e.deliveryDate
 				)
 			) {
 				return iMessage.warn(language('QINGSHURUBITIANXIANG','请输入必填项'))
@@ -545,7 +545,8 @@ export default {
 			if (this.tableListData.length > 0) {
 				const {
 					partType,
-					partNum,
+					// partNum,	//零件号可能没有
+					partNameZh,
 					quantity,
 					procureFactory,
 					deliveryDate,
@@ -559,7 +560,8 @@ export default {
 						: normalPrQuantityYears.length
 				if (
 					!partType ||
-					!partNum ||
+					// !partNum ||	//零件号可能没有
+					!partNameZh ||
 					!procureFactory ||
 					!deliveryDate ||
 					!unitCode ||
@@ -584,6 +586,7 @@ export default {
 				procureOrg: '',
 				deliveryDate: '',
 				storageLocationCode: '',
+				partNameZh:'',
 				requestTraceNo: '',
 				// subType: this.applicationTypeVal,
 				subType: this.baseinfodata.subType,
