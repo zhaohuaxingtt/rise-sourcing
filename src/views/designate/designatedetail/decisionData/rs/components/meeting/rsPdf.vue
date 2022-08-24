@@ -659,7 +659,7 @@ export default {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
           padding: 6px 24px;
-          width: 60%;
+          width: 40%;
           font-weight: bold;
           // line-height: 29px;
           display: flex;
@@ -667,7 +667,7 @@ export default {
           justify-content: center;
         }
         &-value {
-          width: 40%;
+          width: 60%;
           padding: 6px 24px;
           // line-height: 29px;
           background-color: #fff;
@@ -677,10 +677,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 65%;
+            width: 50%;
           }
           .rsTop-right-item-value {
-            width: 35%;
+            width: 50%;
           }
         }
       }
