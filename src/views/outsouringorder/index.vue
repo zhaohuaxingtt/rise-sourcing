@@ -323,6 +323,11 @@ export default {
 				iMessage.warn(this.language('QINGXUANZEPEIJIAN', '请选择配件'))
 				return
 			}
+			if(this.selectRow.find(item=>{
+				return item.status != 0
+			})){
+				return iMessage.warn('仅待签收状态的数据可以退回')
+			}
 			this.backDialogVisible = visible
 			this.mode = 'back'
 		},
@@ -386,12 +391,15 @@ export default {
 		 */
 		handleBatchDelete() {
 			// this.tableLoading = true
-			deleteOutSouring(this.selectRow.map((k) => k.riseCode))
+			deleteOutSouring(this.selectRow.map((k) => k.purchasingRequirementId))
 				.then((res) => {
 					// this.tableLoading = false
 					if (+res.code === 200) {
 						this.getOutsouringFindBypage()
-					}
+						iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+					}else{
+						iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+						}
 				})
 				.catch((err) => {
 					this.tableLoading = false
@@ -571,7 +579,7 @@ export default {
 			if(this.selectRow.find(item=>{
 				return !(item.status == 0 || item.status == 1)
 			})){
-				return iMessage.warn('只能转派，待签收，已签署状态的数据')
+				return iMessage.warn('仅待签收，已签收状态的数据可以转派')
 			}
 			this.showTransfer = true
 		},
