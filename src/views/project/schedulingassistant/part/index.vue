@@ -24,6 +24,7 @@
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
             <el-autocomplete :placeholder="language('QINGSHURU', '请输入')" class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
             <iDicoptions v-else-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="true" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+            <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
           </div>
         </div>
         <div>
@@ -38,20 +39,20 @@
 </template>
 
 <script>
-import { iPage, iCard, iButton } from 'rise'
+import { iPage, iCard, iButton, iMultiLineInput } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import { getLastOperateCarType } from '@/api/project'
 import partList from './components/partList'
 import carEmpty from '../../components/empty/carEmpty'
 import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
-  components: { iPage, carProject, iCard, iDicoptions, iButton, carEmpty, partList },
+  components: { iPage, carProject, iCard, iDicoptions, iButton, carEmpty, partList, iMultiLineInput },
   data() {
     return {
       carProject: '',
       carProjectName: '',
       searchList: [
-        {value: 'partNum', label: '零件号', key: 'LINGJIANHAO', type: 'input', querySearch: this.querySearchPartNum},
+        {value: 'partNum', label: '零件号', key: 'LINGJIANHAO', type: 'multiLineInput', querySearch: this.querySearchPartNum},
         {value: 'partNameZh', label: '零件名称', key: 'LINGJIANMINGCHENG', type: 'input', querySearch: this.querySearchPartNameZh},
         {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE'},
         {value: 'level', label: '风险等级', key: 'FENGXIANDENGJI', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},

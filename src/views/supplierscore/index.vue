@@ -89,7 +89,8 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_PARTNUM|零件号">
-          <iInput v-model="form.partNum" :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" />
+          <!-- <iInput v-model="form.partNum" :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" /> -->
+          <iMultiLineInput v-model="form.partNum" :title="language('LINGJIANHAO', '零件号')" />
         </el-form-item>
         <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_PARTNAME|零件名称">
           <iInput v-model="form.partName" :placeholder="language('QINGSHURULINGJIANMINGCHENG', '请输入零件名称')" />
@@ -194,7 +195,7 @@
 </template>
 
 <script>
-import { iPage, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
+import { iPage, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iMultiLineInput } from "rise"
 import headerNav from '@/components/headerNav'
 import forwardDialog from "@/views/supplierscore/components/forwardDialog"
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -220,7 +221,8 @@ export default {
     iPagination,
     forwardDialog,
     tableList,
-    headerNav
+    headerNav,
+    iMultiLineInput
   },
   mixins: [ filters, pageMixins ], 
   data() {

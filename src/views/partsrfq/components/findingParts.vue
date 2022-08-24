@@ -37,9 +37,10 @@
                     clearable></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
-            <iInput placeholder="请输入"
+            <!-- <iInput placeholder="请输入"
                     v-model="form.partNum"
-                    clearable></iInput>
+                    clearable></iInput> -->
+            <iMultiLineInput v-model="form.partNum" :title="$t('partsprocure.PARTSPROCUREPARTNUMBER')" />
           </el-form-item>
         </el-form>
       </iSearch>
@@ -71,7 +72,7 @@
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
+import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination, iMultiLineInput } from "rise";
 import { confirmTableHead } from "./data";
 import emitter from '@/utils/emitter.js';
 import {
@@ -88,7 +89,8 @@ export default {
     iSelect,
     iInput,
     tableList,
-    iPagination
+    iPagination,
+    iMultiLineInput
   },
   mixins: [emitter],
   props: {

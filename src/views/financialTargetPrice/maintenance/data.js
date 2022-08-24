@@ -39,7 +39,7 @@ export const tableMockData = [
 export const searchList = [
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_RFQNUM|财务目标价管理-目标价维护-RFQ编号'},
   {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_FSNUM|财务目标价管理-目标价维护-FSGSSPNO'},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTNUM|财务目标价管理-目标价维护-零件号'},
+  {value: 'partNum', label: '零件号', type: 'multiLineInput', i18n_label: 'LINGJIANHAO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTNUM|财务目标价管理-目标价维护-零件号'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_CF|财务目标价管理-目标价维护-CF'},
   {value: 'applyStats', label: '申请状态', type: 'select', i18n_label: 'SHENQINGZHUANGTAI',selectOption:'CF_APPLY_STATUS', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_APPLYSTATUS|财务目标价管理-目标价维护-申请状态'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTNAME|财务目标价管理-目标价维护-零件名称'},

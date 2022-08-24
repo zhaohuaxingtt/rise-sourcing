@@ -151,18 +151,24 @@ export default {
     },
     methods:{
         addCell(){
-            if(this.formDataLevel2.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
+            if(this.formDataLevel2.length==5) return this.$message({type:'error',message:'每层最多5个分支',
+            duration: 10000, // error 错误提示显示10秒
+            showClose: true})
             this.formDataLevel2.push({id:'',name:"",
                 weight:"",children:[]})
         },
         handleAdd(index,idx3,str){
             if(str==="2"){
-                if(this.formDataLevel2[index].children.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
+                if(this.formDataLevel2[index].children.length==5) return this.$message({type:'error',message:'每层最多5个分支',
+            duration: 10000, // error 错误提示显示10秒
+            showClose: true})
                  this.formDataLevel2[index].children.push({
                 id:'',name:"",
                 weight:"",children:[]})
             }else if(str==="3"){
-                if(this.formDataLevel2[index].children[idx3].children.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
+                if(this.formDataLevel2[index].children[idx3].children.length==5) return this.$message({type:'error',message:'每层最多5个分支',
+            duration: 10000, // error 错误提示显示10秒
+            showClose: true})
                 this.formDataLevel2[index].children[idx3].children.push({
                 id:'',name:"",
                 weight:"",children:[]})
@@ -211,14 +217,18 @@ export default {
             if(lv1Weight!==100){
                 return this.$message({
                     type:'error',
-                    message:'指标1的比重错误'
+                    message:'指标1的比重错误',
+                    duration: 10000, // error 错误提示显示10秒
+                    showClose: true
                 })
             }
             if(lv2Weight!==100){
                 if(lv2Weight/this.formDataLevel2.length!==100){
                     return this.$message({
                         type:'error',
-                        message:'指标2的比重错误'
+                        message:'指标2的比重错误',
+                        duration: 10000, // error 错误提示显示10秒
+                        showClose: true
                     })
                 }
             }
@@ -236,7 +246,9 @@ export default {
                 if(lv3Weight/num!==100){
                     return this.$message({
                         type:'error',
-                        message:'指标3的比重错误'
+                        message:'指标3的比重错误',
+                        duration: 10000, // error 错误提示显示10秒
+                        showClose: true
                     })
                 }
             }
@@ -244,7 +256,9 @@ export default {
             if(!nameIsNull){
                 return this.$message({
                     type:'error',
-                    message:'名称和比重不能为空'
+                    message:'名称和比重不能为空',
+                    duration: 10000, // error 错误提示显示10秒
+                    showClose: true
                 })
             }
             // 比重非空校验

@@ -7,7 +7,7 @@
 // 定点信搜索条件
 export const letterListSearch =[
     {props:'letterNum',label:'定点信编号',type:'input',labelKey:'LK_DINGDIANXINBIANHAO',permissionKey: 'LK_LETTER_LIST_LETTERNUM'},
-    {props:'partNum',label:'零件号',type:'input',labelKey:'partsprocure.PARTSPROCUREPARTNUMBER',permissionKey: 'LK_LETTER_LIST_PARTNUM'},
+    {props:'partNum',label:'零件号',type:'multiLineInput',labelKey:'partsprocure.PARTSPROCUREPARTNUMBER',permissionKey: 'LK_LETTER_LIST_PARTNUM'},
     {props:'partName',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: 'LK_LETTER_LIST_PARTNAME'},
     {props:'fsnrGsnrNum',label:'FsNr/GsNr',type:'input',labelKey:'partsprocure.FsnrGsnr',permissionKey: 'LK_LETTER_LIST_FSNRGSNR'},
     {props:'csfCssName',label:'询价采购员',type:'input',labelKey:'partsprocure.PARTSPROCUREINQUIRYBUYER',permissionKey: 'LK_LETTER_LIST_CSFNAME'},
@@ -24,7 +24,7 @@ export const letterListSearch =[
 // loi搜索条件
 export const loiListSearch = [
   {props:'loiNum',label:'LOI编号',type:'input',labelKey:'LK_LOIBIANHAO',permissionKey: 'LK_LOI_LIST_LOINUM'},
-  {props:'partNum',label:'零件号',type:'input',labelKey:'partsprocure.PARTSPROCUREPARTNUMBER',permissionKey: 'LK_LOI_LIST_PARTNUM'},
+  {props:'partNum',label:'零件号',type:'multiLineInput',labelKey:'partsprocure.PARTSPROCUREPARTNUMBER',permissionKey: 'LK_LOI_LIST_PARTNUM'},
   {props:'partName',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: 'LK_LOI_LIST_PARTNAME'},
   {props:'fsnrGsnrNum',label:'FsNr/GsNr',type:'input',labelKey:'partsprocure.FsnrGsnr',permissionKey: 'LK_LOI_LIST_FSGSNR'},
   {props:'csfName',label:'询价采购员',type:'input',labelKey:'partsprocure.PARTSPROCUREINQUIRYBUYER',permissionKey: 'LK_LOI_LIST_CSFNAME'},

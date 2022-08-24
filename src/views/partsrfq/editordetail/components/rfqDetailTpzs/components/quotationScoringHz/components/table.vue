@@ -149,7 +149,12 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+                <div class="tag" v-if="scope.row.isOriginprice">
+                  <el-tooltip :content="language('TONGPILIANG','同批量')" placement="bottom" effect="light">
+                    <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
+                  </el-tooltip>
+                </div>
+                <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
@@ -178,8 +183,8 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"developmentCostShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"])) }}RMB</div>
+                    <div>分摊：{{ ttoShow(scope.row[getPorpsNumber(item.props)+"developmentCostShare"])}}RMB</div>
                   </template>
                   <span>{{ttoShow(scope.row[item.props])}}</span>
                 </el-tooltip>
@@ -191,12 +196,12 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"])) }}RMB</div>
+                    <div>分摊：{{ttoShow(scope.row[getPorpsNumber(item.props)+"toolingShare"])}}RMB</div>
                   </template>
-                  <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                  <span>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 </el-tooltip>
-                <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                <span v-else>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 <!-- <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span> -->
                 <span style="color:red;" v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>*</span>
               </template>
@@ -546,6 +551,24 @@ export default{
         white-space:pre-line!important;
         text-align: center;
       }
+      .tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        background: #54b88e;
+        transform: translate3d(50%, -50%, 0) rotate(-135deg);
+        .icon{
+          transform: rotate(135deg) scale(0.8);
+          display: inline-block;
+          color: white;
+          overflow: unset;
+          height: 17px;
+          width: 17px;
+          font-size: 8px;
+        }
+      }
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
@@ -584,6 +607,7 @@ export default{
       height:auto!important;
       td{
         border-bottom: 1px solid #ebeef5;
+        overflow: hidden;
       }
     }
     ::v-deep.el-table__fixed-body-wrapper{

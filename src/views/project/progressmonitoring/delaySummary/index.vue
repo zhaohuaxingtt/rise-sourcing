@@ -24,6 +24,7 @@
           <carProjectSelect v-else-if="item.type === 'carProjectSelect'" v-model="searchParams[item.value]" :filterable="item.filterable" />
           <!--------------字典下拉----------------------->
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -95,7 +96,7 @@
 </template>
 
 <script>
-import { iSearch, iInput, iButton, iCard, iPagination, iMessage, icon } from 'rise'
+import { iSearch, iInput, iButton, iCard, iPagination, iMessage, icon, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import { tableTitle, searchList } from './data'
 import fsSelect from '@/views/project/components/commonSelect/fsSelect'
@@ -117,7 +118,7 @@ import buttonTableSetting from '@/components/buttonTableSetting'
 import { roleMixins } from "@/utils/roleMixins";
 export default {
   mixins: [pageMixins,tableSortMixins,roleMixins],
-  components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog, buttonTableSetting },
+  components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog, buttonTableSetting, iMultiLineInput },
   data() {
     return {
       tableTitle,

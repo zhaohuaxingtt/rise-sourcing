@@ -18,8 +18,9 @@
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-                    v-model="form.spareParts"></iInput>
+            <!-- <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                    v-model="form.spareParts"></iInput> -->
+            <iMultiLineInput v-model="form.spareParts" :title="$t('LK_SPAREPARTSNUMBER')" />
           </el-form-item>
           <!--供应商状态-->
           <el-form-item :label="$t('TPZS.RFQHMC')">
@@ -224,6 +225,7 @@ import {
   iSelect,
   icon,
   iMessage,
+  iMultiLineInput
 } from "rise";
 import { getList, update, add } from "@/api/partsrfq/mek/index.js";
 import { pageMixins } from "@/utils/pageMixins";
@@ -243,6 +245,7 @@ export default {
     icon,
     reportPreview,
     addDialog,
+    iMultiLineInput
   },
   data () {
     return {
