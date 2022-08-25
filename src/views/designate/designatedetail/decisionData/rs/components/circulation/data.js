@@ -150,7 +150,7 @@ export const nomalTableTitleSub = [
 
 // 附件列表
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', key: "", minWidth: 90, fixed: true },
+  {props:'fsnrGsnrNum',name:'SP号', key: "", minWidth: 95, fixed: true },
   // {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
   {props:'partNum',name:'附件零件号', key: "", minWidth: 120, fixed: true },
   {props:'partName',name:'附件零件名称', key: "", minWidth: 110},
@@ -196,7 +196,7 @@ export const accessoryTableTitle = [
 
 // 配件列表
 export const sparePartTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP编号', key: "", minWidth: 90, fixed: true },
+  {props:'fsnrGsnrNum',name:'SP编号', key: "", minWidth: 95, fixed: true },
   {props:'assemblyPartNum',name:'批量零件号', key: "", minWidth: 120, fixed: true},
   {props:'partNum',name:'配件零件号', key: "", minWidth: 120, fixed: true},
   {props:'partName',name:'配件零件名称', key: "", minWidth: 110},

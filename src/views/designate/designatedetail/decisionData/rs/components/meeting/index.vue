@@ -1609,8 +1609,8 @@ export default {
       &-title {
         background-color: rgba(22, 96, 241, 0.06);
         border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 6px 24px;
-        width: 60%;
+        padding: 6px 12px;
+        width: 40%;
         font-weight: bold;
         // line-height: 29px;
         display: flex;
@@ -1618,8 +1618,8 @@ export default {
         justify-content: center;
       }
       &-value {
-        width: 40%;
-        padding: 6px 24px;
+        width: 60%;
+        padding: 6px 12px;
         // line-height: 29px;
         background-color: #fff;
         display: flex;
@@ -1628,10 +1628,10 @@ export default {
       }
       &:nth-of-type(even) {
         .rsTop-right-item-title {
-          width: 65%;
+          width: 50%;
         }
         .rsTop-right-item-value {
-          width: 35%;
+          width: 50%;
         }
       }
     }
@@ -1814,8 +1814,8 @@ export default {
         &-title {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
-          padding: 6px 24px;
-          width: 60%;
+          padding: 6px 12px;
+          width: 40%;
           font-weight: bold;
           // line-height: 29px;
           display: flex;
@@ -1823,8 +1823,8 @@ export default {
           justify-content: center;
         }
         &-value {
-          width: 40%;
-          padding: 6px 24px;
+          width: 60%;
+          padding: 6px 12px;
           // line-height: 29px;
           background-color: #fff;
           display: flex;
@@ -1833,10 +1833,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 65%;
+            width: 40%;
           }
           .rsTop-right-item-value {
-            width: 35%;
+            width: 60%;
           }
         }
       }

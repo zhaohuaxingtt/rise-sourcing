@@ -130,7 +130,7 @@ export const sparePartTableTitle = [
 ]
 
 export const gsTableTitleSub = [
-	{ props: 'fsnrGsnrNum', name: 'GS号', key: '', minWidth: 90, fixed: true },
+	{ props: 'fsnrGsnrNum', name: 'GS号', key: '', minWidth: 95, fixed: true },
 	{ props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
 	{ props: 'status', name: '供货状态', key: '', minWidth: 90 },
 	{ props: 'partName', name: '零件名称', key: '', minWidth: 110 },
@@ -165,5 +165,5 @@ export const gsTableTitleSub = [
 	},
 	{ props: 'savingFee', name: '节约值', key: '', minWidth: 100 },
 	{ props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
-	{ props: 'remarks', name: '备注', key: '', minWidth: 200 },
+	{ props: 'remarks', name: '备注', key: '', minWidth: 195 },
 ]
