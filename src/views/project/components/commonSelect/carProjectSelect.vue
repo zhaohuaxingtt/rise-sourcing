@@ -65,17 +65,19 @@ export default {
     this.optionType === '1' && this.getCarProjectOptions()
     // 获取当前用户所有未SOP和所有已SOP的车型项目
     this.optionType === '2' && this.getCarProjectUserOptions()
-
-    this.defaultCar();
   },
   methods: {
     defaultCar(){
       getDefaultCarTypePro().then(res=>{
         console.log(res);
+        if(res.result){
+          // this.options.find(item => item.value === val).label
+          this.$emit("defaultCarModel",res.data)
+        }
       })
     },
     change(val) {
-      this.$emit('change', val, this.options.find(item => item.value === val).label)
+      this.$emit('change', val, this.options.find(item => item.value === val).label,this.options.find(item => item.value === val).cartypeId)
     },
     getCarProjectOptions() {
       getCarTypePro().then(res => {
@@ -89,7 +91,7 @@ export default {
             }
           })
 
-
+          this.defaultCar();
           console.log(this.options);
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -108,6 +110,7 @@ export default {
               label: item.cartypeProjectZh
             }
           })
+          this.defaultCar();
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }

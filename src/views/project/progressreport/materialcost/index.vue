@@ -11,10 +11,10 @@
   <iPage class="partprogress">
     <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
         <el-tab-pane lazy :label="$t('CAILIAOCHENGBENBAOGAO')" :name="'overview'" >
-          <materialCostReport ref="overviewChart"  />
+          <materialCostReport v-if="currentTab=='overview'" ref="overviewChart"  />
         </el-tab-pane>
         <el-tab-pane lazy :label="$t('材料成本维护')" :name="'detail'" >
-          <materilaCostMaintenance ref="detailChart" />
+          <materilaCostMaintenance v-if="currentTab=='detail'" ref="detailChart" />
         </el-tab-pane>
     </iTabsList>
   </iPage>

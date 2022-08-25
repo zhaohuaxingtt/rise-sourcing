@@ -16,10 +16,10 @@
       <div class="projectProgressCard" slot="header-control">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-          <carProjectSelect optionType="2" :multiple="false" :filterable="true" v-model="carProjectId" :cartypeProName="cartypeProName" @change="handleCarProjectChange" :disabled="disabled" />
+          <carProjectSelect ref="carSelect" optionType="2" :multiple="false" :filterable="true" v-model="carProjectId" :cartypeProName="cartypeProName" @change="handleCarProjectChange" :disabled="disabled" @defaultCarModel="defaultCarModel" />
         </div>
       </div>
-      <carProject :carProjectId="carProjectId" @changeSopStatus="changeSopStatus" />
+      <carProject v-if="carHasShow"  :carProjectId="carProjectId" @changeSopStatus="changeSopStatus" />
     </iCard>
     <!---------------------------------------------------------------------->
     <!----------                  Tooling cost              ---------------->
@@ -36,12 +36,12 @@
     <div class="margin-top20 tabPart">
       <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
         <el-tab-pane lazy label="Parts Progress Overview" :name="'overview'" >
-          <searchPart />
-          <overviewChart ref="overviewChart"  />
+          <!-- <searchPart /> -->
+          <overviewChart v-if="carHasShow && currentTab=='overview'" ref="overviewChart" :cartypeId="cartypeId" />
         </el-tab-pane>
         <el-tab-pane lazy label="Parts Progress Detail" :name="'detail'" >
-          <searchPart />
-          <detailChart ref="detailChart" />
+          <!-- <searchPart /> -->
+          <detailChart v-if="carHasShow && currentTab=='detail'"  ref="detailChart"  :cartypeId="cartypeId"/>
         </el-tab-pane>
       </iTabsList>
       <span class="exportBtn">{{$t("以下报表统计维度为零件数量")}}</span>
@@ -62,25 +62,39 @@ export default {
   components: { iPage, iCard, carProject, iTabsList, iButton, searchPart, overviewChart, detailChart,carProjectSelect },
   props:{
     disabled: {type:Boolean, default:false},
-    carProjectId: {type:String, default:""},
   },
   data() {
     return { 
-      // carProjectId: '3',
+      carProjectId: '',
+      cartypeId: '',
       tollingBudget: '50',
       toolinginvestment: '40',
       toolinginvestmentApplied: '80',
-      currentTab: 'overview'
+      currentTab: 'overview',
+      carHasShow:false,
     }
   },
   created(){
-    console.log(this.carProjectId)
+    // console.log(this.carProjectId)
   },
   methods:{
-    handleCarProjectChange(val, valLabel) {
+    defaultCarModel(data){
+      this.carProjectId = '2000234171';
+      this.$refs.carSelect.data = "2000234171";
+      this.cartypeId = '50015000';
+
+      this.carHasShow = true;
+    },
+    handleCarProjectChange(val, valLabel,cartypeId) {
       this.getFindCartypePro(val);
 
       this.$emit('handleCarProjectChange', val, valLabel)
+
+      if(this.currentTab=='overview'){
+        this.$refs.overviewChart.changeRefresh(cartypeId);
+      }else if(this.currentTab=='detail'){
+        this.$refs.detailChart.changeRefresh(cartypeId);
+      }
     },
     getFindCartypePro(val){
       findCartypePro({

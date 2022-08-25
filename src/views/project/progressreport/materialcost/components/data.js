@@ -53,6 +53,11 @@ export const ModeltableTitle = (vm) => [
         width:150,
         rule: [
             { required: true, message: "11212121", trigger: "blur" },
+            {
+                pattern: /^\d+$/,
+                required: true,
+                trigger: 'blur'
+            }
         ],
     },{
         props: 'vsiCar',

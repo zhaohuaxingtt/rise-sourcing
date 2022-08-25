@@ -87,4 +87,38 @@ export function getCalculationModelVSI(params) {
   })
 }
 
- 
+// 材料成本维护-下载上传模板
+export function downloadFile(data) {
+  return requst({
+    url: '/project-progress-report/downloadFile',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-上传
+export function uploadFile(data) {
+  return requst({
+    url: '/project-progress-report/uploadFile',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-获取vmset下拉框
+export function getvmSetList(params) {
+  return requst({
+    url: '/project-progress-report/getvmSetList',
+    method: 'GET',
+    params
+  })
+}
+
+// 材料成本维护-材料成本报告BoB统计信息
+export function getReportBobOverview(data) {
+  return requst({
+    url: '/project-progress-report/getReportBobOverview',
+    method: 'POST',
+    data
+  })
+}

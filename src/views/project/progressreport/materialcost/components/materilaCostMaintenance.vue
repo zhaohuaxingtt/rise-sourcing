@@ -3,7 +3,7 @@
     <iSearch @sure="sure" @reset="reset">
         <el-form>
             <el-form-item :label="$t('partsprocure.PARTSPROCUREMODELPROJECT')">
-                <iSelect v-model="searchParams.search1" :multiple="true" @click="carModelSearch">
+                <iSelect v-model="searchParams.search1" @change="carModelSearch">
                     <el-option
                     v-for="(item,index) in selectOptions1 || []"
                     :key="index"
@@ -51,7 +51,7 @@
             <iButton @click="editVSI">{{ language("BIANJI", "编辑") }}</iButton>
             <iButton @click="saveVSI">{{language("BAOCUN", "保存")}}</iButton>
         </template>
-        <iFormGroup row="3"
+        <iFormGroup row="3" v-loading="loading"
                     >
             <iFormItem>
                 <iLabel label="Calculation Model SVI"
@@ -80,15 +80,35 @@
     <iCard :title="$t('XIANGQINGLIEBIAO')" class="margin-top20">
         <template v-slot:header-control>
             <iButton v-if="!editType" @click="exportExcel">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
-            <iButton v-if="!editType" @click="uploadModel">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
-            <iButton v-if="!editType" @click="save">{{$t("批量上传")}}</iButton><!-- 批量上传 -->
+            <iButton v-if="!editType" @click="downModel">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
+            <!-- <iButton v-if="!editType" @click="batchUpload">{{$t("批量上传")}}</iButton> -->
+            <!-- 批量上传 -->
+            <el-upload class="upload-demo" v-if="!editType"
+                        style="display: inline-block; margin-right: 10px"
+                        multiple
+                        :action="uploadUrl"
+                        :show-file-list="false"
+                        :on-success="uploadSuccess"
+                        :on-progress="uploadProgress"
+                        :data="uploadData"
+                        :before-upload="beforeUpload"
+                        :on-exceed="handleExceed"
+                        >
+                <el-tooltip :content="
+                    language('WENJIANDAXIAOBUCHAOGUO20MB', '文件大小不超过20MB')
+                    "
+                            placement="top"
+                            effect="light">
+                    <iButton>{{ $t("批量上传") }}</iButton>
+                </el-tooltip>
+            </el-upload>
             <iButton v-if="!editType" @click="refresh">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
             <iButton v-if="!editType" @click="add">{{$t("XINZENG")}}</iButton><!-- 新增 -->
             <iButton v-if="!editType" @click="delModelCar">{{$t("LK_DELETE")}}</iButton><!-- 删除 -->
             <iButton v-if="!editType" @click="editBtn">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
             <iButton v-if="editType" @click="cancel">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
             <iButton v-if="editType" @click="save">{{$t("SAVE")}}</iButton><!-- 保存 -->
-            <iButton v-if="!editType" @click="save">{{$t("编辑表头")}}</iButton><!-- 编辑表头 -->
+            <iButton v-if="!editType" @click="editTitle">{{$t("编辑表头")}}</iButton><!-- 编辑表头 -->
         </template>
         
         <tableList 
@@ -103,7 +123,7 @@
             >
             <!-- 车型项目 -->
             <template slot="cartypeProId" slot-scope="scope" >
-                <iSelect
+                <!-- <iSelect
                     v-model="scope.row.cartypeProId"
                     clearable
                     filterable
@@ -116,8 +136,11 @@
                         :label="item.label"
                         :value="item.value">
                     </el-option>
-                </iSelect>
-                <span v-else style="width: 90%">{{ scope.row.tpPartAttachmentName }}</span>
+                </iSelect> -->
+                <div v-if="scope.row.editType">
+                    <span>{{scope.row.cartypeProName}}</span>
+                </div>
+                <span v-else style="width: 90%">{{ scope.row.cartypeProName }}</span>
             </template>
             <!-- VSI参考零件号 -->
             <template slot="vsiPartNum" slot-scope="scope">
@@ -154,21 +177,14 @@
             <!-- VSI-单价 -->
             <template slot="vsiPrice" slot-scope="scope">
                 <div v-if="scope.row.editType">
-                    <iInput v-model="scope.row.vsiPrice"></iInput>
+                    <iInput v-model="scope.row.vsiPrice" type="number"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.vsiPrice }}</span>
-            </template>
-            <!-- VSI参考模块 -->
-            <template slot="vsiModel" slot-scope="scope">
-                <div v-if="scope.row.editType">
-                    <iInput v-model="scope.row.vsiModel"></iInput>
-                </div>
-                <span v-else style="width: 90%">{{ scope.row.vsiModel }}</span>
             </template>
             <!-- VSI-数量 -->
             <template slot="vsiNum" slot-scope="scope">
                 <div v-if="scope.row.editType">
-                    <iInput v-model="scope.row.vsiNum"></iInput>
+                    <iInput v-model="scope.row.vsiNum" type="number"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.vsiNum }}</span>
             </template>
@@ -186,13 +202,13 @@
             <!-- 定点A价 -->
             <template slot="nomiAPrice" slot-scope="scope">
                 <div v-if="scope.row.editType">
-                    <iInput v-model="scope.row.nomiAPrice"></iInput>
+                    <iInput v-model="scope.row.nomiAPrice" type="number"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.nomiAPrice }}</span>
             </template>
             <!-- 定点供应商 -->
             <template slot="nomiSupplier" slot-scope="scope">
-                <el-select
+                <!-- <el-select
                     v-model="scope.row.nomiSupplier"
                     clearable
                     filterable
@@ -205,12 +221,15 @@
                         :label="item.label"
                         :value="item.value">
                     </el-option>
-                </el-select>
+                </el-select> -->
+                <div v-if="scope.row.editType">
+                    <iInput v-model="scope.row.nomiSupplier"></iInput>
+                </div>
                 <span v-else style="width: 90%">{{ scope.row.nomiSupplier }}</span>
             </template>
             <!-- 科室 -->
             <template slot="dept" slot-scope="scope">
-                <el-select
+                <!-- <el-select
                     v-model="scope.row.dept"
                     clearable
                     filterable
@@ -223,7 +242,10 @@
                         :label="item.label"
                         :value="item.value">
                     </el-option>
-                </el-select>
+                </el-select> -->
+                <div v-if="scope.row.editType">
+                    <iInput v-model="scope.row.dept"></iInput>
+                </div>
                 <span v-else style="width: 90%">{{ scope.row.dept }}</span>
             </template>
         </tableList>
@@ -289,6 +311,9 @@ import {
     removeProjectProgressReport,
     getDefaultCarTypePro,
     getCalculationModelVSI,
+    downloadFile,
+    uploadFile,
+    getvmSetList,
 
 } from '@/api/project/projectprogressreport'
 import { ModeltableTitle } from "./data";
@@ -323,16 +348,18 @@ export default {
     },
     data(){
         return {
+            uploadUrl: process.env.VUE_APP_PROJECTMGT + '/project-progress-report/uploadFile',
+            uploadData:{},
             VSIeditType:true,
             searchParams:{
-                search1:[],
+                search1:"",
                 search2:[],
                 search3:[],
                 search4:"",
                 search5:"",
             },
             searchParamsOld:{
-                search1:[],
+                search1:"",
                 search2:[],
                 search3:[],
                 search4:"",
@@ -410,14 +437,14 @@ export default {
 
             pointerSupplier:[],//定点供应商
             deptList:[],//科室
-
+            CalculationModelVSIId:"",
+            editInforType:1,
         }
     },
     created(){
-        this.tableTitle = ModeltableTitle(this)
-        this.getTableList();
         this.getSearchList();
-        this.getCarDefault();
+
+        this.tableTitle = ModeltableTitle(this)
     },
     methods:{
         commitPart(val){//选择零件后同步表格数据
@@ -432,11 +459,16 @@ export default {
             }
         },
         editVSI(){
-            console.log(this.searchParams.search1)
-            if(this.searchParams.search1.length>0 && this.searchParams.search1.length<2){
+            // console.log(this.searchParams.search1)
+            // if(this.searchParams.search1.length>0 && this.searchParams.search1.length<2){
+            //     this.VSIeditType = false;
+            // }else if(this.searchParams.search1.length>=2){
+            //     iMessage.warn("编辑Calculation Model VSI时仅可选择一个车型项目")
+            // }else{
+            //     iMessage.warn("请选择车型项目")
+            // }
+            if(this.searchParams.search1){
                 this.VSIeditType = false;
-            }else if(this.searchParams.search1.length>=2){
-                iMessage.warn("编辑Calculation Model VSI时仅可选择一个车型项目")
             }else{
                 iMessage.warn("请选择车型项目")
             }
@@ -445,7 +477,8 @@ export default {
             modifyCalculationModelVSI({
                 calcalationModel:this.VSIData.VSIData4,
                 calculationModelVsi:this.VSIData.VSIData1,
-                cartypeProId:this.searchParams.search1[0],
+                cartypeProId:this.searchParams.search1,
+                // cartypeProId:this.searchParams.search1[0],
                 motorGearbox:this.VSIData.VSIData2,
                 vorlogistic:this.VSIData.VSIData3,
             }).then(e=>{
@@ -461,12 +494,15 @@ export default {
         sure(){
             this.page.currPage = 1
             // 若有定点起止时间将其拆分成两个字段
+            this.getVSIData(this.searchParams.search1);
             this.getTableList();
         },
         reset(){
-            this.searchParams = this.searchParamsOld;
+            this.searchParams = _.cloneDeep(this.searchParamsOld)
+
             // 若有定点起止时间将其拆分成两个字段
-            this.sure();
+            this.getVSIData(this.searchParams.search1);
+            this.getTableList();
         },
         getSearchList(){
             getSelectCarType().then(res=>{
@@ -478,10 +514,17 @@ export default {
                             label: item.cartypeProjectZh
                         }
                     })
-
-                    console.log(this.selectOptions1)
+                    this.uploadData = {
+                        id:this.searchParams.search1
+                    };
+                    this.getCarDefault();
                 } else {
                     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+                }
+            })
+            getvmSetList({}).then(res=>{
+                if(res.result){
+                    this.selectOptions2 = res.data;
                 }
             })
         },
@@ -491,24 +534,37 @@ export default {
                 // if(res.result){
                 //     this.searchParams.search1 = res.data;
                 // }
-                this.getVSIData(res.data);
+                this.searchParams.search1 = "2000234171";
+                this.searchParamsOld.search1 = "2000234171";
+                this.getVSIData(this.searchParams.search1);
+                this.getTableList();
             })
         },
         getVSIData(id){
             getCalculationModelVSI({
                 carTypeProId:id
             }).then(res=>{
-                if(res.result){
-                    // this.VSIData.VSIData1 = 
-                    // this.VSIData.VSIData1 = 
-                    // this.VSIData.VSIData1 = 
-                    // this.VSIData.VSIData1 = 
+                if(res.result&&res.data){
+                    this.VSIData.VSIData1 = res.data.calculationModelVsi;
+                    this.VSIData.VSIData2 = res.data.motorGearbox;
+                    this.VSIData.VSIData3 = res.data.vorlogistic;
+                    this.VSIData.VSIData4 = res.data.calcalationModel;
+                    this.CalculationModelVSIId = res.data.id;
+                }else{
+                    this.VSIData.VSIData1 = "";
+                    this.VSIData.VSIData2 = "";
+                    this.VSIData.VSIData3 = "";
+                    this.VSIData.VSIData4 = "";
+                    this.CalculationModelVSIId = "";
                 }
             })
         },
         carModelSearch(val){//选择顶部搜索车型项目
-            this.getVSIData(val);//获取VSI
-            this.getTableList();//获取顶部table表格
+            this.uploadData = {
+                id:val
+            };
+            // this.getVSIData(val);//获取VSI
+            // this.getTableList();//获取顶部table表格
         },
         cancalCommit(){//关闭零件号弹窗
             this.partDialogVisible.dialogVisible = false;
@@ -518,31 +574,44 @@ export default {
             this.partDialogVisible.dataList = val;
         },
         save(){
-            // if(){//编辑
-
-            // }
-            // modifyProjectProgressReport().then(res=>{
-
-            // })
             var that = this;
-            this.$refs.contractForm.$refs.commonTableForm.validate((valid)=>{
-                if (valid) {
-                    createProjectProgressReport({//新增
-                        ...this.tableListData[0],
-                        // vsiNum:Number(this.tableListData[0].vsiNum)
-                    }).then(res=>{
-                        that.$refs.contractForm.$refs.commonTable.clearSelection()
-                        console.log(1111);
-                        that.cancelEdit("save");
-                    })
-                    // this.$refs.contractForm.$refs.commonTableForm.clearValidate()
-                }
-            })
+            if(this.editInforType == 1){//新增
+                this.$refs.contractForm.$refs.commonTableForm.validate((valid)=>{
+                    if (valid) {
+                        createProjectProgressReport({//新增
+                            ...this.tableListData[0],
+                            // vsiNum:Number(this.tableListData[0].vsiNum)
+                        }).then(res=>{
+                            that.$refs.contractForm.$refs.commonTable.clearSelection()
+                            console.log(1111);
+                            that.cancelEdit("save");
+                        })
+                        // this.$refs.contractForm.$refs.commonTableForm.clearValidate()
+                    }
+                })
+            }else if(this.editInforType == 2){//编辑
+                this.$refs.contractForm.$refs.commonTableForm.validate((valid)=>{
+                    if (valid) {
+                        console.log(this.selectList);
+                        modifyProjectProgressReport(//新增
+                            this.selectList
+                            // vsiNum:Number(this.tableListData[0].vsiNum)
+                        ).then(res=>{
+                            that.$refs.contractForm.$refs.commonTable.clearSelection()
+                            console.log(2222);
+                            that.cancelEdit("save");
+                        })
+
+
+                        // this.$refs.contractForm.$refs.commonTableForm.clearValidate()
+                    }
+                })
+            }
         },
         cancelEdit(val){
             if(val == "save"){
                 this.getTableList();
-            }else if(val == "cancel"){
+            }else if(val == "del"){
                 this.getTableList();
                 // this.tableListData.forEach(e=>{
                 //     if(e.editType){
@@ -561,15 +630,25 @@ export default {
             newItemList.map((item) => {
                 newItem[item] = ''
             })
+            var cartypePro = this.selectOptions1.find(e=>{
+                if(e.value == this.searchParams.search1){
+                    return e;
+                }
+            });
             this.tableListData.unshift({
                 ...newItem,
                 editType:true,
                 ...otherObj,
-                time
+                time,
+                cartypeProName:cartypePro.label,
+                cartypeProId:this.searchParams.search1,
+                calculationModelVsiId:this.CalculationModelVSIId,
             })
 
             this.$refs.contractForm.$refs.commonTable.clearSelection()
             this.$refs.contractForm.$refs.commonTable.toggleRowSelection(this.tableListData[0], true)
+
+            this.editInforType = 1;
         },
         cancel(){
             //取消
@@ -602,45 +681,58 @@ export default {
                     changeArrayList.push(item.id)
                 })
                 this.editIdArr = changeArrayList
+                this.editInforType = 2;
             } else {
                 iMessage.error('请选择需要修改数据！')
             }
         },
         getTableList(){
+            this.loading = true;
             var data = {};
-            if(this.searchParams.search4.split(",").length <= 1){
+            // if(this.searchParams.search4.split(",").length <= 1){
+            //     data = {
+            //         cartypeProIdList:this.searchParams.search1,
+            //         nomiPartNum:this.searchParams.search4,
+            //         partPrjTypeList:this.searchParams.search3,
+            //         vsiPartName:this.searchParams.search5,
+            //         vwSetList:this.searchParams.search2,
+            //         current:this.page.currPage,
+            //         size:this.page.pageSize,
+            //     }
+            // }else{
+                const nomiValue = [];
+                if(this.searchParams.search4 !== ""){
+                    nomiValue = this.searchParams.search4.split(",")
+                }
                 data = {
-                    cartypeProIdList:this.searchParams.search1,
-                    nomiPartNum:this.searchParams.search4,
+                    cartypeProId:[this.searchParams.search1],
+                    nomiPartNumList:nomiValue,
                     partPrjTypeList:this.searchParams.search3,
                     vsiPartName:this.searchParams.search5,
                     vwSetList:this.searchParams.search2,
                     current:this.page.currPage,
                     size:this.page.pageSize,
                 }
-            }else{
-                data = {
-                    cartypeProIdList:this.searchParams.search1,
-                    nomiPartNumList:this.searchParams.search4.split(","),
-                    partPrjTypeList:this.searchParams.search3,
-                    vsiPartName:this.searchParams.search5,
-                    vwSetList:this.searchParams.search2,
-                    current:this.page.currPage,
-                    size:this.page.pageSize,
-                }
-            }
+            // }
 
             getProjectProgressReportDetail(data).then(res=>{
                 console.log(res)
                 if(res.result){
                     this.tableListDataOld = res.data;
+                    this.tableListDataOld.forEach(e=>{
+                        if(e.vsiNum){
+                            e.vsiNum = e.vsiNum.split(".")[0]
+                        }
+                    })
                     this.tableListData = _.cloneDeep(this.tableListDataOld);
                     this.editType = false;
                 }else{
                     iMessage.error(res.desZh)
                     this.editType = false;
                 }
+                this.loading = false;
             }).catch(res=>{
+                this.loading = false;
                 this.editType = false;
                 iMessage.error(res.desZh)
             })
@@ -648,18 +740,64 @@ export default {
         clearUploadFunc(){
             this.uploadDialogVisible.dialogVisible = false;
         },
-        uploadModel(){
-            this.uploadRequestVisible.dialogVisible = true;
+        downModel(){
+            // this.uploadRequestVisible.dialogVisible = true;
+            downloadFile({
+                carTypeProId:this.searchParams.search1
+            }).then(res=>{
+                console.log(res);
+            })
+        },
+        uploadSuccess (res, file) {
+            if (res.code == 200 && res.result) {
+                this.getTableList()
+            } else {
+                if (res.data == null) {
+                iMessage.error(res.desZh)
+                } else {
+                this.errorList = res.data
+                this.cancelNo = true
+                }
+            }
+        },
+        uploadProgress(){
+
+        },
+        beforeUpload (file) {
+            const isLt2M = file.size / 1024 / 1024 < 20
+            if (!isLt2M) {
+                iMessage.error('上传文件大小不能超过 20MB!')
+            }
+            return isLt2M
+        },
+        handleExceed (files, fileList) {
+            iMessage.warn(
+                `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
+                } 个文件`
+            )
+        },
+        batchUpload(){
+            uploadFile().then(res=>{
+
+            })
         },
         clearDelFunc(){
             this.delDialogVisible.dialogVisible = false;
         },
         saveModelCar(){
-            // removeProjectProgressReport({
-                
-            // }).then(res=>{
-            //     console.log(res);
-            // })
+            const ids = [];
+            this.selectList.forEach(e=>{
+                ids.push(e.id);
+            })
+            removeProjectProgressReport(
+                ids
+            ).then(res=>{
+                if(res.result){
+                    this.cancelEdit("del");
+                    this.delDialogVisible.dialogVisible = false;
+                }else{
+                }
+            })
         },
         delModelCar(){
             if(this.selectList.length>0){
@@ -724,5 +862,8 @@ export default {
     height: 15px;
     margin-left: 5px;
     cursor: pointer;
+}
+.upload-demo{
+    margin-left:10px;
 }
 </style>
