@@ -304,8 +304,9 @@ const state = {
 			message: 0,
 			url: '/sourceinquirypoint/sourcing/partsign/outsouringorder',
 			activePath: 'outsouringorder',
-			key: '工序委外',
+			key: 'LK_GONGXUWEIWAI',
 			permissionKey:
+				// 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_OUTSOURINGORDER',
 				'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
 			permissionName: '工序委外',
 			group: 2,

@@ -11,7 +11,7 @@
 		<headerNav />
 		<iSearch class="margin-bottom20" @sure="sure" @reset="reset()">
 			<el-form>
-				<template v-for="(items, index) in searchFormTitle">
+				<template v-for="(items, index) in searchForm">
 					<el-form-item
 						:label="language(items.i18nKey, items.i18nName)"
 						:key="index"
@@ -45,30 +45,17 @@
 								v-model="form['partNum']"
 							></iMultiLineInput>
 						</template>
-						<template v-else-if="items.type == 'linieName'">
-							<iSelect
-								clearable
-								v-model="form[items.moduleKey]"
-								:placeholder="language('QINGXUANZE', '请选择')"
-							>
-								<el-option
-									v-for="(item, i) in items.List"
-									:key="i"
-									:label="item.commodity"
-									:value="item.deptId"
-								></el-option>
-							</iSelect>
-						</template>
 						<template v-else>
 							<iSelect
 								clearable
 								v-model="form[items.moduleKey]"
 								:placeholder="language('QINGXUANZE', '请选择')"
 							>
+							<el-option :label="language('ALL','全部')" value=''></el-option>
 								<el-option
-									v-for="(item, i) in items.List"
+									v-for="(item, i) in selectOptions[items.selectOptions]"
 									:key="i"
-									:label="item.name"
+									:label="$i18n.locale == 'zh' ? item.name : item.nameEn"
 									:value="item.code"
 								></el-option>
 							</iSelect>
@@ -144,21 +131,22 @@
 						:content="
 							scope.row.rejectReason != null
 								? scope.row.rejectReason
-								: $t('原因不详')
+								: $t('YUANYINBUXIANG')
 						"
 						placement="top"
 					>
 						<iText
-							>{{ getStatus(scope.row.status)
+							>{{ getStatus(scope.row.status,scope.row.nominationStatus)
 							}}<icon class="el-icon-warning-outline red"
 						/></iText>
 					</el-tooltip>
-					<span v-else>{{ getStatus(scope.row.status) }}</span>
+					<span v-else>{{ getStatus(scope.row.status,scope.row.nominationStatus) }}</span>
+				</template>
+				<template #nominationStatus="scope">
+					<span>{{ scope.row["nominationStatus"] == '1' ? language('YIZHUANDINGDIAN','已转定点') : scope.row["nominationStatus"] == 2 ? language('YDD','已定点') : language('WEIFAQIZHUANDINGDIAN','未发起转定点') }}</span>
 				</template>
 				<template #buyerCode="scope">
-					{{ scope.row.ownerId }}
-					{{ scope.row.ownerId && scope.row.ownerName && '-' }}
-					{{ scope.row.ownerName }}
+					{{ scope.row.ownerName || scope.row.ownerId ||  '-' }}
 				</template>
 			</tablePart>
 			<!------------------------------------------------------------------------>
@@ -246,6 +234,9 @@ import { tableSortMixins } from '@/components/iTableSort/tableSortMixins'
 import { getDepartmentsCombo } from '@/api/ws2/purchase/investmentList'
 import TransferDialog from './components/transferDialog.vue'
 import TurningPointDialog from './components/turningPointDialog.vue'
+import { getDictByCode } from '@/api/dictionary'
+import { purchaseFactory } from '@/api/partsprocure/editordetail'
+import language from '@/utils/language'
 
 // eslint-disable-next-line no-undef
 export default {
@@ -269,8 +260,13 @@ export default {
 	},
 	data() {
 		return {
+			selectOptions:{
+				subTypeOption:addType,
+				statusOption:statusList,
+				procureFactoryOption:[]
+			},
 			backDialogVisible: false,
-			searchFormTitle: [],
+			searchForm,
 			form: JSON.parse(JSON.stringify(form)),
 			tableTitle: tableTitle,
 			tableLoading: false,
@@ -298,16 +294,22 @@ export default {
 		},
 		// 映射采购申请类型
 		getSubType(type) {
-			return this.addType.find((k) => k.label === type).key
+			let item = this.selectOptions.subTypeOption.find((k) => k.code === type)
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 映射状态值
-		getStatus(status) {
-			return this.statusList.find((k) => k.key == status).label
+		getStatus(status,nominationStatus) {
+			let item = this.selectOptions.statusOption.find((k) => k.code == status)
+			if(status=='1'){
+				if(nominationStatus=='2'){
+					return language('LK_YIDINGDIAN','已定点')
+				}
+					return language('LK_YIQIANSHOU','已签收')
+			}
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		//仅看自己
 		showOnlyMyselfData(val) {
-			this.form.currentPage = 1
-			this.form.pageSize = this.page.pageSize
 			this.form.isOwn = val
 			this.getOutsouringFindBypage()
 		},
@@ -318,11 +320,15 @@ export default {
 		 */
 		handleBatchReject(visible) {
 			if (this.selectRow.length < 1) {
-				iMessage.warn(this.language('QINGXUANZEPEIJIAN', '请选择配件'))
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
 				return
 			}
+			if(this.selectRow.find(item=>{
+				return item.status != 0
+			})){
+				return iMessage.warn('仅待签收状态的数据可以退回')
+			}
 			this.backDialogVisible = visible
-			console.log(visible)
 			this.mode = 'back'
 		},
 
@@ -333,7 +339,7 @@ export default {
 		 */
 		handleBatchClose(visible) {
 			if (this.selectRow.length < 1) {
-				iMessage.warn(this.language('QINGXUANZEPEIJIAN', '请选择配件'))
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
 				return
 			}
 			this.backDialogVisible = visible
@@ -359,15 +365,15 @@ export default {
 		},
 
 		/**
-		 * @description: 获取钢材列表数据。
+		 * @description: 获取工序委外列表数据。
 		 * @param {*}
 		 * @return {*}
 		 */
 		getOutsouringFindBypage() {
 			this.tableLoading = true
 			outsouringFindBypage({
-				...{ size: this.page.pageSize, current: this.page.currPage },
 				...this.form,
+				...{ size: this.page.pageSize, currentPage: this.page.currPage },
 			})
 				.then((res) => {
 					this.tableLoading = false
@@ -379,22 +385,40 @@ export default {
 				})
 		},
 		/**
-		 * @description: 删除钢材列表数据。
+		 * @description: 删除工序委外列表数据。
 		 * @param {*}
 		 * @return {*}
 		 */
 		handleBatchDelete() {
-			// this.tableLoading = true
-			deleteOutSouring(this.selectRow.map((k) => k.riseCode))
-				.then((res) => {
-					// this.tableLoading = false
-					if (+res.code === 200) {
-						this.getOutsouringFindBypage()
-					}
-				})
-				.catch((err) => {
-					this.tableLoading = false
-				})
+			if (this.selectRow.length < 1) {
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
+				return
+			}
+			this.$confirm(this.language('QUERENSHANCHUXUANZHONGCAIGOUSHENQING','确认删除选中采购申请?'), this.language('LK_NOTICE','温馨提示'), {
+          type: 'warning',
+          distinguishCancelAndClose: true,
+          confirmButtonText: this.language('LK_QUEREN','确认'),
+          cancelButtonText: this.language('LK_QUXIAO','取消'),
+        })
+        .then(() => {
+					// this.tableLoading = true
+					deleteOutSouring(this.selectRow.map((k) => k.purchasingRequirementId))
+						.then((res) => {
+							// this.tableLoading = false
+							if (+res.code === 200) {
+								this.getOutsouringFindBypage()
+								iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+							}else{
+								iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+								}
+						})
+						.catch((err) => {
+							this.tableLoading = false
+						})
+        })
+        .catch(action => {
+          if(action === 'cancel') {}
+        });
 		},
 		/**
 		 * @description: 签收
@@ -515,12 +539,13 @@ export default {
 
 		// 初始化申请部门数据
 		async initSelectOptions() {
-			const distKeys = await this.dictkey()
-			this.searchFormTitle = searchForm(distKeys)
+			// const DEPARTMENTLIST = await this.getDepartmentsCombo()
+			this.dictkey()
+			// this.searchFormTitle = searchForm([], PURCHASE_FACTORY)
 		},
 
 		// 获取申请部门参数
-		dictkey() {
+		getDepartmentsCombo(){
 			return new Promise((r) => {
 				getDepartmentsCombo()
 					.then((res) => {
@@ -529,13 +554,31 @@ export default {
 					.catch(() => r({}))
 			})
 		},
+		// 查询下拉数据
+		dictkey() {
+			// 获取采购工厂
+			purchaseFactory({isSparePart:0}).then(res=>{
+				if(res.data){
+					this.selectOptions.procureFactoryOption = res.data.map(item=>{
+						let obj = {
+							code: item.procureFactory,
+							name: item.factoryName,
+							nameEn: item.factoryNameEn,
+						}
+						return obj
+					})
+				}
+			})
+			// 获取状态下拉框
+			getDictByCode('OUT_SOURCING_STATUS').then(res=>{
+				this.selectOptions.statusOption = res.data[0].subDictResultVo
+			})
+		},
+		
 
 		// 重置
 		reset() {
-			Object.keys(this.form).forEach((element) => {
-				this.form[element] = ''
-			})
-			this.form.showSelf = true
+			this.form = JSON.parse(JSON.stringify(form)),
 			this.sure()
 		},
 		// 查询按钮
@@ -548,11 +591,15 @@ export default {
 			if (this.selectRow.length == 0) {
 				return iMessage.warn('请先选择数据')
 			}
+			if(this.selectRow.find(item=>{
+				return !(item.status == 0 || item.status == 1)
+			})){
+				return iMessage.warn('仅待签收，已签收状态的数据可以转派')
+			}
 			this.showTransfer = true
 		},
 	},
 	mounted() {
-		console.log(this.tableLoading)
 	},
 }
 </script>

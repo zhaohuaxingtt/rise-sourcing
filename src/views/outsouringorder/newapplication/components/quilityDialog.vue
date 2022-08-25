@@ -6,13 +6,13 @@
 		append-to-body
 	>
 		<div class="titlebar" slot="title">
-			<span>{{ `数量-项次${detailInfo.sapItem}` }}</span>
-			<iButton class="save" @click="saveSapItem">保存</iButton>
+			<span>{{ `${$t('LK_SHULIANG')}-${$t('MODEL-ORDER.LK_XIANGCI')}${detailInfo.sapItem}` }}</span>
+			<iButton class="save" @click="saveSapItem">{{$t('LK_BAOCUN')}}</iButton>
 		</div>
 		<div class="item-dialog clearFloat">
 			<div v-if="canEdit" class="floatright margin-bottom20">
-				<iButton @click="increatment">新增</iButton>
-				<iButton @click="deleteItem">删除</iButton>
+				<iButton @click="increatment">{{$t('LK_XINZENG')}}</iButton>
+				<iButton @click="deleteItem">{{$t('LK_SHANCHU')}}</iButton>
 			</div>
 			<tablePart
 				ref="multipleTable"
@@ -29,7 +29,7 @@
 						v-if="canEdit"
 						v-model="scope.row.year"
 						type="year"
-						placeholder="选择年"
+						:placeholder="language('QINGXUANZE', '请选择')"
 					>
 					</el-date-picker>
 					<span v-else>{{ scope.row.year }}</span>
@@ -38,7 +38,8 @@
 					<iInput
 						v-if="canEdit"
 						v-model="scope.row.quantity"
-						placeholder="请输入数量"
+						@input="handleInput($event, scope.row)"
+						:placeholder="language('QINSHURU', '请输入')"
 					/>
 					<span v-else>{{ scope.row.quantity }}</span>
 				</template>
@@ -50,6 +51,7 @@
 <script>
 import { iDialog, iButton, iInput, iMessage } from 'rise'
 import tablePart from '@/components/iTableSort'
+import { numberProcessor } from "@/utils";
 
 export default {
 	components: {
@@ -100,6 +102,10 @@ export default {
 		openOrderPage() {
 			this.$emit('openOrderPage', this.detailInfo)
 		},
+		// 限制输入数值
+    handleInput(value, row) {
+      this.$set(row, "quantity", numberProcessor(value, 2));
+    },
 
 		// 新增项次
 		increatment() {
@@ -162,14 +168,13 @@ export default {
 
 <style lang="scss" scoped>
 .titlebar {
+	display: flex;
+	padding-right: 20px;
+	justify-content: space-between;
+	align-items: center;
 	> span {
 		font-size: 18px;
 		font-weight: bold;
-	}
-	.save {
-		position: relative;
-		top: 0;
-		margin-left: 450px;
 	}
 }
 .item-dialog {

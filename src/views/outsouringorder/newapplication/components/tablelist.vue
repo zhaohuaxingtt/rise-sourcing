@@ -78,19 +78,7 @@
 					</template>
 					<template slot-scope="scope">
 						<iSelect
-							v-if="canEdit && languageExchange == 'en'"
-							v-model="scope.row['unitCode']"
-							@change="handleUnitChange(scope.row, items.code)"
-						>
-							<el-option
-								v-for="items in fromGroup.UNIT"
-								:key="items.code"
-								:value="items.code"
-								:label="items.code"
-							/>
-						</iSelect>
-						<iSelect
-							v-else-if="canEdit && languageExchange == 'zh'"
+							v-if="canEdit"
 							v-model="scope.row['unitCode']"
 							@change="handleUnitChange(scope.row, items.code)"
 						>
@@ -98,7 +86,7 @@
 								v-for="items in handleArray(fromGroup.UNIT)"
 								:key="items.code"
 								:value="items.code"
-								:label="items.name"
+								:label="$i18n.locale == 'zh' ? items.name : (items.nameEn || items.code)"
 							/>
 						</iSelect>
 						<span v-else>{{ scope.row['unitCode'] }}</span>
@@ -129,7 +117,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<!--<span style="color: red">*</span>-->
+						<span v-if="!baseinfodata.partPrefix" style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
 						<iInput
@@ -153,10 +141,16 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
-						<!-- <span style="color: red">*</span> -->
+						<span style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
-						<span>{{ scope.row['partNameZh'] }}</span>
+						<iInput
+							v-if="!scope.row['partNum'] && canEdit"
+							v-model="scope.row.partNameZh"
+							:disabled="scope.row.partNum!=''"
+							placeholder="请输入"
+						/>
+						<span v-else>{{ scope.row['partNameZh'] }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column
@@ -170,6 +164,7 @@
 				>
 					<template slot="header">
 						<span>{{ $t(items.key) }}</span>
+						<span v-if="baseinfodata.subType === 'ZN_ONE'" style="color: red">*</span>
 					</template>
 					<template slot-scope="scope">
 						<span
@@ -181,6 +176,7 @@
 						<iInput
 							v-else-if="baseinfodata.subType === 'ZN_ONE' && canEdit"
 							v-model="scope.row.quantity"
+							@input="handleInput($event, scope.row)"
 							placeholder="请输入"
 						/>
 						<span v-else>{{ scope.row['quantity'] }}</span>
@@ -279,7 +275,9 @@
 					<template slot-scope="scope">
 						<iSelect
 							v-if="canEdit"
-							v-model="scope.row['storageLocationCode']"
+							:disabled="!scope.row.procureFactory"
+							v-model="scope.row.storageLocation"
+							@visible-change="visibleChange($event,scope.row)"
 							@change="
 								(inventoryLocation) =>
 									departmentChange(inventoryLocation, scope.row)
@@ -287,9 +285,9 @@
 							value-key="id"
 						>
 							<el-option
-								v-for="items in addressList"
+								v-for="items in scope.row.addressList"
 								:key="items.id"
-								:value="items.inventoryLocation"
+								:value="`${items.inventoryLocation}-${items.description}`"
 								:label="`${items.inventoryLocation}-${items.description}`"
 							/>
 						</iSelect>
@@ -352,7 +350,8 @@ import { iInput, iSelect, iDatePicker, iMessage } from 'rise'
 import ItemDialog from '../../components/itemDialog.vue'
 import QuilityDialog from './quilityDialog.vue'
 import { getSupplierInfoQuery } from '@/api/ws2/modelOrder'
-import { validationPart, purchaseGroup } from '@/api/ws2/purchaserequest'
+import { numberProcessor } from "@/utils";
+import { validationPart, purchaseGroup, inventoryLocation } from '@/api/ws2/purchaserequest'
 export default {
 	components: {
 		iInput,
@@ -379,20 +378,25 @@ export default {
 			showItem: false,
 			showQuility: false,
 			detailInfo: {},
-			languageExchange: 'zh',
 		}
 	},
 	inject: ['vm'],
-	watch: {
-		'$i18n.locale': {
-			handler(newVal, oldVal) {
-				this.languageExchange = newVal
-			},
-			deep: true,
-		},
-	},
 	created() {},
 	methods: {
+		// 限制输入数值
+    handleInput(value, row) {
+      this.$set(row, "quantity", numberProcessor(value, 2));
+    },
+		getLocation(purchaseFactory,row) {
+			inventoryLocation({
+				isSpare: false,
+				procureFactory:purchaseFactory
+			})
+				.then((res) => {
+					this.$set(row,'addressList',res.data||[])
+				})
+				.catch((err) => {})
+		},
 		openDetailPage(val) {
 			this.showItem = true
 			this.detailInfo = val
@@ -415,12 +419,16 @@ export default {
 			}
 		},
 		handleArray(ary) {
-			ary.map((item, index) => {
-				if (item.code == 'PC') {
-					ary.unshift(ary.splice(index, 1))
-				}
-			})
-			return ary.flat()
+			if(ary){
+				ary.map((item, index) => {
+					if (item.code == 'PC') {
+						ary.unshift(ary.splice(index, 1))
+					}
+				})
+				return ary.flat()
+			}else{
+				return []
+			}
 		},
 		handleFactoryChange(procureFactory, row) {
 			const factory = this.splitPurchList.find(
@@ -430,6 +438,10 @@ export default {
 				row.factoryName = factory.factoryName
 				row.tmFactoryId = factory.id
 			}
+			this.$set(row,'storageLocationCode','')
+			this.$set(row,'storageLocationDesc','')
+			this.$set(row,'storageLocation','')
+			this.getLocation(procureFactory,row)
 			this.$emit('handleFactoryChange', procureFactory)
 			/* let data = val.split('-')
 			let factoryCode
@@ -543,12 +555,19 @@ export default {
 				return ''
 			}
 		},
-		departmentChange(inventoryLocation, row) {
-			const location = this.addressList.find(
-				(e) => e.inventoryLocation === inventoryLocation
-			)
-			if (location) {
-				row.storageLocationDesc = location.description
+		departmentChange(item, row) {
+			// const location = row.addressList.find(
+			// 	(e) => e.inventoryLocation === inventoryLocation
+			// )
+			if (item) {
+				this.$set(row,'storageLocationCode',item.split('-')[0])
+				this.$set(row,'storageLocationDesc',item.split('-')[1])
+			}
+		},
+		// 展开库存下拉时查询下拉数据
+		visibleChange(visible,row){
+			if(visible&&!row.addressList){
+				this.getLocation(row.procureFactory,row)
 			}
 		},
 		handleUnitChange(val, status) {

@@ -5,13 +5,13 @@
 				<span>
 					{{
 						baseinfodata.riseCode
-							? `RiSE编号:  ${baseinfodata.riseCode}`
+							? ($t('MODEL-ORDER.LK_RISEBIANHAO') + ':' + baseinfodata.riseCode)
 							: $t('LK_XIANJIANCAIGOUSHENQING')
 					}}
 				</span>
 				<div class="btnList flex-align-center">
-					<iButton @click="sendToLine" v-if="canEditable">
-						{{ $t('推送采购员') }}
+					<iButton @click="sendToLine" v-if="!canEdit && canEditable">
+						{{ $t('TUISONGCAIGOUYUAN') }}
 					</iButton>
 					<iButton @click="exitEditor" v-if="canEdit && canEditable">
 						{{ $t('LK_TUICHUBIANJI') }}
@@ -48,19 +48,23 @@
 										<el-option
 											v-for="(item, index) in addType"
 											:key="index"
-											:value="item.label"
-											:label="$t(item.key)"
+											:value="item.code"
+											:label="$i18n.locale == 'zh' ? item.name : item.nameEn"
 										></el-option>
 									</iSelect>
 									<iText v-else>{{ getSubType(baseinfodata.subType) }}</iText>
 									<!--<iText v-else>{{ applicationTypeKey ? $t(applicationTypeKey) : $t('LK_GONGXUWEIWAICAIGOUSHENQING') }}</iText>-->
 								</iFormItem>
-								<iFormItem :label="$t('申请人') + ':'" name="test">
+								<iFormItem :label="$t('LK_SHENQINGREN') + ':'" name="test">
 									<iText>{{ baseinfodata.applyBy }}</iText>
 								</iFormItem>
 							</div>
 							<div class="col">
-								<iFormItem :label="$t('推荐采购员') + ':'" name="test">
+								<iFormItem :label="$t('TUIJIANCAIGOUYUAN') + ':'" name="test" :require="true">
+									<span slot="label">
+										<span style="color: red">*</span>
+										{{$t('TUIJIANCAIGOUYUAN') + ':'}}
+									</span>
 									<iSelect
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.ownerId"
@@ -70,12 +74,12 @@
 											v-for="(item, index) in lineOptiondata"
 											:key="index"
 											:value="item.linieID"
-											:label="$t(item.linieName)"
+											:label="item.linieID +'-'+ ($i18n.locale == 'zh' ? item.linieName : item.linieNameEn)"
 										></el-option>
 									</iSelect>
 									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
 								</iFormItem>
-								<iFormItem :label="$t('申请部门') + ':'" name="test">
+								<iFormItem :label="$t('SHENQINGBUMEN') + ':'" name="test">
 									<iText> {{ baseinfodata.applyDeptNo }}</iText>
 								</iFormItem>
 							</div>
@@ -83,14 +87,12 @@
 								<div class="row">
 									<iFormItem name="test" class="demo-dynamic">
 										<span slot="label">
-											{{ $t('零件编号前缀') + ':' }}
+											{{ $t('LINGJIANBIANHAOQIANZHUI') + ':' }}
 											<el-tooltip
 												effect="light"
 												popper-class="custom-card-tooltip"
 												:content="
-													$t(
-														'零件编号前缀定义：项目类型(默认为MBCP, 四位)+年度项目编号(5位), 例如: MBCP16001'
-													)
+													$t('LINGJIANBIANHAOQIANZHUIDINGYI')
 												"
 												placement="top"
 											>
@@ -106,7 +108,7 @@
 										<iText v-else> {{ baseinfodata.partPrefix }} </iText>
 									</iFormItem>
 								</div>
-								<iFormItem :label="$t('备注') + ':'" name="test">
+								<iFormItem :label="$t('remarks') + ':'" name="test">
 									<iInput
 										v-model="baseinfodata.remark"
 										:disabled="!canEdit"
@@ -115,7 +117,7 @@
 								</iFormItem>
 							</div>
 							<div class="col">
-								<iFormItem :label="$t('状态') + ':'" name="test">
+								<iFormItem :label="$t('STATUS') + ':'" name="test">
 									<iText> {{ getStatus(baseinfodata.status) }} </iText>
 								</iFormItem>
 								<iFormItem name="test"> </iFormItem>
@@ -204,7 +206,7 @@ import {
 	iUserLog,
 	iInput,
 } from 'rise'
-import { newTableTitle, addType, statusList } from '../components/data'
+import { newTableTitle, addType } from '../components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import tablelist from './components/tablelist'
@@ -223,6 +225,8 @@ import { cloneDeep } from 'lodash'
 import uploadButton from './components/uploadButton'
 import { exportExcel } from '@/utils/filedowLoad'
 import buttonDownload from '@/components/buttonDownload'
+import language from '@/utils/language'
+import { getDictByCode } from '@/api/dictionary'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -255,7 +259,6 @@ export default {
 			addressList: [], //库存地点
 			canEdit: false,
 			addType: addType,
-			statusList: statusList,
 			fromItem: false, //是否从项次点击进入
 			// fromDetail: false,
 			uploadAttachmentsButtonLoading: false,
@@ -273,6 +276,7 @@ export default {
 			logDialogVisible: false,
 			isLatest: true,
 			lineOptiondata: [],
+			statusOption:[]
 		}
 	},
 	created() {
@@ -293,7 +297,6 @@ export default {
 		}
 		this.purchaseFactory()
 		this.getProcureGroup()
-		this.getLocation()
 		this.getLineInfo()
 	},
 	computed: {
@@ -306,7 +309,8 @@ export default {
 		// 获取采购申请类型
 		getSubType(val) {
 			if (val == '' || val == null || this.addType.length == 0) return ''
-			return this.addType.find((l) => l.label == val).key
+			let item = this.addType.find((l) => l.code == val)
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
 		getLiner(key) {
@@ -315,15 +319,20 @@ export default {
 				key == undefined ||
 				key == null ||
 				this.lineOptiondata.length == 0
-			)
+			){
 				return ''
-			return this.lineOptiondata.find((j) => j.linieID == key).linieName
+			}
+			let item = this.lineOptiondata.find((j) => j.linieID == key)
+			this.baseinfodata.ownerName = (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
+			return item.linieID +'-'+ (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
 		},
 		// 获取采购申请单状态
 		getStatus(status) {
-			if (status == '' || status == undefined || this.statusList.length <= 0)
+			if (status == '' || status == undefined || this.statusOption.length <= 0){
 				return ''
-			return this.statusList.find((k) => k.key == status).label
+			}
+			let item = this.statusOption.find((k) => k.code == status)
+			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
 		getLineInfo() {
@@ -341,7 +350,7 @@ export default {
 		},
 		//获取采购工厂列表
 		purchaseFactory() {
-			purchaseFactory({ firstId: this.firstId, isSparePart: false })
+			purchaseFactory({ isSparePart: false })
 				.then((res) => {
 					if (res.data) {
 						this.splitPurchList = res.data
@@ -353,7 +362,7 @@ export default {
 		normalPrQuantityYears(data) {
 			// this.baseinfodata.normalPrQuantityYears = data
 		},
-		//保存
+		//保存前校验
 		handleSave() {
 			if (this.tableListData.length == 0) {
 				return iMessage.warn('请添加数据')
@@ -364,57 +373,101 @@ export default {
 				this.tableListData.find((e) => !e.partNum) &&
 				!this.baseinfodata.partPrefix
 			) {
-				return iMessage.warn('请输入零件号')
+				return iMessage.warn(language('LK_QINGSHURULINGJIANHAO','请输入零件号'))
 			}
+			// 校验行内非空项
 			if (
 				this.tableListData.find(
-					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
+					(e) => !e.type || !e.unitCode || !e.partNameZh || !e.procureFactory || !e.deliveryDate
 				)
 			) {
-				return iMessage.warn('请输入必填项')
+				return iMessage.warn(language('QINGSHURUBITIANXIANG','请输入必填项'))
 			}
-			if (this.tableListData.find((e) => !e.quantity)) {
-				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			// 一次性
+			if(this.baseinfodata.subType == 'ZN_ONE'){
+				if (!this.tableListData.find((e) => e.quantity>0)) {
+					return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+				}
+			// 框架
+			}else{
+				let flag = false
+				// 至少有一条数据不为空
+				this.tableListData.forEach(item=>{
+					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity>0 )
+				})
+				if (flag) {
+					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
+				}
 			}
-			const query = this.tableListData.map((item) => {
+			let reg = /^MBCP\d{5}$/
+			if(!reg.test(this.baseinfodata.partPrefix)&&this.baseinfodata.partPrefix){
+				return iMessage.warn(language('LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI','请填写规范的零件编号前缀'))
+			}else{
+				if(this.tableListData.find((e) => !e.partNum)){
+					this.$confirm(this.language('LK_QUERENSHIYONGLINGJIANHAOQIANZHUISHENGCHENGXINDELINGJIANHAO','确认使用零件号前缀生成新的零件号？'), this.language('LK_NOTICE','温馨提示'), {
+						type: 'warning',
+						distinguishCancelAndClose: true,
+						confirmButtonText: this.language('LK_QUEREN','确认'),
+						cancelButtonText: this.language('LK_QUXIAO','取消'),
+					})
+					.then(() => {
+						this.saveOrUpdate()
+					})
+					.catch(action => {
+						if(action === 'cancel') {
+							// 生成定点申请单
+						}
+					});
+				}else{
+					this.saveOrUpdate()
+				}
+			}
+		},
+		// 保存
+		saveOrUpdate(){
+			const tableListData = JSON.parse(JSON.stringify(this.tableListData))
+			const query = tableListData.map((item) => {
+				delete item.addressList
 				return {
 					...item,
-					...this.baseinfodata,
+					ownerName:this.baseinfodata.ownerName,
+					ownerId:this.baseinfodata.ownerId,
+					partPrefix: this.baseinfodata.partPrefix,
 					quantity: item.quantity,
 				}
 			})
 			saveOrUpdate(query)
-				.then((res) => {
-					if (
-						+res.code === 200 &&
-						!this.$route.query.item &&
-						!this.$route.query.code
-					) {
-						this.baseinfodata.riseCode = res.data[0].riseCode
+			.then((res) => {
+				if (
+					+res.code === 200 &&
+					!this.$route.query.item &&
+					!this.$route.query.code
+				) {
+					this.baseinfodata.riseCode = res.data[0].riseCode
 
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-						this.$nextTick(() => {
-							this.$router.replace({
-								path: '/partsign/outsouringorder/addoutsourcing/details',
-								query: {
-									code: this.baseinfodata.riseCode,
-									subType: this.baseinfodata.subType,
-								},
-							})
+					iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+					this.$nextTick(() => {
+						this.$router.replace({
+							path: '/partsign/outsouringorder/addoutsourcing/details',
+							query: {
+								code: this.baseinfodata.riseCode,
+								subType: this.baseinfodata.subType,
+							},
 						})
-					} else if (+res.code === 200 && this.$route.query.code) {
-						this.baseinfodata.riseCode = res.data[0].riseCode
-						this.canEdit = false
-						this.getTableHaderInfo()
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-					} else {
-						this.canEdit = true
-						return iMessage.error(
-							`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`
-						)
-					}
-				})
-				.catch((err) => {})
+					})
+				} else if (+res.code === 200 && this.$route.query.code) {
+					this.baseinfodata.riseCode = res.data[0].riseCode
+					this.canEdit = false
+					this.getTableHaderInfo()
+					iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+				} else {
+					this.canEdit = true
+					return iMessage.error(
+						`${this.$i18n.locale === 'zh' ? res.desZh : res.desEn}`
+					)
+				}
+			})
+			.catch((err) => {})
 		},
 		//编辑
 		handleEdit() {
@@ -423,10 +476,13 @@ export default {
 		//退出编辑
 		exitEditor() {
 			this.canEdit = false
-			this.getTableList()
+			// this.getTableList()
 		},
 		// 发送给采购员
 		sendToLine() {
+			if (!this.baseinfodata.ownerId) {
+				return iMessage.warn('请选择需要推荐的采购员')
+			}
 			if (this.tableListData.length <= 0) {
 				return iMessage.warn('没有需要推送给采购员数据')
 			}
@@ -436,17 +492,30 @@ export default {
 				this.tableListData.find((e) => !e.partNum) &&
 				!this.baseinfodata.partPrefix
 			) {
-				return iMessage.warn('请输入零件号')
+				return iMessage.warn(language('LK_QINGSHURULINGJIANHAO','请输入零件号'))
 			}
 			if (
 				this.tableListData.find(
 					(e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
 				)
 			) {
-				return iMessage.warn('请输入必填项')
+				return iMessage.warn(language('QINGSHURUBITIANXIANG','请输入必填项'))
 			}
-			if (this.tableListData.find((e) => !e.quantity)) {
-				return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+			// 一次性
+			if(this.baseinfodata.subType == 'ZN_ONE'){
+				if (!this.tableListData.find((e) => e.quantity>0)) {
+					return iMessage.warn('类型“工序委外一次性”，数量必须大于0')
+				}
+			// 框架
+			}else{
+				let flag = false
+				// 至少有一条数据不为空
+				this.tableListData.forEach(item=>{
+					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity>0 )
+				})
+				if (flag) {
+					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
+				}
 			}
 			sendLinie({
 				deptName: this.baseinfodata.deptName,
@@ -464,6 +533,7 @@ export default {
 				}),
 				ownerId: this.baseinfodata.ownerId,
 				riseCodes: this.baseinfodata.riseCode,
+				partPrefix: this.baseinfodata.partPrefix,
 			}).then((res) => {
 				if (res.result) {
 					iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -476,7 +546,8 @@ export default {
 			if (this.tableListData.length > 0) {
 				const {
 					partType,
-					partNum,
+					// partNum,	//零件号可能没有
+					partNameZh,
 					quantity,
 					procureFactory,
 					deliveryDate,
@@ -488,17 +559,10 @@ export default {
 					this.baseinfodata.subType === 'ZN_ONE'
 						? quantity
 						: normalPrQuantityYears.length
-				console.log({
-					partType,
-					partNum,
-					procureFactory,
-					deliveryDate,
-					unitCode,
-					itemQuantity,
-				})
 				if (
 					!partType ||
-					!partNum ||
+					// !partNum ||	//零件号可能没有
+					!partNameZh ||
 					!procureFactory ||
 					!deliveryDate ||
 					!unitCode ||
@@ -510,7 +574,8 @@ export default {
 			this.tableListData.push({
 				riseCode: this.$route.query.code || '',
 				sapItem: this.itemNum,
-				partType: this.fromGroup.PART_TYPE[0].code,
+				// partType: this.fromGroup.PART_TYPE[0].code,	//默认添加 L 类型的
+				partType: 'L',
 				account: '',
 				partNum: '',
 				quantity: '',
@@ -522,6 +587,7 @@ export default {
 				procureOrg: '',
 				deliveryDate: '',
 				storageLocationCode: '',
+				partNameZh:'',
 				requestTraceNo: '',
 				// subType: this.applicationTypeVal,
 				subType: this.baseinfodata.subType,
@@ -531,7 +597,7 @@ export default {
 				normalPrQuantityYears: [],
 			})
 			this.itemNum += 10
-			this.getTableList()
+			// this.getTableList()
 		},
 
 		// 删除项次
@@ -590,33 +656,25 @@ export default {
 					this.fromGroup = res.data
 				}
 			})
+			// 获取状态下拉框
+			getDictByCode('OUT_SOURCING_STATUS').then(res=>{
+				this.statusOption = res.data[0].subDictResultVo
+			})
 		},
 		// 獲取選項數據
 		handleSelectionChange(val) {
 			this.selectTableData = val
-		},
-
-		getLocation() {
-			inventoryLocation({
-				isSpare: false,
-			})
-				.then((res) => {
-					if (res.data) {
-						this.addressList = res.data
-					}
-				})
-				.catch((err) => {})
 		},
 		//导出
 		exportExcel() {
 			applyExport(this.baseinfodata.riseCode)
 				.then((res) => {
 					console.log('EXPORT EXCEL:', res)
-					exportExcel(res.data, `工序委外${this.baseinfodata.riseCode}`)
+					exportExcel(res.data, `${language('LK_GONGXUWEIWAI','工序委外')}${this.baseinfodata.riseCode}`)
 				})
 				.catch((err) => {
 					console.log('exportExcel err', err)
-					iMessage.error(err.desZh || '导出失败')
+					iMessage.error(err.desZh || language('NEWS_DAOCHUSHIBAI','导出失败'))
 				})
 		},
 
@@ -628,7 +686,10 @@ export default {
 			findNormalPrById(params).then((res) => {
 				if (res.data) {
 					this.baseinfodata = { ...res.data[0] }
-					this.tableListData = res.data
+					this.tableListData = res.data.map(item=>{
+						item.storageLocation = item.storageLocationCode&&(item.storageLocationCode+'-'+item.storageLocationDesc)||''
+						return item
+					})
 				}
 			})
 		},
@@ -644,7 +705,7 @@ export default {
 					// this.getTableListFn()
 				} else {
 					this.tableListData = msg.data
-					this.getTableList()
+					// this.getTableList()
 				}
 				if (msg.desZh == null || msg.desZh == '') {
 					return iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
@@ -662,7 +723,7 @@ export default {
 				this.uploadAttachmentsButtonLoading = false
 				return iMessage.error(
 					msg.desZh == null
-						? '导入失败'
+						? language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败')
 						: this.$i18n.locale === 'zh'
 						? msg.desZh
 						: msg.desEn

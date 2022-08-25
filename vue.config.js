@@ -172,8 +172,8 @@ module.exports = {
 			},
 			[process.env.VUE_APP_PURCHASE]: {
 				changeOrigin: true,
-				target: 'http://10.173.48.113:8080/executionoperation/web',
-				// target: `${BASE_IP}/executionoperation/web`,
+				// target: 'http://10.173.48.113:8080/executionoperation/web',
+				target: `${BASE_IP}/executionoperation/web`,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_PURCHASE]: '',
 				},
@@ -377,7 +377,7 @@ module.exports = {
 
       // ------------------ 零件服务 ----------------------------
       [process.env.VUE_APP_PART]: {
-        target: `${BASE_IP}/parts/`,
+        target: `${BASE_IP}/parts/web`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_PART]: ''
