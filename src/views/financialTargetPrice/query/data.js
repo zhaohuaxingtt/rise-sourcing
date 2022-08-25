@@ -38,7 +38,7 @@ export const tableMockData = [
 
 export const searchList = [
   {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_QUERY_FSNUM|财务目标价管理-目标价查询-FSGSNO'},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_QUERY_PARTNUM|财务目标价管理-目标价查询-零件号'},
+  {value: 'partNum', label: '零件号', type: 'multiLineInput', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_QUERY_PARTNUM|财务目标价管理-目标价查询-零件号'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'FINANCIALTARGETPRICE_QUERY_PARTNAME|财务目标价管理-目标价查询-零件名称'},
   {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption:'',permission: 'FINANCIALTARGETPRICE_QUERY_BUYER|财务目标价管理-目标价查询-询价采购员'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER',permission: 'FINANCIALTARGETPRICE_QUERY_CF|财务目标价管理-目标价查询-CF'},

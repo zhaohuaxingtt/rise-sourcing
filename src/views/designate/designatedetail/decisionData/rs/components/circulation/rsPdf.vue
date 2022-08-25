@@ -236,7 +236,7 @@
 									</div>
 								</div>
 								<!-- hasLastPage为false，签字栏不用另起一页 -->
-								<iCard
+								<!-- <iCard
 									v-if="!hasLastPage && !remarkList.length"
 									class="checkDate rsCard Application"
 									:title="`Application Date：${dateFilter(
@@ -275,9 +275,48 @@
 											</div>
 										</div>
 									</div>
-								</iCard>
+								</iCard> -->
 							</div>
 						</div>
+						<iCard
+							class="checkDate rsCard Application"
+							:title="`Application Date：${dateFilter(
+								processApplyDate,
+								'YYYY-MM-DD'
+							)}`"
+						>
+							<div class="checkList">
+								<div
+									class="checkList-item"
+									v-for="(item, index) in checkList"
+									:key="index"
+								>
+									<icon
+										v-if="item.approveStatus === true"
+										name="iconrs-wancheng"
+										class="complete"
+									></icon>
+									<icon
+										v-else-if="item.approveStatus === false"
+										name="iconrs-quxiao"
+										class="cancel"
+									></icon>
+									<div v-else class="">-</div>
+									<div class="checkList-item-info">
+										<span>Dept.:</span>
+										<span class="checkList-item-info-depart">{{
+											item.approveDeptNumName
+										}}</span>
+									</div>
+									<div class="checkList-item-info">
+										<span>Date:</span>
+										<span>{{
+											item.approveDate | dateFilter('YYYY-MM-DD')
+										}}</span>
+									</div>
+								</div>
+							</div>
+						</iCard>
 						<div class="page-logo">
 							<img
 								src="../../../../../../../assets/images/logo.png"
@@ -324,7 +363,7 @@
 								</div>
 							</div>
 						</div>
-						<div :style="{ height: tableHeight + 'px' }">
+						<div :style="{ height: otherPageHeight + 'px' }">
 							<div class="beizhu">
 								备注 Remarks:
 								<div class="beizhu-value">
@@ -333,48 +372,46 @@
 									</p>
 								</div>
 							</div>
-							<!-- hasLastPage为false，签字栏不用另起一页 -->
-							<template v-if="!hasLastPage && i == remarkList.length - 1">
-								<iCard
-									class="checkDate rsCard Application"
-									:title="`Application Date：${dateFilter(
-										processApplyDate,
-										'YYYY-MM-DD'
-									)}`"
-								>
-									<div class="checkList">
-										<div
-											class="checkList-item"
-											v-for="(item, index) in checkList"
-											:key="index"
-										>
-											<icon
-												v-if="item.approveStatus === true"
-												name="iconrs-wancheng"
-												class="complete"
-											></icon>
-											<icon
-												v-else-if="item.approveStatus === false"
-												name="iconrs-quxiao"
-												class="cancel"
-											></icon>
-											<div v-else class="">-</div>
-											<div class="checkList-item-info">
-												<span>Dept.:</span>
-												<span class="checkList-item-info-depart">{{
-													item.approveDeptNumName
-												}}</span>
-											</div>
-											<div class="checkList-item-info">
-												<span>Date:</span>
-												<span>{{
-													item.approveDate | dateFilter('YYYY-MM-DD')
-												}}</span>
-											</div>
+							<!-- 签字栏不用另起一页 -->
+							<iCard
+								class="checkDate rsCard Application"
+								:title="`Application Date：${dateFilter(
+									processApplyDate,
+									'YYYY-MM-DD'
+								)}`"
+							>
+								<div class="checkList">
+									<div
+										class="checkList-item"
+										v-for="(item, index) in checkList"
+										:key="index"
+									>
+										<icon
+											v-if="item.approveStatus === true"
+											name="iconrs-wancheng"
+											class="complete"
+										></icon>
+										<icon
+											v-else-if="item.approveStatus === false"
+											name="iconrs-quxiao"
+											class="cancel"
+										></icon>
+										<div v-else class="">-</div>
+										<div class="checkList-item-info">
+											<span>Dept.:</span>
+											<span class="checkList-item-info-depart">{{
+												item.approveDeptNumName
+											}}</span>
+										</div>
+										<div class="checkList-item-info">
+											<span>Date:</span>
+											<span>{{
+												item.approveDate | dateFilter('YYYY-MM-DD')
+											}}</span>
 										</div>
 									</div>
-								</iCard>
-							</template>
+								</div>
+							</iCard>
 						</div>
 						<div class="pdf-content">
 							<div class="page-logo">
@@ -398,7 +435,7 @@
 			</template>
 		</div>
 		<!-- hasLastPage为true，签字栏另起一页 -->
-		<div v-if="hasLastPage">
+		<!-- <div v-if="hasLastPage">
 			<div class="pageCard-main">
 				<slot name="tabTitle"></slot>
 				<iCard class="rsCard pageCard">
@@ -481,7 +518,7 @@
 					</div>
 				</iCard>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -592,10 +629,12 @@ export default {
 			border-bottom: 1px solid #ebeef5;
 			td {
 				border-top: 1px solid #ccc;
-				& > .cell {
+				.cell {
 					padding-right: 1px; /*no*/
 					padding-left: 1px; /*no*/
-					&:first-child {
+				}
+				&:first-child {
+					.cell {
 						padding-left: 8px; /*no*/
 					}
 				}
@@ -712,7 +751,7 @@ export default {
 		color: rgb(95, 104, 121);
 	}
 }
-::v-deep .f-border-table tr.suggestionRow td:first-child {
-	border-left: solid 8px #80a269;
-}
+// ::v-deep .f-border-table tr.suggestionRow td:first-child {
+// 	border-left: solid 8px #80a269;
+// }
 </style>

@@ -919,24 +919,37 @@ export default {
 		},
 		tableTitleSub() {
 			if (this.projectType === partProjTypes.PEIJIAN) {
-				return sparePartTableTitle
+				return sparePartTableTitle.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (this.projectType === partProjTypes.FUJIAN) {
-				return accessoryTableTitle
+				return accessoryTableTitle.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (
 				this.projectType === partProjTypes.GSLINGJIAN ||
 				this.projectType === partProjTypes.GSCOMMONSOURCING
 			) {
-				return gsTableTitleSub
+				return gsTableTitleSub.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI) {
 				// 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
 				const tableTitle = cloneDeep(nomalTableTitleSub) //
 				tableTitle.map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
+					item.fixed = false
 				})
 				return tableTitle
 			}
 			// 默认不显示原零件号
-			return nomalTableTitleSub.filter((item)=>item.props != 'partNum')
+			return nomalTableTitleSub.filter((item)=>item.props != 'partNum').map((item) => {
+					if (item.props == 'partNum') item.props = 'oldPartNum'
+					item.fixed = false
+				})
 		},
 		pageWidth() {
 			// 多加2px 避免出现滚动条
@@ -1004,10 +1017,12 @@ export default {
 					headerHeight -
 					computeHeight -
 					pageLogo -
+					el -
 					this.hasTitle // 表格区域高度, 用div支撑空间
 				// 独立备注页
 				this.otherPageHeight =
-					this.pageHeight - headerHeight - pageLogo - this.hasTitle
+					this.pageHeight - headerHeight -
+					computeHeight - pageLogo - this.hasTitle
 				let rowList = this.$refs.demo
 					.getElementsByClassName('mainTable')[0]
 					.getElementsByClassName('el-table__body-wrapper')[0]
@@ -1046,7 +1061,7 @@ export default {
 						} else {
 							// 另起一页
 							itemHeight += item.offsetHeight
-							if (itemHeight <= this.otherPageHeight - 24) {
+							if (itemHeight <= this.otherPageHeight - el - 24) {
 								// 上下padding各12
 								list.push(this.getRemarkAll[i])
 							} else {
@@ -1060,19 +1075,19 @@ export default {
 					this.remarkList = itemList
 					this.residualRemark = residualRemark
 					// 签字栏是否分页
-					if (itemHeight) {
-						if (this.otherPageHeight - itemHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					} else {
-						if (residualHeight - 24 < el) {
-							this.hasLastPage = true
-						} else {
-							this.hasLastPage = false
-						}
-					}
+					// if (itemHeight) {
+					// 	if (this.otherPageHeight - itemHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// } else {
+					// 	if (residualHeight - 24 < el) {
+					// 		this.hasLastPage = true
+					// 	} else {
+					// 		this.hasLastPage = false
+					// 	}
+					// }
 				} else {
 					this.remarkList = []
 					this.hasLastPage = false
@@ -1217,6 +1232,7 @@ export default {
 		 * @return {*}
 		 */
 		init() {
+			this.loading = true
 			if (this.isApproval) {
 				this.reviewListRs()
 			} else {
@@ -1280,6 +1296,7 @@ export default {
 				})
 				.finally(() => {
 					this.tableLoading = false
+					this.loading = false
 					this.$nextTick(() => {
 						this.getHeight()
 					})
@@ -1332,6 +1349,7 @@ export default {
 				})
 				.finally(() => {
 					this.tableLoading = false
+					this.loading = false
 					this.$nextTick(() => {
 						this.getHeight()
 					})
@@ -1716,10 +1734,6 @@ export default {
 	top: 0;
 }
 
-.suggestionRow {
-	border: 10px solid red;
-}
-
 .circulation {
 	overflow: hidden;
 	.infos {
@@ -1751,6 +1765,11 @@ export default {
 				padding-left: 6px;
 				padding-right: 6px;
 			}
+			&:first-child {
+					.cell {
+						padding: 0 0 0 8px; /*no*/
+					}
+				}
 		}
 
 		::v-deep tr {

@@ -27,11 +27,12 @@
       </el-form-item>
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_PARTNUM|零件号">
-        <iInput
+        <!-- <iInput
           clearable
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
-        ></iInput>
+        ></iInput> -->
+        <iMultiLineInput v-model="form.partNum" :title="language('nominationLanguage_LingJianHao','零件号')" />
       </el-form-item>
       <!-- 询价采购员 -->
       <el-form-item :label="language('CSF','CSF')" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BUYERNAME|CSF">
@@ -126,7 +127,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iDatePicker
+  iDatePicker,
+  iMultiLineInput
 } from "rise";
 
 export default {
@@ -142,7 +144,8 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDatePicker
+    iDatePicker,
+    iMultiLineInput
   },
   mounted() {
     this.form = {
