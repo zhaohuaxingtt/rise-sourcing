@@ -320,7 +320,7 @@ export default {
 		 */
 		handleBatchReject(visible) {
 			if (this.selectRow.length < 1) {
-				iMessage.warn(this.language('QINGXUANZEPEIJIAN', '请选择配件'))
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
 				return
 			}
 			if(this.selectRow.find(item=>{
@@ -339,7 +339,7 @@ export default {
 		 */
 		handleBatchClose(visible) {
 			if (this.selectRow.length < 1) {
-				iMessage.warn(this.language('QINGXUANZEPEIJIAN', '请选择配件'))
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
 				return
 			}
 			this.backDialogVisible = visible
@@ -390,20 +390,35 @@ export default {
 		 * @return {*}
 		 */
 		handleBatchDelete() {
-			// this.tableLoading = true
-			deleteOutSouring(this.selectRow.map((k) => k.purchasingRequirementId))
-				.then((res) => {
-					// this.tableLoading = false
-					if (+res.code === 200) {
-						this.getOutsouringFindBypage()
-						iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
-					}else{
-						iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
-						}
-				})
-				.catch((err) => {
-					this.tableLoading = false
-				})
+			if (this.selectRow.length < 1) {
+				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
+				return
+			}
+			this.$confirm(this.language('QUERENSHANCHUXUANZHONGCAIGOUSHENQING','确认删除选中采购申请?'), this.language('LK_NOTICE','温馨提示'), {
+          type: 'warning',
+          distinguishCancelAndClose: true,
+          confirmButtonText: this.language('LK_QUEREN','确认'),
+          cancelButtonText: this.language('LK_QUXIAO','取消'),
+        })
+        .then(() => {
+					// this.tableLoading = true
+					deleteOutSouring(this.selectRow.map((k) => k.purchasingRequirementId))
+						.then((res) => {
+							// this.tableLoading = false
+							if (+res.code === 200) {
+								this.getOutsouringFindBypage()
+								iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+							}else{
+								iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+								}
+						})
+						.catch((err) => {
+							this.tableLoading = false
+						})
+        })
+        .catch(action => {
+          if(action === 'cancel') {}
+        });
 		},
 		/**
 		 * @description: 签收

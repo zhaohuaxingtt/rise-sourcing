@@ -206,7 +206,7 @@ import {
 	iUserLog,
 	iInput,
 } from 'rise'
-import { newTableTitle, addType, statusList } from '../components/data'
+import { newTableTitle, addType } from '../components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import tablelist from './components/tablelist'
@@ -226,6 +226,7 @@ import uploadButton from './components/uploadButton'
 import { exportExcel } from '@/utils/filedowLoad'
 import buttonDownload from '@/components/buttonDownload'
 import language from '@/utils/language'
+import { getDictByCode } from '@/api/dictionary'
 export default {
 	mixins: [pageMixins, filters],
 	components: {
@@ -258,7 +259,6 @@ export default {
 			addressList: [], //库存地点
 			canEdit: false,
 			addType: addType,
-			statusList: statusList,
 			fromItem: false, //是否从项次点击进入
 			// fromDetail: false,
 			uploadAttachmentsButtonLoading: false,
@@ -276,6 +276,7 @@ export default {
 			logDialogVisible: false,
 			isLatest: true,
 			lineOptiondata: [],
+			statusOption:[]
 		}
 	},
 	created() {
@@ -327,10 +328,10 @@ export default {
 		},
 		// 获取采购申请单状态
 		getStatus(status) {
-			if (status == '' || status == undefined || this.statusList.length <= 0){
+			if (status == '' || status == undefined || this.statusOption.length <= 0){
 				return ''
 			}
-			let item = this.statusList.find((k) => k.code == status)
+			let item = this.statusOption.find((k) => k.code == status)
 			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
@@ -654,6 +655,10 @@ export default {
 				if (res.data) {
 					this.fromGroup = res.data
 				}
+			})
+			// 获取状态下拉框
+			getDictByCode('OUT_SOURCING_STATUS').then(res=>{
+				this.statusOption = res.data[0].subDictResultVo
 			})
 		},
 		// 獲取選項數據
