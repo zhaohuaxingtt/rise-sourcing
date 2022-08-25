@@ -8,5 +8,6 @@
  export default {
   XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG : 'The expected target price should not be blank',
   QIANSHOUSHIJIAN: 'signDate',
+  QINGXUANZEKESHI: 'Please select Dept',
   LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI : 'The part number is insufficient, please add it to 3 digits or more',
 }
