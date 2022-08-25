@@ -39,7 +39,8 @@
 						v-if="canEdit"
 						v-model="scope.row.quantity"
 						@input="handleInput($event, scope.row)"
-						:placeholder="language('QINSHURU', '请输入')"
+						@blur="changeInput(scope.row, scope.$index)"
+						:placeholder="language('QINGSHURU', '请输入')"
 					/>
 					<span v-else>{{ scope.row.quantity }}</span>
 				</template>
@@ -107,9 +108,17 @@ export default {
       this.$set(row, "quantity", numberProcessor(value, 2));
     },
 
+		// 检查输入数字
+		changeInput(row, index){
+			this.initData.forEach((item, i)=>{
+				if(i<index){
+					item.quantity = numberProcessor((item.quantity || row.quantity), 2)
+				}
+			})
+		},
 		// 新增项次
 		increatment() {
-			this.initData.unshift({
+			this.initData.push({
 				year: '',
 				quantity: '',
 			})
