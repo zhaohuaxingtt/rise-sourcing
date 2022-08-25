@@ -629,10 +629,12 @@ export default {
 			border-bottom: 1px solid #ebeef5;
 			td {
 				border-top: 1px solid #ccc;
-				& > .cell {
+				.cell {
 					padding-right: 1px; /*no*/
 					padding-left: 1px; /*no*/
-					&:first-child {
+				}
+				&:first-child {
+					.cell {
 						padding-left: 8px; /*no*/
 					}
 				}
@@ -749,7 +751,7 @@ export default {
 		color: rgb(95, 104, 121);
 	}
 }
-::v-deep .f-border-table tr.suggestionRow td:first-child {
-	border-left: solid 8px #80a269;
-}
+// ::v-deep .f-border-table tr.suggestionRow td:first-child {
+// 	border-left: solid 8px #80a269;
+// }
 </style>

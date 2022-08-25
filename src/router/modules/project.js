@@ -227,7 +227,17 @@ export default [
             component: () => import("@/views/project/progressreport/performanceanalysis"),
           }
         ]
-      }
+      },
+      {
+        path: "performanceanalysis/reportDetails",
+        name: "reportDetails",
+        meta: {
+            title: "项目管理-项目进度报告-项目管理绩效分析-报告详情",
+            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () =>
+            import ("@/views/project/progressreport/performanceanalysis/reportDetails"),
+    },
     ]
   }
 ]

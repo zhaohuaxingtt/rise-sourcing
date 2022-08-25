@@ -919,24 +919,37 @@ export default {
 		},
 		tableTitleSub() {
 			if (this.projectType === partProjTypes.PEIJIAN) {
-				return sparePartTableTitle
+				return sparePartTableTitle.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (this.projectType === partProjTypes.FUJIAN) {
-				return accessoryTableTitle
+				return accessoryTableTitle.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (
 				this.projectType === partProjTypes.GSLINGJIAN ||
 				this.projectType === partProjTypes.GSCOMMONSOURCING
 			) {
-				return gsTableTitleSub
+				return gsTableTitleSub.map(item=>{
+					item.fixed = false
+					return item
+				})
 			} else if (this.projectType === partProjTypes.JINLINGJIANHAOGENGGAI) {
 				// 如果是1000005 （仅零件号变更）原零件号就用oldPartNum填充
 				const tableTitle = cloneDeep(nomalTableTitleSub) //
 				tableTitle.map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
+					item.fixed = false
 				})
 				return tableTitle
 			}
 			// 默认不显示原零件号
-			return nomalTableTitleSub.filter((item)=>item.props != 'partNum')
+			return nomalTableTitleSub.filter((item)=>item.props != 'partNum').map((item) => {
+					if (item.props == 'partNum') item.props = 'oldPartNum'
+					item.fixed = false
+				})
 		},
 		pageWidth() {
 			// 多加2px 避免出现滚动条
@@ -1219,6 +1232,7 @@ export default {
 		 * @return {*}
 		 */
 		init() {
+			this.loading = true
 			if (this.isApproval) {
 				this.reviewListRs()
 			} else {
@@ -1282,6 +1296,7 @@ export default {
 				})
 				.finally(() => {
 					this.tableLoading = false
+					this.loading = false
 					this.$nextTick(() => {
 						this.getHeight()
 					})
@@ -1334,6 +1349,7 @@ export default {
 				})
 				.finally(() => {
 					this.tableLoading = false
+					this.loading = false
 					this.$nextTick(() => {
 						this.getHeight()
 					})
@@ -1718,10 +1734,6 @@ export default {
 	top: 0;
 }
 
-.suggestionRow {
-	border: 10px solid red;
-}
-
 .circulation {
 	overflow: hidden;
 	.infos {
@@ -1753,6 +1765,11 @@ export default {
 				padding-left: 6px;
 				padding-right: 6px;
 			}
+			&:first-child {
+					.cell {
+						padding: 0 0 0 8px; /*no*/
+					}
+				}
 		}
 
 		::v-deep tr {
