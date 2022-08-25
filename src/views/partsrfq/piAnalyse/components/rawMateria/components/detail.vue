@@ -12,7 +12,8 @@
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
-            <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <!-- <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput> -->
+            <iMultiLineInput v-model="searchForm['partNo']" :title="language('LINGJIANHAO', '零件号')" />
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('CAILIAOZU', '材料组')">
             <iInput v-model="searchForm['materialGroup']" :placeholder="language('QINGSHURU','请输入')"></iInput>
@@ -66,7 +67,7 @@
 </template>
 
 <script>
-import {iDialog, iSelect, iInput, iPagination, iButton, iMessage} from 'rise'
+import {iDialog, iSelect, iInput, iPagination, iButton, iMessage, iMultiLineInput} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import {detailTableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
@@ -89,7 +90,8 @@ export default {
     iInput,
     iPagination,
     iButton,
-    tableList
+    tableList,
+    iMultiLineInput
   },
   data () {
     return {

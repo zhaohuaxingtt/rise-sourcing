@@ -82,7 +82,8 @@
           </iButton>
           <iButton
             v-if="!isDisabled" 
-            :loading="cancelSelectedLoading" 
+            :loading="cancelSelectedLoading"
+            v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_PARTDETAILCANCELAPPLY|零件清单取消申请" 
             @click="handleClickByCancelSelected">
             {{ language("QUXIAOSHENQING", "取消申请") }}
           </iButton>

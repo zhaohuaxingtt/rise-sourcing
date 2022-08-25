@@ -9,7 +9,7 @@ export const search=[
 	{props: 'name', name: '报告名称', type: 'input',key:'TPZS.BGMC',placeholder:'TPZS.QSRBGMC'},
 	{props: 'toolType', name: '分析工具类型', type: 'select',select:'REPORT_TOOL_TYPE',key:'TPZS.FXGJLX'},
 	{props: 'materialGroup', name: '材料组', type: 'input',key:'LK_CAILIAOZU',placeholder:'TPZS.QSRCLZ'},
-	{props: 'partsNo', name: '零件号', type: 'input',key:'LK_LINGJIANHAO',placeholder:'TPZS.QSRLJH'},
+	{props: 'partsNo', name: '零件号', type: 'multiLineInput',key:'LK_LINGJIANHAO',placeholder:'TPZS.QSRLJH'},
 	{props: 'rfq', name: 'RFQ号/名称', type: 'input', key:'TPZS.RFQHMC',placeholder:'TPZS.QSRRFQMC'},
 ]
 

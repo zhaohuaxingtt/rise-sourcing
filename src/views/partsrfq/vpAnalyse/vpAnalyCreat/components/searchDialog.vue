@@ -27,7 +27,8 @@
       </el-col>
       <el-col :span="4">
         <el-form-item :label="$t('LK_LINGJIANHAO')">
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.partsId"></iInput>
+          <!-- <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.partsId"></iInput> -->
+          <iMultiLineInput v-model="form.partsId" :title="$t('LK_LINGJIANHAO')" />
         </el-form-item>
       </el-col>
       <el-col :span="8">
@@ -41,13 +42,14 @@
 </template>
 
 <script>
-import { iSearch, iInput, iSelect, iDatePicker, iButton } from 'rise'
+import { iSearch, iInput, iSelect, iDatePicker, iButton, iMultiLineInput } from 'rise'
 import { materialGroupSelectDict } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 export default {
   components: {
     iSearch,
     iInput,
-    iSelect, iDatePicker, iButton
+    iSelect, iDatePicker, iButton,
+    iMultiLineInput
   },
   data() {
     return {

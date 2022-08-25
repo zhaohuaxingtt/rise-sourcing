@@ -106,20 +106,20 @@
             </template>
 
             <template #cfTargetAPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
             </template>
 
             <template #cfTargetBPrice="scope">
-              <div v-if="scope.row.status === 'SKDLC'">
+              <div v-if="scope.row.cfApplyType === 'SKDLC'">
                 <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
                 <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
               </div>
-              <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+              <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
               <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
             </template>
 
@@ -336,7 +336,7 @@
       <iCard class="rsCard">
         <template #header>
           <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+            <iButton @click="handleExportPdf" :loading="loading" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT|RS单导出">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
           </div>
           <div class="title">
             <p>CSC定点推荐 - {{ cardTitle }}</p>
@@ -428,20 +428,20 @@
           </template>
 
           <template #cfTargetAPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
           </template>
 
           <template #cfTargetBPrice="scope">
-            <div v-if="scope.row.status === 'SKDLC'">
+            <div v-if="scope.row.cfApplyType === 'SKDLC'">
               <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
               <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
             </div>
-            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
             <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
           </template>
 
@@ -1116,6 +1116,7 @@ export default {
      * @return {*}
      */    
     init() {
+      this.loading = true
       // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
       if (this.isAuth || this.isApproval) {
         this.reviewListRs()
@@ -1181,6 +1182,7 @@ export default {
       })
       .finally(() => {
         this.tableLoading = false
+        this.loading = false
         this.$nextTick(()=>{
           this.getHeight()
         })
@@ -1306,7 +1308,10 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
-      .finally(() => this.tableLoading = false)
+      .finally(() => {
+        this.tableLoading = false
+        this.loading = false
+      })
 	},
 		
     // 导出pdf
@@ -1353,6 +1358,10 @@ export default {
       console.time(`index${index}`);
       let this_ = this
       let el = this.$refs.contentPdf
+      dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
+      el.style.width = this_.WH[index].width + 'px'
+      el.style.height = this_.WH[index].height + 'px'
+      el.innerHTML = dom.outerHTML
       await html2canvas(el, {
         dpi: 96, //分辨率
         scale: this.pdfPage > 12 ? 1 : 2, //设置缩放
@@ -1365,13 +1374,6 @@ export default {
           }
           return false
         },
-        onclone(doc){
-          dom.getElementsByClassName('pageNum')[0].innerHTML = `page ${index+1} of ${this_.pdfPage}`;
-          let el = doc.getElementById('contentPdf')
-          el.style.width = this_.WH[index].width + 'px'
-          el.style.height = this_.WH[index].height + 'px'
-          el.innerHTML = dom.outerHTML
-        }
       }).then(canvas => {
         console.timeEnd(`index${index}`);
         this.getPdfFile(canvas,index)
@@ -1607,8 +1609,8 @@ export default {
       &-title {
         background-color: rgba(22, 96, 241, 0.06);
         border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 6px 24px;
-        width: 60%;
+        padding: 6px 12px;
+        width: 40%;
         font-weight: bold;
         // line-height: 29px;
         display: flex;
@@ -1616,8 +1618,8 @@ export default {
         justify-content: center;
       }
       &-value {
-        width: 40%;
-        padding: 6px 24px;
+        width: 60%;
+        padding: 6px 12px;
         // line-height: 29px;
         background-color: #fff;
         display: flex;
@@ -1626,10 +1628,10 @@ export default {
       }
       &:nth-of-type(even) {
         .rsTop-right-item-title {
-          width: 65%;
+          width: 50%;
         }
         .rsTop-right-item-value {
-          width: 35%;
+          width: 50%;
         }
       }
     }
@@ -1812,8 +1814,8 @@ export default {
         &-title {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
-          padding: 6px 24px;
-          width: 60%;
+          padding: 6px 12px;
+          width: 40%;
           font-weight: bold;
           // line-height: 29px;
           display: flex;
@@ -1821,8 +1823,8 @@ export default {
           justify-content: center;
         }
         &-value {
-          width: 40%;
-          padding: 6px 24px;
+          width: 60%;
+          padding: 6px 12px;
           // line-height: 29px;
           background-color: #fff;
           display: flex;
@@ -1831,10 +1833,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 65%;
+            width: 40%;
           }
           .rsTop-right-item-value {
-            width: 35%;
+            width: 60%;
           }
         }
       }
@@ -1953,11 +1955,11 @@ export default {
     }
   }
 
-  :v-deep .complete {
+  ::v-deep .complete {
     color: rgb(104, 193, 131);
   }
 
-  :v-deep .cancel {
+  ::v-deep .cancel {
     color: rgb(95, 104, 121);
   }
   ::v-deep .pdf-content {

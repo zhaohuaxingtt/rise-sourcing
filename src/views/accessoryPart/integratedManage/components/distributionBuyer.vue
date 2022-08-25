@@ -12,7 +12,7 @@
     :title="language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="600px"
+    width="400px"
     class="dialog"
   >
     <template slot="footer">
@@ -20,7 +20,7 @@
       <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton>
     </template>
       <el-form class="elForm">
-        <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室')">
+        <!-- <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室')">
           <iSelect v-model="queryPurchaseDept"   value-key="id"  @change="changeDept">
             <el-option
               v-for="item in purchaseDeptOptions"
@@ -29,7 +29,7 @@
               :value="item">
             </el-option>  
           </iSelect> 
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员')">
           <iSelect v-model="queryPurchaseBuyer"  value-key="id" @change="changepurchaseBuyer">
             <el-option
@@ -80,7 +80,7 @@ export default {
     }
   },
   created(){
-    this.getPurchaseDeptOptions()
+    this.getBuyer()
   },
   methods: {
     getUserList() {
@@ -92,6 +92,12 @@ export default {
       //   }
       // })
     },
+    getBuyer(){
+      listUserByFunctionType(0).then(res=>{
+        this.purchaseBuyerOptions = res.data || []
+      })
+    },
+
     getPurchaseDeptOptions() {
       let data = '26'
       listDepartByTag(data).then(res=>{
@@ -154,6 +160,9 @@ export default {
     changepurchaseBuyer(val) {
       this.purchaseUpdata.csfuserId = val.id
       this.purchaseUpdata.csfuserName = val.nameZh
+      this.purchaseUpdata.csfDept = val.deptDTO.id
+      this.purchaseUpdata.csfDeptName = val.deptDTO.deptNum
+      console.log(val);
     }
   }
 }
@@ -163,5 +172,8 @@ export default {
   .elForm{
     display: flex;
     justify-content: space-around;
+    ::v-deep .el-form-item{
+      width: 100%;
+    }
   }
 </style>

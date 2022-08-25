@@ -14,11 +14,12 @@
     <el-form>
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianHao','零件号')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PARTNUM|零件号">
-        <iInput
+        <!-- <iInput
           clearable
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
-        ></iInput>
+        ></iInput> -->
+        <iMultiLineInput v-model="form.partNum" :title="language('nominationLanguage_LingJianHao','零件号')" />
       </el-form-item>
       <!-- 零件名 -->
       <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PARTNAME|零件名">
@@ -308,7 +309,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iDatePicker
+  iDatePicker,
+  iMultiLineInput
 } from "rise";
 import _ from 'lodash'
 import { numberProcessor } from '@/utils' 
@@ -328,7 +330,8 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDatePicker
+    iDatePicker,
+    iMultiLineInput
   },
   mounted() {
     this.form = { showSelf: true }

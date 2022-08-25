@@ -22,12 +22,13 @@
           </iInput>  
         </el-form-item>
         <el-form-item :label="language('nominationLanguage_LingJianHao','零件号')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PARTNUM|零件号">
-          <iInput
+          <!-- <iInput
             clearable
             v-model="formRecord.partNum"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
-          </iInput>         
+          </iInput> -->
+          <iMultiLineInput v-model="formRecord.partNum" :title="language('nominationLanguage_LingJianHao', '零件号')" />
         </el-form-item>
         <el-form-item :label="language('nominationLanguage_LingJianMingCheng','零件名称')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PARTNAME|零件名称">        
           <iInput
@@ -201,7 +202,7 @@
   </div>
 </template>
 <script>
-import {iSearch, iInput, iSelect, iDatePicker, iMessage} from 'rise'
+import {iSearch, iInput, iSelect, iDatePicker, iMessage, iMultiLineInput} from 'rise'
 import {selectDictByKeyss} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import { getCarTypeSop } from "@/api/partsprocure/editordetail"
@@ -215,7 +216,8 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDatePicker
+    iDatePicker,
+    iMultiLineInput
   },
   data() {
     return {

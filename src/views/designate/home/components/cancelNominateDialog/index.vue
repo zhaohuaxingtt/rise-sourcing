@@ -147,22 +147,10 @@ export default {
           this.loading = false;
         });
     },
-    // 查询是否绑定了mtz
-    async bindMtzFlag() {
-      let result = false;
-      let params = {
-        nomiId: this.nomiId
-      };
-      await bindMtzFlag(params).then((res) => {
-        if (res?.code == "200") {
-          result = res.data;
-        }
-      });
-      return result;
-    },
     async confirm() {
       let mtzFlag = false;
-      let res = await this.bindMtzFlag({ nomiId: this.nomiId });
+      // 查询是否绑定了mtz
+      let res = await bindMtzFlag({ nomiId: this.nomiId });
       if (res?.code == "200") {
         mtzFlag = res.data;
       }

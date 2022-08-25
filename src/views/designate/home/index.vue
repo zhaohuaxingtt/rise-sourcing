@@ -103,8 +103,8 @@
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
           <!-- 取消定点 -->
-          <!-- v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点" -->
           <iButton
+            v-permission.auto="SOURCING_NOMINATION_QUXIAODINGDIAN|取消定点"
             @click="cancelNominate"
           >
             {{ language("QUXIAODINGDIAN", "取消定点") }}
@@ -538,6 +538,8 @@ export default {
               this.$message({
                 dangerouslyUseHTMLString: true,
                 type: "error",
+                duration: 10000, // error 错误提示显示10秒
+                showClose: true,
                 message: Array.isArray(res.data.messageList) ? res.data.messageList.reduce((acc, cur, index) => {
                   return acc + `<p>${ this.$i18n.locale === "zh" ? cur.zhMsg : cur.engMsg }</p>${ index != res.data.messageList.length - 1 ? '<br/>' : '' }`
                 }, "") : "Error"
