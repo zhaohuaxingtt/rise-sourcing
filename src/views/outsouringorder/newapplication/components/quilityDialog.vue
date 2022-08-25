@@ -109,7 +109,7 @@ export default {
 
 		// 新增项次
 		increatment() {
-			this.initData.unshift({
+			this.initData.push({
 				year: '',
 				quantity: '',
 			})
