@@ -27,6 +27,7 @@
           </iSelect> 
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -39,9 +40,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{language('LK_ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible" v-permission.auto="FINANCIALTARGETPRICE_QUERY_ASSIGN|财务目标价管理-目标价查询-指派">{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" v-permission.auto="FINANCIALTARGETPRICE_QUERY_EXPORT|财务目标价管理-目标价查询-导出">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, iMultiLineInput } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -102,7 +103,7 @@ import moment from 'moment'
 import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
   mixins: [pageMixins],
-  components: {iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
+  components: {iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch, iMultiLineInput, modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,

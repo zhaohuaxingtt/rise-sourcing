@@ -3,7 +3,7 @@
     <SearchBlock @sure="allSerch" />
       <iCard>
         <div class="table-head">
-          <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+          <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </div>
         <iTableList
           :tableData="allTableList"

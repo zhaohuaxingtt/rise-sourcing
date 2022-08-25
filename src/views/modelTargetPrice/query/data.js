@@ -33,7 +33,7 @@ export const tableMockData = [
 export const searchList = [
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',permission: 'MODELTARGETPRICE_QUERY_RFQNUM|模具目标价管理-目标价查询-RFQ编号'},
   {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP',permission: 'MODELTARGETPRICE_QUERY_FSNUM|模具目标价管理-目标价查询-FSGSNO'},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'MODELTARGETPRICE_QUERY_PARTNUM|模具目标价管理-目标价查询-零件号'},
+  {value: 'partNum', label: '零件号', type: 'multiLineInput', i18n_label: 'LINGJIANHAO',permission: 'MODELTARGETPRICE_QUERY_PARTNUM|模具目标价管理-目标价查询-零件号'},
   {value: 'partNameZh', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'MODELTARGETPRICE_QUERY_PARTNAME|模具目标价管理-目标价查询-零件名称'},
   {value: 'partProjectType', label: '零件项目类型', type: 'selectDict', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PPT',permission: 'MODELTARGETPRICE_QUERY_PARTPROJECTTYPE|模具目标价管理-目标价查询-零件项目类型'},
   {value: 'cartypeProjectNum', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO',permission: 'MODELTARGETPRICE_QUERY_CARPROJECT|模具目标价管理-目标价查询-车型项目'},

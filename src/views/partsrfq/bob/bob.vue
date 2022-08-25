@@ -19,8 +19,9 @@
             </el-form-item>
             <!--零件号-->
             <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-              <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-                      v-model="form.num"></iInput>
+              <!-- <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                      v-model="form.num"></iInput> -->
+              <iMultiLineInput v-model="form.num" :title="$t('LK_SPAREPARTSNUMBER')" />
             </el-form-item>
             <!--供应商状态-->
             <el-form-item :label="$t('TPZS.RFQHMC')">
@@ -202,7 +203,7 @@
 </template>
 
 <script>
-import { iCard, iInput, iSearch, iButton, iPagination, iSelect, icon, iMessage, iPage } from 'rise';
+import { iCard, iInput, iSearch, iButton, iPagination, iSelect, icon, iMessage, iPage, iMultiLineInput } from 'rise';
 import { getBobAnalysisDataList, fetchStaick, fetchEdit, fetchDel, initIn, generateGroupId } from '@/api/partsrfq/bob/analysisList';
 import { pageMixins } from '@/utils/pageMixins';
 import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview';
@@ -218,7 +219,8 @@ export default {
     iSelect,
     icon,
     reportPreview,
-    iPage
+    iPage,
+    iMultiLineInput
   },
   inject: ['getDisabled'],
   data () {

@@ -3444,7 +3444,7 @@
 		SHANGCHUANWENJIANYICIX: 'Upload File (one-time)',
 		SHANGCHUANWENJJIANPILIANG: 'Upload File (series)',
 		DAYINGDINGDANLIUZHUANDAN: 'Print Nomi. Circulation Sheet (one-time)',
-		DAYINGDINGDANLIUZDPILIANG: 'Print Nomi. Circulation Sheet (series)',
+		DAYINGDINGDANLIUZDPILIANG: 'Print Nomi. Circulation Sheet',
 		GANGCAIPROJECT: 'Project',
 		GANGCAICHUANGJIAN: 'Steel App. Mgmt.',
 		XIXANSHIZIJI: 'Filter by Me',

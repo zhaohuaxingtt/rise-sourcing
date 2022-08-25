@@ -586,6 +586,7 @@ export default {
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
+      if (this.selectTableData.length!==1) return iMessage.warn(this.language("QINGXUANZEYITIAOSHUJU", "请选择一条数据"))
       if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
@@ -613,6 +614,7 @@ export default {
             graderName: item.rater,
             coordinator: item.coordinator,
             coordinatorId: item.coordinatorId,
+            rfqDeptRatId: item.id
       }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {

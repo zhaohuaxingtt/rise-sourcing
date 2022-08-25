@@ -265,6 +265,7 @@ export default {
   }
 }
 .searchBox {
+  width: 100%;
   margin: 20px 0;
 }
 .contentBox {
