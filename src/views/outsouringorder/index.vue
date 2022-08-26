@@ -42,7 +42,7 @@
 								:title="
 									language('partsprocure.PARTSPROCUREPARTNUMBER', '零件号')
 								"
-								v-model="form['partNum']"
+								v-model="form['partNumStr']"
 							></iMultiLineInput>
 						</template>
 						<template v-else>

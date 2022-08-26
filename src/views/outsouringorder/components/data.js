@@ -112,7 +112,7 @@ export const searchForm = [
 		permissionKey: 'SOURCING_CHEXINGXIANGMU',
 		type: 'input',
 		List: [],
-		moduleKey: 'detail',
+		moduleKey: 'remark',
 	},
 ]
 
