@@ -432,6 +432,7 @@ export default {
 					ownerName: this.getLiner(this.baseinfodata.ownerId),
 					ownerId:this.baseinfodata.ownerId,
 					partPrefix: this.baseinfodata.partPrefix,
+					remark: this.baseinfodata.remark,
 					quantity: item.quantity,
 				}
 			})
@@ -705,8 +706,8 @@ export default {
 				if (this.baseinfodata.riseCode) {
 					// this.getTableListFn()
 				} else {
-					this.tableListData = msg.data
-					// this.getTableList()
+					// this.tableListData = msg.data
+					this.getTableList()
 				}
 				if (msg.desZh == null || msg.desZh == '') {
 					return iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
