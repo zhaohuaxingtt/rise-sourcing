@@ -146,7 +146,9 @@ export default {
       let rightIdList = rightTableData.map(child=>child.id)
       this.selectDataLeft.forEach(item=>{
           if(!rightIdList.includes(item.id)){
-            rightTableData.push(item)
+            const child = {...item}
+            child.checked = false
+            rightTableData.push(child)
           }
       })
       this.rightTableData = JSON.parse(JSON.stringify(rightTableData))
