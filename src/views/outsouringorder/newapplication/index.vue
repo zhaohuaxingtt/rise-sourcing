@@ -74,7 +74,7 @@
 											v-for="(item, index) in lineOptiondata"
 											:key="index"
 											:value="item.linieID"
-											:label="item.linieID +'-'+ ($i18n.locale == 'zh' ? item.linieName : item.linieNameEn)"
+											:label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
 										></el-option>
 									</iSelect>
 									<iText v-else> {{ getLiner(baseinfodata.ownerId) }}</iText>
@@ -323,8 +323,7 @@ export default {
 				return ''
 			}
 			let item = this.lineOptiondata.find((j) => j.linieID == key)
-			this.baseinfodata.ownerName = (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
-			return item.linieID +'-'+ (this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn)
+			return this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn
 		},
 		// 获取采购申请单状态
 		getStatus(status) {
@@ -430,7 +429,7 @@ export default {
 				delete item.addressList
 				return {
 					...item,
-					ownerName:this.baseinfodata.ownerName,
+					ownerName: this.getLiner(this.baseinfodata.ownerId),
 					ownerId:this.baseinfodata.ownerId,
 					partPrefix: this.baseinfodata.partPrefix,
 					quantity: item.quantity,
@@ -592,8 +591,10 @@ export default {
 				// subType: this.applicationTypeVal,
 				subType: this.baseinfodata.subType,
 				type: 'GPR',
-				supplierSapCode: '11138',
-				tmSupplierId: '50001031',
+				supplierSapCode: '',
+				tmSupplierId: '',
+				// supplierSapCode: '11138',
+				// tmSupplierId: '50001031',
 				normalPrQuantityYears: [],
 			})
 			this.itemNum += 10
