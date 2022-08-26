@@ -34,7 +34,7 @@ Promise.all([
 
 Vue.component(iTable.name, iTable)
 Vue.prototype.$echarts = echarts()
-Vue.prototype.$message = iMessage
+// Vue.prototype.$message = iMessage
 
 new Vue({
 	router,
