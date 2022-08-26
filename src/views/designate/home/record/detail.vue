@@ -146,7 +146,7 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = _row.filter((item)=> (+item.priceReduceRate)!='0');
+        const list = _row.filter((item)=> +item.priceReduceRate!='0');
         return list.length ? list[0].yearMonths : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
