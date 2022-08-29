@@ -691,6 +691,7 @@ export default {
 					this.baseinfodata = { ...res.data[0] }
 					this.tableListData = res.data.map(item=>{
 						item.storageLocation = item.storageLocationCode&&(item.storageLocationCode+'-'+item.storageLocationDesc)||''
+						this.itemNum = item.sapItem + 10
 						return item
 					})
 				}
