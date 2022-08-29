@@ -112,7 +112,7 @@ export default {
 		changeInput(row, index){
 			this.initData.forEach((item, i)=>{
 				if(i<index){
-					item.quantity = numberProcessor((item.quantity || row.quantity), 2)
+					item.quantity = numberProcessor((+item.quantity || +row.quantity), 2)
 				}
 			})
 		},
