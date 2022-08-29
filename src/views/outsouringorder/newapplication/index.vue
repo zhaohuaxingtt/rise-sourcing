@@ -389,10 +389,11 @@ export default {
 				}
 			// 框架
 			}else{
+				console.log(this.tableListData);
 				let flag = false
 				// 至少有一条数据不为空
 				this.tableListData.forEach(item=>{
-					flag = flag || !item.normalPrQuantityYears.find((e)=> e.quantity>0 )
+					flag = flag || (item.normalPrQuantityYears ? !item.normalPrQuantityYears.find((e)=> e.quantity>0 ) : true)
 				})
 				if (flag) {
 					return iMessage.warn('类型“工序委外框架”，五年计划数量必须大于0')
@@ -596,7 +597,7 @@ export default {
 				tmSupplierId: '',
 				// supplierSapCode: '11138',
 				// tmSupplierId: '50001031',
-				normalPrQuantityYears: [],
+				normalPrQuantityYears: null,
 			})
 			this.itemNum += 10
 			// this.getTableList()
