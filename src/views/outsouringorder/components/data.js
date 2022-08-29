@@ -74,7 +74,7 @@ export const searchForm = [
 		i18nKey: '科室',
 		permissionKey: 'SOURCING_FSNRGSNR',
 		type: 'input',
-		moduleKey: 'deptName',
+		moduleKey: 'deptNum',
 	},
 	{
 		i18nName: '申请人',
@@ -88,8 +88,8 @@ export const searchForm = [
 		i18nKey: 'SHENQINGBUMEN',
 		permissionKey: 'SOURCING_ZHUANYECAIGOUYUAN',
 		type: 'input',
-		moduleKey: 'linieName',
-		format: { value: 'deptId', label: 'commodity' },
+		moduleKey: 'applyDeptNo',
+		// format: { value: 'deptId', label: 'commodity' },
 	},
 	{
 		i18nName: '申请日期起',
@@ -118,10 +118,11 @@ export const searchForm = [
 
 export const form = {
 	applyBy: '',
+	applyDeptNo: '',
 	createDate: '',
 	currency: '',
 	currentPage: 1,
-	deptName: '',
+	deptNum: '',
 	pageSize: 10,
 	partNameZh: '',
 	partNumStr: '',
@@ -292,7 +293,7 @@ export const newTableTitle = [
 		align: 'center',
 	},
 	{
-		props: 'riseCode',
+		props: 'contractRiseCode',
 		name: 'RiSE协议号',
 		key: 'MODEL-ORDER.LK_RISEXIEYIHAO',
 		tooltip: true,
