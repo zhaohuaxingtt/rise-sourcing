@@ -80,7 +80,7 @@
 						{{ language('LK_XINJIANNEW', '新建') }}
 					</iButton>
 					<!-- 删除 -->
-					<iButton @click="handleBatchDelete">
+					<iButton @click="deleteItem">
 						{{ language('SHANCHU', '删除') }}
 					</iButton>
 					<!-- 转派 -->
@@ -166,6 +166,16 @@
 		</iCard>
 
 		<!------------------------------------------------------------------------>
+		<!--                  删除弹窗                                       --->
+		<!------------------------------------------------------------------------>
+		<delete-dialog
+			ref="delete"
+			:dialogVisible="deleteDialogVisible"
+			@handleBack="handleBatchDelete"
+			@changeVisible="deleteDialogVisible=false"
+		/>
+
+		<!------------------------------------------------------------------------>
 		<!--                  退回EPS弹窗                                       --->
 		<!------------------------------------------------------------------------>
 		<backEps
@@ -213,6 +223,7 @@ import {
 } from 'rise'
 import headerNav from '@/components/headerNav'
 import backEps from './components/backEps'
+import deleteDialog from './components/deleteDialog'
 import {
 	searchForm,
 	form,
@@ -257,6 +268,7 @@ export default {
 		TurningPointDialog,
 		TransferDialog,
 		backEps,
+		deleteDialog
 	},
 	data() {
 		return {
@@ -278,6 +290,7 @@ export default {
 			showTransfer: false,
 			transferLoading: false,
 			showPoint: false, //转定点
+			deleteDialogVisible: false,
 		}
 	},
 	created() {
@@ -389,36 +402,34 @@ export default {
 		 * @param {*}
 		 * @return {*}
 		 */
-		handleBatchDelete() {
+		deleteItem() {
 			if (this.selectRow.length < 1) {
 				iMessage.warn(this.language('QINGXUANZECAIGOUSHENQING', '请选择采购申请'))
 				return
 			}
-			this.$confirm(this.language('QUERENSHANCHUXUANZHONGCAIGOUSHENQING','确认删除选中采购申请?'), this.language('LK_NOTICE','温馨提示'), {
-          type: 'warning',
-          distinguishCancelAndClose: true,
-          confirmButtonText: this.language('LK_QUEREN','确认'),
-          cancelButtonText: this.language('LK_QUXIAO','取消'),
-        })
-        .then(() => {
-					// this.tableLoading = true
-					deleteOutSouring(this.selectRow.map((k) => k.purchasingRequirementId))
-						.then((res) => {
-							// this.tableLoading = false
-							if (+res.code === 200) {
-								this.getOutsouringFindBypage()
-								iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
-							}else{
-								iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
-								}
-						})
-						.catch((err) => {
-							this.tableLoading = false
-						})
-        })
-        .catch(action => {
-          if(action === 'cancel') {}
-        });
+			this.deleteDialogVisible = true
+		},
+		/**
+		 * @description: 删除工序委外列表数据。
+		 * @param {*}
+		 * @return {*}
+		 */
+		handleBatchDelete(isAllItem) {
+			this.tableLoading = true
+			deleteOutSouring({idList:this.selectRow.map((k) => k.purchasingRequirementId),isAllItem})
+				.then((res) => {
+					if (+res.code === 200) {
+						this.getOutsouringFindBypage()
+						iMessage.success(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+						this.deleteDialogVisible = false
+					}else{
+						iMessage.error(this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+					}
+					this.tableLoading = false
+				})
+				.catch((err) => {
+					this.tableLoading = false
+				})
 		},
 		/**
 		 * @description: 签收
@@ -434,13 +445,14 @@ export default {
      @param {*} reasonDescription  退回描述
      @return {*}
     */
-		handleBackEPS(reasonDescription) {
+		handleBackEPS(reasonDescription,isAllItem) {
 			if (this.mode === 'back') {
 				let params = {
 					purchasingRequirementChooseList: this.selectRow.map((item) => {
 						return { riseCode: item.riseCode, sapItem: item.sapItem }
 					}),
 					reason: reasonDescription,
+					isAllItem
 				}
 				rejectByLinie(params)
 					.then((res) => {
