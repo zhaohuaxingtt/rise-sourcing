@@ -43,6 +43,7 @@
 										:placeholder="$t('LK_QINGXUANZE')"
 										v-model="baseinfodata.subType"
 										:disabled="$route.query.code"
+										@change="changeSubType"
 										v-if="canEdit && canEditable"
 									>
 										<el-option
@@ -306,6 +307,12 @@ export default {
 		},
 	},
 	methods: {
+		// 切换采购申请类型
+		changeSubType(){
+			this.tableListData.forEach(item=>{
+				item.subType = this.baseinfodata.subType
+			})
+		},
 		// 获取采购申请类型
 		getSubType(val) {
 			if (val == '' || val == null || this.addType.length == 0) return ''
