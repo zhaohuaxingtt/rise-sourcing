@@ -29,6 +29,7 @@
 						v-if="canEdit"
 						v-model="scope.row.year"
 						type="year"
+						value-format="yyyy"
 						:placeholder="language('QINGXUANZE', '请选择')"
 					>
 					</el-date-picker>
@@ -111,7 +112,7 @@ export default {
 		// 检查输入数字
 		changeInput(row, index){
 			this.initData.forEach((item, i)=>{
-				if(i<index){
+				if(item.year<row.year){
 					item.quantity = numberProcessor((+item.quantity || +row.quantity), 2)
 				}
 			})
