@@ -118,7 +118,7 @@
 							</div>
 							<div class="col">
 								<iFormItem :label="$t('STATUS') + ':'" name="test">
-									<iText> {{ getStatus(baseinfodata.status) }} </iText>
+									<iText> {{ getStatus(baseinfodata.status, baseinfodata.nominationStatus) }} </iText>
 								</iFormItem>
 								<iFormItem name="test"> </iFormItem>
 							</div>
@@ -326,11 +326,15 @@ export default {
 			return this.$i18n.locale == 'zh' ? item.linieName : item.linieNameEn
 		},
 		// 获取采购申请单状态
-		getStatus(status) {
-			if (status == '' || status == undefined || this.statusOption.length <= 0){
-				return ''
-			}
+		getStatus(status,nominationStatus) {
 			let item = this.statusOption.find((k) => k.code == status)
+			if(status=='1'){
+				if(nominationStatus=='2'){
+					return language('LK_YIDINGDIAN','已定点')
+				}
+					return language('LK_YIQIANSHOU','已签收')
+			}
+			if(item)
 			return this.$i18n.locale == 'zh' ? item.name : item.nameEn
 		},
 		// 获取推荐采购员
