@@ -9,36 +9,19 @@
 
 <template>
 	<iDialog
-		:title="
-			mode == 'back' ? language('TUIHUIYUANYIN', '退回原因') : $t('关闭原因')
-		"
+		:title="language('LK_NOTICE', '温馨提示')"
 		:visible.sync="dialogVisible"
 		@close="clearDialog"
-		width="878px"
+		width="500px"
 	>
-		<el-form label-position="top">
-			<el-form-item
-				:label="
-					mode == 'back'
-						? language('TUIHUILIYOUMIAOSHU', '退回理由描述')
-						: '关闭理由'
-				"
-			>
-				<iInput
-					v-model="reasonDescription"
-					:placeholder="language('QINGSHURUCHEXIAOYUANYIN', '请输入撤销原因')"
-					type="textarea"
-					:rows="6"
-					resize="none"
-				></iInput>
-			</el-form-item>
-		</el-form>
+	<span>{{this.language('QUERENSHANCHUXUANZHONGCAIGOUSHENQING','确认删除选中采购申请?')}}</span>
 		<template slot="footer">
 			<div class="comfirm-button">
 				<div class="switch">
 					<span>全部项次</span>
 					<el-switch
 						disabled
+						size="mini"
 						class="margin-left10 zoom075"
 						v-model="isAllItem"
 						active-color="#1660F1"
@@ -47,9 +30,9 @@
 				</div>
 				<div>
 					<iButton @click="handleConfirm" :loading="saveLoading">{{
-						language('BAOCUN', '保存')
+						language('LK_QUEREN', '确认')
 					}}</iButton>
-					<iButton @click="clearDialog">{{ language('QUXIAO', '取消') }}</iButton>
+					<iButton @click="clearDialog">{{ language('LK_QUXIAO', '取消') }}</iButton>
 				</div>
 			</div>
 		</template>
@@ -83,15 +66,10 @@ export default {
 	},
 	methods: {
 		clearDialog() {
-			this.reasonDescription = ''
 			this.$emit('changeVisible', false)
 		},
 		handleConfirm() {
-			this.saveLoading = true
-			this.$emit('handleBack', this.reasonDescription, this.isAllItem)
-		},
-		changeSaveLoading(loading) {
-			this.saveLoading = loading
+			this.$emit('handleBack', this.isAllItem)
 		},
 	},
 }

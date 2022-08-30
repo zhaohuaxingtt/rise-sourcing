@@ -13,6 +13,16 @@
         </iSelect>
       </el-form-item>
       <div class="comfirm-button">
+				<div class="switch">
+					<span>全部项次</span>
+					<el-switch
+            disabled
+						class="margin-left10 zoom075"
+						v-model="isAllItem"
+						active-color="#1660F1"
+						inactive-color="#cccccc"
+					></el-switch>
+				</div>
         <iButton @click="confirmFunction" :loading="handleLoading">{{ $t('LK_QUEREN') }}</iButton>
       </div>
     </el-form>
@@ -36,7 +46,8 @@ export default {
       buyer: {}, //前期采购员
       deptList: [],
       userList: [],
-      handleLoading: false
+      handleLoading: false,
+      isAllItem: true
     }
   },
   watch: {
@@ -67,6 +78,7 @@ export default {
         beforeLinie: this.buyer.nameZh,
         beforeLinieId: this.buyer.id,
         deptId: this.department.id,
+				isAllItem: this.isAllItem
       }
       this.$emit('handleTurningPoint', param);
       this.handleLoading = false;
@@ -118,6 +130,14 @@ export default {
 
 .comfirm-button {
   display: flex;
-  justify-content: flex-end;
+	justify-content: space-between;
+	align-items: center;
+	.switch{
+		display: inline-flex;
+		align-items: center;
+		.zoom075{
+			zoom:0.75
+		}
+	}
 }
 </style>

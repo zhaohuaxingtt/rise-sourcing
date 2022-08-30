@@ -38,6 +38,16 @@
 				</iSelect>
 			</el-form-item>
 			<div class="comfirm-button">
+				<div class="switch">
+					<span>全部项次</span>
+					<el-switch
+						disabled
+						class="margin-left10 zoom075"
+						v-model="isAllItem"
+						active-color="#1660F1"
+						inactive-color="#cccccc"
+					></el-switch>
+				</div>
 				<iButton @click="handleConfirm" :loading="transferLoading">{{
 					$t('LK_QUEREN')
 				}}</iButton>
@@ -84,6 +94,7 @@ export default {
 				deptName: this.department.commodity,
 				deptNum: this.department.commodity,
 				ownerId: this.buyer.linieID,
+				isAllItem: this.isAllItem
 			}
 			this.$emit('handleTransfer', data)
 		},
@@ -115,6 +126,7 @@ export default {
 			buyer: {}, //前期采购员
 			deptList: [],
 			userList: [],
+			isAllItem: true
 		}
 	},
 	watch: {
@@ -138,6 +150,14 @@ export default {
 
 .comfirm-button {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
+	align-items: center;
+	.switch{
+		display: inline-flex;
+		align-items: center;
+		.zoom075{
+			zoom:0.75
+		}
+	}
 }
 </style>
