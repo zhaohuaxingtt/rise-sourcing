@@ -147,6 +147,13 @@ export const tableTitle = [
 		tooltip: true,
 		minWidth: 180,
 		sortable: true,
+	},{
+		props: 'sapItem',
+		name: '项次',
+		key: 'MODEL-ORDER.LK_XIANGCI',
+		tooltip: true,
+		minWidth: 180,
+		sortable: true,
 	},
 	{
 		props: 'subType',
