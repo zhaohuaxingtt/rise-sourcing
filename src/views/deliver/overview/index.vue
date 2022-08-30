@@ -32,6 +32,7 @@ import projectTop from "../components/projectHeader";
 import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
+import { getOverview, getAllProPurchaser } from '@/api/project'
 export default {
   components: {
     iPage,
@@ -67,38 +68,19 @@ export default {
         { props: "BF", name: "BF", key: "" },
         { props: "Data", name: "Data", key: "" },
         {
-          props: "TM",
-          name: "Start of serie Tool-making",
+          props: "tryout",
+          name: "1st Tryout",
           key: "",
-          width:120,
-          isHeaderSetting: true,
-          HeaderSettingList: [
-            { key: "Start of serie", name: "Start of serie" },
-            { key: "Tool-making", name: "Tool-making" },
-          ],
-        },
-        { props: "T0", name: "T0", key: "" },
-        { props: "tryout", name: "1st tryout", key: "" },
-        {
-          props: "Self",
-          name: "Start of Self-testing",
-          key: "",
-          width:120,
-          isHeaderSetting: true,
-          HeaderSettingList: [
-            { key: "Start of", name: "Start of" },
-            { key: "Self-testing", name: "Self-testing" },
-          ],
         },
         { props: "OTS", name: "OTS", key: "" },
         {
           props: "EM",
           name: "EM",
           key: "",
-          chlidren: [
+          children: [
             { props: "M", name: "M", key: "" },
-            { props: "D", name: "D", key: "" },
-            { props: "C", name: "C", key: "" },
+            // { props: "D", name: "D", key: "" },
+            // { props: "C", name: "C", key: "" },
             { props: "G", name: "G", key: "" },
           ],
         },
@@ -106,7 +88,7 @@ export default {
     };
   },
   created() {
-
+    this.searchData()
   },
   methods: {
     sure(form){
@@ -115,6 +97,13 @@ export default {
     reset(){
       this.searchParams = {}
     },
+    searchData(){
+      getOverview().then(res=>{
+        if(res?.code=='200'){
+          this.tableData = res.data
+        }
+      })
+    }
   },
 };
 </script>
