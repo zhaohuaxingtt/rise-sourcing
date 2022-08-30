@@ -145,14 +145,14 @@ export const tableTitle = [
 		name: 'RiSE编号',
 		key: 'MODEL-ORDER.LK_RISEBIANHAO',
 		tooltip: true,
-		minWidth: 180,
+		minWidth: 230,
 		sortable: true,
 	},{
 		props: 'sapItem',
 		name: '项次',
 		key: 'MODEL-ORDER.LK_XIANGCI',
 		tooltip: true,
-		minWidth: 180,
+		minWidth: 80,
 		sortable: true,
 	},
 	{
