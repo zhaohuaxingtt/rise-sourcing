@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage class="deliverPlan">
     <H1>送样计划</H1>
     <search class="margin-top20" :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
     <el-row :gutter="40">
@@ -16,7 +16,11 @@
       </el-col>
       <el-col :span="12">
         <iCard :title="'送样管理进度计划维护'">
-          <tableList :tableData="tableDataRight" :tableTitle="tableTitleRight">
+          <div class="flex-box">
+            <span>车型项目:{{carProject}} 零件：{{partName}}</span>
+            <iButton>发送</iButton>
+          </div>
+          <tableList class="margin-top20" :tableData="tableDataRight" :tableTitle="tableTitleRight">
           <template #col4="scope">
               <iButton type="text">发送</iButton>
             </template>
@@ -75,6 +79,8 @@ import { searchList, tableTitleLeft, tableTitleRight } from "./data";
           }],
         tableTitleLeft,
         tableTitleRight,
+        carProject: "Kamiq GT MP22",
+        partName: '示例零件1'
       }
     },
     methods:{
@@ -85,5 +91,16 @@ import { searchList, tableTitleLeft, tableTitleRight } from "./data";
 </script>
 
 <style lang="scss" scoped>
-
+.deliverPlan{
+  ::v-deep .el-col{
+    .card{
+      height: calc(100vh - 320px);
+      .flex-box{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
 </style>
