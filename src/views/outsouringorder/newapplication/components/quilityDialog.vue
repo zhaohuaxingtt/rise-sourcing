@@ -112,8 +112,10 @@ export default {
 		// 检查输入数字
 		changeInput(row, index){
 			this.initData.forEach((item, i)=>{
-				if(item.year<row.year){
-					item.quantity = numberProcessor((+item.quantity || +row.quantity), 2)
+				if(item.year<row.year && !(+item.quantity)){
+					// item.quantity = numberProcessor((+item.quantity || +row.quantity), 2)
+					this.$set(row,'quantity',0)
+					iMessage.warn('请填写连续的年计划')
 				}
 			})
 		},

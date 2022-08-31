@@ -590,8 +590,8 @@ export default {
 
 		// 重置
 		reset() {
-			this.form = JSON.parse(JSON.stringify(form)),
-			this.sure()
+			this.form = JSON.parse(JSON.stringify(form))
+			// this.sure()
 		},
 		// 查询按钮
 		sure() {
