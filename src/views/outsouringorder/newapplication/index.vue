@@ -628,9 +628,13 @@ export default {
 			const existItemIds = itemIds.filter((e) => e) // 数据库在已存在的ID
 			if (!existItemIds.length) {
 				this.tableListData = remainingItems
+				return iMessage.success('删除成功')
 			} else {
-				deleteNormalPr(existItemIds).then(() => {
+				deleteNormalPr(existItemIds).then((res) => {
 					this.tableListData = remainingItems
+					if(res?.code=='200'){
+						return iMessage.success('删除成功')
+					}
 				})
 			}
 			// }
