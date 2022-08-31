@@ -1,18 +1,36 @@
-export function echartsSupplerEM(data){
-    var name = ['EM准时完成率','EM总数'];
-    var data1 = [12, 31, 23, 11, 12, 31, 44, 55, 90]
-    var data2 = [22, 11, 22, 18, 70, 3000, 44, 11, 78]
+export function echartsSupplerEM(data,type){
+    console.log(data);
+
+    var name = [
+        // 'EM准时完成率','EM总数'
+        ...type
+    ];
+    var data1 = [
+        // 12, 31, 23, 11, 12, 31, 44, 55, 90
+    ]//左
+    var data2 = [
+        // 22, 11, 22, 18, 70, 300, 44, 11, 78
+    ]//右
     var xAxis = [
-        '供应商1',
-        '供应商2',
-        '供应商3',
-        '供应商4',
-        '供应商5供应商5供应商5供应商5供应商5供应商5',
-        '供应商6',
-        '供应商7',
-        '供应商8',
-        '供应商9',
-      ];
+        // '供应商1',
+        // '供应商2',
+        // '供应商3',
+        // '供应商4',
+        // '供应商5供应商5供应商5供应商5供应商5供应商5',
+        // '供应商6',
+        // '供应商7',
+        // '供应商8',
+        // '供应商9',
+    ];
+
+    data.forEach(e=>{
+        data1.push(e.percentage)
+        data2.push(e.totalNum)
+        xAxis.push(e.name)
+    })
+
+
+
     var interval2 = Math.ceil(Math.max(...data2)/5)
 
     return {
@@ -106,8 +124,11 @@ export function echartsSupplerEM(data){
         series: [
             {
                 name:name[0],
-                type: 'bar',
+                type: 'line',
                 barMaxWidth:40,
+                showSymbol:true,
+                symbol:"circle",
+                symbolSize:15,
                 data: data1,
                 itemStyle:{
                     normal:{
@@ -116,10 +137,8 @@ export function echartsSupplerEM(data){
                 }
             },{
                 name:name[1],
-                type: 'line',
-                showSymbol:true,
-                symbol:"circle",
-                symbolSize:15,
+                type: 'bar',
+                barMaxWidth:40,
                 yAxisIndex: 1,
                 data: data2,
                 itemStyle:{

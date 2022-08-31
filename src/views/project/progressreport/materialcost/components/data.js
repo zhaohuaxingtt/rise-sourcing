@@ -131,3 +131,31 @@ export const ModeltableTitle = (vm) => [
         width:150,
     }
 ]
+
+export const dataPoint = [
+    {
+        props:"nomiAPrice",
+    },{
+        props:"nomiCar",
+    },{
+        props:"nomiSupplier",
+    },{
+        props:"dept",
+    },{
+        props:"fsNum",
+    },{
+        props:"partPrjType",
+    },{
+        props:"ltcRate",
+    },{
+        props:"firstAnnualPrice",
+    },{
+        props:"secondAnnualPrice",
+    },{
+        props:"thirdAnnualPrice",
+    },{
+        props:"modelBudget",
+    },{
+        props:"nomiModelCost",
+    },
+]

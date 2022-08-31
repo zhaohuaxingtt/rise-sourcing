@@ -89,7 +89,7 @@ export function getCalculationModelVSI(params) {
 
 // 材料成本维护-下载上传模板
 export function downloadFile(data) {
-  return requst({
+  return downloadRequst({
     url: '/project-progress-report/downloadFile',
     method: 'POST',
     data
@@ -122,3 +122,118 @@ export function getReportBobOverview(data) {
     data
   })
 }
+
+// 材料成本维护-供应商EM完成情况报告
+export function getSupplierEmOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierEmOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-供应商OTS完成情况报告
+export function getSupplierOtsOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierOtsOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-FG组定点完成情况报告
+export function getFGNomiOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getFGNomiOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-Commodity Em完成情况报告
+export function getCommodityEmOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityEmOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-Commodity完成情况报告
+export function getCommodityOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+// 材料成本维护-刷新定点零件号
+export function refreshNomiPartNum(data) {
+  return requst({
+    url: '/project-progress-report/refreshNomiPartNum',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-根据VSI参考零件号/定点零件号+车型项目id查询定点记录/aeko记录
+export function getPartInfoByVsiNumOrNomiPartNUM(data) {
+  return requst({
+    url: '/project-progress-report/getPartInfoByVsiNumOrNomiPartNUM',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-供应商EM完成情况明细分页查询
+export function getSupplierEmOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierEmOntimePage',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-供应商OTS完成情况分页查询
+export function getSupplierOtsOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierOtsOntimePage',
+    method: 'POST',
+    data
+  })
+} 
+// 材料成本维护-FG组定点完成情况分页查询
+export function getFGNomiOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getFGNomiOntimePage',
+    method: 'POST',
+    data
+  })
+}
+
+// 材料成本维护-Commodity Em完成情况分页查询
+export function getCommodityEmOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityEmOntimePage',
+    method: 'POST',
+    data
+  })
+}
+// 材料成本维护-Commodity完成情况分页查询
+export function getCommodityOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityOntimePage',
+    method: 'POST',
+    data
+  })
+}
+// 材料成本维护-项目管理分析导出
+export function exprotProjectAnalysisc(data) {
+  return downloadRequst({
+    url: '/project-performance-analysisc-report/exprotProjectAnalysisc',
+    method: 'POST',
+    data
+  })
+}
+
+
