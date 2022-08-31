@@ -45,7 +45,9 @@ message.prototype.success = (message) => {
 message.prototype.warn = (message) => {
     Message({
         message: message || this.message,
-        type: 'warning'
+        type: 'warning',
+        duration: 10000, // warning 错误提示显示10秒
+        showClose: true
     })
 }
 message.prototype.error = (message) => {
