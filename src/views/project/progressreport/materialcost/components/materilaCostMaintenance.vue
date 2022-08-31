@@ -17,8 +17,8 @@
                     <el-option
                     v-for="(item,index) in selectOptions2 || []"
                     :key="index"
-                    :label="item.label"
-                    :value="item.value">
+                    :label="item"
+                    :value="item">
                     </el-option>
                 </iSelect> 
             </el-form-item>
@@ -149,7 +149,7 @@
                         <iInput v-model="scope.row.vsiPartNum"></iInput>
                         <!-- <i class="el-icon-search search_btn_lj"></i> -->
                     </div>
-                    <img class="model_img" @click="pointerNum" :src="require('@/assets/images/tongbu.png')" alt="">
+                    <img class="model_img" @click="pointerNum(scope.row)" :src="require('@/assets/images/tongbu.png')" alt="">
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.vsiPartNum }}</span>
             </template>
@@ -195,7 +195,7 @@
                         <iInput v-model="scope.row.nomiPartNum"></iInput>
                         <i class="el-icon-search search_btn_lj"  @click="showPartDialog(scope.row)"></i>
                     </div>
-                    <img class="model_img" :src="require('@/assets/images/tongbu.png')" alt="">
+                    <img class="model_img" @click="pointerRefresh(scope.row)" :src="require('@/assets/images/tongbu.png')" alt="">
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.nomiPartNum }}</span>
             </template>
@@ -314,9 +314,10 @@ import {
     downloadFile,
     uploadFile,
     getvmSetList,
-
+    refreshNomiPartNum,
+    getPartInfoByVsiNumOrNomiPartNUM,
 } from '@/api/project/projectprogressreport'
-import { ModeltableTitle } from "./data";
+import { ModeltableTitle,dataPoint } from "./data";
 import refreshDialog from "./materilaCostMaintenance/refreshDialog"
 import delCarModel from "./materilaCostMaintenance/delCarModel"
 import uploadDialog from "./materilaCostMaintenance/uploadDialog"
@@ -349,7 +350,9 @@ export default {
     data(){
         return {
             uploadUrl: process.env.VUE_APP_PROJECTMGT + '/project-progress-report/uploadFile',
-            uploadData:{},
+            uploadData:{
+                id:"",
+            },
             VSIeditType:true,
             searchParams:{
                 search1:"",
@@ -401,6 +404,7 @@ export default {
             tableListDataOld:[],
             tableListData:[],
             tableTitle:[],
+            dataPoint,
             loading:false,
             
             page:{
@@ -450,8 +454,41 @@ export default {
         commitPart(val){//选择零件后同步表格数据
             console.log(val);
         },
-        pointerNum(){//VSI参考零件号
-            
+        pointerNum(val){//VSI参考零件号
+            if(val.vsiPartNum){
+                getPartInfoByVsiNumOrNomiPartNUM({
+                    cartypeProId:this.searchParams.search1,
+                    nomiPartNum:val.nomiPartNum,
+                    vsiPartNum:"",
+                }).then(res=>{
+                    console.log(res)
+                    if(res.result){
+                        this.tableTitle.forEach(e=>{
+                            val[e.props] = res.data[e.props]
+                        })
+                    }
+                })
+            }else{
+                iMessage.error($t("请输入VSI参考零件号"))
+            }
+        },
+        pointerRefresh(val){
+            if(val.nomiPartNum){
+                getPartInfoByVsiNumOrNomiPartNUM({
+                    cartypeProId:this.searchParams.search1,
+                    nomiPartNum:val.nomiPartNum,
+                    vsiPartNum:"",
+                }).then(res=>{
+                    console.log(res)
+                    if(res.result){
+                        this.dataPoint.forEach(e=>{
+                            val[e.props] = res.data[e.props]
+                        })
+                    }
+                })
+            }else{
+                iMessage.error($t("请输入或选择参考零件号"))
+            }
         },
         inputVSI(val){
             if(this.VSIData.VSIData2 && this.VSIData.VSIData3 && this.VSIData.VSIData4){
@@ -484,6 +521,8 @@ export default {
             }).then(e=>{
                 if(e.result){
                     iMessage.success(e.desZh);
+                    this.VSIeditType = true;
+                    this.getVSIData(this.searchParams.search1);
                 }else{
                     iMessage.error(e.desZh);
                 }
@@ -514,9 +553,6 @@ export default {
                             label: item.cartypeProjectZh
                         }
                     })
-                    this.uploadData = {
-                        id:this.searchParams.search1
-                    };
                     this.getCarDefault();
                 } else {
                     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -531,13 +567,24 @@ export default {
         getCarDefault(){
             getDefaultCarTypePro().then(res=>{
                 console.log(res);
-                // if(res.result){
-                //     this.searchParams.search1 = res.data;
-                // }
-                this.searchParams.search1 = "2000234171";
-                this.searchParamsOld.search1 = "2000234171";
-                this.getVSIData(this.searchParams.search1);
-                this.getTableList();
+                if(res.result){
+                    // this.searchParams.search1 = res.data;
+                    this.searchParams.search1 = "50024008";
+                    // this.searchParamsOld.search1 = res.data;
+                    this.searchParamsOld.search1 = "50024008";
+                    // this.getVSIData(this.searchParams.search1);
+
+                    this.uploadData = {
+                        id:"50024008"
+                        // id:this.searchParams.search1
+                    };
+                    this.getVSIData(this.searchParams.search1);
+                    this.getTableList();
+                }
+                // this.searchParams.search1 = "2000234171";
+                // this.searchParamsOld.search1 = "2000234171";
+                // this.getVSIData(this.searchParams.search1);
+                // this.getTableList();
             })
         },
         getVSIData(id){
@@ -563,6 +610,7 @@ export default {
             this.uploadData = {
                 id:val
             };
+            console.log(this.uploadData)
             // this.getVSIData(val);//获取VSI
             // this.getTableList();//获取顶部table表格
         },
@@ -705,7 +753,7 @@ export default {
                     nomiValue = this.searchParams.search4.split(",")
                 }
                 data = {
-                    cartypeProId:[this.searchParams.search1],
+                    cartypeProIdList:[this.searchParams.search1],
                     nomiPartNumList:nomiValue,
                     partPrjTypeList:this.searchParams.search3,
                     vsiPartName:this.searchParams.search5,
@@ -743,9 +791,8 @@ export default {
         downModel(){
             // this.uploadRequestVisible.dialogVisible = true;
             downloadFile({
-                carTypeProId:this.searchParams.search1
-            }).then(res=>{
-                console.log(res);
+                carTypeProId:"50024008"
+                // carTypeProId:this.searchParams.search1
             })
         },
         uploadSuccess (res, file) {
@@ -810,7 +857,25 @@ export default {
             this.refreshDialogVisible.dialogVisible = false;
         },
         refresh(){
-            this.refreshDialogVisible.dialogVisible = true;
+            // this.refreshDialogVisible.dialogVisible = true;
+            if(this.selectList.length<1){
+                iMessage.error(this.$t("LK_QINGXUANZEZHISHAOYITIAOSHUJU"))
+            }else{
+                const data = [];
+                this.selectList.forEach(e=>{
+                    data.push({
+                        vsiPartNum:e.vsiPartNum,
+                        nomiPartNum:e.nomiPartNum,
+                    })
+                })
+
+                refreshNomiPartNum(data).then(res=>{
+                    console.log(res)
+                    if(res.result){
+                        this.getTableList();
+                    }
+                })
+            }
         },
         clearuploadRequestVisibleFunc(){
             this.uploadRequestVisible.dialogVisible = false;

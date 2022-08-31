@@ -911,6 +911,7 @@ export default {
 				const tableTitle = cloneDeep(nomalTableTitle) //
 				tableTitle.map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
+					return item
 				})
 				return tableTitle
 			}
@@ -942,6 +943,7 @@ export default {
 				tableTitle.map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
 					item.fixed = false
+					return item
 				})
 				return tableTitle
 			}
@@ -949,6 +951,7 @@ export default {
 			return nomalTableTitleSub.filter((item)=>item.props != 'partNum').map((item) => {
 					if (item.props == 'partNum') item.props = 'oldPartNum'
 					item.fixed = false
+					return item
 				})
 		},
 		pageWidth() {

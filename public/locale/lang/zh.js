@@ -2819,6 +2819,7 @@
     CAOZUO: '操作',
     TIAOZHUANPAICHENG: '跳转排程',
     TIAOZHUANJIANKONG: '跳转监控',
+    TIAOZHUANXIANGMUJINDUBAOGAO: '跳转项目进度报告',
     CHEXINGXIANGMUZHONGWENMINGCHENG: '车型项目中文名称',
     CHEXINGXIANGMULEIXING: '车型项目类型',
     LK_DUIBUQIMEIYOUQUANXIAN2: '对不起，您没有查看权限',
@@ -6443,6 +6444,8 @@
     "EM完成数量":"EM完成数量",
 
     "请选择需要删除的数据":"请选择需要删除的数据",
+    "请输入VSI参考零件号":"请输入VSI参考零件号",
+    "请输入或选择参考零件号":"请输入或选择参考零件号",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })

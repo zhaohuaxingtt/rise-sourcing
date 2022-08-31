@@ -1,12 +1,12 @@
 <template>
     <iPage>
         <div class="flex">
-            <span>{{$t("供应商EM准时完成情况报告")}}</span>
+            <span>{{$t(list.name)}}</span>
             <div>
                 <!-- 刷新 -->
                 <iButton>{{$t("LK_SHUAXIN")}}</iButton>
-                <!-- 保存 -->
-                <iButton>{{$t("BIDDING_DAOCHU")}}</iButton>
+                <!-- 导出 -->
+                <iButton @click="upload">{{$t("BIDDING_DAOCHU")}}</iButton>
                 <!-- 返回 -->
                 <iButton @click="goBack">{{$t("LK_FANHUI")}}</iButton>
             </div>
@@ -14,7 +14,7 @@
         <iCard class="marginTop20">
             <el-form>
                 <el-form-item :label="$t('partsprocure.PARTSPROCUREMODELPROJECT')">
-                    <iSelect v-model="searchParams.search1">
+                    <iSelect v-model="cartypeProId" @change="getChange">
                         <el-option
                         v-for="(item,index) in selectOptions1 || []"
                         :key="index"
@@ -58,11 +58,31 @@
 </template>
 
 <script>
-import { iPage,iCard,iButton,iSelect,iPagination } from "rise";
+import { iPage,iCard,iButton,iSelect,iPagination,iMessage } from "rise";
 import tableList from "@/components/commonTable";
 import echarts from "@/utils/echarts";
 import { pageMixins } from '@/utils/pageMixins'
-import { echartsSupplerEM,tableTitle } from "./data";
+import { tableTitle } from "./data";
+import { echartsSupplerEM } from "../data";
+
+import {
+    getSupplierEmOntimeInfo,
+    getSupplierOtsOntimeInfo,
+    getFGNomiOntimeInfo,
+    getCommodityEmOntimeInfo,
+    getCommodityOntimeInfo,
+
+    getSupplierEmOntimePage,
+    getSupplierOtsOntimePage,
+    getFGNomiOntimePage,
+    getCommodityEmOntimePage,
+    getCommodityOntimePage,
+
+    getDefaultCarTypePro,
+    exprotProjectAnalysisc,
+} from '@/api/project/projectprogressreport'
+
+import { getCarTypePro } from '@/api/project'
 
 export default {
     mixins: [ pageMixins ],
@@ -76,17 +96,182 @@ export default {
     },
     data(){
         return{
-            searchParams:{
-                search1:""
-            },
+            cartypeProId:"",
             selectOptions1:[],
 
             tableListData:[],
             tableTitle:tableTitle,
             loading:false,
+
+            list:{},
         }
     },
+    created(){
+    },
     methods:{
+        upload(){
+            exprotProjectAnalysisc({
+                cartypeProId:this.cartypeProId,
+                reportIdList:[this.list.type]
+            }).then(res=>{
+                console.log(res)
+            })
+        },
+        getChange(val){
+            console.log(val);
+            this.cartypeProId = val;
+            this.getData(this.list.type);
+        },
+        getCarData(){
+            getCarTypePro().then(res => {
+                if (res?.result) {
+                    this.selectOptions1 = res.data.map(item => {
+                        return {
+                            ...item,
+                            value: item.id,
+                            label: item.cartypeProName
+                        }
+                    })
+
+                    this.getDefaultCarTypePro();
+                } else {
+                    iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+                }
+            })
+        },
+        getDefaultCarTypePro(){
+            getDefaultCarTypePro().then(res=>{
+                console.log(res);
+                if(res.result){
+                    // this.cartypeProId = res.data;
+                    this.cartypeProId = "50024008";
+                    this.getData(this.list.type);
+                }
+            })
+        },
+        getData(val){
+            if(val == 1){
+                getSupplierEmOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    }
+                })
+                
+                getSupplierEmOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 2){
+                getSupplierOtsOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    }
+                })
+                
+                getSupplierOtsOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 3){
+                getFGNomiOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    }
+                })
+                
+                getFGNomiOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 4){
+                getCommodityEmOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    }
+                })
+                
+                getCommodityEmOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 5){
+                getCommodityOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    }
+                })
+                
+                getCommodityOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }
+        },
         goBack(){
             this.$router.go(-1)
         },
@@ -96,13 +281,15 @@ export default {
         editTitle(){
 
         },
-        setMapEcharts(){
+        echartsOption(num,data,type){
             let myChart = echarts().init(document.getElementById("echartsBox"));
-            myChart.setOption(echartsSupplerEM());
+            myChart.setOption(echartsSupplerEM(data,type));
         },
     },
     mounted(){
-        this.setMapEcharts();
+        this.list = this.$route.query;
+        this.getCarData();
+
     },
 }
 </script>
