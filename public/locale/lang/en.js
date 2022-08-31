@@ -4037,6 +4037,7 @@
 		SOPSHIJIAN: 'SOP Time',
 		TIAOZHUANPAICHENG: 'Scheduling',
 		TIAOZHUANJIANKONG: 'monitoring',
+		TIAOZHUANXIANGMUJINDUBAOGAO: 'Report',
 		CHEXINGXIANGMUZHONGWENMINGCHENG: 'Carline Name',
 		LK_FENPEIKESHI: 'Assign Dept.',
 		SHENQINGLEIXING: 'App. Type',
@@ -6439,6 +6440,8 @@
 		"EM完成数量":"EM完成数量",
 
 		"请选择需要删除的数据":"请选择需要删除的数据",
+		"请输入VSI参考零件号":"请输入VSI参考零件号",
+		"请输入或选择参考零件号":"请输入或选择参考零件号",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

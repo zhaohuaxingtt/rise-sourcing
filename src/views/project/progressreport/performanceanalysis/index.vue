@@ -20,6 +20,7 @@
                 <iButton @click="upload">{{$t("导出")}}</iButton>
             </div>
         </div>
+
         <div class="model_wrap_box">
             <div class="model_supplierEm" v-for="(item,index) in picImg" :key="index">
                 <div class="model_title" @click="jump(item)">
@@ -34,19 +35,30 @@
                     <div :id="'echarts_'+index" class="echarts"></div>
                 </div>
             </div>
-            <div class="model_supplierEm">
+            <!-- <div class="model_supplierEm">
                 <div>
 
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
-import { iButton, } from "rise";
+import { iButton,iMessage } from "rise";
 import { echartsSupplerEM } from "./data";
 import echarts from "@/utils/echarts";
+import {
+    getSupplierEmOntimeInfo,
+    getSupplierOtsOntimeInfo,
+    getFGNomiOntimeInfo,
+    getCommodityEmOntimeInfo,
+    getCommodityOntimeInfo,
+
+    getDefaultCarTypePro,
+
+    exprotProjectAnalysisc,
+} from '@/api/project/projectprogressreport'
 
 export default {
     components:{
@@ -55,35 +67,58 @@ export default {
     data(){
         return{
             checked: false,
-            picImg:[]
+            picImg:[],
+            cartypeProId:'',
         }
     },
     created(){
         this.picImg = [
             {
-                select:true,
+                select:false,
                 name:this.$t("供应商EM准时完成情况报告"),
+                id:1,
             },{
                 select:false,
                 name:this.$t("供应商OTS准时完成情况报告"),
+                id:2,
             },{
                 select:false,
                 name:this.$t("FG组定点准时完成情况报告"),
+                id:3,
             },{
                 select:false,
                 name:this.$t("不同Commodity EM完成情况报告"),
+                id:4,
             },{
                 select:false,
                 name:this.$t("不同Commodity项目完成情况报告"),
+                id:5,
             }
-        ]
+        ];
+        
     },
     methods:{
+        getDefaultCarTypePro(){
+            getDefaultCarTypePro().then(res=>{
+                console.log(res);
+                if(res.result){
+                    // this.cartypeProId = res.data;
+                    this.cartypeProId = "50024008";
+
+                    this.getSupplierEmOntimeInfo();
+                    this.getSupplierOtsOntimeInfo();
+                    this.getFGNomiOntimeInfo();
+                    this.getCommodityEmOntimeInfo();
+                    this.getCommodityOntimeInfo();
+                }
+            })
+        },
         jump(val){
             this.$router.push({
                 path:"/projectmgt/performanceanalysis/reportDetails",
                 query:{
-
+                    type:val.id,
+                    name:val.name
                 }
             })
         },
@@ -100,18 +135,84 @@ export default {
             
         },
         upload(){
-
+            if(this.picImg.some(e=>e.select)){
+                const datalist = [];
+                this.picImg.forEach(e=>{
+                    if(e.select){
+                       datalist.push(e.id) 
+                    }
+                })
+                exprotProjectAnalysisc({
+                    cartypeProId:this.cartypeProId,
+                    reportIdList:datalist
+                }).then(res=>{
+                    console.log(res)
+                })
+            }else{
+                iMessage.error("请勾选需导出的报表");
+            }
         },
-        echartsOption(){
-            this.picImg.forEach((e,index)=>{
-                let nameId = "echarts_"+index;
-                let myChart = echarts().init(document.getElementById(nameId));
-                myChart.setOption(echartsSupplerEM());
+        getSupplierEmOntimeInfo(){//1
+            getSupplierEmOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                }
             })
+        },
+        getSupplierOtsOntimeInfo(){//2
+            getSupplierOtsOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(1,res?.data,["OTS准时完成率","OTS总数"]);
+                }
+            })
+        },
+        getFGNomiOntimeInfo(){//3
+            getFGNomiOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(2,res?.data,["定点准时完成率","定点总数"]);
+                }
+            })
+        },
+        getCommodityEmOntimeInfo(){//4
+            getCommodityEmOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(3,res?.data,["EM准时完成率","EM总数"]);
+                }
+            })
+        },
+        getCommodityOntimeInfo(){//5
+            getCommodityOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(4,res?.data,["EM准时完成率","OTS准时完成率","定点总数"]);
+                }
+            })
+        },
+        echartsOption(num,data,type){
+            // this.picImg.forEach((e,index)=>{
+                let nameId = "echarts_"+num;
+                let myChart = echarts().init(document.getElementById(nameId));
+                myChart.setOption(echartsSupplerEM(data,type));
+            // })
         },
     },
     mounted(){
-        this.echartsOption();
+        this.getDefaultCarTypePro();
+        // this.echartsOption();
     },
 }
 </script>

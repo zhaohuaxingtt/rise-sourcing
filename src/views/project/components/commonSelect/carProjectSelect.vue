@@ -72,7 +72,10 @@ export default {
         console.log(res);
         if(res.result){
           // this.options.find(item => item.value === val).label
-          this.$emit("defaultCarModel",res.data)
+          this.$emit("defaultCarModel",{
+            data:res.data,
+            list:this.options
+          })
         }
       })
     },

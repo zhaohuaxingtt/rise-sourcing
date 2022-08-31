@@ -79,13 +79,28 @@ export default {
   },
   methods:{
     defaultCarModel(data){
-      this.carProjectId = '2000234171';
-      this.$refs.carSelect.data = "2000234171";
-      this.cartypeId = '50015000';
-
+      if(this.$route.query.carProject){
+        this.carProjectId = this.$route.query.carProject;
+        this.$refs.carSelect.data = this.$route.query.carProject;
+        this.cartypeId = data.list.find(item => item.value === this.$route.query.carProject).cartypeId;
+        this.getFindCartypePro(this.$route.query.carProject);
+        console.log(this.carProjectId)
+        console.log(this.cartypeId)
+      }else{
+        // this.carProjectId = data.data;
+        this.carProjectId = "50024008";
+        // this.$refs.carSelect.data = data.data;
+        this.$refs.carSelect.data = "50024008";
+        this.cartypeId = '11';
+        // this.cartypeId = data.list.find(item => item.value === data.data).cartypeId;
+        this.getFindCartypePro(this.carProjectId);
+        console.log(this.carProjectId)
+        console.log(this.cartypeId)
+      }
       this.carHasShow = true;
     },
     handleCarProjectChange(val, valLabel,cartypeId) {
+      console.log(val,valLabel,cartypeId);
       this.getFindCartypePro(val);
 
       this.$emit('handleCarProjectChange', val, valLabel)
@@ -96,7 +111,7 @@ export default {
         this.$refs.detailChart.changeRefresh(cartypeId);
       }
     },
-    getFindCartypePro(val){
+    getFindCartypePro(val){//获取tooling cost数据
       findCartypePro({
         cartypeProId:[val],
         localFactoryName: "",
