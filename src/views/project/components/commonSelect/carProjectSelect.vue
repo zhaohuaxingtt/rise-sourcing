@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iSelect :filterable="filterable" v-model="data" :placeholder="language('QINGXUANZE', '请选择')" @change="change" :disabled="disabled">
+  <iSelect :filterable="filterable" :multiple="multiple" v-model="data" :placeholder="language('QINGXUANZE', '请选择')" @change="change" :disabled="disabled">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -21,11 +21,13 @@
 <script>
 import { iMessage, iSelect } from 'rise'
 import { getCarTypePro, getSelectCarType } from '@/api/project'
+import { getDefaultCarTypePro } from '@/api/project/projectprogressreport'
 export default {
   components: { iSelect },
   props: {
     value: {type:String},
     filterable: {type:Boolean,default:false},
+    multiple: {type:Boolean,default:false},
     optionType: {type:String,default:'1'},
     disabled: {type:Boolean,default:false},
     valueType: {type:String,default:'1'},
@@ -65,8 +67,20 @@ export default {
     this.optionType === '2' && this.getCarProjectUserOptions()
   },
   methods: {
+    defaultCar(){
+      getDefaultCarTypePro().then(res=>{
+        console.log(res);
+        if(res.result){
+          // this.options.find(item => item.value === val).label
+          this.$emit("defaultCarModel",{
+            data:res.data,
+            list:this.options
+          })
+        }
+      })
+    },
     change(val) {
-      this.$emit('change', val, this.options.find(item => item.value === val).label)
+      this.$emit('change', val, this.options.find(item => item.value === val).label,this.options.find(item => item.value === val).cartypeId)
     },
     getCarProjectOptions() {
       getCarTypePro().then(res => {
@@ -79,6 +93,9 @@ export default {
               label: item.cartypeProName
             }
           })
+
+          this.defaultCar();
+          console.log(this.options);
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -96,6 +113,7 @@ export default {
               label: item.cartypeProjectZh
             }
           })
+          this.defaultCar();
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
