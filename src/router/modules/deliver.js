@@ -71,6 +71,16 @@ export default [
         },
         component: () => import("@/views/deliver/activity"),
       },
+      {
+        path: "deliverPlan",
+        name: "deliverPlan",
+        meta: {
+          title: "送样管理-deliverPlan",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/deliverPlan"),
+      },
+      
       
     ]
   }
