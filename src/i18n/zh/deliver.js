@@ -1,0 +1,7 @@
+export default {
+  'LINGJIANBIANHAO/LINGJIANMINGCHENG': '零件编号/零件名称',
+  'CHEXINGXIANGMUZHUANGTAI': '车型项目状态',
+  'YANCHIJIBIE': '延迟级别',
+  'YANCHIYUANYIN': '延迟原因',
+  'WANCHENGZHUANGKUANG': '完成状况',
+}
