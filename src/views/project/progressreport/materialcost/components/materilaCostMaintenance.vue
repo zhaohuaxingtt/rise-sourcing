@@ -48,8 +48,9 @@
 
     <iCard title="Calculation Model VSI" class="margin-top20">
         <template v-slot:header-control>
-            <iButton @click="editVSI">{{ language("BIANJI", "编辑") }}</iButton>
-            <iButton @click="saveVSI">{{language("BAOCUN", "保存")}}</iButton>
+            <iButton @click="cancelVSI" v-if="!VSIeditType">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
+            <iButton @click="editVSI"  v-if="VSIeditType">{{ language("BIANJI", "编辑") }}</iButton>
+            <iButton @click="saveVSI" v-if="!VSIeditType">{{language("BAOCUN", "保存")}}</iButton>
         </template>
         <iFormGroup row="3" v-loading="loading"
                     >
@@ -81,9 +82,9 @@
         <template v-slot:header-control>
             <iButton v-if="!editType" @click="exportExcel">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
             <iButton v-if="!editType" @click="downModel">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
-            <!-- <iButton v-if="!editType" @click="batchUpload">{{$t("批量上传")}}</iButton> -->
             <!-- 批量上传 -->
-            <el-upload class="upload-demo" v-if="!editType"
+            <iButton v-if="!editType" @click="batchUpload" style="display: inline-block; margin-right: 10px">{{$t("批量上传")}}</iButton>
+            <el-upload class="upload-demo" v-show="false"
                         style="display: inline-block; margin-right: 10px"
                         multiple
                         :action="uploadUrl"
@@ -94,13 +95,7 @@
                         :before-upload="beforeUpload"
                         :on-exceed="handleExceed"
                         >
-                <el-tooltip :content="
-                    language('WENJIANDAXIAOBUCHAOGUO20MB', '文件大小不超过20MB')
-                    "
-                            placement="top"
-                            effect="light">
-                    <iButton>{{ $t("批量上传") }}</iButton>
-                </el-tooltip>
+                <iButton ref="clickBtn" @click="batchload">{{ $t("批量上传") }}</iButton>
             </el-upload>
             <iButton v-if="!editType" @click="refresh">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
             <iButton v-if="!editType" @click="add">{{$t("XINZENG")}}</iButton><!-- 新增 -->
@@ -108,7 +103,7 @@
             <iButton v-if="!editType" @click="editBtn">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
             <iButton v-if="editType" @click="cancel">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
             <iButton v-if="editType" @click="save">{{$t("SAVE")}}</iButton><!-- 保存 -->
-            <iButton v-if="!editType" @click="editTitle">{{$t("编辑表头")}}</iButton><!-- 编辑表头 -->
+            <!-- <iButton v-if="!editType" @click="editTitle">{{$t("编辑表头")}}</iButton> -->
         </template>
         
         <tableList 
@@ -292,7 +287,7 @@
     <partDialog v-if="partDialogVisible.dialogVisible" :partDialogVisible="partDialogVisible" @cancalCommit="cancalCommit" @commit="commitPart"></partDialog>
     
     <!-- 格式校验错误 -->
-    <rulesError v-if="rulesErrorVisible.dialogVisible" :rulesErrorVisible="rulesErrorVisible" @close="rulesClose"></rulesError>
+    <rulesError :errorList="errorList" v-if="rulesErrorVisible.dialogVisible" :rulesErrorVisible="rulesErrorVisible" @close="rulesClose"></rulesError>
 
 </div>
 </template>
@@ -316,6 +311,7 @@ import {
     getvmSetList,
     refreshNomiPartNum,
     getPartInfoByVsiNumOrNomiPartNUM,
+    exportProjectProgressReport,
 } from '@/api/project/projectprogressreport'
 import { ModeltableTitle,dataPoint } from "./data";
 import refreshDialog from "./materilaCostMaintenance/refreshDialog"
@@ -443,6 +439,8 @@ export default {
             deptList:[],//科室
             CalculationModelVSIId:"",
             editInforType:1,
+
+            errorList:[],//校验失败
         }
     },
     created(){
@@ -451,6 +449,18 @@ export default {
         this.tableTitle = ModeltableTitle(this)
     },
     methods:{
+        exportExcel(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
+            exportProjectProgressReport({
+                carTypeProId:this.searchParams.search1,
+                list:[
+                    ...this.selectList
+                ]
+            })
+        },
         commitPart(val){//选择零件后同步表格数据
             console.log(val);
         },
@@ -496,19 +506,24 @@ export default {
             }
         },
         editVSI(){
-            // console.log(this.searchParams.search1)
-            // if(this.searchParams.search1.length>0 && this.searchParams.search1.length<2){
-            //     this.VSIeditType = false;
-            // }else if(this.searchParams.search1.length>=2){
-            //     iMessage.warn("编辑Calculation Model VSI时仅可选择一个车型项目")
-            // }else{
-            //     iMessage.warn("请选择车型项目")
-            // }
             if(this.searchParams.search1){
                 this.VSIeditType = false;
             }else{
                 iMessage.warn("请选择车型项目")
             }
+        },
+        cancelVSI(){
+            iMessageBox(
+                this.language('SHIFOUQUXIAOBIANJI', '是否取消编辑？'),
+                this.language('LK_WENXINTISHI', '温馨提示'),
+                {
+                    confirmButtonText: this.language('QUEREN', '确认'),
+                    cancelButtonText: this.language('QUXIAO', '取消')
+                }
+            ).then((res) => {
+                this.VSIeditType = true;
+                this.getVSIData(this.searchParams.search1);
+            }).catch((res) => {})
         },
         saveVSI(){
             modifyCalculationModelVSI({
@@ -622,6 +637,10 @@ export default {
             this.partDialogVisible.dataList = val;
         },
         save(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             var that = this;
             if(this.editInforType == 1){//新增
                 this.$refs.contractForm.$refs.commonTableForm.validate((valid)=>{
@@ -669,6 +688,10 @@ export default {
             }
         },
         add(otherObj = {}){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             this.editType = true;
             const time = new Date().getTime()
             const newItemList = this.tableTitle.map((item) => {
@@ -699,6 +722,10 @@ export default {
             this.editInforType = 1;
         },
         cancel(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             //取消
             iMessageBox(
                 this.language('SHIFOUQUXIAOBIANJI', '是否取消编辑？'),
@@ -721,6 +748,10 @@ export default {
             .catch((res) => {})
         },
         editBtn(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             if (this.selectList.length > 0) {
                 this.editType = true
                 var changeArrayList = []
@@ -790,25 +821,29 @@ export default {
         },
         downModel(){
             // this.uploadRequestVisible.dialogVisible = true;
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             downloadFile({
                 carTypeProId:"50024008"
                 // carTypeProId:this.searchParams.search1
             })
         },
         uploadSuccess (res, file) {
-            if (res.code == 200 && res.result) {
-                this.getTableList()
-            } else {
-                if (res.data == null) {
-                iMessage.error(res.desZh)
-                } else {
-                this.errorList = res.data
-                this.cancelNo = true
-                }
-            }
+            // if (res.code == 200 && res.result) {
+            //     this.getTableList()
+            // } else {
+                // if (res.data == null) {
+                //     iMessage.error(res.desZh)
+                // } else {
+                    this.errorList = res.data
+                    this.rulesErrorVisible.dialogVisible = true;
+                // }
+            // }
         },
         uploadProgress(){
-
+            
         },
         beforeUpload (file) {
             const isLt2M = file.size / 1024 / 1024 < 20
@@ -824,9 +859,11 @@ export default {
             )
         },
         batchUpload(){
-            uploadFile().then(res=>{
-
-            })
+            if(this.VSIData.VSIData1){
+                this.$refs.clickBtn.$el.click()
+            }else{
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+            }
         },
         clearDelFunc(){
             this.delDialogVisible.dialogVisible = false;
@@ -847,6 +884,10 @@ export default {
             })
         },
         delModelCar(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             if(this.selectList.length>0){
                 this.delDialogVisible.dialogVisible = true;
             }else{
@@ -857,6 +898,10 @@ export default {
             this.refreshDialogVisible.dialogVisible = false;
         },
         refresh(){
+            if(!this.VSIData.VSIData1){
+                iMessage.error(this.$t("请先编辑保存VSI数据"))
+                return false;
+            }
             // this.refreshDialogVisible.dialogVisible = true;
             if(this.selectList.length<1){
                 iMessage.error(this.$t("LK_QINGXUANZEZHISHAOYITIAOSHUJU"))
