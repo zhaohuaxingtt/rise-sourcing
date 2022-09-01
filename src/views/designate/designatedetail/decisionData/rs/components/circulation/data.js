@@ -21,7 +21,7 @@ export const nomalDetailTitle = [
   {props: 'buyer', name: '采购员', enName: 'Buyer'},
   {props: 'sop', name: '投产时间', enName: 'SOP'},
   {props: 'epen', name: '工程师', enName: 'EP/EN'},
-  {props: 'carLine', name: '车型', enName: 'Carline'},
+  {props: 'carTypeName', name: '车型', enName: 'Car Type Name'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'}
 ]
 
@@ -53,7 +53,7 @@ export const infos = [
 
 // 生产
 export const nomalTableTitle = [
-  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 90, fixed: true },
+  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 95, fixed: true },
   { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
   { props: 'partNum', name: '原零件号', key: '', minWidth: 95 }, // 12/24 业务说取partNum
   { props: 'oldAPrice', name: '原A价', key: '', minWidth: 100 },
@@ -150,11 +150,11 @@ export const nomalTableTitleSub = [
 
 // 附件列表
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', key: "", minWidth: 90, fixed: true },
+  {props:'fsnrGsnrNum',name:'SP号', key: "", minWidth: 95, fixed: true },
   // {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
   {props:'partNum',name:'附件零件号', key: "", minWidth: 120, fixed: true },
   {props:'partName',name:'附件零件名称', key: "", minWidth: 110},
-  {props:'carLine',name:'车型', key: "", minWidth: 85},
+  {props:'carTypeName',name:'车型', key: "", minWidth: 85},
   {props:'svwCode',name:'厂商号', key: "", minWidth: 70},
   {props:'supplierName',name:'供应商名称',  key: "", minWidth: 110},
   {props:'prodLocation',name:'产地',  key: "", minWidth: 70},
@@ -196,11 +196,11 @@ export const accessoryTableTitle = [
 
 // 配件列表
 export const sparePartTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP编号', key: "", minWidth: 90, fixed: true },
+  {props:'fsnrGsnrNum',name:'SP编号', key: "", minWidth: 95, fixed: true },
   {props:'assemblyPartNum',name:'批量零件号', key: "", minWidth: 120, fixed: true},
   {props:'partNum',name:'配件零件号', key: "", minWidth: 120, fixed: true},
   {props:'partName',name:'配件零件名称', key: "", minWidth: 110},
-  {props:'carLine',name:'车型', key: "", minWidth: 85},
+  {props:'carTypeName',name:'车型', key: "", minWidth: 85},
   {props:'svwCode',name:'厂商号', key: "", minWidth: 70},
   {props:'supplierName',name:'供应商名称',  key: "", minWidth: 110},
   {props:'prodLocation',name:'产地',  key: "", minWidth: 70},
@@ -239,12 +239,12 @@ export const sparePartTableTitle = [
 // ]
 
 export const gsTableTitle = [
-  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 90, fixed: true },
+  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 100, fixed: true },
   { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
   { props: 'status', name: '供货状态', key: '', minWidth: 90 },
   { props: 'partName', name: '零件名称', key: '', minWidth: 110 },
   { props: 'unit', name: '零件单位', key: '', minWidth: 82 },
-  { props: 'carLine', name: '车型', key: '', minWidth: 70 },
+  { props: 'carTypeName', name: '车型', key: '', minWidth: 70 },
   { props: 'svwCode', name: '厂商号', key: '', minWidth: 70 },
   { props: 'supplierName', name: '供应商名称', key: '', minWidth: 110 },
   { props: 'prodLocation', name: '产地', key: '', minWidth: 70 },
@@ -260,7 +260,7 @@ export const gsTableTitle = [
   { props: 'share', name: '份额(%)', key: '', minWidth: 70 },
   { props: 'ltc', name:'年降', key: '', minWidth: 100 },
   { props: 'beginYearReduce', name: '年降开始时间', key: '', minWidth: 120 },
-  { props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 115 },
+  { props: 'savingFee', name: '节约值', key: '', minWidth: 115 },
   { props: 'turnover', name: '采购金额', key: '', minWidth: 115 },
   { props: 'remarks', name: '备注', key: '', minWidth: 200 },
 ]

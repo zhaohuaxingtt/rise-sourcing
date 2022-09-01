@@ -19,6 +19,7 @@
                   </el-option>  
                 </iSelect> 
                 <iDatePicker clearable class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.props]" :title="language(item.labelKey,item.label)" />
                 <iInput clearable :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
@@ -100,7 +101,7 @@
     </iCard>
 
     <!-- 转派弹窗 -->
-    <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
+    <turnSendDialog :dialogVisible="turnSendVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
     <!-- 关闭定点信弹窗 -->
     <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
   </div>
@@ -116,7 +117,8 @@ import {
     iButton,
     iMessage,
     iCard,
-    icon
+    icon,
+    iMultiLineInput
 } from 'rise';
 import {
     letterListSearch,
@@ -156,6 +158,7 @@ export default {
         closeLetterDialog,
         iCard,
         icon,
+        iMultiLineInput,
         buttonTableSetting
     },
     data(){
@@ -212,6 +215,11 @@ export default {
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];
             }
+            if(searchParams.status){
+                data.status = searchParams.status.split(',')
+            }else{
+                data.status = []
+            }
             await getLetterList({
                 ...searchParams,
                 ...data,
@@ -220,7 +228,6 @@ export default {
                 res.data.records.forEach(val=> {
                     val.nominateDate = this.getYearMonth(val.nominateDate) === 'undefined' ? '' : this.getYearMonth(val.nominateDate)
                 })
-                console.log('res.data',res.data);
                 const {code,data={}} = res;
                 if(code==200){
                    const {records=[],total} = data;

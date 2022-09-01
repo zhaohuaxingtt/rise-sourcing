@@ -46,7 +46,7 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'partNum', label: '附件零件号', type: 'input', key: 'FUJIANLINGJIANHAO',permission: 'ACCESSORY_MANAGEMENT_PARTNUM|附件-附件管理-附件零件号'},
+  {value: 'partNum', label: '附件零件号', type: 'multiLineInput', key: 'FUJIANLINGJIANHAO',permission: 'ACCESSORY_MANAGEMENT_PARTNUM|附件-附件管理-附件零件号'},
   {value: 'partNameCh', label: '附件零件名称', type: 'input', key: 'FUJIANLINGJIANMINGCHENG',permission: 'ACCESSORY_MANAGEMENT_PARTNAME|附件-附件管理-附件零件名称'},
   {value: 'carType', label: '使用车型', type: 'input', key: 'SHIYONGCHEXING',permission: 'ACCESSORY_MANAGEMENT_CARTYPE|附件-附件管理-使用车型'},
   {value: 'timeToMarket', label: '附件上市时间', type: 'date', key: 'FUJIANSHANGSHISHIJIAN',permission: 'ACCESSORY_MANAGEMENT_TIMETOMARKET|附件-附件管理-附件上市时间'},

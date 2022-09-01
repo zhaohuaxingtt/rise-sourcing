@@ -269,7 +269,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .projectoverview {
   &-home {

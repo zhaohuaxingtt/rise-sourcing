@@ -8,7 +8,7 @@
  */
 export const search=[
   {props: 'materialGroup', name: '材料组', type: 'input', key: 'LK_CAILIAOZU'},
-  {props: 'partsNo', name: '零件号', type: 'input', key: 'TPZS.LJH'},
+  {props: 'partsNo', name: '零件号', type: 'multiLineInput', key: 'TPZS.LJH'},
   {props: 'rfqNo', name: 'RFQ号/名称', type: 'input', key: 'TPZS.RFQHMC'},
   {props: 'createByName', name: '创建人', type: 'input', key: 'TPZS.CJR'},
  ]

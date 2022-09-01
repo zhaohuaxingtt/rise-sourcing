@@ -7,8 +7,8 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
-  <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18 ? (headerWidth?headerWidth[index]*2*4+"px":""): fixWidth(index)'>
+  <el-table class="table" :class="isRoutePreview?'isRoutePreview':''" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18 ? (headerWidth?(headerWidth[index]-3)*2*4+"px":""): fixWidth(index)'>
       <template slot-scope="scope">
         <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
         <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
@@ -50,6 +50,9 @@ export default{
     }
   },
   computed:{
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
     tabelData(){
       try {
         return this.parentsData.data
@@ -81,7 +84,7 @@ export default{
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
-          rfqId:this.$route.query.id,
+          rfqId:this.$route.query.id||items.rfqId,
           round:itemss.round,
           supplierId:itemss.supplierId,
           fsNum:itemss.partPrjCode,
@@ -146,6 +149,18 @@ export default{
           div{
             text-align: center;
           }
+        }
+    }
+  }
+  .isRoutePreview{
+    ::v-deep .el-table__row{
+      height: unset !important;
+    }
+    ::v-deep td{
+        padding: 1px 0;
+        .cell{
+          padding: 0px 1px;
+          line-height: 1.2;
         }
     }
   }

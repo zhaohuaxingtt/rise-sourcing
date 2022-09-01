@@ -26,6 +26,7 @@
             </el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
+          <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.i18n_label, item.label)" />
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -38,9 +39,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="handleApprove" >{{language('PIZHUN','批准')}}</iButton>
+          <iButton @click="handleApprove" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_APPROVAL|财务目标价管理-目标价审批-批准">{{language('PIZHUN','批准')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_EXPORT|财务目标价管理-目标价审批-导出">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, iMultiLineInput } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -98,7 +99,7 @@ import modificationRecordDialog from '@/views/financialTargetPrice/maintenance/c
 import approvalRecordDialog from '@/views/financialTargetPrice/maintenance/components/approvalRecord'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog,approvalRecordDialog,modificationRecordDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog,approvalRecordDialog,modificationRecordDialog, iMultiLineInput},
   data() {
     return {
       tableTitle: tableTitle,

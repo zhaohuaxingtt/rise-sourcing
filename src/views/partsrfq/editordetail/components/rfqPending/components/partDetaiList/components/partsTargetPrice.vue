@@ -25,10 +25,10 @@
       <div class="button-box">
         <template v-if="!todo">
           <iButton  v-if="isPosition" v-permission.auto="PARTSRFQ_PARTDETAILLIST_LINGJIANMUBIAOJIA_CHAKANXIUGAIJILU|零件目标价-查看修改记录"  @click="showDialog">{{ language('CHAKAN','查看') + language('XIUGAIJILU','修改记录') }}</iButton>
-          <iButton @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
+          <iButton v-permission.auto="PARTSRFQ_PARTDETAILLIST_LINGJIANMUBIAOJIA_DAOCHU|零件目标价-导出" @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>
-          <iButton v-if="!disabled" @click="openDialog">{{
+          <iButton v-if="!disabled" @click="openDialog" v-permission.auto="PARTSRFQ_PARTDETAILLIST_APPLYLINGJIANMUBIAOJIA|申请零件目标价">{{
             language("LK_SHENQINGMUBIAOJIA", "申请目标价")
           }}</iButton>
         </template>

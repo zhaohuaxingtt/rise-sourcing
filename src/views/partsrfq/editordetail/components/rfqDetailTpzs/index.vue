@@ -21,7 +21,7 @@
         </div>
         <!--------------------报价评分跟踪----------------------------------------->
         <iCard id="card1"
-               :title="'报价与评分跟踪'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="'报价与评分跟踪'"
                @handleTitle="addFile($event,1,'报价与评分跟踪')"
                @handleCollapse="handleCollapse($event,'1')"
                collapse
@@ -31,7 +31,7 @@
         <!--------------------报价分析汇总-零件----------------------------------------->
         <iCard id="card2"
                @handleTitle="addFile($event,2,'报价分析汇总-零件')"
-               :title="'报价分析汇总-零件'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="'报价分析汇总-零件'"
                @handleCollapse="handleCollapse($event,'2')"
                collapse
                class="margin-top20"
@@ -49,7 +49,7 @@
                             </quotationScoringMj>
                             
         <iCard @handleTitle="addFile($event,3,'报价分析汇总-模具',1)"
-               :title="'报价分析汇总-模具'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="'报价分析汇总-模具'"
                v-else
                class="margin-top20"
                @handleCollapse='handleCollapse($event,"3")'
@@ -61,7 +61,7 @@
         <quotationScoringEcartsCard :rfqInfoData="rfqInfoData" id="card4" ref='quotationScoringEcartsCard'
                                     v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
         <iCard  @handleTitle="addFile($event,4,'报价趋势',1)"
-               :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="language('LK_BAOJIAQS','报价趋势')"
                v-else
                class="margin-top20"
                @handleCollapse="handleCollapse($event,'4')"
@@ -81,7 +81,7 @@
                    v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
         <iCard @handleTitle="addFile($event,5,'业务分配模拟')"
                id="card5"
-               :title="'业务分配模拟'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+               :title="'业务分配模拟'"
                v-else
                class="margin-top20 buMonitor"
                @handleCollapse="handleCollapse($event,'5')"
@@ -93,13 +93,15 @@
     <el-tab-pane 
                  name="two"
                  label="专项分析工具"
-                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
+                 v-if="hasPermission('RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU')"
+                 v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU">
       <gather />
     </el-tab-pane>
     <el-tab-pane lazy
                  name="three"
                  label="谈判基本信息"
-                 v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI|谈判基本信息">
+                 v-if="hasPermission('RFQ_DETAIL_TIPS_TANPANJIBENXINXI')"
+                 v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI">
       <negotiateBasicInfor :rfqInfoData="rfqInfoData"></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
@@ -115,6 +117,7 @@ import { icardData } from './components/data'
 import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 import {  downloadPdfMixins } from '@/utils/pdf'
+import { hasPermission } from "@/utils";
 import { udMutilfiles, reportAdd } from '@/api/partsrfq/reportList/index'
 export default {
   mixins: [downloadPdfMixins],
@@ -145,7 +148,7 @@ export default {
     }
   },
   methods: {
-      
+    hasPermission,
     handleTabClick (target) {
       this.activityTabIndex = target.name
     },

@@ -45,6 +45,7 @@
         </template>
         <template v-else>
           <iButton
+            v-permission.auto=" PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SHENGQINGMUBIAOJIA|模具预算申请目标价"
             @click="moldBudgetApplicationVisible = true"
             >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
           >

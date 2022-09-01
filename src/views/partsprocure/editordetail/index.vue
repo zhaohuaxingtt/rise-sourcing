@@ -61,7 +61,6 @@
 						module_obj_ae: '零件采购项目', 
 						bizId_obj_ae: 'projectId', 
 						queryParams:['bizId_obj_ae']}"
-					credentials
 					isPage
 					isUser
 					class="margin-left20"
@@ -169,7 +168,7 @@
 							</iSelect> -->
 							<iSelect
 								ref="partProjectTypeSelect"
-								v-if="!disabled"
+								v-if="!disabled && canChange"
 								v-model="detailData.partProjectType"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
@@ -487,6 +486,11 @@
 				return this.fromGroup.PART_PROJECT_TYPE || []
 				// return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
 			},
+			
+			// canChange: false,	// 是否可以修改零件项目类型
+			canChange(){
+				return ['NO_NR','NOT_IN_RFQ'].includes(this.detailData.status)
+			},
 
    /**
     * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择
@@ -663,7 +667,7 @@
 				previousPartProjectType: "",
 				defaultPartProjectTypeProcureFactoryCache: "", // 批量件类型的采购工厂缓存
 				pFPartProjectTypeProcureFactoryCache: "", // 配附件类型的采购工厂缓存
-				partProjectSourceScenarioCode: ""
+				partProjectSourceScenarioCode: "",
 			};
 		},
 		created() {

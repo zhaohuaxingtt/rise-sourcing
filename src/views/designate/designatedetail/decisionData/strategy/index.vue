@@ -11,9 +11,9 @@
   <iCard :title="language('OVERVIEWS','Overviews')">
     <div class="control">
       <div class="flex-align-center">
-        <span class="label">材料组</span>
+        <span class="">{{$t('CHAILIAOZU')}}</span>
         <iSelect v-model="categoryCode" @change="randomNumber++"> 
-          <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+items.categoryName"></el-option> 
+          <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+ ($i18n.locale === 'zh' ? items.categoryName :  items.categoryNameDe)"></el-option> 
         </iSelect>
         <iButton v-if="categoryCode && !isRoutePreview && !isApproval" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
@@ -23,7 +23,7 @@
   </iCard>
   <higthligthts :key='randomNumber' v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
   <iCard :title='language("KEYINITIATIVE","Key Initiatives")' class="mineCards" collapse :defalutCollVal="false">
-    <iButton v-if="!isPreview && !nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>前往编辑</iButton>
+    <iButton v-if="!isPreview && !nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>{{language('QIANWANGBIANJI','前往编辑')}}</iButton>
     <listOfinit :key='randomNumber' ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
   <fileManageDialog :visible.sync="fileDialogVisible" :nominateAppId="nominateAppId" :categoryCode="categoryCode" :isPreview="isPreview" @afterClose="getStrategy" />
@@ -92,7 +92,7 @@ export default{
       try {
         if (!this.categoryCode && !this.categoryName) {
           this.categoryCode = this.catCodeList[0].categoryCode
-          this.categoryName = this.catCodeList[0].categoryName
+          this.categoryName = this.$i18n.locale === 'zh' ? this.catCodeList[0].categoryName :  this.catCodeList[0].categoryNameDe
         }
       } catch (error) {
         this.categoryCode = ''

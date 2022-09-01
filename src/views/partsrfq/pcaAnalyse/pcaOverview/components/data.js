@@ -26,7 +26,7 @@ export const tableSearch = [
     nameLanguage: 'LK_LINGJIANHAO',
     placeholder: '请输入',
     placeholderLanguage: 'LK_QINGSHURU',
-    type: 'input',
+    type: 'multiLineInput',
   },
   {
     props: 'rfq',
@@ -59,7 +59,7 @@ export const externalTableSearch = [
     nameLanguage: 'LK_LINGJIANHAO',
     placeholder: '请输入',
     placeholderLanguage: 'LK_QINGSHURU',
-    type: 'input',
+    type: 'multiLineInput',
   },
   {
     props: 'rfq',

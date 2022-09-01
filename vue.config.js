@@ -211,9 +211,27 @@ module.exports = {
 					['^' + process.env.VUE_APP_DIC_API]: '',
 				},
 			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
 			[process.env.VUE_APP_SOURCING]: {
-				target: `${BASE_IP}/sourcing/web`,
+				target: `${BASE_IP}/sourcing/webweb`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',
@@ -322,7 +340,7 @@ module.exports = {
 
 			[process.env.VUE_APP_USER_CENTER]: {
 				// target: `http://10.122.17.38:8015/usercenter/`,
-				target: `${BASE_IP}/usercenter/web`,
+				target: `${BASE_IP}/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_USER_CENTER]: '',

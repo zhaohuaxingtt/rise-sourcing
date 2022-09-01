@@ -266,7 +266,7 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
             <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
@@ -812,8 +812,10 @@ export default {
     // 表态重置
     async handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
-
-      if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+      let list = ['TOBE_STATED','QUOTING','QUOTED','BOUND']
+      if (!this.multipleSelection.every(item =>  list.includes(item.status)
+      //  item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")
+       )) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价、已绑定的零件进行重置"))
 
       await this.$confirm(this.language('DECLARERESETTIPS','该行表态内容会被重置，请确认'))
 

@@ -10,6 +10,9 @@
   <div class="conent">
     <div class="selsTable">
       <el-table 
+        ref="table"
+        border
+        :stripe="false"
         tooltip-effect="light"
         :height="height"
         :data="tableData"
@@ -43,7 +46,7 @@
             v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
             :key="index"
             :label="item.i18n ? $t(item.i18n) : item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
             :sortable='"custom"'
@@ -58,7 +61,7 @@
             :fixed='item.fixed'
             :key="index"
             :label="item.label"
-            :width="item.width"
+            :min-width="item.width"
             :prop='item.props'
             align="center"
           >
@@ -66,7 +69,7 @@
             <template slot="header" slot-scope="scope">
               <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
               <div class="headerContent" v-if='scope.column.label == ""'>
-                <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
+                <div class="c" :style="{width:cWidth,minWidth:minWidth}" v-if='ratingList.firstTile.length > 0'>
                   <ul style="width:0px">
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
@@ -99,7 +102,9 @@
                         <li v-else :key='indexss'>
                           <span>
                             {{itemsss.rateEn}}
-                          <br v-if='itemsss.rateEn && itemsss.rate' />      
+                          </span>
+                          <br v-if='itemsss.rateEn && itemsss.rate' />
+                          <span>
                             {{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
@@ -144,7 +149,12 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+                <div class="tag" v-if="scope.row.isOriginprice">
+                  <el-tooltip :content="language('TONGPILIANG','同批量')" placement="bottom" effect="light">
+                    <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
+                  </el-tooltip>
+                </div>
+                <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
@@ -173,8 +183,8 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"developmentCostShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"])) }}RMB</div>
+                    <div>分摊：{{ ttoShow(scope.row[getPorpsNumber(item.props)+"developmentCostShare"])}}RMB</div>
                   </template>
                   <span>{{ttoShow(scope.row[item.props])}}</span>
                 </el-tooltip>
@@ -186,12 +196,12 @@
                 <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'> -->
                 <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>
                   <template slot="content">
-                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
-                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                    <div>一次性：{{ ttoShow(subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"])) }}RMB</div>
+                    <div>分摊：{{ttoShow(scope.row[getPorpsNumber(item.props)+"toolingShare"])}}RMB</div>
                   </template>
-                  <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                  <span>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 </el-tooltip>
-                <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                <span v-else>{{ttoShow(scope.row[item.props]?scope.row[item.props]:scope.row[item.props])}}</span>
                 <!-- <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span> -->
                 <span style="color:red;" v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>*</span>
               </template>
@@ -212,6 +222,7 @@ import moment from 'moment'
 export default{
   components:{icon},
   props:{
+    height: {type: Number, default:''},
     tableData:{
       type:Array,
       default:()=>[]
@@ -257,6 +268,12 @@ export default{
         return this.$store.getters.isPreview;
     }
   },
+  data() {
+    return {
+      ebrWidth: '',
+      minWidth: ''
+    }
+  },
   methods:{
     setfixElement(){
       try {
@@ -273,6 +290,14 @@ export default{
         ulDom.innerHTML = `<ul>${str}</ul>`
         ulDom.setAttribute('class','rateList')
         box.appendChild(ulDom)
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            if(ulDom){
+              this.minWidth = document.getElementsByClassName('selsTable')[0].offsetWidth - document.getElementsByClassName('rightBorder')[0].offsetLeft - document.getElementsByClassName('rightBorder')[0].offsetWidth + 'px'
+              ulDom.style.width = document.getElementsByClassName('EBR')[0].clientWidth + 'px'
+            }
+          },280)
+        })
       } catch (error) {
         console.warn(error)
       }
@@ -317,8 +342,9 @@ export default{
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
-          rfqId:this.$route.query.id,
-          round:items.round,
+          rfqId:this.$route.query.id||items.rfqId,
+          // round:items.round,
+          round:items[index+'round'],
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,
@@ -391,7 +417,7 @@ export default{
      */
     headerClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR'){
-        return 'rightBorder'
+        return 'EBR rightBorder'
       }
       if(this.vm.reRenderLastChild.name == column.label){
         return 'rightBorder'
@@ -425,6 +451,9 @@ export default{
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
+      }
+      if(column.label == ''){
+        return 'hiddleBorder'
       }
       //判断是否是推荐供应商
       if(this.tuijianSuplier(column.property,row)){
@@ -507,6 +536,13 @@ export default{
     ::v-deep.tuijianSupplier{
       border-bottom: 2px solid blue;
     }
+    
+    ::v-deep tr:nth-child(even){
+      background-color: #FFFFFF;
+    }
+    ::v-deep .el-table__row{
+      height: unset !important;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;
@@ -514,6 +550,24 @@ export default{
       span {
         white-space:pre-line!important;
         text-align: center;
+      }
+      .tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        background: #54b88e;
+        transform: translate3d(50%, -50%, 0) rotate(-135deg);
+        .icon{
+          transform: rotate(135deg) scale(0.8);
+          display: inline-block;
+          color: white;
+          overflow: unset;
+          height: 17px;
+          width: 17px;
+          font-size: 8px;
+        }
       }
     }
     ::v-deep .el-table__header-wrapper{
@@ -551,6 +605,17 @@ export default{
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
       height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+        overflow: hidden;
+      }
+    }
+    ::v-deep.el-table__fixed-body-wrapper{
+      overflow:visible;
+      height:auto!important;
+      td{
+        border-bottom: 1px solid #ebeef5;
+      }
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
@@ -579,8 +644,8 @@ export default{
       }
     }
     ::v-deep.leftRightBorder{
-      border-left: 1px solid #C5CCD6;
-      border-right: 1px solid #C5CCD6;
+      border-left: 1px solid #EBEEF5;
+      border-right: 1px solid #EBEEF5;
     }
     ::v-deep .bgcoor{
       background: #f5f7fa;
@@ -590,8 +655,11 @@ export default{
       }
     }
     ::v-deep .rightBorder{
-      border-right: 1px solid #C5CCD6;
+      border-right: 1px solid #EBEEF5;
       position: relative;
+    }
+    ::v-deep .hiddleBorder{
+      border-right: 0px;
     }
     ::v-deep .is-sortable{
       .cell{
@@ -614,7 +682,7 @@ export default{
   .headerContent{
     position: absolute;
     top: 0px;
-    left: -1px;
+    left: 0px;
     height: 0px;
     width: 0px;
     .c{
@@ -623,10 +691,10 @@ export default{
       z-index: 123;
       bottom: -1px;
       left:0PX;
-      border: 1px solid #C5CCD6;
+      border: 1px solid #EBEEF5;
       border-bottom: none;
       border-left:none;
-      border-top-right-radius: 5px;
+      // border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
       border-top: none;
@@ -637,28 +705,30 @@ export default{
         word-break: break-all;
       }
       ul{
-        border-right: 1px solid #C5CCD6;
-        border-top: 1px solid #C5CCD6;
+        border-right: 1px solid #EBEEF5;
+        border-top: 1px solid #EBEEF5;
         &:nth-child(2){
           overflow: hidden;
         }
         &:first-child{
-          border-top-right-radius: 3px;
-          overflow: hidden;
-          border-right: 0px;
-          border: none;
-          width: 0px;
+          border: 0px;
+          // border-top-right-radius: 3px;
+          // overflow: hidden;
+          // border-right: 0px;
+          // border: none;
+          // width: 0px;
           li{
-            border-right: 1px solid #C5CCD6;
-            &:first-child{
-              background-color:white;
-              border:none;
-              border-right: 1px solid #C5CCD6;
-            }
+            border:0px;
+            // border-right: 1px solid #EBEEF5;
+            // &:first-child{
+            //   background-color:white;
+            //   border:none;
+            //   border-right: 1px solid #EBEEF5;
+            // }
           }
         }
         li{
-          border-bottom: 1px solid #C5CCD6;
+          border-bottom: 1px solid #EBEEF5;
           height: 38px;
           &:last-child{
             border-bottom: none;
@@ -672,6 +742,9 @@ export default{
       }
       .lastChild{
         flex: 1;
+        &:first-child{
+          border: 0px;
+        }
         &:last-child{
           border-right: 0px;
         }
@@ -687,7 +760,7 @@ export default{
     padding-top: 200px;
     overflow-x: scroll;
     ::v-deep.el-table__fixed{
-          height: 97%!important;
+          height: calc(100% - 20px) !important;;
           bottom: -1px;
           padding-top: 200px;
           box-sizing: border-box;
@@ -704,18 +777,22 @@ export default{
               right: -1px;
               height: 0px;
               width: 0px;
-              top: -1px;
+              top: 0px;
               ul{
+                width: 100%;
                 position: absolute;
                 bottom: -1.8px;
                 right: 1.6px;
-                border: 1px solid #C5CCD6;
+                border-left: 1px solid #EBEEF5;
+                border-top: 1px solid #EBEEF5;
+                border-right: 1px solid #EBEEF5;
                 border-bottom: none;
-                border-top-left-radius: 10px;
+                // border-top-left-radius: 10px;
                 overflow: hidden;
-                min-width: 70px;
+                // min-width: 70px;
+                // width: 100%;
                 li{
-                    border-bottom: 1px solid #C5CCD6;
+                    border-bottom: 1px solid #EBEEF5;
                     line-height: 38px;
                     height: 38px;
                     padding: 0px 5px;

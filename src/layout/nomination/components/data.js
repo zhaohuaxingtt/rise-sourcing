@@ -17,29 +17,29 @@ export const applyType = [
 // 定点申请步骤栏
 export const applyStep = [
     {id:0,name:'定点申请详情',key:'DINGDIANSHENGQINGXINAGQING',path:'/designate/details'},
-    {id:1,name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN',path:'/designate/rfqdetail'},
-    {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier',hasInfo:true},
-    {id:3,name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI',path:'/designate/suggestion'},
-    {id:4,name:'审批人 & 审批记录',key:'nominationLanguage.SHENPIRENANDSHENPIJILU',path:'/designate/approvalpersonrecord'},
-    {id:5,name:'决策资料',key:'nominationLanguage.JUECEZILIAO',path:'/designate/decisiondata/title'},
+    {id:1,name:'RFQ & 零件清单',key:'nominationLanguage_RFQANDLINGJIANQINGDAN',path:'/designate/rfqdetail'},
+    {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage_GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier',hasInfo:true},
+    {id:3,name:'定点建议',key:'nominationLanguage_DINGDIANJIANYI',path:'/designate/suggestion'},
+    {id:4,name:'审批人 & 审批记录',key:'nominationLanguage_SHENPIRENANDSHENPIJILU',path:'/designate/approvalpersonrecord'},
+    {id:5,name:'决策资料',key:'nominationLanguage_JUECEZILIAO',path:'/designate/decisiondata/title'},
 ]
 // 决策资料--tab栏
 export const decisionType = [
-    {key:'Title',name:'Title',path:'/designate/decisiondata/title'},
-    {key:'PartList',name:'Part List',path:'/designate/decisiondata/partlist'},
-    {key:'Tasks',name:'Tasks',path:'/designate/decisiondata/tasks'},
-    {key:'Drawing',name:'Drawing',path:'/designate/decisiondata/drawing'},
-    {key:'BDL',name:'BDL',path:'/designate/decisiondata/bdl'},
-    {key:'SingleSourcing',name:'Single Sourcing',path:'/designate/decisiondata/singlesourcing'},
-    {key:'ABPrice',name:'A-B Price',path:'/designate/decisiondata/abprice'},
-    {key:'CostAnalysis',name:'Cost Analysis',path:'/designate/decisiondata/costanalysis'},
-    {key:'TimeLine',name:'Timeline',path:'/designate/decisiondata/timeline'},
-    {key:'Strategy',name:'Strategy',path:'/designate/decisiondata/strategy'},
+    {key:'Title',name:'Title',path:'/designate/decisiondata/title', permissionKey: 'SOURCING_NOMINATION_ATTATCH_TITLE'},
+    {key:'PartList',name:'Part List',path:'/designate/decisiondata/partlist', permissionKey: 'SOURCING_NOMINATION_ATTATCH_PARTLIST'},
+    {key:'Tasks',name:'Tasks',path:'/designate/decisiondata/tasks', permissionKey: 'SOURCING_NOMINATION_ATTATCH_TASKS'},
+    {key:'Drawing',name:'Drawing',path:'/designate/decisiondata/drawing', permissionKey: 'SOURCING_NOMINATION_ATTATCH_DRAWING'},
+    {key:'BDL',name:'BDL',path:'/designate/decisiondata/bdl', permissionKey: 'SOURCING_NOMINATION_ATTATCH_BDL'},
+    {key:'SingleSourcing',name:'Single Sourcing',path:'/designate/decisiondata/singlesourcing', permissionKey: 'SOURCING_NOMINATION_ATTATCH_SINGLESOURCING'},
+    {key:'ABPrice',name:'A-B Price',path:'/designate/decisiondata/abprice', permissionKey: 'SOURCING_NOMINATION_ATTATCH_ABPRICE'},
+    {key:'CostAnalysis',name:'Cost Analysis',path:'/designate/decisiondata/costanalysis', permissionKey: 'SOURCING_NOMINATION_ATTATCH_COSTANALYSIS'},
+    {key:'TimeLine',name:'Timeline',path:'/designate/decisiondata/timeline', permissionKey: 'SOURCING_NOMINATION_ATTATCH_TIMELINE'},
+    {key:'Strategy',name:'Strategy',path:'/designate/decisiondata/strategy', permissionKey: 'SOURCING_NOMINATION_ATTATCH_STRATEGY'},
     // {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
-    {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario'},
-    {key:'RS',name:'RS',path:'/designate/decisiondata/rs'},
-    {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz',isMtz:true},
-    {key:'Attachment',name:'Attachment',path:'/designate/decisiondata/attachment'},
+    {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario', permissionKey: 'SOURCING_NOMINATION_ATTATCH_AWARDSCENARIO'},
+    {key:'RS',name:'RS',path:'/designate/decisiondata/rs', permissionKey: 'SOURCING_NOMINATION_ATTATCH_RS'},
+    {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz',isMtz:true, permissionKey: 'SOURCING_NOMINATION_ATTATCH_MTZ'},
+    {key:'Attachment',name:'Attachment',path:'/designate/decisiondata/attachment', permissionKey: 'SOURCING_NOMINATION_ATTATCH_ATTACHMENT'},
 ]
 
 // 整体三级菜单排序 表头

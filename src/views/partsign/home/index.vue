@@ -22,11 +22,12 @@
           >
             <el-form>
               <el-form-item :label="language('partsignLanguage.LingJianHao','零件号')" v-permission.auto="PARTSIGN_PARTNUM|零件号">
-                <iInput
+                <!-- <iInput
                   clearable
                   v-model="form.partNum"
                   :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
-                ></iInput>
+                ></iInput> -->
+                <iMultiLineInput v-model="form.partNum" :title="language('partsignLanguage.LingJianHao','零件号')" />
               </el-form-item>
               <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|零件名中">
                 <iInput
@@ -268,7 +269,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  icon
+  icon,
+  iMultiLineInput
 } from 'rise';
 // import tablelist from "./components/tableList";
 import tablelist from "@/components/iTableSort";
@@ -307,8 +309,9 @@ export default {
     iInput,
     iSelect,
     icon,
+    iMultiLineInput,
     headerNav,
-    buttonTableSetting
+    buttonTableSetting,
   },
   mixins: [pageMixins, filters,tableSortMixins],
   data() {

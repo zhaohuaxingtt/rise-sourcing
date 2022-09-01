@@ -248,7 +248,9 @@ export default {
           this.$message({
             dangerouslyUseHTMLString: true,
             message: res.desZh.replace(/\n|\r\n/g, ' <br/> '),
-            type: 'error'
+            type: 'error',
+            duration: 10000, // error 错误提示显示10秒
+            showClose: true
           })
         }
         this.queryOrderItemList()

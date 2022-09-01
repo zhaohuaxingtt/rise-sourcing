@@ -25,18 +25,23 @@
               v-permission.auto="PARTSRFQ_SEARCHBOX|零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称">
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
               </el-form-item> -->
-               <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
+               <el-form-item :label="language('LK_LINGJIANHAO','零件号')"
                   >
-                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
+                <!-- <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput> -->
+                <iMultiLineInput v-model="form.partNum" :title="language('LK_LINGJIANHAO','零件号')" />
               </el-form-item>
-              <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
-                  >
+              <el-form-item  :label="language('LK_LINGJIANMINGCHENG','零件名称')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partName"></iInput>
+              </el-form-item>
+              <el-form-item  :label="$t('LINGJIANCAIGOUXIANGMUHAO')">
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
               </el-form-item>
-              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
-                  >
-                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqIdVague"></iInput>
-              </el-form-item>    
+              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqId"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('RFQMINGCHENG','RFQ名称')">
+                <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.rfqName"></iInput>
+              </el-form-item>
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
                 >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
@@ -44,11 +49,11 @@
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
               </el-form-item>  
-              <el-form-item  :label="language('LK_SAP','供应商SAP号')"
+              <el-form-item  :label="$t('LK_GONGYINGSHANGSAPHAO')"
                  >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
               </el-form-item>
-              <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
+              <el-form-item  :label="$t('LK_GONGYINGSHANGMINGCHENG')"
                  >
                 <iInput clearable :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>
@@ -248,7 +253,7 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
+import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon, iMultiLineInput} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import headerNav from "@/components/headerNav"
 // import tablelist from "pages/partsrfq/components/tablelist";
@@ -293,7 +298,8 @@ export default {
     nominateTypeDialog,
     assignInquiryBuyerDialog,
     headerNav,
-    buttonTableSetting
+    buttonTableSetting,
+    iMultiLineInput
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins,tableSortMixins],
   data() {
@@ -305,8 +311,11 @@ export default {
       diologAssignmentOfScroingTasks: false,
       form: {
         searchConditions: '',
+        rfqId:'',
+        rfqName:'',
         carType: '',
         partType: '',
+        partName:'',
         rfqStatus: '',
         car: '',
         modelCode: '',
@@ -577,6 +586,7 @@ export default {
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
+      if (this.selectTableData.length!==1) return iMessage.warn(this.language("QINGXUANZEYITIAOSHUJU", "请选择一条数据"))
       if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
@@ -604,6 +614,7 @@ export default {
             graderName: item.rater,
             coordinator: item.coordinator,
             coordinatorId: item.coordinatorId,
+            rfqDeptRatId: item.id
       }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {

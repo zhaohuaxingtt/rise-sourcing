@@ -281,6 +281,8 @@ export default {
             dangerouslyUseHTMLString: true,
             message: str,
             type: "error",
+            duration: 10000, // error 错误提示显示10秒
+            showClose: true
           });
         }
       } else {
@@ -295,6 +297,8 @@ export default {
           dangerouslyUseHTMLString: true,
           message: str,
           type: "error",
+          duration: 10000, // error 错误提示显示10秒
+          showClose: true
         });
       }
       let deleteIds = this.selectedOrderData.map((i) => i.id);

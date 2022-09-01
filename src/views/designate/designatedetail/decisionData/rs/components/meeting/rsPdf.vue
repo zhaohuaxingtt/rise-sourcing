@@ -97,20 +97,20 @@
                 </template>
 
                 <template #cfTargetAPrice="scope">
-                  <div v-if="scope.row.status === 'SKDLC'">
+                  <div v-if="scope.row.cfApplyType === 'SKDLC'">
                     <p>{{ scope.row.cfTargetSkdAPrice | toThousands }}</p>
                     <p>{{ scope.row.cfTargetAPrice | toThousands }}</p>
                   </div>
-                  <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
+                  <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdAPrice | toThousands }}</span>
                   <span v-else>{{ scope.row.cfTargetAPrice | toThousands }}</span>
                 </template>
 
                 <template #cfTargetBPrice="scope">
-                  <div v-if="scope.row.status === 'SKDLC'">
+                  <div v-if="scope.row.cfApplyType === 'SKDLC'">
                     <p>{{ scope.row.cfTargetSkdBPrice | toThousands }}</p>
                     <p>{{ scope.row.cfTargetBPrice | toThousands }}</p>
                   </div>
-                  <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
+                  <span v-else-if="scope.row.cfApplyType === 'SKD'">{{ scope.row.cfTargetSkdBPrice | toThousands }}</span>
                   <span v-else>{{ scope.row.cfTargetBPrice | toThousands }}</span>
                 </template>
 
@@ -659,7 +659,7 @@ export default {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
           padding: 6px 24px;
-          width: 60%;
+          width: 40%;
           font-weight: bold;
           // line-height: 29px;
           display: flex;
@@ -667,7 +667,7 @@ export default {
           justify-content: center;
         }
         &-value {
-          width: 40%;
+          width: 60%;
           padding: 6px 24px;
           // line-height: 29px;
           background-color: #fff;
@@ -677,10 +677,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 65%;
+            width: 50%;
           }
           .rsTop-right-item-value {
-            width: 35%;
+            width: 50%;
           }
         }
       }

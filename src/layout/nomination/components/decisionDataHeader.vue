@@ -58,6 +58,7 @@ import { decisionType } from './data'
 import sortDialog from './sortDialog'
 import {mapGetters,mapState} from 'vuex'
 import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
+import { hasPermission } from "@/utils";
 
 
 let fullscreenLoading  = null;
@@ -153,15 +154,23 @@ export default {
             const nominationStep = this.nominationStep
             let tableListData = nominationStep.nodeList || JSON.parse(JSON.stringify(decisionType))
             tableListData = tableListData.filter(o => !o.flag)
-            this.decisionType = tableListData.map(o => {
+            this.decisionType = []
+            tableListData.forEach(o => {
                 const tabName = o.tabName
                 const tabTarget = decisionType.find(item => item.name === tabName)
-                if (tabTarget) {
-                    o.key = tabTarget.key
-                    o.name = tabTarget.name
-                    o.path = tabTarget.path
+                if (tabTarget&&hasPermission(tabTarget.permissionKey)) {
+                    this.decisionType.push({
+                        key: tabTarget.key,
+                        name: tabTarget.name,
+                        path: tabTarget.path,
+                        permissionKey: tabTarget.permissionKey,
+                    })
+                    // o.key = tabTarget.key
+                    // o.name = tabTarget.name
+                    // o.path = tabTarget.path
+                    // o.permissionKey = tabTarget.permissionKey
                 }
-                return o
+                // return o
             })
             } catch (error) {
                 console.log(error)
@@ -260,6 +269,7 @@ export default {
                 cursor: pointer;
             }
         &.preview-header{
+            padding: 0 30px;
             background-color: #fff;
             // box-shadow: $btn-box-shadow;
             border-top-left-radius: 6px;

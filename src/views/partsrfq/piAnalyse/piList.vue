@@ -20,8 +20,9 @@
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-                    v-model="form.num"></iInput>
+            <!-- <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                    v-model="form.num"></iInput> -->
+            <iMultiLineInput v-model="form.num" :title="$t('LK_SPAREPARTSNUMBER')" />
           </el-form-item>
           <!--RFQ号-->
           <el-form-item :label="$t('TPZS.RFQHMC')">
@@ -230,7 +231,8 @@ import {
   iPagination,
   iSelect,
   icon,
-  iMessage
+  iMessage,
+  iMultiLineInput
 } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
@@ -248,7 +250,8 @@ export default {
     iSelect,
     icon,
     reportPreview,
-    addScheme
+    addScheme,
+    iMultiLineInput
   },
   data () {
     return {
