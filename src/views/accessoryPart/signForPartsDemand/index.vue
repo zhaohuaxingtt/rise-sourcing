@@ -513,7 +513,8 @@ export default {
     sure() {
       this.page.currPage = 1
       // 若有定点起止时间将其拆分成两个字段
-      const {sendDate=[]} = this.searchParams;
+      let {sendDate=[]} = this.searchParams;
+      sendDate = sendDate || []
       this.searchParams.startDate = sendDate[0] || ''
       this.searchParams.endDate = sendDate[1] || ''
       // this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
