@@ -12,6 +12,9 @@
     <projectTop />
     <search :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
     <iCard class="margin-top20">
+      <div class="flex-end">
+        <iButton>导出</iButton>
+      </div>
       <template v-for="i in 3">
         <proItem
           :key="i"
@@ -27,6 +30,7 @@
 import {
   iPage,
   iCard,
+  iButton
 } from "rise";
 import projectTop from "../components/projectHeader";
 import search from "../components/search";
@@ -40,6 +44,7 @@ export default {
     search,
     proItem,
     iCard,
+    iButton
   },
   data() {
     return {
@@ -116,5 +121,9 @@ export default {
     // height: calc(100% - 55px) !important;
     // overflow: auto !important;
   }
+}
+.flex-end{
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
-  <iCard>
+  <iCard title="Id.4x后座靠背总成项目管理进度图">
     <template slot='header-control'>
+      <i-button>导出</i-button>
       <i-button>设置送样进度节点</i-button>
       <i-button>发送供应商填写计划</i-button>
     </template>
@@ -12,7 +13,6 @@
         {{item}}
       </div>
     </div>
-    <progress-item />
     <item :list="list" :key="i" :header="header"/>
   </iCard>
 </template>
@@ -20,10 +20,9 @@
 <script>
 import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage } from "rise";
 import Item from "./item.vue";
-import progressItem from "./progressItem";
   export default {
     components:{
-      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item, progressItem
+      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,
     },
     data() {
       return {

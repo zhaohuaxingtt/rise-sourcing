@@ -1,14 +1,16 @@
 <template>
-<div class="table-content">
-  <template v-for="(data,key) in list">
-    <row-item :data="data" :list="list" :header="header" :key="key"></row-item>
-    <template v-if="data.showChlid">
-      <template v-for="(child,key) in data.children">
-        <row-item :data="child" :list="list" :key="key" :header="header"></row-item>
+  <div class="table-content">
+    <div style="width:100%;height:50px;"></div>
+    <template v-for="(data,key) in list">
+      <row-item :data="data" :list="list" :header="header" :key="key"></row-item>
+      <template v-if="data.showChlid">
+        <!-- 层级数据渲染 -->
+        <template v-for="(child,key) in data.children">
+          <row-item :data="child" :list="list" :key="key" :header="header"></row-item>
+        </template>
       </template>
     </template>
-  </template>
-</div>
+  </div>
 </template>
 
 <script>
