@@ -30,9 +30,10 @@
       >
         <template #year="scope">
           <el-date-picker
-            disabled
+            :disabled="scope.$index"
             v-if="canEdit"
             v-model="scope.row.year"
+            @change="changeYear"
             type="year"
             value-format="yyyy"
             :placeholder="language('QINGXUANZE', '请选择')"
@@ -99,6 +100,12 @@ export default {
   },
 
   methods: {
+    // 年份修改，重新计算
+    changeYear(year) {
+      this.initData.forEach((item, i) => {
+        item.year = (Number(year) + i).toString();
+      });
+    },
     // 关闭弹窗
     clearDiolog() {
       this.$emit("input", false);
