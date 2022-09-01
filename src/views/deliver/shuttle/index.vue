@@ -203,7 +203,9 @@ export default {
     handleRowClick(row) {
       this.$emit('set-resource-parent', row)
     },
-    leftChange() {},
+    leftChange() {
+      
+    },
     rightChange() {},
   },
 };
@@ -216,6 +218,7 @@ export default {
   min-height: 500px;
   display: flex;
   flex-flow: row;
+  margin-top:30px;
   .shuttle-btn-box {
     width: 80px;
     height: 100%;
@@ -239,6 +242,7 @@ export default {
       width: 100%;
       display: flex;
       align-items: center;
+      margin-bottom:20px;
       .search-input {
         flex: 1;
         width: 100%;

@@ -2,8 +2,8 @@
   <iCard title="Id.4x后座靠背总成项目管理进度图">
     <template slot='header-control'>
       <i-button>导出</i-button>
-      <i-button>设置送样进度节点</i-button>
-      <i-button>发送供应商填写计划</i-button>
+      <i-button @click="jumpHeavy">设置送样进度节点</i-button>
+      <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
     </template>
     <div class="row-item">
       <div class="first-column-item">
@@ -98,6 +98,26 @@ import Item from "./item.vue";
         }
       }
     },
+    methods:{
+      jumpHeavy(){
+        const routeData = this.$router.resolve({
+          path:"/deliver/shuttle",
+          query:{
+            carModelId:"",
+          }
+        })
+        window.open(routeData.href, '_blank')
+      },
+      jumpSupplier(){
+        const routeData = this.$router.resolve({
+          path:"/deliver/deliverPlan",
+          query:{
+            carModelId:"",
+          }
+        })
+        window.open(routeData.href, '_blank')
+      },
+    }
   }
 </script>
 

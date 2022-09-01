@@ -17,7 +17,7 @@
       @reset="reset"
       :icon="false"
     ></search>
-    <tableList title="kickoff 列表" class="margin-top20" />
+    <tableList :title="titleName+' 列表'" class="margin-top20" />
   </iPage>
 </template>
 
@@ -57,9 +57,12 @@ export default {
         prop6: "",
         prop8: "",
       },
+      titleName:"",
     };
   },
-  created() {},
+  created() {
+    this.titleName = this.$route.query?.type;
+  },
   methods: {
     sure(form) {
       this.searchParams = form;

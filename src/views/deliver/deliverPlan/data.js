@@ -12,7 +12,14 @@ export const tableTitleLeft = [
   { props: "col5", name: "操作", key: "", minWidth:200 },
 ]
 
-export const tableTitleRight = [
+export const tableTitleRight1 = [
+  { props: "col1", name: "节点", key: "", tooltip: true, width:200 },
+  { props: "col2", name: "预计开始(SOLL)", key: "", tooltip: true, width:160 },
+  { props: "col3", name: "预计结束(SOLL)", key: "", tooltip: true, width:160 },
+  { props: "col4", name: "操作", key: "", minWidth:120 },
+]
+
+export const tableTitleRight2 = [
   { props: "col1", name: "节点", key: "", tooltip: true, width:200 },
   { props: "col2", name: "实际开始(SOLL)", key: "", tooltip: true, width:160 },
   { props: "col3", name: "实际结束(SOLL)", key: "", tooltip: true, width:160 },

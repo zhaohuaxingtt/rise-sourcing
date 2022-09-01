@@ -1,6 +1,10 @@
 <template>
   <iPage>
     <projectTop />
+    <iNavMvp lev="2" class="flex-end"
+               :list="navList"
+               @change="change"
+               lang></iNavMvp>
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false"></search>
     <iTabsList v-model='defaultTab' type="card">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
@@ -20,7 +24,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iSearch, iButton, iDatePicker, iSelect, iMessage, iTabsList } from "rise";
+import { iPage, iCard, iSearch, iButton, iDatePicker, iSelect, iMessage, iTabsList,iNavMvp } from "rise";
 import projectTop from '../components/projectHeader'
 import search from "../components/search";
 import chartsItem from "./components/chartsItem";
@@ -28,17 +32,26 @@ import offenChartsItem from "./components/offenChartsItem";
 import yuanyinChartsItem from "./components/yuanyinChartsItem";
 import tableList from "../components/tableList";
 import { delayAnalysisSearchList as searchList } from "../components/data";
+
+import { navList } from "./data";
   export default {
     components:{
-      iPage, iCard, iSearch, iButton, iDatePicker, iSelect, iMessage, iTabsList, projectTop, search, chartsItem, offenChartsItem,yuanyinChartsItem,tableList
+      iPage, iCard, iSearch, iButton, iDatePicker, iSelect, iMessage, iTabsList, projectTop, search, chartsItem, offenChartsItem,yuanyinChartsItem,tableList,iNavMvp
     },
     data() {
       return {
         searchList,
         selectOptions: {},
-        defaultTab:'1'
+        defaultTab:'1',
+        navList,
+        threeTreeValue:"",
       }
     },
+    methods:{
+      change(val){
+        this.threeTreeValue = val.value;
+      },
+    }
   }
 </script>
 
@@ -50,5 +63,13 @@ import { delayAnalysisSearchList as searchList } from "../components/data";
   ::v-deep .card{
     width: 100%;
   }
+}
+.flex-end{
+  position: absolute;
+  right:140px;
+  top:30px;
+}
+.routerpage{
+  position: relative;
 }
 </style>

@@ -11,10 +11,10 @@
   <iPage class="overview">
     <projectTop />
     <search :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
-    <iCard class="margin-top20">
-      <div class="flex-end">
+    <div class="flex-end">
         <iButton>导出</iButton>
-      </div>
+    </div>
+    <div class="margin-top20">
       <template v-for="i in 3">
         <proItem
           :key="i"
@@ -22,7 +22,7 @@
           :tableTitle="tableTitle"
         ></proItem>
       </template>
-    </iCard>
+    </div>
   </iPage>
 </template>
 
