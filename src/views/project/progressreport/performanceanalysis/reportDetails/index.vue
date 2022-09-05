@@ -109,13 +109,8 @@ export default {
     created(){
     },
     methods:{
-        getEnquiry(val){
-            console.log(val);
-
-        //     totalCount:0, //总条数
-        //  pageSize:5,   //每页多少条
-        //  pageSizes:[10,20,50,100,300], //每页条数切换
-        //  currPage:1,    //当前页
+        getEnquiry(){
+            this.getData(this.list.type);
         },
         upload(){
             exprotProjectAnalysisc({
