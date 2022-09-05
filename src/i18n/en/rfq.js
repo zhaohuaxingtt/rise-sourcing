@@ -12,7 +12,7 @@ export default {
 	LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI:
 		'The part number is insufficient, please add it to 3 digits or more',
 	QINGXUANZEKESHI: 'Please select dept',
-	LK_XIANJIANCAIGOUSHENQING: 'Create',
+	LK_XIANJIANCAIGOUSHENQING: 'New Purchase Application',
 	LK_XINZHENGXIANGCI: 'New items ',
 	LK_SHANCHUXIANGCI: 'Delete items ',
 	QUXIAODINGDIANTIAOJIANJIANCHA: 'Cancel the fixed point condition check',

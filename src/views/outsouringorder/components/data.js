@@ -147,7 +147,23 @@ export const tableTitle = [
 		tooltip: true,
 		minWidth: 230,
 		sortable: true,
-	},{
+	},
+	{
+		props: 'partNum',
+		name: '零件号',
+		key: 'LINGJIANHAO',
+		tooltip: true,
+		minWidth: 160,
+		sortable: true,
+	},
+	{
+		props: 'partNameZh',
+		name: '零件名称（中）',
+		key: 'LINGJIANMINGCZH',
+		tooltip: true,
+		minWidth: 160,
+		sortable: true,
+	}, {
 		props: 'sapItem',
 		name: '项次',
 		key: 'MODEL-ORDER.LK_XIANGCI',
@@ -197,8 +213,8 @@ export const tableTitle = [
 	},
 	{
 		props: 'createDate',
-		name: '生成时间',
-		key: 'MODEL-ORDER.LK_SHENQINGSHIJIAN',
+		name: '申请时间',
+		key: 'SHENQINGSHIJIAN',
 		width: 120,
 		tooltip: true,
 		sortable: true,

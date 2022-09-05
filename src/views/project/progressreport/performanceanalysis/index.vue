@@ -9,8 +9,8 @@
 <template>
     <div>
         <div class="model_analysis">
-            <iButton @click="myReport">{{$t("我的报告")}}</iButton>
-            <div class="model_font">
+            <!-- <iButton @click="myReport">{{$t("我的报告")}}</iButton> -->
+            <div class="model_font flexend">
                 <div @click="checkedBtn" class="model_font marginRright20">
                     <img class="model_img"
                             :src="checked?require('@/assets/images/checked.png'):require('@/assets/images/unchecked.png')"
@@ -307,6 +307,10 @@ export default {
     height: 15px;
 }
 .echarts{
+    flex:1;
+}
+.flexend{
+    justify-content: flex-end;
     flex:1;
 }
 </style>
