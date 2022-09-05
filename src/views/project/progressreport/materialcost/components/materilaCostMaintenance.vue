@@ -246,8 +246,8 @@
         </tableList>
         <iPagination v-update
             class="pagination"
-            @size-change="handleSizeChange($event, getEnquiry)"
-            @current-change="handleCurrentChange($event, getEnquiry)"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"
@@ -797,6 +797,10 @@ export default {
             getProjectProgressReportDetail(data).then(res=>{
                 console.log(res)
                 if(res.result){
+                    this.page.currPage = res.pageNum;
+                    this.page.pageSize = res.pageSize;
+                    this.page.totalCount = res.total;
+
                     this.tableListDataOld = res.data;
                     this.tableListDataOld.forEach(e=>{
                         if(e.vsiNum){
@@ -831,16 +835,19 @@ export default {
             })
         },
         uploadSuccess (res, file) {
-            // if (res.code == 200 && res.result) {
-            //     this.getTableList()
-            // } else {
-                // if (res.data == null) {
-                //     iMessage.error(res.desZh)
-                // } else {
+            if (res.code == 200 && res.result) {
+                iMessage.success($t('SHANGCHUANCHENGGONG'))
+                this.page.pageSize = 10;
+                this.page.currPage = 1;
+                this.getTableList()
+            } else {
+                if (res.data == null) {
+                    iMessage.error(res.desZh)
+                } else {
                     this.errorList = res.data
                     this.rulesErrorVisible.dialogVisible = true;
-                // }
-            // }
+                }
+            }
         },
         uploadProgress(){
             
@@ -928,11 +935,14 @@ export default {
         handleSelectionChange(val){
             this.selectList = val
         },
-        handleSizeChange(){
-
+        handleSizeChange(val){
+            this.page.pageSize = val;
+            this.page.currPage = 1;
+            this.getTableList();
         },
-        handleCurrentChange(){
-
+        handleCurrentChange(val){
+            this.page.currPage = val;
+            this.getTableList();
         },
     }
 }
