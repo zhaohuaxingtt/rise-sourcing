@@ -3,6 +3,8 @@
     :title="$t('格式校验错误')"
     :visible.sync="rulesErrorVisible.dialogVisible"
     @close="clearRefresh"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     width="80%"
   >
     <iButton class="upload_button" @click="upload">{{$t('DAOCHU')}}</iButton>
@@ -24,7 +26,9 @@
 import { iDialog,iButton } from "rise";
 import tableList from "@/components/commonTable";
 import { rulesErrorTitle } from "./data.js";
-
+import {
+    exportErrorInfo,
+} from '@/api/project/projectprogressreport'
 export default {
     components:{
         iDialog,
@@ -35,6 +39,10 @@ export default {
         rulesErrorVisible:{
             type:Object,
             default:{},
+        },
+        errorList:{
+            type:Array,
+            default:[],
         }
     },
     data(){
@@ -45,9 +53,16 @@ export default {
             tableTitle:rulesErrorTitle,
         }
     },
+    created(){
+        this.tableListData = _.cloneDeep(this.errorList);
+    },
     methods:{
         upload(){
-
+            exportErrorInfo({
+                list:[
+                    ...this.tableListData
+                ]
+            })
         },
         clearRefresh(){
             this.$emit("close")
