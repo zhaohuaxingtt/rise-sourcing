@@ -468,8 +468,8 @@ export default {
             if(val.vsiPartNum){
                 getPartInfoByVsiNumOrNomiPartNUM({
                     cartypeProId:this.searchParams.search1,
-                    nomiPartNum:val.nomiPartNum,
-                    vsiPartNum:"",
+                    nomiPartNum:"",
+                    vsiPartNum:val.vsiPartNum,
                 }).then(res=>{
                     console.log(res)
                     if(res.result){
@@ -479,7 +479,7 @@ export default {
                     }
                 })
             }else{
-                iMessage.error($t("请输入VSI参考零件号"))
+                iMessage.error(this.$t("请输入VSI参考零件号"))
             }
         },
         pointerRefresh(val){
@@ -497,7 +497,7 @@ export default {
                     }
                 })
             }else{
-                iMessage.error($t("请输入或选择参考零件号"))
+                iMessage.error(this.$t("请输入或选择参考零件号"))
             }
         },
         inputVSI(val){
@@ -531,6 +531,7 @@ export default {
                 calculationModelVsi:this.VSIData.VSIData1,
                 cartypeProId:this.searchParams.search1,
                 // cartypeProId:this.searchParams.search1[0],
+                id:this.CalculationModelVSIId?this.CalculationModelVSIId:"",
                 motorGearbox:this.VSIData.VSIData2,
                 vorlogistic:this.VSIData.VSIData3,
             }).then(e=>{
@@ -836,7 +837,7 @@ export default {
         },
         uploadSuccess (res, file) {
             if (res.code == 200 && res.result) {
-                iMessage.success($t('SHANGCHUANCHENGGONG'))
+                iMessage.success(this.$t('SHANGCHUANCHENGGONG'))
                 this.page.pageSize = 10;
                 this.page.currPage = 1;
                 this.getTableList()
