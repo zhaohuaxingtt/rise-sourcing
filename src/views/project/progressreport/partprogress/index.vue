@@ -91,7 +91,7 @@ export default {
         this.carProjectId = "50024008";
         // this.$refs.carSelect.data = data.data;
         this.$refs.carSelect.data = "50024008";
-        this.cartypeId = '11';
+        this.cartypeId = '50024008';
         // this.cartypeId = data.list.find(item => item.value === data.data).cartypeId;
         this.getFindCartypePro(this.carProjectId);
         console.log(this.carProjectId)
@@ -106,9 +106,9 @@ export default {
       this.$emit('handleCarProjectChange', val, valLabel)
 
       if(this.currentTab=='overview'){
-        this.$refs.overviewChart.changeRefresh(cartypeId);
+        this.$refs.overviewChart.changeRefresh(val);
       }else if(this.currentTab=='detail'){
-        this.$refs.detailChart.changeRefresh(cartypeId);
+        this.$refs.detailChart.changeRefresh(val);
       }
     },
     getFindCartypePro(val){//获取tooling cost数据
