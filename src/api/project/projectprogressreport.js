@@ -235,5 +235,19 @@ export function exprotProjectAnalysisc(data) {
     data
   })
 }
-
-
+// 材料成本维护-导出
+export function exportProjectProgressReport(data) {
+  return downloadRequst({
+    url: '/project-progress-report/exportProjectProgressReport',
+    method: 'POST',
+    data
+  })
+}
+// 材料成本维护-导出
+export function exportErrorInfo(data) {
+  return downloadRequst({
+    url: '/project-progress-report/exportErrorInfo',
+    method: 'POST',
+    data
+  })
+}
