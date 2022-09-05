@@ -37,6 +37,13 @@ import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
 import { getOverview, getAllProPurchaser } from '@/api/project'
+
+import {
+  material_group_list,
+  cartype_pro_List,
+  buyer_list,
+} from "@/api/project/deliver"
+
 export default {
   components: {
     iPage,
@@ -50,15 +57,21 @@ export default {
     return {
       searchList,
       selectOptions: {
-        carProjectOptions: [
+        deptOptions: [//材料组
           {
-            label: "test",
+            label: "组1",
             value: 1,
           },
         ],
-        deptOptions: [
+        buyerList: [//采购员
           {
-            label: "组1",
+            label: "111",
+            value: 1,
+          },
+        ],
+        carProjectOptions: [//车型项目
+          {
+            label: "test",
             value: 1,
           },
         ],
@@ -103,11 +116,26 @@ export default {
       this.searchParams = {}
     },
     searchData(){
-      getOverview().then(res=>{
+      material_group_list({}).then(res=>{
         if(res?.code=='200'){
-          this.tableData = res.data
+          this.selectOptions.deptOptions = res.data
         }
       })
+      cartype_pro_List({}).then(res=>{
+        if(res?.code=='200'){
+          this.selectOptions.carProjectOptions = res.data
+        }
+      })
+      buyer_list({}).then(res=>{
+        if(res?.code=='200'){
+          this.selectOptions.buyerList = res.data
+        }
+      })
+      // getOverview().then(res=>{
+      //   if(res?.code=='200'){
+      //     this.tableData = res.data
+      //   }
+      // })
     }
   },
 };

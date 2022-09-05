@@ -97,7 +97,7 @@ export const shuttleTableTitle = [
 
 export const searchList = [
   {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
-  {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'input'},
+  {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList'},
   {prop:'pro',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions'},
 ]
 
