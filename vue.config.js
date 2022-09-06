@@ -13,7 +13,7 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -356,47 +356,47 @@ module.exports = {
 				},
 			},
 
-      // ------------------ 上传 ----------------------------
-      [process.env.VUE_APP_FILEAPI]: {
-        target: `${BASE_IP}/fileud`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_FILEAPI]: ''
-        }
-      },
+			// ------------------ 上传 ----------------------------
+			[process.env.VUE_APP_FILEAPI]: {
+				target: `${BASE_IP}/fileud`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_FILEAPI]: ''
+				}
+			},
 
-      // ------------------ 零件服务 ----------------------------
-      [process.env.VUE_APP_PART]: {
-        target: `${BASE_IP}/parts/`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PART]: ''
-        }
-      },
-      // ------------------ 零件服务 api ----------------------------
-      [process.env.VUE_APP_PART_API]: {
-        target: `${BASE_IP}/parts/`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PART_API]: ''
-        }
-      },
-      // ------------------ aonApi ----------------------------
-      [process.env.VUE_APP_POWEBI_KPI]: {
-        target: `${BASE_IP}`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_POWEBI_KPI]: ''
-        }
-      },
-      // ------------------ TP服务 api ----------------------------
-      [process.env.VUE_APP_PARTS]: {
-        target: `${BASE_IP}/sourcing/web`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PARTS]: ''
-        }
-      },
+			// ------------------ 零件服务 ----------------------------
+			[process.env.VUE_APP_PART]: {
+				target: `${BASE_IP}/parts/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PART]: ''
+				}
+			},
+			// ------------------ 零件服务 api ----------------------------
+			[process.env.VUE_APP_PART_API]: {
+				target: `${BASE_IP}/parts/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PART_API]: ''
+				}
+			},
+			// ------------------ aonApi ----------------------------
+			[process.env.VUE_APP_POWEBI_KPI]: {
+				target: `${BASE_IP}`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_POWEBI_KPI]: ''
+				}
+			},
+			// ------------------ TP服务 api ----------------------------
+			[process.env.VUE_APP_PARTS]: {
+				target: `${BASE_IP}/sourcing/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PARTS]: ''
+				}
+			},
 		},
 	},
 }

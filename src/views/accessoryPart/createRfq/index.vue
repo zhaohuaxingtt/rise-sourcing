@@ -10,98 +10,217 @@
 -->
 
 <template>
-  <iPage v-permission.auto="ACCESSORYPART_CREATERFQ_PAGE|配附件创建RFQ页面">
+  <iPage v-permission.auto="ACCESSORYPART_CREATERFQ_PAGE | 配附件创建RFQ页面">
     <topComponents>
       <span slot="left" class="floatleft font20 font-weight">
-        RFQ编号：{{detailData.rfqId}}
+        RFQ编号：{{ detailData.rfqId }}
       </span>
     </topComponents>
-    <iCard :title="language('JICHUXINXI','基础信息')" collapse v-loading="basicLoading">
+    <iCard
+      :title="language('JICHUXINXI', '基础信息')"
+      collapse
+      v-loading="basicLoading"
+    >
       <iFormGroup row="4" class="accessoryPartDetail">
-        <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''" v-permission.dynamic.auto="item.permission">
-          <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
-          <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select' && item.value === 'linie'" v-model="linie" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+        <iFormItem
+          v-for="(item, index) in basicInfo"
+          :key="index"
+          :label="language(item.key, item.label)"
+          :class="item.row ? 'row' + item.row : ''"
+          v-permission.dynamic.auto="item.permission"
+        >
+          <iText v-if="!item.editable">{{ detailData[item.value] }}</iText>
+          <iInput
+            v-else-if="item.type === 'input'"
+            v-model="detailData[item.value]"
+          ></iInput>
+          <iSelect
+            v-else-if="item.type === 'select' && item.value === 'linie'"
+            v-model="linie"
+            :disabled="linieAndDeptDisable(item.value)"
+            @change="(val) => handleDeptChange(item.value, val)"
+          >
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="(item) in fromGroup[item.selectOption]"
+              v-for="item in fromGroup[item.selectOption]"
               :key="item.value"
             ></el-option>
           </iSelect>
-          <iSelect v-else-if="item.type === 'select' && item.value === 'linieDept'" v-model="linieDept" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+          <iSelect
+            v-else-if="item.type === 'select' && item.value === 'linieDept'"
+            v-model="linieDept"
+            :disabled="linieAndDeptDisable(item.value)"
+            @change="(val) => handleDeptChange(item.value, val)"
+          >
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="(item) in fromGroup[item.selectOption]"
+              v-for="item in fromGroup[item.selectOption]"
               :key="item.value"
             ></el-option>
           </iSelect>
         </iFormItem>
       </iFormGroup>
-      <div style="text-align:right;">
-        <iButton @click="handleSaveRfq" v-permission.auto="ACCESSORYPART_CREATERFQ_RFQSAVEBTN|配附件创建RFQ-RFQ保存按钮">{{language('BAOCUN','保存')}}</iButton>
+      <div style="text-align: right">
+        <iButton
+          @click="handleSaveRfq"
+          v-permission.auto="
+            ACCESSORYPART_CREATERFQ_RFQSAVEBTN | (配附件创建RFQ - RFQ保存按钮)
+          "
+          >{{ language("BAOCUN", "保存") }}</iButton
+        >
         <!-- <iButton @click="handleCancel" v-permission.auto="ACCESSORYPART_CREATERFQ_CANCELBTN|配附件创建RFQ-取消按钮">{{language('QUXIAO','取消')}}</iButton> -->
       </div>
     </iCard>
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
-          <div class="floatright">
-            <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="ACCESSORYPART_CREATERFQ_PARTSAVEBTN|配附件创建RFQ-零件保存按钮">{{language('BAOCUN','保存')}}</iButton>
-            <!--------------------添加按钮----------------------------------->
-            <iButton @click="handleAddParts" v-permission.auto="ACCESSORYPART_CREATERFQ_ADDBTN|配附件创建RFQ-添加按钮">{{language('TIANJIA','添加')}}</iButton>
-            <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete" v-permission.auto="ACCESSORYPART_CREATERFQ_DELETEBTN|配附件创建RFQ-删除按钮">{{language('SHANCHU','删除')}}</iButton>
-            <!--------------------批量更新采购工厂----------------------------------->
-            <iButton @click="handleChangeFactory" v-permission.auto="ACCESSORYPART_CREATERFQ_UPDATEFACTORYBTN|配附件创建RFQ-批量更新采购工厂按钮">{{language('PILIANGGENGXINCAIGOUGONGCHANG','批量更新采购工厂')}}</iButton>
-          </div>
+        <div class="floatright">
+          <!--------------------保存按钮----------------------------------->
+          <iButton
+            @click="handleSave"
+            :loading="saveLoading"
+            v-permission.auto="
+              ACCESSORYPART_CREATERFQ_PARTSAVEBTN |
+                (配附件创建RFQ - 零件保存按钮)
+            "
+            >{{ language("BAOCUN", "保存") }}</iButton
+          >
+          <!--------------------添加按钮----------------------------------->
+          <iButton
+            @click="handleAddParts"
+            v-permission.auto="
+              ACCESSORYPART_CREATERFQ_ADDBTN | (配附件创建RFQ - 添加按钮)
+            "
+            >{{ language("TIANJIA", "添加") }}</iButton
+          >
+          <!--------------------删除按钮----------------------------------->
+          <iButton
+            @click="handleDelete"
+            v-permission.auto="
+              ACCESSORYPART_CREATERFQ_DELETEBTN | (配附件创建RFQ - 删除按钮)
+            "
+            >{{ language("SHANCHU", "删除") }}</iButton
+          >
+          <!--------------------批量更新采购工厂----------------------------------->
+          <iButton
+            @click="handleChangeFactory"
+            v-permission.auto="
+              ACCESSORYPART_CREATERFQ_UPDATEFACTORYBTN |
+                (配附件创建RFQ - 批量更新采购工厂按钮)
+            "
+            >{{
+              language("PILIANGGENGXINCAIGOUGONGCHANG", "批量更新采购工厂")
+            }}</iButton
+          >
+        </div>
       </div>
-      <tableList v-permission.auto="ACCESSORYPART_CREATERFQ_LINGJIANTABLE|配附件创建RFQ-零件列表" :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPlan="openPlanDialog"></tableList>
+      <tableList
+        v-permission.auto="
+          ACCESSORYPART_CREATERFQ_LINGJIANTABLE | (配附件创建RFQ - 零件列表)
+        "
+        :activeItems="'a1'"
+        selection
+        indexKey
+        :tableData="tableData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+        @openPage="openPage"
+        @openPlan="openPlanDialog"
+      ></tableList>
     </iCard>
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" :stuffId="stuffId" :defaultSearch="defaultSearch" />
+    <addAccessoryPartDialog
+      :dialogVisible="accDialogVisible"
+      @changeVisible="changeAccDialogVisible"
+      @selectPart="selectPart"
+      :stuffId="stuffId"
+      :defaultSearch="defaultSearch"
+    />
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <updateFactoryDialog ref="updateFactory" :dialogVisible="factoryDialogVisible" @changeVisible="changefactoryDialogVisible" @updateFactory="updateFactory" />
+    <updateFactoryDialog
+      ref="updateFactory"
+      :dialogVisible="factoryDialogVisible"
+      @changeVisible="changefactoryDialogVisible"
+      @updateFactory="updateFactory"
+    />
     <!------------------------------------------------------------------------>
     <!--                  添加附件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addFileDialog :dialogVisible="fileDialogVisible" @changeVisible="changefileDialogVisible" @selectPart="selectPart" />
+    <addFileDialog
+      :dialogVisible="fileDialogVisible"
+      @changeVisible="changefileDialogVisible"
+      @selectPart="selectPart"
+    />
     <!------------------------------------------------------------------------>
     <!--                  产能计划弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <capacityPlanningDialog :dialogVisible="planDialogVisible" @changeVisible="changeplanDialogVisible" :detailInfo="selectPlanRow" />
+    <capacityPlanningDialog
+      :dialogVisible="planDialogVisible"
+      @changeVisible="changeplanDialogVisible"
+      :detailInfo="selectPlanRow"
+    />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iMessage } from 'rise'
-import topComponents from '../../designate/designatedetail/components/topComponents'
-import { basicInfo, tableTitle, fileTableTitle } from './data'
-import { pageMixins } from "@/utils/pageMixins"
-import tableList from '@/views/designate/designatedetail/components/tableList'
-import addAccessoryPartDialog from './components/addAccessoryPart'
-import updateFactoryDialog from './components/updateFactory'
-import addFileDialog from './components/addFile'
-import capacityPlanningDialog from './components/capacityPlanning'
-import { getPartBySP, autoInquiry, getDeptList, getUserList, updateRfq } from '@/api/accessoryPart/index'
-import {addRfq,insertRfqPart} from '@/api/partsrfq/home/index'
-import { updateProcureButch } from "@/api/partsprocure/home";
 import {
-  dictkey,
-} from "@/api/partsprocure/editordetail";
-import { uniq } from 'lodash'
-import {partProjTypes} from '@/config'
+  iPage,
+  iCard,
+  iFormGroup,
+  iFormItem,
+  iText,
+  iButton,
+  iInput,
+  iSelect,
+  iMessage,
+} from "rise";
+import topComponents from "../../designate/designatedetail/components/topComponents";
+import { basicInfo, tableTitle, fileTableTitle } from "./data";
+import { pageMixins } from "@/utils/pageMixins";
+import tableList from "@/views/designate/designatedetail/components/tableList";
+import addAccessoryPartDialog from "./components/addAccessoryPart";
+import updateFactoryDialog from "./components/updateFactory";
+import addFileDialog from "./components/addFile";
+import capacityPlanningDialog from "./components/capacityPlanning";
+import {
+  getPartBySP,
+  autoInquiry,
+  getDeptList,
+  getUserList,
+  updateRfq,
+} from "@/api/accessoryPart/index";
+import { addRfq, insertRfqPart } from "@/api/partsrfq/home/index";
+import { updateProcureButch } from "@/api/partsprocure/home";
+import { dictkey } from "@/api/partsprocure/editordetail";
+import { uniq } from "lodash";
+import { partProjTypes } from "@/config";
 export default {
   mixins: [pageMixins],
-  components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
+  components: {
+    iPage,
+    topComponents,
+    iCard,
+    iFormGroup,
+    iFormItem,
+    iText,
+    iButton,
+    iInput,
+    iSelect,
+    tableList,
+    addAccessoryPartDialog,
+    updateFactoryDialog,
+    addFileDialog,
+    capacityPlanningDialog,
+  },
   props: {
-    partType: {type: String, default: '1'} // 零件类型：1：配件   2：附件
+    partType: { type: String, default: "1" }, // 零件类型：1：配件   2：附件
   },
   data() {
     return {
@@ -121,26 +240,26 @@ export default {
       basicLoading: false,
       selectPlanRow: {},
       fromGroup: {},
-      linie: '',
-      linieDept: '',
+      linie: "",
+      linieDept: "",
       saveLoading: false,
-      stuffId: '',
-      defaultSearch: {}
-    }
+      stuffId: "",
+      defaultSearch: {},
+    };
   },
   computed: {
     tableTitle() {
-      const type = this.$route.query.type
-      return type === '1' ? tableTitle : fileTableTitle
-    }
+      const type = this.$route.query.type;
+      return type === "1" ? tableTitle : fileTableTitle;
+    },
   },
   created() {
     // this.getProcureGroup()
-    this.getDepOption()
+    this.getDepOption();
     // this.getUserOptions()
     if (this.$route.query.ids) {
-      this.ids = this.$route.query.ids
-      this.detailData.csfuserName = this.$route.query.csfName
+      this.ids = this.$route.query.ids;
+      this.detailData.csfuserName = this.$route.query.csfName;
       this.defaultSearch = {
         csfuserName: this.$route.query.csfName,
         csfuserId: this.$route.query.csf,
@@ -148,41 +267,44 @@ export default {
         respLinieName: this.$route.query.linieName,
         supplierSapCode: this.$route.query.supplier,
         supplierNameZh: this.$route.query.supplierNameZh,
-        spnrNumList: this.ids.split(',')
-      }
-      this.getList()
+        spnrNumList: this.ids.split(","),
+      };
+      this.getList();
     }
     if (this.$route.query.linie) {
-      this.detailData.linie = this.$route.query.linieName
-      this.linie = this.$route.query.linieName
+      this.detailData.linie = this.$route.query.linieName;
+      this.linie = this.$route.query.linieName;
     }
     if (this.$route.query.linieDept) {
-      this.detailData.linieDept = this.$route.query.linieDeptName
-      this.linieDept = this.$route.query.linieDeptName
+      this.detailData.linieDept = this.$route.query.linieDeptName;
+      this.linieDept = this.$route.query.linieDeptName;
     }
   },
   methods: {
     handleCancel() {
       // const type = this.$route.query.type
       // const url = type === '1' ? '/sourceinquirypoint/sourcing/integratedmanage' : '/sourceinquirypoint/sourcing/filemanage'
-
     },
     handleDelete() {
-      if(this.selectItems.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAOSHANCHUDEHANG','请选择需要删除的行'))
-        return
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("QINGXUANZEXUYAOSHANCHUDEHANG", "请选择需要删除的行")
+        );
+        return;
       }
       // const selectIds = this.selectItems.map(item => item)
-      this.tableData = this.tableData.filter(item => !this.selectItems.includes(item))
-      this.ids = this.tableData.map(item => item.spnrNum).join(',')
-      this.stuffId = this.tableData[0]?.stuffId
+      this.tableData = this.tableData.filter(
+        (item) => !this.selectItems.includes(item)
+      );
+      this.ids = this.tableData.map((item) => item.spnrNum).join(",");
+      this.stuffId = this.tableData[0]?.stuffId;
     },
     handleDeptChange(type, val) {
-      this.detailData[type] = val
-      if (type === 'linieDept') {
-        this.$set(this.detailData,'linie','')
-        this.linie = ''
-        this.getUserOptions()
+      this.detailData[type] = val;
+      if (type === "linieDept") {
+        this.$set(this.detailData, "linie", "");
+        this.linie = "";
+        this.getUserOptions();
       }
     },
     /**
@@ -190,34 +312,46 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getDepOption() {
-      getDeptList({tag:'4'}).then(res => {
+      getDeptList({ tag: "4" }).then((res) => {
         if (res?.result) {
-          this.fromGroup = {...this.fromGroup, LINIE_DEPT: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
+          this.fromGroup = {
+            ...this.fromGroup,
+            LINIE_DEPT: res.data?.map((item) => {
+              return { value: item.id, label: item.nameZh };
+            }),
+          };
         } else {
-          this.fromGroup = {...this.fromGroup, LINIE_DEPT: []}
+          this.fromGroup = { ...this.fromGroup, LINIE_DEPT: [] };
         }
-      })
+      });
     },
     /**
      * @Description: 获取linie下拉
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getUserOptions() {
       // this.detailData = {
       //   ...this.detailData,
       //   linie: ''
       // }
-      getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
-        if (res?.result) {
-          this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
-        } else {
-          this.fromGroup = {...this.fromGroup, LINIE: []}
+      getUserList({ deptId: this.detailData.linieDept, tag: "4" }).then(
+        (res) => {
+          if (res?.result) {
+            this.fromGroup = {
+              ...this.fromGroup,
+              LINIE: res.data?.map((item) => {
+                return { value: item.id, label: item.nameZh };
+              }),
+            };
+          } else {
+            this.fromGroup = { ...this.fromGroup, LINIE: [] };
+          }
         }
-      })
+      );
     },
     linieAndDeptDisable(type) {
       // if (type === 'linie' && this.$route.query.type !== '1') {
@@ -227,7 +361,7 @@ export default {
       //   return true
       // }
       // return false
-      return true
+      return true;
     },
     //获取上方group信息
     getProcureGroup() {
@@ -242,86 +376,114 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     handleChangeFactory() {
       if (this.selectItems.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAOGENGXINDEHANGXIANGMU','请选择需要更新的行项目'))
-        return
+        iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOGENGXINDEHANGXIANGMU",
+            "请选择需要更新的行项目"
+          )
+        );
+        return;
       }
-      this.changefactoryDialogVisible(true)
+      this.changefactoryDialogVisible(true);
     },
     updateFactory(procureFactory, procureFactoryId, procureFactoryName) {
       // this.pushKey();
       // 复制参数对应key
-      const  params = {
-        ids: this.selectItems.map(item => item.purchasingProjectId),
+      const params = {
+        ids: this.selectItems.map((item) => item.purchasingProjectId),
         updateInfo: {
           procureFactory: procureFactory,
           procureFactoryId: procureFactoryId,
           procureFactoryName: procureFactoryName,
-        }
-      }
-      updateProcureButch(params).then((res) => {
-        if (res.data) {
-          iMessage.success(this.language("XIUGAICHENGGONG",'修改成功'));
-          this.changefactoryDialogVisible(false)
-          this.getList()
-        } else {
-          iMessage.error(res.desZh);
-        }
-      }).finally(() => {
-        this.$refs.updateFactory.changeLoading(false)
-      });
+        },
+      };
+      updateProcureButch(params)
+        .then((res) => {
+          if (res.data) {
+            iMessage.success(this.language("XIUGAICHENGGONG", "修改成功"));
+            this.changefactoryDialogVisible(false);
+            this.getList();
+          } else {
+            iMessage.error(res.desZh);
+          }
+        })
+        .finally(() => {
+          this.$refs.updateFactory.changeLoading(false);
+        });
     },
     updateRfq() {
-      this.basicLoading = true
+      this.basicLoading = true;
       const params = {
-          rfqId: this.detailData.rfqId,
-          rfqName: this.detailData.rfqName,
-          rfqDesc: this.detailData.rfqDesc,
-          userId: this.$store.state.permission.userInfo.id
-      }
-      updateRfq(params).then(res => {
-        if (res.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.basicLoading = false
-      })
+        rfqId: this.detailData.rfqId,
+        rfqName: this.detailData.rfqName,
+        rfqDesc: this.detailData.rfqDesc,
+        userId: this.$store.state.permission.userInfo.id,
+      };
+      updateRfq(params)
+        .then((res) => {
+          if (res.result) {
+            iMessage.success(
+              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+            );
+          } else {
+            iMessage.error(
+              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+            );
+          }
+        })
+        .finally(() => {
+          this.basicLoading = false;
+        });
     },
     /**
      * @Description: 生成RFQ
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     handleSaveRfq() {
-      if(this.detailData.rfqId) {
-      //   // 如果rfq编号已存在则变为更新rfq
-        this.updateRfq()
+      if (this.detailData.rfqId) {
+        //   // 如果rfq编号已存在则变为更新rfq
+        this.updateRfq();
       } else {
-        this.basicLoading = true
+        this.basicLoading = true;
         const params = {
-            rfqName: this.detailData.rfqName,
-            rfqDesc: this.detailData.rfqDesc,
-            userId: this.$store.state.permission.userInfo.id,
-            linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
-            linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
-        }
-        addRfq(params).then(res => {
-          if (res?.result) {
-            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-            this.detailData.rfqId = res.data.rfqId
-            this.detailData.currentStatus = res.data?.currentStatus
-            this.detailData.createDateTime = res.data?.createDate
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          }
-        }).finally(() => {
-          this.basicLoading = false
-        })
+          rfqType: this.$route.query.type == "1" ? "ACC" : "ANNEX",
+          rfqName: this.detailData.rfqName,
+          rfqDesc: this.detailData.rfqDesc,
+          userId: this.$store.state.permission.userInfo.id,
+          linieId:
+            this.detailData.linie === this.$route.query.linieName
+              ? this.$route.query.linie
+              : this.detailData.linie,
+          linieName:
+            this.detailData.linie === this.$route.query.linieName
+              ? this.$route.query.linieName
+              : this.fromGroup.LINIE.find(
+                  (item) => item.value === this.detailData.linie
+                )?.label || this.tableData[0].linieName,
+        };
+        addRfq(params)
+          .then((res) => {
+            if (res?.result) {
+              iMessage.success(
+                this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+              );
+              this.detailData.rfqId = res.data.rfqId;
+              this.detailData.currentStatus = res.data?.currentStatus;
+              this.detailData.createDateTime = res.data?.createDate;
+            } else {
+              iMessage.error(
+                this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+              );
+            }
+          })
+          .finally(() => {
+            this.basicLoading = false;
+          });
       }
     },
     /**
@@ -329,32 +491,52 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     async handleAccessorySave() {
       if (!this.detailData.linie || !this.detailData.linieDept) {
-        iMessage.warn(this.language('QINGXUANZELINIEHEBUMEN','请选择部门和LINIE'))
-        return
+        iMessage.warn(
+          this.language("QINGXUANZELINIEHEBUMEN", "请选择部门和LINIE")
+        );
+        return;
       }
-      this.saveLoading = true
+      this.saveLoading = true;
       const params = {
-        linieDeptName: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDeptName : this.fromGroup.LINIE_DEPT.find(item => item.value === this.detailData.linieDept)?.label || this.tableData[0].linieDeptName,
-        linieDept: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDept : this.detailData.linieDept,
-        linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
-        linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
+        linieDeptName:
+          this.detailData.linieDept === this.$route.query.linieDeptName
+            ? this.$route.query.linieDeptName
+            : this.fromGroup.LINIE_DEPT.find(
+                (item) => item.value === this.detailData.linieDept
+              )?.label || this.tableData[0].linieDeptName,
+        linieDept:
+          this.detailData.linieDept === this.$route.query.linieDeptName
+            ? this.$route.query.linieDept
+            : this.detailData.linieDept,
+        linieId:
+          this.detailData.linie === this.$route.query.linieName
+            ? this.$route.query.linie
+            : this.detailData.linie,
+        linieName:
+          this.detailData.linie === this.$route.query.linieName
+            ? this.$route.query.linieName
+            : this.fromGroup.LINIE.find(
+                (item) => item.value === this.detailData.linie
+              )?.label || this.tableData[0].linieName,
         rfqId: this.detailData.rfqId,
-        spNums: this.tableData.map(item => item.spnrNum),
+        spNums: this.tableData.map((item) => item.spnrNum),
         stuffId: this.tableData[0].stuffId,
-        supplierSapCodes: this.tableData.map(item => item.supplierSapCode)
-      }
-      const res = await autoInquiry(params)
+        supplierSapCodes: this.tableData.map((item) => item.supplierSapCode),
+      };
+      const res = await autoInquiry(params);
       if (res?.result) {
-        this.saveLoading = false
-        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-        window.open(router.href,'_blank')
+        this.saveLoading = false;
+        iMessage.success(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
+        const router = this.$router.resolve({
+          path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`,
+        });
+        window.open(router.href, "_blank");
       } else {
-        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        this.saveLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
+        this.saveLoading = false;
       }
     },
     /**
@@ -362,35 +544,37 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     async handleAttachmentSave() {
-      this.saveLoading = true
-      const params = this.tableData.map(item => {
+      this.saveLoading = true;
+      const params = this.tableData.map((item) => {
         return {
-              buyerName: item.buyerName, // 询价采购员
-              buyerId:item.buyerId,
-              linieName: item.linieName, // linie
-              linieId: item.linieUserId, // linie
-              partNum: item.partNum, // 零件号
-              fsnrGsnrNum: item.spnrNum, // fs号
-              stuffId: item.stuffId, // 工艺组ID，还没有
-              stuffName: item.stuffName, // 工艺组name，还没有
-              purchaseProjectId: item.purchasingProjectId,
-              partNameZh: item.partNameZh,
-              partProjectType: partProjTypes.FUJIAN,
-              rfqId: this.detailData.rfqId,
-              userId: this.$store.state.permission.userInfo.id
-            }
-      })
-      const res = await insertRfqPart(params)
+          buyerName: item.buyerName, // 询价采购员
+          buyerId: item.buyerId,
+          linieName: item.linieName, // linie
+          linieId: item.linieUserId, // linie
+          partNum: item.partNum, // 零件号
+          fsnrGsnrNum: item.spnrNum, // fs号
+          stuffId: item.stuffId, // 工艺组ID，还没有
+          stuffName: item.stuffName, // 工艺组name，还没有
+          purchaseProjectId: item.purchasingProjectId,
+          partNameZh: item.partNameZh,
+          partProjectType: partProjTypes.FUJIAN,
+          rfqId: this.detailData.rfqId,
+          userId: this.$store.state.permission.userInfo.id,
+        };
+      });
+      const res = await insertRfqPart(params);
       if (res?.result) {
-        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        this.saveLoading = false
-        const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-        window.open(router.href,'_blank')
+        iMessage.success(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
+        this.saveLoading = false;
+        const router = this.$router.resolve({
+          path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`,
+        });
+        window.open(router.href, "_blank");
       } else {
-        this.saveLoading = false
-        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        this.saveLoading = false;
+        iMessage.error(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
       }
     },
     /**
@@ -398,16 +582,18 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     handleSave() {
       if (!this.detailData.rfqId) {
-        iMessage.warn(this.language('QINGXIANBAOCUNRFQXINXI','请先保存rfq的信息'))
-        return
+        iMessage.warn(
+          this.language("QINGXIANBAOCUNRFQXINXI", "请先保存rfq的信息")
+        );
+        return;
       }
-      if (this.$route.query.type === '1') {
-        this.handleAccessorySave()
+      if (this.$route.query.type === "1") {
+        this.handleAccessorySave();
       } else {
-        this.handleAttachmentSave()
+        this.handleAttachmentSave();
       }
     },
     /**
@@ -415,107 +601,117 @@ export default {
      * @Author: Luoshuang
      * @param {*} selectParts 选择的零件，为sp号数组
      * @return {*}
-     */    
+     */
     selectPart(selectParts) {
-      this.ids = uniq([...this.ids.split(','), ...selectParts]).join(',')
-      this.changeAccDialogVisible(false)
-      this.changefileDialogVisible(false)
-      this.getList()
+      this.ids = uniq([...this.ids.split(","), ...selectParts]).join(",");
+      this.changeAccDialogVisible(false);
+      this.changefileDialogVisible(false);
+      this.getList();
     },
     /**
      * @Description: 获取表格数据
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getList() {
-      this.tableLoading = true
+      this.tableLoading = true;
       const params = {
-        spNumList: this.ids.split(','),
+        spNumList: this.ids.split(","),
         // projectType: this.$route.query.type === '1' ? '0' : '1'
-      }
-      getPartBySP(params).then(res => {
-        if (res?.result) {
-          this.tableData = res.data
-          this.detailData = {
-            ...this.detailData,
-            rfqName:res.data[0] ? res.data[0].partNum + (res.data[0].partNameZh && ('-'+res.data[0].partNameZh)) + (res.data[0].partNameDe && ('-'+res.data[0].partNameDe)) : ''
+      };
+      getPartBySP(params)
+        .then((res) => {
+          if (res?.result) {
+            this.tableData = res.data;
+            this.detailData = {
+              ...this.detailData,
+              rfqName: res.data[0]
+                ? res.data[0].partNum +
+                  (res.data[0].partNameZh && "-" + res.data[0].partNameZh) +
+                  (res.data[0].partNameDe && "-" + res.data[0].partNameDe)
+                : "",
+            };
+            this.stuffId = res.data[0]?.stuffId || "";
+          } else {
+            this.tableData = [];
+            iMessage.error(
+              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+            );
           }
-          this.stuffId = res.data[0]?.stuffId || ''
-        } else {
-          this.tableData = []
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.tableLoading = false
-      })
+        })
+        .finally(() => {
+          this.tableLoading = false;
+        });
     },
     /**
      * @Description: 点击产能计划列打开产能计划弹窗
      * @Author: Luoshuang
      * @param {*} row
      * @return {*}
-     */    
+     */
     openPlanDialog(row) {
-      this.selectPlanRow = row
-      this.changeplanDialogVisible(true)
+      this.selectPlanRow = row;
+      this.changeplanDialogVisible(true);
     },
     /**
      * @Description: 表格选中行
      * @Author: Luoshuang
      * @param {*} val
      * @return {*}
-     */    
+     */
     handleSelectionChange(val) {
-      this.selectItems = val
+      this.selectItems = val;
     },
     /**
      * @Description: 产能计划弹窗状态修改
      * @Author: Luoshuang
      * @param {*} visible
      * @return {*}
-     */    
+     */
     changeplanDialogVisible(visible) {
-      this.planDialogVisible = visible
+      this.planDialogVisible = visible;
     },
     /**
      * @Description: 添加配件弹窗状态修改
      * @Author: Luoshuang
      * @param {*} visible
      * @return {*}
-     */    
+     */
     changeAccDialogVisible(visible) {
-      this.accDialogVisible = visible
+      this.accDialogVisible = visible;
     },
     /**
      * @Description: 添加附件弹窗状态修改
      * @Author: Luoshuang
      * @param {*} visible
      * @return {*}
-     */    
+     */
     changefileDialogVisible(visible) {
-      this.fileDialogVisible = visible
+      this.fileDialogVisible = visible;
     },
     /**
      * @Description: 添加按钮点击事件，根据类型打开不同的弹窗
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     handleAddParts() {
-      if(!this.detailData.rfqId) {
-        iMessage.warn(this.language('QINGXIANBAOCUNRFQXINXI','请先保存RFQ信息'))
-        return
+      if (!this.detailData.rfqId) {
+        iMessage.warn(
+          this.language("QINGXIANBAOCUNRFQXINXI", "请先保存RFQ信息")
+        );
+        return;
       }
-      switch(this.$route.query.type) {
-        case '1': // 配件
-          this.changeAccDialogVisible(true)
-          break
-        case '2':
-          this.changefileDialogVisible(true)
-          break
+      switch (this.$route.query.type) {
+        case "1": // 配件
+          this.changeAccDialogVisible(true);
+          break;
+        case "2":
+          this.changefileDialogVisible(true);
+          break;
         default:
-          break
+          break;
       }
     },
     /**
@@ -526,13 +722,13 @@ export default {
      */
     changefactoryDialogVisible(visible) {
       if (this.selectItems.length < 1) {
-        iMessage.warn(this.language('QINGXUANZELINGJIAN','请选择零件'))
-        return
+        iMessage.warn(this.language("QINGXUANZELINGJIAN", "请选择零件"));
+        return;
       }
-      this.factoryDialogVisible = visible
-    }
-  }
-}
+      this.factoryDialogVisible = visible;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
