@@ -182,7 +182,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["OTS准时完成率","OTS总数"]);
                     }
                 })
                 
@@ -206,7 +206,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["定点准时完成率","定点总数"]);
                     }
                 })
                 
@@ -254,7 +254,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["EM准时完成率","OTS准时完成率","定点总数"]);
                     }
                 })
                 
