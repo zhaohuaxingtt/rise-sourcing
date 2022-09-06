@@ -96,9 +96,9 @@ export const shuttleTableTitle = [
 ]
 
 export const searchList = [
-  {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
-  {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList'},
-  {prop:'pro',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions'},
+  {prop:'materialGroupIds',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
+  {prop:'buyerIds',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList'},
+  {prop:'cartypeProIds',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions'},
 ]
 
 export const delayAnalysisSearchList = [
@@ -122,12 +122,12 @@ export const progressDetailSearchList = [
 ]
 
 export const kickOffSearchList = [
-  {prop:'prop1',label:'车型项目',key:'',type:'input'},
-  {prop:'prop2',label:'材料组',key:'',type:'input'},
-  {prop:'prop3',label:'RFQ',key:'',type:'input'},
-  {prop:'prop4',label:'零件号',key:'',type:'input'},
-  {prop:'prop5',label:'零件名称',key:'',type:'input'},
-  {prop:'prop6',label:'零件类型',key:'',type:'select', selectOption:'partTypeOptions'},
-  {prop:'prop7',label:'供应商',key:'',type:'input'},
-  {prop:'prop8',label:'进度状态',key:'',type:'select', selectOption:'proessOptions'},
+  {prop:'cartypePro',label:'车型项目',key:'',type:'input'},
+  {prop:'materialGroupNameZh',label:'材料组',key:'',type:'input'},
+  {prop:'rfq',label:'RFQ',key:'',type:'input'},
+  {prop:'partNum',label:'零件号',key:'',type:'input'},
+  {prop:'partName',label:'零件名称',key:'',type:'input'},
+  {prop:'partType',label:'零件类型',key:'',type:'select', selectOption:'partTypeOptions'},
+  {prop:'supplier',label:'供应商',key:'',type:'input'},
+  {prop:'completion',label:'进度状态',key:'',type:'select', selectOption:'proessOptions'},
 ]

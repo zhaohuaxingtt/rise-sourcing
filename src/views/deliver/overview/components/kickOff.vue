@@ -40,13 +40,13 @@ export default {
     return {
       searchList,
       selectOptions: {
-        partTypeOptions: [
+        partTypeOptions: [//零件类型
           {
             label: "类型1",
             value: 1,
           },
         ],
-        proessOptions: [
+        proessOptions: [//进度状态
           {
             label: "进度1",
             value: 1,
@@ -54,8 +54,14 @@ export default {
         ],
       },
       searchParams: {
-        prop6: "",
-        prop8: "",
+        cartypePro: "",
+        materialGroupNameZh: "",
+        rfq: "",
+        partNum: "",
+        partName: "",
+        partType: "",//零件类型
+        supplier: "",
+        completion: "",//进度状态
       },
       titleName:"",
     };

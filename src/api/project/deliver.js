@@ -6,6 +6,16 @@ const requstToolingApi = axios(process.env.VUE_APP_TOOLING)
 
 const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECTMGT)
 
+const requstDic = axios(process.env.VUE_APP_DIC)
+
+// 查询材料组
+export function getDictByCode(code) {
+    return requstDic({
+        url: `/dict?code=${code}`,
+        method: 'GET'
+    })
+}
+
 // 查询材料组
 export function material_group_list(params) {
     return requst({
@@ -32,3 +42,14 @@ export function buyer_list(params) {
         params
     })
 }
+
+// 查询总览页所有数据
+export function sample_overviewPage(data) {
+    return requst({
+        url: '/sample_overview/page',
+        method: 'POST',
+        data
+    })
+}
+
+

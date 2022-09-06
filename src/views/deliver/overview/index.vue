@@ -36,7 +36,7 @@ import projectTop from "../components/projectHeader";
 import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
-import { getOverview, getAllProPurchaser } from '@/api/project'
+import { sample_overviewPage } from '@/api/project/deliver'
 
 import {
   material_group_list,
@@ -58,26 +58,19 @@ export default {
       searchList,
       selectOptions: {
         deptOptions: [//材料组
-          {
-            label: "组1",
-            value: 1,
-          },
+
         ],
         buyerList: [//采购员
-          {
-            label: "111",
-            value: 1,
-          },
+
         ],
         carProjectOptions: [//车型项目
-          {
-            label: "test",
-            value: 1,
-          },
+
         ],
       },
       searchParams: {
-        carProject: "",
+        buyerIds: "",
+        cartypeProIds: "",
+        materialGroupIds: "",
       },
       tableTitle: [
         { props: "type", name: "分类", key: "" },
@@ -107,8 +100,18 @@ export default {
   },
   created() {
     this.searchData()
+    this.getDataList();
   },
   methods: {
+    getDataList(){
+      sample_overviewPage({
+        buyerIds:[],//采购员
+        cartypeProIds:[],//车型项目
+        materialGroupIds:[],//材料组
+      }).then(res=>{
+        console.log(res);
+      })
+    },
     sure(form){
       this.searchParams = form
     },
@@ -131,12 +134,7 @@ export default {
           this.selectOptions.buyerList = res.data
         }
       })
-      // getOverview().then(res=>{
-      //   if(res?.code=='200'){
-      //     this.tableData = res.data
-      //   }
-      // })
-    }
+    },
   },
 };
 </script>
