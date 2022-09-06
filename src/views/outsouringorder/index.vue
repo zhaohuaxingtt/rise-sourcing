@@ -503,6 +503,7 @@ export default {
             return { riseCode: item.riseCode, sapItem: item.sapItem };
           }),
           closeReason: reasonDescription,
+          isAllItem,
         };
         closeOutSouringOrder(params)
           .then((res) => {
