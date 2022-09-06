@@ -28,7 +28,7 @@
         </iCard>
         <iCard class="marginTop20" :title="$t('明细数据')">
             <template v-slot:header-control>
-                <iButton @click="editTitle">{{$t("编辑表头")}}</iButton><!-- 编辑表头 -->
+                <!-- <iButton @click="editTitle">{{$t("编辑表头")}}</iButton> -->
             </template>
             <tableList 
                 :tableData="tableListData" 
