@@ -59,7 +59,8 @@ export default {
   },
   mixins: [tableSortMixins, pageMixins],
   props:{
-    title:{ type: String, }
+    title:{ type: String, },
+    dataList:{type:Array,default:[]},
   },
   data() {
     return {
@@ -68,17 +69,15 @@ export default {
       tableTitle,
       tableListData: [
         {
-          col1: "ID4.X",
-          col2: "80000967",
-          col3: "123",
-          col4: "111",
-          col5: "示例零件1",
-          col6: "Nomi",
-          col7: "20W-20",
-          col8: "重度延期4周",
-          col9: "手工输入原因",
-          col10: "宁波金鑫粉末冶金有限公司",
-          status: 1,
+          cartypeProNameZh: "ID4.X",
+          rfq: "80000967",
+          materialGroupCode: "123",
+          partNum: "111",
+          partNameZh: "示例零件1",
+          partType: "Nomi",
+          soll: "20W-20",
+          progress: "重度延期4周",
+          supplierName: "宁波金鑫粉末冶金有限公司",
         },
       ],
     };

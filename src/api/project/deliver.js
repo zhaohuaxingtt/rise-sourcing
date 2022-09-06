@@ -52,4 +52,12 @@ export function sample_overviewPage(data) {
     })
 }
 
+// 查询总览-零件列表-所有数据
+export function sample_part_listPage(data) {
+    return requst({
+        url: '/sample_part_list/page',
+        method: 'POST',
+        data
+    })
+}
 

@@ -60,16 +60,16 @@ export const COMFIRMTAB = [
 ]
 
 export const tableTitle = [
-  { props: "col1", name: "车型项目", key: "", tooltip: true, },
-  { props: "col2", name: "RFQ", key: "", tooltip: true,},
-  { props: "col3", name: "材料组编号", key: "", tooltip: true,  },
-  { props: "col4", name: "零件号", key: "", tooltip: true, },
-  { props: "col5", name: "零件名称", key: "", tooltip: true, },
-  { props: "col6", name: "零件类型", key: "", tooltip: true,  },
-  { props: "col7", name: "Soll", key: "", tooltip: true,  },
-  { props: "col8", name: "进度", key: "", tooltip: true,  },
+  { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true, },
+  { props: "rfq", name: "RFQ", key: "", tooltip: true,},
+  { props: "materialGroupCode", name: "材料组编号", key: "", tooltip: true,  },
+  { props: "partNum", name: "零件号", key: "", tooltip: true, },
+  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
+  { props: "partType", name: "零件类型", key: "", tooltip: true,  },
+  { props: "soll", name: "Soll", key: "", tooltip: true,  },
+  { props: "progress", name: "进度", key: "", tooltip: true,  },
   // { props: "col9", name: "延迟原因备注", key: "", tooltip: true, minWidth:120 },
-  { props: "col10", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
+  { props: "supplierName", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
 ]
 
 export const shuttleTableTitle = [
@@ -96,9 +96,9 @@ export const shuttleTableTitle = [
 ]
 
 export const searchList = [
-  {prop:'materialGroupIds',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
-  {prop:'buyerIds',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList'},
-  {prop:'cartypeProIds',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions'},
+  {prop:'materialGroupIds',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions',multiple:true},
+  {prop:'buyerIds',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList',multiple:true},
+  {prop:'cartypeProIds',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions',multiple:true},
 ]
 
 export const delayAnalysisSearchList = [

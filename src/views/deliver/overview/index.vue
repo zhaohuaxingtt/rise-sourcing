@@ -14,12 +14,12 @@
     <div class="flex-end">
         <iButton>导出</iButton>
     </div>
-    <div class="margin-top20">
-      <template v-for="i in 3">
+    <div class="margin-top20" v-loading="loading">
+      <template v-for="(item,index) in tabelDataList">
         <proItem
-          :key="i"
+          :key="index"
           class="margin-top20"
-          :tableTitle="tableTitle"
+          :dataList="item"
         ></proItem>
       </template>
     </div>
@@ -58,79 +58,65 @@ export default {
       searchList,
       selectOptions: {
         deptOptions: [//材料组
-
+          
         ],
         buyerList: [//采购员
-
+          
         ],
         carProjectOptions: [//车型项目
-
+          
         ],
       },
       searchParams: {
-        buyerIds: "",
-        cartypeProIds: "",
-        materialGroupIds: "",
+        buyerIds:[],//采购员
+        cartypeProIds:[],//车型项目
+        materialGroupIds:[],//材料组
       },
-      tableTitle: [
-        { props: "type", name: "分类", key: "" },
-        { props: "csc", name: "CSC", key: "" },
-        { props: "Kickoff", name: "Kickoff", key: "" },
-        { props: "BF", name: "BF", key: "" },
-        { props: "Data", name: "Data", key: "" },
-        {
-          props: "tryout",
-          name: "1st Tryout",
-          key: "",
-        },
-        { props: "OTS", name: "OTS", key: "" },
-        {
-          props: "EM",
-          name: "EM",
-          key: "",
-          children: [
-            { props: "M", name: "M", key: "" },
-            // { props: "D", name: "D", key: "" },
-            // { props: "C", name: "C", key: "" },
-            { props: "G", name: "G", key: "" },
-          ],
-        },
-      ],
+      tabelDataList:[],
+      loading:false,
     };
   },
   created() {
-    this.searchData()
+    // this.searchData()
     this.getDataList();
   },
   methods: {
     getDataList(){
-      sample_overviewPage({
-        buyerIds:[],//采购员
-        cartypeProIds:[],//车型项目
-        materialGroupIds:[],//材料组
-      }).then(res=>{
-        console.log(res);
+      this.loading = true;
+      sample_overviewPage(this.searchParams).then(res=>{
+        if(res?.result){
+          this.tabelDataList = _.cloneDeep(res.data)
+        }
+        this.loading = false;
+      }).catch(res=>{
+        this.loading = false;
       })
     },
     sure(form){
-      this.searchParams = form
+      this.searchParams = form;
+      this.getDataList();
     },
     reset(){
-      this.searchParams = {}
+      this.searchParams = {
+        buyerIds: [],
+        cartypeProIds: [],
+        materialGroupIds: [],
+      }
+      this.getDataList();
     },
     searchData(){
       material_group_list({}).then(res=>{
-        if(res?.code=='200'){
+        if(res?.result){
           this.selectOptions.deptOptions = res.data
         }
       })
       cartype_pro_List({}).then(res=>{
-        if(res?.code=='200'){
+        if(res?.result){
           this.selectOptions.carProjectOptions = res.data
         }
       })
       buyer_list({}).then(res=>{
-        if(res?.code=='200'){
+        if(res?.result){
           this.selectOptions.buyerList = res.data
         }
       })
