@@ -31,7 +31,7 @@
       <div class="toolingcost-content-item lineClass"></div>
       <div class="toolingcost-content-item">Tooling investment applied:<span>{{toolinginvestment}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
-      <div class="toolingcost-content-item">ooling nominated. / %:<span>{{toolinginvestment}}mio / {{toolinginvestmentApplied}}%</span></div>
+      <div class="toolingcost-content-item">Tooling nominated. / %:<span>{{toolinginvestment}}mio / {{toolinginvestmentApplied}}%</span></div>
     </iCard>
     <div class="margin-top20 tabPart">
       <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">

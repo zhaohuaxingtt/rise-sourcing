@@ -550,7 +550,13 @@ export default {
             this.page.currPage = 1
             // 若有定点起止时间将其拆分成两个字段
             this.getVSIData(this.searchParams.search1);
+
+            console.log(111111)
+
             this.getTableList();
+
+            console.log(22222)
+
         },
         reset(){
             this.searchParams = _.cloneDeep(this.searchParamsOld)
@@ -780,13 +786,13 @@ export default {
             //         size:this.page.pageSize,
             //     }
             // }else{
-                const nomiValue = [];
+                var nomiValueDataList = [];
                 if(this.searchParams.search4 !== ""){
-                    nomiValue = this.searchParams.search4.split(",")
+                    nomiValueDataList = this.searchParams.search4.split(",")
                 }
                 data = {
                     cartypeProIdList:[this.searchParams.search1],
-                    nomiPartNumList:nomiValue,
+                    nomiPartNumList:nomiValueDataList,
                     partPrjTypeList:this.searchParams.search3,
                     vsiPartName:this.searchParams.search5,
                     vwSetList:this.searchParams.search2,
