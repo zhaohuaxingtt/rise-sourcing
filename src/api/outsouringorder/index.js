@@ -33,7 +33,7 @@ export function outsouringFindBypage(parmars) {
  */
 export function deleteOutSouring(parmars) {
 	return requst({
-		url: '/pr/normalPr/delete',
+		url: '/pr/normalPr/deleteNormalPrBatch',
 		method: 'POST',
 		data: parmars,
 	})

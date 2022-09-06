@@ -438,7 +438,7 @@ export default {
     handleBatchDelete(isAllItem) {
       this.tableLoading = true;
       deleteOutSouring({
-        idList: this.selectRow.map((k) => k.purchasingRequirementId),
+        requirementIds: this.selectRow.map((k) => k.purchasingRequirementId),
         isAllItem,
       })
         .then((res) => {
