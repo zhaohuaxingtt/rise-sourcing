@@ -194,10 +194,18 @@ export function echartsSupplerEM(data,type){
                 params.forEach((e,index) => {
                     t += '<div>'
                     t += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + e.color + ';"></span>'
-                    if(index == 0){
-                        t += e.seriesName + ':' + e.value + '%'
+                    if(name.length == 3){
+                        if(index == 0 || index == 1){
+                            t += e.seriesName + ':' + e.value + '%'
+                        }else{
+                            t += e.seriesName + ':' + e.value
+                        }
                     }else{
-                        t += e.seriesName + ':' + e.value
+                        if(index == 0){
+                            t += e.seriesName + ':' + e.value + '%'
+                        }else{
+                            t += e.seriesName + ':' + e.value
+                        }
                     }
                     t += '</div>'
                 });
