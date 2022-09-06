@@ -12,18 +12,22 @@
     <!-- <projectTop :subNavList="subMenu" /> -->
     <!-- <router-view></router-view> -->
     <projectTop />
-    <comingSoon />
+    <!-- <comingSoon /> -->
+    <router-view></router-view>
   </iPage>
-  
 </template>
 
 <script>
 import { iPage } from 'rise'
 import projectTop from '../components/projectHeader'
 import { MENU } from './data'
-import comingSoon from '@/views/project/components/comingSoon'
+// import comingSoon from '@/views/project/components/comingSoon'
 export default {
-  components: { iPage, projectTop, comingSoon },
+  components: { 
+    iPage, 
+    projectTop, 
+    // comingSoon 
+  },
   data() {
     return {
       subMenu: MENU,

@@ -13,30 +13,39 @@
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
     <iCard class="carProgress" >
-      <carProject :carProjectId="carProjectId" />
+      <div class="projectProgressCard" slot="header-control">
+        <div class="titleSearch">
+          <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
+          <carProjectSelect ref="carSelect" optionType="2" :multiple="false" :filterable="true" v-model="carProjectId" :cartypeProName="cartypeProName" @change="handleCarProjectChange" :disabled="disabled" @defaultCarModel="defaultCarModel" />
+        </div>
+      </div>
+      <carProject v-if="carHasShow"  :carProjectId="carProjectId" @changeSopStatus="changeSopStatus" />
     </iCard>
     <!---------------------------------------------------------------------->
     <!----------                  Tooling cost              ---------------->
     <!---------------------------------------------------------------------->
     <iCard class="toolingcost margin-top20">
       <div class="toolingcost-title">Tooling cost (RMB)</div>
-      <div class="toolingcost-content">
-        <div class="toolingcost-content-item">Tooling budget:<span>{{tollingBudget}}mio</span></div>
-        <div class="toolingcost-content-item">Tooling investment applied / %:<span>{{toolinginvestment}}mio / {{toolinginvestmentApplied}}%</span></div>
-      </div>
+      <div class="toolingcost-content-item lineClass"></div>
+      <div class="toolingcost-content-item">Tooling budget:<span>{{tollingBudget}}mio</span></div>
+      <div class="toolingcost-content-item lineClass"></div>
+      <div class="toolingcost-content-item">Tooling investment applied:<span>{{toolinginvestment}}mio</span></div>
+      <div class="toolingcost-content-item lineClass"></div>
+      <div class="toolingcost-content-item">ooling nominated. / %:<span>{{toolinginvestment}}mio / {{toolinginvestmentApplied}}%</span></div>
     </iCard>
     <div class="margin-top20 tabPart">
       <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
         <el-tab-pane lazy label="Parts Progress Overview" :name="'overview'" >
-          <searchPart />
-          <overviewChart ref="overviewChart"  />
+          <!-- <searchPart /> -->
+          <overviewChart v-if="carHasShow && currentTab=='overview'" ref="overviewChart" :cartypeId="cartypeId" />
         </el-tab-pane>
         <el-tab-pane lazy label="Parts Progress Detail" :name="'detail'" >
-          <searchPart />
-          <detailChart ref="detailChart" />
+          <!-- <searchPart /> -->
+          <detailChart v-if="carHasShow && currentTab=='detail'"  ref="detailChart"  :cartypeId="cartypeId"/>
         </el-tab-pane>
       </iTabsList>
-      <iButton class="exportBtn">{{language('DAOCHUBAOGAO', '导出报告')}}</iButton>
+      <span class="exportBtn">{{$t("以下报表统计维度为零件数量")}}</span>
+      <!-- <iButton class="exportBtn">{{language('DAOCHUBAOGAO', '导出报告')}}</iButton> -->
     </div>
   </iPage>
 </template>
@@ -44,24 +53,128 @@
 <script>
 import { iPage, iCard, iTabsList, iButton } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress/components/progress'
+import { findCartypePro } from "@/api/project/projectprogressreport";
 import searchPart from './components/searchPart'
 import overviewChart from './components/overviewChart'
 import detailChart from './components/detailChart'
+import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 export default {
-  components: { iPage, iCard, carProject, iTabsList, iButton, searchPart, overviewChart, detailChart },
+  components: { iPage, iCard, carProject, iTabsList, iButton, searchPart, overviewChart, detailChart,carProjectSelect },
+  props:{
+    disabled: {type:Boolean, default:false},
+  },
   data() {
     return { 
-      carProjectId: '3',
+      carProjectId: '',
+      cartypeId: '',
       tollingBudget: '50',
       toolinginvestment: '40',
       toolinginvestmentApplied: '80',
-      currentTab: 'overview'
+      currentTab: 'overview',
+      carHasShow:false,
     }
-  }
+  },
+  created(){
+    // console.log(this.carProjectId)
+  },
+  methods:{
+    defaultCarModel(data){
+      if(this.$route.query.carProject){
+        this.carProjectId = this.$route.query.carProject;
+        this.$refs.carSelect.data = this.$route.query.carProject;
+        this.cartypeId = data.list.find(item => item.value === this.$route.query.carProject).cartypeId;
+        this.getFindCartypePro(this.$route.query.carProject);
+        console.log(this.carProjectId)
+        console.log(this.cartypeId)
+      }else{
+        // this.carProjectId = data.data;
+        this.carProjectId = "50024008";
+        // this.$refs.carSelect.data = data.data;
+        this.$refs.carSelect.data = "50024008";
+        this.cartypeId = '50024008';
+        // this.cartypeId = data.list.find(item => item.value === data.data).cartypeId;
+        this.getFindCartypePro(this.carProjectId);
+        console.log(this.carProjectId)
+        console.log(this.cartypeId)
+      }
+      this.carHasShow = true;
+    },
+    handleCarProjectChange(val, valLabel,cartypeId) {
+      console.log(val,valLabel,cartypeId);
+      this.getFindCartypePro(val);
+
+      this.$emit('handleCarProjectChange', val, valLabel)
+
+      if(this.currentTab=='overview'){
+        this.$refs.overviewChart.changeRefresh(val);
+      }else if(this.currentTab=='detail'){
+        this.$refs.detailChart.changeRefresh(val);
+      }
+    },
+    getFindCartypePro(val){//获取tooling cost数据
+      findCartypePro({
+        cartypeProId:[val],
+        localFactoryName: "",
+        showHistory: "0",
+        showSelf: "Y",
+        sopBegin: "",
+        sopEnd: "",
+      }).then(res=>{
+        console.log(res)
+      })
+    },
+
+
+
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+::v-deep .cardHeader{
+  justify-content: flex-start!important;
+}
+.projectProgressCard {
+  float:left;
+  &-content {
+    margin-top: 20px;
+    border-top: 1px dashed #BBC4D6;;
+  }
+  .titleSearch-label {
+    width: auto !important;
+  }
+  .titleSearch {
+    display: flex;
+    align-items: center;
+    float: left;
+    &-label {
+      display: block;
+      width: 60px;
+      font-size: 14px !important;
+    }
+    ::v-deep .el-select {
+      width: 240px;
+    }
+  }
+  ::v-deep .cardHeader {
+
+    width: 100%;
+    & > div {
+      &:first-child {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  ::v-deep .cardBody {
+    margin-top: -15px;
+  }
+}
+.lineClass{
+  border-right: 1px solid #cbcaca;
+  height: 25px;
+}
 .partprogress {
   padding: 0;
   padding-top: 10px;
@@ -96,11 +209,9 @@ export default {
           margin-left: 60px;
         }
         &:first-child {
-          padding-right: 80px;
-          border-right: 1px solid #eee;
         }
         &:last-child {
-          padding-left: 80px;
+          // padding-left: 80px;
         }
       }
       
@@ -109,10 +220,11 @@ export default {
   }
   .tabPart {
     position: relative;
-    ::v-deep .el-button.exportBtn {
+    ::v-deep .exportBtn {
+      font-size:14px;
       position: absolute;
       right: 0;
-      top: 0;
+      top: 10px;
     }
   }
 }

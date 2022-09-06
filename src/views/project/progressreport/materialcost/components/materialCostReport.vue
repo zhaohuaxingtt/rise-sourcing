@@ -9,28 +9,20 @@
 
 <template>
   <iCard class="overviewChartWrapper margin-top20 iframe-powerbi">
-    <!-- <iButton @click="getMap">12121211221</iButton> -->
     <div id='powerBi'></div>
   </iCard>
 </template>
 
 <script>
-import { iCard,iButton } from 'rise'
+import { iCard } from 'rise'
 import * as pbi from "powerbi-client";
 import { getReportBobOverview } from "@/api/project/projectprogressreport";
-
-// import { downloadPDF,uploadUdFile } from "@/utils/pdf";
-
 export default {
   components: { 
-    iCard,
-    iButton,
+    iCard, 
   },
   props: {
-    cartypeId:{
-      type:String,
-      default:""
-    }
+    
   },
   data() {
     return {
@@ -39,7 +31,7 @@ export default {
         tenantId: '8716a3b9-b827-484b-92ad-ed90aaf4d707',
         clientSecret: '6cpyeTY~dAmL-Uub2X8Om30Mm2EUk-d.TS',
         workspaceId:process.env.NODE_ENV === "production"?"c272ae69-a6b4-4407-bd0e-f67953de36ce":"876776a9-f959-442e-a011-b4bade0dd862",
-        reportId: process.env.NODE_ENV === "production"?"":"b45a3f28-ade2-4628-9f6a-ddd74c2bf1d4",
+        reportId: process.env.NODE_ENV === "production"?"":"4d0913cc-53e3-4109-ac03-77e2cbb81e28",
       },
       config: {
         type: "",
@@ -76,30 +68,6 @@ export default {
     this.getUrl();
   },
   methods: {
-    // getMap(){
-      //  window.print();
-      // downloadPDF({
-      //   idEle: "#powerBi",
-      //   pdfName:"powerbi",
-      //   exportPdf: true,
-      //   callback: async (pdf, pdfName) => {
-      //     try {
-      //       const filename = pdfName.replaceAll(/\./g, '_') + ".pdf";
-      //       const pdfFile = pdf.output("datauristring");
-      //       const blob = dataURLtoFile(pdfFile, filename);
-      //       uploadUdFile({
-      //         applicationName: 'sourcing',
-      //         businessId: Math.ceil(Math.random() * 100000),
-      //         multifile: blob
-      //       }).then(res => {
-      //         iMessage.success("生成成功");
-      //       });
-      //     } catch {
-      //       iMessage.err("生成失败");
-      //     }
-      //   },
-      // });
-    // },
     getUrl(){
       getReportBobOverview({
         ...this.formData
@@ -111,14 +79,7 @@ export default {
     init(){
       this.renderBi();
     },
-    changeRefresh(val){
-      console.log(val)
-      this.filterParameter.values = [val];
-      this.report.setFilters([this.filterParameter]);
-    },
     renderBi(){
-      
-
       var that = this;
       let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       var config = {
@@ -139,23 +100,23 @@ export default {
       };
       var reportContainer = document.getElementById('powerBi');
       this.report = powerbi.embed(reportContainer, config);
-      console.log(this.cartypeId)
-      this.report.on("loaded", async function () {
-        //设置参数
-        that.filterParameter = {
-              $schema: "http://powerbi.com/product/schema#basic",
-              target: {
-                table: "app_proc_pm_part_progress_overview_nt_daily",
-                column: "CartypeProjectID",
-              },
-              operator: "In",
-              values: [that.cartypeId],
-              filterType: pbi.models.FilterType.BasicFilter,
-              requireSingleSelection: true
-        };
-        //设置筛选器
-        that.report.setFilters([that.filterParameter]);
-      });
+      // console.log(this.cartypeId)
+      // this.report.on("loaded", async function () {
+      //   //设置参数
+      //   that.filterParameter = {
+      //         $schema: "http://powerbi.com/product/schema#basic",
+      //         target: {
+      //           table: "app_proc_pm_part_progress_overview_nt_daily",
+      //           column: "CartypeProjectID",
+      //         },
+      //         operator: "In",
+      //         values: [that.cartypeId],
+      //         filterType: pbi.models.FilterType.BasicFilter,
+      //         requireSingleSelection: true
+      //   };
+      //   //设置筛选器
+      //   that.report.setFilters([that.filterParameter]);
+      // });
     },
   }
 }

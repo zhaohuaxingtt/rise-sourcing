@@ -97,6 +97,11 @@
             <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
             <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
+          <!-- 跳转项目进度报告 -->
+          <div class="cursor margin-top30" @click="openReport(dataItem)">
+            <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
+            <span class="openLinkText">{{$t('TIAOZHUANXIANGMUJINDUBAOGAO')}}</span>
+          </div>
         </div>
         <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
         <!---------------------------------------------------------------------->
@@ -293,6 +298,22 @@ export default {
      */    
     openMonitoring(row) {
       const router =  this.$router.resolve({path: '/projectmgt/projectprogressmonitoring', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      window.open(router.href,'_blank')
+    },
+    /**
+     * @Description: 跳转项目进度报告
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */ 
+    openReport(row){
+      const router =  this.$router.resolve({
+        path: '/projectmgt/projectprogressreport/partprogress',
+        query: {
+          carProject: row.id,
+          cartypeProjectZh: row.cartypeProjectZh
+        }
+      })
       window.open(router.href,'_blank')
     },
     /**
