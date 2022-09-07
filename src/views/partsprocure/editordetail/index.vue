@@ -1207,7 +1207,9 @@ export default {
     canChange() {
       return (
         ["NO_NR", "NOT_IN_RFQ"].includes(this.detailData.status) &&
-        this.detailData.partProjectType != partProjTypes.GONGXUWEIWAI
+        this.detailData.partProjectType != partProjTypes.GONGXUWEIWAI &&
+        this.detailData.partProjectType !=
+          partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU
       );
     },
 

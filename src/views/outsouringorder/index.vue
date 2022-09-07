@@ -104,10 +104,10 @@
           </iButton>
         </div>
       </div>
+      <!-- radio 单选数据 -->
       <tablePart
         ref="tableList"
         :lang="true"
-        radio
         @handleSelectionChange="(row) => (selectRow = row)"
         :tableData="tableData"
         :tableTitle="tableTitle"
@@ -459,6 +459,18 @@ export default {
      * @return {*}
      */
     handleBatchSingn() {
+      if (this.selectRow.length == 0) {
+        return iMessage.warn(
+          this.language("QINGXUANZECAIGOUSHENQING", "请选择采购申请")
+        );
+      }
+      if (
+        this.selectRow.find((item) => {
+          return !(item.status == 0 || item.status == 1);
+        })
+      ) {
+        return iMessage.warn("仅待签收状态的数据可以签收");
+      }
       this.showPoint = true;
     },
     /**
