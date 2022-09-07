@@ -588,6 +588,7 @@ export default {
     // 映射状态值
     getStatus(status, nominationStatus) {
       let item = statusList.find((k) => k.code == status);
+      if (!item) return status;
       if (status == "1") {
         if (nominationStatus == "2") {
           return this.language("LK_YIDINGDIAN", "已定点");
