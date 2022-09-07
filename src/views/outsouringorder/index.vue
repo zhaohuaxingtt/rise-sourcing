@@ -403,7 +403,7 @@ export default {
       this.tableLoading = true;
       outsouringFindBypage({
         ...this.form,
-        ...{ size: this.page.pageSize, currentPage: this.page.currPage },
+        ...{ pageSize: this.page.pageSize, currentPage: this.page.currPage },
       })
         .then((res) => {
           this.tableLoading = false;
