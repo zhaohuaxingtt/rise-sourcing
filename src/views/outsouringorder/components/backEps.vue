@@ -36,7 +36,7 @@
     <template slot="footer">
       <div class="comfirm-button">
         <div class="switch">
-          <span>该申请下的全部项次</span>
+          <span>{{ language("QUANBUXIANGCI") }}</span>
           <el-switch
             class="margin-left10 zoom075"
             v-model="isAllItem"

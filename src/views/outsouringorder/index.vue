@@ -104,10 +104,10 @@
           </iButton>
         </div>
       </div>
+      <!-- radio 单选数据 -->
       <tablePart
         ref="tableList"
         :lang="true"
-        radio
         @handleSelectionChange="(row) => (selectRow = row)"
         :tableData="tableData"
         :tableTitle="tableTitle"
