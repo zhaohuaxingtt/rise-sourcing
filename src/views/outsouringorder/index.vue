@@ -68,7 +68,7 @@
       </el-form>
     </iSearch>
     <iCard>
-      <div class="margin-bottom20 clearFloat flex-align-center">
+      <div class="margin-bottom20 clearFloat">
         <div class="showMe">
           <span>{{ $t("MODEL-ORDER.LK_JINKANZIJI") }}</span>
           <el-switch
@@ -666,10 +666,9 @@ export default {
   color: $color-delete;
 }
 .showMe {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   height: 30px;
-  width: 60%;
   span {
     font-size: 20px;
     color: #000000;
@@ -679,9 +678,9 @@ export default {
     margin-left: 10px;
   }
 }
-.btns {
-  width: 40%;
-}
+// .btns {
+//   width: 40%;
+// }
 .topMenu {
   display: flex;
   justify-content: space-between;
