@@ -19,5 +19,6 @@ export default {
   QUERENSHANCHUXUANZHONGCAIGOUSHENQING: 'Confirm to delete selected purchase requisition?',
   QINGXUANZECAIGOUSHENQING: 'Please select purchase requisition',
   QINGXUANZECAIGOUSHENQINGLEIXING: 'Please select the type of purchase requisition',
-  QINGTIANJIASHUJU: 'Please add data'
+  QINGTIANJIASHUJU: 'Please add data',
+  'QUANBUXIANGCI': 'All items under the application'
 }
