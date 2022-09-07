@@ -238,7 +238,6 @@ import { cloneDeep } from "lodash";
 import uploadButton from "./components/uploadButton";
 import { exportExcel } from "@/utils/filedowLoad";
 import buttonDownload from "@/components/buttonDownload";
-import language from "@/utils/language";
 import { getDictByCode } from "@/api/dictionary";
 export default {
   mixins: [pageMixins, filters],
@@ -349,9 +348,9 @@ export default {
       let item = this.statusOption.find((k) => k.code == status);
       if (status == "1") {
         if (nominationStatus == "2") {
-          return language("LK_YIDINGDIAN", "已定点");
+          return this.language("LK_YIDINGDIAN", "已定点");
         }
-        return language("LK_YIQIANSHOU", "已签收");
+        return this.language("LK_YIQIANSHOU", "已签收");
       }
       if (item) return this.$i18n.locale == "zh" ? item.name : item.nameEn;
     },
@@ -387,11 +386,11 @@ export default {
     handleSave() {
       if (!this.baseinfodata.subType) {
         return iMessage.warn(
-          language("QINGXUANZECAIGOUSHENQINGLEIXING", "请选择采购申请类型")
+          this.language("QINGXUANZECAIGOUSHENQINGLEIXING", "请选择采购申请类型")
         );
       }
       if (this.tableListData.length == 0) {
-        return iMessage.warn(language("QINGTIANJIASHUJU", "请添加数据"));
+        return iMessage.warn(this.language("QINGTIANJIASHUJU", "请添加数据"));
       }
 
       // 零件前缀没有，并且零件号为空
@@ -400,7 +399,7 @@ export default {
         !this.baseinfodata.partPrefix
       ) {
         return iMessage.warn(
-          language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
+          this.language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
         );
       }
       // 校验行内非空项
@@ -414,11 +413,13 @@ export default {
             !e.deliveryDate
         )
       ) {
-        return iMessage.warn(language("QINGSHURUBITIANXIANG", "请输入必填项"));
+        return iMessage.warn(
+          this.language("QINGSHURUBITIANXIANG", "请输入必填项")
+        );
       }
       // 一次性
       if (this.baseinfodata.subType == "ZN_ONE") {
-        if (!this.tableListData.find((e) => e.quantity > 0)) {
+        if (this.tableListData.find((e) => !(e.quantity > 0))) {
           return iMessage.warn("类型“工序委外一次性”，数量必须大于0");
         }
         // 框架
@@ -443,7 +444,7 @@ export default {
         this.baseinfodata.partPrefix
       ) {
         return iMessage.warn(
-          language(
+          this.language(
             "LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI",
             "请填写规范的零件编号前缀"
           )
@@ -547,7 +548,7 @@ export default {
         !this.baseinfodata.partPrefix
       ) {
         return iMessage.warn(
-          language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
+          this.language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
         );
       }
       if (
@@ -555,7 +556,9 @@ export default {
           (e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
         )
       ) {
-        return iMessage.warn(language("QINGSHURUBITIANXIANG", "请输入必填项"));
+        return iMessage.warn(
+          this.language("QINGSHURUBITIANXIANG", "请输入必填项")
+        );
       }
       // 一次性
       if (this.baseinfodata.subType == "ZN_ONE") {
@@ -611,11 +614,11 @@ export default {
           unitCode,
           normalPrQuantityYears = [],
         } = this.tableListData[this.tableListData.length - 1];
-
+        console.log(normalPrQuantityYears);
         const itemQuantity =
           this.baseinfodata.subType === "ZN_ONE"
             ? quantity
-            : normalPrQuantityYears.length;
+            : normalPrQuantityYears && normalPrQuantityYears[0].quantity > 0;
         if (
           !partType ||
           // !partNum ||	//零件号可能没有
@@ -737,7 +740,7 @@ export default {
           console.log("EXPORT EXCEL:", res);
           exportExcel(
             res.data,
-            `${language("LK_GONGXUWEIWAI", "工序委外")}${
+            `${this.language("LK_GONGXUWEIWAI", "工序委外")}${
               this.baseinfodata.riseCode
             }`
           );
@@ -745,7 +748,7 @@ export default {
         .catch((err) => {
           console.log("exportExcel err", err);
           iMessage.error(
-            err.desZh || language("NEWS_DAOCHUSHIBAI", "导出失败")
+            err.desZh || this.language("NEWS_DAOCHUSHIBAI", "导出失败")
           );
         });
     },
@@ -799,7 +802,7 @@ export default {
         this.uploadAttachmentsButtonLoading = false;
         return iMessage.error(
           msg.desZh == null
-            ? language("LK_AEKO_TCM_TIPS_DAORUSHIBAI", "导入失败")
+            ? this.language("LK_AEKO_TCM_TIPS_DAORUSHIBAI", "导入失败")
             : this.$i18n.locale === "zh"
             ? msg.desZh
             : msg.desEn

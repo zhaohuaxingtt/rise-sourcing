@@ -258,7 +258,6 @@ import TransferDialog from "./components/transferDialog.vue";
 import TurningPointDialog from "./components/turningPointDialog.vue";
 import { getDictByCode } from "@/api/dictionary";
 import { purchaseFactory } from "@/api/partsprocure/editordetail";
-import language from "@/utils/language";
 
 // eslint-disable-next-line no-undef
 export default {
@@ -296,7 +295,6 @@ export default {
       tableData: [],
       selectRow: [],
       addType: addType,
-      statusList: statusList,
       mode: "back",
       showTransfer: false,
       transferLoading: false,
@@ -328,9 +326,9 @@ export default {
       let item = this.selectOptions.statusOption.find((k) => k.code == status);
       if (status == "1") {
         if (nominationStatus == "2") {
-          return language("LK_YIDINGDIAN", "已定点");
+          return this.language("LK_YIDINGDIAN", "已定点");
         }
-        return language("LK_YIQIANSHOU", "已签收");
+        return this.language("LK_YIQIANSHOU", "已签收");
       }
       return this.$i18n.locale == "zh" ? item.name : item.nameEn;
     },
@@ -494,6 +492,8 @@ export default {
           .finally(() => {
             this.$refs.backEPS.changeSaveLoading &&
               this.$refs.backEPS.changeSaveLoading(false);
+            this.$refs.backEPS.changeSaveLoading &&
+              this.$refs.backEPS.clearDialog();
           });
         return;
       }
@@ -521,6 +521,8 @@ export default {
           .finally(() => {
             this.$refs.backEPS.changeSaveLoading &&
               this.$refs.backEPS.changeSaveLoading(false);
+            this.$refs.backEPS.changeSaveLoading &&
+              this.$refs.backEPS.clearDialog();
           });
       }
     },
