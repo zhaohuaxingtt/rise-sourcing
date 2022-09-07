@@ -252,7 +252,7 @@ export const newTableTitle = [
 		key: 'LK_LINGJIANLEIXING',
 		tooltip: true,
 		align: 'center',
-		width: 150,
+		width: 100,
 	},
 	{
 		props: 'partNum',
@@ -260,7 +260,7 @@ export const newTableTitle = [
 		key: 'LK_SPAREPARTSNUMBER',
 		tooltip: true,
 		align: 'center',
-		width: 120,
+		width: 170,
 	},
 	{
 		props: 'partNameZh',
@@ -268,7 +268,7 @@ export const newTableTitle = [
 		key: 'LINGJIANMINGCHEN',
 		tooltip: true,
 		align: 'center',
-		minWidth: 140,
+		width: 200,
 	},
 	{
 		props: 'quantity',
@@ -276,7 +276,7 @@ export const newTableTitle = [
 		key: 'LK_SHULIANG',
 		tooltip: true,
 		align: 'center',
-		width: 70,
+		width: 80,
 	},
 	{
 		props: 'unitCode',
@@ -292,6 +292,7 @@ export const newTableTitle = [
 		key: 'LK_CAIGOUGONGCHANG',
 		tooltip: true,
 		align: 'center',
+		width: 160,
 	},
 	{
 		props: 'deliveryDate',
@@ -314,6 +315,15 @@ export const newTableTitle = [
 		key: 'MODEL-ORDER.LK_XUQIUGENZONGHAO',
 		tooltip: true,
 		align: 'center',
+		width: 160,
+	},
+	{
+		props: 'status',
+		name: '状态',
+		key: 'STATUS',
+		tooltip: true,
+		align: 'center',
+		width: 80,
 	},
 	{
 		props: 'contractRiseCode',
