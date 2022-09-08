@@ -13,6 +13,7 @@ import store from './store'
 import echarts from './utils/echarts'
 import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
+import "./utils/thousandth"
 import './permission'
 import './i18n'
 import Vue from 'vue'
