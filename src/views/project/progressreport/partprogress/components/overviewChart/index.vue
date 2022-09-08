@@ -112,8 +112,14 @@ export default {
       this.renderBi();
     },
     changeRefresh(val){
-      console.log(val)
-      this.filterParameter.values = [val];
+      // console.log(this.cartypeId,22222222)
+      var cartypeId = "";
+      if(val){
+        cartypeId = val;
+      }else{
+        cartypeId = this.cartypeId;
+      }
+      this.filterParameter.values = [cartypeId];
       this.report.setFilters([this.filterParameter]);
     },
     renderBi(){

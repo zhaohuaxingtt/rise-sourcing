@@ -60,6 +60,8 @@ import {
     exprotProjectAnalysisc,
 } from '@/api/project/projectprogressreport'
 
+import { getSelectCarType } from '@/api/project'
+
 export default {
     components:{
         iButton,
@@ -69,6 +71,7 @@ export default {
             checked: false,
             picImg:[],
             cartypeProId:'',
+            carTypeName:"",
         }
     },
     created(){
@@ -98,11 +101,12 @@ export default {
         
     },
     methods:{
-        getDefaultCarTypePro(){
-            getDefaultCarTypePro().then(res=>{
+        async getDefaultCarTypePro(){
+            await getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
                     this.cartypeProId = res.data;
+                    this.carTypeName = this.carModelList.find(item => item.id === res.data).cartypeProjectCode
                     // this.cartypeProId = "50024008";
 
                     this.getSupplierEmOntimeInfo();
@@ -110,6 +114,13 @@ export default {
                     this.getFGNomiOntimeInfo();
                     this.getCommodityEmOntimeInfo();
                     this.getCommodityOntimeInfo();
+                }
+            })
+        },
+        async getSelectCarType(){
+            await getSelectCarType().then(res=>{
+                if(res?.result){
+                    this.carModelList = res.data;
                 }
             })
         },
@@ -206,12 +217,13 @@ export default {
             // this.picImg.forEach((e,index)=>{
                 let nameId = "echarts_"+num;
                 let myChart = echarts().init(document.getElementById(nameId));
-                myChart.setOption(echartsSupplerEM(data,type));
+                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName));
             // })
         },
     },
-    mounted(){
-        this.getDefaultCarTypePro();
+    async mounted(){
+        await this.getSelectCarType();
+        await this.getDefaultCarTypePro();
         // this.echartsOption();
     },
 }

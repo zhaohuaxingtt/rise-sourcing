@@ -106,15 +106,15 @@ export default {
       this.carHasShow = true;
     },
     tabChange(val){
-      console.log(val);
-      if(this.currentTab=='overview'){
-        this.$refs.overviewChart.changeRefresh(val);
-      }else if(this.currentTab=='detail'){
-        this.$refs.detailChart.changeRefresh(val);
-      }
+      // if(this.currentTab=='overview'){
+      //   this.$refs.overviewChart.changeRefresh(this.cartypeId);
+      // }else if(this.currentTab=='detail'){
+      //   this.$refs.detailChart.changeRefresh(this.cartypeId);
+      // }
     },
     handleCarProjectChange(val, valLabel,cartypeId) {
       console.log(val,valLabel,cartypeId);
+      // console.log(val);
       this.cartypeId = val;
       this.getFindCartypePro(val);
 
