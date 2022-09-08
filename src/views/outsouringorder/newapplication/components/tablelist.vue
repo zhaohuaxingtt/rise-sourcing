@@ -42,7 +42,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'partType'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -54,7 +54,10 @@
             <span style="color: red">*</span>
           </template>
           <template slot-scope="scope">
-            <iSelect v-if="canEdit" v-model="scope.row['partType']">
+            <iSelect
+              v-if="canEdit && canEditRow(scope.row)"
+              v-model="scope.row['partType']"
+            >
               <el-option
                 v-for="items in fromGroup.PART_TYPE"
                 :key="items.code"
@@ -68,7 +71,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'unitCode'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -81,7 +84,7 @@
           </template>
           <template slot-scope="scope">
             <iSelect
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               v-model="scope.row['unitCode']"
               @change="handleUnitChange(scope.row, items.code)"
             >
@@ -100,7 +103,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'account'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -115,7 +118,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'partNum'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -128,7 +131,7 @@
           </template>
           <template slot-scope="scope">
             <iInput
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               v-model.trim="scope.row['partNum']"
               @blur="
                 getPartInfoAsync(scope.row['partNum'], scope.row['sapItem'])
@@ -140,7 +143,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'partNameZh'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -153,7 +156,7 @@
           </template>
           <template slot-scope="scope">
             <iInput
-              v-if="!scope.row['partNum'] && canEdit"
+              v-if="!scope.row['partNum'] && canEdit && canEditRow(scope.row)"
               v-model="scope.row.partNameZh"
               :disabled="scope.row.partNum != ''"
               placeholder="请输入"
@@ -164,7 +167,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'quantity'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -183,7 +186,11 @@
               >查看</span
             >
             <iInput
-              v-else-if="baseinfodata.subType === 'ZN_ONE' && canEdit"
+              v-else-if="
+                baseinfodata.subType === 'ZN_ONE' &&
+                canEdit &&
+                canEditRow(scope.row)
+              "
               v-model="scope.row.quantity"
               @input="handleInput($event, scope.row)"
               placeholder="请输入"
@@ -204,7 +211,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'factoryName'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -216,7 +223,7 @@
           </template>
           <template slot-scope="scope">
             <iSelect
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               v-model="scope.row.procureFactory"
               @change="
                 (procureFactory) =>
@@ -240,7 +247,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'procureGroup'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -248,7 +255,7 @@
         >
           <template slot-scope="scope">
             <iInput
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               v-model="scope.row['procureGroup']"
               @blur="checkPurchaseGroup(scope.row)"
             ></iInput>
@@ -258,7 +265,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'requestTraceNo'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -266,7 +273,7 @@
         >
           <template slot-scope="scope">
             <iInput
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               v-model="scope.row['requestTraceNo']"
             ></iInput>
             <span v-else>{{ scope.row["requestTraceNo"] }}</span>
@@ -275,7 +282,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'storageLocationCode'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -283,7 +290,7 @@
         >
           <template slot-scope="scope">
             <iSelect
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               :disabled="!scope.row.procureFactory"
               v-model="scope.row.storageLocation"
               @visible-change="visibleChange($event, scope.row)"
@@ -306,7 +313,7 @@
         <el-table-column
           :key="index"
           align="center"
-          :show-overflow-tooltip="items.tooltip"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'deliveryDate'"
           :width="items.width"
           :label="$t(items.key)"
@@ -318,7 +325,7 @@
           </template>
           <template slot-scope="scope">
             <iDatePicker
-              v-if="canEdit"
+              v-if="canEdit && canEditRow(scope.row)"
               class="datapicker"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd HH:mm:ss"
@@ -412,6 +419,9 @@ export default {
   inject: ["vm"],
   created() {},
   methods: {
+    canEditRow(row) {
+      return ["", "-1", "-2"].includes(row.status);
+    },
     // 限制输入数值
     handleInput(value, row) {
       this.$set(row, "quantity", numberProcessor(value, 2));
