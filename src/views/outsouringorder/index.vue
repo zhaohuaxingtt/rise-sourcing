@@ -372,6 +372,13 @@ export default {
         );
         return;
       }
+      if (
+        this.selectRow.find((item) => {
+          return item.status != 1 && item.nominationStatus != 2;
+        })
+      ) {
+        return iMessage.warn("仅已定点状态的数据可以关闭");
+      }
       this.backDialogVisible = visible;
       this.mode = "close";
     },
