@@ -14,7 +14,7 @@ export default {
   LINGJIANBIANHAOQIANZHUI: 'Part number prefix',
   LINGJIANBIANHAOQIANZHUIDINGYI: 'Part number prefix definition: project type (default is MBCP, four digits) + annual project number (5 digits), for example: MBCP22001',
   TUISONGCAIGOUYUAN: 'Push the buyer',
-  LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI: 'Please fill in the standard part number prefix',
+  LK_QINGTIANXIEGUIFANDELINGJIANBIANHAOQIANZHUI: 'The prefix of the part number is 9 characters, please fill in the standard',
   LK_QUERENSHIYONGLINGJIANHAOQIANZHUISHENGCHENGXINDELINGJIANHAO: 'Confirm to use the part number prefix to generate a new part number?',
   QUERENSHANCHUXUANZHONGCAIGOUSHENQING: 'Confirm to delete selected purchase requisition?',
   QINGXUANZECAIGOUSHENQING: 'Please select purchase requisition',
