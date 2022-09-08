@@ -94,7 +94,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column width="80"
+            <el-table-column 
               prop="tryout"
               align="center"
               label="1st Tryout"

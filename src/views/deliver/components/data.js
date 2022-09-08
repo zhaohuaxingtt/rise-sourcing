@@ -68,7 +68,7 @@ export const tableTitle = [
   { props: "partType", name: "零件类型", key: "", tooltip: true,  },
   { props: "soll", name: "Soll", key: "", tooltip: true,  },
   { props: "progress", name: "进度", key: "", tooltip: true,  },
-  // { props: "col9", name: "延迟原因备注", key: "", tooltip: true, minWidth:120 },
+  { props: "delayWkDesc", name: "延迟原因备注", key: "", tooltip: true, minWidth:200 },
   { props: "supplierName", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
 ]
 
@@ -102,16 +102,16 @@ export const searchList = [
 ]
 
 export const delayAnalysisSearchList = [
-  {prop:'prop1',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'deptOptions'},
-  {prop:'prop2',label:'RFQ',key:'RFQ',type:'input' },
-  {prop:'prop3',label:'材料组',key:'CAILIAOZU',type:'input' },
-  {prop:'prop4',label:'零件编号/零件名称',key:'LINGJIANBIANHAO/LINGJIANMINGCHENG',type:'input' },
-  {prop:'prop5',label:'零件类型',key:'LINGJIANLEIXING',type:'select', selectOption:'deptOptions'},
-  {prop:'prop6',label:'车型项目状态',key:'CHEXINGXIANGMUZHUANGTAI',type:'select', selectOption:'deptOptions'},
-  {prop:'prop7',label:'延迟级别',key:'YANCHIJIBIE',type:'select', selectOption:'deptOptions'},
-  {prop:'prop8',label:'延迟原因',key:'YANCHIYUANYIN',type:'input' },
-  {prop:'prop9',label:'完成状况',key:'WANCHENGZHUANGKUANG',type:'select', selectOption:'deptOptions'},
-  {prop:'prop10',label:'供应商',key:'GONGYINGSHANG',type:'input' },
+  {prop:'cartypeProId',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'cartypeProId'},
+  {prop:'rfq',label:'RFQ',key:'RFQ',type:'input' },
+  {prop:'materialGroup',label:'材料组',key:'CAILIAOZU',type:'input' },
+  {prop:'part',label:'零件编号/零件名称',key:'LINGJIANBIANHAO/LINGJIANMINGCHENG',type:'input' },
+  {prop:'partType',label:'零件类型',key:'LINGJIANLEIXING',type:'select', selectOption:'partType'},
+  {prop:'cartypeStatus',label:'车型项目状态',key:'CHEXINGXIANGMUZHUANGTAI',type:'select', selectOption:'cartypeStatus'},
+  {prop:'delayLevel',label:'延迟级别',key:'YANCHIJIBIE',type:'select', selectOption:'delayLevel'},
+  {prop:'delayReason',label:'延迟原因',key:'YANCHIYUANYIN',type:'input' },
+  {prop:'completionStatus',label:'完成状况',key:'WANCHENGZHUANGKUANG',type:'select', selectOption:'completionStatus'},
+  {prop:'supplierName',label:'供应商',key:'GONGYINGSHANG',type:'input' },
 
 ]
 

@@ -61,3 +61,29 @@ export function sample_part_listPage(data) {
     })
 }
 
+// 延迟页-零件列表
+export function delayList(data) {
+    return requst({
+        url: '/sample_part_list/delay/list',
+        method: 'POST',
+        data
+    })
+}
+
+// 延迟页-级别汇总
+export function level_summary(data) {
+    return requst({
+        url: '/sample_part_list/delay/level_summary',
+        method: 'POST',
+        data
+    })
+}
+
+// 延迟页-级别汇总
+export function reason_summary(data) {
+    return requst({
+        url: '/sample_part_list/delay/reason_summary',
+        method: 'POST',
+        data
+    })
+}

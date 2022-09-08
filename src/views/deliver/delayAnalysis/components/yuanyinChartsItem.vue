@@ -10,8 +10,17 @@ export default {
   components: {
     iCard,
   },
+  props:{
+    picRightData:{
+      type:Array,
+      default:[],
+    }
+  },
   mounted() {
     this.initCharts();
+  },
+  created(){
+    console.log(this.picRightData);
   },
   methods: {
     initCharts() {

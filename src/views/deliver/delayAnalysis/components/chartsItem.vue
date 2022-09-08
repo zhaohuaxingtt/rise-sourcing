@@ -10,6 +10,15 @@ import { iCard } from "rise";
     components:{
       iCard
     },
+    props:{
+      picLeftData:{
+        type:Array,
+        default:[],
+      }
+    },
+    created(){
+      console.log(this.picLeftData);
+    },
     mounted(){
       this.initCharts()
     },

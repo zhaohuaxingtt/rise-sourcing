@@ -16,22 +16,29 @@
         :selection='false'
       >
         <!-- 延迟级别 -->
-        <template #col8="scope">
+        <template #progress="scope">
           <div class="table-item-aeko">
-            <icon
-              class="margin-right5 font20"
-              symbol
-              :name="showIcon(scope.row.status)"
-            ></icon>
-            <span>{{ scope.row.col8 }}</span>
+            <img v-if="scope.row.delayWk"
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/black.png')"
+            >
+            <!-- <img
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/red.png')"
+            >
+            <img
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/yellow.png')"
+            > -->
+            <span>{{ scope.row.progress }}</span>
           </div>
         </template>
       </tableList>
       <!-- 分页 -->
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -48,7 +55,7 @@ import { iCard, iPagination, iButton, icon } from "rise";
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { tableTitle } from "./data.js";
-import { pageMixins } from "@/utils/pageMixins";
+
 export default {
   components: {
     iCard,
@@ -57,13 +64,20 @@ export default {
     iButton,
     icon,
   },
-  mixins: [tableSortMixins, pageMixins],
+  mixins: [tableSortMixins],
   props:{
     title:{ type: String, },
     dataList:{type:Array,default:[]},
   },
   data() {
     return {
+      page:{
+        totalCount:0, //总条数
+        pageSize:10,   //每页多少条
+        pageSizes:[10,20,50,100,300], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
       downloadLoading: false,
       loading: false,
       tableTitle,
@@ -74,6 +88,7 @@ export default {
           materialGroupCode: "123",
           partNum: "111",
           partNameZh: "示例零件1",
+          status:1,
           partType: "Nomi",
           soll: "20W-20",
           progress: "重度延期4周",
@@ -82,27 +97,36 @@ export default {
       ],
     };
   },
+  created(){
+    this.tableListData = _.cloneDeep(this.dataList);
+  },
   methods: {
+    handleSizeChange(val){
+      console.log(val);
+      this.$emit("handleSizeChange",{
+        size:val,
+        currPage:1,
+      })
+    },
+    handleCurrentChange(val){
+      this.$emit("handleCurrentChange",{
+        size:this.page.pageSize,
+        currPage:val,
+      })
+    },
     handleDownload() {},
     getTableData() {},
-    showIcon(status) {
-      let result = "";
-      switch (status) {
-        case 1:
-          result = "iconyouxianji-landeng";
-          break;
-        case 2:
-          result = "iconyouxianji-huangdeng";
-          break;
-        case 3:
-          result = "iconyouxianji-hongdeng";
-          break;
-      }
-      return result;
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.table-item-aeko{
+  display: flex;
+  justify-content: center;
+}
+.img_deng{
+  width:20px;
+  height:20px;
+}
 </style>
