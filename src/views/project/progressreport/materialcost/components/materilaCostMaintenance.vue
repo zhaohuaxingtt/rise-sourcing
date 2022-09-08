@@ -57,23 +57,25 @@
             <iFormItem>
                 <iLabel label="Calculation Model SVI"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData1" :disabled="true"></iInput>
+                <div class="format_div">{{$postThousandth(VSIData.VSIData1)}}</div>
             </iFormItem>
-
             <iFormItem>
                 <iLabel label="Motor & Gearbox"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData2" type="number" @change="inputVSI" :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData2)}}</div>
+                <iInput v-model="VSIData.VSIData2" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
             <iFormItem>
                 <iLabel label="HT/CKD/MTZ/NTVorlogistic/MBCP"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData3" type="number" @change="inputVSI"  :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData3)}}</div>
+                <iInput v-model="VSIData.VSIData3" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
             <iFormItem>
                 <iLabel label="Calculation Model CSC-Base"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData4" type="number" @change="inputVSI"  :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData4)}}</div>
+                <iInput v-model="VSIData.VSIData4" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
         </iFormGroup>
     </iCard>
@@ -174,7 +176,7 @@
                 <div v-if="scope.row.editType">
                     <iInput v-model="scope.row.vsiPrice" type="number"></iInput>
                 </div>
-                <span v-else style="width: 90%">{{ scope.row.vsiPrice }}</span>
+                <span v-else style="width: 90%">{{ $postThousandth(scope.row.vsiPrice) }}</span>
             </template>
             <!-- VSI-数量 -->
             <template slot="vsiNum" slot-scope="scope">
@@ -182,6 +184,10 @@
                     <iInput v-model="scope.row.vsiNum" type="number"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.vsiNum }}</span>
+            </template>
+            <!-- VSI-整车 -->
+            <template slot="vsiCar" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.vsiCar) }}</span>
             </template>
             <!-- 定点零件号 -->
             <template slot="nomiPartNum" slot-scope="scope">
@@ -199,8 +205,30 @@
                 <div v-if="scope.row.editType">
                     <iInput v-model="scope.row.nomiAPrice" type="number"></iInput>
                 </div>
-                <span v-else style="width: 90%">{{ scope.row.nomiAPrice }}</span>
+                <span v-else style="width: 90%">{{ $postThousandth(scope.row.nomiAPrice) }}</span>
             </template>
+            <!-- 定点-整车 -->
+            <template slot="nomiCar" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.nomiCar) }}</span>
+            </template>
+
+            <!-- 年降 -->
+            <template slot="ltcRate" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.ltcRate) }}</span>
+            </template>
+            <!-- 年降（SOP+1） -->
+            <template slot="firstAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.firstAnnualPrice) }}</span>
+            </template>
+            <!-- '年降（SOP+2） -->
+            <template slot="secondAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.secondAnnualPrice) }}</span>
+            </template>
+            <!-- 年降（SOP+3） -->
+            <template slot="thirdAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.thirdAnnualPrice) }}</span>
+            </template>
+
             <!-- 定点供应商 -->
             <template slot="nomiSupplier" slot-scope="scope">
                 <!-- <el-select
@@ -242,6 +270,14 @@
                     <iInput v-model="scope.row.dept"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.dept }}</span>
+            </template>
+            <!-- 模具预算 -->
+            <template slot="modelBudget" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.modelBudget) }}</span>
+            </template>
+            <!-- 定点模具费用 -->
+            <template slot="nomiModelCost" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.nomiModelCost) }}</span>
             </template>
         </tableList>
         <iPagination v-update
@@ -590,15 +626,15 @@ export default {
             getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
-                    // this.searchParams.search1 = res.data;
-                    this.searchParams.search1 = "50024008";
-                    // this.searchParamsOld.search1 = res.data;
-                    this.searchParamsOld.search1 = "50024008";
+                    this.searchParams.search1 = res.data;
+                    // this.searchParams.search1 = "50024008";
+                    this.searchParamsOld.search1 = res.data;
+                    // this.searchParamsOld.search1 = "50024008";
                     // this.getVSIData(this.searchParams.search1);
 
                     this.uploadData = {
-                        id:"50024008"
-                        // id:this.searchParams.search1
+                        // id:"50024008"
+                        id:this.searchParams.search1
                     };
                     this.getVSIData(this.searchParams.search1);
                     this.getTableList();
@@ -992,5 +1028,15 @@ export default {
 }
 .upload-demo{
     margin-left:10px;
+}
+
+.format_div{
+    width: 100%;
+    height:2.1875rem;
+    background:#F5F7FA;
+    line-height: 2.1875rem;
+    padding-left:16px;
+    padding-right:16px;
+    color:#C0C4CC;
 }
 </style>

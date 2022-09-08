@@ -87,11 +87,12 @@ export default {
         console.log(this.carProjectId)
         console.log(this.cartypeId)
       }else{
-        // this.carProjectId = data.data;
-        this.carProjectId = "50024008";
-        // this.$refs.carSelect.data = data.data;
-        this.$refs.carSelect.data = "50024008";
-        this.cartypeId = '50024008';
+        this.carProjectId = data.data;
+        // this.carProjectId = "50024008";
+        this.$refs.carSelect.data = data.data;
+        // this.$refs.carSelect.data = "50024008";
+        this.cartypeId =  data.data;
+        // this.cartypeId = '50024008';
         // this.cartypeId = data.list.find(item => item.value === data.data).cartypeId;
         this.getFindCartypePro(this.carProjectId);
         console.log(this.carProjectId)
@@ -99,8 +100,17 @@ export default {
       }
       this.carHasShow = true;
     },
+    tabChange(val){
+      console.log(val);
+      if(this.currentTab=='overview'){
+        this.$refs.overviewChart.changeRefresh(val);
+      }else if(this.currentTab=='detail'){
+        this.$refs.detailChart.changeRefresh(val);
+      }
+    },
     handleCarProjectChange(val, valLabel,cartypeId) {
       console.log(val,valLabel,cartypeId);
+      this.cartypeId = val;
       this.getFindCartypePro(val);
 
       this.$emit('handleCarProjectChange', val, valLabel)

@@ -102,8 +102,8 @@ export default {
             getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
-                    // this.cartypeProId = res.data;
-                    this.cartypeProId = "50024008";
+                    this.cartypeProId = res.data;
+                    // this.cartypeProId = "50024008";
 
                     this.getSupplierEmOntimeInfo();
                     this.getSupplierOtsOntimeInfo();
