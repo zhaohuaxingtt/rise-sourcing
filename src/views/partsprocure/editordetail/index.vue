@@ -340,16 +340,6 @@
               "
               name="test"
             >
-              <!-- <iSelect
-								ref="partProjectTypeSelect"
-								v-if="!disabled"
-                :disabled="isGXWW"
-								v-model="detailData.partProjectType"
-								@change="onPartProjectTypeChange">
-								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
-								</el-option>
-							</iSelect> -->
               <iSelect
                 ref="partProjectTypeSelect"
                 v-if="!disabled && canChange"
@@ -416,7 +406,7 @@
                 ref="carTypeProjectNum"
                 v-model="detailData.carTypeProjectNum"
                 filterable
-                v-if="!disabled && detailData.partProjectSource != 1"
+                v-if="!disabled && detailData.partProjectSource != 1 && !isGXWW"
                 @change="handleChangeByCarTypeProject"
               >
                 <!-- :disabled='carTypeCanselect()'  -->
@@ -1209,6 +1199,15 @@ export default {
         ["NO_NR", "NOT_IN_RFQ"].includes(this.detailData.status) &&
         this.detailData.partProjectType != partProjTypes.GONGXUWEIWAI &&
         this.detailData.partProjectType !=
+          partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU
+      );
+    },
+
+    // 是否是工序委外类型
+    isGXWW() {
+      return (
+        this.detailData.partProjectType == partProjTypes.GONGXUWEIWAI ||
+        this.detailData.partProjectType ==
           partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU
       );
     },
