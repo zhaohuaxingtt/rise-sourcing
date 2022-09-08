@@ -374,10 +374,10 @@ export default {
       }
       if (
         this.selectRow.find((item) => {
-          return item.status != 1 && item.nominationStatus != 2;
+          return !(item.status == 0 || item.status == 1);
         })
       ) {
-        return iMessage.warn("仅已定点状态的数据可以关闭");
+        return iMessage.warn("仅待签收，已签收状态的数据可以关闭");
       }
       this.backDialogVisible = visible;
       this.mode = "close";
@@ -473,7 +473,7 @@ export default {
       }
       if (
         this.selectRow.find((item) => {
-          return !(item.status == 0 || item.status == 1);
+          return item.status != 0;
         })
       ) {
         return iMessage.warn("仅待签收状态的数据可以签收");

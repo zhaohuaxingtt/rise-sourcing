@@ -45,7 +45,7 @@
                     v-model="baseinfodata.subType"
                     :disabled="$route.query.code"
                     @change="changeSubType"
-                    v-if="canEdit && canEditable"
+                    v-if="canEdit && !disabledEditBaseInfo"
                   >
                     <el-option
                       v-for="(item, index) in addType"
@@ -74,7 +74,7 @@
                   <iSelect
                     :placeholder="$t('LK_QINGXUANZE')"
                     v-model="baseinfodata.ownerId"
-                    v-if="canEdit && canEditable"
+                    v-if="canEdit && !disabledEditBaseInfo"
                   >
                     <el-option
                       v-for="(item, index) in lineOptiondata"
@@ -108,7 +108,7 @@
                       </el-tooltip>
                     </span>
                     <iInput
-                      v-if="canEdit && canEditable"
+                      v-if="canEdit && !disabledEditBaseInfo"
                       v-model="baseinfodata.partPrefix"
                     />
                     <iText v-else> {{ baseinfodata.partPrefix }} </iText>
@@ -117,12 +117,11 @@
                 <iFormItem :label="$t('remarks') + ':'" name="test">
                   <iInput
                     v-model="baseinfodata.remark"
-                    :disabled="!canEdit"
-                    class="width500"
+                    :disabled="!canEdit || disabledEditBaseInfo"
                   ></iInput>
                 </iFormItem>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <iFormItem :label="$t('STATUS') + ':'" name="test">
                   <iText>
                     {{
@@ -134,7 +133,7 @@
                   </iText>
                 </iFormItem>
                 <iFormItem name="test"> </iFormItem>
-              </div>
+              </div> -->
             </div>
           </iFormGroup>
         </iCard>
@@ -312,9 +311,27 @@ export default {
     this.getLineInfo();
   },
   computed: {
-    // 工序委外是否可以编辑
+    // 工序委外项次table是否可以编辑
     canEditable() {
-      return ["-1", "-2"].includes(this.baseinfodata.status);
+      if (this.tableListData.length) {
+        return this.tableListData.find((item) =>
+          ["-1", "-2", ""].includes(item.status)
+        );
+      }
+      return true;
+    },
+    // 工序委外基本信息是否可以编辑
+    disabledEditBaseInfo() {
+      if (this.tableListData.length) {
+        return (
+          (this.tableListData.find((item) => {
+            return !["", "-1", "-2"].includes(item.status);
+          }) ||
+            false) &&
+          true
+        );
+      }
+      return false;
     },
   },
   methods: {
@@ -603,34 +620,6 @@ export default {
     },
     // 新增項次
     insertItem() {
-      if (this.tableListData.length > 0) {
-        const {
-          partType,
-          // partNum,	//零件号可能没有
-          partNameZh,
-          quantity,
-          procureFactory,
-          deliveryDate,
-          unitCode,
-          normalPrQuantityYears = [],
-        } = this.tableListData[this.tableListData.length - 1];
-        console.log(normalPrQuantityYears);
-        const itemQuantity =
-          this.baseinfodata.subType === "ZN_ONE"
-            ? quantity
-            : normalPrQuantityYears && normalPrQuantityYears[0].quantity > 0;
-        if (
-          !partType ||
-          // !partNum ||	//零件号可能没有
-          !partNameZh ||
-          !procureFactory ||
-          !deliveryDate ||
-          !unitCode ||
-          !itemQuantity
-        ) {
-          return iMessage.warn("请输入上一条数据必填项");
-        }
-      }
       this.tableListData.push({
         riseCode: this.$route.query.code || "",
         sapItem: this.itemNum,
@@ -649,6 +638,7 @@ export default {
         storageLocationCode: "",
         partNameZh: "",
         requestTraceNo: "",
+        status: "",
         // subType: this.applicationTypeVal,
         subType: this.baseinfodata.subType,
         type: "GPR",
