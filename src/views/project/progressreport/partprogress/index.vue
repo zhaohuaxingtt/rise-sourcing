@@ -27,11 +27,11 @@
     <iCard class="toolingcost margin-top20">
       <div class="toolingcost-title">Tooling cost (RMB)</div>
       <div class="toolingcost-content-item lineClass"></div>
-      <div class="toolingcost-content-item">Tooling budget:<span>{{tollingBudget}}mio</span></div>
+      <div class="toolingcost-content-item">Tooling budget:<span>{{tooling.generalBudget}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
-      <div class="toolingcost-content-item">Tooling investment applied:<span>{{toolinginvestment}}mio</span></div>
+      <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.bmAmount}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
-      <div class="toolingcost-content-item">Tooling nominated. / %:<span>{{toolinginvestment}}mio / {{toolinginvestmentApplied}}%</span></div>
+      <div class="toolingcost-content-item">Tooling nominated. / %:<span>{{tooling.fixedAmount}}mio / {{tooling.percentage}}</span></div>
     </iCard>
     <div class="margin-top20 tabPart">
       <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
@@ -67,11 +67,16 @@ export default {
     return { 
       carProjectId: '',
       cartypeId: '',
-      tollingBudget: '50',
       toolinginvestment: '40',
       toolinginvestmentApplied: '80',
       currentTab: 'overview',
       carHasShow:false,
+      tooling:{
+        generalBudget:0,//总预算
+        bmAmount:0,//已申请且审批通过金额
+        fixedAmount:0,//定点金额
+        percentage:0,//已定点金额/总预算 百分比
+      }
     }
   },
   created(){
@@ -87,11 +92,12 @@ export default {
         console.log(this.carProjectId)
         console.log(this.cartypeId)
       }else{
-        // this.carProjectId = data.data;
-        this.carProjectId = "50024008";
-        // this.$refs.carSelect.data = data.data;
-        this.$refs.carSelect.data = "50024008";
-        this.cartypeId = '50024008';
+        this.carProjectId = data.data;
+        // this.carProjectId = "50024008";
+        this.$refs.carSelect.data = data.data;
+        // this.$refs.carSelect.data = "50024008";
+        this.cartypeId =  data.data;
+        // this.cartypeId = '50024008';
         // this.cartypeId = data.list.find(item => item.value === data.data).cartypeId;
         this.getFindCartypePro(this.carProjectId);
         console.log(this.carProjectId)
@@ -99,8 +105,17 @@ export default {
       }
       this.carHasShow = true;
     },
+    tabChange(val){
+      // if(this.currentTab=='overview'){
+      //   this.$refs.overviewChart.changeRefresh(this.cartypeId);
+      // }else if(this.currentTab=='detail'){
+      //   this.$refs.detailChart.changeRefresh(this.cartypeId);
+      // }
+    },
     handleCarProjectChange(val, valLabel,cartypeId) {
       console.log(val,valLabel,cartypeId);
+      // console.log(val);
+      this.cartypeId = val;
       this.getFindCartypePro(val);
 
       this.$emit('handleCarProjectChange', val, valLabel)
@@ -120,12 +135,36 @@ export default {
         sopBegin: "",
         sopEnd: "",
       }).then(res=>{
-        console.log(res)
+        if(res?.result){
+          if(res?.data.length>0){
+            var percentage = "";
+            if(res.data[0].fixedAmount && res.data[0].generalBudget){
+              percentage = ((res.data[0].fixedAmount/res.data[0].generalBudget).toFixed(4))*100 + "%"
+            }
+            this.tooling = {
+              generalBudget:this.getMioValue(res.data[0].generalBudget),//总预算
+              bmAmount:this.getMioValue(res.data[0].bmAmount),//已申请且审批通过金额
+              fixedAmount:this.getMioValue(res.data[0].fixedAmount),//定点金额
+              percentage:percentage,//已定点金额/总预算 百分比
+            }
+          }else{
+            this.tooling = {
+              generalBudget:0,//总预算
+              bmAmount:0,//已申请且审批通过金额
+              fixedAmount:0,//定点金额
+              percentage:"-",//已定点金额/总预算 百分比
+            }
+          }
+        }
       })
     },
-
-
-
+    getMioValue(val){
+      if(val){
+        return (Number(val)/1E6).toFixed(2);
+      }else{
+        return 0;
+      }
+    },
   },
 }
 </script>

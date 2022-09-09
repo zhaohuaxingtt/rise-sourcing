@@ -1,4 +1,4 @@
-export function echartsSupplerEM(data,type){
+export function echartsSupplerEM(data,type,valueN){
     console.log(data);
 
     var name = [
@@ -120,7 +120,7 @@ export function echartsSupplerEM(data,type){
         title:{
             top:10,
             show:true,
-            text:"车型项目XXX",
+            text:valueN,
             textStyle:{
                 color:"#9E9E9E",
                 fontSize:13,
