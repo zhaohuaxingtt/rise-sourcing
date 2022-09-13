@@ -10,9 +10,6 @@
           }}
         </span>
         <div class="btnList flex-align-center">
-          <iButton @click="sendToLine" v-if="!canEdit && canEditable">
-            {{ $t("TUISONGCAIGOUYUAN") }}
-          </iButton>
           <iButton @click="exitEditor" v-if="canEdit && canEditable">
             {{ $t("LK_TUICHUBIANJI") }}
           </iButton>
@@ -24,6 +21,9 @@
             v-if="!canEdit && isLatest && canEditable"
           >
             {{ $t("LK_BIANJI") }}
+          </iButton>
+          <iButton @click="sendToLine" v-if="!canEdit && canEditable">
+            {{ $t("TUISONGCAIGOUYUAN") }}
           </iButton>
           <!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
           <logButton class="margin-left20" @click="lookLog" />
@@ -544,11 +544,12 @@ export default {
     //编辑
     handleEdit() {
       this.canEdit = true;
+      this.oldTableData = JSON.parse(JSON.stringify(this.tableListData));
     },
     //退出编辑
     exitEditor() {
       this.canEdit = false;
-      // this.getTableList()
+      this.tableListData = JSON.parse(JSON.stringify(this.oldTableData));
     },
     // 发送给采购员
     sendToLine() {
@@ -556,7 +557,7 @@ export default {
         return iMessage.warn("请选择需要推荐的采购员");
       }
       if (this.tableListData.length <= 0) {
-        return iMessage.warn("没有需要推送给采购员数据");
+        return iMessage.warn("没有需要推送给采购员的数据");
       }
 
       // 零件前缀没有，并且零件号为空
