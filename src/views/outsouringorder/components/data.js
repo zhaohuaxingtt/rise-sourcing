@@ -252,7 +252,7 @@ export const newTableTitle = [
 		key: 'LK_LINGJIANLEIXING',
 		tooltip: true,
 		align: 'center',
-		width: 100,
+		width: 140,
 	},
 	{
 		props: 'partNum',
@@ -284,7 +284,7 @@ export const newTableTitle = [
 		key: 'LK_JILIANGDANWEI',
 		tooltip: true,
 		align: 'center',
-		width: 90,
+		width: 160,
 	},
 	{
 		props: 'factoryName',
@@ -300,7 +300,7 @@ export const newTableTitle = [
 		key: 'LK_JIAOHUORIQI',
 		tooltip: true,
 		align: 'center',
-		width: 110,
+		width: 160,
 	},
 	{
 		props: 'storageLocationCode',
@@ -315,7 +315,7 @@ export const newTableTitle = [
 		key: 'MODEL-ORDER.LK_XUQIUGENZONGHAO',
 		tooltip: true,
 		align: 'center',
-		width: 160,
+		width: 120,
 	},
 	{
 		props: 'status',
@@ -323,7 +323,7 @@ export const newTableTitle = [
 		key: 'STATUS',
 		tooltip: true,
 		align: 'center',
-		width: 80,
+		width: 70,
 	},
 	{
 		props: 'contractRiseCode',
@@ -331,7 +331,7 @@ export const newTableTitle = [
 		key: 'MODEL-ORDER.LK_RISEXIEYIHAO',
 		tooltip: true,
 		align: 'center',
-		width: 160,
+		width: 120,
 	},
 	// {
 	//   props: 'detail',
