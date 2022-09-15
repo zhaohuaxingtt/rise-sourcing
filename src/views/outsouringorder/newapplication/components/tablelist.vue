@@ -13,7 +13,7 @@
       :span-method="objectSpanMethod"
       :row-class-name="tableRowClassName"
       class="table"
-      :key="keystring"
+      :key="baseinfodata.subType"
     >
       <el-table-column
         v-if="selection"
@@ -321,14 +321,16 @@
         >
           <template slot="header">
             <span>{{ $t(items.key) }}</span>
-            <span style="color: red">*</span>
+            <span v-if="baseinfodata.subType == 'ZN_ONE'" style="color: red"
+              >*</span
+            >
           </template>
           <template slot-scope="scope">
             <iDatePicker
               v-if="canEdit && canEditRow(scope.row)"
               class="datapicker"
               format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="yyyy-MM-dd"
               v-model="scope.row['deliveryDate']"
               type="date"
             />
