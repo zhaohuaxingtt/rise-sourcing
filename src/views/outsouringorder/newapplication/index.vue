@@ -426,6 +426,7 @@ export default {
             !e.type ||
             !e.unitCode ||
             !e.partNameZh ||
+            !e.partNameDe ||
             !e.procureFactory ||
             !e.deliveryDate
         )
@@ -627,6 +628,11 @@ export default {
     insertItem() {
       let sapItem =
         +(this.tableListData[this.tableListData.length - 1]?.sapItem || 0) + 10;
+      let factoryName = "";
+      const factory = this.splitPurchList.find((e) => e.procureFactory == 1000);
+      if (factory) {
+        factoryName = factory.factoryName;
+      }
       this.tableListData.push({
         riseCode: this.$route.query.code || "",
         sapItem: sapItem,
@@ -637,13 +643,14 @@ export default {
         quantity: "",
         unitCode: "PC",
         supplierNameZh: "",
-        factoryName: "",
+        factoryName: factoryName,
         tmFactoryId: "",
-        procureFactory: "",
+        procureFactory: "1000", // 默认1000
         procureOrg: "",
         deliveryDate: "",
         storageLocationCode: "",
         partNameZh: "",
+        partNameDe: "",
         requestTraceNo: "",
         status: "",
         // subType: this.applicationTypeVal,

@@ -168,6 +168,30 @@
           :key="index"
           align="center"
           :show-overflow-tooltip="items.tooltip && !canEdit"
+          v-else-if="items.props == 'partNameDe'"
+          :prop="items.props"
+          :label="$t(items.key)"
+          :width="items.width"
+          :min-width="items.minWidth"
+        >
+          <template slot="header">
+            <span>{{ $t(items.key) }}</span>
+            <span style="color: red">*</span>
+          </template>
+          <template slot-scope="scope">
+            <iInput
+              v-if="!scope.row['partNum'] && canEdit && canEditRow(scope.row)"
+              v-model="scope.row.partNameDe"
+              :disabled="scope.row.partNum != ''"
+              placeholder="请输入"
+            />
+            <span v-else>{{ scope.row["partNameDe"] }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :key="index"
+          align="center"
+          :show-overflow-tooltip="items.tooltip && !canEdit"
           v-else-if="items.props == 'quantity'"
           :prop="items.props"
           :label="$t(items.key)"
@@ -564,6 +588,7 @@ export default {
               element.categoryId = "";
               element.categoryName = "";
               element.partNameZh = "";
+              element.partNameDe = "";
               element.unit = "";
               element.unitCode = "";
               element.applyDeptNo = "";
@@ -578,6 +603,7 @@ export default {
               element.categoryName = res?.data?.categoryName;
               element.dept = res?.data?.dept;
               element.partNameZh = res?.data?.partNameZh;
+              element.partNameDe = res?.data?.partNameDe;
               element.unit = res?.data?.unitNameZh;
               element.unitCode = res?.data?.unitNameEn;
               element.applyDeptNo = res?.data?.dept;
