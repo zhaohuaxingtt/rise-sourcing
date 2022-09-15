@@ -264,7 +264,6 @@ export default {
       tableTitle: newTableTitle,
       tab: "source",
       splitPurchList: [], //采购工厂
-      itemNum: 10,
       fromGroup: {},
       selectTableData: [],
       addressList: [], //库存地点
@@ -305,6 +304,7 @@ export default {
     // 新建的
     if (!this.$route.query.item && !this.$route.query.code) {
       this.canEdit = true;
+      this.oldTableData = [];
     }
     this.purchaseFactory();
     this.getProcureGroup();
@@ -625,9 +625,11 @@ export default {
     },
     // 新增項次
     insertItem() {
+      let sapItem =
+        +(this.tableListData[this.tableListData.length - 1]?.sapItem || 0) + 10;
       this.tableListData.push({
         riseCode: this.$route.query.code || "",
-        sapItem: this.itemNum,
+        sapItem: sapItem,
         // partType: this.fromGroup.PART_TYPE[0].code,	//默认添加 L 类型的
         partType: "L",
         account: "",
@@ -653,7 +655,6 @@ export default {
         // tmSupplierId: '50001031',
         normalPrQuantityYears: null,
       });
-      this.itemNum += 10;
       // this.getTableList()
     },
 
@@ -756,14 +757,14 @@ export default {
       findNormalPrById(params).then((res) => {
         if (res.data) {
           this.baseinfodata = { ...res.data[0] };
-          this.tableListData = res.data.map((item) => {
-            item.storageLocation =
-              (item.storageLocationCode &&
-                item.storageLocationCode + "-" + item.storageLocationDesc) ||
-              "";
-            this.itemNum = item.sapItem + 10;
-            return item;
-          });
+          this.tableListData =
+            res.data.map((item) => {
+              item.storageLocation =
+                (item.storageLocationCode &&
+                  item.storageLocationCode + "-" + item.storageLocationDesc) ||
+                "";
+              return item;
+            }) || [];
         }
       });
     },
