@@ -264,8 +264,16 @@ export const newTableTitle = [
 	},
 	{
 		props: 'partNameZh',
-		name: '零件名称',
-		key: 'LINGJIANMINGCHEN',
+		name: '零件名称(中)',
+		key: 'LINGJIANMINGCHEN_ZH',
+		tooltip: true,
+		align: 'center',
+		width: 200,
+	},
+	{
+		props: 'partNameDe',
+		name: '零件名称(德)',
+		key: 'LINGJIANMINGCHEN_DE',
 		tooltip: true,
 		align: 'center',
 		width: 200,
