@@ -16,10 +16,27 @@
 
 <script>
 export default {
-  
+  components: {
+  },
+  data() {
+    return {
+    }
+  },
+  computed: {
+    
+  },
+  created(){
+  },
+  methods:{
+    
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.nav2{
+  position: absolute;
+  top: 0;
+  right: 6.25rem;
+}
 </style>

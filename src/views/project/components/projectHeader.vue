@@ -9,9 +9,9 @@
 
 <template>
   <div :class="`projectTop ${isProgressConfirm ? 'withAfter' : ''}`">
-    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
+    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" @change="dsadasdad" routerPage class="nav" />
     <div style="display:flex;align-items:center" class="right-control">
-      <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
+      <iNavMvp v-if="subNavList && $route.path !== '/projectmgt/projectoverview'"  :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <div class="control">
         <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage  :isUser="true" class="margin-left20 margin-right10" />
         <!-- <logButton class="margin-left20" @click="toLogPage" /> -->
@@ -24,7 +24,7 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { TAB } from "./data"
+import { TAB,navList } from "./data"
 import logButton from "@/components/logButton"
 import iLog from '@/views/project/log'
 import iLoger from 'rise/web/components/iLoger'
@@ -47,7 +47,7 @@ export default {
   props: {
     // eslint-disable-next-line no-undef
     navList: {type:Array, default: _.cloneDeep(TAB)},
-    subNavList: {type:Array}
+    subNavList: {type:Array,default: _.cloneDeep(navList)}
   },
   computed: {
     isProgressConfirm() {
@@ -58,6 +58,9 @@ export default {
     }
   },
   methods: {
+    dsadasdad(val){
+      console.log(val);
+    },
     // 跳转查看日志
     toLogPage() {
       this.showDialog = true

@@ -6,17 +6,22 @@
  * @Description: 通用表格
 -->
 <template>
-  <el-form :model="{tableData}" status-icon :rules="rules" ref="commonTableForm">
+  <el-form :model="{tableData}" status-icon :rules="rules" ref="commonTableForm"
+            class="commonTable"
+            :class="{ formStyle: ruleLength === 0, 'table-border-visible': border }"
+  >
     <el-table :height="height"
               tooltip-effect='light'
               :data='tableData'
+              ref="commonTable"
               :empty-text="language('LK_ZANWUSHUJU', '暂无数据')"
               v-loading='tableLoading'
               @row-click="rowClick"
               @select-all="handleSelectionAllChange"
               @selection-change="handleSelectionChange"
+              :border="border"
               :row-class-name="handleTableRow">
-      <el-table-column v-if="selection" type='selection' width="55" align='center'></el-table-column>
+      <el-table-column v-if="selection" :selectable="selectionType" type='selection' width="55" align='center'></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
@@ -118,6 +123,7 @@ export default {
     index: {type: Boolean, default: false},
     height: {type: Number || String},
     openPageProps: {type: String, default: ''},
+    selectable:{type: Boolean, default: false},
     inputProps: {
       type: Array, default: () => {
         return []
@@ -133,6 +139,7 @@ export default {
         return {}
       }
     },
+    border: { type: Boolean, default: false },
     customOpenPageWord: {type: String, default: ''},
     openPageGetRowData: {type: Boolean, default: false},
     inputType: {type: String, default: ''},
@@ -150,6 +157,13 @@ export default {
     }
   },
   methods: {
+    selectionType(){
+      if (this.selectable == true) {
+        return false
+      } else {
+        return true
+      }
+    },
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
@@ -197,7 +211,6 @@ export default {
     height: 35px !important;
   }
 }
-
 .icon {
   color: $color-blue;
 }
@@ -206,8 +219,47 @@ export default {
   font-size: 14px;
   color: red;
 }
+.commonTable {
+  ::v-deep .el-table__row {
+    .el-form-item {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .el-input {
+      height: 35px !important;
+      width: 100% !important;
 
+      .el-input__inner {
+        height: 35px !important;
+      }
+    }
+  }
+}
+
+.el-tooltip__popper {
+  max-width: 400px;
+}
+.linkEllipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .el-form-item {
   margin-top: 1.375rem;
+}
+
+.formStyle ::v-deep .el-form-item {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.table-border-visible {
+  ::v-deep .el-table--border th {
+    border-right: 1px solid #ffffff !important;
+  }
+
+  ::v-deep .el-table--border td {
+    border-right: 0 !important;
+  }
 }
 </style>
