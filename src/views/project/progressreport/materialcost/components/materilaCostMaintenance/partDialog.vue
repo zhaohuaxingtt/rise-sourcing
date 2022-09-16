@@ -27,7 +27,7 @@
                 <span></span>
                 <div>
                     <!-- <iButton @click="save">{{language('XUANZE', '选择')}}</iButton> -->
-                    <iButton @click="save">{{$t("LK_QUEREN")}}</iButton>
+                    <iButton @click="save" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_POINTELISTQUEREN">{{$t("LK_QUEREN")}}</iButton>
                 </div>
             </div>
             <tableList
