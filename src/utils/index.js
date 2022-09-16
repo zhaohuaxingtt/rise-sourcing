@@ -42,7 +42,7 @@ export function setToken(tokenData) {
 export function removeToken() {
   const keys = document.cookie.match(/[^ =;]+(?==)/g)
   if (keys) {
-    for (let i = keys.length; i--; ) {
+    for (let i = keys.length; i--;) {
       document.cookie =
         keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString() // 清除当前域名下的,例如：m.ratingdog.cn
       document.cookie =
@@ -106,10 +106,10 @@ export function password(str, publicKey) {
 
 export function closeCliantClearStoreage() {
   let beginTime = null
-  window.onbeforeunload = function(params) {
+  window.onbeforeunload = function (params) {
     beginTime = new Date().getTime()
   }
-  window.onunload = function() {
+  window.onunload = function () {
     let endTime = new Date().getTime()
     if (endTime - beginTime <= 5) {
       removeToken()
@@ -167,7 +167,7 @@ export function serialize(data, type = Object) {
 }
 
 // 数字限制输入
-export const numberProcessor = function(val, precision = 4, negative) {
+export const numberProcessor = function (val, precision = 4, negative) {
   let result = ''
   if (+precision > 0) {
     if (negative) {
@@ -217,7 +217,7 @@ export function filterEmptyChildren(arr, target) {
 // eslint-disable-next-line no-undef
 let languageList = []
 // eslint-disable-next-line no-undef
-Vue.prototype.language = function(languageKey, name) {
+Vue.prototype.language = function (languageKey, name) {
   if (process.env.NODE_ENV == 'dev') {
     languageList.push(
       languageKey + '----' + name + '----' + this.$router.currentRoute.path
@@ -300,8 +300,7 @@ function _permissionKeySendToService(router) {
     console.error('您上次权限失败的数据为:')
     console.log(errorData(serviceData))
     alert(
-      `权限自动上传中有${
-        errorData(serviceData).length
+      `权限自动上传中有${errorData(serviceData).length
       }条错误，请查看控制台中的错误日志，解决后再上传`
     )
   }
@@ -479,7 +478,7 @@ export function permissionArray(permissionKey, list) {
  * 检查是否包含permissionKey权限
  * @param {*} permissionKey
  */
- export function hasPermission(permissionKey) {
+export function hasPermission(permissionKey) {
   return store.state.permission.whiteBtnList[permissionKey]
 }
 
@@ -528,9 +527,9 @@ export function fmoney(s, n) {
   n = n > 0 && n <= 20 ? n : 2
   s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(n) + ''
   var l = s
-      .split('.')[0]
-      .split('')
-      .reverse(),
+    .split('.')[0]
+    .split('')
+    .reverse(),
     r = s.split('.')[1],
     t = ''
   for (let i = 0; i < l.length; i++) {
@@ -625,8 +624,8 @@ export function pad(num, n) {
 // 设置页面水印
 export function watermark(text) {
   console.log(store.state.permission.userInfo.id);
-  const { language='zh', userInfo={} } = store.state.permission
-  const { nameZh='', nameEn='', id='' } = userInfo
+  const { language = 'zh', userInfo = {} } = store.state.permission
+  const { nameZh = '', nameEn = '', id = '' } = userInfo
   let name = language == 'zh' ? nameZh : nameEn
   let template = (
     `<div class='watermark'>
@@ -646,14 +645,14 @@ export function watermark(text) {
   }
   //默认设置
   let defaultSettings = {
-    watermark_txt: text||template,
+    watermark_txt: text || template,
     watermark_x: 20,//水印起始位置x轴坐标
     watermark_y: 20,//水印起始位置Y轴坐标
     watermark_rows: 0,//水印行数
     watermark_cols: 0,//水印列数
     watermark_x_space: 100,//水印x轴间隔
     watermark_y_space: 50,//水印y轴间隔
-    watermark_color: '#aaa',//水印字体颜色
+    watermark_color: '#dddddd',//水印字体颜色
     watermark_alpha: 0.4,//水印透明度
     watermark_fontsize: '16px',//水印字体大小
     watermark_font: '微软雅黑',//水印字体
