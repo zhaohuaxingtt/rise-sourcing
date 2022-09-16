@@ -108,6 +108,7 @@ import { navList } from "./data";
       this.getDic();
       this.getData(1,10);
       this.getPicLeft();
+      this.getPicRight();
     },
     methods:{
       getPicLeft(){
