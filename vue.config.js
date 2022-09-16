@@ -12,7 +12,10 @@ const postcss = px2rem({
 })
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
+
 const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
 	outputDir: 'dist',
@@ -209,9 +212,27 @@ module.exports = {
 					['^' + process.env.VUE_APP_DIC_API]: '',
 				},
 			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
 			[process.env.VUE_APP_SOURCING]: {
-				target: `${BASE_IP}/sourcing/web`,
+				target: `${BASE_IP}/sourcing/webweb`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',
@@ -382,26 +403,10 @@ module.exports = {
       },
       // ------------------ 零件服务 api ----------------------------
       [process.env.VUE_APP_PART_API]: {
-        target: `${BASE_IP}/parts/`,
+        target: `${BASE_IP}/parts`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_PART_API]: ''
-        }
-      },
-      // ------------------ aonApi ----------------------------
-      [process.env.VUE_APP_POWEBI_KPI]: {
-        target: `${BASE_IP}`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_POWEBI_KPI]: ''
-        }
-      },
-      // ------------------ TP服务 api ----------------------------
-      [process.env.VUE_APP_PARTS]: {
-        target: `${BASE_IP}/sourcing/web`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PARTS]: ''
         }
       },
 		},

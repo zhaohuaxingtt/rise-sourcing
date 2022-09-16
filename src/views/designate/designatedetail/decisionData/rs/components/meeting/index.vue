@@ -1116,6 +1116,7 @@ export default {
      * @return {*}
      */    
     init() {
+      this.loading = true
       // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
       if (this.isAuth || this.isApproval) {
         this.reviewListRs()
@@ -1181,6 +1182,7 @@ export default {
       })
       .finally(() => {
         this.tableLoading = false
+        this.loading = false
         this.$nextTick(()=>{
           this.getHeight()
         })
@@ -1306,7 +1308,10 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
-      .finally(() => this.tableLoading = false)
+      .finally(() => {
+        this.tableLoading = false
+        this.loading = false
+      })
 	},
 		
     // 导出pdf
@@ -1604,8 +1609,8 @@ export default {
       &-title {
         background-color: rgba(22, 96, 241, 0.06);
         border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 6px 24px;
-        width: 60%;
+        padding: 6px 12px;
+        width: 40%;
         font-weight: bold;
         // line-height: 29px;
         display: flex;
@@ -1613,8 +1618,8 @@ export default {
         justify-content: center;
       }
       &-value {
-        width: 40%;
-        padding: 6px 24px;
+        width: 60%;
+        padding: 6px 12px;
         // line-height: 29px;
         background-color: #fff;
         display: flex;
@@ -1623,10 +1628,10 @@ export default {
       }
       &:nth-of-type(even) {
         .rsTop-right-item-title {
-          width: 65%;
+          width: 50%;
         }
         .rsTop-right-item-value {
-          width: 35%;
+          width: 50%;
         }
       }
     }
@@ -1730,7 +1735,7 @@ export default {
     border-top: 1px solid #666;
   }
 .contentPdf{
-   ::v-deep .rsCard {
+  ::v-deep .rsCard {
     box-shadow: none;
 
     .title {
@@ -1809,8 +1814,8 @@ export default {
         &-title {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
-          padding: 6px 24px;
-          width: 60%;
+          padding: 6px 12px;
+          width: 40%;
           font-weight: bold;
           // line-height: 29px;
           display: flex;
@@ -1818,8 +1823,8 @@ export default {
           justify-content: center;
         }
         &-value {
-          width: 40%;
-          padding: 6px 24px;
+          width: 60%;
+          padding: 6px 12px;
           // line-height: 29px;
           background-color: #fff;
           display: flex;
@@ -1828,10 +1833,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 65%;
+            width: 40%;
           }
           .rsTop-right-item-value {
-            width: 35%;
+            width: 60%;
           }
         }
       }
@@ -1915,6 +1920,9 @@ export default {
         font-size: 13px !important;
       }
     }
+    .complete {
+      color: rgb(104, 193, 131);
+    }
   }
   ::v-deep .checkList {
     display: flex;
@@ -1950,9 +1958,6 @@ export default {
     }
   }
 
-  ::v-deep .complete {
-    color: rgb(104, 193, 131);
-  }
 
   ::v-deep .cancel {
     color: rgb(95, 104, 121);
