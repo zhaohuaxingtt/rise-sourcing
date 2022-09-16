@@ -20,105 +20,128 @@
 <script>
 import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage } from "rise";
 import Item from "./item.vue";
-  export default {
-    components:{
-      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,
-    },
-    data() {
-      return {
-        header: [
-          '2019-12',
-          '2020-01',
-          '2020-02',
-          '2020-03',
-          '2020-04',
-          '2020-05',
-          '2020-06',
-          '2020-07',
-          '2020-08',
-          '2020-09',
-          '2020-10',
-          '2020-11',
-        ],
-        list:[
-          // status: 1 绿色；2 黄色
-          {
-          name:"1.0 BF",
-          showChlid:false,
-          status: 1,
-          point:true,
-          rang:['2019-12'],
-          children:[
-            { name:'1.1 TM数模数据', status: 2, rang:['2019-12'], },
-            { name:'1.2 TZ图纸数据', status: 1, rang:['2019-12'], },
-            { name:'1.2 TZ图纸数据', rang:['2019-12'], },
-            { name:'1.3 Fakom(P-muster)', status: 2,
-              rang:['2019-12','2020-01','2020-02',], },
-            { name:'1.4 P-muster', point:true, status: 2, rang:['2020-04'], },
-            { name:'1.5 software', point:true, status: 1, rang:['2020-01','2020-02'], width:'40%' },
-            { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
-          ]
-        },{
-          name:"2.0 联系人提交清单",
-          showChlid:false,
-          status: 1,
-          point:true,
-          rang:['2020-03'],
-          children:[
-            { name:'2.1 TM数模数据', status: 2, },
-            { name:'2.2 TZ图纸数据' },
-            { name:'2.3 Fakom(P-muster)', status: 2, },
-            { name:'2.4 P-muster' },
-            { name:'2.5 software', status: 1, },
-            { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
-          ]
-        }
-        ],
-        obj:{
-          name:"1.0BF",
-          showChlid:false,
-          status: 1,
-          point:true,
-          children:[
+import {
+  getGanttChart,
+} from "@/api/project/deliver";
+
+export default {
+  components:{
+    iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,
+  },
+  props:{
+    carProjectId:{
+      type:String,
+      default:"",
+    }
+  },
+  data() {
+    return {
+      header: [
+        '2019-12',
+        '2020-01',
+        '2020-02',
+        '2020-03',
+        '2020-04',
+        '2020-05',
+        '2020-06',
+        '2020-07',
+        '2020-08',
+        '2020-09',
+        '2020-10',
+        '2020-11',
+      ],
+      list:[
+        // status: 1 绿色；2 黄色
+        {
+        name:"1.0 BF",
+        showChlid:false,
+        status: 1,
+        point:true,
+        rang:['2019-12'],
+        children:[
+          { name:'1.1 TM数模数据', status: 2, rang:['2019-12'], },
+          { name:'1.2 TZ图纸数据', status: 1, rang:['2019-12'], },
+          { name:'1.2 TZ图纸数据', rang:['2019-12'], },
+          { name:'1.3 Fakom(P-muster)', status: 2,
+            rang:['2019-12','2020-01','2020-02',], },
+          { name:'1.4 P-muster', point:true, status: 2, rang:['2020-04'], },
+          { name:'1.5 software', point:true, status: 1, rang:['2020-01','2020-02'], width:'40%' },
+          { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
+        ]
+      },{
+        name:"2.0 联系人提交清单",
+        showChlid:false,
+        status: 1,
+        point:true,
+        rang:['2020-03'],
+        children:[
+          { name:'2.1 TM数模数据', status: 2, },
+          { name:'2.2 TZ图纸数据' },
+          { name:'2.3 Fakom(P-muster)', status: 2, },
+          { name:'2.4 P-muster' },
+          { name:'2.5 software', status: 1, },
+          { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
+        ]
+      }
+      ],
+      obj:{
+        name:"1.0BF",
+        showChlid:false,
+        status: 1,
+        point:true,
+        children:[
+          { name:'1.1 TM数模数据', status: 2, },
+          { name:'1.2 TZ图纸数据' },
+          { name:'1.3 Fakom(P-muster)', status: 2, },
+          { name:'1.4 P-muster' },
+          { name:'1.5 software', status: 1,
+            showChlid:false,
+            children:[
             { name:'1.1 TM数模数据', status: 2, },
             { name:'1.2 TZ图纸数据' },
             { name:'1.3 Fakom(P-muster)', status: 2, },
             { name:'1.4 P-muster' },
-            { name:'1.5 software', status: 1,
-              showChlid:false,
-              children:[
-              { name:'1.1 TM数模数据', status: 2, },
-              { name:'1.2 TZ图纸数据' },
-              { name:'1.3 Fakom(P-muster)', status: 2, },
-              { name:'1.4 P-muster' },
-              { name:'1.5 software', status: 1, },
-            ]
-            },
+            { name:'1.5 software', status: 1, },
           ]
-        }
+          },
+        ]
       }
-    },
-    methods:{
-      jumpHeavy(){
-        const routeData = this.$router.resolve({
-          path:"/deliver/shuttle",
-          query:{
-            carModelId:"",
-          }
-        })
-        window.open(routeData.href, '_blank')
-      },
-      jumpSupplier(){
-        const routeData = this.$router.resolve({
-          path:"/deliver/deliverPlan",
-          query:{
-            carModelId:"",
-          }
-        })
-        window.open(routeData.href, '_blank')
-      },
     }
+  },
+  created(){
+    this.getData();
+  },
+  methods:{
+    getData(){
+      console.log(this.carProjectId)
+      getGanttChart({
+        cartypeProId:this.carProjectId,
+        current:1,
+        size:1,
+      }).then(res=>{
+        console.log(res);
+      })
+    },
+    jumpHeavy(){
+      const routeData = this.$router.resolve({
+        path:"/deliver/shuttle",
+        query:{
+          carProjectId:this.carProjectId,
+        }
+      })
+      window.open(routeData.href, '_blank')
+    },
+    jumpSupplier(){
+      const routeData = this.$router.resolve({
+        path:"/deliver/deliverPlan",
+        query:{
+          carProjectId:this.carProjectId,
+        }
+      })
+      window.open(routeData.href, '_blank')
+    },
   }
+}
 </script>
 
 <style lang="scss" scoped>

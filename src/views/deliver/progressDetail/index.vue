@@ -12,16 +12,16 @@
                 <iSelect filterable v-model="searchParams.carProject" :placeholder="language('QINGXUANZE','请选择')">
                   <el-option
                     v-for="item in carProjectOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.cartypeProId"
+                    :label="item.cartypeProNameZh"
+                    :value="item.cartypeProId">
                   </el-option>
                 </iSelect>
               </el-form-item>
           </el-form>
         </div>
         <div class="isearch-top">
-          <iprogress :carProjectId="'50141107'"></iprogress>
+          <iprogress v-if="searchParams.carProject" :carProjectId="searchParams.carProject"></iprogress>
         </div>
       </div>
       <el-divider></el-divider>
@@ -29,21 +29,39 @@
         <span class="form-title lineH60">零件进度：</span>
         <div class="flex-top flex1">
           <el-form class="margin-top10">
-            <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key, item.label)">
-              <iSelect clearable v-update v-if="item.type === 'select'" v-model="searchParams[item.prop]"
-                :placeholder="language('QINGXUANZE', '请选择')">
-                <el-option v-if="item.prop == 'showSelf' || item.prop == 'linieApportionStatus'" value=""
-                  :label="language('ALL', '全部')"></el-option>
-                <el-option v-for="item_ in selectOptions[item.selectOption] || []" :key="item_.value" :label="item_.label"
-                  :value="item_.value">
+            <el-form-item :label="language('CAILIAOZU', '材料组')">
+              <iSelect filterable v-model="searchParams.dept"  :placeholder="language('QINGXUANZE','请选择')">
+                <el-option
+                  v-for="item in deptList"
+                  :key="item.materialGroupId"
+                  :label="item.materialGroupNameZh"
+                  :value="item.materialGroupId">
                 </el-option>
               </iSelect>
-              <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange"
-                v-model="searchParams[item.prop]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
-              <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.prop]"
-                :title="language(item.key, item.label)" />
-              <iInput clearable v-else v-model="searchParams[item.vpropalue]" :placeholder="language('QINGSHURU', '请输入')"></iInput>
             </el-form-item>
+
+            <el-form-item :label="language('LINGJIAN', '零件')">
+              <iSelect filterable v-model="searchParams.part" :placeholder="language('QINGXUANZE','请选择')">
+                <el-option
+                  v-for="item in partList"
+                  :key="item.partNum"
+                  :label="item.partNameZh"
+                  :value="item.partNum">
+                </el-option>
+              </iSelect>
+            </el-form-item>
+
+            <el-form-item :label="language('GONGYINGSHANG', '供应商')">
+              <iSelect filterable v-model="searchParams.supplier" :placeholder="language('QINGXUANZE','请选择')">
+                <el-option
+                  v-for="item in supplierList"
+                  :key="item.cartypeProId"
+                  :label="item.cartypeProNameZh"
+                  :value="item.cartypeProId">
+                </el-option>
+              </iSelect>
+            </el-form-item>
+
           </el-form>
           <div class="sreach-button">
             <iButton>查询</iButton>
@@ -55,10 +73,10 @@
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
       <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem/>
+        <heavyItem :carProjectId="searchParams.carProject" v-if="searchParams.carProject" />
       </el-tab-pane>
       <el-tab-pane name="2" label="普通零件">
-        <commonParts/>
+        <commonParts :carProjectId="searchParams.carProject" v-if="searchParams.carProject" />
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -70,29 +88,74 @@ import projectTop from '../components/projectHeader'
 import iprogress from "../components/progress";
 import heavyItem from "./components/heavyItem";
 import commonParts from "./components/commonParts";
-import { progressDetailSearchList as searchList } from "../components/data";
+import {
+  cartype_pro_List,
+  getCartypeProMaterialGroup,
+  getCartypeProPart,
+  getCartypeProSupplier,
+} from "@/api/project/deliver";
 
-  export default {
-    components:{
-      iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, projectTop,iprogress,heavyItem,commonParts
-    },
-    data() {
-      return {
-        searchParams: {
-          carProject:""
-        },
-        carProjectOptions:[],
-        searchList,
-        selectOptions:{},
-        tabVal:'1'
-      }
-    },
-    methods:{
-      changeTab(){
+export default {
+  components:{
+    iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, projectTop,iprogress,heavyItem,commonParts
+  },
+  data() {
+    return {
+      searchParams: {
+        carProject:"",
+        dept:"",
+        part:"",
+        supplier:"",
+      },
 
-      }
+      carProjectOptions:[],
+      deptList:[],
+      partList:[],
+      supplierList:[],
+
+
+      selectOptions:{},
+      tabVal:'1',
+    }
+  },
+  created(){
+    this.getData();
+  },
+  methods:{
+    getData(){
+      cartype_pro_List({}).then(res=>{
+        if(res?.result){
+          this.carProjectOptions = res.data.filter(res => res)
+          this.searchParams.carProject = this.carProjectOptions[0]?.cartypeProId;
+
+          this.getGroup(this.searchParams.carProject);//获取车型项目材料组下拉
+        }
+      })
+    },
+    getGroup(val){
+      getCartypeProMaterialGroup(val).then(res=>{
+        if(res?.result){
+          this.deptList = res.data;
+        }
+      })
+
+      getCartypeProPart(val).then(res=>{
+        if(res?.result){
+          this.partList = res.data;
+        }
+      })
+
+      getCartypeProSupplier(val).then(res=>{
+        if(res?.result){
+          this.supplierList = res.data;
+        }
+      })
+    },
+    changeTab(){
+
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

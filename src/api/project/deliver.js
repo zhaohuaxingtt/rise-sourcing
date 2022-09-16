@@ -79,11 +79,79 @@ export function level_summary(data) {
     })
 }
 
-// 延迟页-级别汇总
+// 延迟页-原因汇总（小类）
 export function reason_summary(data) {
     return requst({
         url: '/sample_part_list/delay/reason_summary',
         method: 'POST',
         data
+    })
+}
+
+// 查询车型项目材料组信息
+export function getCartypeProMaterialGroup(data) {
+    return requst({
+        url: `/sample_part_list/web/getCartypeProMaterialGroup/${data}`,
+        method: 'GET',
+    })
+}
+
+// 查询车型项目零件信息
+export function getCartypeProPart(data) {
+    return requst({
+        url: `/sample_part_list/web/getCartypeProPart/${data}`,
+        method: 'GET',
+    })
+}
+
+// 查询车型项目供应商信息
+export function getCartypeProSupplier(data) {
+    return requst({
+        url: `/sample_part_list/web/getCartypeProSupplier/${data}`,
+        method: 'GET',
+    })
+}
+
+// 车型项目零件甘特图
+export function getGanttChart(params) {
+    return requst({
+        url: `/sample_part_actityty/web/getGanttChart`,
+        method: 'GET',
+        params
+    })
+}
+
+// 查询材料组及其关联的零件
+export function getMaterialGroupPart(data) {
+    return requst({
+        url: `/sample_part_list/web/getMaterialGroupPart`,
+        method: 'POST',
+        data
+    })
+}
+
+// 查询车型项目关联设置的heavyitem
+export function getHeavyitem(params) {
+    return requst({
+        url: `/sample_heavyitem/web/getHeavyitem/${params}`,
+        method: 'GET',
+    })
+}
+
+// 设置heavyitem
+export function setHeavyitem(data) {
+    return requst({
+        url: `/sample_heavyitem/web/setHeavyitem`,
+        method: 'POST',
+        data
+    })
+}
+
+// 查询车型项目零件关联的节点信息
+export function getPartActityty(params) {
+    return requst({
+        url: `/sample_part_actityty/web/getPartActityty`,
+        method: 'GET',
+        params
     })
 }

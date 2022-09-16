@@ -140,7 +140,7 @@ import { navList } from "./data";
 
         cartype_pro_List({}).then(res=>{
           if(res?.result){
-            this.selectOptions.cartypeProId = res.data
+            this.selectOptions.cartypeProId = res.data.filter(res => res)
           }
         })
       },

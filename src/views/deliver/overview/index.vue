@@ -112,7 +112,7 @@ export default {
       })
       cartype_pro_List({}).then(res=>{
         if(res?.result){
-          this.selectOptions.carProjectOptions = res.data
+          this.selectOptions.carProjectOptions = res.data.filter(res => res)
         }
       })
       buyer_list({}).then(res=>{
