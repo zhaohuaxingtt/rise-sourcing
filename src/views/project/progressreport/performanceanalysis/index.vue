@@ -17,7 +17,7 @@
                             :fit="fit" />
                     <span :class="checked?'checked':'unchecked'">{{$t('全选')}}</span>
                 </div>
-                <iButton @click="upload">{{$t("导出")}}</iButton>
+                <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_DAOCHU">{{$t("导出")}}</iButton>
             </div>
         </div>
 
