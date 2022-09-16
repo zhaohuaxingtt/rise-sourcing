@@ -498,7 +498,12 @@ export default {
             })
         },
         commitPart(val){//选择零件后同步表格数据
-            console.log(val);
+            this.partDialogVisible.dialogVisible = false;
+            var editData = this.tableListData[val.oldList.index];
+            this.dataPoint.forEach(e=>{
+                editData[e.props] = val.newList[e.props]
+            })
+
         },
         pointerNum(val){//VSI参考零件号
             if(val.vsiPartNum){

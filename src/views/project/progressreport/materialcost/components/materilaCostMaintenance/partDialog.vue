@@ -39,8 +39,8 @@
                 :tableLoading="loading"
                 :index="true">
             </tableList>
-            <iPagination @size-change="handleSizeChange($event, getTableList)"
-                    @current-change="handleCurrentChange($event, getTableList)"
+            <iPagination @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
                     :page-sizes="page.pageSizes"
                     :page-size="page.pageSize"
                     :current-page="page.currPage"
@@ -86,16 +86,35 @@ export default {
             },
             handleSelectArr:[],
             tableListData:[],
+            dataListAll:[],
             tableTitleInfor:partNumberTitle,
             loading:false,
         }
     },
     created(){
+        this.searchForm.nomiPartNum = this.partDialogVisible.dataList.nomiPartNum;
         this.getTableList();
     },
     methods:{
+        handleSizeChange(val){//一页的数据
+            this.page.currPage = 1;
+            this.page.pageSize = val;
+            this.tableListData = this.dataListAll.slice(0,this.page.pageSize);
+        },
+        handleCurrentChange(val){//第几页
+            this.page.currPage = val;
+            if(val === 1){
+                this.tableListData = this.dataListAll.slice(0,this.page.pageSize);
+                return;
+            }
+            val = (val - 1)*this.page.pageSize;
+            this.tableListData = this.dataListAll.slice(val,val+this.page.pageSize);
+        },
         getTableList(val){
+            this.page.currPage = 1;
+            this.page.pageSize = 10;
             this.loading = true;
+            // return;
             getPartInfoByVsiNumAndNomiPartNUM({
                 current: this.page.currPage,
                 size: this.page.pageSize,
@@ -104,13 +123,10 @@ export default {
                 vsiPartNum:this.partDialogVisible.dataList.vsiPartNum,
             }).then(res=>{
                 console.log(res);
-                if(res.result){
-                    this.tableListData = res.data;
-                    this.page.currPage = res.pageNum
-                    this.page.pageSize = res.pageSize;
-                    this.page.totalCount = res.total;
-                }else{
-
+                if(res?.result){
+                    this.dataListAll = res.data;
+                    this.tableListData = this.dataListAll.slice(0,this.page.pageSize);
+                    this.page.totalCount = this.dataListAll.length;
                 }
                 this.loading = false;
 
@@ -148,7 +164,13 @@ export default {
                 iMessage.error(this.language("QXZYTLJHSJ","请选择一条零件号数据！"))
                 return false;
             }
-            this.$emit("commit",this.handleSelectArr[0]);
+
+
+            console.log();
+            this.$emit("commit",{
+                oldList:this.partDialogVisible.dataList,
+                newList:this.handleSelectArr[0]
+            });
         },
 
         clearRefresh(){
