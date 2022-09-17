@@ -77,7 +77,7 @@ export default {
     };
   },
   created() {
-    // this.searchData()
+    this.searchData()
     this.getDataList();
   },
   methods: {
@@ -112,7 +112,12 @@ export default {
       })
       cartype_pro_List({}).then(res=>{
         if(res?.result){
-          this.selectOptions.carProjectOptions = res.data.filter(res => res)
+          var carList = res.data.filter(res => res)
+          carList.forEach(e=>{
+            e.value = e.cartypeProId;
+            e.label = e.cartypeProNameZh;
+          })
+          this.selectOptions.carProjectOptions = carList;
         }
       })
       buyer_list({}).then(res=>{

@@ -113,11 +113,11 @@ export function getCartypeProSupplier(data) {
 }
 
 // 车型项目零件甘特图
-export function getGanttChart(params) {
+export function getGanttChart(data) {
     return requst({
         url: `/sample_part_actityty/web/getGanttChart`,
-        method: 'GET',
-        params
+        method: 'POST',
+        data
     })
 }
 

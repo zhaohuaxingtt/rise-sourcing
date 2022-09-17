@@ -1,10 +1,16 @@
 <template>
   <iPage>
     <projectTop />
-    <iNavMvp lev="2" class="flex-end"
+    <!-- <iNavMvp lev="2" class="flex-end"
                :list="navList"
+               routerPage
                @change="change"
-               lang></iNavMvp>
+               lang></iNavMvp> -->
+    <div class="flex-end">
+      <div class="flex2-name" v-for="(item,index) in navList" :key="index" @click="change(item)">
+        <span :class="lev2Index == index?'click-name':''">{{$t(item.key)}}</span>
+      </div>
+    </div>
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
     <iTabsList v-model='defaultTab' type="card">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
@@ -98,10 +104,12 @@ import { navList } from "./data";
         },
         defaultTab:'1',
         navList,
-        threeTreeValue:"",
         dataList:[],//列表数据
         picLeftData:[],//左图表数据
         picRightData:[],//右图表数据
+
+        threeTreeValue:"1stTryout",//二级菜单 /OTS/EM
+        lev2Index:3,
       }
     },
     created(){
@@ -112,14 +120,20 @@ import { navList } from "./data";
     },
     methods:{
       getPicLeft(){
-        level_summary(this.searchForm).then(res=>{
+        level_summary({
+          ...this.searchForm,
+          title:this.threeTreeValue,
+        }).then(res=>{
           if(res?.result){
             this.picLeftData = res.data;
           }
         })
       },
       getPicRight(){
-        reason_summary(this.searchForm).then(res=>{
+        reason_summary({
+          ...this.searchForm,
+          title:this.threeTreeValue,
+        }).then(res=>{
           if(res?.result){
             this.picRightData = res.data;
           }
@@ -141,7 +155,12 @@ import { navList } from "./data";
 
         cartype_pro_List({}).then(res=>{
           if(res?.result){
-            this.selectOptions.cartypeProId = res.data.filter(res => res)
+            var carList = res.data.filter(res => res)
+            carList.forEach(e=>{
+              e.value = e.cartypeProId;
+              e.label = e.cartypeProNameZh;
+            })
+            this.selectOptions.cartypeProId = carList;
           }
         })
       },
@@ -150,6 +169,7 @@ import { navList } from "./data";
           ...this.searchForm,
           current:page,
           size:size,
+          title:this.threeTreeValue,
         }).then(res=>{
           if(res?.result){
             this.dataList = res.data;
@@ -185,7 +205,8 @@ import { navList } from "./data";
         this.getData(1,10);
       },
       change(val){
-        this.threeTreeValue = val.value;
+        this.lev2Index = val.value - 1;
+        this.threeTreeValue = val.name;
       },
     }
   }
@@ -204,8 +225,70 @@ import { navList } from "./data";
   position: absolute;
   right:140px;
   top:30px;
+
+  display: flex;
 }
 .routerpage{
   position: relative;
+}
+.flex2-name{
+  min-width: 7.625rem;
+  margin-left: 0.0625rem;
+  position: relative;
+  padding: 0.25rem 1.5625rem;
+  cursor: pointer;
+  letter-spacing: 0.0625rem;
+  text-align: center;
+
+  span{
+    opacity: 1;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    color: #727272;
+    display: inline-block;
+    font-size: 1.125rem !important;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -1px;
+      transform: translate(0, -50%);
+      width: 1px;
+      height: 16px;
+      background: #909091;
+      opacity: 0.58;
+    }
+  }
+}
+.flex2-name:first-of-type{
+  min-width: auto!important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+
+  span{
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -1px;
+      transform: translate(0, -50%);
+      width: 0px;
+      height: 0px;
+      background: #909091;
+      opacity: 0.58;
+    }
+  }
+}
+
+.flex2-name:last-of-type{
+  min-width: auto!important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+.click-name{
+  font-weight:bold;
+  color:#1660f1!important;
 }
 </style>

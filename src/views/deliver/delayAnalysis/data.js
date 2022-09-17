@@ -4,15 +4,16 @@ export const navList = [
       name: '定点',
       message: 0,
       url: '/deliver/delayanalysis',
-      activePath: 'delayanalysis',
+      activePath: '/delayanalysis',
       key: 'nominationLanguage_DINGDIAN'
     },
     {
       value: 2,
       name: '启动',
       message: 0,
+      // url: '/deliver/delayanalysis/StartUp',
       url: '/deliver/delayanalysis',
-      activePath: 'delayanalysis',
+      activePath: '/StartUp',
       key: 'LK_QIDONG'
     },
     {
@@ -20,7 +21,8 @@ export const navList = [
       name: 'BF',
       message: 0,
       url: '/deliver/delayanalysis',
-      activePath: 'delayanalysis',
+      // url: '/deliver/delayanalysis/BF',
+      activePath: '/BF',
       key: 'BF'
     },
     {
@@ -28,7 +30,8 @@ export const navList = [
       name: '1st Tryout',
       message: 0,
       url: '/deliver/delayanalysis',
-      activePath: 'delayanalysis',
+      // url: '/deliver/delayanalysis/Tryout',
+      activePath: '/Tryout',
       key: '1st Tryout'
     },
     {
@@ -36,15 +39,17 @@ export const navList = [
       name: 'OTS',
       message: 0,
       url: '/deliver/delayanalysis',
-      activePath: 'delayanalysis',
+      // url: '/deliver/delayanalysis/OTS',
+      activePath: '/OTS',
       key: 'OTS'
     },
     {
       value: 6,
       name: 'EM',
       message: 0,
-      url: '/deliver/delayanalysis?type=6',
-      activePath: 'delayanalysis',
+      url: '/deliver/delayanalysis',
+      // url: '/deliver/delayanalysis/EM',
+      activePath: '/EM',
       key: 'EM'
     }
 ]
