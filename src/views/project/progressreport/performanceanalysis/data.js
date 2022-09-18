@@ -1,4 +1,4 @@
-export function echartsSupplerEM(data,type){
+export function echartsSupplerEM(data,type,valueN){
     console.log(data);
 
     var name = [
@@ -6,6 +6,9 @@ export function echartsSupplerEM(data,type){
         ...type
     ];
     var data1 = [
+        // 12, 31, 23, 11, 12, 31, 44, 55, 90
+    ]//左
+    var data1_2 = [
         // 12, 31, 23, 11, 12, 31, 44, 55, 90
     ]//左
     var data2 = [
@@ -22,22 +25,102 @@ export function echartsSupplerEM(data,type){
         // '供应商8',
         // '供应商9',
     ];
+    
+    var series = [];
 
     data.forEach(e=>{
-        data1.push(e.percentage)
-        data2.push(e.totalNum)
-        xAxis.push(e.name)
+        if(name.length == 3){
+            data1.push(e.emPercentage)
+            data1_2.push(e.otsPercentage)
+            data2.push(e.totalNum)
+            xAxis.push(e.carTypeProName)
+        }else{
+            data1.push(e.percentage)
+            data2.push(e.totalNum)
+            xAxis.push(e.name)
+        }
     })
 
+    if(name.length == 3){
+        series = [
+            {
+                name:name[0],
+                type: 'line',
+                barMaxWidth:40,
+                showSymbol:true,
+                symbol:"circle",
+                symbolSize:15,
+                data: data1,
+                itemStyle:{
+                    normal:{
+                        color:"#1663F6",
+                    }
+                }
+            },{
+                name:name[1],
+                type: 'line',
+                barMaxWidth:40,
+                showSymbol:true,
+                symbol:"circle",
+                symbolSize:15,
+                data: data1_2,
+                itemStyle:{
+                    normal:{
+                        color:"#76CBFF",
+                    }
+                }
+            },{
+                name:name[2],
+                type: 'bar',
+                barMaxWidth:40,
+                yAxisIndex: 1,
+                data: data2,
+                itemStyle:{
+                    normal:{
+                        color:"#6EA0FF",
+                    }
+                }
+            }
+        ]
+    }else{
+        series = [
+            {
+                name:name[0],
+                type: 'line',
+                barMaxWidth:40,
+                showSymbol:true,
+                symbol:"circle",
+                symbolSize:15,
+                data: data1,
+                itemStyle:{
+                    normal:{
+                        color:"#1663F6",
+                    }
+                }
+            },{
+                name:name[1],
+                type: 'bar',
+                barMaxWidth:40,
+                yAxisIndex: 1,
+                data: data2,
+                itemStyle:{
+                    normal:{
+                        color:"#6EA0FF",
+                    }
+                }
+            }
+        ]
+    }
 
 
+    console.log(name);
     var interval2 = Math.ceil(Math.max(...data2)/5)
 
     return {
         title:{
             top:10,
             show:true,
-            text:"车型项目XXX",
+            text:valueN,
             textStyle:{
                 color:"#9E9E9E",
                 fontSize:13,
@@ -111,42 +194,24 @@ export function echartsSupplerEM(data,type){
                 params.forEach((e,index) => {
                     t += '<div>'
                     t += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + e.color + ';"></span>'
-                    if(index == 0){
-                        t += e.seriesName + ':' + e.value + '%'
+                    if(name.length == 3){
+                        if(index == 0 || index == 1){
+                            t += e.seriesName + ':' + e.value + '%'
+                        }else{
+                            t += e.seriesName + ':' + e.value
+                        }
                     }else{
-                        t += e.seriesName + ':' + e.value
+                        if(index == 0){
+                            t += e.seriesName + ':' + e.value + '%'
+                        }else{
+                            t += e.seriesName + ':' + e.value
+                        }
                     }
                     t += '</div>'
                 });
                 return t
             }
         },
-        series: [
-            {
-                name:name[0],
-                type: 'line',
-                barMaxWidth:40,
-                showSymbol:true,
-                symbol:"circle",
-                symbolSize:15,
-                data: data1,
-                itemStyle:{
-                    normal:{
-                        color:"#6EA0FF",
-                    }
-                }
-            },{
-                name:name[1],
-                type: 'bar',
-                barMaxWidth:40,
-                yAxisIndex: 1,
-                data: data2,
-                itemStyle:{
-                    normal:{
-                        color:"#1663F6",
-                    }
-                }
-            }
-        ]
+        series: series
       };
 }

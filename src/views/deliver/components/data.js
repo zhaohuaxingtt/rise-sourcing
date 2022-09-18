@@ -60,16 +60,16 @@ export const COMFIRMTAB = [
 ]
 
 export const tableTitle = [
-  { props: "col1", name: "车型项目", key: "", tooltip: true, },
-  { props: "col2", name: "RFQ", key: "", tooltip: true,},
-  { props: "col3", name: "材料组编号", key: "", tooltip: true,  },
-  { props: "col4", name: "零件号", key: "", tooltip: true, },
-  { props: "col5", name: "零件名称", key: "", tooltip: true, },
-  { props: "col6", name: "零件类型", key: "", tooltip: true,  },
-  { props: "col7", name: "Soll", key: "", tooltip: true,  },
-  { props: "col8", name: "进度", key: "", tooltip: true,  },
-  // { props: "col9", name: "延迟原因备注", key: "", tooltip: true, minWidth:120 },
-  { props: "col10", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
+  { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true, },
+  { props: "rfq", name: "RFQ", key: "", tooltip: true,},
+  { props: "materialGroupCode", name: "材料组编号", key: "", tooltip: true,  },
+  { props: "partNum", name: "零件号", key: "", tooltip: true, },
+  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
+  { props: "partType", name: "零件类型", key: "", tooltip: true,  },
+  { props: "soll", name: "Soll", key: "", tooltip: true,  },
+  { props: "progress", name: "进度", key: "", tooltip: true,  },
+  { props: "delayWkDesc", name: "延迟原因备注", key: "", tooltip: true, minWidth:200 },
+  { props: "supplierName", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
 ]
 
 export const shuttleTableTitle = [
@@ -96,22 +96,22 @@ export const shuttleTableTitle = [
 ]
 
 export const searchList = [
-  {prop:'dept',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions'},
-  {prop:'buyer',label:'采购员',key:'CAIGOUYUAN',type:'input'},
-  {prop:'pro',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions'},
+  {prop:'materialGroupIds',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions',multiple:true},
+  {prop:'buyerIds',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList',multiple:true},
+  {prop:'cartypeProIds',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions',multiple:true},
 ]
 
 export const delayAnalysisSearchList = [
-  {prop:'prop1',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'deptOptions'},
-  {prop:'prop2',label:'RFQ',key:'RFQ',type:'input' },
-  {prop:'prop3',label:'材料组',key:'CAILIAOZU',type:'input' },
-  {prop:'prop4',label:'零件编号/零件名称',key:'LINGJIANBIANHAO/LINGJIANMINGCHENG',type:'input' },
-  {prop:'prop5',label:'零件类型',key:'LINGJIANLEIXING',type:'select', selectOption:'deptOptions'},
-  {prop:'prop6',label:'车型项目状态',key:'CHEXINGXIANGMUZHUANGTAI',type:'select', selectOption:'deptOptions'},
-  {prop:'prop7',label:'延迟级别',key:'YANCHIJIBIE',type:'select', selectOption:'deptOptions'},
-  {prop:'prop8',label:'延迟原因',key:'YANCHIYUANYIN',type:'input' },
-  {prop:'prop9',label:'完成状况',key:'WANCHENGZHUANGKUANG',type:'select', selectOption:'deptOptions'},
-  {prop:'prop10',label:'供应商',key:'GONGYINGSHANG',type:'input' },
+  {prop:'cartypeProId',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'cartypeProId'},
+  {prop:'rfq',label:'RFQ',key:'RFQ',type:'input' },
+  {prop:'materialGroup',label:'材料组',key:'CAILIAOZU',type:'input' },
+  {prop:'part',label:'零件编号/零件名称',key:'LINGJIANBIANHAO/LINGJIANMINGCHENG',type:'input' },
+  {prop:'partType',label:'零件类型',key:'LINGJIANLEIXING',type:'select', selectOption:'partType'},
+  {prop:'cartypeStatus',label:'车型项目状态',key:'CHEXINGXIANGMUZHUANGTAI',type:'select', selectOption:'cartypeStatus'},
+  {prop:'delayLevel',label:'延迟级别',key:'YANCHIJIBIE',type:'select', selectOption:'delayLevel'},
+  {prop:'delayReason',label:'延迟原因',key:'YANCHIYUANYIN',type:'input' },
+  {prop:'completionStatus',label:'完成状况',key:'WANCHENGZHUANGKUANG',type:'select', selectOption:'completionStatus'},
+  {prop:'supplierName',label:'供应商',key:'GONGYINGSHANG',type:'input' },
 
 ]
 
@@ -122,12 +122,12 @@ export const progressDetailSearchList = [
 ]
 
 export const kickOffSearchList = [
-  {prop:'prop1',label:'车型项目',key:'',type:'input'},
-  {prop:'prop2',label:'材料组',key:'',type:'input'},
-  {prop:'prop3',label:'RFQ',key:'',type:'input'},
-  {prop:'prop4',label:'零件号',key:'',type:'input'},
-  {prop:'prop5',label:'零件名称',key:'',type:'input'},
-  {prop:'prop6',label:'零件类型',key:'',type:'select', selectOption:'partTypeOptions'},
-  {prop:'prop7',label:'供应商',key:'',type:'input'},
-  {prop:'prop8',label:'进度状态',key:'',type:'select', selectOption:'proessOptions'},
+  {prop:'cartypePro',label:'车型项目',key:'',type:'input'},
+  {prop:'materialGroupNameZh',label:'材料组',key:'',type:'input'},
+  {prop:'rfq',label:'RFQ',key:'',type:'input'},
+  {prop:'partNum',label:'零件号',key:'',type:'input'},
+  {prop:'partName',label:'零件名称',key:'',type:'input'},
+  {prop:'partType',label:'零件类型',key:'',type:'select', selectOption:'partTypeOptions'},
+  {prop:'supplier',label:'供应商',key:'',type:'input'},
+  {prop:'completion',label:'进度状态',key:'',type:'select', selectOption:'proessOptions'},
 ]

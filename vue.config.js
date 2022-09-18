@@ -384,31 +384,47 @@ module.exports = {
 				},
 			},
 
-      // ------------------ 上传 ----------------------------
-      [process.env.VUE_APP_FILEAPI]: {
-        target: `${BASE_IP}/fileud`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_FILEAPI]: ''
-        }
-      },
+			// ------------------ 上传 ----------------------------
+			[process.env.VUE_APP_FILEAPI]: {
+				target: `${BASE_IP}/fileud`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_FILEAPI]: ''
+				}
+			},
 
-      // ------------------ 零件服务 ----------------------------
-      [process.env.VUE_APP_PART]: {
-        target: `${BASE_IP}/parts/web`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PART]: ''
-        }
-      },
-      // ------------------ 零件服务 api ----------------------------
-      [process.env.VUE_APP_PART_API]: {
-        target: `${BASE_IP}/parts`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_PART_API]: ''
-        }
-      },
+			// ------------------ 零件服务 ----------------------------
+			[process.env.VUE_APP_PART]: {
+				target: `${BASE_IP}/parts/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PART]: ''
+				}
+			},
+			// ------------------ 零件服务 api ----------------------------
+			[process.env.VUE_APP_PART_API]: {
+				target: `${BASE_IP}/parts/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PART_API]: ''
+				}
+			},
+			// ------------------ aonApi ----------------------------
+			[process.env.VUE_APP_POWEBI_KPI]: {
+				target: `${BASE_IP}`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_POWEBI_KPI]: ''
+				}
+			},
+			// ------------------ TP服务 api ----------------------------
+			[process.env.VUE_APP_PARTS]: {
+				target: `${BASE_IP}/sourcing/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_PARTS]: ''
+				}
+			},
 		},
 	},
 }
