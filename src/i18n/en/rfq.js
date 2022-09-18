@@ -26,5 +26,6 @@ export default {
 	JIEBANGMTZ: 'Unbind, MTZ keep fixed point',
 	BUJIEBANGMTZ: 'Do not unbind, MTZ cancels the fixed point',
 	TONGPILIANG: 'Same with Series A Price',
-	YIQIANSHOUQZPJGLYMJXFPCGYDCZ: 'has been signed for. Please go to the Parts management page to assign purchasers'
+	YIQIANSHOUQZPJGLYMJXFPCGYDCZ: 'has been signed for. Please go to the Parts management page to assign purchasers',
+	QINHXIANTIANJIASHUJU: 'Please add data first'
 }

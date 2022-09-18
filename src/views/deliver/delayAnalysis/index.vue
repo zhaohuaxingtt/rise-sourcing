@@ -1,25 +1,33 @@
 <template>
   <iPage>
     <projectTop />
-    <iNavMvp lev="2" class="flex-end"
+    <!-- <iNavMvp lev="2" class="flex-end"
                :list="navList"
+               routerPage
                @change="change"
-               lang></iNavMvp>
-    <search :searchList="searchList" :selectOptions="selectOptions" :icon="false"></search>
+               lang></iNavMvp> -->
+    <div class="flex-end">
+      <div class="flex2-name" v-for="(item,index) in navList" :key="index" @click="change(item)">
+        <span :class="lev2Index == index?'click-name':''">{{$t(item.key)}}</span>
+      </div>
+    </div>
+    <search :searchList="searchList" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
     <iTabsList v-model='defaultTab' type="card">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
       <el-tab-pane label="offen图" name="2"></el-tab-pane>
     </iTabsList>
     <template v-if="defaultTab==1">
       <el-row :gutter="20">
-        <el-col :span="12"><chartsItem/></el-col>
-        <el-col :span="12"><yuanyinChartsItem/></el-col>
+        <el-col :span="12"><chartsItem :picLeftData="picLeftData" /></el-col>
+        <el-col :span="12"><yuanyinChartsItem :picRightData="picRightData" /></el-col>
       </el-row>
     </template>
     <template v-else>
-      <offenChartsItem/>
+      <offenChartsItem  />
     </template>
-    <tableList title="零件清单列表" class="margin-top20"/>
+    <tableList title="零件清单列表" class="margin-top20" :dataList="dataList" ref="partsListTable" 
+      @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"
+    />
   </iPage>
 </template>
 
@@ -32,6 +40,13 @@ import offenChartsItem from "./components/offenChartsItem";
 import yuanyinChartsItem from "./components/yuanyinChartsItem";
 import tableList from "../components/tableList";
 import { delayAnalysisSearchList as searchList } from "../components/data";
+import { selectDictByKeyss } from "@/api/dictionary";
+import {
+  cartype_pro_List,
+  delayList,
+  level_summary,
+  reason_summary,
+} from "@/api/project/deliver";
 
 import { navList } from "./data";
   export default {
@@ -41,15 +56,157 @@ import { navList } from "./data";
     data() {
       return {
         searchList,
-        selectOptions: {},
+        selectOptions: {
+          cartypeProId:[],
+          partType:[],
+          cartypeStatus:[
+            {
+              value:0,
+              label:"未SOP车型",
+            },{
+              value:1,
+              label:"已SOP车型",
+            }
+          ],
+          delayLevel:[
+            {
+              value:1,
+              label:"轻度延迟",
+            },{
+              value:2,
+              label:"中度延迟",
+            },{
+              value:3,
+              label:"重度延迟",
+            }
+          ],
+          completionStatus:[
+            {
+              value:0,
+              label:"未完成",
+            },{
+              value:1,
+              label:"已完成",
+            }
+          ],
+        },
+        searchForm:{
+          cartypeProId:"",
+          rfq:"",
+          materialGroup:"",
+          part:"",
+          partType:"",
+          cartypeStatus:"",
+          delayLevel:"",
+          delayReason:"",
+          completionStatus:"",
+          supplierName:"",
+        },
         defaultTab:'1',
         navList,
-        threeTreeValue:"",
+        dataList:[],//列表数据
+        picLeftData:[],//左图表数据
+        picRightData:[],//右图表数据
+
+        threeTreeValue:"1stTryout",//二级菜单 /OTS/EM
+        lev2Index:3,
       }
     },
+    created(){
+      this.getDic();
+      this.getData(1,10);
+      this.getPicLeft();
+      this.getPicRight();
+    },
     methods:{
+      getPicLeft(){
+        level_summary({
+          ...this.searchForm,
+          title:this.threeTreeValue,
+        }).then(res=>{
+          if(res?.result){
+            this.picLeftData = res.data;
+          }
+        })
+      },
+      getPicRight(){
+        reason_summary({
+          ...this.searchForm,
+          title:this.threeTreeValue,
+        }).then(res=>{
+          if(res?.result){
+            this.picRightData = res.data;
+          }
+        })
+      },
+      getDic(){
+        selectDictByKeyss([//零件类型
+          "SAMPLE_PART_TYPE",
+        ]).then(res=>{
+          if(res.result){
+            const list = res.data.SAMPLE_PART_TYPE;
+            list.forEach(e => {
+              e.value = e.id;
+              e.label = e.name;
+            });
+            this.selectOptions.partType = list;
+          }
+        })
+
+        cartype_pro_List({}).then(res=>{
+          if(res?.result){
+            var carList = res.data.filter(res => res)
+            carList.forEach(e=>{
+              e.value = e.cartypeProId;
+              e.label = e.cartypeProNameZh;
+            })
+            this.selectOptions.cartypeProId = carList;
+          }
+        })
+      },
+      getData(page,size){
+        delayList({
+          ...this.searchForm,
+          current:page,
+          size:size,
+          title:this.threeTreeValue,
+        }).then(res=>{
+          if(res?.result){
+            this.dataList = res.data;
+          }
+        })
+      },
+      handleSizeChange(val){
+        console.log(val)
+        this.getData(val.currPage,val.size);
+      },
+      handleCurrentChange(val){
+        console.log(val)
+        this.getData(val.currPage,val.size);
+      },
+      sure(val){
+        console.log(val);
+        this.searchForm = val;
+        this.getData(1,10);
+      },
+      reset(){
+        this.searchForm = {
+          cartypeProId:"",
+          rfq:"",
+          materialGroup:"",
+          part:"",
+          partType:"",
+          cartypeStatus:"",
+          delayLevel:"",
+          delayReason:"",
+          completionStatus:"",
+          supplierName:"",
+        };
+        this.getData(1,10);
+      },
       change(val){
-        this.threeTreeValue = val.value;
+        this.lev2Index = val.value - 1;
+        this.threeTreeValue = val.name;
       },
     }
   }
@@ -68,8 +225,70 @@ import { navList } from "./data";
   position: absolute;
   right:140px;
   top:30px;
+
+  display: flex;
 }
 .routerpage{
   position: relative;
+}
+.flex2-name{
+  min-width: 7.625rem;
+  margin-left: 0.0625rem;
+  position: relative;
+  padding: 0.25rem 1.5625rem;
+  cursor: pointer;
+  letter-spacing: 0.0625rem;
+  text-align: center;
+
+  span{
+    opacity: 1;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    color: #727272;
+    display: inline-block;
+    font-size: 1.125rem !important;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -1px;
+      transform: translate(0, -50%);
+      width: 1px;
+      height: 16px;
+      background: #909091;
+      opacity: 0.58;
+    }
+  }
+}
+.flex2-name:first-of-type{
+  min-width: auto!important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+
+  span{
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -1px;
+      transform: translate(0, -50%);
+      width: 0px;
+      height: 0px;
+      background: #909091;
+      opacity: 0.58;
+    }
+  }
+}
+
+.flex2-name:last-of-type{
+  min-width: auto!important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+.click-name{
+  font-weight:bold;
+  color:#1660f1!important;
 }
 </style>

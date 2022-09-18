@@ -17,7 +17,7 @@
       @reset="reset"
       :icon="false"
     ></search>
-    <tableList :title="titleName+' 列表'" class="margin-top20" />
+    <tableList :title="titleName+' 列表'" :dataList="dataList" class="margin-top20" />
   </iPage>
 </template>
 
@@ -27,6 +27,10 @@ import projectTop from "../../components/projectHeader";
 import search from "../../components/search";
 import tableList from "../../components/tableList";
 import { kickOffSearchList as searchList } from "../../components/data";
+import { selectDictByKeyss } from "@/api/dictionary"
+import { sample_part_listPage } from '@/api/project/deliver'
+
+
 export default {
   components: {
     iPage,
@@ -38,33 +42,69 @@ export default {
   },
   data() {
     return {
+      dataList:[],
       searchList,
       selectOptions: {
-        partTypeOptions: [
-          {
-            label: "类型1",
-            value: 1,
-          },
+        partTypeOptions: [//零件类型
         ],
-        proessOptions: [
-          {
-            label: "进度1",
-            value: 1,
-          },
+        proessOptions: [//进度状态
         ],
       },
       searchParams: {
-        prop6: "",
-        prop8: "",
+        cartypePro: "",
+        materialGroupNameZh: "",
+        rfq: "",
+        partNum: "",
+        partName: "",
+        partType: "",//零件类型
+        supplier: "",
+        completion: "",//进度状态
       },
       titleName:"",
     };
   },
   created() {
     this.titleName = this.$route.query?.type;
+    this.getDic();
+    this.getData();
   },
   methods: {
+    getData(){
+      sample_part_listPage(this.searchParams).then(res=>{
+        if(res.result){
+          this.dataList = res.data;
+        }
+      })
+    },
+    getDic(){
+      selectDictByKeyss([//零件类型
+        "SAMPLE_PART_TYPE",
+      ]).then(res=>{
+        if(res.result){
+          const list = res.data.SAMPLE_PART_TYPE;
+          list.forEach(e => {
+            e.value = e.id;
+            e.label = e.name;
+          });
+          this.selectOptions.partTypeOptions = list;
+        }
+      })
+
+      selectDictByKeyss([//进度状态
+        "SAMPLE_PART_PROGRESS",
+      ]).then(res=>{
+        if(res.result){
+          const list = res.data.SAMPLE_PART_PROGRESS;
+          list.forEach(e => {
+            e.value = e.id;
+            e.label = e.name;
+          });
+          this.selectOptions.proessOptions = res.data.SAMPLE_PART_PROGRESS;
+        }
+      })
+    },
     sure(form) {
+      console.log(form);
       this.searchParams = form;
     },
     reset() {

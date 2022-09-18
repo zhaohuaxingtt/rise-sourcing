@@ -14,12 +14,12 @@
     <div class="flex-end">
         <iButton>导出</iButton>
     </div>
-    <div class="margin-top20">
-      <template v-for="i in 3">
+    <div class="margin-top20" v-loading="loading">
+      <template v-for="(item,index) in tabelDataList">
         <proItem
-          :key="i"
+          :key="index"
           class="margin-top20"
-          :tableTitle="tableTitle"
+          :dataList="item"
         ></proItem>
       </template>
     </div>
@@ -36,7 +36,14 @@ import projectTop from "../components/projectHeader";
 import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
-import { getOverview, getAllProPurchaser } from '@/api/project'
+import { sample_overviewPage } from '@/api/project/deliver'
+
+import {
+  material_group_list,
+  cartype_pro_List,
+  buyer_list,
+} from "@/api/project/deliver"
+
 export default {
   components: {
     iPage,
@@ -50,65 +57,75 @@ export default {
     return {
       searchList,
       selectOptions: {
-        carProjectOptions: [
-          {
-            label: "test",
-            value: 1,
-          },
+        deptOptions: [//材料组
+          
         ],
-        deptOptions: [
-          {
-            label: "组1",
-            value: 1,
-          },
+        buyerList: [//采购员
+          
+        ],
+        carProjectOptions: [//车型项目
+          
         ],
       },
       searchParams: {
-        carProject: "",
+        buyerIds:[],//采购员
+        cartypeProIds:[],//车型项目
+        materialGroupIds:[],//材料组
       },
-      tableTitle: [
-        { props: "type", name: "分类", key: "" },
-        { props: "csc", name: "CSC", key: "" },
-        { props: "Kickoff", name: "Kickoff", key: "" },
-        { props: "BF", name: "BF", key: "" },
-        { props: "Data", name: "Data", key: "" },
-        {
-          props: "tryout",
-          name: "1st Tryout",
-          key: "",
-        },
-        { props: "OTS", name: "OTS", key: "" },
-        {
-          props: "EM",
-          name: "EM",
-          key: "",
-          children: [
-            { props: "M", name: "M", key: "" },
-            // { props: "D", name: "D", key: "" },
-            // { props: "C", name: "C", key: "" },
-            { props: "G", name: "G", key: "" },
-          ],
-        },
-      ],
+      tabelDataList:[],
+      loading:false,
     };
   },
   created() {
     this.searchData()
+    this.getDataList();
   },
   methods: {
+    getDataList(){
+      this.loading = true;
+      sample_overviewPage(this.searchParams).then(res=>{
+        if(res?.result){
+          this.tabelDataList = _.cloneDeep(res.data)
+        }
+        this.loading = false;
+      }).catch(res=>{
+        this.loading = false;
+      })
+    },
     sure(form){
-      this.searchParams = form
+      this.searchParams = form;
+      this.getDataList();
     },
     reset(){
-      this.searchParams = {}
+      this.searchParams = {
+        buyerIds: [],
+        cartypeProIds: [],
+        materialGroupIds: [],
+      }
+      this.getDataList();
     },
     searchData(){
-      getOverview().then(res=>{
-        if(res?.code=='200'){
-          this.tableData = res.data
+      material_group_list({}).then(res=>{
+        if(res?.result){
+          this.selectOptions.deptOptions = res.data
         }
       })
-    }
+      cartype_pro_List({}).then(res=>{
+        if(res?.result){
+          var carList = res.data.filter(res => res)
+          carList.forEach(e=>{
+            e.value = e.cartypeProId;
+            e.label = e.cartypeProNameZh;
+          })
+          this.selectOptions.carProjectOptions = carList;
+        }
+      })
+      buyer_list({}).then(res=>{
+        if(res?.result){
+          this.selectOptions.buyerList = res.data
+        }
+      })
+    },
   },
 };
 </script>

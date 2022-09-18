@@ -2,9 +2,9 @@
   <iSearch :icon="icon" class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="QUEREN" :searchKey="REST">
     <el-form>
       <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.key?language(item.key, item.label):item.label">
-        <iSelect clearable v-update v-if="item.type === 'select'" v-model="searchParams[item.prop]"
+        <iSelect clearable v-update v-if="item.type === 'select'" v-model="searchParams[item.prop]" :multiple="item.multiple"
           :placeholder="language('QINGXUANZE', '请选择')">
-          <el-option value="" :label="language('ALL', '全部')"></el-option>
+          <!-- <el-option value="" :label="language('ALL', '全部')"></el-option> -->
           <el-option v-for="item_ in selectOptions[item.selectOption] || []" :key="item_.value" :label="item_.label"
             :value="item_.value">
           </el-option>
@@ -49,10 +49,11 @@ export default {
       this.$emit('sure', this.searchParams)
     },
     reset() {
-      this.searchList.map(item=>{
-        this.$set(this.searchParams,[item.prop],'')
-      })
-      this.$emit('reset', {})
+      // this.searchList.map(item=>{
+      //   this.$set(this.searchParams,[item.prop],'')
+      // })
+      // this.$emit('reset', {})
+      this.$emit('reset')
     },
   }
 }

@@ -9,17 +9,22 @@
 
 <template>
   <iCard class="overviewChartWrapper margin-top20 iframe-powerbi">
+    <!-- <iButton @click="getMap">12121211221</iButton> -->
     <div id='powerBi'></div>
   </iCard>
 </template>
 
 <script>
-import { iCard } from 'rise'
+import { iCard,iButton } from 'rise'
 import * as pbi from "powerbi-client";
 import { getReportBobOverview } from "@/api/project/projectprogressreport";
+
+// import { downloadPDF,uploadUdFile } from "@/utils/pdf";
+
 export default {
   components: { 
-    iCard, 
+    iCard,
+    iButton,
   },
   props: {
     cartypeId:{
@@ -71,6 +76,30 @@ export default {
     this.getUrl();
   },
   methods: {
+    // getMap(){
+      //  window.print();
+      // downloadPDF({
+      //   idEle: "#powerBi",
+      //   pdfName:"powerbi",
+      //   exportPdf: true,
+      //   callback: async (pdf, pdfName) => {
+      //     try {
+      //       const filename = pdfName.replaceAll(/\./g, '_') + ".pdf";
+      //       const pdfFile = pdf.output("datauristring");
+      //       const blob = dataURLtoFile(pdfFile, filename);
+      //       uploadUdFile({
+      //         applicationName: 'sourcing',
+      //         businessId: Math.ceil(Math.random() * 100000),
+      //         multifile: blob
+      //       }).then(res => {
+      //         iMessage.success("生成成功");
+      //       });
+      //     } catch {
+      //       iMessage.err("生成失败");
+      //     }
+      //   },
+      // });
+    // },
     getUrl(){
       getReportBobOverview({
         ...this.formData
@@ -83,8 +112,14 @@ export default {
       this.renderBi();
     },
     changeRefresh(val){
-      console.log(val)
-      this.filterParameter.values = [val];
+      // console.log(this.cartypeId,22222222)
+      var cartypeId = "";
+      if(val){
+        cartypeId = val;
+      }else{
+        cartypeId = this.cartypeId;
+      }
+      this.filterParameter.values = [cartypeId];
       this.report.setFilters([this.filterParameter]);
     },
     renderBi(){

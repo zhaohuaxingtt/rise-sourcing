@@ -28,9 +28,54 @@ export default [
       },
       {
         path: "delayanalysis",
-        name: "overview",
+        name: "delayanalysis",
         meta: {
-          title: "送样管理-延误清单",
+          title: "送样管理-延误清单-定点",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/delayAnalysis"),
+      },
+      {
+        path: "delayanalysis/StartUp",
+        name: "delayanalysisStartUp",
+        meta: {
+          title: "送样管理-延误清单-启动",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/delayAnalysis"),
+      },
+      {
+        path: "delayanalysis/BF",
+        name: "delayanalysisBF",
+        meta: {
+          title: "送样管理-延误清单-BF",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/delayAnalysis"),
+      },
+      {
+        path: "delayanalysis/Tryout",
+        name: "delayanalysisTryout",
+        meta: {
+          title: "送样管理-延误清单-1st Tryout",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/delayAnalysis"),
+      },
+      {
+        path: "delayanalysis/OTS",
+        name: "delayanalysisOTS",
+        meta: {
+          title: "送样管理-延误清单-OTS",
+          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import("@/views/deliver/delayAnalysis"),
+      },
+      {
+        path: "delayanalysis/EM",
+        name: "delayanalysisEM",
+        meta: {
+          title: "送样管理-延误清单-EM",
           activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),

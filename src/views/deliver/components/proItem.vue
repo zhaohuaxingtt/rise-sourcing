@@ -3,104 +3,293 @@
     <iCard>
       <div class="wrap-flex">
         <div class="left">
-          <h2>全新一代朗逸两厢</h2>
-          <h2>New Gran Lavida</h2>
+          <h2>{{dataList.cartypeProNameZh}}</h2>
+          <h2>{{dataList.cartypeProNameEn}}</h2>
           <div>
-            <p>零件总个数：<span>{{totalNum||0}}</span></p>
-            <p>当前定点完成数量：<span>{{totalNum||0}}</span></p>
-            <p>当前已完成送样数量：<span>{{totalNum||100000}}</span></p>
+            <p>零件总个数：<span>{{dataList.partTotalNum}}</span></p>
+            <p>当前定点完成数量：<span>{{dataList.nomiTotalNum}}</span></p>
+            <p>当前已完成送样数量：<span>{{dataList.sampleTotalNum}}</span></p>
           </div>
         </div>
         <div class="right">
-          <iprogress :carProjectId="carProjectId"></iprogress>
+          <iprogress :carProjectId="dataList.cartypeProId"></iprogress>
           <el-table :data="tableListData" class="margin-top20">
-            <template v-for="item in tableTitle">
-              <el-table-column v-if="item.children" :key="item.props" :label="item.name" :prop="item.props" align="center">
-                <el-table-column v-for="child in item.children" :key="child.props" :label="child.name" :prop="child.props" align="center">
-                  <div slot-scope="scope">
-                      <span style="color:blue;cursor:pointer;" @click="jump(child.props)">{{scope.row[child.props]}}</span> | <span>{{scope.row[child.props]}}</span>
-                  </div>
-                </el-table-column>
-              </el-table-column>
-              <el-table-column v-else :key="item.props" :label="item.name" :prop="item.props" align="center">
-                <div slot-scope="scope">
-                  <template v-if="item.props == 'type'">
-                      <span>{{scope.row[item.props]}}</span>
-                    </template>
-                    <template v-else>
-                      <span style="color:blue;cursor:pointer;" @click="jump(item.props)">{{scope.row[item.props]}}</span> | <span>{{scope.row[item.props]}}</span>
-                    </template>
+            <el-table-column width="70"
+              prop="type"
+              align="center"
+              label="分类"
+            >
+              <template slot-scope="scope">
+                <span>{{scope.row.type}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="70"
+              prop="csc"
+              align="center"
+              label="CSC"
+            >
+              <template slot-scope="scope">
+                <span :style="scope.row.cscNomiNotDone!=0?'color:blue;cursor:pointer;':''" @click="jump('csc',scope.row.cscNomiNotDone)">{{scope.row.cscNomiNotDone}}</span> | <span>{{scope.row.cscNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="70"
+              prop="Kickoff"
+              align="center"
+              label="Kickoff"
+            >
+              <template slot-scope="scope">
+                <span :style="scope.row.kickoffNomiNotDone!=0?'color:blue;cursor:pointer;':''" @click="jump('Kickoff',scope.row.kickoffNomiNotDone)">{{scope.row.kickoffNomiNotDone}}</span> | <span>{{scope.row.kickoffNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="70"
+              prop="BF"
+              align="center"
+              label="BF"
+            >
+              <template slot-scope="scope">
+                <span  :style="scope.row.bfNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('BF',scope.row.bfNomiNotDone)">{{scope.row.bfNomiNotDone}}</span> | <span>{{scope.row.bfNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="70"
+              prop="Data"
+              align="center"
+              label="Data Confirm"
+              show-overflow-tooltip
+            >
+              <template slot="header">
+                <div>
+                  <span>Data</span>
+                  <br/>
+                  <span>Confirm</span>
                 </div>
+              </template>
+              <template slot-scope="scope">
+                <span  :style="scope.row.dataConfirmNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('Data',scope.row.dataConfirmNomiNotDone)">{{scope.row.dataConfirmNomiNotDone}}</span> | <span>{{scope.row.dataConfirmNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="Start"
+              align="center"
+              label="Start of Serie tool-making"
+            >
+              <template slot="header">
+                <div>
+                  <span>Start of Serie</span>
+                  <br/>
+                  <span>tool-making</span>
+                </div>
+              </template>
+              <template slot-scope="scope">
+                <span  :style="scope.row.startOfSerieToolMakingNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('Data',scope.row.startOfSerieToolMakingNomiNotDone)">{{scope.row.startOfSerieToolMakingNomiNotDone}}</span> | <span>{{scope.row.startOfSerieToolMakingNomiDone}}</span>
+              </template>
+            </el-table-column>
+
+             <el-table-column width="70"
+              prop="T0"
+              align="center"
+              label="T0"
+            >
+              <template slot-scope="scope">
+                <span  :style="scope.row.toNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('1st Tryout',scope.row.toNomiNotDone)">{{scope.row.toNomiNotDone}}</span> | <span>{{scope.row.toNomiDone}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column 
+              prop="tryout"
+              align="center"
+              label="1st Tryout"
+            >
+              <template slot-scope="scope">
+                <span  :style="scope.row.onestTryoutNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('1st Tryout',scope.row.onestTryoutNomiNotDone)">{{scope.row.onestTryoutNomiNotDone}}</span> | <span>{{scope.row.onestTryoutNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="Startof"
+              align="center"
+              label="Start of Self-testing"
+            >
+              <template slot="header">
+                <div>
+                  <span>Start of</span>
+                  <br/>
+                  <span>Self-testing</span>
+                </div>
+              </template>
+              <template slot-scope="scope">
+                <span  :style="scope.row.startOfSelfTestingNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('OTS',scope.row.startOfSelfTestingNomiNotDone)">{{scope.row.startOfSelfTestingNomiNotDone}}</span> | <span>{{scope.row.startOfSelfTestingNomiDone}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="70"
+              prop="OTS"
+              align="center"
+              label="OTS"
+            >
+              <template slot-scope="scope">
+                <span  :style="scope.row.otsNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('OTS',scope.row.otsNomiNotDone)">{{scope.row.otsNomiNotDone}}</span> | <span>{{scope.row.otsNomiDone}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column  
+              label="EM" 
+              prop="EM" 
+              align="center"
+            >
+              <el-table-column  width="70"
+                label="M" 
+                prop="M" 
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span  :style="scope.row.emMNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('EM-M',scope.row.emMNomiNotDone)">{{scope.row.emMNomiNotDone}}</span> | <span>{{scope.row.emMNomiDone}}</span>
+                </template>
               </el-table-column>
-            </template>
+
+              <el-table-column  width="70"
+                label="D" 
+                prop="D" 
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span  :style="scope.row.emDNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('EM-M',scope.row.emDNomiNotDone)">{{scope.row.emDNomiNotDone}}</span> | <span>{{scope.row.emDNomiDone}}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column  width="70"
+                label="C" 
+                prop="C"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span  :style="scope.row.emCubingNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('EM-M',scope.row.emCubingNomiNotDone)">{{scope.row.emCubingNomiNotDone}}</span> | <span>{{scope.row.emCubingNomiDone}}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column  width="70"
+                label="G" 
+                prop="G" 
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <span  :style="scope.row.emGNomiNotDone!=0?'color:blue;cursor:pointer;':''"  @click="jump('EM-G',scope.row.emGNomiNotDone)">{{scope.row.emGNomiNotDone}}</span> | <span>{{scope.row.emGNomiDone}}</span>
+                </template>
+              </el-table-column>
+            </el-table-column>
           </el-table>
-          <!-- <tableList
-            class="margin-top20"
-            ref="tableList"
-            :selection="false"
-            :tableData="tableListData"
-            :tableTitle="tableTitle"
-            :lang="true">
-            <template #csc="scope">
-              <span>{{'ASD'+'|'+'ZX'}}</span>
-            </template>
-          </tableList> -->
         </div>
       </div>
     </iCard>
-  <!-- </div> -->
 </template>
 
 <script>
 import { iCard } from "rise";
-import tableList from "@/components/iTableSort"
 import iprogress from "./progress";
 export default {
   components:{
-    iCard, iprogress,tableList
+    iCard, iprogress
   },
   props:{
-    tableTitle:{type: String},
+    dataList:{type: Array,default:[]},
     carProjectId:{type: String, default: '50141107'},
+  },
+  created(){
+    this.getData(this.dataList);
+  },
+  watch:{
+    // dataList (newValue, oldValue) {
+    //   console.log(newValue)
+      
+
+    //   console.log(this.tableListData)
+    // },
   },
   data(){
     return{
       tableListData:[
         {
-          type:'Nomi后',
-          csc: '50',
-          Kickoff: '30',
-          BF: '25',
-          Data: '30',
-          tryout: '30',
-          OTS: '30',
-          M: '30',
-          G: '30',
+          type:'FS/GS',
         },{
-          type:'Aeko后',
-          csc: '50',
-          Kickoff: '30',
-          BF: '25',
-          Data: '35',
-          tryout: '40',
-          OTS: '35',
-          M: '35',
-          G: '35',
-        },
+          type:'Aeko',
+        }
       ]
     }
   },
   methods:{
-    jump(val){
-      console.log(val);
-      const hrefs = this.$router.resolve({
-        path: "/deliver/kickoff",
-        query: {
-          type: val
-        }
-      });
-      window.open(hrefs.href, "_blank");
+    getData(newValue){
+      this.tableListData = [
+        {
+          type:'FS/GS',
+          cscNomiDone: newValue.cscNomiDone,
+          cscNomiNotDone: newValue.cscNomiNotDone,
+          kickoffNomiDone: newValue.kickoffNomiDone,
+          kickoffNomiNotDone: newValue.kickoffNomiNotDone,
+          bfNomiDone: newValue.bfNomiDone,
+          bfNomiNotDone: newValue.bfNomiNotDone,
+          dataConfirmNomiDone: newValue.dataConfirmNomiDone,
+          dataConfirmNomiNotDone: newValue.dataConfirmNomiNotDone,
+          onestTryoutNomiDone: newValue.onestTryoutNomiDone,
+          onestTryoutNomiNotDone: newValue.onestTryoutNomiNotDone,
+          otsNomiDone: newValue.otsNomiDone,
+          otsNomiNotDone: newValue.otsNomiNotDone,
+          emMNomiDone: newValue.emMNomiDone,
+          emMNomiNotDone: newValue.emMNomiNotDone,
+          emGNomiDone: newValue.emGNomiDone,
+          emGNomiNotDone: newValue.emGNomiNotDone,
+          emDNomiDone:newValue.emDNomiDone,
+          emDNomiNotDone:newValue.emDNomiNotDone,
+          emCubingNomiDone: newValue.emCubingNomiDone,
+          emCubingNomiNotDone: newValue.emCubingNomiNotDone,
 
+          startOfSerieToolMakingNomiDone: newValue.startOfSerieToolMakingNomiDone,
+          startOfSerieToolMakingNomiNotDone: newValue.startOfSerieToolMakingNomiNotDone,
+          toNomiDone: newValue.toNomiDone,
+          toNomiNotDone: newValue.toNomiNotDone,
+          startOfSelfTestingNomiDone: newValue.startOfSelfTestingNomiDone,
+          startOfSelfTestingNomiNotDone: newValue.startOfSelfTestingNomiNotDone,
+
+        },{
+          type:'Aeko',
+          cscNomiDone: newValue.cscAekoDone,
+          cscNomiNotDone: newValue.cscAekoNotDone,
+          kickoffNomiDone: newValue.kickoffAekoDone,
+          kickoffNomiNotDone:newValue.kickoffAekoNotDone,
+          bfNomiDone: newValue.bfAekoDone,
+          bfNomiNotDone: newValue.bfAekoNotDone,
+          dataConfirmNomiDone: newValue.dataConfirmAekoDone,
+          dataConfirmNomiNotDone: newValue.dataConfirmAekoNotDone,
+          onestTryoutNomiDone: newValue.onestTryoutAekoDone,
+          onestTryoutNomiNotDone: newValue.onestTryoutAekoNotDone,
+          otsNomiDone:newValue.otsAekoDone,
+          otsNomiNotDone:newValue.otsAekoNotDone,
+          emMNomiDone: newValue.emMAekoDone,
+          emMNomiNotDone: newValue.emMAekoNotDone,
+          emGNomiDone: newValue.emGAekoDone,
+          emGNomiNotDone: newValue.emGAekoNotDone,
+          emDNomiDone:newValue.emDAekoDone,
+          emDNomiNotDone:newValue.emDAekoNotDone,
+          emCubingNomiDone: newValue.emCubingAekoDone,
+          emCubingNomiNotDone: newValue.emCubingAekoNotDone,
+
+          startOfSerieToolMakingNomiDone: newValue.startOfSerieToolMakingAekoDone,
+          startOfSerieToolMakingNomiNotDone: newValue.startOfSerieToolMakingAekoNotDone,
+          toNomiDone: newValue.toAekoDone,
+          toNomiNotDone: newValue.toAekoNotDone,
+          startOfSelfTestingNomiDone: newValue.startOfSelfTestingAekoDone,
+          startOfSelfTestingNomiNotDone: newValue.startOfSelfTestingAekoNotDone,
+        }
+      ];
+    },
+    jump(val,num){
+      console.log(val);
+      console.log(num);
+      if(num != 0){
+        const hrefs = this.$router.resolve({
+          path: "/deliver/kickoff",
+          query: {
+            type: val
+          }
+        });
+        window.open(hrefs.href, "_blank");
+      }
     }
   }
 }

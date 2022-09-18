@@ -28,7 +28,7 @@ Vue.directive('permission', {
         })
       }
 
-      // if (removeFlag && openProcess && el.parentNode) el.parentNode.removeChild(el)
+      if (removeFlag && openProcess && el.parentNode) el.parentNode.removeChild(el)
       return
     }
 
@@ -60,7 +60,7 @@ Vue.directive('permission', {
         !store.state.permission.whiteBtnList[value] &&
         businessPermission(value, router.currentRoute.query)
       ) {
-        // if (openProcess && el.parentNode) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
@@ -69,10 +69,10 @@ Vue.directive('permission', {
         // store.dispatch('uploadResource', splitValue)
       }
       if (!store.state.permission.whiteBtnList[pagePermission]) {
-        // if (openProcess && el.parentNode) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(pagePermission, router.currentRoute.query)) {
-          // if (openProcess && el.parentNode) el.parentNode.removeChild(el)
+          if (openProcess && el.parentNode) el.parentNode.removeChild(el)
         }
       }
       // force permission
@@ -80,16 +80,16 @@ Vue.directive('permission', {
         binding.modifiers.force &&
         !store.state.permission.whiteBtnList[pagePermission]
       ) {
-        // if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess) el.parentNode.removeChild(el)
       }
     } else {
       //remove
       let menuBtn = binding.value && binding.value.indexOf('ACHIEVEMENT') > -1
       if (!store.state.permission.whiteBtnList[binding.expression] && !menuBtn) {
-        // if (openProcess && !store.state.permission.whiteBtnList[pagePermission]) el.parentNode.removeChild(el)
+        if (openProcess && !store.state.permission.whiteBtnList[pagePermission]) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(value, router.currentRoute.query)) {
-          // if (openProcess) el.parentNode.removeChild(el)
+          if (openProcess) el.parentNode.removeChild(el)
         }
       }
     }
@@ -109,7 +109,7 @@ Vue.directive('permissionArr', {
       if (
         !binding.value.some((item) => store.state.permission.whiteBtnList[item])
       ) {
-        // el.parentNode.removeChild(el)
+        el.parentNode.removeChild(el)
       }
     }
   },

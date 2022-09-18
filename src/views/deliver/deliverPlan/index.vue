@@ -93,84 +93,87 @@ import {
 import search from "../components/search";
 import tableList from "@/components/iTableSort"
 import { searchList, tableTitleLeft, tableTitleRight1,tableTitleRight2 } from "./data";
-  export default {
-    components:{
-      iPage,
-      iCard,
-      iButton,
-      search,
-      tableList,
-      iDatePicker
-    },
-    data() {
-      return {
-        searchList,
-        tableDataLeft:[{
-            col1:'车型项目1',
-            col2:'2',
-            col3:'零件1',
-            col4:'4',
-            col5:'5',
-          },{
-            col1:'车型项目2',
-            col2:'2',
-            col3:'零件2',
-            col4:'4',
-            col5:'5',
-          }],
-        tableDataRight:[{
-            col1:'1',
-            col2:'2',
-            col3:'3',
-            type:true,
-          },{
-            col1:'1',
-            col2:'',
-            col3:'',
-            type:true,
-          },{
-            col1:'1',
-            col2:'',
-            col3:'',
-            type:false,
-          },{
-            col1:'1',
-            col2:'',
-            col3:'2',
-            type:false,
-          }],
-        tableTitleLeft,
-        tableTitleRight1,
-        tableTitleRight2,
-        carProject: "",
-        partName: '',
-        rightTitleType:true,
-      }
-    },
-    created(){
-      this.carProject = this.tableDataLeft[0].col1;
-      this.partName = this.tableDataLeft[0].col3;
-    },
-    methods:{
-      editPlan(val){
-        this.rightTitleType = true;
-        this.carProject = val.col1;
-        this.partName = val.col3;
-        console.log(val);
-      },
-      editActual(val){
-        this.rightTitleType = false;
-        this.carProject = val.col1;
-        this.partName = val.col3;
-        console.log(val);
-      },
-      copyParts(val){
-        console.log(val);
-      },
-      sure(){},
-      reset(){},
+import {
+  getPartActityty,
+} from "@/api/project/deliver";
+export default {
+  components:{
+    iPage,
+    iCard,
+    iButton,
+    search,
+    tableList,
+    iDatePicker
+  },
+  data() {
+    return {
+      searchList,
+      tableDataLeft:[{
+          col1:'车型项目1',
+          col2:'2',
+          col3:'零件1',
+          col4:'4',
+          col5:'5',
+        },{
+          col1:'车型项目2',
+          col2:'2',
+          col3:'零件2',
+          col4:'4',
+          col5:'5',
+        }],
+      tableDataRight:[{
+          col1:'1',
+          col2:'2',
+          col3:'3',
+          type:true,
+        },{
+          col1:'1',
+          col2:'',
+          col3:'',
+          type:true,
+        },{
+          col1:'1',
+          col2:'',
+          col3:'',
+          type:false,
+        },{
+          col1:'1',
+          col2:'',
+          col3:'2',
+          type:false,
+        }],
+      tableTitleLeft,
+      tableTitleRight1,
+      tableTitleRight2,
+      carProject: "",
+      partName: '',
+      rightTitleType:true,
     }
+  },
+  created(){
+    this.carProject = this.tableDataLeft[0].col1;
+    this.partName = this.tableDataLeft[0].col3;
+  },
+  methods:{
+    editPlan(val){
+      this.rightTitleType = true;
+      this.carProject = val.col1;
+      this.partName = val.col3;
+      console.log(val);
+    },
+    editActual(val){
+      this.rightTitleType = false;
+      this.carProject = val.col1;
+      this.partName = val.col3;
+      console.log(val);
+    },
+    copyParts(val){
+      console.log(val);
+    },
+    sure(){},
+    reset(){},
   }
+}
 </script>
 
 <style lang="scss" scoped>
