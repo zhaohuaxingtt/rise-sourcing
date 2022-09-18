@@ -9,15 +9,15 @@
 <template>
     <div>
         <div class="model_analysis">
-            <iButton @click="myReport">{{$t("我的报告")}}</iButton>
-            <div class="model_font">
+            <!-- <iButton @click="myReport">{{$t("我的报告")}}</iButton> -->
+            <div class="model_font flexend">
                 <div @click="checkedBtn" class="model_font marginRright20">
                     <img class="model_img"
                             :src="checked?require('@/assets/images/checked.png'):require('@/assets/images/unchecked.png')"
                             :fit="fit" />
                     <span :class="checked?'checked':'unchecked'">{{$t('全选')}}</span>
                 </div>
-                <iButton @click="upload">{{$t("导出")}}</iButton>
+                <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_DAOCHU">{{$t("导出")}}</iButton>
             </div>
         </div>
 
@@ -60,6 +60,8 @@ import {
     exprotProjectAnalysisc,
 } from '@/api/project/projectprogressreport'
 
+import { getSelectCarType } from '@/api/project'
+
 export default {
     components:{
         iButton,
@@ -69,6 +71,7 @@ export default {
             checked: false,
             picImg:[],
             cartypeProId:'',
+            carTypeName:"",
         }
     },
     created(){
@@ -98,18 +101,26 @@ export default {
         
     },
     methods:{
-        getDefaultCarTypePro(){
-            getDefaultCarTypePro().then(res=>{
+        async getDefaultCarTypePro(){
+            await getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
-                    // this.cartypeProId = res.data;
-                    this.cartypeProId = "50024008";
+                    this.cartypeProId = res.data;
+                    this.carTypeName = this.carModelList.find(item => item.id === res.data).cartypeProjectCode
+                    // this.cartypeProId = "50024008";
 
                     this.getSupplierEmOntimeInfo();
                     this.getSupplierOtsOntimeInfo();
                     this.getFGNomiOntimeInfo();
                     this.getCommodityEmOntimeInfo();
                     this.getCommodityOntimeInfo();
+                }
+            })
+        },
+        async getSelectCarType(){
+            await getSelectCarType().then(res=>{
+                if(res?.result){
+                    this.carModelList = res.data;
                 }
             })
         },
@@ -206,12 +217,13 @@ export default {
             // this.picImg.forEach((e,index)=>{
                 let nameId = "echarts_"+num;
                 let myChart = echarts().init(document.getElementById(nameId));
-                myChart.setOption(echartsSupplerEM(data,type));
+                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName));
             // })
         },
     },
-    mounted(){
-        this.getDefaultCarTypePro();
+    async mounted(){
+        await this.getSelectCarType();
+        await this.getDefaultCarTypePro();
         // this.echartsOption();
     },
 }
@@ -307,6 +319,10 @@ export default {
     height: 15px;
 }
 .echarts{
+    flex:1;
+}
+.flexend{
+    justify-content: flex-end;
     flex:1;
 }
 </style>

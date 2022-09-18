@@ -19,7 +19,11 @@
             v-for="(item, index) in partProc"
             :key="index"
             @click="onTaskProcessClick(item)">
-            <icon symbol :name="item.icon" class="icon" /><span>{{data && item.valueKey && data[item.valueKey] || 0}}</span></li>
+            <icon symbol :name="item.icon" class="icon" />
+            <el-tooltip class="item" effect="light" :content="data && item.valueKey && data[item.valueKey] || 0" placement="bottom">
+              <span>{{data && item.valueKey && data[item.valueKey] || 0}}</span>
+            </el-tooltip>
+          </li>
         </ul>
       </div>
       
@@ -156,8 +160,9 @@ export default {
         text-align: center;
         li {
           display: inline-block;
-          padding: 2px 10px;
+          padding: 2px 0 10px 0;
           cursor: pointer;
+          width: 25%;
           span {
             display: block;
             width: 100%;
@@ -165,6 +170,11 @@ export default {
             font-size: 14px;
             line-height: 20px;
             padding-top: 5px;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow:ellipsis;
           }
         }
       }

@@ -44,11 +44,11 @@ export const partNumberTitle = [
 
 export const rulesErrorTitle = [
     {
-        props: 'createDate',
+        props: 'errorInfo',
         name: '错误信息',
         key: 'rulesError错误信息',
     },{
-        props: 'createDate',
+        props: 'nomiPartNum',
         name: '零件号',
         key: 'rulesError零件号',
     },{
@@ -56,19 +56,19 @@ export const rulesErrorTitle = [
         name: '零件名称',
         key: 'rulesError零件名称',
     },{
-        props: 'createDate',
+        props: 'vwSet',
         name: 'VW Set',
         key: 'rulesErrorVWSet',
     },{
-        props: 'createDate',
+        props: 'vsiModel',
         name: 'VSI 参考模块',
         key: 'rulesError参考模块',
     },{
-        props: 'createDate',
+        props: 'vsiPrice',
         name: 'VSI 单价',
         key: 'rulesError单价',
     },{
-        props: 'createDate',
+        props: 'vsiNum',
         name: 'VSI 数量',
         key: 'rulesError数量',
     },

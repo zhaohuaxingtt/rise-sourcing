@@ -4,9 +4,9 @@
             <span>{{$t(list.name)}}</span>
             <div>
                 <!-- 刷新 -->
-                <iButton>{{$t("LK_SHUAXIN")}}</iButton>
+                <iButton v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_INFOR_REFRESH">{{$t("LK_SHUAXIN")}}</iButton>
                 <!-- 导出 -->
-                <iButton @click="upload">{{$t("BIDDING_DAOCHU")}}</iButton>
+                <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_INFOR_DAOCHU">{{$t("BIDDING_DAOCHU")}}</iButton>
                 <!-- 返回 -->
                 <iButton @click="goBack">{{$t("LK_FANHUI")}}</iButton>
             </div>
@@ -28,7 +28,7 @@
         </iCard>
         <iCard class="marginTop20" :title="$t('明细数据')">
             <template v-slot:header-control>
-                <iButton @click="editTitle">{{$t("编辑表头")}}</iButton><!-- 编辑表头 -->
+                <!-- <iButton @click="editTitle">{{$t("编辑表头")}}</iButton> -->
             </template>
             <tableList 
                 :tableData="tableListData" 
@@ -104,11 +104,15 @@ export default {
             loading:false,
 
             list:{},
+            cartypeProName:"",
         }
     },
     created(){
     },
     methods:{
+        getEnquiry(){
+            this.getData(this.list.type);
+        },
         upload(){
             exprotProjectAnalysisc({
                 cartypeProId:this.cartypeProId,
@@ -120,6 +124,8 @@ export default {
         getChange(val){
             console.log(val);
             this.cartypeProId = val;
+            this.cartypeProName = this.selectOptions1.find(item => item.id == val).label;
+            // this.cartypeProName = this.selectOptions1.find(item => item.id == val).cartypeProjectCode
             this.getData(this.list.type);
         },
         getCarData(){
@@ -143,8 +149,10 @@ export default {
             getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
-                    // this.cartypeProId = res.data;
-                    this.cartypeProId = "50024008";
+                    this.cartypeProId = res.data;
+                    this.cartypeProName = this.selectOptions1.find(item => item.id == res.data).label;
+                    // this.cartypeProName = this.selectOptions1.find(item => item.id == res.data).cartypeProjectCode
+                    // this.cartypeProId = "50024008";
                     this.getData(this.list.type);
                 }
             })
@@ -155,7 +163,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"],this.cartypeProName);
                     }
                 })
                 
@@ -179,7 +187,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["OTS准时完成率","OTS总数"],this.cartypeProName);
                     }
                 })
                 
@@ -203,7 +211,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["定点准时完成率","定点总数"],this.cartypeProName);
                     }
                 })
                 
@@ -227,7 +235,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"],this.cartypeProName);
                     }
                 })
                 
@@ -251,7 +259,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                        this.echartsOption(0,res?.data,["EM准时完成率","OTS准时完成率","定点总数"],this.cartypeProName);
                     }
                 })
                 
@@ -281,9 +289,9 @@ export default {
         editTitle(){
 
         },
-        echartsOption(num,data,type){
+        echartsOption(num,data,type,carModelName){
             let myChart = echarts().init(document.getElementById("echartsBox"));
-            myChart.setOption(echartsSupplerEM(data,type));
+            myChart.setOption(echartsSupplerEM(data,type,carModelName));
         },
     },
     mounted(){
