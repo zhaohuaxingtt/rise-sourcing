@@ -49,7 +49,7 @@
     <iCard title="Calculation Model VSI" class="margin-top20">
         <template v-slot:header-control>
             <iButton @click="cancelVSI" v-if="!VSIeditType">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
-            <iButton @click="editVSI"  v-if="VSIeditType">{{ language("BIANJI", "编辑") }}</iButton>
+            <iButton @click="editVSI"  v-if="VSIeditType" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_EDIT">{{ language("BIANJI", "编辑") }}</iButton>
             <iButton @click="saveVSI" v-if="!VSIeditType">{{language("BAOCUN", "保存")}}</iButton>
         </template>
         <iFormGroup row="3" v-loading="loading"
@@ -57,33 +57,35 @@
             <iFormItem>
                 <iLabel label="Calculation Model SVI"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData1" :disabled="true"></iInput>
+                <div class="format_div">{{$postThousandth(VSIData.VSIData1)}}</div>
             </iFormItem>
-
             <iFormItem>
                 <iLabel label="Motor & Gearbox"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData2" type="number" @change="inputVSI" :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData2)}}</div>
+                <iInput v-model="VSIData.VSIData2" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
             <iFormItem>
                 <iLabel label="HT/CKD/MTZ/NTVorlogistic/MBCP"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData3" type="number" @change="inputVSI"  :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData3)}}</div>
+                <iInput v-model="VSIData.VSIData3" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
             <iFormItem>
                 <iLabel label="Calculation Model CSC-Base"
                         slot="label"></iLabel>
-                <iInput v-model="VSIData.VSIData4" type="number" @change="inputVSI"  :disabled="VSIeditType"></iInput>
+                <div class="format_div" v-if="VSIeditType">{{$postThousandth(VSIData.VSIData4)}}</div>
+                <iInput v-model="VSIData.VSIData4" type="number" @change="inputVSI" v-else :disabled="VSIeditType"></iInput>
             </iFormItem>
         </iFormGroup>
     </iCard>
 
     <iCard :title="$t('XIANGQINGLIEBIAO')" class="margin-top20">
         <template v-slot:header-control>
-            <iButton v-if="!editType" @click="exportExcel">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
-            <iButton v-if="!editType" @click="downModel">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
+            <iButton v-if="!editType" @click="exportExcel" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_DAOCHU">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
+            <iButton v-if="!editType" @click="downModel" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_XIAZAI">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
             <!-- 批量上传 -->
-            <iButton v-if="!editType" @click="batchUpload" style="display: inline-block; margin-right: 10px">{{$t("批量上传")}}</iButton>
+            <iButton v-if="!editType" @click="batchUpload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_PILIANGSHANGCHUAN" style="display: inline-block; margin-right: 10px">{{$t("批量上传")}}</iButton>
             <el-upload class="upload-demo" v-show="false"
                         style="display: inline-block; margin-right: 10px"
                         multiple
@@ -97,10 +99,10 @@
                         >
                 <iButton ref="clickBtn" @click="batchload">{{ $t("批量上传") }}</iButton>
             </el-upload>
-            <iButton v-if="!editType" @click="refresh">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
-            <iButton v-if="!editType" @click="add">{{$t("XINZENG")}}</iButton><!-- 新增 -->
-            <iButton v-if="!editType" @click="delModelCar">{{$t("LK_DELETE")}}</iButton><!-- 删除 -->
-            <iButton v-if="!editType" @click="editBtn">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
+            <iButton v-if="!editType" @click="refresh" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_REFRESH">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
+            <iButton v-if="!editType" @click="add" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_ADD">{{$t("XINZENG")}}</iButton><!-- 新增 -->
+            <iButton v-if="!editType" @click="delModelCar" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_DEL">{{$t("LK_DELETE")}}</iButton><!-- 删除 -->
+            <iButton v-if="!editType" @click="editBtn" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_EDIT">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
             <iButton v-if="editType" @click="cancel">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
             <iButton v-if="editType" @click="save">{{$t("SAVE")}}</iButton><!-- 保存 -->
             <!-- <iButton v-if="!editType" @click="editTitle">{{$t("编辑表头")}}</iButton> -->
@@ -174,7 +176,7 @@
                 <div v-if="scope.row.editType">
                     <iInput v-model="scope.row.vsiPrice" type="number"></iInput>
                 </div>
-                <span v-else style="width: 90%">{{ scope.row.vsiPrice }}</span>
+                <span v-else style="width: 90%">{{ $postThousandth(scope.row.vsiPrice) }}</span>
             </template>
             <!-- VSI-数量 -->
             <template slot="vsiNum" slot-scope="scope">
@@ -182,6 +184,10 @@
                     <iInput v-model="scope.row.vsiNum" type="number"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.vsiNum }}</span>
+            </template>
+            <!-- VSI-整车 -->
+            <template slot="vsiCar" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.vsiCar) }}</span>
             </template>
             <!-- 定点零件号 -->
             <template slot="nomiPartNum" slot-scope="scope">
@@ -199,8 +205,30 @@
                 <div v-if="scope.row.editType">
                     <iInput v-model="scope.row.nomiAPrice" type="number"></iInput>
                 </div>
-                <span v-else style="width: 90%">{{ scope.row.nomiAPrice }}</span>
+                <span v-else style="width: 90%">{{ $postThousandth(scope.row.nomiAPrice) }}</span>
             </template>
+            <!-- 定点-整车 -->
+            <template slot="nomiCar" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.nomiCar) }}</span>
+            </template>
+
+            <!-- 年降 -->
+            <template slot="ltcRate" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.ltcRate) }}</span>
+            </template>
+            <!-- 年降（SOP+1） -->
+            <template slot="firstAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.firstAnnualPrice) }}</span>
+            </template>
+            <!-- '年降（SOP+2） -->
+            <template slot="secondAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.secondAnnualPrice) }}</span>
+            </template>
+            <!-- 年降（SOP+3） -->
+            <template slot="thirdAnnualPrice" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.thirdAnnualPrice) }}</span>
+            </template>
+
             <!-- 定点供应商 -->
             <template slot="nomiSupplier" slot-scope="scope">
                 <!-- <el-select
@@ -242,6 +270,14 @@
                     <iInput v-model="scope.row.dept"></iInput>
                 </div>
                 <span v-else style="width: 90%">{{ scope.row.dept }}</span>
+            </template>
+            <!-- 模具预算 -->
+            <template slot="modelBudget" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.modelBudget) }}</span>
+            </template>
+            <!-- 定点模具费用 -->
+            <template slot="nomiModelCost" slot-scope="scope">
+                <span style="width: 90%">{{ $postThousandth(scope.row.nomiModelCost) }}</span>
             </template>
         </tableList>
         <iPagination v-update
@@ -462,14 +498,19 @@ export default {
             })
         },
         commitPart(val){//选择零件后同步表格数据
-            console.log(val);
+            this.partDialogVisible.dialogVisible = false;
+            var editData = this.tableListData[val.oldList.index];
+            this.dataPoint.forEach(e=>{
+                editData[e.props] = val.newList[e.props]
+            })
+
         },
         pointerNum(val){//VSI参考零件号
             if(val.vsiPartNum){
                 getPartInfoByVsiNumOrNomiPartNUM({
                     cartypeProId:this.searchParams.search1,
-                    nomiPartNum:val.nomiPartNum,
-                    vsiPartNum:"",
+                    nomiPartNum:"",
+                    vsiPartNum:val.vsiPartNum,
                 }).then(res=>{
                     console.log(res)
                     if(res.result){
@@ -479,7 +520,7 @@ export default {
                     }
                 })
             }else{
-                iMessage.error($t("请输入VSI参考零件号"))
+                iMessage.error(this.$t("请输入VSI参考零件号"))
             }
         },
         pointerRefresh(val){
@@ -497,7 +538,7 @@ export default {
                     }
                 })
             }else{
-                iMessage.error($t("请输入或选择参考零件号"))
+                iMessage.error(this.$t("请输入或选择参考零件号"))
             }
         },
         inputVSI(val){
@@ -531,6 +572,7 @@ export default {
                 calculationModelVsi:this.VSIData.VSIData1,
                 cartypeProId:this.searchParams.search1,
                 // cartypeProId:this.searchParams.search1[0],
+                id:this.CalculationModelVSIId?this.CalculationModelVSIId:"",
                 motorGearbox:this.VSIData.VSIData2,
                 vorlogistic:this.VSIData.VSIData3,
             }).then(e=>{
@@ -549,7 +591,13 @@ export default {
             this.page.currPage = 1
             // 若有定点起止时间将其拆分成两个字段
             this.getVSIData(this.searchParams.search1);
+
+            console.log(111111)
+
             this.getTableList();
+
+            console.log(22222)
+
         },
         reset(){
             this.searchParams = _.cloneDeep(this.searchParamsOld)
@@ -583,15 +631,15 @@ export default {
             getDefaultCarTypePro().then(res=>{
                 console.log(res);
                 if(res.result){
-                    // this.searchParams.search1 = res.data;
-                    this.searchParams.search1 = "50024008";
-                    // this.searchParamsOld.search1 = res.data;
-                    this.searchParamsOld.search1 = "50024008";
+                    this.searchParams.search1 = res.data;
+                    // this.searchParams.search1 = "50024008";
+                    this.searchParamsOld.search1 = res.data;
+                    // this.searchParamsOld.search1 = "50024008";
                     // this.getVSIData(this.searchParams.search1);
 
                     this.uploadData = {
-                        id:"50024008"
-                        // id:this.searchParams.search1
+                        // id:"50024008"
+                        id:this.searchParams.search1
                     };
                     this.getVSIData(this.searchParams.search1);
                     this.getTableList();
@@ -779,13 +827,13 @@ export default {
             //         size:this.page.pageSize,
             //     }
             // }else{
-                const nomiValue = [];
+                var nomiValueDataList = [];
                 if(this.searchParams.search4 !== ""){
-                    nomiValue = this.searchParams.search4.split(",")
+                    nomiValueDataList = this.searchParams.search4.split(",")
                 }
                 data = {
                     cartypeProIdList:[this.searchParams.search1],
-                    nomiPartNumList:nomiValue,
+                    nomiPartNumList:nomiValueDataList,
                     partPrjTypeList:this.searchParams.search3,
                     vsiPartName:this.searchParams.search5,
                     vwSetList:this.searchParams.search2,
@@ -836,7 +884,7 @@ export default {
         },
         uploadSuccess (res, file) {
             if (res.code == 200 && res.result) {
-                iMessage.success($t('SHANGCHUANCHENGGONG'))
+                iMessage.success(this.$t('SHANGCHUANCHENGGONG'))
                 this.page.pageSize = 10;
                 this.page.currPage = 1;
                 this.getTableList()
@@ -985,5 +1033,15 @@ export default {
 }
 .upload-demo{
     margin-left:10px;
+}
+
+.format_div{
+    width: 100%;
+    height:2.1875rem;
+    background:#F5F7FA;
+    line-height: 2.1875rem;
+    padding-left:16px;
+    padding-right:16px;
+    color:#C0C4CC;
 }
 </style>

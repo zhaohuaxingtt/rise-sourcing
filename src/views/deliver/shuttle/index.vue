@@ -55,11 +55,16 @@ import { iPage, iCard, iInput } from "rise";
 import item from "./item";
 import shuttleTable from "./shuttleTable";
 import { shuttleTableTitle as tableTitle } from "../components/data.js";
-
+import {
+  getMaterialGroupPart,
+  getHeavyitem,
+  setHeavyitem,
+} from "@/api/project/deliver";
 export default {
   components: { iPage, iCard, iInput, item, shuttleTable },
   data() {
     return {
+      carProjectId:"",
       leftSearch: "",
       rightSearch: "",
       tableTitle,
@@ -129,9 +134,23 @@ export default {
   },
   created(){
     this.leftTableData = JSON.parse(JSON.stringify(this.allTableData));
+    this.carProjectId = this.$route.query.carProjectId;
+    this.getData();
     this.getRightTable()
   },
   methods: {
+    getData(){
+      getMaterialGroupPart({
+        carProjectId:this.carProjectId
+      }).then(res=>{
+        console.log(res);
+      })
+
+
+      getHeavyitem(this.carProjectId).then(res=>{
+        console.log(res);
+      })
+    },
     // 左侧选中数据
     handleSelectionChangeLeft(val,result){
       this.selectDataLeft = val
@@ -152,6 +171,13 @@ export default {
           }
       })
       this.rightTableData = JSON.parse(JSON.stringify(rightTableData))
+
+
+      setHeavyitem([
+        ...this.rightTableData
+      ]).then(res=>{
+        console.log(res);
+      })
       // this.getRightTable()
     },
     
@@ -169,6 +195,12 @@ export default {
         }
       })
       this.rightTableData = JSON.parse(JSON.stringify(rightTableData))
+
+      setHeavyitem([
+        ...this.rightTableData
+      ]).then(res=>{
+        console.log(res);
+      })
       // this.allTableData = JSON.parse(JSON.stringify(this.leftTableData))
       // this.getRightTable()
     },

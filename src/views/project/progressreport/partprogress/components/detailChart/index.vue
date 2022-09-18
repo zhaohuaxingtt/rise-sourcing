@@ -83,8 +83,14 @@ export default {
       this.renderBi();
     },
     changeRefresh(val){
-      console.log(val)
-      this.filterParameter.values = [val];
+      // console.log(this.cartypeId,33333333)
+      var cartypeId = "";
+      if(val){
+        cartypeId = val;
+      }else{
+        cartypeId = this.cartypeId;
+      }
+      this.filterParameter.values = [cartypeId];
       this.report.setFilters([this.filterParameter]);
     },
     renderBi(){
