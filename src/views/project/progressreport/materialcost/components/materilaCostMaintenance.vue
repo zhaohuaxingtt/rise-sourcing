@@ -878,8 +878,8 @@ export default {
                 return false;
             }
             downloadFile({
-                carTypeProId:"50024008"
-                // carTypeProId:this.searchParams.search1
+                // carTypeProId:"50024008"
+                carTypeProId:this.searchParams.search1
             })
         },
         uploadSuccess (res, file) {
