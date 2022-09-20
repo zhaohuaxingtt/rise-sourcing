@@ -128,7 +128,7 @@ export function echartsSupplerEM(data,type,valueN){
         },
         legend:{
             top:10,
-            right:0,
+            right:10,
             show:true,
             data:name,
         },
