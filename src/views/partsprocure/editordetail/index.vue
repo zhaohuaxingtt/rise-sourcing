@@ -1278,11 +1278,13 @@ export default {
 
       return false;
     },
-    //是否是一次性采购或者DB一次性采购
+    //是否是一次性采购或者DB一次性采购,工序委外
     iSDisposablePurchase() {
       if (
         this.sourcePartProjectType == "50001001" ||
-        this.sourcePartProjectType == "50001000"
+        this.sourcePartProjectType == "50001000" ||
+        this.sourcePartProjectType == partProjTypes.GONGXUWEIWAI ||
+        this.sourcePartProjectType == partProjTypes.GONGXUWEIWAIYICIXINGCAIGOU
       ) {
         return true;
       } else {
