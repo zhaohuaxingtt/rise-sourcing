@@ -1758,7 +1758,7 @@ export default {
 
 .rsPdfWrapper,
 .demo {
-  width: max-content;
+  width: 100%;
   height: 0;
   overflow: hidden;
   position: relative;
@@ -1939,6 +1939,11 @@ export default {
   border-top: 1px solid #666;
 }
 .contentPdf {
+  ::v-deep p {
+    margin: 0;
+    padding: 0;
+    font-style: normal;
+  }
   ::v-deep .rsCard {
     box-shadow: none;
     & + .rsCard {
