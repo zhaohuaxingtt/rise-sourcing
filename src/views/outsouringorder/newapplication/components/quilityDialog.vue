@@ -11,12 +11,25 @@
           detailInfo.sapItem
         }`
       }}</span>
-      <iButton class="save" @click="saveSapItem">{{ $t("LK_BAOCUN") }}</iButton>
+      <iButton
+        class="save"
+        @click="saveSapItem"
+        permissionKey="OUTSOURINGORDER_DETAILS_SHULIANG_BAOCUN"
+        >{{ $t("LK_BAOCUN") }}</iButton
+      >
     </div>
     <div class="item-dialog clearFloat">
       <div v-if="canEdit" class="floatright margin-bottom20">
-        <iButton @click="increatment">{{ $t("LK_XINZENG") }}</iButton>
-        <iButton @click="deleteItem">{{ $t("LK_SHANCHU") }}</iButton>
+        <iButton
+          @click="increatment"
+          permissionKey="OUTSOURINGORDER_DETAILS_SHULIANG_XINZENG"
+          >{{ $t("LK_XINZENG") }}</iButton
+        >
+        <iButton
+          @click="deleteItem"
+          permissionKey="OUTSOURINGORDER_DETAILS_SHULIANG_SHANCHU"
+          >{{ $t("LK_SHANCHU") }}</iButton
+        >
       </div>
       <tablePart
         ref="multipleTable"
