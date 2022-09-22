@@ -43,12 +43,14 @@
             inactive-color="#cccccc"
           ></el-switch>
         </div>
-        <iButton @click="sureByMySelf">{{
-          language("LK_ZHUANPAIZIJI", "转派自己")
-        }}</iButton>
-        <iButton @click="handleConfirm" :loading="transferLoading">{{
-          $t("LK_QUEREN")
-        }}</iButton>
+        <div>
+          <iButton @click="sureByMySelf">{{
+            language("LK_ZHUANPAIZIJI", "转派自己")
+          }}</iButton>
+          <iButton @click="handleConfirm" :loading="transferLoading">{{
+            $t("LK_QUEREN")
+          }}</iButton>
+        </div>
       </div>
     </el-form>
   </iDialog>
