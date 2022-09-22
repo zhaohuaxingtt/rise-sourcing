@@ -79,27 +79,27 @@
           ></el-switch>
         </div>
         <div class="floatright btns">
-          <iButton @click="createSignSheet">
+          <iButton @click="createSignSheet" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_XINJIAN">
             {{ language("LK_XINJIANNEW", "新建") }}
           </iButton>
           <!-- 删除 -->
-          <iButton @click="deleteItem">
+          <iButton @click="deleteItem" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_SHANCHU">
             {{ language("SHANCHU", "删除") }}
           </iButton>
           <!-- 转派 -->
-          <iButton @click="handleBatchTransation">
+          <iButton @click="handleBatchTransation" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_ZHUANPAI">
             {{ language("ZHUANPAI", "转派") }}
           </iButton>
           <!-- 签收 -->
-          <iButton @click="handleBatchSingn">
+          <iButton @click="handleBatchSingn" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_QIANSHOU">
             {{ language("QIANSHOU", "签收") }}
           </iButton>
           <!-- 退回 -->
-          <iButton @click="handleBatchReject(true)">
+          <iButton @click="handleBatchReject(true)" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_TUIHUI">
             {{ language("TUIHUI", "退回") }}
           </iButton>
           <!-- 关闭 -->
-          <iButton @click="handleBatchClose(true)">
+          <iButton @click="handleBatchClose(true)" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_GUANBI">
             {{ language("LK_GUANBI", "关闭") }}
           </iButton>
         </div>

@@ -1,5 +1,8 @@
 <template>
-  <iPage class="partsprocureHome">
+  <iPage
+    class="partsprocureHome"
+    permissionKey="SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_OUTSOURINGORDER_DETAILS"
+  >
     <div>
       <div class="pageTitle flex-between-center-center margin-botttom20">
         <span>
@@ -19,10 +22,15 @@
           <iButton
             @click="handleEdit"
             v-if="!canEdit && isLatest && canEditable"
+            permissionKey="OUTSOURINGORDER_DETAILS_BIANJI"
           >
             {{ $t("LK_BIANJI") }}
           </iButton>
-          <iButton @click="sendToLine" v-if="!canEdit && canEditable">
+          <iButton
+            @click="sendToLine"
+            v-if="!canEdit && canEditable"
+            permissionKey="OUTSOURINGORDER_DETAILS_TUISONGCAIGOUYUAN"
+          >
             {{ $t("TUISONGCAIGOUYUAN") }}
           </iButton>
           <!--<iButton @click="createOrder" v-if="!canEdit">{{ $t('创建订单') }}</iButton>-->
@@ -143,10 +151,18 @@
         <div class="table-top">
           <iFormGroup row="5" inline :rules="rules"> </iFormGroup>
           <div>
-            <iButton @click="insertItem" v-if="canEdit && canEditable">
+            <iButton
+              @click="insertItem"
+              v-if="canEdit && canEditable"
+              permissionKey="OUTSOURINGORDER_DETAILS_XINZHENGXIANGCI"
+            >
               {{ $t("LK_XINZHENGXIANGCI") }}
             </iButton>
-            <iButton @click="deleteItem" v-if="canEdit && canEditable">
+            <iButton
+              @click="deleteItem"
+              v-if="canEdit && canEditable"
+              permissionKey="OUTSOURINGORDER_DETAILS_SHANCHUXIANGCI"
+            >
               {{ $t("LK_SHANCHUXIANGCI") }}
             </iButton>
             <upload-button
@@ -155,8 +171,13 @@
               :upload-button-loading="uploadAttachmentsButtonLoading"
               :data-info="baseinfodata"
               class="margin-left8"
+              permissionKey="OUTSOURINGORDER_DETAILS_DAORU"
             />
-            <iButton @click="exportExcel" style="margin-left: 8px">
+            <iButton
+              @click="exportExcel"
+              style="margin-left: 8px"
+              permissionKey="OUTSOURINGORDER_DETAILS_DAOCHU"
+            >
               {{ $t("LK_DAOCHU") }}
             </iButton>
             <!-- <buttonDownload :downloadMethod="exportExcel" /> -->
