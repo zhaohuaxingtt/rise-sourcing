@@ -499,6 +499,11 @@ export default {
         );
         return;
       }
+      if (!this.tableData.length) {
+        return iMessage.warn(
+          this.language("QINHXIANTIANJIASHUJU", "请先添加数据")
+        );
+      }
       this.saveLoading = true;
       const params = {
         linieDeptName:
