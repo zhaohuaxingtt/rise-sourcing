@@ -196,13 +196,13 @@ export function echartsSupplerEM(data,type,valueN){
                     t += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + e.color + ';"></span>'
                     if(name.length == 3){
                         if(index == 0 || index == 1){
-                            t += e.seriesName + ':' + e.value + '%'
+                            t += e.seriesName + ':' + (e.value*100).toFixed(2) + '%'
                         }else{
                             t += e.seriesName + ':' + e.value
                         }
                     }else{
                         if(index == 0){
-                            t += e.seriesName + ':' + e.value + '%'
+                            t += e.seriesName + ':' + (e.value*100).toFixed(2) + '%'
                         }else{
                             t += e.seriesName + ':' + e.value
                         }
