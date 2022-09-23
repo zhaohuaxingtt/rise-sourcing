@@ -107,7 +107,12 @@ export default {
     searchData(){
       material_group_list({}).then(res=>{
         if(res?.result){
-          this.selectOptions.deptOptions = res.data
+          var list = res.data
+          list.forEach(e=>{
+            e.value = e.materialGroupId;
+            e.label = e.materialGroupNameZh;
+          })
+          this.selectOptions.deptOptions = list
         }
       })
       cartype_pro_List({}).then(res=>{
