@@ -278,6 +278,7 @@ export default{
     setfixElement(){
       try {
         const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
+        console.log([needRemovebox])
         if(needRemovebox){
           needRemovebox.parentNode.removeChild(needRemovebox)
         }
@@ -605,17 +606,6 @@ export default{
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
       height:auto!important;
-      td{
-        border-bottom: 1px solid #ebeef5;
-        overflow: hidden;
-      }
-    }
-    ::v-deep.el-table__fixed-body-wrapper{
-      overflow:visible;
-      height:auto!important;
-      td{
-        border-bottom: 1px solid #ebeef5;
-      }
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
