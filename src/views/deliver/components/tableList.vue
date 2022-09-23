@@ -10,7 +10,7 @@
         class="table"
         ref="tableList"
         :lang="true"
-        :tableData="tableListData"
+        :tableData="dataList"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :selection='false'
@@ -81,24 +81,10 @@ export default {
       downloadLoading: false,
       loading: false,
       tableTitle,
-      tableListData: [
-        {
-          cartypeProNameZh: "ID4.X",
-          rfq: "80000967",
-          materialGroupCode: "123",
-          partNum: "111",
-          partNameZh: "示例零件1",
-          status:1,
-          partType: "Nomi",
-          soll: "20W-20",
-          progress: "重度延期4周",
-          supplierName: "宁波金鑫粉末冶金有限公司",
-        },
-      ],
     };
   },
   created(){
-    this.tableListData = _.cloneDeep(this.dataList);
+    
   },
   methods: {
     handleSizeChange(val){
@@ -115,7 +101,8 @@ export default {
       })
     },
     handleDownload() {},
-    getTableData() {},
+    getTableData() {
+    },
   },
 };
 </script>

@@ -13,7 +13,7 @@
           v-model="searchParams[item.prop]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
         <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.prop]"
           :title="language(item.key, item.label)" />
-        <iInput clearable v-else v-model="searchParams[item.vpropalue]" :placeholder="language('QINGSHURU', '请输入')"></iInput>
+        <iInput clearable v-else v-model="searchParams[item.prop]" :placeholder="language('QINGSHURU', '请输入')"></iInput>
       </el-form-item>
     </el-form>
   </iSearch>

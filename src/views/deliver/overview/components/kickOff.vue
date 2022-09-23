@@ -11,7 +11,7 @@
   <iPage class="overview">
     <projectTop />
     <search
-      :searchList="searchList"
+      :searchList="kickOffSearchList"
       :selectOptions="selectOptions"
       @sure="sure"
       @reset="reset"
@@ -26,7 +26,7 @@ import { iPage, iCard, iButton } from "rise";
 import projectTop from "../../components/projectHeader";
 import search from "../../components/search";
 import tableList from "../../components/tableList";
-import { kickOffSearchList as searchList } from "../../components/data";
+import { kickOffSearchList } from "../../components/data";
 import { selectDictByKeyss } from "@/api/dictionary"
 import { sample_part_listPage } from '@/api/project/deliver'
 
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       dataList:[],
-      searchList,
+      kickOffSearchList,
       selectOptions: {
         partTypeOptions: [//零件类型
         ],
@@ -106,6 +106,7 @@ export default {
     sure(form) {
       console.log(form);
       this.searchParams = form;
+      this.getData();
     },
     reset() {
       this.searchParams = {};
