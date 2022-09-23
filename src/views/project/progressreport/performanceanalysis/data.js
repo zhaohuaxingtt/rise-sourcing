@@ -33,7 +33,7 @@ export function echartsSupplerEM(data,type,valueN){
             data1.push(e.emPercentage)
             data1_2.push(e.otsPercentage)
             data2.push(e.totalNum)
-            xAxis.push(e.carTypeProName)
+            xAxis.push(e.dept)
         }else{
             data1.push(e.percentage)
             data2.push(e.totalNum)
