@@ -30,12 +30,12 @@ export function echartsSupplerEM(data,type,valueN){
 
     data.forEach(e=>{
         if(name.length == 3){
-            data1.push(e.emPercentage)
-            data1_2.push(e.otsPercentage)
+            data1.push((e.emPercentage*100).toFixed(2))
+            data1_2.push((e.otsPercentage*100).toFixed(2))
             data2.push(e.totalNum)
             xAxis.push(e.dept)
         }else{
-            data1.push(e.percentage)
+            data1.push((e.percentage*100).toFixed(2))
             data2.push(e.totalNum)
             xAxis.push(e.name)
         }
@@ -196,13 +196,13 @@ export function echartsSupplerEM(data,type,valueN){
                     t += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + e.color + ';"></span>'
                     if(name.length == 3){
                         if(index == 0 || index == 1){
-                            t += e.seriesName + ':' + (e.value*100).toFixed(2) + '%'
+                            t += e.seriesName + ':' + e.value + '%'
                         }else{
                             t += e.seriesName + ':' + e.value
                         }
                     }else{
                         if(index == 0){
-                            t += e.seriesName + ':' + (e.value*100).toFixed(2) + '%'
+                            t += e.seriesName + ':' + e.value + '%'
                         }else{
                             t += e.seriesName + ':' + e.value
                         }
