@@ -13,7 +13,7 @@
       :span-method="objectSpanMethod"
       :row-class-name="tableRowClassName"
       class="table"
-      :key="baseinfodata.subType"
+      :key="baseinfodata.subType + baseinfodata.partPrefix"
     >
       <el-table-column
         v-if="selection"
@@ -207,7 +207,7 @@
               v-if="baseinfodata.subType === 'ZN_AGT'"
               class="openLinkText cursor"
               @click="viewQuantity(scope.row)"
-              >查看</span
+              >{{ getCountAll(scope.row) }}</span
             >
             <iInput
               v-else-if="
@@ -529,6 +529,14 @@ export default {
     viewQuantity(data) {
       this.showQuility = true;
       this.detailInfo = data;
+    },
+    getCountAll(row) {
+      let quantity =
+        row.normalPrQuantityYears?.reduce(
+          (sum, item) => sum + +item.quantity,
+          0
+        ) || 0;
+      return quantity;
     },
     //保存
     handleSaveQuantity(data) {
