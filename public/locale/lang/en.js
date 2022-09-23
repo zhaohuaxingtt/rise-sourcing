@@ -6453,8 +6453,10 @@
 
 		"OTS准时完成率":"OTS on-time completion rate",
 		"定点总数":"Nomi. Total",
+		"定点完成数量":"Fixed point completion quantity",
 		"定点准时完成率":"On time completion rate of Nomi.",
 		"OTS总数":"Total OTS",
+		"OTS完成数量":"OTS completed quantity",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

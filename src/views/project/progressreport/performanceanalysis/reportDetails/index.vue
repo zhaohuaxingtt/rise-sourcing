@@ -30,10 +30,10 @@
             <template v-slot:header-control>
                 <!-- <iButton @click="editTitle">{{$t("编辑表头")}}</iButton> -->
             </template>
-            <tableList 
+            <tableList v-if="$route.query.type == 1"
                 :tableData="tableListData" 
                 ref="contractForm"
-                :tableTitle="tableTitle" 
+                :tableTitle="tableTitle1" 
                 :tableLoading="loading" 
                 :index="true"
                 :selectable="false"
@@ -41,7 +41,54 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
-
+            </tableList>
+            <tableList v-else-if="$route.query.type == 2"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle2" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+            </tableList>
+            <tableList v-else-if="$route.query.type == 3"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle3" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+            </tableList>
+            <tableList v-else-if="$route.query.type == 4"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle4" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+            </tableList>
+            <tableList v-else-if="$route.query.type == 5"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle5" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
             </tableList>
             <iPagination v-update
                 class="pagination"
@@ -62,7 +109,13 @@ import { iPage,iCard,iButton,iSelect,iPagination,iMessage } from "rise";
 import tableList from "@/components/commonTable";
 import echarts from "@/utils/echarts";
 import { pageMixins } from '@/utils/pageMixins'
-import { tableTitle } from "./data";
+import { 
+    tableTitle1,
+    tableTitle2,
+    tableTitle3,
+    tableTitle4,
+    tableTitle5,
+} from "./data";
 import { echartsSupplerEM } from "../data";
 
 import {
@@ -100,7 +153,11 @@ export default {
             selectOptions1:[],
 
             tableListData:[],
-            tableTitle:tableTitle,
+            tableTitle1,
+            tableTitle2,
+            tableTitle3,
+            tableTitle4,
+            tableTitle5,
             loading:false,
 
             list:{},
@@ -187,7 +244,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,[this.$t("OTS准时完成率"),this.$t("OTS总数")],this.cartypeProName);
+                        this.echartsOption(1,res?.data,[this.$t("OTS准时完成率"),this.$t("OTS总数")],this.cartypeProName);
                     }
                 })
                 
@@ -211,7 +268,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,[this.$t("定点准时完成率"),this.$t("定点总数")],this.cartypeProName);
+                        this.echartsOption(2,res?.data,[this.$t("定点准时完成率"),this.$t("定点总数")],this.cartypeProName);
                     }
                 })
                 
@@ -235,7 +292,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")],this.cartypeProName);
+                        this.echartsOption(3,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")],this.cartypeProName);
                     }
                 })
                 
@@ -259,7 +316,7 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(0,res?.data,[this.$t("EM准时完成率"),this.$t("OTS准时完成率"),this.$t("定点总数")],this.cartypeProName);
+                        this.echartsOption(4,res?.data,[this.$t("EM准时完成率"),this.$t("OTS准时完成率"),this.$t("定点总数")],this.cartypeProName);
                     }
                 })
                 
@@ -291,7 +348,7 @@ export default {
         },
         echartsOption(num,data,type,carModelName){
             let myChart = echarts().init(document.getElementById("echartsBox"));
-            myChart.setOption(echartsSupplerEM(data,type,carModelName));
+            myChart.setOption(echartsSupplerEM(data,type,carModelName,num));
         },
     },
     mounted(){
