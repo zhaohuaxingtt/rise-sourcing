@@ -41,6 +41,9 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
             </tableList>
             <tableList v-else-if="$route.query.type == 2"
                 :tableData="tableListData" 
@@ -53,6 +56,9 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
             </tableList>
             <tableList v-else-if="$route.query.type == 3"
                 :tableData="tableListData" 
@@ -65,6 +71,9 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
             </tableList>
             <tableList v-else-if="$route.query.type == 4"
                 :tableData="tableListData" 
@@ -77,6 +86,9 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
             </tableList>
             <tableList v-else-if="$route.query.type == 5"
                 :tableData="tableListData" 
@@ -89,6 +101,9 @@
                 border
                 @handleSelectionChange="handleSelectionChange"
                 >
+                <template slot-scope="scope" slot="otsPercentage">
+                    <span>{{setPercentage(scope.row.otsPercentage)}}</span>
+                </template>
             </tableList>
             <iPagination v-update
                 class="pagination"
@@ -167,6 +182,9 @@ export default {
     created(){
     },
     methods:{
+        setPercentage(val){
+            return val ? (val*100).toFixed(0) + "%" : val;
+        },
         getEnquiry(){
             this.getData(this.list.type);
         },
