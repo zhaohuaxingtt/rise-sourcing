@@ -16,21 +16,21 @@
         :selection='false'
       >
         <!-- 延迟级别 -->
-        <template #progress="scope">
+        <template #delayWk="scope">
           <div class="table-item-aeko">
-            <img v-if="scope.row.delayWk"
+            <img v-if="scope.row.delayWk >= 4"
               class="margin-right5 img_deng"
               :src="require('@/assets/images/icon/black.png')"
             >
-            <!-- <img
+            <img v-else-if="scope.row.delayWk >= 2 && scope.row.delayWk <4"
               class="margin-right5 img_deng"
               :src="require('@/assets/images/icon/red.png')"
             >
-            <img
+            <img v-else-if="scope.row.delayWk == 1"
               class="margin-right5 img_deng"
               :src="require('@/assets/images/icon/yellow.png')"
-            > -->
-            <span>{{ scope.row.progress }}</span>
+            >
+            <span>{{ scope.row.delayWkDesc }}</span>
           </div>
         </template>
       </tableList>
@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     handleSizeChange(val){
-      console.log(val);
       this.$emit("handleSizeChange",{
         size:val,
         currPage:1,
