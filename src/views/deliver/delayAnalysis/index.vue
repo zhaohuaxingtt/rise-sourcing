@@ -12,7 +12,7 @@
       </div>
     </div>
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
-    <iTabsList v-model='defaultTab' type="card">
+    <iTabsList v-model='defaultTab' type="card" :tab-click="tableClick">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
       <el-tab-pane label="offen图" name="2" v-if="offenShow"></el-tab-pane>
     </iTabsList>
@@ -121,6 +121,14 @@ import { navList } from "./data";
       this.getPicRight();
     },
     methods:{
+      tableClick(val){
+        if(val.name == 1){
+          this.getPicLeft();
+          this.getPicRight();
+        }else{
+          
+        }
+      },
       getPicLeft(){
         level_summary({
           ...this.searchForm,
