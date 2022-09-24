@@ -14,18 +14,18 @@
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
     <iTabsList v-model='defaultTab' type="card">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
-      <el-tab-pane label="offen图" name="2"></el-tab-pane>
+      <el-tab-pane label="offen图" name="2" v-if="offenShow"></el-tab-pane>
     </iTabsList>
     <template v-if="defaultTab==1">
       <el-row :gutter="20">
-        <el-col :span="12"><chartsItem :picLeftData="picLeftData" /></el-col>
-        <el-col :span="12"><yuanyinChartsItem :picRightData="picRightData" /></el-col>
+        <el-col :span="12"><chartsItem ref="chartsItem" :picLeftData="picLeftData" /></el-col>
+        <el-col :span="12"><yuanyinChartsItem ref="yuanyinChartsItem" :picRightData="picRightData" /></el-col>
       </el-row>
     </template>
     <template v-else>
       <offenChartsItem  />
     </template>
-    <tableList title="零件清单列表" class="margin-top20" :dataList="dataList" ref="partsListTable" 
+    <tableList title="零件清单列表" class="margin-top20" :dataList="dataList" ref="partsListTable"
       @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"
     />
   </iPage>
@@ -108,8 +108,10 @@ import { navList } from "./data";
         picLeftData:[],//左图表数据
         picRightData:[],//右图表数据
 
-        threeTreeValue:"1stTryout",//二级菜单 /OTS/EM
-        lev2Index:3,
+        threeTreeValue:"EM",//二级菜单 /OTS/EM
+        lev2Index:5,
+
+        offenShow:true,
       }
     },
     created(){
@@ -126,6 +128,7 @@ import { navList } from "./data";
         }).then(res=>{
           if(res?.result){
             this.picLeftData = res.data;
+            this.$refs.chartsItem.setEcharts(this.picLeftData);
           }
         })
       },
@@ -136,6 +139,7 @@ import { navList } from "./data";
         }).then(res=>{
           if(res?.result){
             this.picRightData = res.data;
+            this.$refs.yuanyinChartsItem.setEcharts(this.picRightData);
           }
         })
       },
@@ -173,21 +177,23 @@ import { navList } from "./data";
         }).then(res=>{
           if(res?.result){
             this.dataList = res.data;
+            this.pageTotal = res.total;
+            this.$refs.partsListTable.page.totalCount = res.total;
           }
         })
       },
       handleSizeChange(val){
-        console.log(val)
         this.getData(val.currPage,val.size);
       },
       handleCurrentChange(val){
-        console.log(val)
         this.getData(val.currPage,val.size);
       },
       sure(val){
         console.log(val);
         this.searchForm = val;
         this.getData(1,10);
+        this.getPicLeft();
+        this.getPicRight();
       },
       reset(){
         this.searchForm = {
@@ -203,10 +209,23 @@ import { navList } from "./data";
           supplierName:"",
         };
         this.getData(1,10);
+        this.getPicLeft();
+        this.getPicRight();
       },
       change(val){
         this.lev2Index = val.value - 1;
         this.threeTreeValue = val.name;
+
+        console.log(val.value);
+        if(Number(val.value) < 4){
+          this.offenShow = false;
+          this.defaultTab = '1';
+        }else{
+          this.offenShow = true;
+        }
+        this.getData(1,10);
+        this.getPicLeft();
+        this.getPicRight();
       },
     }
   }
