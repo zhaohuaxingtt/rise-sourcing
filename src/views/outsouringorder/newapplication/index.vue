@@ -329,17 +329,17 @@ export default {
     this.purchaseFactory();
     this.getProcureGroup();
     this.getLineInfo();
-    console.log(this.disabledEditBaseInfo);
-    console.log(this.isSelf);
   },
   computed: {
     ...Vuex.mapState({
       userId: (state) => state.permission.userInfo?.id || "",
     }),
     isSelf() {
-      return [this.baseinfodata.ownerId, this.baseinfodata.applyId].includes(
-        this.userId
-      );
+      return this.baseinfodata.applyId
+        ? [this.baseinfodata.ownerId, this.baseinfodata.applyId].includes(
+            this.userId
+          )
+        : true;
     },
     // 工序委外项次table是否可以编辑
     canEditable() {
