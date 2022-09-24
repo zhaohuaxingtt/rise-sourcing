@@ -607,42 +607,13 @@ export default {
       if (this.tableListData.length <= 0) {
         return iMessage.warn("没有需要推送给采购员的数据");
       }
-
-      // 零件前缀没有，并且零件号为空
-      if (
-        this.tableListData.find((e) => !e.partNum) &&
-        !this.baseinfodata.partPrefix
-      ) {
-        return iMessage.warn(
-          this.language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
-        );
-      }
-      if (
-        this.tableListData.find(
-          (e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
-        )
-      ) {
-        return iMessage.warn(
-          this.language("QINGSHURUBITIANXIANG", "请输入必填项")
-        );
-      }
-      // 一次性
-      if (this.baseinfodata.subType == "ZN_ONE") {
-        if (!this.tableListData.find((e) => e.quantity > 0)) {
-          return iMessage.warn("类型“工序委外一次性”，数量必须大于0");
-        }
-        // 框架
-      } else {
-        let flag = false;
-        // 至少有一条数据不为空
-        this.tableListData.forEach((item) => {
-          flag =
-            flag || !item.normalPrQuantityYears.find((e) => e.quantity > 0);
+      let msg = this.checkData();
+      if (msg)
+        return this.$message({
+          dangerouslyUseHTMLString: true,
+          message: msg,
+          type: "warning",
         });
-        if (flag) {
-          return iMessage.warn("类型“工序委外框架”，五年计划数量必须大于0");
-        }
-      }
       sendLinie({
         deptName: this.baseinfodata.deptName,
         deptNum: this.baseinfodata.deptNum,
