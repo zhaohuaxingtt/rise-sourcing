@@ -94,7 +94,8 @@ export default {
                 id:4,
             },{
                 select:false,
-                name:this.$t("不同Commodity项目完成情况报告"),
+                // name:this.$t("不同Commodity项目完成情况报告"),
+                name:this.$t("不同CommodityOTS完成情况报告"),
                 id:5,
             }
         ];
@@ -209,7 +210,11 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(4,res?.data,[this.$t("EM准时完成率"),this.$t("OTS准时完成率"),this.$t("定点总数")]);
+                    this.echartsOption(4,res?.data,[
+                        // this.$t("EM准时完成率"),
+                        this.$t("OTS准时完成率"),
+                        this.$t("OTS完成数")
+                    ]);
                 }
             })
         },
@@ -217,7 +222,7 @@ export default {
             // this.picImg.forEach((e,index)=>{
                 let nameId = "echarts_"+num;
                 let myChart = echarts().init(document.getElementById(nameId));
-                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName));
+                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName,num));
             // })
         },
     },

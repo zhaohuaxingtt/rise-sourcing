@@ -6450,13 +6450,14 @@
 		"FG组定点准时完成情况报告":"On time completion report of FG group",
 		"不同CommodityEM完成情况报告":"Report on completion of different CommodityEM",
 		"不同Commodity项目完成情况报告":"Report on completion of different commodity projects",
+		"不同CommodityOTS完成情况报告":"Report on completion of OTS of different communities",
 
 		"OTS准时完成率":"OTS on-time completion rate",
 		"定点总数":"Nomi. Total",
 		"定点完成数量":"Fixed point completion quantity",
 		"定点准时完成率":"On time completion rate of Nomi.",
 		"OTS总数":"Total OTS",
-		"OTS完成数量":"OTS completed quantity",
+		"OTS完成数":"OTS completed quantity",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

@@ -6454,13 +6454,14 @@
 		"FG组定点准时完成情况报告":"FG组定点准时完成情况报告",
 		"不同CommodityEM完成情况报告":"不同Commodity EM完成情况报告",
 		"不同Commodity项目完成情况报告":"不同Commodity项目完成情况报告",
+		"不同CommodityOTS完成情况报告":"不同Commodity OTS完成情况报告",
 
     "OTS准时完成率":"OTS准时完成率",
 		"定点总数":"定点总数",
 		"定点完成数量":"定点完成数量",
 		"定点准时完成率":"定点准时完成率",
 		"OTS总数":"OTS总数",
-		"OTS完成数量":"OTS完成数量",
+		"OTS完成数":"OTS完成数",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })
