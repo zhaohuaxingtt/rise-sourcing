@@ -13,22 +13,22 @@
           }}
         </span>
         <div class="btnList flex-align-center">
-          <iButton @click="exitEditor" v-if="canEdit && canEditable">
+          <iButton @click="exitEditor" v-if="canEdit && canEditable && isSelf">
             {{ $t("LK_TUICHUBIANJI") }}
           </iButton>
-          <iButton @click="handleSave" v-if="canEdit && canEditable">
+          <iButton @click="handleSave" v-if="canEdit && canEditable && isSelf">
             {{ $t("LK_BAOCUN") }}
           </iButton>
           <iButton
             @click="handleEdit"
-            v-if="!canEdit && isLatest && canEditable"
+            v-if="!canEdit && isLatest && canEditable && isSelf"
             permissionKey="OUTSOURINGORDER_DETAILS_BIANJI"
           >
             {{ $t("LK_BIANJI") }}
           </iButton>
           <iButton
             @click="sendToLine"
-            v-if="!canEdit && canEditable"
+            v-if="!canEdit && canEditable && isSelf"
             permissionKey="OUTSOURINGORDER_DETAILS_TUISONGCAIGOUYUAN"
           >
             {{ $t("TUISONGCAIGOUYUAN") }}
@@ -192,7 +192,6 @@
           :splitPurchList="splitPurchList"
           :canEdit="canEdit && canEditable"
           :addressList="addressList"
-          @normalPrQuantityYears="normalPrQuantityYears"
           @handleSelectionChange="handleSelectionChange"
           open-page-props="id"
           :index="true"
@@ -332,6 +331,16 @@ export default {
     this.getLineInfo();
   },
   computed: {
+    ...Vuex.mapState({
+      userId: (state) => state.permission.userInfo?.id || "",
+    }),
+    isSelf() {
+      return this.baseinfodata.applyId
+        ? [this.baseinfodata.ownerId, this.baseinfodata.applyId].includes(
+            this.userId
+          )
+        : true;
+    },
     // 工序委外项次table是否可以编辑
     canEditable() {
       if (this.tableListData.length) {
@@ -339,17 +348,16 @@ export default {
           ["-1", "-2", ""].includes(item.status)
         );
       }
-      return true;
+      return true && this.isSelf;
     },
     // 工序委外基本信息是否可以编辑
     disabledEditBaseInfo() {
+      if (!this.isSelf) return true;
       if (this.tableListData.length) {
         return (
-          (this.tableListData.find((item) => {
+          this.tableListData.find((item) => {
             return !["", "-1", "-2"].includes(item.status);
-          }) ||
-            false) &&
-          true
+          }) || false
         );
       }
       return false;
@@ -416,9 +424,65 @@ export default {
         })
         .catch((err) => {});
     },
-    //项次数量信息
-    normalPrQuantityYears(data) {
-      // this.baseinfodata.normalPrQuantityYears = data
+    // 逐行校验
+    checkData() {
+      let msg = "";
+      // "quantity", 单独校验
+      let check_data = [
+        "partType",
+        "partNameZh",
+        "partNameDe",
+        "unitCode",
+        "factoryName",
+      ];
+      // 没有零件前缀时校验零件号
+      if (!this.baseinfodata.partPrefix) {
+        check_data.push("partNum");
+      }
+      // 一次性需要校验交货日期
+      if (this.baseinfodata.subType == "ZN_ONE") {
+        check_data.push("deliveryDate");
+      }
+      this.tableListData.forEach((item) => {
+        let child_msg = "";
+        let quantity_msg = "";
+        // 校验行内非空项
+        if (check_data.find((key) => !item[key])) {
+          child_msg = this.language("必填字段未维护", "必填字段未维护");
+        }
+        // 校验数量
+        if (this.baseinfodata.subType == "ZN_ONE") {
+          // 一次性
+          if (!(item.quantity > 0)) {
+            quantity_msg = this.language(
+              "计划数量必须大于0",
+              "计划数量必须大于0"
+            );
+          }
+        } else {
+          // 框架
+          if (
+            item.normalPrQuantityYears
+              ? !item.normalPrQuantityYears.find((e) => e.quantity > 0)
+              : true
+          ) {
+            quantity_msg = this.language(
+              "计划数量必须大于0",
+              "计划数量必须大于0"
+            );
+          }
+        }
+        if (child_msg || quantity_msg) {
+          msg +=
+            item.sapItem +
+            this.language("MODEL-ORDER.LK_XIANGCI") +
+            (child_msg ? child_msg : "") +
+            (child_msg && quantity_msg ? "," : "") +
+            (quantity_msg ? quantity_msg : "") +
+            "<br/>";
+        }
+      });
+      return msg;
     },
     //保存前校验
     handleSave() {
@@ -429,57 +493,6 @@ export default {
       }
       if (this.tableListData.length == 0) {
         return iMessage.warn(this.language("QINGTIANJIASHUJU", "请添加数据"));
-      }
-
-      // 零件前缀没有，并且零件号为空
-      if (
-        this.tableListData.find((e) => !e.partNum) &&
-        !this.baseinfodata.partPrefix
-      ) {
-        return iMessage.warn(
-          this.language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
-        );
-      }
-      // 校验行内非空项
-      if (
-        this.tableListData.find(
-          (e) =>
-            !e.type ||
-            !e.unitCode ||
-            !e.partNameZh ||
-            !e.partNameDe ||
-            !e.procureFactory ||
-            !e.deliveryDate
-        )
-      ) {
-        return iMessage.warn(
-          this.language("QINGSHURUBITIANXIANG", "请输入必填项")
-        );
-      }
-      // 一次性
-      if (this.baseinfodata.subType == "ZN_ONE") {
-        if (this.tableListData.find((e) => !(e.quantity > 0))) {
-          return iMessage.warn("类型“工序委外一次性”，数量必须大于0");
-        }
-
-        if (this.tableListData.find((e) => !e.deliveryDate)) {
-          return iMessage.warn("请选择交货日期");
-        }
-        // 框架
-      } else {
-        console.log(this.tableListData);
-        let flag = false;
-        // 至少有一条数据不为空
-        this.tableListData.forEach((item) => {
-          flag =
-            flag ||
-            (item.normalPrQuantityYears
-              ? !item.normalPrQuantityYears.find((e) => e.quantity > 0)
-              : true);
-        });
-        if (flag) {
-          return iMessage.warn("类型“工序委外框架”，五年计划数量必须大于0");
-        }
       }
       let reg = /^MBCP\d{5}$/;
       if (
@@ -492,32 +505,41 @@ export default {
             "请填写规范的零件编号前缀"
           )
         );
-      } else {
-        if (this.tableListData.find((e) => !e.partNum)) {
-          this.$confirm(
+      }
+      let msg = this.checkData();
+      if (msg)
+        return this.$message({
+          dangerouslyUseHTMLString: true,
+          message: msg,
+          type: "warning",
+        });
+      let tips = "";
+      this.tableListData.forEach((e) => {
+        if (!e.partNum) {
+          tips +=
+            e.sapItem +
+            this.language("MODEL-ORDER.LK_XIANGCI") +
             this.language(
               "LK_QUERENSHIYONGLINGJIANHAOQIANZHUISHENGCHENGXINDELINGJIANHAO",
               "确认使用零件号前缀生成新的零件号？"
-            ),
-            this.language("LK_NOTICE", "温馨提示"),
-            {
-              type: "warning",
-              distinguishCancelAndClose: true,
-              confirmButtonText: this.language("LK_QUEREN", "确认"),
-              cancelButtonText: this.language("LK_QUXIAO", "取消"),
-            }
-          )
-            .then(() => {
-              this.saveOrUpdate();
-            })
-            .catch((action) => {
-              if (action === "cancel") {
-                // 生成定点申请单
-              }
-            });
-        } else {
-          this.saveOrUpdate();
+            ) +
+            "<br/>";
         }
+      });
+      if (tips) {
+        this.$confirm(tips, this.language("LK_NOTICE", "温馨提示"), {
+          type: "warning",
+          dangerouslyUseHTMLString: true,
+          distinguishCancelAndClose: true,
+          confirmButtonText: this.language("LK_QUEREN", "确认"),
+          cancelButtonText: this.language("LK_QUXIAO", "取消"),
+        })
+          .then(() => {
+            this.saveOrUpdate();
+          })
+          .catch((action) => {});
+      } else {
+        this.saveOrUpdate();
       }
     },
     // 保存
@@ -585,42 +607,13 @@ export default {
       if (this.tableListData.length <= 0) {
         return iMessage.warn("没有需要推送给采购员的数据");
       }
-
-      // 零件前缀没有，并且零件号为空
-      if (
-        this.tableListData.find((e) => !e.partNum) &&
-        !this.baseinfodata.partPrefix
-      ) {
-        return iMessage.warn(
-          this.language("LK_QINGSHURULINGJIANHAO", "请输入零件号")
-        );
-      }
-      if (
-        this.tableListData.find(
-          (e) => !e.type || !e.unitCode || !e.procureFactory || !e.deliveryDate
-        )
-      ) {
-        return iMessage.warn(
-          this.language("QINGSHURUBITIANXIANG", "请输入必填项")
-        );
-      }
-      // 一次性
-      if (this.baseinfodata.subType == "ZN_ONE") {
-        if (!this.tableListData.find((e) => e.quantity > 0)) {
-          return iMessage.warn("类型“工序委外一次性”，数量必须大于0");
-        }
-        // 框架
-      } else {
-        let flag = false;
-        // 至少有一条数据不为空
-        this.tableListData.forEach((item) => {
-          flag =
-            flag || !item.normalPrQuantityYears.find((e) => e.quantity > 0);
+      let msg = this.checkData();
+      if (msg)
+        return this.$message({
+          dangerouslyUseHTMLString: true,
+          message: msg,
+          type: "warning",
         });
-        if (flag) {
-          return iMessage.warn("类型“工序委外框架”，五年计划数量必须大于0");
-        }
-      }
       sendLinie({
         deptName: this.baseinfodata.deptName,
         deptNum: this.baseinfodata.deptNum,
