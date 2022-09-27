@@ -1,6 +1,7 @@
 <template>
   <iCard title="延迟级别汇总">
-    <div ref="charts" class="charts"></div>
+    <div ref="charts1" class="charts" v-show="chartsType"></div>
+    <p class="nodata-yanwu"  v-show="!chartsType">暂无数据</p>
   </iCard>
 </template>
 
@@ -16,10 +17,11 @@ import { iCard } from "rise";
         default:[],
       }
     },
-    data:{
-      return:{
-        charts:null,
+    data(){
+      return{
+        chartslist:null,
         option:null,
+        chartsType:true,
       }
     },
     created(){
@@ -30,11 +32,18 @@ import { iCard } from "rise";
     },
     methods:{
       initCharts(){
-        this.charts = this.$echarts.init(this.$refs.charts)
+        this.chartslist = this.$echarts.init(this.$refs.charts1);
       },
       setEcharts(data){
-        let dataList = [];
-        let nameList = [];
+        console.log(data);
+        if(data.length < 1){
+          this.chartsType = false;
+          return false;
+        }
+        this.chartsType = true;
+        
+        var dataList = [];
+        var nameList = [];
         if(data){
           dataList = data.map(item => {
             return item.num
@@ -43,8 +52,8 @@ import { iCard } from "rise";
             return item.name
           })
         }
-        let maxNum = Math.max.apply(null,dataList)
-        let max = Math.ceil(maxNum/10)*10
+        var maxNum = Math.max.apply(null,dataList)
+        var max = Math.ceil(maxNum/10)*10
 
         this.option = {
           tooltip: {
@@ -74,7 +83,7 @@ import { iCard } from "rise";
           },
           series: [
             {
-              name: '重度延迟',
+              name: '延迟级别数量',
               type: 'bar',
               data: dataList,
               barWidth:30,
@@ -93,7 +102,8 @@ import { iCard } from "rise";
             },
           ]
         };
-        this.charts.setOption(this.option);
+
+        this.chartslist.setOption(this.option);
       }
     }
   }
@@ -101,7 +111,16 @@ import { iCard } from "rise";
 
 <style lang="scss" scoped>
 .charts{
-  width: 65%;
+  width:  65%;
   height: 200px;
+}
+
+.nodata-yanwu{
+  width:100%;
+  height:200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size:13px;
 }
 </style>

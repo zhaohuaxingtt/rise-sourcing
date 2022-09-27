@@ -49,10 +49,13 @@ export default {
       this.$emit('sure', this.searchParams)
     },
     reset() {
-      // this.searchList.map(item=>{
-      //   this.$set(this.searchParams,[item.prop],'')
-      // })
-      // this.$emit('reset', {})
+      this.searchList.map(item=>{
+        if(item.multiple){
+          this.$set(this.searchParams,[item.prop],[])
+        }else{
+          this.$set(this.searchParams,[item.prop],'')
+        }
+      })
       this.$emit('reset')
     },
   }

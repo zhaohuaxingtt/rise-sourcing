@@ -88,6 +88,15 @@ export function reason_summary(data) {
     })
 }
 
+// 延迟页-offen图
+export function delayOffen(data) {
+    return requst({
+        url: '/sample_part_list/delay/offen',
+        method: 'POST',
+        data
+    })
+}
+
 // 查询车型项目材料组信息
 export function getCartypeProMaterialGroup(data) {
     return requst({
