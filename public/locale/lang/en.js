@@ -589,6 +589,7 @@
 		LK_QITAPEIZHI: 'Other Config.',
 		LK_QITAXINXI: '',
 		LK_QIDONGXIANGMU: 'Project Initiation',
+		LK_QIDONG: 'Initiation',
 		LK_QIDONGXUNJIA: 'Inquiry',
 		LK_QIANSHOU: 'Sign-in',
 		LK_QIANSHOUQUEREN: 'Confirm sign in',

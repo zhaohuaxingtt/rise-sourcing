@@ -42,7 +42,7 @@ export function setToken(tokenData) {
 export function removeToken() {
   const keys = document.cookie.match(/[^ =;]+(?==)/g)
   if (keys) {
-    for (let i = keys.length; i--; ) {
+    for (let i = keys.length; i--;) {
       document.cookie =
         keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString() // 清除当前域名下的,例如：m.ratingdog.cn
       document.cookie =
@@ -106,10 +106,10 @@ export function password(str, publicKey) {
 
 export function closeCliantClearStoreage() {
   let beginTime = null
-  window.onbeforeunload = function(params) {
+  window.onbeforeunload = function (params) {
     beginTime = new Date().getTime()
   }
-  window.onunload = function() {
+  window.onunload = function () {
     let endTime = new Date().getTime()
     if (endTime - beginTime <= 5) {
       removeToken()
@@ -167,7 +167,7 @@ export function serialize(data, type = Object) {
 }
 
 // 数字限制输入
-export const numberProcessor = function(val, precision = 4, negative) {
+export const numberProcessor = function (val, precision = 4, negative) {
   let result = ''
   if (+precision > 0) {
     if (negative) {
@@ -217,7 +217,7 @@ export function filterEmptyChildren(arr, target) {
 // eslint-disable-next-line no-undef
 let languageList = []
 // eslint-disable-next-line no-undef
-Vue.prototype.language = function(languageKey, name) {
+Vue.prototype.language = function (languageKey, name) {
   if (process.env.NODE_ENV == 'dev') {
     languageList.push(
       languageKey + '----' + name + '----' + this.$router.currentRoute.path
@@ -300,8 +300,7 @@ function _permissionKeySendToService(router) {
     console.error('您上次权限失败的数据为:')
     console.log(errorData(serviceData))
     alert(
-      `权限自动上传中有${
-        errorData(serviceData).length
+      `权限自动上传中有${errorData(serviceData).length
       }条错误，请查看控制台中的错误日志，解决后再上传`
     )
   }
@@ -479,7 +478,7 @@ export function permissionArray(permissionKey, list) {
  * 检查是否包含permissionKey权限
  * @param {*} permissionKey
  */
- export function hasPermission(permissionKey) {
+export function hasPermission(permissionKey) {
   return store.state.permission.whiteBtnList[permissionKey]
 }
 
@@ -528,9 +527,9 @@ export function fmoney(s, n) {
   n = n > 0 && n <= 20 ? n : 2
   s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(n) + ''
   var l = s
-      .split('.')[0]
-      .split('')
-      .reverse(),
+    .split('.')[0]
+    .split('')
+    .reverse(),
     r = s.split('.')[1],
     t = ''
   for (let i = 0; i < l.length; i++) {
@@ -620,4 +619,99 @@ export function pad(num, n) {
     len++
   }
   return num
+}
+
+// 设置页面水印
+export function watermark(text) {
+  console.log(store.state.permission.userInfo.id);
+  const { language = 'zh', userInfo = {} } = store.state.permission
+  const { nameZh = '', nameEn = '', id = '' } = userInfo
+  let name = language == 'zh' ? nameZh : nameEn
+  let template = (
+    `<div class='watermark'>
+      <div class='watermark-item'>
+        <span>${id}</span>
+        <span>${name}</span>
+      </div>
+      <div class='watermark-item'>
+        <span>${new Date().toJSON().split('T')[0]}</span>
+      </div>
+    </div>`)
+  let el = document.getElementsByClassName('mask_div')
+  for (let i = 0; i < el.length; i++) {
+    const e = el[i];
+    e.remove()
+    i--
+  }
+  //默认设置
+  let defaultSettings = {
+    watermark_txt: text || template,
+    watermark_x: 20,//水印起始位置x轴坐标
+    watermark_y: 20,//水印起始位置Y轴坐标
+    watermark_rows: 0,//水印行数
+    watermark_cols: 0,//水印列数
+    watermark_x_space: 100,//水印x轴间隔
+    watermark_y_space: 50,//水印y轴间隔
+    watermark_color: '#dddddd',//水印字体颜色
+    watermark_alpha: 0.4,//水印透明度
+    watermark_fontsize: '16px',//水印字体大小
+    watermark_font: '微软雅黑',//水印字体
+    watermark_width: 180,//水印宽度
+    watermark_height: 80,//水印长度
+    watermark_angle: 45//水印倾斜度数
+  };
+  let oTemp = document.createDocumentFragment();
+
+  //获取页面最大宽度
+  let page_width = Math.max(document.body.scrollWidth, document.body.clientWidth) * 0.985;
+  //获取页面最大高度
+  var page_height = Math.max(document.body.scrollHeight, document.body.clientHeight) + 450;
+  // var page_height = document.body.scrollHeight+document.body.scrollTop;
+  //如果将水印列数设置为0，或水印列数设置过大，超过页面最大宽度，则重新计算水印列数和水印x轴间隔
+  if (defaultSettings.watermark_cols == 0 || (parseInt(defaultSettings.watermark_x + defaultSettings.watermark_width * defaultSettings.watermark_cols + defaultSettings.watermark_x_space * (defaultSettings.watermark_cols - 1)) > page_width)) {
+    defaultSettings.watermark_cols = parseInt((page_width - defaultSettings.watermark_x + defaultSettings.watermark_x_space) / (defaultSettings.watermark_width + defaultSettings.watermark_x_space));
+    defaultSettings.watermark_x_space = parseInt((page_width - defaultSettings.watermark_x - defaultSettings.watermark_width * defaultSettings.watermark_cols) / (defaultSettings.watermark_cols - 1));
+  }
+  //如果将水印行数设置为0，或水印行数设置过大，超过页面最大长度，则重新计算水印行数和水印y轴间隔
+  if (defaultSettings.watermark_rows == 0 || (parseInt(defaultSettings.watermark_y + defaultSettings.watermark_height * defaultSettings.watermark_rows + defaultSettings.watermark_y_space * (defaultSettings.watermark_rows - 1)) > page_height)) {
+    defaultSettings.watermark_rows = parseInt((defaultSettings.watermark_y_space + page_height - defaultSettings.watermark_y) / (defaultSettings.watermark_height + defaultSettings.watermark_y_space));
+    defaultSettings.watermark_y_space = parseInt(((page_height - defaultSettings.watermark_y) - defaultSettings.watermark_height * defaultSettings.watermark_rows) / (defaultSettings.watermark_rows - 1));
+  }
+  var x;
+  var y;
+  for (var i = 0; i < defaultSettings.watermark_rows; i++) {
+    y = defaultSettings.watermark_y + (defaultSettings.watermark_y_space + defaultSettings.watermark_height) * i;
+    for (var j = 0; j < defaultSettings.watermark_cols; j++) {
+      x = defaultSettings.watermark_x + (defaultSettings.watermark_width + defaultSettings.watermark_x_space) * j;
+
+      var mask_div = document.createElement('div');
+      mask_div.id = 'mask_div' + i + j;
+      mask_div.className = 'mask_div';
+      mask_div.innerHTML = defaultSettings.watermark_txt
+      //设置水印div倾斜显示
+      mask_div.style.webkitTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+      mask_div.style.MozTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+      mask_div.style.msTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+      mask_div.style.OTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+      mask_div.style.transform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+      mask_div.style.visibility = "";
+      mask_div.style.position = "absolute";
+      mask_div.style.left = x + 'px';
+      mask_div.style.top = y + 'px';
+      mask_div.style.overflow = "hidden";
+      mask_div.style.zIndex = "9999";
+      mask_div.style.pointerEvents = 'none';//pointer-events:none  让水印不遮挡页面的点击事件
+      //mask_div.style.border="solid #eee 1px";
+      mask_div.style.opacity = defaultSettings.watermark_alpha;
+      mask_div.style.fontSize = defaultSettings.watermark_fontsize;
+      mask_div.style.fontFamily = defaultSettings.watermark_font;
+      mask_div.style.color = defaultSettings.watermark_color;
+      mask_div.style.textAlign = "center";
+      mask_div.style.width = defaultSettings.watermark_width + 'px';
+      mask_div.style.height = defaultSettings.watermark_height + 'px';
+      mask_div.style.display = "block";
+      oTemp.appendChild(mask_div);
+    };
+  };
+  document.body.appendChild(oTemp);
 }

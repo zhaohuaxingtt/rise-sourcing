@@ -1,0 +1,118 @@
+<template>
+  <iCard :title="title">
+    <template #header-control>
+      <iButton :loading="downloadLoading" @click="handleDownload">{{
+        language("DAOCHU", "导出")
+      }}</iButton>
+    </template>
+    <div>
+      <tableList
+        class="table"
+        ref="tableList"
+        :lang="true"
+        :tableData="dataList"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+        :selection='false'
+      >
+        <!-- 延迟级别 -->
+        <template #delayWk="scope">
+          <div class="table-item-aeko">
+            <img v-if="scope.row.delayWk >= 4"
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/black.png')"
+            >
+            <img v-else-if="scope.row.delayWk >= 2 && scope.row.delayWk <4"
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/red.png')"
+            >
+            <img v-else-if="scope.row.delayWk == 1"
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/yellow.png')"
+            >
+            <span>{{ scope.row.delayWkDesc }}</span>
+          </div>
+        </template>
+      </tableList>
+      <!-- 分页 -->
+      <iPagination
+        v-update
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount"
+      />
+    </div>
+  </iCard>
+</template>
+
+<script>
+import { iCard, iPagination, iButton, icon } from "rise";
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import { tableTitle } from "./data.js";
+
+export default {
+  components: {
+    iCard,
+    tableList,
+    iPagination,
+    iButton,
+    icon,
+  },
+  mixins: [tableSortMixins],
+  props:{
+    title:{ type: String, },
+    dataList:{type:Array,default:[]},
+  },
+  data() {
+    return {
+      page:{
+        totalCount:0, //总条数
+        pageSize:10,   //每页多少条
+        pageSizes:[10,20,50,100,300], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
+      downloadLoading: false,
+      loading: false,
+      tableTitle,
+    };
+  },
+  created(){
+    
+  },
+  methods: {
+    handleSizeChange(val){
+      this.$emit("handleSizeChange",{
+        size:val,
+        currPage:1,
+      })
+    },
+    handleCurrentChange(val){
+      this.$emit("handleCurrentChange",{
+        size:this.page.pageSize,
+        currPage:val,
+      })
+    },
+    handleDownload() {},
+    getTableData() {
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.table-item-aeko{
+  display: flex;
+  justify-content: center;
+}
+.img_deng{
+  width:20px;
+  height:20px;
+}
+</style>

@@ -4,9 +4,9 @@
             <span>{{$t(list.name)}}</span>
             <div>
                 <!-- 刷新 -->
-                <iButton>{{$t("LK_SHUAXIN")}}</iButton>
+                <iButton v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_INFOR_REFRESH">{{$t("LK_SHUAXIN")}}</iButton>
                 <!-- 导出 -->
-                <iButton @click="upload">{{$t("BIDDING_DAOCHU")}}</iButton>
+                <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_INFOR_DAOCHU">{{$t("BIDDING_DAOCHU")}}</iButton>
                 <!-- 返回 -->
                 <iButton @click="goBack">{{$t("LK_FANHUI")}}</iButton>
             </div>
