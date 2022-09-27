@@ -300,6 +300,18 @@ const state = {
       group: 2,
     },
     {
+      name: '工序委外',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/outsouringorder',
+      activePath: 'outsouringorder',
+      key: 'LK_GONGXUWEIWAI',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_OUTSOURINGORDER',
+      // 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
+      permissionName: '工序委外',
+      group: 2,
+    },
+    {
       name: 'RFQ',
       message: 0,
       url: '/sourceinquirypoint/sourcing/partsrfq',
@@ -564,10 +576,10 @@ const state = {
     },
   ],
   configscoredeptThirdMenu: [],
-  pendingRequestNum:0,
-  mapControl:[],
-  updateKey:'0',
-  imgList: []
+  pendingRequestNum: 0,
+  mapControl: [],
+  updateKey: '0',
+  imgList: [],
 }
 
 const mutations = {
@@ -580,24 +592,24 @@ const mutations = {
   SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
     state.sourceinquirypointThirdMenu = data
   },
-  SET_PENDINGREQUESTNUM(state,data){
+  SET_PENDINGREQUESTNUM(state, data) {
     state.pendingRequestNum = data
   },
-  SET_MAPCONTROL(state,mapControl){
+  SET_MAPCONTROL(state, mapControl) {
     state.mapControl = mapControl
   },
-  SET_UPDATE(state){
-    state.updateKey = + new Date()
+  SET_UPDATE(state) {
+    state.updateKey = +new Date()
   },
   // img 数据加载
-  PUSH_IMGLIST(state, data){
+  PUSH_IMGLIST(state, data) {
     state.imgList.push(data)
   },
   // img 数据加载完毕
-  REMOVE_IMGLIST(state, data){
+  REMOVE_IMGLIST(state, data) {
     let i = state.imgList.indexOf(data)
-    state.imgList.splice(i,1)
-  }
+    state.imgList.splice(i, 1)
+  },
 }
 
 let source = null
@@ -656,7 +668,7 @@ const actions = {
         .catch((err) => reject(err))
     })
   },
-  updatePendingRequestNum({commit},requestNum=0){
+  updatePendingRequestNum({ commit }, requestNum = 0) {
     commit('SET_PENDINGREQUESTNUM', requestNum)
   },
   updatePdfPage({ commit }) {
@@ -666,35 +678,35 @@ const actions = {
     commit('SET_MAPCONTROL', mapControl)
   },
   pushImgList({ commit }, img) {
-    const key = 'img'+num
+    const key = 'img' + num
     num++
-    commit('PUSH_IMGLIST',key)
-    return new Promise((r,j)=>{
+    commit('PUSH_IMGLIST', key)
+    return new Promise((r, j) => {
       const timeOut = setTimeout(() => {
-        console.log('timeOut');
-        commit('REMOVE_IMGLIST',key)
+        console.log('timeOut')
+        commit('REMOVE_IMGLIST', key)
         img.style.height = '300px'
         r(img)
-      }, 30000);
+      }, 30000)
       img.onload = () => {
-        commit('REMOVE_IMGLIST',key)
+        commit('REMOVE_IMGLIST', key)
         clearTimeout(timeOut)
         r(img)
       }
       img.onerror = () => {
-        commit('REMOVE_IMGLIST',key)
+        commit('REMOVE_IMGLIST', key)
         img.style.height = '300px'
         clearTimeout(timeOut)
         j(img)
       }
-      img.onabort = ()=>{
-        commit('REMOVE_IMGLIST',key)
+      img.onabort = () => {
+        commit('REMOVE_IMGLIST', key)
         img.style.height = '300px'
         clearTimeout(timeOut)
         j(img)
       }
     })
-  }
+  },
 }
 
 const getters = {
@@ -702,7 +714,7 @@ const getters = {
   pendingRequestNum: (state) => state.pendingRequestNum,
   updateKey: (state) => state.updateKey,
   mapControl: (state) => state.mapControl,
-  imgList: (state) => state.imgList
+  imgList: (state) => state.imgList,
 }
 
 export default {
