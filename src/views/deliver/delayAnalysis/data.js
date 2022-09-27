@@ -27,7 +27,7 @@ export const navList = [
     },
     {
       value: 4,
-      name: '1st Tryout',
+      name: '1stTryout',
       message: 0,
       url: '/deliver/delayanalysis',
       // url: '/deliver/delayanalysis/Tryout',

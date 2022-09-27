@@ -12,7 +12,7 @@
       </div>
     </div>
     <search :searchList="searchList" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
-    <iTabsList v-model='defaultTab' type="card" :tab-click="tableClick">
+    <iTabsList v-model='defaultTab' type="card" @tab-click="tableClick">
       <el-tab-pane label="延迟图" name="1"></el-tab-pane>
       <el-tab-pane label="offen图" name="2" v-if="offenShow"></el-tab-pane>
     </iTabsList>
@@ -23,7 +23,7 @@
       </el-row>
     </template>
     <template v-else>
-      <offenChartsItem  />
+      <offenChartsItem ref="offenChartsItem" :offenData="offenData" />
     </template>
     <tableList title="零件清单列表" class="margin-top20" :dataList="dataList" ref="partsListTable"
       @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"
@@ -46,6 +46,7 @@ import {
   delayList,
   level_summary,
   reason_summary,
+  delayOffen,
 } from "@/api/project/deliver";
 
 import { navList } from "./data";
@@ -107,6 +108,7 @@ import { navList } from "./data";
         dataList:[],//列表数据
         picLeftData:[],//左图表数据
         picRightData:[],//右图表数据
+        offenData:[],//offen图标数据
 
         threeTreeValue:"EM",//二级菜单 /OTS/EM
         lev2Index:5,
@@ -126,8 +128,19 @@ import { navList } from "./data";
           this.getPicLeft();
           this.getPicRight();
         }else{
-          
+          this.delayOffen();
         }
+      },
+      delayOffen(){
+        delayOffen({
+          ...this.searchForm,
+          title:this.threeTreeValue,
+        }).then(res=>{
+          if(res?.result){
+            this.offenData = res.data;
+            this.$refs.offenChartsItem.setEcharts(this.offenData);
+          }
+        })
       },
       getPicLeft(){
         level_summary({
@@ -197,11 +210,14 @@ import { navList } from "./data";
         this.getData(val.currPage,val.size);
       },
       sure(val){
-        console.log(val);
         this.searchForm = val;
         this.getData(1,10);
-        this.getPicLeft();
-        this.getPicRight();
+        if(this.defaultTab == 1){
+          this.getPicLeft();
+          this.getPicRight();
+        }else{
+          this.delayOffen();
+        }
       },
       reset(){
         this.searchForm = {
@@ -217,23 +233,30 @@ import { navList } from "./data";
           supplierName:"",
         };
         this.getData(1,10);
-        this.getPicLeft();
-        this.getPicRight();
+        if(this.defaultTab == 1){
+          this.getPicLeft();
+          this.getPicRight();
+        }else{
+          this.delayOffen();
+        }
       },
       change(val){
         this.lev2Index = val.value - 1;
         this.threeTreeValue = val.name;
-
-        console.log(val.value);
         if(Number(val.value) < 4){
           this.offenShow = false;
           this.defaultTab = '1';
         }else{
           this.offenShow = true;
         }
+
         this.getData(1,10);
-        this.getPicLeft();
-        this.getPicRight();
+        if(this.defaultTab == 1){
+          this.getPicLeft();
+          this.getPicRight();
+        }else{
+          this.delayOffen();
+        }
       },
     }
   }

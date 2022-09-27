@@ -55,9 +55,9 @@
               <iSelect filterable v-model="searchParams.supplier" :placeholder="language('QINGXUANZE','请选择')">
                 <el-option
                   v-for="item in supplierList"
-                  :key="item.cartypeProId"
-                  :label="item.cartypeProNameZh"
-                  :value="item.cartypeProId">
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </iSelect>
             </el-form-item>
