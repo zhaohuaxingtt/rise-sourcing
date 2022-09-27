@@ -1,6 +1,7 @@
 <template>
   <iCard title="延迟原因汇总">
-    <div ref="charts" class="charts"></div>
+    <div ref="charts2" class="charts" v-show="chartsType"></div>
+    <p class="nodata_yanwu" v-show="!chartsType">暂无数据</p>
   </iCard>
 </template>
 
@@ -20,6 +21,7 @@ export default {
     return{
       charts:null,
       option:null,
+      chartsType:true,
     }
   },
   mounted() {
@@ -30,9 +32,16 @@ export default {
   },
   methods: {
     initCharts() {
-      this.charts = this.$echarts.init(this.$refs.charts);
+      this.charts = this.$echarts.init(this.$refs.charts2);
     },
     setEcharts(data){
+      console.log(data);
+      if(data.length < 1){
+        this.chartsType = false;
+        return false;
+      }
+      this.chartsType = true;
+
       let dataList = [];
       if(data){
         data.forEach((e,index) => {
@@ -77,6 +86,7 @@ export default {
           },
         ],
       };
+
       this.charts.setOption(this.option);
     }
   },
@@ -88,4 +98,15 @@ export default {
   width: 600px;
   height: 200px;
 }
+.nodata_yanwu{
+  width:100%;
+  height:200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size:13px;
+  text-align:center;
+  line-height: 200px;
+}
+
 </style>
