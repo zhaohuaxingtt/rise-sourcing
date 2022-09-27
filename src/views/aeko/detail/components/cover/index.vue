@@ -5,8 +5,8 @@
 -->
 <template>
     <div>
-        <editCover :aekoInfo="aekoInfo" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
-        <previewCover :aekoInfo="aekoInfo" @getBbasicInfo="getBbasicInfo" v-else/>
+        <editCover :aekoInfo="aekoInfo" :currentTab="currentTab" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
+        <previewCover :aekoInfo="aekoInfo" :currentTab="currentTab" @getBbasicInfo="getBbasicInfo" v-else/>
     </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
         editCover,
     },
     props:{
+        currentTab: { type: String },
         aekoInfo:{
             type:Object,
             default:()=>{},
