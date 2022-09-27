@@ -11,119 +11,119 @@ import { cloneDeep } from 'lodash'
 import axios from 'axios'
 
 const state = {
-  navList: [
-    //sourcing 4级菜单列表
-    {
-      value: 1,
-      name: '零件签收',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/partsign',
-      activePath: 'partsign',
-      key: 'LK_LINGJIANQIANSHOU',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSIGN',
-      permissionName: '寻源执行-零件签收',
-    },
-    {
-      value: 2,
-      name: '采购项目建立',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/partsprocure',
-      activePath: 'partsprocure',
-      key: 'LK_CAIGOUXIANGMUJIANLI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSPROCURE',
-      permissionName: '寻源执行-采购项目建立',
-    },
-    {
-      value: 3,
-      name: '配件签收',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/signforpartsdemand',
-      activePath: 'signforpartsdemand',
-      key: 'LK_PEIJIANXUQIUQIANSHOU',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_SIGNFORPARTSDEMAND',
-      permissionName: '寻源执行-配件签收',
-    },
-    {
-      value: 4,
-      name: '配件管理',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/integratedmanage',
-      activePath: 'integratedmanage',
-      key: 'LK_PEIJIANZONGHEGUANLI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
-      permissionName: '寻源执行-配件管理',
-    },
-    {
-      value: 5,
-      name: '附件导入',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/importfiles',
-      activePath: 'importfiles',
-      key: 'LK_FUJIANXUQIUDAORU',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
-      permissionName: '寻源执行-附件导入',
-    },
-    {
-      value: 6,
-      name: '附件管理',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/filemanage',
-      activePath: 'filemanage',
-      key: 'LK_FUJIANZONGHEGUANLI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
-      permissionName: '寻源执行-附件管理',
-    },
-    {
-      value: 7,
-      name: 'RFQ管理',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/partsrfq',
-      activePath: 'partsrfq',
-      key: 'LK_RFQGUANLI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
-      permissionName: '寻源执行-RFQ管理',
-    },
-    {
-      value: 8,
-      name: '竞价开标',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/biddingProjectList',
-      activePath: 'biddingProjectList',
-      key: 'LK_JINGJIAKAIBIAO',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_BIDDINGPROJECTLIST',
-      permissionName: '寻源执行-竞价开标',
-    },
-    {
-      value: 9,
-      name: '定点管理',
-      message: 0,
-      url: '/sourcing/partsnomination',
-      activePath: 'partsnomination',
-      key: 'LK_DINGDIANGUANLI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSNOMINATION',
-      permissionName: '寻源执行-定点管理',
-    },
-    {
-      value: 10,
-      name: '钢材创建',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/steeldemandcreation',
-      activePath: 'steeldemandcreation',
-      key: 'GANGCAIXUQIUCHUANGJIAN',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_STEELDEMANDCREATION',
-      permissionName: '寻源执行-钢材创建',
-    },
-    {
-      value: 11,
-      name: '定点信/LOI',
-      message: 0,
-      url: '/sourceinquirypoint/sourcing/partsletter',
-      activePath: 'partsletter',
-      key: 'LK_DINGDIANXINLOI',
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER',
-      permissionName: '寻源执行-定点信/LOI',
-    },
-  ],
+	navList: [
+		//sourcing 4级菜单列表
+		{
+			value: 1,
+			name: '零件签收',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/partsign',
+			activePath: 'partsign',
+			key: 'LK_LINGJIANQIANSHOU',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSIGN',
+			permissionName: '寻源执行-零件签收',
+		},
+		{
+			value: 2,
+			name: '采购项目建立',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/partsprocure',
+			activePath: 'partsprocure',
+			key: 'LK_CAIGOUXIANGMUJIANLI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSPROCURE',
+			permissionName: '寻源执行-采购项目建立',
+		},
+		{
+			value: 3,
+			name: '配件签收',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/signforpartsdemand',
+			activePath: 'signforpartsdemand',
+			key: 'LK_PEIJIANXUQIUQIANSHOU',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_SIGNFORPARTSDEMAND',
+			permissionName: '寻源执行-配件签收',
+		},
+		{
+			value: 4,
+			name: '配件管理',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/integratedmanage',
+			activePath: 'integratedmanage',
+			key: 'LK_PEIJIANZONGHEGUANLI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
+			permissionName: '寻源执行-配件管理',
+		},
+		{
+			value: 5,
+			name: '附件导入',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/importfiles',
+			activePath: 'importfiles',
+			key: 'LK_FUJIANXUQIUDAORU',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
+			permissionName: '寻源执行-附件导入',
+		},
+		{
+			value: 6,
+			name: '附件管理',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/filemanage',
+			activePath: 'filemanage',
+			key: 'LK_FUJIANZONGHEGUANLI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
+			permissionName: '寻源执行-附件管理',
+		},
+		{
+			value: 7,
+			name: 'RFQ管理',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/partsrfq',
+			activePath: 'partsrfq',
+			key: 'LK_RFQGUANLI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
+			permissionName: '寻源执行-RFQ管理',
+		},
+		{
+			value: 8,
+			name: '竞价开标',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/biddingProjectList',
+			activePath: 'biddingProjectList',
+			key: 'LK_JINGJIAKAIBIAO',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_BIDDINGPROJECTLIST',
+			permissionName: '寻源执行-竞价开标',
+		},
+		{
+			value: 9,
+			name: '定点管理',
+			message: 0,
+			url: '/sourcing/partsnomination',
+			activePath: 'partsnomination',
+			key: 'LK_DINGDIANGUANLI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSNOMINATION',
+			permissionName: '寻源执行-定点管理',
+		},
+		{
+			value: 10,
+			name: '钢材创建',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/steeldemandcreation',
+			activePath: 'steeldemandcreation',
+			key: 'GANGCAIXUQIUCHUANGJIAN',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_STEELDEMANDCREATION',
+			permissionName: '寻源执行-钢材创建',
+		},
+		{
+			value: 11,
+			name: '定点信/LOI',
+			message: 0,
+			url: '/sourceinquirypoint/sourcing/partsletter',
+			activePath: 'partsletter',
+			key: 'LK_DINGDIANXINLOI',
+			permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER',
+			permissionName: '寻源执行-定点信/LOI',
+		},
+	],
 
   sourceinquirypointNavListLeft: [
     //sourcing 三级菜单列表
@@ -400,167 +400,167 @@ const state = {
     },
   ],
 
-  financialmanageNavListLeft: [
-    {
-      value: 1,
-      name: '零件目标价',
-      message: 0,
-      url: '/targetpriceandscore/financialtargetprice/maintenance',
-      activePath: 'financialtargetprice',
-      key: 'LINGJIANMUBIAOJIA',
-      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE',
-      permissionName: '零件目标价',
-      group: 1,
-    },
-    {
-      value: 2,
-      name: '模具目标价',
-      message: 0,
-      url: '/targetpriceandscore/modeltargetprice/signin',
-      activePath: 'modeltargetprice',
-      key: 'MOJUMUBIAOJIA',
-      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE',
-      permissionName: '模具目标价',
-      group: 2,
-    },
-  ],
-  financialmanageThirdMenu: [
-    {
-      name: '维护',
-      message: 0,
-      url: '/targetpriceandscore/financialtargetprice/maintenance',
-      activePath: 'maintenance',
-      key: 'WEIHU',
-      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_MAINTENANCE',
-      permissionName: '维护',
-      group: 1,
-    },
-    {
-      name: '审批',
-      message: 0,
-      url: '/targetpriceandscore/financialtargetprice/approval',
-      activePath: 'approval',
-      key: 'SHENPI',
-      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_APPROVAL',
-      permissionName: '审批',
-      group: 1,
-    },
-    {
-      name: '查询',
-      message: 0,
-      url: '/targetpriceandscore/financialtargetprice/query',
-      activePath: 'query',
-      key: 'CHAXUN',
-      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_QUERY',
-      permissionName: '查询',
-      group: 1,
-    },
-    {
-      name: '签收',
-      message: 0,
-      url: '/targetpriceandscore/modeltargetprice/signin',
-      activePath: 'signin',
-      key: 'QIANSHOU',
-      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_SIGNIN',
-      permissionName: '签收',
-      group: 2,
-    },
-    {
-      name: '维护',
-      message: 0,
-      url: '/targetpriceandscore/modeltargetprice/maintenance',
-      activePath: 'maintenance',
-      key: 'WEIHU',
-      permissionKey:
-        'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_MAINTENANCE',
-      permissionName: '维护',
-      group: 2,
-    },
-    {
-      name: '审批',
-      message: 0,
-      url: '/targetpriceandscore/modeltargetprice/approval',
-      activePath: 'approval',
-      key: 'SHENPI',
-      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_APPROVAL',
-      permissionName: '审批',
-      group: 2,
-    },
-    {
-      name: '查询',
-      message: 0,
-      url: '/targetpriceandscore/modeltargetprice/query',
-      activePath: 'query',
-      key: 'CHAXUN',
-      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_QUERY',
-      permissionName: '查询',
-      group: 2,
-    },
-  ],
+	financialmanageNavListLeft: [
+		{
+			value: 1,
+			name: '零件目标价',
+			message: 0,
+			url: '/targetpriceandscore/financialtargetprice/maintenance',
+			activePath: 'financialtargetprice',
+			key: 'LINGJIANMUBIAOJIA',
+			permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE',
+			permissionName: '零件目标价',
+			group: 1,
+		},
+		{
+			value: 2,
+			name: '模具目标价',
+			message: 0,
+			url: '/targetpriceandscore/modeltargetprice/signin',
+			activePath: 'modeltargetprice',
+			key: 'MOJUMUBIAOJIA',
+			permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE',
+			permissionName: '模具目标价',
+			group: 2,
+		},
+	],
+	financialmanageThirdMenu: [
+		{
+			name: '维护',
+			message: 0,
+			url: '/targetpriceandscore/financialtargetprice/maintenance',
+			activePath: 'maintenance',
+			key: 'WEIHU',
+			permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_MAINTENANCE',
+			permissionName: '维护',
+			group: 1,
+		},
+		{
+			name: '审批',
+			message: 0,
+			url: '/targetpriceandscore/financialtargetprice/approval',
+			activePath: 'approval',
+			key: 'SHENPI',
+			permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_APPROVAL',
+			permissionName: '审批',
+			group: 1,
+		},
+		{
+			name: '查询',
+			message: 0,
+			url: '/targetpriceandscore/financialtargetprice/query',
+			activePath: 'query',
+			key: 'CHAXUN',
+			permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_QUERY',
+			permissionName: '查询',
+			group: 1,
+		},
+		{
+			name: '签收',
+			message: 0,
+			url: '/targetpriceandscore/modeltargetprice/signin',
+			activePath: 'signin',
+			key: 'QIANSHOU',
+			permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_SIGNIN',
+			permissionName: '签收',
+			group: 2,
+		},
+		{
+			name: '维护',
+			message: 0,
+			url: '/targetpriceandscore/modeltargetprice/maintenance',
+			activePath: 'maintenance',
+			key: 'WEIHU',
+			permissionKey:
+				'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_MAINTENANCE',
+			permissionName: '维护',
+			group: 2,
+		},
+		{
+			name: '审批',
+			message: 0,
+			url: '/targetpriceandscore/modeltargetprice/approval',
+			activePath: 'approval',
+			key: 'SHENPI',
+			permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_APPROVAL',
+			permissionName: '审批',
+			group: 2,
+		},
+		{
+			name: '查询',
+			message: 0,
+			url: '/targetpriceandscore/modeltargetprice/query',
+			activePath: 'query',
+			key: 'CHAXUN',
+			permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_QUERY',
+			permissionName: '查询',
+			group: 2,
+		},
+	],
 
-  scoremanageNavListLeft: [
-    {
-      value: 1,
-      name: '评分任务',
-      message: 0,
-      url: '/targetpriceandscore/supplierscore/home',
-      activePath: 'home',
-      key: 'PINGFENRENWU',
-      permissionKey: 'CSCSCOREMANAGE_MENU_SUPPLIERSCORE',
-      permissionName: '评分任务',
-      group: 1,
-    },
-  ],
-  scoremanageThirdMenu: [],
+	scoremanageNavListLeft: [
+		{
+			value: 1,
+			name: '评分任务',
+			message: 0,
+			url: '/targetpriceandscore/supplierscore/home',
+			activePath: 'home',
+			key: 'PINGFENRENWU',
+			permissionKey: 'CSCSCOREMANAGE_MENU_SUPPLIERSCORE',
+			permissionName: '评分任务',
+			group: 1,
+		},
+	],
+	scoremanageThirdMenu: [],
 
-  costanalysismanageNavListLeft: [
-    {
-      value: 1,
-      name: '成本分析管理',
-      message: 0,
-      url: '/targetpriceandscore/costanalysismanage/home',
-      activePath: 'home',
-      key: 'CHENGBENFENXIGUANLI',
-      permissionKey: 'COSTANALYSISMANAGE_MENU_COSTANALYSISMANAGE',
-      permissionName: '成本分析管理',
-      group: 1,
-    },
-    {
-      value: 2,
-      name: '基础数据维护',
-      message: 0,
-      url: '/targetpriceandscore/datamaintenance/costMaintenance',
-      activePath: 'datamaintenance',
-      key: 'JICHUSHUJUWEIHU',
-      permissionKey: 'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE',
-      permissionName: '基础数据维护',
-      group: 2,
-    },
-  ],
-  costanalysismanageThirdMenu: [
-    {
-      name: '人工成本维护',
-      message: 0,
-      url: '/targetpriceandscore/datamaintenance/costMaintenance',
-      activePath: 'costDatatenance',
-      key: 'RENGONGCHENGBENWEIHU',
-      permissionKey:
-        'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE_SUBMENU_COSTMAINTENANCE',
-      permissionName: '人工成本维护',
-      group: 2,
-    },
-    {
-      name: '人工成本数据维护',
-      message: 0,
-      url: '/targetpriceandscore/datamaintenance/costDataMaintenance',
-      activePath: 'costDataMaintenance',
-      key: 'RGCBSJWH',
-      permissionKey:
-        'COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_TAB',
-      permissionName: '人工成本数据维护',
-      group: 2,
-    },
-  ],
+	costanalysismanageNavListLeft: [
+		{
+			value: 1,
+			name: '成本分析管理',
+			message: 0,
+			url: '/targetpriceandscore/costanalysismanage/home',
+			activePath: 'home',
+			key: 'CHENGBENFENXIGUANLI',
+			permissionKey: 'COSTANALYSISMANAGE_MENU_COSTANALYSISMANAGE',
+			permissionName: '成本分析管理',
+			group: 1,
+		},
+		{
+			value: 2,
+			name: '基础数据维护',
+			message: 0,
+			url: '/targetpriceandscore/datamaintenance/costMaintenance',
+			activePath: 'datamaintenance',
+			key: 'JICHUSHUJUWEIHU',
+			permissionKey: 'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE',
+			permissionName: '基础数据维护',
+			group: 2,
+		},
+	],
+	costanalysismanageThirdMenu: [
+		{
+			name: '人工成本维护',
+			message: 0,
+			url: '/targetpriceandscore/datamaintenance/costMaintenance',
+			activePath: 'costDatatenance',
+			key: 'RENGONGCHENGBENWEIHU',
+			permissionKey:
+				'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE_SUBMENU_COSTMAINTENANCE',
+			permissionName: '人工成本维护',
+			group: 2,
+		},
+		{
+			name: '人工成本数据维护',
+			message: 0,
+			url: '/targetpriceandscore/datamaintenance/costDataMaintenance',
+			activePath: 'costDataMaintenance',
+			key: 'RGCBSJWH',
+			permissionKey:
+				'COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_TAB',
+			permissionName: '人工成本数据维护',
+			group: 2,
+		},
+	],
 
   configscoredeptNavListLeft: [
     {
@@ -615,41 +615,41 @@ const mutations = {
 let source = null
 let num = 0
 const actions = {
-  updateNavList({ commit, state }) {
-    if (source) source.cancel()
-    source = axios.CancelToken.source()
+	updateNavList({ commit, state }) {
+		if (source) source.cancel()
+		source = axios.CancelToken.source()
 
-    return new Promise((resolve, reject) => {
-      getAgentTasksNum({ cancelToken: source.token })
-        .then((res) => {
-          if (res.code == 200) {
-            const sourceinquirypointNavListLeft = cloneDeep(
-              state.sourceinquirypointNavListLeft
-            )
-            const sourceinquirypointThirdMenu = cloneDeep(
-              state.sourceinquirypointThirdMenu
-            )
+		return new Promise((resolve, reject) => {
+			getAgentTasksNum({ cancelToken: source.token })
+				.then((res) => {
+					if (res.code == 200) {
+						const sourceinquirypointNavListLeft = cloneDeep(
+							state.sourceinquirypointNavListLeft
+						)
+						const sourceinquirypointThirdMenu = cloneDeep(
+							state.sourceinquirypointThirdMenu
+						)
 
-            Object.keys(res.data).forEach((key) => {
-              //   for (let i = 0, item; (item = navList[i++]);) {
-              switch (key) {
-                case 'partAgentNum': // 零件签收待办
-                  sourceinquirypointThirdMenu[3].message = res.data[key] || 0
-                  break
-                case 'purchaseProjectAgentNum': // 采购项目待办
-                  sourceinquirypointNavListLeft[2].message = res.data[key] || 0
-                  break
-                case 'rfqAgentNum': // RFQ待办
-                  sourceinquirypointThirdMenu[9].message = res.data[key] || 0
-                  break
-                case 'normiAgentNun': // 定点管理待办
-                  sourceinquirypointThirdMenu[11].message = res.data[key] || 0
-                  break
-                default:
-                  break
-              }
-              //   }
-            })
+						Object.keys(res.data).forEach((key) => {
+							//   for (let i = 0, item; (item = navList[i++]);) {
+							switch (key) {
+								case 'partAgentNum': // 零件签收待办
+									sourceinquirypointThirdMenu[3].message = res.data[key] || 0
+									break
+								case 'purchaseProjectAgentNum': // 采购项目待办
+									sourceinquirypointNavListLeft[2].message = res.data[key] || 0
+									break
+								case 'rfqAgentNum': // RFQ待办
+									sourceinquirypointThirdMenu[9].message = res.data[key] || 0
+									break
+								case 'normiAgentNun': // 定点管理待办
+									sourceinquirypointThirdMenu[11].message = res.data[key] || 0
+									break
+								default:
+									break
+							}
+							//   }
+						})
 
             // commit("SET_NAV_LIST", navList)
             commit(
@@ -718,9 +718,9 @@ const getters = {
 }
 
 export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions,
-  getters,
+	namespaced: true,
+	state,
+	mutations,
+	actions,
+	getters,
 }

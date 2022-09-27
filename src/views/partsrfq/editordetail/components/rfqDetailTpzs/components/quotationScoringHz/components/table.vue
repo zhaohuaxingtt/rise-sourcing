@@ -278,6 +278,7 @@ export default{
     setfixElement(){
       try {
         const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
+        console.log([needRemovebox])
         if(needRemovebox){
           needRemovebox.parentNode.removeChild(needRemovebox)
         }
