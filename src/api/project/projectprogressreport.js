@@ -261,6 +261,15 @@ export function getCarProjectEmOntimeDTOInfo(data) {
   })
 }
 
+// 车型项目Em准时完成情况报告fenye
+export function getCarProjectEmOntimeDTOPage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectEmOntimeDTOPage',
+    method: 'POST',
+    data
+  })
+}
+
 // 车型项目定点准时完成情况报告
 export function getCarProjectNomOntimeDTOInfo(data) {
   return requst({
@@ -270,10 +279,82 @@ export function getCarProjectNomOntimeDTOInfo(data) {
   })
 }
 
+// 车型项目定点准时完成情况报告fenye
+export function getCarProjectNomOntimeDTOPage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectNomOntimeDTOPage',
+    method: 'POST',
+    data
+  })
+}
+
 // 车型项目ots准时完成情况报告
 export function getCarProjectOTSOntimeDTOInfo(data) {
   return requst({
     url: '/project-performance-analysisc-report/getCarProjectOTSOntimeDTOInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 车型项目ots准时完成情况报告fenye
+export function getCarProjectOTSOntimeDTOPage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectOTSOntimeDTOPage',
+    method: 'POST',
+    data
+  })
+}
+
+// FG组BF完成情况报告
+export function getFGBFNomiOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getFGBFNomiOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// FG组BF完成情况报告分页查询
+export function getFGBFNomiOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getFGBFNomiOntimePage',
+    method: 'POST',
+    data
+  })
+}
+
+// 供应商1stTryout完成情况报告
+export function getSupplierTryOutOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierTryOutOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 供应商1stTryout完成情况报告fenye
+export function getSupplierTryOutOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getSupplierTryOutOntimePage',
+    method: 'POST',
+    data
+  })
+}
+
+// Commodity定点完成情况报告
+export function getCommodityNomOntimeInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityNomOntimeInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// Commodity定点完成情况报告fenye
+export function getCommodityNomOntimePage(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCommodityNomOntimePage',
     method: 'POST',
     data
   })

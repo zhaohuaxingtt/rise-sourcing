@@ -34,6 +34,14 @@ export function echartsSupplerEM(data,type,valueN,numberVal){
             data1_2.push((e.otsPercentage*100).toFixed(2))
             data2.push(e.completeOtsTotalNum)
             xAxis.push(e.dept)
+        }else if(numberVal == 9){
+            data1.push((e.percentage*100).toFixed(2))
+            data2.push(e.totalNum)
+            xAxis.push(e.fgGroup)
+        }else if(numberVal == 10){
+            data1.push((e.percentage*100).toFixed(2))
+            data2.push(e.totalNum)
+            xAxis.push(e.dept)
         }else{
             data1.push((e.percentage*100).toFixed(2))
             data2.push(e.totalNum)

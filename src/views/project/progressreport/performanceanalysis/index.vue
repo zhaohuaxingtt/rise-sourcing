@@ -60,6 +60,10 @@ import {
     getCarProjectEmOntimeDTOInfo,
     getCarProjectNomOntimeDTOInfo,
     getCarProjectOTSOntimeDTOInfo,
+
+    getFGBFNomiOntimeInfo,
+    getSupplierTryOutOntimeInfo,
+    getCommodityNomOntimeInfo,
 } from '@/api/project/projectprogressreport'
 
 import { getSelectCarType } from '@/api/project'
@@ -144,6 +148,10 @@ export default {
                     this.getCarProjectEmOntimeDTOInfo();
                     this.getCarProjectNomOntimeDTOInfo();
                     this.getCarProjectOTSOntimeDTOInfo();
+
+                    this.getFGBFNomiOntimeInfo();
+                    this.getSupplierTryOutOntimeInfo();
+                    this.getCommodityNomOntimeInfo();
                 }
             })
         },
@@ -247,7 +255,8 @@ export default {
                 }
             })
         },
-        getCarProjectEmOntimeDTOInfo(){//6
+
+        getCarProjectEmOntimeDTOInfo(){//6车型项目Em准时完成情况报告
             getCarProjectEmOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
             }).then(res=>{
@@ -259,7 +268,7 @@ export default {
                 }
             })
         },
-        getCarProjectNomOntimeDTOInfo(){//7
+        getCarProjectNomOntimeDTOInfo(){//7车型项目定点准时完成情况报告
             getCarProjectNomOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
             }).then(res=>{
@@ -267,12 +276,12 @@ export default {
                 if(res.result){
                     this.echartsOption(6,res?.data,[
                         this.$t("定点准时完成率"),
-                        this.$t("定点总数")
+                        this.$t("OTS总数")
                     ]);
                 }
             })
         },
-        getCarProjectOTSOntimeDTOInfo(){//8
+        getCarProjectOTSOntimeDTOInfo(){//8车型项目ots准时完成情况报告
             getCarProjectOTSOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
             }).then(res=>{
@@ -280,11 +289,52 @@ export default {
                 if(res.result){
                     this.echartsOption(7,res?.data,[
                         this.$t("OTS准时完成率"),
-                        this.$t("OTS完成数")
+                        this.$t("OTS总数")
                     ]);
                 }
             })
         },
+        
+        getFGBFNomiOntimeInfo(){//9FG组BF完成情况报告
+            getFGBFNomiOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(8,res?.data,[
+                        this.$t("BF准时完成率"),
+                        this.$t("BF总数")
+                    ]);
+                }
+            })
+        },
+        getSupplierTryOutOntimeInfo(){//10供应商1stTryout完成情况报告
+            getSupplierTryOutOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(9,res?.data,[
+                        this.$t("1stTryout准时完成率"),
+                        this.$t("1stTryout总数")
+                    ]);
+                }
+            })
+        },
+        getCommodityNomOntimeInfo(){//11不同Commodity定点完成情况报告
+            getCommodityNomOntimeInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(10,res?.data,[
+                        this.$t("定点准时完成率"),
+                        this.$t("定点总数")
+                    ]);
+                }
+            })
+        },
+
 
         echartsOption(num,data,type){
             // this.picImg.forEach((e,index)=>{
