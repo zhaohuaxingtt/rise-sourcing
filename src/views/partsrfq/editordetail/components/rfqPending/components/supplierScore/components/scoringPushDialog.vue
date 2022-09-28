@@ -177,7 +177,7 @@ export default {
       tableListData: [],
       multipleSelection: [],
       selectTableData: [],
-      rateDeptNumList: [],
+      rateDeptIdList: [],
       supplierProduceNames: [],
       deptScoringOptions: [],
       supplierProduceNamesLoading: false,
@@ -274,7 +274,7 @@ export default {
         return iMessage.warn(
           this.language("NINHAIWEIXUANZEGONGS", "您当前还未选择供应商！")
         );
-      if (!this.rateDeptNumList.length)
+      if (!this.rateDeptIdList.length)
         return iMessage.warn(
           this.language(
             "NINHAIWEIXUANZEPINGFENBUMEN",
@@ -282,7 +282,7 @@ export default {
           )
         );
       let params = {
-        rateDeptIdList: this.rateDeptNumList.map((item) => item.id),
+        rateDeptIdList: this.rateDeptIdList,
         rfqId: this.ids[0],
         supplierDTOS: this.selectTableData.map((item) => {
           return {
@@ -460,7 +460,7 @@ export default {
       }
     },
     handleSelectionChangeDept(val) {
-      this.rateDeptNumList = val.map((item) => item.rateDepartNum);
+      this.rateDeptIdList = val.map((item) => item.id);
     },
     handleSelectionChange(val) {
       this.selectTableData = val;
