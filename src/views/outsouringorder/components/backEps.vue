@@ -88,7 +88,6 @@ export default {
       this.$emit("changeVisible", false);
     },
     handleConfirm() {
-      this.saveLoading = true;
       this.$emit("handleBack", this.reasonDescription, this.isAllItem);
     },
     changeSaveLoading(loading) {
