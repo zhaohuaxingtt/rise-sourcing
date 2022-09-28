@@ -1,5 +1,5 @@
-export function echartsSupplerEM(data,type,valueN){
-    console.log(data);
+export function echartsSupplerEM(data,type,valueN,numberVal){
+    console.log(numberVal);
 
     var name = [
         // 'EM准时完成率','EM总数'
@@ -29,19 +29,19 @@ export function echartsSupplerEM(data,type,valueN){
     var series = [];
 
     data.forEach(e=>{
-        if(name.length == 3){
-            data1.push(e.emPercentage)
-            data1_2.push(e.otsPercentage)
-            data2.push(e.totalNum)
-            xAxis.push(e.carTypeProName)
+        if(numberVal == 4){
+            data1.push((e.emPercentage*100).toFixed(2))
+            data1_2.push((e.otsPercentage*100).toFixed(2))
+            data2.push(e.completeOtsTotalNum)
+            xAxis.push(e.dept)
         }else{
-            data1.push(e.percentage)
+            data1.push((e.percentage*100).toFixed(2))
             data2.push(e.totalNum)
             xAxis.push(e.name)
         }
     })
 
-    if(name.length == 3){
+    if(numberVal == 4){
         series = [
             {
                 name:name[0],
@@ -50,27 +50,29 @@ export function echartsSupplerEM(data,type,valueN){
                 showSymbol:true,
                 symbol:"circle",
                 symbolSize:15,
-                data: data1,
+                data: data1_2,
                 itemStyle:{
                     normal:{
                         color:"#1663F6",
                     }
                 }
-            },{
+            },
+            // {
+            //     name:name[1],
+            //     type: 'line',
+            //     barMaxWidth:40,
+            //     showSymbol:true,
+            //     symbol:"circle",
+            //     symbolSize:15,
+            //     data: data1_2,
+            //     itemStyle:{
+            //         normal:{
+            //             color:"#76CBFF",
+            //         }
+            //     }
+            // },
+            {
                 name:name[1],
-                type: 'line',
-                barMaxWidth:40,
-                showSymbol:true,
-                symbol:"circle",
-                symbolSize:15,
-                data: data1_2,
-                itemStyle:{
-                    normal:{
-                        color:"#76CBFF",
-                    }
-                }
-            },{
-                name:name[2],
                 type: 'bar',
                 barMaxWidth:40,
                 yAxisIndex: 1,
@@ -128,7 +130,7 @@ export function echartsSupplerEM(data,type,valueN){
         },
         legend:{
             top:10,
-            right:0,
+            right:10,
             show:true,
             data:name,
         },
@@ -194,8 +196,9 @@ export function echartsSupplerEM(data,type,valueN){
                 params.forEach((e,index) => {
                     t += '<div>'
                     t += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + e.color + ';"></span>'
-                    if(name.length == 3){
-                        if(index == 0 || index == 1){
+                    if(numberVal == 4){
+                        // if(index == 0 || index == 1){
+                        if(index == 0){
                             t += e.seriesName + ':' + e.value + '%'
                         }else{
                             t += e.seriesName + ':' + e.value

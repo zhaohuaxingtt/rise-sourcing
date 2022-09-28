@@ -15,7 +15,7 @@
                     <img class="model_img"
                             :src="checked?require('@/assets/images/checked.png'):require('@/assets/images/unchecked.png')"
                             :fit="fit" />
-                    <span :class="checked?'checked':'unchecked'">{{$t('全选')}}</span>
+                    <span :class="checked?'checked':'unchecked'">{{$t('QUANXUAN')}}</span>
                 </div>
                 <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_DAOCHU">{{$t("导出")}}</iButton>
             </div>
@@ -54,10 +54,12 @@ import {
     getFGNomiOntimeInfo,
     getCommodityEmOntimeInfo,
     getCommodityOntimeInfo,
-
     getDefaultCarTypePro,
-
     exprotProjectAnalysisc,
+
+    getCarProjectEmOntimeDTOInfo,
+    getCarProjectNomOntimeDTOInfo,
+    getCarProjectOTSOntimeDTOInfo,
 } from '@/api/project/projectprogressreport'
 
 import { getSelectCarType } from '@/api/project'
@@ -90,12 +92,36 @@ export default {
                 id:3,
             },{
                 select:false,
-                name:this.$t("不同Commodity EM完成情况报告"),
+                name:this.$t("不同CommodityEM完成情况报告"),
                 id:4,
             },{
                 select:false,
-                name:this.$t("不同Commodity项目完成情况报告"),
+                name:this.$t("不同CommodityOTS完成情况报告"),
                 id:5,
+            },{
+                select:false,
+                name:this.$t("车型项目Em准时完成情况报告"),
+                id:6,
+            },{
+                select:false,
+                name:this.$t("车型项目定点准时完成情况报告"),
+                id:7,
+            },{
+                select:false,
+                name:this.$t("车型项目ots准时完成情况报告"),
+                id:8,
+            },{
+                select:false,
+                name:this.$t("FG组BF完成情况报告"),
+                id:9,
+            },{
+                select:false,
+                name:this.$t("供应商1stTryout完成情况报告"),
+                id:10,
+            },{
+                select:false,
+                name:this.$t("Commodity定点完成情况报告"),
+                id:11,
             }
         ];
         
@@ -114,6 +140,10 @@ export default {
                     this.getFGNomiOntimeInfo();
                     this.getCommodityEmOntimeInfo();
                     this.getCommodityOntimeInfo();
+
+                    this.getCarProjectEmOntimeDTOInfo();
+                    this.getCarProjectNomOntimeDTOInfo();
+                    this.getCarProjectOTSOntimeDTOInfo();
                 }
             })
         },
@@ -160,7 +190,7 @@ export default {
                     console.log(res)
                 })
             }else{
-                iMessage.error("请勾选需导出的报表");
+                iMessage.error(this.$t("请勾选需导出的报表"));
             }
         },
         getSupplierEmOntimeInfo(){//1
@@ -169,7 +199,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    this.echartsOption(0,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")]);
                 }
             })
         },
@@ -179,7 +209,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(1,res?.data,["OTS准时完成率","OTS总数"]);
+                    this.echartsOption(1,res?.data,[this.$t("OTS准时完成率"),this.$t("OTS总数")]);
                 }
             })
         },
@@ -189,7 +219,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(2,res?.data,["定点准时完成率","定点总数"]);
+                    this.echartsOption(2,res?.data,[this.$t("定点准时完成率"),this.$t("定点总数")]);
                 }
             })
         },
@@ -199,7 +229,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(3,res?.data,["EM准时完成率","EM总数"]);
+                    this.echartsOption(3,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")]);
                 }
             })
         },
@@ -209,15 +239,58 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(4,res?.data,["EM准时完成率","OTS准时完成率","定点总数"]);
+                    this.echartsOption(4,res?.data,[
+                        // this.$t("EM准时完成率"),
+                        this.$t("OTS准时完成率"),
+                        this.$t("OTS完成数")
+                    ]);
                 }
             })
         },
+        getCarProjectEmOntimeDTOInfo(){//6
+            getCarProjectEmOntimeDTOInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                if(res.result){
+                    this.echartsOption(5,res?.data,[
+                        this.$t("EM准时完成率"),
+                        this.$t("EM总数")
+                    ]);
+                }
+            })
+        },
+        getCarProjectNomOntimeDTOInfo(){//7
+            getCarProjectNomOntimeDTOInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(6,res?.data,[
+                        this.$t("定点准时完成率"),
+                        this.$t("定点总数")
+                    ]);
+                }
+            })
+        },
+        getCarProjectOTSOntimeDTOInfo(){//8
+            getCarProjectOTSOntimeDTOInfo({
+                cartypeProId:this.cartypeProId,
+            }).then(res=>{
+                // console.log(res);
+                if(res.result){
+                    this.echartsOption(7,res?.data,[
+                        this.$t("OTS准时完成率"),
+                        this.$t("OTS完成数")
+                    ]);
+                }
+            })
+        },
+
         echartsOption(num,data,type){
             // this.picImg.forEach((e,index)=>{
                 let nameId = "echarts_"+num;
                 let myChart = echarts().init(document.getElementById(nameId));
-                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName));
+                myChart.setOption(echartsSupplerEM(data,type,this.carTypeName,num));
             // })
         },
     },

@@ -38,16 +38,16 @@ export const TAB = [
     permissionKey: 'PROJECTMGT_PROGRESSMONITORING_TAB',
     permissionName: '项目管理-项目进度监控Tab'
   },
-  // {
-  //   value: 4,
-  //   name: '项目进度报告',
-  //   message: 0,
-  //   url: '/projectmgt/projectprogressreport',
-  //   activePath: 'projectprogressreport',
-  //   key: 'XIANGMUJINDUBAOGAO',
-  //   permissionKey: 'PROJECTMGT_PROGRESSREPORT_TAB',
-  //   permissionName: '项目管理-项目进度报告Tab'
-  // }
+  {
+    value: 4,
+    name: '项目进度报告',
+    message: 0,
+    url: '/projectmgt/projectprogressreport',
+    activePath: 'projectprogressreport',
+    key: 'XIANGMUJINDUBAOGAO',
+    permissionKey: 'PROJECTMGT_PROGRESSREPORT_TAB',
+    permissionName: '项目管理-项目进度报告Tab'
+  }
 ]
 
 export const COMFIRMTAB = [
