@@ -19,11 +19,11 @@ const INVESTMENT = axios(process.env.VUE_APP_TOOLING + '/investment')
  * @return {*}
  */
 export function outsouringFindBypage(parmars) {
-	return requst({
-		url: '/pr/normalPr/findByPage',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/findByPage',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
@@ -32,11 +32,11 @@ export function outsouringFindBypage(parmars) {
  * @return {*}
  */
 export function deleteOutSouring(parmars) {
-	return requst({
-		url: '/pr/normalPr/deleteNormalPrBatch',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/deleteNormalPrBatch',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
@@ -45,11 +45,11 @@ export function deleteOutSouring(parmars) {
  * @return {*}
  */
 export function rejectByLinie(parmars) {
-	return requst({
-		url: '/pr/normalPr/outsourcing/rejectByLinie',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/outsourcing/rejectByLinie',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
@@ -58,11 +58,11 @@ export function rejectByLinie(parmars) {
  * @return {*}
  */
 export function sendLinie(parmars) {
-	return requst({
-		url: '/pr/normalPr/outsourcing/sendLinie',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/outsourcing/sendLinie',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
@@ -71,11 +71,11 @@ export function sendLinie(parmars) {
  * @return {*}
  */
 export function signByLinie(parmars) {
-	return requst({
-		url: '/pr/normalPr/outsourcing/signByLinie',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/outsourcing/signByLinie',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
@@ -84,38 +84,38 @@ export function signByLinie(parmars) {
  * @return {*}
  */
 export function closeOutSouringOrder(parmars) {
-	return requst({
-		url: '/pr/normalPr/outsourcing/close',
-		method: 'POST',
-		data: parmars,
-	})
+  return requst({
+    url: '/pr/normalPr/outsourcing/close',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 // 数据字典
 export function dictkey(params) {
-	return requstPartResource({
-		url: '/selectDictKey',
-		method: 'GET',
-		params: params,
-	})
+  return requstPartResource({
+    url: '/selectDictKey',
+    method: 'GET',
+    params: params,
+  })
 }
 
 //获取linie下拉
 export function liniePullDownByDept(parmars) {
-	return INVESTMENT({
-		url: '/liniePullDownByDept',
-		method: 'POST',
-		data: parmars,
-	})
+  return INVESTMENT({
+    url: '/liniePullDownByDept',
+    method: 'POST',
+    data: parmars,
+  })
 }
 
 /**
  * 根据部门信息获取前期采购员
  */
 export function listByDeptId(params) {
-	return requst({
-		url: '/stock/listByDeptId',
-		method: 'GET',
-		params,
-	})
+  return requst({
+    url: '/stock/listByDeptId',
+    method: 'GET',
+    params,
+  })
 }

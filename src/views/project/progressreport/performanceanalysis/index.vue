@@ -15,7 +15,7 @@
                     <img class="model_img"
                             :src="checked?require('@/assets/images/checked.png'):require('@/assets/images/unchecked.png')"
                             :fit="fit" />
-                    <span :class="checked?'checked':'unchecked'">{{$t('全选')}}</span>
+                    <span :class="checked?'checked':'unchecked'">{{$t('QUANXUAN')}}</span>
                 </div>
                 <iButton @click="upload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_CEANALYSIS_DAOCHU">{{$t("导出")}}</iButton>
             </div>
@@ -90,7 +90,7 @@ export default {
                 id:3,
             },{
                 select:false,
-                name:this.$t("不同Commodity EM完成情况报告"),
+                name:this.$t("不同CommodityEM完成情况报告"),
                 id:4,
             },{
                 select:false,
@@ -160,7 +160,7 @@ export default {
                     console.log(res)
                 })
             }else{
-                iMessage.error("请勾选需导出的报表");
+                iMessage.error(this.$t("请勾选需导出的报表"));
             }
         },
         getSupplierEmOntimeInfo(){//1
@@ -169,7 +169,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(0,res?.data,["EM准时完成率","EM总数"]);
+                    this.echartsOption(0,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")]);
                 }
             })
         },
@@ -179,7 +179,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(1,res?.data,["OTS准时完成率","OTS总数"]);
+                    this.echartsOption(1,res?.data,[this.$t("OTS准时完成率"),this.$t("OTS总数")]);
                 }
             })
         },
@@ -189,7 +189,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(2,res?.data,["定点准时完成率","定点总数"]);
+                    this.echartsOption(2,res?.data,[this.$t("定点准时完成率"),this.$t("定点总数")]);
                 }
             })
         },
@@ -199,7 +199,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(3,res?.data,["EM准时完成率","EM总数"]);
+                    this.echartsOption(3,res?.data,[this.$t("EM准时完成率"),this.$t("EM总数")]);
                 }
             })
         },
@@ -209,7 +209,7 @@ export default {
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
-                    this.echartsOption(4,res?.data,["EM准时完成率","OTS准时完成率","定点总数"]);
+                    this.echartsOption(4,res?.data,[this.$t("EM准时完成率"),this.$t("OTS准时完成率"),this.$t("定点总数")]);
                 }
             })
         },

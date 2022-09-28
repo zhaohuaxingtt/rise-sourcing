@@ -125,280 +125,280 @@ const state = {
 		},
 	],
 
-	sourceinquirypointNavListLeft: [
-		//sourcing 三级菜单列表
-		// {
-		//   value: 1,
-		//   name: "寻源执行",
-		//   message: 0,
-		//   url: "/sourceinquirypoint/sourcing/partsign",
-		//   activePath: "sourcing",
-		//   key: "XUANYUANCAIDAN",
-		//   permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
-		//   permissionName: '寻源执行'
-		// },
-		{
-			value: 1,
-			name: '寻源概览',
-			message: 0,
-			url: '/sourcing/dashboard',
-			activePath: 'dashboard',
-			key: 'XUANYUANGAILAN',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD',
-			permissionName: '寻源概览',
-			group: 1,
-		},
-		{
-			value: 2,
-			name: '需求管理',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign',
-			activePath: 'partsign',
-			key: 'XUQIUGUANLI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN',
-			permissionName: '需求管理',
-			group: 2,
-		},
-		{
-			value: 3,
-			name: '采购项目',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsprocure',
-			activePath: 'partsprocure',
-			key: 'CAIGOUXIANGMU',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSPROCURE',
-			permissionName: '采购项目',
-			group: 3,
-		},
-		{
-			value: 4,
-			name: 'RFQ管理',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsrfq',
-			activePath: 'partsrfq',
-			key: 'LK_RFQGUANLI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_RFQMANAGE',
-			permissionName: 'RFQ管理',
-			group: 4,
-		},
-		{
-			value: 5,
-			name: '定点管理',
-			message: 0,
-			url: '/sourcing/partsnomination',
-			activePath: 'partsnomination',
-			key: 'LK_DINGDIANGUANLI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION',
-			permissionName: '定点管理',
-			group: 5,
-		},
-		{
-			value: 6,
-			name: '定点信/LOI',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsletter',
-			activePath: 'partsletter',
-			key: 'LK_DINGDIANXINLOI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER',
-			permissionName: '定点信/LOI',
-			group: 6,
-		},
-	],
-	sourceinquirypointThirdMenu: [
-		//sourcing 4级菜单列表
-		{
-			name: '概览',
-			message: 0,
-			url: '/sourcing/dashboard/index',
-			activePath: 'dashboard/index',
-			key: 'GAILAN',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_DASHBOARD',
-			permissionName: '概览',
-			group: 1,
-		},
-		{
-			name: '状态跟踪报表',
-			message: 0,
-			url: '/sourcing/dashboard/report',
-			activePath: 'dashboard/report',
-			key: 'LK_ZHUANGTAIGENZHONGBAOBIAO',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_REPORT',
-			permissionName: '状态跟踪报表',
-			group: 1,
-		},
-		{
-			name: '状态跟踪详情',
-			message: 0,
-			url: '/sourcing/dashboard/details',
-			activePath: 'dashboard/details',
-			key: 'LK_ZHUANGTAIGENZHONGXIANGQING',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_DETAILS',
-			permissionName: '状态跟踪详情',
-			group: 1,
-		},
-		{
-			name: '批量件签收',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign',
-			activePath: 'partsign',
-			key: 'PILIANGJIANQIANSHOU',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_PARTSIGN',
-			permissionName: '批量件签收',
-			group: 2,
-		},
-		{
-			name: '配件签收',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/signforpartsdemand',
-			activePath: 'signforpartsdemand',
-			key: 'LK_PEIJIANXUQIUQIANSHOU',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_SIGNFORPARTSDEMAND',
-			permissionName: '配件签收',
-			group: 2,
-		},
-		{
-			name: '配件管理',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/integratedmanage',
-			activePath: 'integratedmanage',
-			key: 'LK_PEIJIANZONGHEGUANLI',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_INTEGRATEDMANAGE',
-			permissionName: '配件管理',
-			group: 2,
-		},
-		{
-			name: '附件导入',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/importfiles',
-			activePath: 'importfiles',
-			key: 'LK_FUJIANXUQIUDAORU',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_IMPORTFILES',
-			permissionName: '附件导入',
-			group: 2,
-		},
-		{
-			name: '附件管理',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/filemanage',
-			activePath: 'filemanage',
-			key: 'LK_FUJIANZONGHEGUANLI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_FILEMANAGE',
-			permissionName: '附件管理',
-			group: 2,
-		},
-		{
-			name: '钢材导入',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/steeldemandcreation',
-			activePath: 'steeldemandcreation',
-			key: 'GANGCAIDAORU',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
-			permissionName: '钢材导入',
-			group: 2,
-		},
-		{
-			name: '工序委外',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsign/outsouringorder',
-			activePath: 'outsouringorder',
-			key: 'LK_GONGXUWEIWAI',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_OUTSOURINGORDER',
-			// 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
-			permissionName: '工序委外',
-			group: 2,
-		},
-		{
-			name: 'RFQ',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsrfq',
-			activePath: 'partsrfq',
-			key: 'RFQUPPERCASE',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_RFQMANAGE_SUBMENU_RFQ',
-			permissionName: 'RFQ',
-			group: 4,
-		},
-		{
-			name: '竞价开标',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsrfq/biddingProjectList',
-			activePath: 'biddingProjectList',
-			key: 'LK_JINGJIAKAIBIAO',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_RFQMANAGE_SUBMENU_BIDDINGPROJECTLIST',
-			permissionName: '竞价开标',
-			group: 4,
-		},
-		{
-			name: '定点申请',
-			path: '/sourcing/partsnomination',
-			message: 0,
-			key: 'DINGDIANSHENQING',
-			url: '/sourcing/partsnomination',
-			activePath: '/partsnomination',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION',
-			permissionName: '定点申请',
-			group: 5,
-		},
-		{
-			name: '上会RS复核',
-			path: '/sourcing/partsnomination/rsReview',
-			message: 0,
-			key: 'SHANGHUIRSFUHE',
-			url: '/sourcing/partsnomination/rsReview',
-			activePath: 'rsReview',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RSREVIEW',
-			permissionName: '上会RS复核',
-			group: 5,
-		},
-		{
-			name: 'M签字单',
-			path: '/sourcing/partsnomination/signSheetBox',
-			message: 0,
-			key: 'SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE_1',
-			url: '/sourcing/partsnomination/signSheetBox',
-			activePath: 'signSheetBox',
-			permissionKey:
-				'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_SIGNSHEETBOX',
-			permissionName: 'M签字单',
-			group: 5,
-		},
-		{
-			name: '定点记录',
-			path: '/sourcing/partsnomination/record',
-			message: 0,
-			key: 'SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE',
-			url: '/sourcing/partsnomination/record',
-			activePath: 'record',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD',
-			permissionName: '定点记录',
-			group: 5,
-		},
-		{
-			name: '定点信',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsletter',
-			activePath: 'partsletter',
-			key: 'LK_DINGDIANXINLOI_TITLE',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_PARTSLETTER',
-			permissionName: '定点信',
-			group: 6,
-		},
-		{
-			name: 'LOI',
-			message: 0,
-			url: '/sourceinquirypoint/sourcing/partsletter/loi',
-			activePath: 'loi',
-			key: 'LK_DINGDIANXINLOI_LOI',
-			permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_LOI',
-			permissionName: 'LOI',
-			group: 6,
-		},
-	],
+  sourceinquirypointNavListLeft: [
+    //sourcing 三级菜单列表
+    // {
+    //   value: 1,
+    //   name: "寻源执行",
+    //   message: 0,
+    //   url: "/sourceinquirypoint/sourcing/partsign",
+    //   activePath: "sourcing",
+    //   key: "XUANYUANCAIDAN",
+    //   permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
+    //   permissionName: '寻源执行'
+    // },
+    {
+      value: 1,
+      name: '寻源概览',
+      message: 0,
+      url: '/sourcing/dashboard',
+      activePath: 'dashboard',
+      key: 'XUANYUANGAILAN',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD',
+      permissionName: '寻源概览',
+      group: 1,
+    },
+    {
+      value: 2,
+      name: '需求管理',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign',
+      activePath: 'partsign',
+      key: 'XUQIUGUANLI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN',
+      permissionName: '需求管理',
+      group: 2,
+    },
+    {
+      value: 3,
+      name: '采购项目',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsprocure',
+      activePath: 'partsprocure',
+      key: 'CAIGOUXIANGMU',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSPROCURE',
+      permissionName: '采购项目',
+      group: 3,
+    },
+    {
+      value: 4,
+      name: 'RFQ管理',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsrfq',
+      activePath: 'partsrfq',
+      key: 'LK_RFQGUANLI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_RFQMANAGE',
+      permissionName: 'RFQ管理',
+      group: 4,
+    },
+    {
+      value: 5,
+      name: '定点管理',
+      message: 0,
+      url: '/sourcing/partsnomination',
+      activePath: 'partsnomination',
+      key: 'LK_DINGDIANGUANLI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION',
+      permissionName: '定点管理',
+      group: 5,
+    },
+    {
+      value: 6,
+      name: '定点信/LOI',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsletter',
+      activePath: 'partsletter',
+      key: 'LK_DINGDIANXINLOI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER',
+      permissionName: '定点信/LOI',
+      group: 6,
+    },
+  ],
+  sourceinquirypointThirdMenu: [
+    //sourcing 4级菜单列表
+    {
+      name: '概览',
+      message: 0,
+      url: '/sourcing/dashboard/index',
+      activePath: 'dashboard/index',
+      key: 'GAILAN',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_DASHBOARD',
+      permissionName: '概览',
+      group: 1,
+    },
+    {
+      name: '状态跟踪报表',
+      message: 0,
+      url: '/sourcing/dashboard/report',
+      activePath: 'dashboard/report',
+      key: 'LK_ZHUANGTAIGENZHONGBAOBIAO',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_REPORT',
+      permissionName: '状态跟踪报表',
+      group: 1,
+    },
+    {
+      name: '状态跟踪详情',
+      message: 0,
+      url: '/sourcing/dashboard/details',
+      activePath: 'dashboard/details',
+      key: 'LK_ZHUANGTAIGENZHONGXIANGQING',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_DETAILS',
+      permissionName: '状态跟踪详情',
+      group: 1,
+    },
+    {
+      name: '批量件签收',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign',
+      activePath: 'partsign',
+      key: 'PILIANGJIANQIANSHOU',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_PARTSIGN',
+      permissionName: '批量件签收',
+      group: 2,
+    },
+    {
+      name: '配件签收',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/signforpartsdemand',
+      activePath: 'signforpartsdemand',
+      key: 'LK_PEIJIANXUQIUQIANSHOU',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_SIGNFORPARTSDEMAND',
+      permissionName: '配件签收',
+      group: 2,
+    },
+    {
+      name: '配件管理',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/integratedmanage',
+      activePath: 'integratedmanage',
+      key: 'LK_PEIJIANZONGHEGUANLI',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_INTEGRATEDMANAGE',
+      permissionName: '配件管理',
+      group: 2,
+    },
+    {
+      name: '附件导入',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/importfiles',
+      activePath: 'importfiles',
+      key: 'LK_FUJIANXUQIUDAORU',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_IMPORTFILES',
+      permissionName: '附件导入',
+      group: 2,
+    },
+    {
+      name: '附件管理',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/filemanage',
+      activePath: 'filemanage',
+      key: 'LK_FUJIANZONGHEGUANLI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_FILEMANAGE',
+      permissionName: '附件管理',
+      group: 2,
+    },
+    {
+      name: '钢材导入',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/steeldemandcreation',
+      activePath: 'steeldemandcreation',
+      key: 'GANGCAIDAORU',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
+      permissionName: '钢材导入',
+      group: 2,
+    },
+    {
+      name: '工序委外',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsign/outsouringorder',
+      activePath: 'outsouringorder',
+      key: 'LK_GONGXUWEIWAI',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_OUTSOURINGORDER',
+      // 'SOURCEINQUIRYPOINT_MENU_PARTSIGN_SUBMENU_STEELDEMANDCREATION',
+      permissionName: '工序委外',
+      group: 2,
+    },
+    {
+      name: 'RFQ',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsrfq',
+      activePath: 'partsrfq',
+      key: 'RFQUPPERCASE',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_RFQMANAGE_SUBMENU_RFQ',
+      permissionName: 'RFQ',
+      group: 4,
+    },
+    {
+      name: '竞价开标',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsrfq/biddingProjectList',
+      activePath: 'biddingProjectList',
+      key: 'LK_JINGJIAKAIBIAO',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_RFQMANAGE_SUBMENU_BIDDINGPROJECTLIST',
+      permissionName: '竞价开标',
+      group: 4,
+    },
+    {
+      name: '定点申请',
+      path: '/sourcing/partsnomination',
+      message: 0,
+      key: 'DINGDIANSHENQING',
+      url: '/sourcing/partsnomination',
+      activePath: '/partsnomination',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION',
+      permissionName: '定点申请',
+      group: 5,
+    },
+    {
+      name: '上会RS复核',
+      path: '/sourcing/partsnomination/rsReview',
+      message: 0,
+      key: 'SHANGHUIRSFUHE',
+      url: '/sourcing/partsnomination/rsReview',
+      activePath: 'rsReview',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RSREVIEW',
+      permissionName: '上会RS复核',
+      group: 5,
+    },
+    {
+      name: 'M签字单',
+      path: '/sourcing/partsnomination/signSheetBox',
+      message: 0,
+      key: 'SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE_1',
+      url: '/sourcing/partsnomination/signSheetBox',
+      activePath: 'signSheetBox',
+      permissionKey:
+        'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_SIGNSHEETBOX',
+      permissionName: 'M签字单',
+      group: 5,
+    },
+    {
+      name: '定点记录',
+      path: '/sourcing/partsnomination/record',
+      message: 0,
+      key: 'SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE',
+      url: '/sourcing/partsnomination/record',
+      activePath: 'record',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD',
+      permissionName: '定点记录',
+      group: 5,
+    },
+    {
+      name: '定点信',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsletter',
+      activePath: 'partsletter',
+      key: 'LK_DINGDIANXINLOI_TITLE',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_PARTSLETTER',
+      permissionName: '定点信',
+      group: 6,
+    },
+    {
+      name: 'LOI',
+      message: 0,
+      url: '/sourceinquirypoint/sourcing/partsletter/loi',
+      activePath: 'loi',
+      key: 'LK_DINGDIANXINLOI_LOI',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_LOI',
+      permissionName: 'LOI',
+      group: 6,
+    },
+  ],
 
 	financialmanageNavListLeft: [
 		{
@@ -562,54 +562,54 @@ const state = {
 		},
 	],
 
-	configscoredeptNavListLeft: [
-		{
-			value: 1,
-			name: '评分部门设置',
-			message: 0,
-			url: '/targetpriceandscore/configscoredept',
-			activePath: 'configscoredept',
-			key: 'PINGFENBUMENSHEZHI',
-			permissionKey: 'MANAGEBACKEND_MENU_CONFIGSCOREDEPT',
-			permissionName: '评分部门设置',
-			group: 1,
-		},
-	],
-	configscoredeptThirdMenu: [],
-	pendingRequestNum: 0,
-	mapControl: [],
-	updateKey: '0',
-	imgList: [],
+  configscoredeptNavListLeft: [
+    {
+      value: 1,
+      name: '评分部门设置',
+      message: 0,
+      url: '/targetpriceandscore/configscoredept',
+      activePath: 'configscoredept',
+      key: 'PINGFENBUMENSHEZHI',
+      permissionKey: 'MANAGEBACKEND_MENU_CONFIGSCOREDEPT',
+      permissionName: '评分部门设置',
+      group: 1,
+    },
+  ],
+  configscoredeptThirdMenu: [],
+  pendingRequestNum: 0,
+  mapControl: [],
+  updateKey: '0',
+  imgList: [],
 }
 
 const mutations = {
-	SET_NAV_LIST(state, data) {
-		state.navList = data
-	},
-	SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT(state, data) {
-		state.sourceinquirypointNavListLeft = data
-	},
-	SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
-		state.sourceinquirypointThirdMenu = data
-	},
-	SET_PENDINGREQUESTNUM(state, data) {
-		state.pendingRequestNum = data
-	},
-	SET_MAPCONTROL(state, mapControl) {
-		state.mapControl = mapControl
-	},
-	SET_UPDATE(state) {
-		state.updateKey = +new Date()
-	},
-	// img 数据加载
-	PUSH_IMGLIST(state, data) {
-		state.imgList.push(data)
-	},
-	// img 数据加载完毕
-	REMOVE_IMGLIST(state, data) {
-		let i = state.imgList.indexOf(data)
-		state.imgList.splice(i, 1)
-	},
+  SET_NAV_LIST(state, data) {
+    state.navList = data
+  },
+  SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT(state, data) {
+    state.sourceinquirypointNavListLeft = data
+  },
+  SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
+    state.sourceinquirypointThirdMenu = data
+  },
+  SET_PENDINGREQUESTNUM(state, data) {
+    state.pendingRequestNum = data
+  },
+  SET_MAPCONTROL(state, mapControl) {
+    state.mapControl = mapControl
+  },
+  SET_UPDATE(state) {
+    state.updateKey = +new Date()
+  },
+  // img 数据加载
+  PUSH_IMGLIST(state, data) {
+    state.imgList.push(data)
+  },
+  // img 数据加载完毕
+  REMOVE_IMGLIST(state, data) {
+    let i = state.imgList.indexOf(data)
+    state.imgList.splice(i, 1)
+  },
 }
 
 let source = null
@@ -651,70 +651,70 @@ const actions = {
 							//   }
 						})
 
-						// commit("SET_NAV_LIST", navList)
-						commit(
-							'SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT',
-							sourceinquirypointNavListLeft
-						)
-						commit(
-							'SET_SOURCEINQUIRYPOINT_THIRD_MENU',
-							sourceinquirypointThirdMenu
-						)
-						resolve(res)
-					} else {
-						reject(res)
-					}
-				})
-				.catch((err) => reject(err))
-		})
-	},
-	updatePendingRequestNum({ commit }, requestNum = 0) {
-		commit('SET_PENDINGREQUESTNUM', requestNum)
-	},
-	updatePdfPage({ commit }) {
-		commit('SET_UPDATE')
-	},
-	updateMapControl({ commit }, mapControl) {
-		commit('SET_MAPCONTROL', mapControl)
-	},
-	pushImgList({ commit }, img) {
-		const key = 'img' + num
-		num++
-		commit('PUSH_IMGLIST', key)
-		return new Promise((r, j) => {
-			const timeOut = setTimeout(() => {
-				console.log('timeOut')
-				commit('REMOVE_IMGLIST', key)
-				img.style.height = '300px'
-				r(img)
-			}, 30000)
-			img.onload = () => {
-				commit('REMOVE_IMGLIST', key)
-				clearTimeout(timeOut)
-				r(img)
-			}
-			img.onerror = () => {
-				commit('REMOVE_IMGLIST', key)
-				img.style.height = '300px'
-				clearTimeout(timeOut)
-				j(img)
-			}
-			img.onabort = () => {
-				commit('REMOVE_IMGLIST', key)
-				img.style.height = '300px'
-				clearTimeout(timeOut)
-				j(img)
-			}
-		})
-	},
+            // commit("SET_NAV_LIST", navList)
+            commit(
+              'SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT',
+              sourceinquirypointNavListLeft
+            )
+            commit(
+              'SET_SOURCEINQUIRYPOINT_THIRD_MENU',
+              sourceinquirypointThirdMenu
+            )
+            resolve(res)
+          } else {
+            reject(res)
+          }
+        })
+        .catch((err) => reject(err))
+    })
+  },
+  updatePendingRequestNum({ commit }, requestNum = 0) {
+    commit('SET_PENDINGREQUESTNUM', requestNum)
+  },
+  updatePdfPage({ commit }) {
+    commit('SET_UPDATE')
+  },
+  updateMapControl({ commit }, mapControl) {
+    commit('SET_MAPCONTROL', mapControl)
+  },
+  pushImgList({ commit }, img) {
+    const key = 'img' + num
+    num++
+    commit('PUSH_IMGLIST', key)
+    return new Promise((r, j) => {
+      const timeOut = setTimeout(() => {
+        console.log('timeOut')
+        commit('REMOVE_IMGLIST', key)
+        img.style.height = '300px'
+        r(img)
+      }, 30000)
+      img.onload = () => {
+        commit('REMOVE_IMGLIST', key)
+        clearTimeout(timeOut)
+        r(img)
+      }
+      img.onerror = () => {
+        commit('REMOVE_IMGLIST', key)
+        img.style.height = '300px'
+        clearTimeout(timeOut)
+        j(img)
+      }
+      img.onabort = () => {
+        commit('REMOVE_IMGLIST', key)
+        img.style.height = '300px'
+        clearTimeout(timeOut)
+        j(img)
+      }
+    })
+  },
 }
 
 const getters = {
-	navList: (state) => state.navList,
-	pendingRequestNum: (state) => state.pendingRequestNum,
-	updateKey: (state) => state.updateKey,
-	mapControl: (state) => state.mapControl,
-	imgList: (state) => state.imgList,
+  navList: (state) => state.navList,
+  pendingRequestNum: (state) => state.pendingRequestNum,
+  updateKey: (state) => state.updateKey,
+  mapControl: (state) => state.mapControl,
+  imgList: (state) => state.imgList,
 }
 
 export default {

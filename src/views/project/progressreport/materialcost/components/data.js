@@ -134,6 +134,8 @@ export const ModeltableTitle = (vm) => [
 
 export const dataPoint = [
     {
+        props:"nomiPartNum",
+    },{
         props:"nomiAPrice",
     },{
         props:"nomiCar",
