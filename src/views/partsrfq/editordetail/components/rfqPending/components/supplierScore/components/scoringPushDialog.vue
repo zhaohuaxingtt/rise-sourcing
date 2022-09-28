@@ -282,7 +282,7 @@ export default {
           )
         );
       let params = {
-        rateDeptNumList: this.rateDeptNumList,
+        rateDeptIdList: this.rateDeptNumList.map((item) => item.id),
         rfqId: this.ids[0],
         supplierDTOS: this.selectTableData.map((item) => {
           return {
