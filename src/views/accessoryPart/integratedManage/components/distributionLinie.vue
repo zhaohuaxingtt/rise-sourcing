@@ -109,7 +109,8 @@ export default {
         deptId : val,
         roleCode : "LINIE",
       }
-      listUserByDepartIdAndRoleCode(data).then(res=>{
+      listUserByDepartId(data).then(res=>{
+      // listUserByDepartIdAndRoleCode(data).then(res=>{
         this.linieOptions = res.data || []
       })
     },

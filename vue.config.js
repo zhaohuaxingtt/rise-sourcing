@@ -13,8 +13,8 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 
-// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -63,6 +63,7 @@ module.exports = {
 					},
 					commons: {
 						name: 'commons',
+						test: resolve('src/components'),
 						priority: -11,
 						reuseExistingChunk: true,
 					},
@@ -138,7 +139,7 @@ module.exports = {
 	//本地server配置
 	devServer: {
 		open: true,
-		host: 'localhost',
+		host: '0.0.0.0',
 		port: 8080,
 		https: false,
 		hot: true,
@@ -169,12 +170,12 @@ module.exports = {
 					['^' + process.env.VUE_APP_COMMON]: '',
 				},
 			},
-			[process.env.VUE_APP_BASE_EXECUTIONOPERATION]: {
+			[process.env.VUE_APP_PURCHASE]: {
 				changeOrigin: true,
-				// target: 'http://rise-nginx-internal.apps.vmocp-dev.csvw.com/executionoperation/web',
+				// target: 'http://10.173.48.113:8080/executionoperation/web',
 				target: `${BASE_IP}/executionoperation/web`,
 				pathRewrite: {
-					['^' + process.env.VUE_APP_BASE_EXECUTIONOPERATION]: '',
+					['^' + process.env.VUE_APP_PURCHASE]: '',
 				},
 			},
 			[process.env.VUE_APP_AEKO]: {
@@ -211,9 +212,27 @@ module.exports = {
 					['^' + process.env.VUE_APP_DIC_API]: '',
 				},
 			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
 			[process.env.VUE_APP_SOURCING]: {
-				target: `${BASE_IP}/sourcing/web`,
+				target: `${BASE_IP}/sourcing/webweb`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',
@@ -270,7 +289,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_FIXEDASSETS]: {
-				target: `http://10.122.17.38:8053/`,
+				target: `${BASE_IP}/fixedasset`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_FIXEDASSETS]: '',
@@ -311,6 +330,15 @@ module.exports = {
 			},
 
 			//------------------ 组织 start ----------------------------
+			[process.env.VUE_APP_USER_CENTER_API]: {
+				//   供应商
+				target: `${BASE_IP}/usercenter/`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_USER_CENTER_API]: '',
+				},
+			},
+
 			[process.env.VUE_APP_ORGANIZATION]: {
 				//   供应商
 				target: `${BASE_IP}/usercenter/`,
@@ -331,7 +359,6 @@ module.exports = {
 
 			//------------------- 业务日志 ---------------------
 			[process.env.VUE_APP_BIZLOG]: {
-				// target: `http://10.122.17.38:8013/bizlog`,
 				target: `${BASE_IP}/bizlog/`,
 				changeOrigin: true,
 				pathRewrite: {

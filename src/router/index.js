@@ -16,6 +16,7 @@ import createpartsRoutes from './modules/createparts'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
+import deliverRoutes from './modules/deliver'
 import supplierkpiRoutes from './modules/supplierkpi'
 import categoryManagementAssistant from './modules/categoryManagementAssistant'
 import mek from './modules/mek'
@@ -390,6 +391,8 @@ const router = new VueRouter({
 		...aekoRoutes,
 		//项目管理
 		...projectRoutes,
+		//送样管理
+		...deliverRoutes,
 		//品类管理助手
 		...categoryManagementAssistant,
 		//ws2

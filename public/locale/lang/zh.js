@@ -625,6 +625,7 @@
     LK_QITAPEIZHI: '其他配置',
     LK_QITAXINXI: '其他信息',
     LK_QIDONGXIANGMU: '启动项目',
+    LK_QIDONG: '启动',
     LK_QIDONGXUNJIA: '启动询价',
     LK_QIANSHOU: '签收',
     LK_QIANSHOUQUEREN: '签收确认',

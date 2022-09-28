@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 11:28:03
+ * @LastEditTime: 2022-05-11 17:11:36
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -2418,6 +2418,9 @@ export default {
         font-size: 13px !important;
       }
     }
+    .complete {
+      color: rgb(104, 193, 131);
+    }
   }
   ::v-deep .checkList {
     display: flex;
@@ -2451,10 +2454,6 @@ export default {
     &-item:last-child {
       margin-right: 0;
     }
-  }
-
-  ::v-deep .complete {
-    color: rgb(104, 193, 131);
   }
 
   ::v-deep .cancel {
