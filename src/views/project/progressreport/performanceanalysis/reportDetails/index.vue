@@ -105,6 +105,102 @@
                     <span>{{setPercentage(scope.row.otsPercentage)}}</span>
                 </template>
             </tableList>
+            <!-- 车型项目Em准时完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 6"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle6" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
+            </tableList>
+            <!-- 车型项目定点准时完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 7"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle7" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
+            </tableList>
+            <!-- 车型项目ots准时完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 8"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle8" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
+            </tableList>
+            <!-- FG组BF完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 9"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle9" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
+            </tableList>
+            <!-- 供应商1stTryout完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 10"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle10" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="percentage">
+                    <span>{{setPercentage(scope.row.percentage)}}</span>
+                </template>
+            </tableList>
+            <!-- 不同Commodity定点完成情况报告 -->
+            <tableList v-else-if="$route.query.type == 11"
+                :tableData="tableListData" 
+                ref="contractForm"
+                :tableTitle="tableTitle11" 
+                :tableLoading="loading" 
+                :index="true"
+                :selectable="false"
+                :selection="false"
+                border
+                @handleSelectionChange="handleSelectionChange"
+                >
+                <template slot-scope="scope" slot="nomPercentage">
+                    <span>{{setPercentage(scope.row.nomPercentage)}}</span>
+                </template>
+            </tableList>
             <iPagination v-update
                 class="pagination"
                 @size-change="handleSizeChange($event, getEnquiry)"
@@ -130,6 +226,12 @@ import {
     tableTitle3,
     tableTitle4,
     tableTitle5,
+    tableTitle6,
+    tableTitle7,
+    tableTitle8,
+    tableTitle9,
+    tableTitle10,
+    tableTitle11,
 } from "./data";
 import { echartsSupplerEM } from "../data";
 
@@ -148,6 +250,20 @@ import {
 
     getDefaultCarTypePro,
     exprotProjectAnalysisc,
+
+    getCarProjectEmOntimeDTOInfo,
+    getCarProjectEmOntimeDTOPage,
+    getCarProjectNomOntimeDTOInfo,
+    getCarProjectNomOntimeDTOPage,
+    getCarProjectOTSOntimeDTOInfo,
+    getCarProjectOTSOntimeDTOPage,
+
+    getFGBFNomiOntimeInfo,
+    getFGBFNomiOntimePage,
+    getSupplierTryOutOntimeInfo,
+    getSupplierTryOutOntimePage,
+    getCommodityNomOntimeInfo,
+    getCommodityNomOntimePage,
 } from '@/api/project/projectprogressreport'
 
 import { getCarTypePro } from '@/api/project'
@@ -173,6 +289,12 @@ export default {
             tableTitle3,
             tableTitle4,
             tableTitle5,
+            tableTitle6,
+            tableTitle7,
+            tableTitle8,
+            tableTitle9,
+            tableTitle10,
+            tableTitle11,
             loading:false,
 
             list:{},
@@ -342,6 +464,168 @@ export default {
                 })
                 
                 getCommodityOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 6){//车型项目Em准时完成情况报告
+                getCarProjectEmOntimeDTOInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(5,res?.data,[
+                            this.$t("EM准时完成率"),
+                            this.$t("EM总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getCarProjectEmOntimeDTOPage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 7){//车型项目定点准时完成情况报告
+                getCarProjectNomOntimeDTOInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(6,res?.data,[
+                            this.$t("定点准时完成率"),
+                            this.$t("OTS总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getCarProjectNomOntimeDTOPage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 8){//车型项目ots准时完成情况报告
+                getCarProjectOTSOntimeDTOInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(7,res?.data,[
+                            this.$t("OTS准时完成率"),
+                            this.$t("OTS总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getCarProjectOTSOntimeDTOPage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 9){//FG组BF完成情况报告
+                getFGBFNomiOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(8,res?.data,[
+                            this.$t("BF准时完成率"),
+                            this.$t("BF总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getFGBFNomiOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 10){//供应商1stTryout完成情况报告
+                getSupplierTryOutOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(9,res?.data,[
+                            this.$t("1stTryout准时完成率"),
+                            this.$t("1stTryout总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getSupplierTryOutOntimePage({
+                    cartypeProId:this.cartypeProId,
+                    current:this.page.currPage,
+                    size:this.page.pageSize,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.result){
+                        const { pageNum, pageSize, total } = res;
+                        this.page.currPage = pageNum;
+                        this.page.pageSize = pageSize;
+                        this.page.totalCount = total;
+
+                        this.tableListData = res.data;
+                    }
+                })
+            }else if(val == 11){//不同Commodity定点完成情况报告
+                getCommodityNomOntimeInfo({
+                    cartypeProId:this.cartypeProId,
+                }).then(res=>{
+                    if(res.result){
+                        this.echartsOption(10,res?.data,[
+                            this.$t("定点准时完成率"),
+                            this.$t("定点总数")
+                        ],this.cartypeProName);
+                    }
+                })
+                
+                getCommodityNomOntimePage({
                     cartypeProId:this.cartypeProId,
                     current:this.page.currPage,
                     size:this.page.pageSize,
