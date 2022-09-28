@@ -251,3 +251,30 @@ export function exportErrorInfo(data) {
     data
   })
 }
+
+// 车型项目Em准时完成情况报告
+export function getCarProjectEmOntimeDTOInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectEmOntimeDTOInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 车型项目定点准时完成情况报告
+export function getCarProjectNomOntimeDTOInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectNomOntimeDTOInfo',
+    method: 'POST',
+    data
+  })
+}
+
+// 车型项目ots准时完成情况报告
+export function getCarProjectOTSOntimeDTOInfo(data) {
+  return requst({
+    url: '/project-performance-analysisc-report/getCarProjectOTSOntimeDTOInfo',
+    method: 'POST',
+    data
+  })
+}

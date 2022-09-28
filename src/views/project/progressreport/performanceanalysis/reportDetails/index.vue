@@ -334,7 +334,10 @@ export default {
                     cartypeProId:this.cartypeProId,
                 }).then(res=>{
                     if(res.result){
-                        this.echartsOption(4,res?.data,[this.$t("EM准时完成率"),this.$t("OTS准时完成率"),this.$t("定点总数")],this.cartypeProName);
+                        this.echartsOption(4,res?.data,[
+                            this.$t("OTS准时完成率"),
+                            this.$t("OTS完成数")
+                        ],this.cartypeProName);
                     }
                 })
                 
