@@ -139,18 +139,10 @@ export function getMaterialGroupPart(data) {
     })
 }
 
-// 查询车型项目关联设置的heavyitem
-export function getHeavyitem(params) {
-    return requst({
-        url: `/sample_heavyitem/web/getHeavyitem/${params}`,
-        method: 'GET',
-    })
-}
-
 // 设置heavyitem
 export function setHeavyitem(data) {
     return requst({
-        url: `/sample_heavyitem/web/setHeavyitem`,
+        url: `/sample_part_list/web/setHeavyitem`,
         method: 'POST',
         data
     })
@@ -178,6 +170,42 @@ export function partsPage(data) {
 export function getPartNode(data) {
     return requst({
         url: `/sample_part_actityty/web/getPartNode`,
+        method: 'POST',
+        data
+    })
+}
+
+// 送样计划查询
+export function getSamplePlanList(data) {
+    return requst({
+        url: `/sample_part_list/web/getSamplePlanList`,
+        method: 'POST',
+        data
+    })
+}
+
+// 根据零件编号 数据类型查询对应的计划详情
+export function planDetail(data) {
+    return requst({
+        url: `/sample_part_list/web/planDetail`,
+        method: 'POST',
+        data
+    })
+}
+
+// 根据零件编号 数据类型查询对应的计划详情
+export function changePlan(data) {
+    return requst({
+        url: `/sample_part_actityty/web/changePlan`,
+        method: 'POST',
+        data
+    })
+}
+
+// 普通零件查询接口
+export function ordinaryPart(data) {
+    return requst({
+        url: `/sample_part_actityty/web/ordinaryPart`,
         method: 'POST',
         data
     })

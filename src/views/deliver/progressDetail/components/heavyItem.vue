@@ -2,7 +2,7 @@
   <iCard title="Id.4x后座靠背总成项目管理进度图">
     <template slot='header-control'>
       <i-button>导出</i-button>
-      <i-button @click="jumpHeavy">设置送样进度节点</i-button>
+      <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
       <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
     </template>
     <div class="row-item">
@@ -53,6 +53,10 @@ export default {
         currPage:1,    //当前页
         layout:"sizes, prev, pager, next, jumper"
       },
+    },
+    carProjectOptions:{
+      type:Array,
+      default:[],
     }
   },
   data() {
@@ -254,10 +258,12 @@ export default {
       window.open(routeData.href, '_blank')
     },
     jumpSupplier(){
+      var obj = this.carProjectOptions.filter(e=> e.cartypeProId == this.carProjectId)
       const routeData = this.$router.resolve({
         path:"/deliver/deliverPlan",
         query:{
           carProjectId:this.carProjectId,
+          carProjectName:obj[0].cartypeProNameZh
         }
       })
       window.open(routeData.href, '_blank')

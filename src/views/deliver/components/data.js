@@ -80,14 +80,14 @@ export const shuttleTableTitle = [
     align: 'left'
   },
   {
-    prop: 'col1',
+    prop: 'name',
     label: '材料组名称',
     i18n: '材料组名称',
     type: 'expanded',
     minWidth: 200,
     align: 'left'
   },{
-    prop: 'col2',
+    prop: 'code',
     label: '材料组号',
     i18n: '材料组号',
     minWidth: 200,

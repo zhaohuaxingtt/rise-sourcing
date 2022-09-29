@@ -73,10 +73,10 @@
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
       <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" />
+        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" />
       </el-tab-pane>
       <el-tab-pane name="2" label="普通零件">
-        <commonParts :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
+        <commonParts ref="commonParts" :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -95,6 +95,7 @@ import {
   getCartypeProSupplier,
   partsPage,
   getPartNode,
+  ordinaryPart,
 } from "@/api/project/deliver";
 
 export default {
@@ -155,16 +156,22 @@ export default {
       this.getPartNode(this.partNum);
     },
     async getData(){
-      cartype_pro_List({}).then(res=>{
-        if(res?.result){
-          this.carProjectOptions = res.data.filter(res => res)
-          this.searchParams.carTypeProId = this.carProjectOptions[0]?.cartypeProId;
-          this.carTypeProIdOld = this.carProjectOptions[0]?.cartypeProId;
-          this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
-        }
-      })
+      await this.getCarType();
       await this.partsPage();
       this.getPartNode(this.partNum);
+    },
+    getCarType(){
+      return new Promise((resolve,reject) => {
+        cartype_pro_List({}).then(res=>{
+          if(res?.result){
+            this.carProjectOptions = res.data.filter(res => res)
+            this.searchParams.carTypeProId = this.carProjectOptions[0]?.cartypeProId;
+            this.carTypeProIdOld = this.carProjectOptions[0]?.cartypeProId;
+            this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
+            resolve();
+          }
+        })
+      })
     },
     partsPage(){
       return new Promise((resolve,reject) => {
@@ -183,13 +190,23 @@ export default {
       })
     },
     getPartNode(){
-      console.log(this.partNum)
-      getPartNode({
-        partNum:this.partNum,
-      }).then(res=>{
-        console.log(res);
-        this.$refs.heavyItem.setData(res.data);
-      })
+      if(this.tabVal == 1){
+        getPartNode({
+          partNum:this.partNum,
+        }).then(res=>{
+          if(res?.result){
+            this.$refs.heavyItem.setData(res.data);
+          }
+        })
+      }else{
+        ordinaryPart({
+          ...this.searchParams,
+        }).then(res=>{
+          if(res?.result){
+            this.$refs.commonParts.setData(res.data);
+          }
+        })
+      }
     },
     getGroup(val){
       getCartypeProMaterialGroup(val).then(res=>{
@@ -210,8 +227,9 @@ export default {
         }
       })
     },
-    changeTab(){
-
+    changeTab(val){
+      this.tabVal = val.name;
+      this.getPartNode();
     }
   }
 }
