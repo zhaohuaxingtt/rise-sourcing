@@ -5,7 +5,7 @@
       <row-item :data="data" :list="list" :header="header" :key="key"></row-item>
       <template v-if="data.showChlid">
         <!-- 层级数据渲染 -->
-        <template v-for="(child,key) in data.children">
+        <template v-for="(child,key) in data.childList">
           <row-item :data="child" :list="list" :key="key" :header="header"></row-item>
         </template>
       </template>

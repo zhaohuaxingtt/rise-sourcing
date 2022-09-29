@@ -164,3 +164,21 @@ export function getPartActityty(params) {
         params
     })
 }
+
+// 根据车型项目和零件筛选条件查询零件分页
+export function partsPage(data) {
+    return requst({
+        url: `/sample_part_actityty/web/partsPage`,
+        method: 'POST',
+        data
+    })
+}
+
+// 根据零件编号获取节点信息
+export function getPartNode(data) {
+    return requst({
+        url: `/sample_part_actityty/web/getPartNode`,
+        method: 'POST',
+        data
+    })
+}

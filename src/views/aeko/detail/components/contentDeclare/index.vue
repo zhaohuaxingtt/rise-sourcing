@@ -16,20 +16,42 @@
       :searchKey="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CONFIRM"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM|零件号">
+        <el-form-item
+          :label="language('LINGJIANHAO', '零件号')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM | 零件号
+          "
+        >
           <iMultiLineInput
-            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
-            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            :placeholder="
+              language(
+                'partsprocure.PARTSPROCURE',
+                '请输入零件号，多个逗号分隔'
+              )
+            "
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER', '零件号')"
             v-model="form.partNum"
           ></iMultiLineInput>
         </el-form-item>
-        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE|供应商编号">
+        <el-form-item
+          :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE | 供应商编号
+          "
+        >
           <iInput
             v-model="form.supplierSapCode"
-            :placeholder="language('QINGSHURUGONGYINGSHANGSAP号', '请输入供应商SAP号')"
+            :placeholder="
+              language('QINGSHURUGONGYINGSHANGSAP号', '请输入供应商SAP号')
+            "
           />
         </el-form-item>
-        <el-form-item :label="showCarTypeLabel" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
+        <el-form-item
+          :label="showCarTypeLabel"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE | 车型项目
+          "
+        >
           <iSelect
             clearable
             multiple
@@ -37,8 +59,10 @@
             filterable
             reserve-keyword
             v-model="form.cartypeProjectCode"
-            :placeholder="language('partsprocure.CHOOSE','请选择')"
-            :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
+            :placeholder="language('partsprocure.CHOOSE', '请选择')"
+            :filter-method="
+              ($event) => selectFilter($event, 'cartypeProjectCode')
+            "
             v-lazy-select="cartypeProjectLazy"
             @change="handleChangeByAll($event, 'cartypeProjectCode')"
             @visible-change="selectVisibleChange($event, 'cartypeProjectCode')"
@@ -55,7 +79,12 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_STATUS|内容状态">
+        <el-form-item
+          :label="language('NEIRONGZHUANGTAI', '内容状态')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_STATUS | 内容状态
+          "
+        >
           <iSelect
             multiple
             collapse-tags
@@ -63,8 +92,10 @@
             clearable
             reserve-keyword
             v-model="form.status"
-            :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
-            :filter-method="$event => selectFilter($event, 'status')"
+            :placeholder="
+              language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')
+            "
+            :filter-method="($event) => selectFilter($event, 'status')"
             @change="handleChangeByAll($event, 'status')"
             @visible-change="selectVisibleChange($event, 'status')"
           >
@@ -80,13 +111,18 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ|MTZ相关">
+        <el-form-item
+          :label="language('MTZXIANGGUAN', 'MTZ相关')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ | MTZ相关
+          "
+        >
           <iSelect
             filterable
             reserve-keyword
             v-model="form.isMtz"
             :placeholder="language('QINGXUANZEMTZXIANGGUAN', '请选择MTZ相关')"
-            :filter-method="$event => selectFilter($event, 'isMtz')"
+            :filter-method="($event) => selectFilter($event, 'isMtz')"
             @visible-change="selectVisibleChange($event, 'isMtz')"
           >
             <el-option
@@ -101,13 +137,20 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY|采购工厂">
+        <el-form-item
+          :label="language('LK_CAIGOUGONGCHANG', '采购工厂')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY | 采购工厂
+          "
+        >
           <iSelect
             filterable
             reserve-keyword
             v-model="form.procureFactory"
-            :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
-            :filter-method="$event => selectFilter($event, 'procureFactory')"
+            :placeholder="
+              language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')
+            "
+            :filter-method="($event) => selectFilter($event, 'procureFactory')"
             @visible-change="selectVisibleChange($event, 'procureFactory')"
           >
             <el-option
@@ -122,21 +165,39 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERNAMEZH|供应商简称">
+        <el-form-item
+          :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERNAMEZH | 供应商简称
+          "
+        >
           <iInput
             v-model="form.supplierNameZh"
-            :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
+            :placeholder="
+              language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')
+            "
           />
         </el-form-item>
-        <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_INVESTCARTYPEPRO|指定投资车型项目">
+        <el-form-item
+          :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_INVESTCARTYPEPRO |
+              指定投资车型项目
+          "
+        >
           <iSelect
-            collapse-tags 
+            collapse-tags
             filterable
             multiple
             clearable
             reserve-keyword
             v-model="form.investCarTypePros"
-            :placeholder="language('QINGXUANZEZHIDINGTOUZICHEXINGXIANGMU', '请选择指定投资⻋型项⽬')"
+            :placeholder="
+              language(
+                'QINGXUANZEZHIDINGTOUZICHEXINGXIANGMU',
+                '请选择指定投资⻋型项⽬'
+              )
+            "
             @change="handleChangeByAll($event, 'investCarTypePros')"
             @visible-change="selectVisibleChange($event, 'investCarTypePros')"
           >
@@ -147,8 +208,8 @@
             <el-option
               :value="item.carTypeProjectCode"
               :label="item.carTypeProjectZh"
-              v-for="(item,index) in investCarTypeProOptions"
-              :key="item+index"
+              v-for="(item, index) in investCarTypeProOptions"
+              :key="item + index"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -156,57 +217,162 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton v-if="!disabled && !cantBeCombine" :loading="declareToggleLoading" @click="combine" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_COMBINE|组合">
+        <iButton
+          v-if="!disabled && !cantBeCombine"
+          :loading="declareToggleLoading"
+          @click="combine"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_COMBINE | 组合
+          "
+        >
           {{ language("nominationSuggestion_ZuHe", "组合") }}
-          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="language('LK_AEKONEIRONGZUHECOMMENTS','多变一或多变多组合操作，用于系统计算封面表态的单车成本变化。')" placement="top">
+          <el-tooltip
+            effect="light"
+            popper-class="custom-card-tooltip"
+            :content="
+              language(
+                'LK_AEKONEIRONGZUHECOMMENTS',
+                '多变一或多变多组合操作，用于系统计算封面表态的单车成本变化。'
+              )
+            "
+            placement="top"
+          >
             <i class="el-icon-warning-outline bule iconSuffix"></i>
           </el-tooltip>
         </iButton>
-        <iButton v-if="!disabled && cantBeCombine" @click="cancelCombination" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CANCELCOMBINE|取消组合">{{language("nominationSuggestion_QuXiaoZuHe", "取消组合")}}</iButton>
+        <iButton
+          v-if="!disabled && cantBeCombine"
+          @click="cancelCombination"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CANCELCOMBINE | 取消组合
+          "
+          >{{
+            language("nominationSuggestion_QuXiaoZuHe", "取消组合")
+          }}</iButton
+        >
 
-
-        <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置") }}</iButton>
-        <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton v-if="!disabled" @click="goToinvestCarTypePro" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
+        <iButton
+          v-if="!disabled"
+          :loading="declareToggleLoading"
+          @click="handleDeclareToggle"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE | 无关相关切换
+          "
+          >{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton
+        >
+        <iButton
+          v-if="!disabled"
+          :loading="declareResetLoading"
+          @click="handleDeclareReset"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET | 表态重置
+          "
+          >{{
+            language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置")
+          }}</iButton
+        >
+        <iButton
+          v-if="!disabled"
+          :loading="declareSendSupplier"
+          @click="sendSupplierPrice"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION |
+              发放供应商报价
+          "
+          >{{
+            language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价")
+          }}</iButton
+        >
+        <iButton
+          v-if="!disabled"
+          @click="goToinvestCarTypePro"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO |
+              指定投资车型项目
+          "
+          >{{
+            language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬")
+          }}</iButton
+        >
+        <iButton
+          v-if="!disabled"
+          @click="handleExport"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT | 导出
+          "
+        >
           {{ language("DAOCHU", "导出") }}
-          <el-tooltip 
-            effect="light" 
+          <el-tooltip
+            effect="light"
             popper-class="custom-card-tooltip"
-            :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
-            placement="top">
+            :content="`${language(
+              'LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI',
+              '勾选零件行项目-->导出->批量维护原零件信息-->导入'
+            )}`"
+            placement="top"
+          >
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
         <Upload
-          class="margin-left10" 
-          v-if="!disabled" 
-          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入"
+          class="margin-left10"
+          v-if="!disabled"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT | 导入
+          "
           hideTip
-          :buttonText="language('DAORU','导⼊')"
+          :buttonText="language('DAORU', '导⼊')"
           :request="importItemExcel"
           :onHttpUploaded="onHttpUploaded"
           :accept="'.xlsx,.xls'"
         />
-        <iButton class="btn-margin-left10" v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
+        <iButton
+          class="btn-margin-left10"
+          v-if="!disabled"
+          :loading="submitLoading"
+          @click="handleSubmit"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT | 提交
+          "
+          >{{ language("TIJIAO", "提交") }}</iButton
+        >
+        <iButton
+          v-if="!disabled"
+          :loading="cancelLoading"
+          @click="cancelContent"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL | 撤回
+          "
+        >
           {{ language("CHEHUI", "撤回") }}
-          <el-tooltip 
-            effect="light" 
+          <el-tooltip
+            effect="light"
             popper-class="custom-card-tooltip"
-            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
-            placement="top">
+            :content="`${language(
+              'LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO',
+              '审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】'
+            )}`"
+            placement="top"
+          >
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <iButton @click="transfer" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER|转派">
+        <iButton
+          @click="transfer"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER | 转派
+          "
+        >
           {{ language("ZHUANPAI", "转派") }}
-          <el-tooltip 
-            effect="light" 
+          <el-tooltip
+            effect="light"
             popper-class="custom-card-tooltip"
-            :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
-            placement="top">
+            :content="`${language(
+              'TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI',
+              '同一零件关联的多个原零件行将被一同转派'
+            )}`"
+            placement="top"
+          >
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
@@ -240,7 +406,9 @@
           ref="tableList"
           index
           fixed
-          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE|内容表态表单"
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_TABLE | 内容表态表单
+          "
           :lang="true"
           :indexFixed="true"
           :selection="isSelection"
@@ -251,47 +419,92 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #supplierNameZh="scope">
-            <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
+            <span>{{
+              showSupplierNameZh(
+                scope.row.supplierSapCode,
+                scope.row.supplierNameZh
+              )
+            }}</span>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="(scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED') && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" :readonly="!canEdit(scope.row)">
+            <iInput
+              v-if="
+                (scope.row.status === 'EMPTY' ||
+                  scope.row.status === 'TOBE_STATED') &&
+                !isDeclareBlackListPart(scope.row) &&
+                !disabled
+              "
+              class="oldPartNumPresetQuery"
+              :class="{ oldPartNumPreset: !scope.row.isDeclare }"
+              :placeholder="language('QINGXUANZE', '请选择')"
+              v-model="scope.row.showPartNumPreset"
+              :readonly="!canEdit(scope.row)"
+            >
               <div class="inputSearchIcon" slot="suffix">
-                <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
+                <icon
+                  symbol
+                  name="iconshaixuankuangsousuo"
+                  class="oldPartNumPresetIcon"
+                  @click.native="oldPartNumPresetSelect(scope.row)"
+                />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" :readonly="!canEdit(scope.row)"></iInput>
+            <iInput
+              v-else
+              v-model="scope.row.showPartNumPreset"
+              class="inputClass"
+              :class="{ oldPartNumPreset: !scope.row.isDeclare }"
+              :placeholder="language('QINGXUANZE', '请选择')"
+              :readonly="!canEdit(scope.row)"
+            ></iInput>
           </template>
           <template #oldPartNamePreset="scope">
-            <span v-if="scope.row.isDeclare==0">{{scope.row.oldPartNamePreset}}</span>
-            <span v-else>{{scope.row.originPartName}}</span>
+            <span v-if="scope.row.isDeclare == 0">{{
+              scope.row.oldPartNamePreset
+            }}</span>
+            <span v-else>{{ scope.row.originPartName }}</span>
           </template>
           <template #dosage="scope">
-            <span class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link" @click="viewDosage(scope.row)">{{
+              language("CHAKAN", "查看")
+            }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span
+              v-if="scope.row.quotationId"
+              class="link"
+              @click="jumpQuotation(scope.row)"
+              >{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span
+            >
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
-            <span>{{floatFixNum(scope.row.mouldPriceChange)}}</span>
+            <span>{{ floatFixNum(scope.row.mouldPriceChange) }}</span>
           </template>
           <!-- 原零件A价 -->
           <template #originPriceA="scope">
-            <span>{{floatFixNum(scope.row.originPriceA)}}</span>
+            <span>{{ floatFixNum(scope.row.originPriceA) }}</span>
           </template>
           <!-- 原零件B价 -->
           <template #originPriceB="scope">
-            <span>{{floatFixNum(scope.row.originPriceB)}}</span>
+            <span>{{ floatFixNum(scope.row.originPriceB) }}</span>
           </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
-            <span v-if="scope.row.quotationId" class="blue-text" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span
+              v-if="scope.row.quotationId"
+              class="blue-text"
+              @click="showPriceAxis(scope.row)"
+              >{{ language("CHAKAN", "查看") }}</span
+            >
           </template>
           <template #investCarTypePro="scope">
             <iSelect
               v-model="scope.row.investCarTypePro"
-              :disabled="disabledInvestCarTypePro(scope.row)||!canEdit(scope.row)"
+              :disabled="
+                disabledInvestCarTypePro(scope.row) || !canEdit(scope.row)
+              "
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeCarInvestProjects($event, scope.row)"
               :readonly="!canEdit(scope.row)"
@@ -299,36 +512,52 @@
               <el-option
                 :value="item.carTypeProjectCode"
                 :label="item.carTypeProjectZh"
-                v-for="item in (scope.row.carInvestProjects || [])"
+                v-for="item in scope.row.carInvestProjects || []"
                 :key="item"
               ></el-option>
             </iSelect>
           </template>
           <!-- B价变动含分摊 -->
           <template #bpriceChange="scope">
-            <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
+            <span>{{ floatFixNum(scope.row.bpriceChange) }}</span>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="blue-text" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-            <span v-else>{{scope.row.isMtzDesc}}</span>
+            <span
+              v-if="scope.row.isMtz == 1"
+              class="blue-text"
+              @click="view(scope.row)"
+              >{{ language("CHAKAN", "查看") }}</span
+            >
+            <span v-else>{{ scope.row.isMtzDesc }}</span>
           </template>
           <!-- 是否待报价 -->
           <template #isReplace="scope">
-            <span v-if="scope.row.isReplace!==null">{{scope.row.isReplace ? language('nominationLanguage.Yes','是')  : language('nominationLanguage.No','否')}}</span>
+            <span v-if="scope.row.isReplace !== null">{{
+              scope.row.isReplace
+                ? language("nominationLanguage.Yes", "是")
+                : language("nominationLanguage.No", "否")
+            }}</span>
           </template>
           <!-- 合并原承运方式和新承运方式 -->
           <template #tranWayDesc="scope">
-            <span>{{getRranWayDesc(scope.row)}}</span>
+            <span>{{ getRranWayDesc(scope.row) }}</span>
           </template>
           <template #groupName="scope">
             <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName" :readonly="!canEdit(scope.row)">
+              <iInput
+                type="textarea"
+                v-if="!disabled"
+                :placeholder="language('LK_QINGSHURU', '请输入')"
+                @blur="updateGroupName(scope.row)"
+                v-model="scope.row.groupName"
+                :readonly="!canEdit(scope.row)"
+              >
               </iInput>
-              <span v-else>{{scope.row.groupName}}</span>
+              <span v-else>{{ scope.row.groupName }}</span>
             </div>
           </template>
         </tableList>
-        <iPagination 
+        <iPagination
           v-update
           class="margin-top30"
           @size-change="handleSizeChange($event, init)"
@@ -338,98 +567,164 @@
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
           :layout="page.layout"
-          :total="page.totalCount" />
+          :total="page.totalCount"
+        />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
+    <dosageDialog
+      :visible.sync="dosageDialogVisible"
+      :aekoInfo="aekoInfo"
+      :objectAekoPartId="currentRow.objectAekoPartId"
+      @update="init"
+    />
     <!-- 指定投资⻋型项⽬ -->
-    <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
+    <investCarTypeProDialog
+      v-if="investCarTypeProVisible"
+      :multipleSelection="multipleSelection"
+      :dialogVisible="investCarTypeProVisible"
+      @changeVisible="changeVisible"
+      @refresh="init"
+    />
     <!-- 价格轴 -->
-    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" :priceAxisRow="priceAxisRow" @changeVisible="changeVisible"/>
+    <priceAxisDialog
+      v-if="priceAxisVisible"
+      :dialogVisible="priceAxisVisible"
+      :priceAxisRow="priceAxisRow"
+      @changeVisible="changeVisible"
+    />
     <!-- 转派 -->
-    <assignDialog v-if="transferVisible" :dialogVisible="transferVisible" @changeVisible="changeVisible" @getList="init" :selectItems="multipleSelection"/>
+    <assignDialog
+      v-if="transferVisible"
+      :dialogVisible="transferVisible"
+      @changeVisible="changeVisible"
+      @getList="init"
+      :selectItems="multipleSelection"
+    />
   </div>
 </template>
 
-<script> 
-import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage, iMultiLineInput } from "rise"
+<script>
+import {
+  iSearch,
+  iInput,
+  iSelect,
+  iCard,
+  iButton,
+  icon,
+  iPagination,
+  iMessage,
+  iMultiLineInput,
+} from "rise";
 // import tableList from "@/views/partsign/editordetail/components/tableList"
 // import tableList from "rise/web/quotationdetail/components/tableList"
-import tableList from "@/components/iTableSort"
-import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
-import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
-import { pageMixins } from "@/utils/pageMixins"
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import dosageDialog from "../dosageDialog";
+import {
+  contentDeclareQueryForm,
+  mtzOptions,
+  contentDeclareTableTitle as tableTitle,
+} from "../data";
+import { pageMixins } from "@/utils/pageMixins";
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar,importItemExcel } from "@/api/aeko/detail"
-import { getDictByCode } from "@/api/dictionary"
+import {
+  getAekoLiniePartInfo,
+  patchAekoReference,
+  patchAekoReset,
+  patchAekoContent,
+  sendSupplier,
+  liniePartExport,
+  sendSupplierCheck,
+  cancelContent,
+  updateInvestCarProject,
+  searchInvestCar,
+  importItemExcel,
+} from "@/api/aeko/detail";
+import { getDictByCode } from "@/api/dictionary";
 // import { searchCartypeProject } from "@/api/aeko/manage"
-import { partListGetCartype } from "@/api/aeko/detail/partsList.js"
-import { procureFactorySelectVo } from "@/api/dictionary"
-import { cloneDeep, chunk, debounce } from "lodash"
+import { partListGetCartype } from "@/api/aeko/detail/partsList.js";
+import { procureFactorySelectVo } from "@/api/dictionary";
+import { cloneDeep, chunk, debounce } from "lodash";
 
-import investCarTypeProDialog from './components/investCarTypeProDialog' 
-import priceAxisDialog from './components/priceAxisDialog' 
-import { getWorkflowId } from '@/api/aeko/approve'
+import investCarTypeProDialog from "./components/investCarTypeProDialog";
+import priceAxisDialog from "./components/priceAxisDialog";
+import { getWorkflowId } from "@/api/aeko/approve";
 
 // 组合相关功能
-import {combine} from './mixins/combine'
+import { combine } from "./mixins/combine";
 
+import Upload from "@/components/Upload";
 
-import Upload from '@/components/Upload'
-
-import {floatFixNum} from "../../../approve/approveDetails/data.js"
+import { floatFixNum } from "../../../approve/approveDetails/data.js";
 
 import { setLogMenu } from "@/utils";
-import qs from 'qs'
-import buttonTableSetting from '@/components/buttonTableSetting'
-import assignDialog from './components/assignDialog'
+import qs from "qs";
+import buttonTableSetting from "@/components/buttonTableSetting";
+import assignDialog from "./components/assignDialog";
 import { roleMixins } from "@/utils/roleMixins";
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
-
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, 
-  buttonTableSetting, iMultiLineInput, assignDialog },
-  mixins: [ pageMixins, combine, tableSortMixins, roleMixins ],
+  components: {
+    iSearch,
+    iInput,
+    iSelect,
+    iCard,
+    iButton,
+    icon,
+    iPagination,
+    tableList,
+    dosageDialog,
+    investCarTypeProDialog,
+    priceAxisDialog,
+    Upload,
+    buttonTableSetting,
+    iMultiLineInput,
+    assignDialog,
+  },
+  mixins: [pageMixins, combine, tableSortMixins, roleMixins],
   props: {
     aekoInfo: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   computed: {
     disabled() {
       // AEKO状态为撤销以及从AEKO查看跳转过来的
-      const {query} = this.$route;
-      const {from=''} = query;
-      const {auditType=''} = query; // 我的申请详情页内嵌页面
-      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check' || auditType;
+      const { query } = this.$route;
+      const { from = "" } = query;
+      const { auditType = "" } = query; // 我的申请详情页内嵌页面
+      return (
+        this.aekoInfo.aekoStatus == "CANCELED" || from == "check" || auditType
+      );
     },
     // 判断展示车型还是车型项目 展示label
-    showCarTypeLabel(){
-      const {aekoInfo={}} = this;
-      if(aekoInfo.aekoType == 'AeA'){  // 车型
-        return this.language('LK_AEKO_CHEXING', '车型')
-      }else{ // 车型项目
-        return this.language('CHEXINGXIANGMU', '车型项目')
+    showCarTypeLabel() {
+      const { aekoInfo = {} } = this;
+      if (aekoInfo.aekoType == "AeA") {
+        // 车型
+        return this.language("LK_AEKO_CHEXING", "车型");
+      } else {
+        // 车型项目
+        return this.language("CHEXINGXIANGMU", "车型项目");
       }
     },
     // 是否可勾选
-    isSelection(){
-      const {query} = this.$route;
-      const {from=''} = query;
-      if(from == 'check') return false
-      else return true
+    isSelection() {
+      const { query } = this.$route;
+      const { from = "" } = query;
+      if (from == "check") return false;
+      else return true;
     },
     // 检查是否可以进行后续操作
-    checkTodo(){
-      let result = true
-      this.multipleSelection.forEach(item => {
-        if(item.buyerId!==this.userInfo.id) result = false
-      })
-      return result
-    }
+    checkTodo() {
+      let result = true;
+      this.multipleSelection.forEach((item) => {
+        if (item.buyerId !== this.userInfo.id) result = false;
+      });
+      return result;
+    },
   },
   data() {
     return {
@@ -456,306 +751,400 @@ export default {
       investCarTypeProVisible: false,
       priceAxisVisible: false,
       transferVisible: false,
-      priceAxisRow:{},
+      priceAxisRow: {},
       submitLoading: false,
       debouncer: null,
-      declareSendSupplier:false,
-      cancelLoading:false,
+      declareSendSupplier: false,
+      cancelLoading: false,
       // showLineList:hidenTableTitle,
-      addTableTitle:[],
-      importItemExcel:importItemExcel,
-      singleAssign:[]
+      addTableTitle: [],
+      importItemExcel: importItemExcel,
+      singleAssign: [],
     };
   },
   created() {
-    this.searchCartypeProject()
-    this.getDictByCode()
-    this.procureFactorySelectVo()
-    this.getSearchInvestCar()
+    this.searchCartypeProject();
+    this.getDictByCode();
+    this.procureFactorySelectVo();
+    this.getSearchInvestCar();
 
-    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
+    if (
+      sessionStorage.getItem(
+        `aekoConatentDeclareParams_${this.$route.query.requirementAekoId}`
+      )
+    ) {
       try {
-        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
+        const aekoConatentDeclareParams = JSON.parse(
+          sessionStorage.getItem(
+            `aekoConatentDeclareParams_${this.$route.query.requirementAekoId}`
+          )
+        );
 
-        this.form = aekoConatentDeclareParams.form
+        this.form = aekoConatentDeclareParams.form;
         // this.page.currPage = aekoConatentDeclareParams.currPage
         // this.page.pageSize = aekoConatentDeclareParams.pageSize
-      } catch(e) {
-        console.error(e)
+      } catch (e) {
+        console.error(e);
       }
     }
 
-    const {query} = this.$route;
-    const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页-内容表态'):setLogMenu('AEKO表态-详情页-内容表态')
+    const { query } = this.$route;
+    const { from = "" } = query;
+    from == "manage"
+      ? setLogMenu("AEKO管理-详情页-内容表态")
+      : setLogMenu("AEKO表态-详情页-内容表态");
     // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列 显示采购员 并且只固定AEKO组别、零件号、零件名称【蓝湖上面看到的】
-    if(from == 'check'){
-      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
-      filterTable.map((item)=>{
-        if(item.props=='groupName' || item.props =='partNum' || item.props=='partNameZh'){
+    if (from == "check") {
+      let filterTable = tableTitle.filter(
+        (item) =>
+          item.props != "originBnkTranWayDesc" &&
+          item.props != "newBnkTranWayDesc"
+      );
+      filterTable.map((item) => {
+        if (
+          item.props == "groupName" ||
+          item.props == "partNum" ||
+          item.props == "partNameZh"
+        ) {
           item.fixed = true;
-        }else{
+        } else {
           item.fixed = false;
         }
-      })
+      });
       this.tableTitle = filterTable;
-    } else if(from == 'stance'){
-      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+    } else if (from == "stance") {
+      let filterTable = tableTitle.filter(
+        (item) =>
+          item.props != "originBnkTranWayDesc" &&
+          item.props != "newBnkTranWayDesc"
+      );
       this.tableTitle = filterTable;
-    } else{
-      this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
+    } else {
+      this.tableTitle = tableTitle.filter(
+        (item) => item.props != "tranWayDesc" && item.props != "buyerName"
+      );
     }
-    
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     floatFixNum,
     // 判断是否能操作数据
-    canEdit(row){
-      return row.buyerId==this.userInfo.id
+    canEdit(row) {
+      return row.buyerId == this.userInfo.id;
     },
     // 转派
-    transfer(){
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDELINGJIAN", "请选择需要转派的零件"))
-      this.transferVisible = true
+    transfer() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOZHUANPAIDELINGJIAN",
+            "请选择需要转派的零件"
+          )
+        );
+      this.transferVisible = true;
     },
     searchCartypeProject() {
-      const {query} = this.$route;
-      const { requirementAekoId ='',} = query;
-      partListGetCartype(requirementAekoId)
-      .then(res => {
+      const { query } = this.$route;
+      const { requirementAekoId = "" } = query;
+      partListGetCartype(requirementAekoId).then((res) => {
         if (res.code == 200) {
-          this.carTypeProjectOptionsCache = 
-            Array.isArray(res.data) ?
-            res.data.map(item => ({
-              key: item.code,
-              label: item.name,
-              value: item.code,
-              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
-            })) :
-            []
+          this.carTypeProjectOptionsCache = Array.isArray(res.data)
+            ? res.data.map((item) => ({
+                key: item.code,
+                label: item.name,
+                value: item.code,
+                lowerCaseLabel:
+                  typeof item.name === "string"
+                    ? item.name.toLowerCase()
+                    : item.name,
+              }))
+            : [];
 
-          this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
-          this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
-          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+          this.carTypeProjectOptionsFilterCache =
+            this.carTypeProjectOptionsCache;
+          this.carTypeProjectOptionsCacheChunks = chunk(
+            this.carTypeProjectOptionsCache,
+            20
+          );
+          this.carTypeProjectOptions =
+            this.carTypeProjectOptionsCacheChunks[0] || [];
         } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      })
+      });
     },
     getDictByCode() {
       getDictByCode("CONTENT_STATUS")
-      .then(res => {
-        if (res.code == 200) {
-          this.contentStatusOptionsCache = 
-            Array.isArray(res.data) && res.data[0] && Array.isArray(res.data[0].subDictResultVo) ?
-            res.data[0].subDictResultVo.map(item => ({
-              key: item.code,
-              label: item.name,
-              value: item.code,
-              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
-            })) :
-            []
-          this.contentStatusOptionsCache.unshift({
-            key: "EMPTY",
-            label: "(空)",
-            value: "EMPTY",
-            lowerCaseLabel: "(空)"
-          })
+        .then((res) => {
+          if (res.code == 200) {
+            this.contentStatusOptionsCache =
+              Array.isArray(res.data) &&
+              res.data[0] &&
+              Array.isArray(res.data[0].subDictResultVo)
+                ? res.data[0].subDictResultVo.map((item) => ({
+                    key: item.code,
+                    label: item.name,
+                    value: item.code,
+                    lowerCaseLabel:
+                      typeof item.name === "string"
+                        ? item.name.toLowerCase()
+                        : item.name,
+                  }))
+                : [];
+            this.contentStatusOptionsCache.unshift({
+              key: "EMPTY",
+              label: "(空)",
+              value: "EMPTY",
+              lowerCaseLabel: "(空)",
+            });
 
-          this.contentStatusOptions = this.contentStatusOptionsCache
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .catch(() => {})
+            this.contentStatusOptions = this.contentStatusOptionsCache;
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .catch(() => {});
     },
     procureFactorySelectVo() {
       procureFactorySelectVo()
-      .then(res => {
-        if (res.code == 200) {
-          this.procureFactoryOptiopnsCache = 
-            Array.isArray(res.data) ?
-            res.data.map(item => ({
-              key: item.code,
-              label: item.name,
-              value: item.code,
-              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
-            })) :
-            []
+        .then((res) => {
+          if (res.code == 200) {
+            this.procureFactoryOptiopnsCache = Array.isArray(res.data)
+              ? res.data.map((item) => ({
+                  key: item.code,
+                  label: item.name,
+                  value: item.code,
+                  lowerCaseLabel:
+                    typeof item.name === "string"
+                      ? item.name.toLowerCase()
+                      : item.name,
+                }))
+              : [];
 
-          this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .catch(() => {})
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache;
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .catch(() => {});
     },
     handleChangeByAll(value, key) {
       if (!value[value.length - 1]) {
-        this.$set(this.form, key, [""])
+        this.$set(this.form, key, [""]);
       } else {
-        this.$set(this.form, key, this.form[key].filter(item => item || item === 0))
+        this.$set(
+          this.form,
+          key,
+          this.form[key].filter((item) => item || item === 0)
+        );
       }
     },
     // 获取投资车型项目下拉
-    async getSearchInvestCar(){
+    async getSearchInvestCar() {
       const requirementAekoId = this.$route.query.requirementAekoId;
-      await searchInvestCar(requirementAekoId).then((res)=>{
-        if(res.code == 200){
+      await searchInvestCar(requirementAekoId).then((res) => {
+        if (res.code == 200) {
           this.investCarTypeProOptions = res.data || [];
         }
-      })
+      });
     },
     init() {
-      this.loading = true
+      this.loading = true;
 
-      const form = {}
-      Object.keys(this.form).forEach(key => form[key] = typeof this.form[key] === "string" ? this.form[key].trim() : this.form[key])
-
+      const form = {};
+      Object.keys(this.form).forEach(
+        (key) =>
+          (form[key] =
+            typeof this.form[key] === "string"
+              ? this.form[key].trim()
+              : this.form[key])
+      );
 
       // 零件号需要单独处理下  根据逗号和空格拆成List
       // const {partNum=''} = form;
       // let newPartNum = partNum=='' ? [] : partNum.split(/[ ,，]+/);
 
-      const {query} = this.$route;
-      const {from=''} = query;
-      const {auditType=''} = query;
-      if(!auditType){
+      const { query } = this.$route;
+      const { from = "" } = query;
+      const { auditType = "" } = query;
+      if (!auditType) {
         getAekoLiniePartInfo({
           ...form,
           // partNum:newPartNum,
           requirementAekoId: this.aekoInfo.requirementAekoId,
-          cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
-          investCarTypePros: Array.isArray(this.form.investCarTypePros) ? (this.form.investCarTypePros.length === 1 && this.form.investCarTypePros[0] === "" ? null : this.form.investCarTypePros) : null,
-          status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
+          cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode)
+            ? this.form.cartypeProjectCode.length === 1 &&
+              this.form.cartypeProjectCode[0] === ""
+              ? null
+              : this.form.cartypeProjectCode
+            : null,
+          investCarTypePros: Array.isArray(this.form.investCarTypePros)
+            ? this.form.investCarTypePros.length === 1 &&
+              this.form.investCarTypePros[0] === ""
+              ? null
+              : this.form.investCarTypePros
+            : null,
+          status: Array.isArray(this.form.status)
+            ? this.form.status.length === 1 && this.form.status[0] === ""
+              ? null
+              : this.form.status
+            : null,
           current: this.page.currPage,
           size: this.page.pageSize,
-          isView:from=='check' ? 1 : undefined,
+          isView: from == "check" ? 1 : undefined,
         })
-        .then(res => {
-          if (res.code == 200) {
-            const list = res.data || [];
-            // isDeclare：0是预设 取oldPartNumPreset（可能为空）  isDeclare：1不预设 取originPartNum 
-            list.map((item)=>{
-              item.showPartNumPreset = item.isDeclare == 1 ? item.originPartNum : item.oldPartNumPreset
-            })
-            this.tableListData = Array.isArray(res.data) ? list : []
-            this.tableListData.map(o => {
-              // 分组管理需要备份原始分组名称
-              o.groupNameBak = o.groupName
-              return
-            })
-            this.page.totalCount = res.total || 0
-            this.rowspan(this.tableListData)
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-  
-          this.loading = false
-        })
-        .catch(() => this.loading = false)
-      }else{
-        this.getWorkflowId()
+          .then((res) => {
+            if (res.code == 200) {
+              const list = res.data || [];
+              // isDeclare：0是预设 取oldPartNumPreset（可能为空）  isDeclare：1不预设 取originPartNum
+              list.map((item) => {
+                item.showPartNumPreset =
+                  item.isDeclare == 1
+                    ? item.originPartNum
+                    : item.oldPartNumPreset;
+              });
+              this.tableListData = Array.isArray(res.data) ? list : [];
+              this.tableListData.map((o) => {
+                // 分组管理需要备份原始分组名称
+                o.groupNameBak = o.groupName;
+                return;
+              });
+              this.page.totalCount = res.total || 0;
+              this.rowspan(this.tableListData);
+            } else {
+              iMessage.error(
+                this.$i18n.locale === "zh" ? res.desZh : res.desEn
+              );
+            }
+
+            this.loading = false;
+          })
+          .catch(() => (this.loading = false));
+      } else {
+        this.getWorkflowId();
       }
     },
-    
-      // 申请详情内嵌页面获取流程id:WorkflowId
-      getWorkflowId(){
-        let params = {
-          id: this.$route.query.id,
-          auditType: this.$route.query.auditType,
-          current: this.page.currPage,
-          size: this.page.pageSize,
-        }
-        getWorkflowId(params).then(res=>{
+
+    // 申请详情内嵌页面获取流程id:WorkflowId
+    getWorkflowId() {
+      let params = {
+        id: this.$route.query.id,
+        auditType: this.$route.query.auditType,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+      };
+      getWorkflowId(params)
+        .then((res) => {
           console.log(res);
           if (res.code == 200) {
-            let { data } = res
-            this.tableListData = Array.isArray(data.records) ? data.records : []
-            this.tableListData.map(o => {
+            let { data } = res;
+            this.tableListData = Array.isArray(data.records)
+              ? data.records
+              : [];
+            this.tableListData.map((o) => {
               // 分组管理需要备份原始分组名称
-              o.groupNameBak = o.groupName
-              o.showPartNumPreset = o.isDeclare == 1 ? o.originPartNum : o.oldPartNumPreset
-              return
-            })
-            this.page.totalCount = data.total || 0
-            this.rowspan(this.tableListData)
+              o.groupNameBak = o.groupName;
+              o.showPartNumPreset =
+                o.isDeclare == 1 ? o.originPartNum : o.oldPartNumPreset;
+              return;
+            });
+            this.page.totalCount = data.total || 0;
+            this.rowspan(this.tableListData);
           } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
-          this.loading = false
-        }).catch(() => this.loading = false)
-      },
+          this.loading = false;
+        })
+        .catch(() => (this.loading = false));
+    },
     sure() {
       // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
-      if(this.form.partNum && this.form.partNum.trim().length < 3){
-        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
+      if (this.form.partNum && this.form.partNum.trim().length < 3) {
+        return iMessage.warn(
+          this.language(
+            "LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI",
+            "查询零件号不足,请补充至3位或以上"
+          )
+        );
       }
 
-      this.page.currPage = 1
-      this.init()
+      this.page.currPage = 1;
+      this.init();
     },
     reset() {
-      this.page.currPage = 1
-      this.form = cloneDeep(contentDeclareQueryForm)
-      this.sure()
+      this.page.currPage = 1;
+      this.form = cloneDeep(contentDeclareQueryForm);
+      this.sure();
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.multipleSelection = list;
     },
     // 查看装⻋率/每⻋⽤量
     viewDosage(row) {
-      if(!this.canEdit(row)) return
-      this.currentRow = row
-      this.dosageDialogVisible = true
+      if (!this.canEdit(row)) return;
+      this.currentRow = row;
+      this.dosageDialogVisible = true;
     },
-    jumpQuotation(row){
-      if(row.status=='QUOTING'&&row.buyerId!=this.userInfo.id){
-        return iMessage.warn(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
+    jumpQuotation(row) {
+      if (row.status == "QUOTING" && row.buyerId != this.userInfo.id) {
+        return iMessage.warn(
+          this.language(
+            "AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA",
+            "请选择自己的零件号进行报价"
+          )
+        );
       }
-      const { quotationId="" } = row;
-      let { quotationFrom="" } = row; // 有quotationFrom则是绑定报价单，不能编辑
+      const { quotationId = "" } = row;
+      let { quotationFrom = "" } = row; // 有quotationFrom则是绑定报价单，不能编辑
       const route = this.$router.resolve({
-        path: '/aeko/quotationdetail',
+        path: "/aeko/quotationdetail",
         query: {
           quotationId: quotationFrom || quotationId,
           requirementAekoId: this.aekoInfo.requirementAekoId,
-          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
-        }
-      })
+          editDisabled:
+            !["TOBE_STATED", "QUOTING", "QUOTED", "REJECT"].includes(
+              row.status
+            ) || (quotationFrom ? true : false),
+        },
+      });
 
-      window.open(route.href, "_blank")
+      window.open(route.href, "_blank");
     },
     // 查看mtz变更
     view(row) {
-      if(!this.canEdit(row)) return
-      const {query} = this.$route;
-      const {from=''} = query; // 从AEKO查看跳转至MTZ的不允许变更 只允许查看
-      const routeData = this.$router.resolve({name: 'aekoMtzDetails', query: {
-        objectAekoPartId: row.objectAekoPartId,
-        aekoNum: this.aekoInfo.aekoCode,
-        status: from=='check' ? 'SUBMITED': row.status
-      }})
-      window.open(routeData.href, '_blank')
+      if (!this.canEdit(row)) return;
+      const { query } = this.$route;
+      const { from = "" } = query; // 从AEKO查看跳转至MTZ的不允许变更 只允许查看
+      const routeData = this.$router.resolve({
+        name: "aekoMtzDetails",
+        query: {
+          objectAekoPartId: row.objectAekoPartId,
+          aekoNum: this.aekoInfo.aekoCode,
+          status: from == "check" ? "SUBMITED" : row.status,
+        },
+      });
+      window.open(routeData.href, "_blank");
     },
     isAea(str) {
       var asc1 = str.charCodeAt(0);
       var asc2 = str.charCodeAt(1);
       if (asc1 > 57 && asc2 >= 48 && asc2 <= 57) {
-          return true;
+        return true;
       }
       return false;
     },
     oldPartNumPresetSelect(row) {
-      if(!this.canEdit(row)){
-        return
+      if (!this.canEdit(row)) {
+        return;
       }
       // if (!row.oldPartNumPreset) return
       // 如果是从AEKO查看跳转过来的 不允许跳转
       const routeQuery = this.$route.query;
-      const {from=''} = routeQuery;
-      if(from == 'check') return;
-      let type = this.aekoInfo.aekoCode.slice(0,2)
+      const { from = "" } = routeQuery;
+      if (from == "check") return;
+      let type = this.aekoInfo.aekoCode.slice(0, 2);
       const query = {
         partNum: row.partNum,
         isAea: this.isAea(type),
@@ -763,94 +1152,131 @@ export default {
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
         originPartNum: row.originPartNum, // 选择的原零件
-        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()  // 预设的原零件
-      }
+        oldPartNumPreset:
+          typeof row.oldPartNumPreset === "string" &&
+          row.oldPartNumPreset.trim(), // 预设的原零件
+      };
 
-      if (!query.originPartNum) delete query.originPartNum
-      if (!query.oldPartNumPreset) delete query.oldPartNumPreset
+      if (!query.originPartNum) delete query.originPartNum;
+      if (!query.oldPartNumPreset) delete query.oldPartNumPreset;
 
       this.$router.push({
         path: "/aeko/quondampart",
-        query
-      })
-    
-      sessionStorage.setItem(`aekoConatentDeclareParams_${ this.aekoInfo.requirementAekoId }`, JSON.stringify({
-        form: this.form,
-        requirementAekoId: this.aekoInfo.requirementAekoId,
-        currPage: this.page.currPage,
-        pageSize: this.page.pageSize,
-        currentTab: "contentDeclare",
-        from:routeQuery.from,
-      }))
+        query,
+      });
+
+      sessionStorage.setItem(
+        `aekoConatentDeclareParams_${this.aekoInfo.requirementAekoId}`,
+        JSON.stringify({
+          form: this.form,
+          requirementAekoId: this.aekoInfo.requirementAekoId,
+          currPage: this.page.currPage,
+          pageSize: this.page.pageSize,
+          currentTab: "contentDeclare",
+          from: routeQuery.from,
+        })
+      );
     },
     // 相关无关切换
     handleDeclareToggle() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN",
+            "请选择需要切换表态的零件"
+          )
+        );
 
       // if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
 
-      this.declareToggleLoading = true
+      this.declareToggleLoading = true;
 
       patchAekoReference({
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+        objectAekoPartId: this.multipleSelection.map(
+          (item) => item.objectAekoPartId
+        ),
       })
-      .then(res => {
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+        .then((res) => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
 
-        if (res.code == 200) {
-          iMessage.success(message)
-          this.init()
-        } else {
-          iMessage.error(message)
-        }
+          if (res.code == 200) {
+            iMessage.success(message);
+            this.init();
+          } else {
+            iMessage.error(message);
+          }
 
-        this.declareToggleLoading = false
-      })
-      .catch(() => this.declareToggleLoading = false)
+          this.declareToggleLoading = false;
+        })
+        .catch(() => (this.declareToggleLoading = false));
     },
     // 表态重置
     async handleDeclareReset() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
-      let list = ['TOBE_STATED','QUOTING','QUOTED','BOUND']
-      if (!this.multipleSelection.every(item =>  list.includes(item.status)
-      //  item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")
-       )) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价、已绑定的零件进行重置"))
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN",
+            "请选择需要重置表态的零件"
+          )
+        );
+      let list = ["TOBE_STATED", "QUOTING", "QUOTED", "BOUND"];
+      if (
+        !this.multipleSelection.every(
+          (item) => list.includes(item.status)
+          //  item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")
+        )
+      )
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI",
+            "请选择内容状态为待表态、报价中、已报价、已绑定的零件进行重置"
+          )
+        );
 
-      await this.$confirm(this.language('DECLARERESETTIPS','该行表态内容会被重置，请确认'))
+      await this.$confirm(
+        this.language("DECLARERESETTIPS", "该行表态内容会被重置，请确认")
+      );
 
-      this.declareResetLoading = true
+      this.declareResetLoading = true;
 
       patchAekoReset({
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+        objectAekoPartId: this.multipleSelection.map(
+          (item) => item.objectAekoPartId
+        ),
       })
-      .then(res => {
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+        .then((res) => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
 
-        if (res.code == 200) {
-          iMessage.success(message)
-          this.init()
-        } else {
-          iMessage.error(message)
-        }
+          if (res.code == 200) {
+            iMessage.success(message);
+            this.init();
+          } else {
+            iMessage.error(message);
+          }
 
-        this.declareResetLoading = false
-      })
-      .catch(() => this.declareResetLoading = false)
+          this.declareResetLoading = false;
+        })
+        .catch(() => (this.declareResetLoading = false));
     },
     // 导出
     handleExport() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEYAODAOCHUDELINGJIANHANGXIANGMU", "请选择要导出的零件行项目!"))
-      const ids = this.multipleSelection.map((item)=>item.objectAekoPartId);
-      liniePartExport({ids});
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "AEKO_QINGXUANZEYAODAOCHUDELINGJIANHANGXIANGMU",
+            "请选择要导出的零件行项目!"
+          )
+        );
+      const ids = this.multipleSelection.map((item) => item.objectAekoPartId);
+      liniePartExport({ ids });
       // let printTableTitle = tableTitle.filter(item => item.isExport);
       // let oldPartIndex = 0;
       // const {multipleSelection=[],aekoInfo={}} = this;
 
       // const selectionList = cloneDeep(multipleSelection);
 
-      
       // selectionList.map((item)=>{
       //   // 原零件号加个“请填写”
       //   item.oldPart = '请填写';
@@ -859,8 +1285,7 @@ export default {
       //     item.supplierSapCode = "请填写";
       //   }
       // });
-      
-      
+
       // printTableTitle.map((item,index)=>{
       //   // 原零件号(系统预设)
       //   if(item.props == 'oldPartNumPreset'){
@@ -885,8 +1310,8 @@ export default {
       //     props:'oldPart',
       //     name:'原零件号'
       //   })
-        
-      //   // 零件行项目ID 
+
+      //   // 零件行项目ID
       //   printTableTitle.unshift(({
       //     props:'objectAekoPartId',
       //     name:'零件行项目ID'
@@ -896,77 +1321,112 @@ export default {
     },
     // 提交
     handleSubmit() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN",
+            "请选择需要提交表态的零件"
+          )
+        );
       // 什么都不提示，所以放在下一个提示之前
-      let multipleSelection =this.multipleSelection.filter(item=>{
-        return item.statusDesc != "已绑定"
-      })
-      if(!multipleSelection.length) return
+      let multipleSelection = this.multipleSelection.filter((item) => {
+        return item.statusDesc != "已绑定";
+      });
+      if (!multipleSelection.length) return;
       for (let i = 0, item; (item = multipleSelection[i++]); ) {
-        if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
-          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
+        if (
+          !["TOBE_STATED", "QUOTING", "QUOTED", "REJECT"].includes(item.status)
+        )
+          return iMessage.warn(
+            this.language(
+              "QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO",
+              "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"
+            )
+          );
       }
 
-      this.submitLoading = true
+      this.submitLoading = true;
 
       patchAekoContent({
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        objectAekoPartId: multipleSelection.map(item => item.objectAekoPartId)
+        objectAekoPartId: multipleSelection.map(
+          (item) => item.objectAekoPartId
+        ),
       })
-      .then(res => {
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+        .then((res) => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
 
-        if (res.code == 200) {
-          iMessage.success(message)
-          this.init()
-        } else {
-          iMessage.error(message)
-        }
+          if (res.code == 200) {
+            iMessage.success(message);
+            this.init();
+          } else {
+            iMessage.error(message);
+          }
 
-        this.submitLoading = false
-      })
-      .catch(() => this.submitLoading = false)
+          this.submitLoading = false;
+        })
+        .catch(() => (this.submitLoading = false));
     },
     selectFilter(value, key) {
-      if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel()
-      
-      this.debouncer = debounce(() => {
-        let _value = typeof value === "string" ? value.trim().toLowerCase() : _value
+      if (this.debouncer && typeof this.debouncer.cancel === "function")
+        this.debouncer.cancel();
 
-        switch(key) {
+      this.debouncer = debounce(() => {
+        let _value =
+          typeof value === "string" ? value.trim().toLowerCase() : _value;
+
+        switch (key) {
           case "cartypeProjectCode":
             if (_value) {
-              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
-              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsFilterCache, 20)
+              this.carTypeProjectOptionsFilterCache =
+                this.carTypeProjectOptionsCache.filter((item) =>
+                  item.lowerCaseLabel.includes(_value)
+                );
+              this.carTypeProjectOptionsCacheChunks = chunk(
+                this.carTypeProjectOptionsFilterCache,
+                20
+              );
             } else {
-              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
-              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+              this.carTypeProjectOptionsFilterCache =
+                this.carTypeProjectOptionsCache;
+              this.carTypeProjectOptionsCacheChunks = chunk(
+                this.carTypeProjectOptionsCache,
+                20
+              );
             }
 
-            this.cartypeProjectCurrentPage = 1
-            this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
-            break
+            this.cartypeProjectCurrentPage = 1;
+            this.carTypeProjectOptions =
+              this.carTypeProjectOptionsCacheChunks[0] || [];
+            break;
           case "status":
             if (_value) {
-              this.contentStatusOptions = this.contentStatusOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
+              this.contentStatusOptions = this.contentStatusOptionsCache.filter(
+                (item) => item.lowerCaseLabel.includes(_value)
+              );
             } else {
-              this.contentStatusOptions = this.contentStatusOptionsCache
+              this.contentStatusOptions = this.contentStatusOptionsCache;
             }
-            break
+            break;
           case "isMtz":
             if (_value) {
-              this.mtzOptions = mtzOptions.filter(item => item.label.includes(_value))
+              this.mtzOptions = mtzOptions.filter((item) =>
+                item.label.includes(_value)
+              );
             } else {
-              this.mtzOptions = mtzOptions
+              this.mtzOptions = mtzOptions;
             }
-            break
+            break;
           case "procureFactory":
             if (_value) {
-              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache.filter(item => item.lowerCaseLabel.includes(_value))
+              this.procureFactoryOptiopns =
+                this.procureFactoryOptiopnsCache.filter((item) =>
+                  item.lowerCaseLabel.includes(_value)
+                );
             } else {
-              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache;
             }
-            break
+            break;
           // case "cartypeProjectCode":
           //   if(_value){
 
@@ -976,226 +1436,307 @@ export default {
           // break
           default:
         }
-      }, 400)
-      this.debouncer()
+      }, 400);
+      this.debouncer();
     },
     selectVisibleChange(visible, key) {
-      switch(key) {
+      switch (key) {
         case "cartypeProjectCode":
           if (!visible) {
-            this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
-            this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+            this.carTypeProjectOptionsFilterCache =
+              this.carTypeProjectOptionsCache;
+            this.carTypeProjectOptionsCacheChunks = chunk(
+              this.carTypeProjectOptionsCache,
+              20
+            );
           }
 
-          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
-          this.cartypeProjectCurrentPage = 1
-        break
+          this.carTypeProjectOptions =
+            this.carTypeProjectOptionsCacheChunks[0] || [];
+          this.cartypeProjectCurrentPage = 1;
+          break;
         case "status":
           if (!visible) {
-            this.contentStatusOptions = this.contentStatusOptionsCache
+            this.contentStatusOptions = this.contentStatusOptionsCache;
           }
-        break
+          break;
         case "isMtz":
           if (!visible) {
-            this.mtzOptions = mtzOptions
+            this.mtzOptions = mtzOptions;
           }
-        break
+          break;
         case "procureFactory":
           if (!visible) {
-            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache;
           }
-        break
+          break;
         default:
       }
     },
     cartypeProjectLazy() {
-      if (this.carTypeProjectOptions.length < this.carTypeProjectOptionsFilterCache.length) {
-        this.cartypeProjectCurrentPage += 1
-        this.carTypeProjectOptions = this.carTypeProjectOptions.concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
+      if (
+        this.carTypeProjectOptions.length <
+        this.carTypeProjectOptionsFilterCache.length
+      ) {
+        this.cartypeProjectCurrentPage += 1;
+        this.carTypeProjectOptions = this.carTypeProjectOptions.concat(
+          this.carTypeProjectOptionsCacheChunks[
+            this.cartypeProjectCurrentPage - 1
+          ]
+        );
       }
     },
     isDeclareBlackListPart(part) {
       // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
-      return false // 取消黑名单限制
+      return false; // 取消黑名单限制
     },
     // 发送供应商报价-先校验一品多点
-    async sendSupplierPrice(){
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
-      let {multipleSelection=[]} = this;
-      
+    async sendSupplierPrice() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU",
+            "请选择需要操作的原零件项目"
+          )
+        );
+      let { multipleSelection = [] } = this;
+
       // jira-7759 校验同一新零件号同一采购工厂同一供应商”的多个行项目
-      const filtRows = []
-      let flag = false
-      this.multipleSelection.forEach(item => {
-        if(item.buyerId!==this.userInfo.id){
-          flag = true
+      const filtRows = [];
+      let flag = false;
+      this.multipleSelection.forEach((item) => {
+        if (item.buyerId !== this.userInfo.id) {
+          flag = true;
         }
-        const dumplicatedParts = this.tableListData.filter(o => o.partNum === item.partNum && o.factoryCode === item.factoryCode && o.supplierSapCode === item.supplierSapCode)
-        if (dumplicatedParts.length > 1 && !filtRows.find(o => o.partNum === item.partNum)) {
-          filtRows.push(item)
+        const dumplicatedParts = this.tableListData.filter(
+          (o) =>
+            o.partNum === item.partNum &&
+            o.factoryCode === item.factoryCode &&
+            o.supplierSapCode === item.supplierSapCode
+        );
+        if (
+          dumplicatedParts.length > 1 &&
+          !filtRows.find((o) => o.partNum === item.partNum)
+        ) {
+          filtRows.push(item);
         }
-      })
-      if(flag){
-         return iMessage.error(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA", "请选择自己的零件号进行报价"))
+      });
+      if (flag) {
+        return iMessage.error(
+          this.language(
+            "AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGBAOJIA",
+            "请选择自己的零件号进行报价"
+          )
+        );
       }
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
-        if (this.multipleSelection.length > 1 && filtRows.filter(o => o.status ==='TOBE_STATED').length) {
-          const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
-          ${filtRows.map(o => o.partNum).join(',')} 
-          ${this.language('GONGYINGSHANG','供应商')}:
-          ${filtRows.map(o => o.supplierNameZh).join(',')} 
-          ${this.language('CAIGOUGONGC1','采购工厂')}:
-          ${filtRows.map(o => o.factoryName).join(',')} 
-          ${this.language('SINGLEGROUPSENDFIRSTONE','在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认')}
-          `
-        
-        const confirmCheckInfo = await this.$confirm(
-          confirmMsg,
-          this.language('LK_NOTICE','提示'),
+        if (
+          this.multipleSelection.length > 1 &&
+          filtRows.filter((o) => o.status === "TOBE_STATED").length
+        ) {
+          const confirmMsg = `${this.language(
+            "LK_CURRENTPARTNUMBER",
+            "当前针对零件号"
+          )}:
+          ${filtRows.map((o) => o.partNum).join(",")} 
+          ${this.language("GONGYINGSHANG", "供应商")}:
+          ${filtRows.map((o) => o.supplierNameZh).join(",")} 
+          ${this.language("CAIGOUGONGC1", "采购工厂")}:
+          ${filtRows.map((o) => o.factoryName).join(",")} 
+          ${this.language(
+            "SINGLEGROUPSENDFIRSTONE",
+            "在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认"
+          )}
+          `;
+
+          const confirmCheckInfo = await this.$confirm(
+            confirmMsg,
+            this.language("LK_NOTICE", "提示"),
             {
-                confirmButtonText: this.language('nominationLanguage.Yes','是'),
-                cancelButtonText: this.language('nominationLanguage.No','否'),
-                customClass: 'aeko-confirmBox'
+              confirmButtonText: this.language("nominationLanguage.Yes", "是"),
+              cancelButtonText: this.language("nominationLanguage.No", "否"),
+              customClass: "aeko-confirmBox",
             }
-          )
-          if (confirmCheckInfo === 'confirm') {
-            multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
+          );
+          if (confirmCheckInfo === "confirm") {
+            multipleSelection = window._.uniqBy(
+              multipleSelection,
+              (o) => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`
+            );
           }
-          
-        } 
+        }
         // 都不支持报价
-        if (filtRows.filter(o => o.status !=='TOBE_STATED').length === this.multipleSelection.length) {
+        if (
+          filtRows.filter((o) => o.status !== "TOBE_STATED").length ===
+          this.multipleSelection.length
+        ) {
           // 已经报过价格
-          const errorMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
-          ${filtRows.map(o => o.partNum).join(',')} 
-          ${this.language('GONGYINGSHANG','供应商')}:
-          ${filtRows.map(o => o.supplierNameZh).join(',')} 
-          ${this.language('CAIGOUGONGC1','采购工厂')}:
-          ${filtRows.map(o => o.factoryName).join(',')} 
-          ${this.language('AEKOSENTSUPPLIERPRICENOTALLOWED','已发送报价，不允许再次发送')}
-          `
-        
-          return this.$confirm(
-            errorMsg,
-            this.language('LK_NOTICE','提示'),
-            {
-                confirmButtonText: this.language('SURE','确定'),
-                cancelButtonText: this.language('nominationLanguage.No','否'),
-                customClass: 'aeko-confirmBox hidden-cancel-button'
-            }
-          )
+          const errorMsg = `${this.language(
+            "LK_CURRENTPARTNUMBER",
+            "当前针对零件号"
+          )}:
+          ${filtRows.map((o) => o.partNum).join(",")} 
+          ${this.language("GONGYINGSHANG", "供应商")}:
+          ${filtRows.map((o) => o.supplierNameZh).join(",")} 
+          ${this.language("CAIGOUGONGC1", "采购工厂")}:
+          ${filtRows.map((o) => o.factoryName).join(",")} 
+          ${this.language(
+            "AEKOSENTSUPPLIERPRICENOTALLOWED",
+            "已发送报价，不允许再次发送"
+          )}
+          `;
+
+          return this.$confirm(errorMsg, this.language("LK_NOTICE", "提示"), {
+            confirmButtonText: this.language("SURE", "确定"),
+            cancelButtonText: this.language("nominationLanguage.No", "否"),
+            customClass: "aeko-confirmBox hidden-cancel-button",
+          });
         }
       }
-      
+
       this.declareSendSupplier = true;
       const data = {
-        requirementAekoId:this.$route.query.requirementAekoId,
-        objectAekoPartId:multipleSelection.map((item)=>item.objectAekoPartId)
+        requirementAekoId: this.$route.query.requirementAekoId,
+        objectAekoPartId: multipleSelection.map(
+          (item) => item.objectAekoPartId
+        ),
       };
       // 校验一品多点
-      await sendSupplierCheck(data).then((res)=>{
-        const {code } = res;
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-        if(code == 200){
-          // 存在一品多点
-          if(Array.isArray(res.data) && res.data.length > 0){
-            this.$confirm(
-            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN','当前选中的零件中存在一品多点，将同时发送报价至相关供应商，是否继续发送报价？'),
-            this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
-            {
-                confirmButtonText: this.language('nominationLanguage.Yes','是'),
-                cancelButtonText: this.language('nominationLanguage.No','否'),
-            }
-            ).then(()=>{ // 确认后需要将objectAekoPartId替换成查询返回的list
-              this.sendSupplier({
-                ...data,
-                objectAekoPartId:res.data,
-              });
-            }).catch(()=>{
+      await sendSupplierCheck(data)
+        .then((res) => {
+          const { code } = res;
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+          if (code == 200) {
+            // 存在一品多点
+            if (Array.isArray(res.data) && res.data.length > 0) {
+              this.$confirm(
+                this.language(
+                  "LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN",
+                  "当前选中的零件中存在一品多点，将同时发送报价至相关供应商，是否继续发送报价？"
+                ),
+                this.language("LK_AEKO_NEIRONGBIAOTAI_CAOZUO", "操作"),
+                {
+                  confirmButtonText: this.language(
+                    "nominationLanguage.Yes",
+                    "是"
+                  ),
+                  cancelButtonText: this.language(
+                    "nominationLanguage.No",
+                    "否"
+                  ),
+                }
+              )
+                .then(() => {
+                  // 确认后需要将objectAekoPartId替换成查询返回的list
+                  this.sendSupplier({
+                    ...data,
+                    objectAekoPartId: res.data,
+                  });
+                })
+                .catch(() => {
+                  this.sendSupplier(data);
+                });
+            } else {
               this.sendSupplier(data);
-            })
-          }else{
-            this.sendSupplier(data);
+            }
+          } else {
+            this.declareSendSupplier = false;
+            iMessage.error(message);
           }
-          
-        }else{
-          this.declareSendSupplier = false;
-          iMessage.error(message);
-        }
-      }).catch(()=> this.declareSendSupplier = false)
-      
+        })
+        .catch(() => (this.declareSendSupplier = false));
     },
 
     // 发送供应商报价
-    async sendSupplier(data){
-      await sendSupplier(data).then((res)=>{
-        this.declareSendSupplier = false;
-        const SupplierMessage = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-        const {code,data={}} = res;
-        if(code == 200){
-          const buildFailReasonList = data.buildFailReasonList || [];
-          const sendFailReasonList = data.sendFailReasonList || [];
+    async sendSupplier(data) {
+      await sendSupplier(data)
+        .then((res) => {
+          this.declareSendSupplier = false;
+          const SupplierMessage =
+            this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+          const { code, data = {} } = res;
+          if (code == 200) {
+            const buildFailReasonList = data.buildFailReasonList || [];
+            const sendFailReasonList = data.sendFailReasonList || [];
 
-          if(buildFailReasonList.length || sendFailReasonList.length){
-            const arr = buildFailReasonList.concat(sendFailReasonList);
-            console.log(arr,'arr');
-            let str = '';
-            arr.map((item)=>{
-              str+= `<p>${item}</p>`;
-            })
-            this.$alert(
-              str,
-              this.language('LK_WENXINTISHI','温馨提示'
-            ), {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: this.language('LK_QUEDING','确定'),
-          });
+            if (buildFailReasonList.length || sendFailReasonList.length) {
+              const arr = buildFailReasonList.concat(sendFailReasonList);
+              console.log(arr, "arr");
+              let str = "";
+              arr.map((item) => {
+                str += `<p>${item}</p>`;
+              });
+              this.$alert(str, this.language("LK_WENXINTISHI", "温馨提示"), {
+                dangerouslyUseHTMLString: true,
+                confirmButtonText: this.language("LK_QUEDING", "确定"),
+              });
+            }
+            this.init();
+          } else {
+            iMessage.error(SupplierMessage);
           }
-          this.init();
-        }else{
-          iMessage.error(SupplierMessage);
-        }   
-      }).catch((err)=>{
-            this.declareSendSupplier = false;
         })
+        .catch((err) => {
+          this.declareSendSupplier = false;
+        });
     },
 
     // 指定车型项目弹窗展示
-    goToinvestCarTypePro(){
+    goToinvestCarTypePro() {
       const { multipleSelection } = this;
-      if (!multipleSelection.length) return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
-      if(!this.checkTodo) return iMessage.warn(this.language("AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGCAOZUO", "请选择自己的零件号进行操作"))
+      if (!multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "createparts.QingXuanZeZhiShaoYiTiaoShuJu",
+            "请选择至少一条数据"
+          )
+        );
+      if (!this.checkTodo)
+        return iMessage.warn(
+          this.language(
+            "AEKO_QINGXUANZEZIJIDELINGJIANHAOJINXINGCAOZUO",
+            "请选择自己的零件号进行操作"
+          )
+        );
       this.investCarTypeProVisible = true;
     },
 
-    changeVisible(type,visible){
+    changeVisible(type, visible) {
       this[type] = visible;
     },
 
     // 撤回
-    async cancelContent(){
+    async cancelContent() {
       const { multipleSelection } = this;
-      if (!multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHEHUIBIAOTAIDELINGJIAN", "请选择需要撤回表态的零件"))
-      const data = multipleSelection.map((item)=>item.objectAekoPartId);
+      if (!multipleSelection.length)
+        return iMessage.warn(
+          this.language(
+            "QINGXUANZEXUYAOCHEHUIBIAOTAIDELINGJIAN",
+            "请选择需要撤回表态的零件"
+          )
+        );
+      const data = multipleSelection.map((item) => item.objectAekoPartId);
       this.cancelLoading = true;
-      await cancelContent(data).then((res)=>{
-        this.cancelLoading = false;
-        if(res.code == 200){
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-          this.init()
-        }else{
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      }).catch((err)=>{
-        this.cancelLoading = false;
-      })
+      await cancelContent(data)
+        .then((res) => {
+          this.cancelLoading = false;
+          if (res.code == 200) {
+            iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
+            this.init();
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .catch((err) => {
+          this.cancelLoading = false;
+        });
     },
 
     // 查看价格轴弹窗
-    showPriceAxis(row={}){
-      if(!this.canEdit(row)) return
+    showPriceAxis(row = {}) {
+      if (!this.canEdit(row)) return;
       this.priceAxisVisible = true;
       this.priceAxisRow = row;
     },
@@ -1214,72 +1755,82 @@ export default {
     // },
 
     // 变更投资车型项目
-    async handleChangeCarInvestProjects(value,row){
-      const data =[{
-        investCarTypePro: value,
-        objectAekoPartId: row.objectAekoPartId,
-        requirementAekoId: this.$route.query.requirementAekoId
-      }];
-      await updateInvestCarProject(data).then((res)=>{
-        if(res.code == 200){
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-        }else{
+    async handleChangeCarInvestProjects(value, row) {
+      const data = [
+        {
+          investCarTypePro: value,
+          objectAekoPartId: row.objectAekoPartId,
+          requirementAekoId: this.$route.query.requirementAekoId,
+        },
+      ];
+      await updateInvestCarProject(data).then((res) => {
+        if (res.code == 200) {
+          iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
+        } else {
           this.init();
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          
         }
-      })
+      });
     },
 
     // 承运方式展示字段
-    getRranWayDesc(row){
-      if(row.originBnkTranWay==null && row.newBnkTranWay==null){
-        return ' '
-      }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运
-        return row.originBnkTranWayDesc
-      }else if(row.originBnkTranWay != row.newBnkTranWay){  //若新原零件承运方式不同 则承运方式显示原承运方式&（原）&-&新承运方式&（新）
-        return `${row.originBnkTranWayDesc || '-'}(原)-${row.newBnkTranWayDesc || '-'}(新)`
-      }else{
-        return ' '
+    getRranWayDesc(row) {
+      if (row.originBnkTranWay == null && row.newBnkTranWay == null) {
+        return " ";
+      } else if (row.originBnkTranWay == row.newBnkTranWay) {
+        //若新原零件承运方式相同，则承运方式显示自运或者承运
+        return row.originBnkTranWayDesc;
+      } else if (row.originBnkTranWay != row.newBnkTranWay) {
+        //若新原零件承运方式不同 则承运方式显示原承运方式&（原）&-&新承运方式&（新）
+        return `${row.originBnkTranWayDesc || "-"}(原)-${
+          row.newBnkTranWayDesc || "-"
+        }(新)`;
+      } else {
+        return " ";
       }
-      
     },
 
     // 导入
-    async onHttpUploaded(formData,content){
-      const newFormData = new FormData()
-      newFormData.append('uploadFile', content.file)
-      await importItemExcel(newFormData,{requirementAekoId:this.$route.query.requirementAekoId}).then((res)=>{
-        const {code} = res;
-        if(code!=200){
-          const tips = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-          this.$alert(tips, this.language('LK_AEKO_ALERT_TISHI','提示'), {
-            confirmButtonText: this.language('LK_QUEDING','确定'),
-          })
-        }else{
-          this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-          this.init();
-        }
-      }).catch((e)=>{
-        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      });
+    async onHttpUploaded(formData, content) {
+      const newFormData = new FormData();
+      newFormData.append("uploadFile", content.file);
+      await importItemExcel(newFormData, {
+        requirementAekoId: this.$route.query.requirementAekoId,
+      })
+        .then((res) => {
+          const { code } = res;
+          if (code != 200) {
+            const tips = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+            this.$alert(tips, this.language("LK_AEKO_ALERT_TISHI", "提示"), {
+              confirmButtonText: this.language("LK_QUEDING", "确定"),
+            });
+          } else {
+            this.$message.success(
+              this.language("LK_CAOZUOCHENGGONG", "操作成功")
+            );
+            this.init();
+          }
+        })
+        .catch((e) => {
+          this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        });
     },
     // 投资车型项目下拉是否禁用
-    disabledInvestCarTypePro(row){
-      
+    disabledInvestCarTypePro(row) {
       // 当模具投资变动没有值时 禁用下拉
       // 内容状态为 报价中 已报价 拒绝 不禁用
-      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
-      return !row.mouldPriceChange || !statusDisabled || this.disabled
-
+      const statusDisabled =
+        row.status == "QUOTING" ||
+        row.status == "QUOTED" ||
+        row.status == "REJECT";
+      return !row.mouldPriceChange || !statusDisabled || this.disabled;
     },
-    showSupplierNameZh(code=null,name=null){
-      if(!code && !name) return ''
-      else{
-        return (code || '') + '-' + (name || '')
+    showSupplierNameZh(code = null, name = null) {
+      if (!code && !name) return "";
+      else {
+        return (code || "") + "-" + (name || "");
       }
     },
-
   },
 };
 </script>
@@ -1324,7 +1875,7 @@ export default {
         right: 0;
       }
     }
-    
+
     ::v-deep .el-input__suffix-inner {
       position: absolute;
       top: 50%;
@@ -1361,15 +1912,15 @@ export default {
       }
     }
   }
-  .tipsIcon{
+  .tipsIcon {
     transform: rotate(180deg);
   }
-  .blue-text{
-    color: #1763F7;
+  .blue-text {
+    color: #1763f7;
   }
 }
 ::v-deep.el-button {
-  &.btn-margin-left10{
+  &.btn-margin-left10 {
     margin-left: 10px;
   }
   &:hover {
@@ -1400,11 +1951,12 @@ export default {
   }
 }
 ::v-deep.table {
-  td,th {
+  td,
+  th {
     .cell {
       width: 100% !important;
-      .is-disabled{
-        .el-input__inner{
+      .is-disabled {
+        .el-input__inner {
           color: #505050;
         }
       }
@@ -1420,7 +1972,9 @@ export default {
 .aeko-confirmBox.hidden-cancel-button .el-message-box__btns .el-button {
   display: none;
 }
-.aeko-confirmBox.hidden-cancel-button .el-message-box__btns .el-button--primary {
+.aeko-confirmBox.hidden-cancel-button
+  .el-message-box__btns
+  .el-button--primary {
   display: block;
 }
 </style>

@@ -2456,7 +2456,6 @@ export default {
     }
   }
 
-
   ::v-deep .cancel {
     color: rgb(95, 104, 121);
   }
