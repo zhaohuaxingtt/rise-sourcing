@@ -22,7 +22,7 @@
 			6：已定点
 			7：已结束 
 			8：已取消  -->
-    <!-- 零件采购项目状态： 
+    <!-- 零件采购项目状态：
 			NO_RFQ("11", "未加入RFQ"),
 			HAS_RFQ("12", "已加入RFQ"),
 			APPLICATION_DESIGNAT("13", "已申请定点"),
@@ -1640,9 +1640,6 @@ export default {
           });
         } else {
           this.disabled = false;
-        }
-
-        if (res.data.partProjectType) {
         }
 
         if (res.data.targetprice) {

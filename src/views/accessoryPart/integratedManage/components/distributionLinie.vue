@@ -45,7 +45,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { listLinieDept, listUserByDepartIdAndRoleCode, updateCsfOrLinie, listUserByDepartId } from '@/api/accessoryPart/index'
+import { listLinieDept, listUserByDepartIdAndRoleCode, updateCsfOrLinie, listUserByFunctionType } from '@/api/accessoryPart/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
