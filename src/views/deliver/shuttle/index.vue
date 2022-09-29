@@ -141,7 +141,15 @@ export default {
   methods: {
     getData(){
       getMaterialGroupPart({
-        carProjectId:this.carProjectId
+        carProjectId:this.carProjectId,
+        type:0,
+      }).then(res=>{
+        console.log(res);
+      })
+
+      getMaterialGroupPart({
+        carProjectId:this.carProjectId,
+        type:1,
       }).then(res=>{
         console.log(res);
       })

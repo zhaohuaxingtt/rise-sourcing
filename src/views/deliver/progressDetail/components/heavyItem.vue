@@ -14,11 +14,22 @@
       </div>
     </div>
     <item :list="list" :key="i" :header="header"/>
+
+    <iPagination v-update
+      class="pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      background
+      :current-page="partPage.currPage"
+      :page-sizes="partPage.pageSizes"
+      :page-size="partPage.pageSize"
+      :layout="partPage.layout"
+      :total="partPage.totalCount" />
   </iCard>
 </template>
 
 <script>
-import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage } from "rise";
+import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage,iPagination } from "rise";
 import Item from "./item.vue";
 import {
   getGanttChart,
@@ -26,92 +37,203 @@ import {
 
 export default {
   components:{
-    iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,
+    iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,iPagination
   },
   props:{
     carProjectId:{
       type:String,
       default:"",
+    },
+    partPage:{
+      type:Object,
+      default:{
+        totalCount:0, //总条数
+        pageSize:1,   //每页多少条
+        pageSizes:[10,20,50,100,300], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
     }
   },
   data() {
     return {
-      header: [
-        '2019-12',
-        '2020-01',
-        '2020-02',
-        '2020-03',
-        '2020-04',
-        '2020-05',
-        '2020-06',
-        '2020-07',
-        '2020-08',
-        '2020-09',
-        '2020-10',
-        '2020-11',
-      ],
-      list:[
-        // status: 1 绿色；2 黄色
-        {
-        name:"1.0 BF",
-        showChlid:false,
-        status: 1,
-        point:true,
-        rang:['2019-12'],
-        children:[
-          { name:'1.1 TM数模数据', status: 2, rang:['2019-12'], },
-          { name:'1.2 TZ图纸数据', status: 1, rang:['2019-12'], },
-          { name:'1.2 TZ图纸数据', rang:['2019-12'], },
-          { name:'1.3 Fakom(P-muster)', status: 2,
-            rang:['2019-12','2020-01','2020-02',], },
-          { name:'1.4 P-muster', point:true, status: 2, rang:['2020-04'], },
-          { name:'1.5 software', point:true, status: 1, rang:['2020-01','2020-02'], width:'40%' },
-          { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
-        ]
-      },{
-        name:"2.0 联系人提交清单",
-        showChlid:false,
-        status: 1,
-        point:true,
-        rang:['2020-03'],
-        children:[
-          { name:'2.1 TM数模数据', status: 2, },
-          { name:'2.2 TZ图纸数据' },
-          { name:'2.3 Fakom(P-muster)', status: 2, },
-          { name:'2.4 P-muster' },
-          { name:'2.5 software', status: 1, },
-          { name:'1.6 software', status: 1, rang:['2020-01','2020-02'], width:'20%' },
-        ]
-      }
-      ],
-      obj:{
-        name:"1.0BF",
-        showChlid:false,
-        status: 1,
-        point:true,
-        children:[
-          { name:'1.1 TM数模数据', status: 2, },
-          { name:'1.2 TZ图纸数据' },
-          { name:'1.3 Fakom(P-muster)', status: 2, },
-          { name:'1.4 P-muster' },
-          { name:'1.5 software', status: 1,
-            showChlid:false,
-            children:[
-            { name:'1.1 TM数模数据', status: 2, },
-            { name:'1.2 TZ图纸数据' },
-            { name:'1.3 Fakom(P-muster)', status: 2, },
-            { name:'1.4 P-muster' },
-            { name:'1.5 software', status: 1, },
-          ]
-          },
-        ]
-      }
+      header: [],//title
+      list:[],
+      minT:"",
+      maxT:"",
     }
   },
   created(){
-    this.getData();
+    // this.getData();
   },
   methods:{
+    handleSizeChange(val){
+
+    },
+    handleCurrentChange(val){
+      this.$emit("handleCurrentChange",val)
+    },
+    setData(data){
+      var header = [];
+      var minTime = "";
+      var maxTime = "";
+
+      console.log(header);
+      data.forEach(e => {
+        console.log(e);
+        header.push({
+          time:e.actualEndTime,
+          code:this.timeOff(e.actualEndTime),
+        })
+        header.push({
+          time:e.actualStartTime,
+          code:this.timeOff(e.actualStartTime),
+        })
+        header.push({
+          time:e.planEndTime,
+          code:this.timeOff(e.planEndTime),
+        })
+        header.push({
+          time:e.planStartTime,
+          code:this.timeOff(e.planStartTime),
+        })
+        if(!e.planStartTime && e.planEndTime){
+          e.pointRangTop = [[e.planEndTime.split(" ")[0].split("-")[0],e.planEndTime.split(" ")[0].split("-")[1]].join("-")]
+          e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+        }else if(e.planStartTime && e.planEndTime){
+          e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)
+          e.barRangTopRight = (e.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+          e.barWidthTopLeft = (e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+          e.barWidthTopLeftWidth = (100-(e.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+        }
+        if(!e.actualStartTime && e.actualEndTime){
+          e.pointRangBottom = [[e.actualEndTime.split(" ")[0].split("-")[0],e.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
+          e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+        }else if(e.actualStartTime && e.actualEndTime){
+          e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)
+          e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+          e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+          e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+        }
+        e.showChlid = false;
+
+        if(e.childList.length>0){
+          e.childList.forEach(item => {
+            header.push({
+              time:item.actualEndTime,
+              code:this.timeOff(item.actualEndTime),
+            })
+            header.push({
+              time:item.actualStartTime,
+              code:this.timeOff(item.actualStartTime),
+            })
+            header.push({
+              time:item.planEndTime,
+              code:this.timeOff(item.planEndTime),
+            })
+            header.push({
+              time:item.planStartTime,
+              code:this.timeOff(item.planStartTime),
+            })
+
+            if(!item.planStartTime && item.planEndTime){
+              item.pointRangTop = [[item.planEndTime.split(" ")[0].split("-")[0],item.planEndTime.split(" ")[0].split("-")[1]].join("-")]
+              item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+            }else if(item.planStartTime && item.planEndTime){
+              this.yearAll = [];
+              this.minYear = item.planStartTime;
+              this.maxYear = item.planEndTime;
+              item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)
+              item.barRangTopRight = (item.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              item.barWidthTopLeft = (item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              item.barWidthTopLeftWidth = (100-(item.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            }
+            if(!item.actualStartTime && item.actualEndTime){
+              item.pointRangBottom = [[item.actualEndTime.split(" ")[0].split("-")[0],item.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
+              item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+            }else if(item.actualStartTime && item.actualEndTime){
+              this.yearAll = [];
+              this.minYear = item.actualStartTime;
+              this.maxYear = item.actualEndTime;
+              item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)
+              item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            }
+
+          })
+        }
+      });
+      const headerList = header.filter(item => item.code)
+      minTime = Math.min.apply(null,headerList.map((item,index) => {
+        return item.code
+      }))
+      maxTime = Math.max.apply(null,headerList.map((item,index) => {
+        return item.code
+      }))
+      headerList.forEach(e=>{
+        if(e.code.toString() == minTime.toString()){
+          this.minT = e.time;
+        }
+        if(e.code.toString() == maxTime.toString()){
+          this.maxT = e.time;
+        }
+      })
+      this.header = this.yearMake(this.maxT,this.minT);
+
+      console.log(headerList);
+      this.list = _.cloneDeep(data);
+    },
+    yearMake(max,min){
+      var maxYear = max;
+      var minYear = min;
+      var yearAll = [];
+      let time = "";
+
+      var i=0;
+      while(i<100){
+        if(this.timeOff(maxYear)<this.timeOff(minYear)){
+          break;
+        }
+        if(yearAll.length > 0){
+          if(yearAll[yearAll.length-1] == [maxYear.split(" ")[0].split("-")[0],maxYear.split(" ")[0].split("-")[1]].join("-")){
+            break;
+          }else{
+            time = yearAll[yearAll.length-1];
+            var data = [time.split(" ")[0].split("-")[0],time.split(" ")[0].split("-")[1]].join("-")
+            if(data.split("-")[1] == 12){
+              const num = [Number(data.split("-")[0]) + 1,"01"].join("-")
+              yearAll.push(num)
+              i++
+            }else{
+              let month = "";
+              if(Number(data.split("-")[1]) < 9){
+                month = "0" + (Number(data.split("-")[1]) + 1)
+              }else{
+                month = Number(data.split("-")[1]) + 1
+              }
+              const num = [data.split("-")[0],month].join("-")
+              yearAll.push(num)
+              i++
+            }
+          }
+        }else{
+          time = minYear;
+          var data = [time.split(" ")[0].split("-")[0],time.split(" ")[0].split("-")[1]].join("-")
+          yearAll.push(data)
+          i++
+        }
+      }
+      console.log(yearAll)
+      return (yearAll)
+    },
+    timeOff(val){
+      if(val){
+        return new Date(val).getTime();
+      }else{
+        return null;
+      }
+    },
     getData(){
       console.log(this.carProjectId)
       getGanttChart({
