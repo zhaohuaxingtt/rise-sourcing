@@ -1,7 +1,21 @@
 <template>
   <iPage class="deliverPlan">
     <H1>送样计划</H1>
-    <search class="margin-top20" :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
+    <div style="margin:20px 0;">
+      <iSearch @sure="sure" @reset="reset">
+        <el-form class="margin-top10">
+          <el-form-item :label="$t('CHEXINGXIANGMU')">
+            <iInput v-model="selectOptions.catTypeProName"></iInput>
+          </el-form-item>
+          <el-form-item :label="$t('LINGJIANHAO')">
+            <iInput v-model="selectOptions.partNum"></iInput>
+          </el-form-item>
+          <el-form-item :label="$t('LINGJIANMINGCHENG')">
+            <iInput v-model="selectOptions.partName"></iInput>
+          </el-form-item>
+        </el-form>
+      </iSearch>
+    </div>
     <el-row :gutter="40">
       <el-col :span="12">
         <iCard :title="'送样零件'">
@@ -23,58 +37,69 @@
             </div>
             <div>
               <iButton>甘特图导出</iButton>
-              <iButton>保存</iButton>
-              <iButton>发送</iButton>
+              <iButton @click="save">保存</iButton>
+              <iButton @click="sendOut">发送</iButton>
             </div>
           </div>
-          <tableList v-show="rightTitleType" class="margin-top20" :tableData="tableDataRight" :tableTitle="tableTitleRight1">
-            <template #col2="scope">
+          <tableList
+            v-show="rightTitleType"
+            @handleSelectionChange="handleSelectionChangePlan"
+            class="margin-top20"
+            :tableData="tableDataRight"
+            :tableTitle="tableTitleRight1"
+            >
+            <template #planStartTime="scope">
               <iDatePicker
-                v-if="scope.row.type"
-                v-model="scope.row.col2"
+                v-if="scope.row.isSend"
+                v-model="scope.row.planStartTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.col2?scope.row.col2:'/'}}</span>
+              <span v-else>{{scope.row.planStartTime?scope.row.planStartTime:'/'}}</span>
             </template>
-            <template #col3="scope">
+            <template #planEndTime="scope">
               <iDatePicker
-                v-if="scope.row.type"
-                v-model="scope.row.col3"
+                v-if="scope.row.isSend"
+                v-model="scope.row.planEndTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.col3?scope.row.col3:'/'}}</span>
+              <span v-else>{{scope.row.planEndTime?scope.row.planEndTime:'/'}}</span>
             </template>
             <template #col4="scope">
-              <iButton type="text" :disabled="!scope.row.type">发送</iButton>
+              <iButton type="text" :disabled="!scope.row.isSend" @click="sendOne(scope.row)">发送</iButton>
             </template>
           </tableList>
-          <tableList v-show="!rightTitleType" class="margin-top20" :tableData="tableDataRight" :tableTitle="tableTitleRight2">
-            <template #col2="scope">
+          <tableList 
+            v-show="!rightTitleType"
+            class="margin-top20" 
+            :tableData="tableDataRight" 
+            :tableTitle="tableTitleRight2"
+            >
+            <template #actualStartTime="scope">
               <iDatePicker
-                v-if="scope.row.type"
-                v-model="scope.row.col2"
+                v-if="scope.row.isSend"
+                v-model="scope.row.actualStartTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.col2?scope.row.col2:'/'}}</span>
+              <span v-else>{{scope.row.actualStartTime?scope.row.actualStartTime:'/'}}</span>
             </template>
-            <template #col3="scope">
+            <template #actualEndTime="scope">
               <iDatePicker
-                v-if="scope.row.type"
-                v-model="scope.row.col3"
+                v-if="scope.row.isSend"
+                v-model="scope.row.actualEndTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.col3?scope.row.col3:'/'}}</span>
+              <span v-else>{{scope.row.actualEndTime?scope.row.actualEndTime:'/'}}</span>
             </template>
             <template #col4="scope">
-              <iButton type="text" :disabled="!scope.row.type">发送</iButton>
+              <iButton type="text" :disabled="!scope.row.isSend" @click="sendOne(scope.row)">发送</iButton>
             </template>
           </tableList>
         </iCard>
@@ -89,89 +114,160 @@ import {
   iCard,
   iButton,
   iDatePicker,
+  iSearch,
+  iInput,
+  iMessage
 } from "rise";
-import search from "../components/search";
 import tableList from "@/components/iTableSort"
 import { searchList, tableTitleLeft, tableTitleRight1,tableTitleRight2 } from "./data";
 import {
   getPartActityty,
+  getSamplePlanList,
+  planDetail,
+  changePlan,
 } from "@/api/project/deliver";
 export default {
   components:{
     iPage,
     iCard,
     iButton,
-    search,
     tableList,
-    iDatePicker
+    iDatePicker,
+    iSearch,
+    iInput
   },
   data() {
     return {
       searchList,
-      tableDataLeft:[{
-          col1:'车型项目1',
-          col2:'2',
-          col3:'零件1',
-          col4:'4',
-          col5:'5',
-        },{
-          col1:'车型项目2',
-          col2:'2',
-          col3:'零件2',
-          col4:'4',
-          col5:'5',
-        }],
-      tableDataRight:[{
-          col1:'1',
-          col2:'2',
-          col3:'3',
-          type:true,
-        },{
-          col1:'1',
-          col2:'',
-          col3:'',
-          type:true,
-        },{
-          col1:'1',
-          col2:'',
-          col3:'',
-          type:false,
-        },{
-          col1:'1',
-          col2:'',
-          col3:'2',
-          type:false,
-        }],
+      selectOptions: {
+        catTypeProName:"",
+        partNum:"",
+        partName:"",
+      },
+      tableDataLeft:[],
       tableTitleLeft,
       tableTitleRight1,
       tableTitleRight2,
-      carProject: "",
+      tableDataRight:[],
+      partNum: "",
       partName: '',
       rightTitleType:true,
+
+      selectData:[],
     }
   },
   created(){
-    this.carProject = this.tableDataLeft[0].col1;
-    this.partName = this.tableDataLeft[0].col3;
+    this.selectOptions.catTypeProName = this.$route.query.carProjectName;
+    this.getLeftData();
   },
   methods:{
+    sendOne(val){
+      const data = _.cloneDeep(val);
+      data.type = 1;
+      changePlan([data]).then(res=>{
+        if(res?.result){
+          iMessage.success(res.desZh)
+        }
+      })
+    },
+    sendOut(){
+      if(this.selectData.length<1){
+        iMessage.error("请选择")
+        return;
+      }
+      var sendType = true;
+      this.selectData.forEach(e=>{
+        if(!e.isSend){
+          sendType = false;
+        }
+      })
+      if(!sendType){
+        iMessage.error("请勾选可发送的节点进行发送")
+        return
+      }
+      this.changePlan(1)
+    },
+    save(){
+      if(this.selectData.length<1){
+        iMessage.error("请选择")
+        return;
+      }
+      var sendType = true;
+      this.selectData.forEach(e=>{
+        if(!e.isSend){
+          sendType = false;
+        }
+      })
+      if(!sendType){
+        iMessage.error("请勾选可发送的节点进行发送")
+        return
+      }
+      this.changePlan(4)
+    },
+    changePlan(val){
+      this.selectData.forEach(e=>{
+        e.type = val;
+      })
+      changePlan(this.selectData).then(res=>{
+        if(res?.result){
+          iMessage.success(res.desZh)
+        }
+      })
+    },
+    handleSelectionChangePlan(val){
+      this.selectData = val;
+    },
+    getLeftData(){
+      getSamplePlanList({
+        ...this.selectOptions
+      }).then(res=>{
+        this.tableDataLeft = res.data;
+        this.partNum = this.tableDataLeft[0].partNum;
+        this.partName = this.tableDataLeft[0].partNameZh;
+
+        this.getRightData();
+      })
+    },
+    getRightData(){
+      planDetail({
+        partNum:this.partNum,
+        type:this.rightTitleType?1:2
+      }).then(res=>{
+        // this.tableDataRight = res.data;
+        // res.data.forEach((e,index) => {
+        //   if(index == 0){
+        //     e.isSend = true;
+        //   }
+        // });
+        this.tableDataRight = res.data;
+      })
+    },
     editPlan(val){
       this.rightTitleType = true;
-      this.carProject = val.col1;
-      this.partName = val.col3;
-      console.log(val);
+      this.partNum = val.partNum;
+      this.partName = val.partNameZh;
+      this.getRightData();
     },
     editActual(val){
       this.rightTitleType = false;
-      this.carProject = val.col1;
-      this.partName = val.col3;
-      console.log(val);
+      this.partNum = val.partNum;
+      this.partName = val.partNameZh;
+      this.getRightData();
     },
     copyParts(val){
       console.log(val);
     },
-    sure(){},
-    reset(){},
+    sure(){
+      this.getLeftData();
+    },
+    reset(){
+      this.selectOptions = {
+        catTypeProName:this.$route.query.carProjectName,
+        partNum:"",
+        partName:"",
+      }
+      this.getLeftData();
+    },
   }
 }
 </script>
