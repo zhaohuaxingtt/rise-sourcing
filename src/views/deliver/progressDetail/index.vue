@@ -64,8 +64,8 @@
 
           </el-form>
           <div class="sreach-button">
-            <iButton>查询</iButton>
-            <iButton>重置</iButton>
+            <iButton @click="sure">查询</iButton>
+            <iButton @click="reset">重置</iButton>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
       <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
+        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" />
       </el-tab-pane>
       <el-tab-pane name="2" label="普通零件">
         <commonParts :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
@@ -109,6 +109,7 @@ export default {
         partNum:"",
         supplierId:"",
       },
+      carTypeProIdOld:"",
 
       carProjectOptions:[],
       deptList:[],
@@ -119,17 +120,46 @@ export default {
       tabVal:'1',
 
       partNum:'',
+      partPage:{
+        totalCount:0, //总条数
+        pageSize:1,   //每页多少条
+        pageSizes:[1], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
     }
   },
   created(){
     this.getData();
   },
   methods:{
+    async sure(){
+      this.partPage.currPage = 1;
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    async reset(){
+      this.partPage.currPage = 1;
+      this.searchParams = {
+        carTypeProId : this.carTypeProIdOld,
+        materialGroupId : "",
+        partNum : "",
+        supplierId : "",
+      }
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    async handleCurrentChange(val){
+      this.partPage.currPage = val;
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
     async getData(){
       cartype_pro_List({}).then(res=>{
         if(res?.result){
           this.carProjectOptions = res.data.filter(res => res)
           this.searchParams.carTypeProId = this.carProjectOptions[0]?.cartypeProId;
+          this.carTypeProIdOld = this.carProjectOptions[0]?.cartypeProId;
           this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
         }
       })
@@ -140,11 +170,13 @@ export default {
       return new Promise((resolve,reject) => {
         partsPage({
           ...this.searchParams,
-          current:3,
+          current:this.partPage.currPage,
           size:1,
         }).then(res=>{
           if(res?.result){
-            this.partNum = res.data[0].partsNum
+            this.partNum = res.data[0].partsNum;
+            this.partPage.currPage = res.pageNum;
+            this.partPage.totalCount = res.total;
             resolve();
           }
         })
@@ -156,6 +188,7 @@ export default {
         partNum:this.partNum,
       }).then(res=>{
         console.log(res);
+        this.$refs.heavyItem.setData(res.data);
       })
     },
     getGroup(val){

@@ -1,24 +1,37 @@
 <template>
   <div class="row-item">
     <div class="first-column-item">
-      <template v-if="data.children">
+      <template v-if="data.childList">
         <i class="el-icon-remove-outline icon" v-if="data.showChlid" @click="change(data)"></i>
         <i class="el-icon-circle-plus-outline icon" v-else  @click="change(data)"></i>
       </template>
-      {{data.name}}
+      <el-tooltip
+        :content="data.num + ' ' + data.nodeName"
+        placement="top" effect="light"
+        :disabled="strWidth(data.num + ' ' + data.nodeName) <= boxWidth('font-hidden')"
+        >
+        <span id="font-hidden" @click="change(data)">{{data.num}} {{data.nodeName}}</span>
+      </el-tooltip>
     </div>
     <div class="column-item" :key="index" v-for="(item,index) in header">
-      <template v-if="(data.rang||[]).includes(item)">
-        <template v-if="data.point">
-          <i class="el-icon-caret-top point point-hui" :style="{width:(data.rang.indexOf(item)==data.rang.length-1)&&data.width||'100%'}"></i>
-          <i class="el-icon-caret-top point" :style="{width:(data.rang.indexOf(item)==data.rang.length-1)&&data.width||'100%'}" :class="data.status==1?'point-green':data.status==2?'point-yellow':''"></i>
+      <template>
+        <template v-if="(data.pointRangTop||[]).includes(item)">
+          <i v-if="!data.planStartTime && data.planEndTime" class="el-icon-caret-top point point-hui" :style="{width:(data.pointRangTop.indexOf(item)!=-1)&&data.pointWidthTop||'100%'}"></i>
         </template>
-        <template v-else>
-          <div class="progress-box">
-            <div class="progress hui" :style="{width:(data.rang.indexOf(item)==data.rang.length-1)&&data.width||'100%'}"></div>
-            <div class="progress" :style="{width:(data.rang.indexOf(item)==data.rang.length-1)&&data.width||'100%'}" :class="data.status==1?'green':data.status==2?'yellow':''"></div>
-          </div>
+        <template v-else-if="(data.barRangTop||[]).includes(item)">
+          <div v-if="data.actualStartTime && data.actualEndTime && data.barRangTop[data.barRangTop.length-1].indexOf(item) != -1" class="progress hui" :style="{width:data.barRangTopRight}"></div>
+          <div v-else-if="data.actualStartTime && data.actualEndTime && data.barRangTop[0].indexOf(item) != -1" class="progress hui" :style="{marginLeft:data.barWidthTopLeft,width:data.barWidthTopLeftWidth}"></div>
+          <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress hui" style="width:100%"></div>
         </template>
+        <div v-else :style="{height:data.pointRangTop?'50%':'15px'}"></div>
+      </template>
+      <template v-if="(data.pointRangBottom||[]).includes(item)">
+        <i v-if="!data.actualStartTime && data.actualEndTime" class="el-icon-caret-top point point-green" :style="{width:(data.pointRangBottom.indexOf(item)!=-1)&&data.pointWidthBottom||'100%'}"></i>
+      </template>
+      <template v-else-if="(data.barRangBottom||[]).includes(item)">
+        <div v-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[data.barRangBottom.length-1].indexOf(item) != -1" class="progress green" :style="{width:data.barWidthBottomRight}"></div>
+        <div v-else-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[0].indexOf(item) != -1" class="progress green" :style="{marginLeft:data.barWidthBottomLeft,width:data.barWidthBottomLeftWidth}"></div>
+        <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress green" style="width:100%"></div>
       </template>
     </div>
   </div>
@@ -35,12 +48,36 @@
       change(data){
         data.showChlid = !data.showChlid
       }
+    },
+    computed:{
+      strWidth() {
+        return function (string) {
+          const dom = document.createElement('span')
+          dom.style.display = 'inline-block'
+          dom.style.fontSize = '1rem'
+          dom.textContent = string
+          document.body.appendChild(dom)
+          const width = dom.clientWidth
+          document.body.removeChild(dom)
+          return width
+        }
+      },
+      //字符串所在元素宽度
+      boxWidth() {
+        return function (dom) {
+          return document.getElementById(dom)?.offsetWidth ?? 0
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+#font-hidden{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .row-item{
   height: 50px;
   line-height: 50px;
@@ -96,8 +133,13 @@
     flex: none;
     width: 200px;
     border-right: 1px #ccc solid;
+    display: flex;
+    align-items: center;
     .icon{
       color: #1660f1;
+    }
+    span{
+      flex:1;
     }
   }
 }
