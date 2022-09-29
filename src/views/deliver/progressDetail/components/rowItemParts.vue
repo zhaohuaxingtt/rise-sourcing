@@ -1,7 +1,8 @@
 <template>
   <div class="row-item">
     <div class="row-wrap">
-        <span class="row-name">{{data.edition}}</span>
+        <!-- <span class="row-name">{{data.edition}}</span> -->
+        <span class="row-name"></span>
         <div class="cound-wh">
             <el-tooltip class="item flex1" effect="light" :content="data.name" placement="top">
                 <span class="font-nowrap">{{data.name}}</span>
@@ -9,7 +10,7 @@
             <div class="cound" :class="data.circular==1?'black':'green'"></div>
         </div>
     </div>
-    <div id="column-item" :class="item.complete?'row-complete':''" :key="index" v-for="(item,index) in data.data">
+    <div id="column-item" :class="item.complete?'row-complete':''" :key="index" v-for="(item,index) in data.nodeList">
       <div class="row-content">
         <span class="content-top">{{item.name}}</span>
         <div id="row-line"></div>
@@ -120,6 +121,7 @@
     color: #d9d9d9;
 }
 .row-name{
+    height:20px;
     display: block;
     margin-bottom:11px;
     margin-top:15px;
