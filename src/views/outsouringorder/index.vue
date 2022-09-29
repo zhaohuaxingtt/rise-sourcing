@@ -79,27 +79,45 @@
           ></el-switch>
         </div>
         <div class="floatright btns">
-          <iButton @click="createSignSheet" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_XINJIAN">
+          <iButton
+            @click="createSignSheet"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_XINJIAN"
+          >
             {{ language("LK_XINJIANNEW", "新建") }}
           </iButton>
           <!-- 删除 -->
-          <iButton @click="deleteItem" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_SHANCHU">
+          <iButton
+            @click="deleteItem"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_SHANCHU"
+          >
             {{ language("SHANCHU", "删除") }}
           </iButton>
           <!-- 转派 -->
-          <iButton @click="handleBatchTransation" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_ZHUANPAI">
+          <iButton
+            @click="handleBatchTransation"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_ZHUANPAI"
+          >
             {{ language("ZHUANPAI", "转派") }}
           </iButton>
           <!-- 签收 -->
-          <iButton @click="handleBatchSingn" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_QIANSHOU">
+          <iButton
+            @click="handleBatchSingn"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_QIANSHOU"
+          >
             {{ language("QIANSHOU", "签收") }}
           </iButton>
           <!-- 退回 -->
-          <iButton @click="handleBatchReject(true)" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_TUIHUI">
+          <iButton
+            @click="handleBatchReject(true)"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_TUIHUI"
+          >
             {{ language("TUIHUI", "退回") }}
           </iButton>
           <!-- 关闭 -->
-          <iButton @click="handleBatchClose(true)" permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_GUANBI">
+          <iButton
+            @click="handleBatchClose(true)"
+            permissionKey="SOURCEINQUIRYPOINT_OUTSOURINGORDER_GUANBI"
+          >
             {{ language("LK_GUANBI", "关闭") }}
           </iButton>
         </div>
@@ -302,11 +320,28 @@ export default {
       deleteDialogVisible: false,
     };
   },
+  computed: {
+    ...Vuex.mapState({
+      userId: (state) => state.permission.userInfo?.id || "",
+    }),
+  },
   created() {
     this.initSelectOptions();
     this.getOutsouringFindBypage();
+    console.log(this.userInfo);
   },
   methods: {
+    // 检查用户是否有操作权限
+    checkUser() {
+      let msg = "";
+      this.selectRow.forEach((item) => {
+        if (![item.ownerId, item.applyId].includes(this.userId)) {
+          msg += item.riseCode + ",";
+        }
+      });
+      if (msg) msg = "无 " + msg + " 操作权限";
+      return msg;
+    },
     // 新建采購申請
     createSignSheet() {
       // const { herf } = this.$router.resolve({
@@ -356,6 +391,8 @@ export default {
       ) {
         return iMessage.warn("仅待签收状态的数据可以退回");
       }
+      let msg = this.checkUser();
+      if (msg) return iMessage.warn(msg);
       this.backDialogVisible = visible;
       this.mode = "back";
     },
@@ -379,6 +416,8 @@ export default {
       ) {
         return iMessage.warn("仅待签收，已签收状态的数据可以关闭");
       }
+      let msg = this.checkUser();
+      if (msg) return iMessage.warn(msg);
       this.backDialogVisible = visible;
       this.mode = "close";
     },
@@ -433,6 +472,8 @@ export default {
         );
         return;
       }
+      let msg = this.checkUser();
+      if (msg) return iMessage.warn(msg);
       this.deleteDialogVisible = true;
     },
     /**
@@ -478,6 +519,8 @@ export default {
       ) {
         return iMessage.warn("仅待签收状态的数据可以签收");
       }
+      let msg = this.checkUser();
+      if (msg) return iMessage.warn(msg);
       this.showPoint = true;
     },
     /**
@@ -488,6 +531,9 @@ export default {
     */
     handleBackEPS(reasonDescription, isAllItem) {
       if (this.mode === "back") {
+        if (!reasonDescription) return iMessage.warn("退回理由不能为空");
+        this.$refs.backEPS.changeSaveLoading &&
+          this.$refs.backEPS.changeSaveLoading(true);
         let params = {
           purchasingRequirementChooseList: this.selectRow.map((item) => {
             return { riseCode: item.riseCode, sapItem: item.sapItem };
@@ -662,7 +708,6 @@ export default {
       this.showTransfer = true;
     },
   },
-  mounted() {},
 };
 </script>
 <style lang="scss" scoped>
