@@ -5,26 +5,35 @@
       <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
       <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
     </template>
-    <div class="row-item">
-      <div class="first-column-item">
-        <i class="el-icon-circle-plus-outline"></i> 零件A
+    <div class="wrap-back">
+      <div class="wrap-div"></div>
+      <div class="line-div">
+        <div class="line-samll" v-for="(item,index) in lineList" :key="index" :style="{left:item.w+'%'}">
+          <div :class="item.garyShow?'gray':'line-line'"></div>
+          <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
+        </div>
       </div>
-      <div v-for="item in header" :key="item" >
-        {{item}}
+      <div class="row-item">
+        <div class="first-column-item">
+          <i class="el-icon-circle-plus-outline"></i> 零件A
+        </div>
+        <div v-for="item in header" :key="item">
+          {{item}}
+        </div>
       </div>
-    </div>
-    <item :list="list" :key="i" :header="header"/>
+      <item :list="list" @refresh="refresh" :key="i" :header="header"/>
 
-    <iPagination v-update
-      class="pagination"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      background
-      :current-page="partPage.currPage"
-      :page-sizes="partPage.pageSizes"
-      :page-size="partPage.pageSize"
-      :layout="partPage.layout"
-      :total="partPage.totalCount" />
+      <iPagination v-update
+        class="pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        background
+        :current-page="partPage.currPage"
+        :page-sizes="partPage.pageSizes"
+        :page-size="partPage.pageSize"
+        :layout="partPage.layout"
+        :total="partPage.totalCount" />
+    </div>
   </iCard>
 </template>
 
@@ -65,12 +74,101 @@ export default {
       list:[],
       minT:"",
       maxT:"",
+      lineList:[],
     }
   },
   created(){
     // this.getData();
   },
+  mounted(){
+
+  },
   methods:{
+    refresh(){
+      this.$nextTick(()=>{
+        const s = document.getElementsByClassName("table-content")[0].offsetHeight;
+
+        const y = document.getElementsByClassName("wrap-div")[0];
+        // 设置阴影部分div宽高
+        const h = s-50
+        y.style.height = h + "px";
+
+        // 设置line的div宽高
+        const line = document.getElementsByClassName("line-div")[0];
+        line.style.height = s + "px";
+      })
+    },
+    noTodayWrap(){
+      var div = document.getElementsByClassName("row-item")[0];
+      var width = div.offsetWidth - 200//div宽度,零件Adiv宽度200，需要减去
+      var nowTimeCode = this.timeOff("2022-09-15 12:15:30");//当前时间
+      // var nowTimeCode = Math.round(new Date().getTime()/1000);
+
+      const start = this.header[0] + "-01 00:00:00"
+      const end = this.header[this.header.length-1] + "-30 23:59:59"
+      var startTimeCode = this.timeOff(start)
+      var endTimeCode = this.timeOff(end)
+      var difference = endTimeCode - startTimeCode//最大时间-最小时间的差值
+
+      var w = 0;
+
+      if(nowTimeCode >= startTimeCode && nowTimeCode<=endTimeCode){
+        const t = nowTimeCode - startTimeCode;
+        const divW = t/difference*100
+        w = Number(divW.toFixed(2))
+      }
+      this.$nextTick(()=>{
+        const y = document.getElementsByClassName("wrap-div")[0];
+
+        // 设置阴影部分div宽高
+        const s = document.getElementsByClassName("table-content")[0].offsetHeight;
+        const h = s-50
+        y.style.height = h + "px";
+        y.style.width = w + "%";
+
+        // 设置line的div宽高
+        const line = document.getElementsByClassName("line-div")[0];
+        line.style.width = width + "px";
+        line.style.height = s + "px";
+
+        // 设置线
+        this.lineList = [
+          {
+            name:"BF",
+            time:"2022-09-02 20:15:30",
+          },{
+            name:"VFF",
+            time:"2022-09-08 20:15:30",
+          },{
+            name:"PVS",
+            time:"2022-09-20 20:15:30",
+          },{
+            name:"OS",
+            time:"2022-09-25 20:15:30",
+          },{
+            name:"SOP",
+            time:"2022-09-26 20:15:30",
+          },
+        ]
+
+        this.lineList.forEach(e=>{
+          const lineS = this.timeOff(e.time)
+          var lineOneW = 0;
+          if(lineS >= startTimeCode && lineS <= endTimeCode){
+            const linet = lineS - startTimeCode;
+            const lineW = linet/difference*100
+            lineOneW = Number(lineW.toFixed(2))
+          }
+          if(this.timeOff(e.time) > nowTimeCode){
+            e.garyShow = true;
+          }
+          e.w = lineOneW;
+        })
+
+
+        console.log(this.lineList);
+      })
+    },
     handleSizeChange(val){
 
     },
@@ -82,9 +180,9 @@ export default {
       var minTime = "";
       var maxTime = "";
 
-      console.log(header);
+      // console.log(header);
       data.forEach(e => {
-        console.log(e);
+        // console.log(e);
         header.push({
           time:e.actualEndTime,
           code:this.timeOff(e.actualEndTime),
@@ -187,6 +285,8 @@ export default {
 
       console.log(headerList);
       this.list = _.cloneDeep(data);
+
+      this.noTodayWrap();
     },
     yearMake(max,min){
       var maxYear = max;
@@ -293,4 +393,59 @@ export default {
     background: #1660f1;
   }
 }
+.wrap-back{
+  width:100%;
+  height:100%;
+  position: relative;
+}
+.wrap-div{
+  position: absolute;
+  right:0;
+  top:100px;
+  background:black;
+  opacity:0.02;
+  // vertical-align: top;
+  -webkit-pointer-events: none;
+  -moz-pointer-events: none;
+  -ms-pointer-events: none;
+  -o-pointer-events: none;
+  pointer-events: none;
+}
+.line-div{
+  position: absolute;
+  right:0;
+  top:50px;
+  // background:#1660f1;
+  display: flex;
+  flex-wrap: wrap;
+}
+.line-samll{
+  position:absolute;
+  height:100%;
+  top: 0;
+  left:10%;
+  display: flex;
+  .line-line{
+    height: 100%;
+    width: 2px;
+    background: #1660f1;
+  }
+
+  .gray{
+    height: 100%;
+    width: 2px;
+    background:#cbcbcb;
+  }
+
+  span{
+    margin-left: 10px;
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .gray-name{
+    color:#a9a9a9;
+  }
+}
+
 </style>
