@@ -142,8 +142,8 @@ import itemParts from "./itemParts.vue";
             }
             data[0].nodeList = [
                 {
-                    actualEndTime:null,
-                    actualStartTime: null,
+                    actualEndTime:"2022-12-09 23:11:32",
+                    actualStartTime: "2022-10-03 23:11:32",
                     id: 1,
                     nodeName: "1",
                     num: "1.0",
@@ -201,7 +201,8 @@ import itemParts from "./itemParts.vue";
 
                 if(e.nodeList.length>0){
                     e.nodeList.forEach(item=>{
-                        item.name = item.nodeName;
+                        item.planStartWeek = this.week(item.planStartTime);
+                        item.actuatlEndWeek = this.week(item.actualEndTime);
                         if(item.planStartTime){
                             // status 1 为绿色 2为黄色 3位红色 4位黑色 5为灰色
                             // type 1为圆 2位三角形
@@ -229,15 +230,17 @@ import itemParts from "./itemParts.vue";
                                         item.complete = true;
                                     }
                                 }else{
-                                    item.status = 5;
+                                    item.status = 1;
                                     item.type = 1;
-                                    item.complete = false;
+                                    item.complete = true;
                                 }
                             }
                         }else{
                             item.status = 5;
                             item.type = 1;
                             item.complete = false;
+                            item.planStartWeek = this.week(item.planStartTime);
+                            item.actuatlEndWeek = this.week(item.actualEndTime);
                         }
                     })
                 }
@@ -248,6 +251,23 @@ import itemParts from "./itemParts.vue";
 
             console.log(this.list);
             
+        },
+        week(time,type){
+            if(!time){
+                return "";
+            }
+            var d1 = Math.ceil((new Date(time) - new Date(new Date(time).getFullYear().toString())) / (24 * 60 * 60 * 1000));
+            //周天数
+            // console.log(d1, "天数");
+            //2. 代入获取本年的1月1号是星期几
+            var week = new Date(new Date(time).getFullYear().toString() + "/01/01").getDay();
+            // console.log(week, "代入获取本年的1月1号是星期几");
+            //计算 当前时间是本年的第几周
+            var weekTotal = Math.ceil((d1 + week - 1) / 7);
+
+            var year = time.split(" ")[0].split("-")[0].slice(2)
+
+            return weekTotal+"W-"+year;r
         },
         timeOff(val){
             if(val){

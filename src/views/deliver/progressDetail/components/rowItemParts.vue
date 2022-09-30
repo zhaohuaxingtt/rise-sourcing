@@ -12,19 +12,19 @@
     </div>
     <div id="column-item" :class="item.complete?'row-complete':''" :key="index" v-for="(item,index) in data.nodeList">
       <div class="row-content">
-        <span class="content-top">{{item.name}}</span>
+        <span class="content-top">{{item.planStartWeek}}</span>
         <div id="row-line"></div>
         <div id="row-line" :class="item.complete?'green row-line-05':''"></div>
-
         <!-- 1 为绿色 2为黄色 3位红色 4位黑色 5为灰色 -->
-        <el-tooltip effect="light" :content="'实际完成时间：'+item.name" placement="right" v-if="item.status == 2||item.status == 3||item.status == 4">
+        <!-- v-if="item.status == 2||item.status == 3||item.status == 4" -->
+        <el-tooltip effect="light" :content="'实际完成时间：'+item.actuatlEndWeek" placement="bottom">
             <div class="row-img1 hui" v-if="item.type==1" :class="item.status==1?'green':item.status==2?'yellow':item.status==3?'red':item.status==4?'black':''"></div><!-- 圆 -->
             <i v-if="item.type==2" class="row-img2 el-icon-caret-top point-hui" :class="item.status==1?'point-green':item.status==2?'point-yellow':item.status==3?'point-red':item.status==4?'point-black':''"></i><!-- 三角形 -->
         </el-tooltip>
-        <template v-else>
-            <div class="row-img1 hui" v-if="item.type==1" :class="item.status==1?'green':item.status==2?'yellow':item.status==3?'red':item.status==4?'black':''"></div><!-- 圆 -->
-            <i v-if="item.type==2" class="row-img2 el-icon-caret-top point-hui" :class="item.status==1?'point-green':item.status==2?'point-yellow':item.status==3?'point-red':item.status==4?'point-black':''"></i><!-- 三角形 -->
-        </template>
+        <!-- <template v-else>
+            <div class="row-img1 hui" v-if="item.type==1" :class="item.status==1?'green':item.status==2?'yellow':item.status==3?'red':item.status==4?'black':''"></div>
+            <i v-if="item.type==2" class="row-img2 el-icon-caret-top point-hui" :class="item.status==1?'point-green':item.status==2?'point-yellow':item.status==3?'point-red':item.status==4?'point-black':''"></i>
+        </template> -->
       </div>
     </div>
   </div>
