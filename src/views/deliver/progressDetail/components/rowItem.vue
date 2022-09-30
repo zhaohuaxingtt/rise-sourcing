@@ -47,6 +47,7 @@
     methods:{
       change(data){
         data.showChlid = !data.showChlid
+        this.$emit("refresh")
       }
     },
     computed:{
