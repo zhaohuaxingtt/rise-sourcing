@@ -5,7 +5,24 @@
       <iSearch @sure="sure" @reset="reset">
         <el-form class="margin-top10">
           <el-form-item :label="$t('CHEXINGXIANGMU')">
-            <iInput v-model="selectOptions.catTypeProName"></iInput>
+            <iSelect filterable v-model="selectOptions.catTypeProName" :placeholder="language('QINGXUANZE','请选择')" @change="projectChange">
+              <el-option
+                v-for="(item,index) in carProjectOptions"
+                :key="index"
+                :label="item.cartypeProNameZh"
+                :value="item.cartypeProNameZh">
+              </el-option>
+            </iSelect>
+          </el-form-item>
+          <el-form-item :label="language('GONGYINGSHANG', '供应商')">
+            <iSelect filterable v-model="selectOptions.supplierId" :placeholder="language('QINGXUANZE','请选择')">
+              <el-option
+                v-for="item in supplierList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LINGJIANHAO')">
             <iInput v-model="selectOptions.partNum"></iInput>
@@ -23,7 +40,7 @@
             <template #col5="scope">
               <iButton type="text" @click="editPlan(scope.row)">编辑计划</iButton>
               <iButton type="text" @click="editActual(scope.row)">编辑实际</iButton>
-              <iButton type="text" @click="copyParts(scope.row)">复制</iButton>
+              <!-- <iButton type="text" @click="copyParts(scope.row)">复制</iButton> -->
             </template>
           </tableList>
         </iCard>
@@ -36,9 +53,9 @@
               <span style="display:inline-block;margin-left:20px;">零件：{{partName}}</span>
             </div>
             <div>
-              <iButton>甘特图导出</iButton>
-              <iButton @click="save">保存</iButton>
-              <iButton @click="sendOut">发送</iButton>
+              <!-- <iButton>甘特图导出</iButton> -->
+              <!-- <iButton @click="save">保存</iButton> -->
+              <iButton @click="sendOut" v-if="rightTitleType">发送</iButton>
             </div>
           </div>
           <tableList
@@ -50,26 +67,29 @@
             >
             <template #planStartTime="scope">
               <iDatePicker
-                v-if="scope.row.isSend"
+                v-if="!scope.row.isSend"
                 v-model="scope.row.planStartTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.planStartTime?scope.row.planStartTime:'/'}}</span>
+              <span v-else>{{scope.row.planStartTime?scope.row.planStartTime.split(" ")[0]:'/'}}</span>
             </template>
             <template #planEndTime="scope">
               <iDatePicker
-                v-if="scope.row.isSend"
+                v-if="!scope.row.isSend"
                 v-model="scope.row.planEndTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
               </iDatePicker>
-              <span v-else>{{scope.row.planEndTime?scope.row.planEndTime:'/'}}</span>
+              <span v-else>{{scope.row.planEndTime?scope.row.planEndTime.split(" ")[0]:'/'}}</span>
+            </template>
+            <template #isSend="scope">
+              <span>{{scope.row.isSend?scope.row.isFeedback?"已反馈":"已发送":"未发送"}}</span>
             </template>
             <template #col4="scope">
-              <iButton type="text" :disabled="!scope.row.isSend" @click="sendOne(scope.row)">发送</iButton>
+              <iButton type="text" :disabled="scope.row.isSend?scope.row.isFeedback?false:true:false" @click="scope.row.isSend?scope.row.isFeedback?unlock(scope.row):sendOne(scope.row):sendOne(scope.row)">{{scope.row.isSend?scope.row.isFeedback?"解锁":"发送":"发送"}}</iButton>
             </template>
           </tableList>
           <tableList 
@@ -79,27 +99,27 @@
             :tableTitle="tableTitleRight2"
             >
             <template #actualStartTime="scope">
-              <iDatePicker
+              <!-- <iDatePicker
                 v-if="scope.row.isSend"
                 v-model="scope.row.actualStartTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
-              </iDatePicker>
-              <span v-else>{{scope.row.actualStartTime?scope.row.actualStartTime:'/'}}</span>
+              </iDatePicker> -->
+              <span>{{scope.row.actualStartTime?scope.row.actualStartTime.split(" ")[0]:'/'}}</span>
             </template>
             <template #actualEndTime="scope">
-              <iDatePicker
+              <!-- <iDatePicker
                 v-if="scope.row.isSend"
                 v-model="scope.row.actualEndTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
-              </iDatePicker>
-              <span v-else>{{scope.row.actualEndTime?scope.row.actualEndTime:'/'}}</span>
+              </iDatePicker> -->
+              <span>{{scope.row.actualEndTime?scope.row.actualEndTime.split(" ")[0]:'/'}}</span>
             </template>
             <template #col4="scope">
-              <iButton type="text" :disabled="!scope.row.isSend" @click="sendOne(scope.row)">发送</iButton>
+              <iButton type="text" :disabled="!(scope.row.isSend && scope.row.isFeedback)" @click="unlock(scope.row)">解锁</iButton>
             </template>
           </tableList>
         </iCard>
@@ -115,6 +135,7 @@ import {
   iButton,
   iDatePicker,
   iSearch,
+  iSelect,
   iInput,
   iMessage
 } from "rise";
@@ -125,6 +146,8 @@ import {
   getSamplePlanList,
   planDetail,
   changePlan,
+  cartype_pro_List,
+  getCartypeProSupplier,
 } from "@/api/project/deliver";
 export default {
   components:{
@@ -134,14 +157,17 @@ export default {
     tableList,
     iDatePicker,
     iSearch,
-    iInput
+    iInput,
+    iSelect
   },
   data() {
     return {
       searchList,
+      supplierList:[],
       selectOptions: {
         catTypeProName:"",
         partNum:"",
+        supplierId:"",
         partName:"",
       },
       tableDataLeft:[],
@@ -151,22 +177,70 @@ export default {
       tableDataRight:[],
       partNum: "",
       partName: '',
+      carProject:"",
       rightTitleType:true,
+
+      carProjectOptions:[],//车型项目
 
       selectData:[],
     }
   },
   created(){
     this.selectOptions.catTypeProName = this.$route.query.carProjectName;
-    this.getLeftData();
+    this.getSearch();
   },
   methods:{
+    unlock(val){
+      const data = _.cloneDeep(val);
+      delete data.isFeedback;
+      delete data.isSend;
+      data.type = 3;
+      changePlan([data]).then(res=>{
+        if(res?.result){
+          iMessage.success(res.desZh)
+          this.getRightData();
+        }
+      })
+    },
+    projectChange(val){
+      this.getSupplier();
+    },
+    async getSearch(){
+      await this.getCarType();
+      await this.getSupplier();
+      this.getLeftData();
+    },
+    getCarType(){
+      return new Promise((resolve,reject) => {
+        cartype_pro_List({}).then(res=>{
+          if(res?.result){
+            this.carProjectOptions = res.data.filter(res => res)
+            resolve();
+          }
+        })
+      })
+    },
+    getSupplier(){
+      this.selectOptions.supplierId = "";
+      var supplierId = this.carProjectOptions.filter(e => e.cartypeProNameZh == this.selectOptions.catTypeProName)
+      return new Promise((resolve,reject) => {
+        getCartypeProSupplier(supplierId[0].cartypeProId).then(res=>{
+          if(res?.result){
+            this.supplierList = res.data;
+            resolve();
+          }
+        })
+      })
+    },
     sendOne(val){
       const data = _.cloneDeep(val);
+      delete data.isFeedback;
+      delete data.isSend;
       data.type = 1;
       changePlan([data]).then(res=>{
         if(res?.result){
           iMessage.success(res.desZh)
+          this.getRightData();
         }
       })
     },
@@ -207,10 +281,13 @@ export default {
     changePlan(val){
       this.selectData.forEach(e=>{
         e.type = val;
+        delete e.isFeedback;
+        delete e.isSend;
       })
       changePlan(this.selectData).then(res=>{
         if(res?.result){
           iMessage.success(res.desZh)
+          this.getRightData();
         }
       })
     },
@@ -224,6 +301,7 @@ export default {
         this.tableDataLeft = res.data;
         this.partNum = this.tableDataLeft[0].partNum;
         this.partName = this.tableDataLeft[0].partNameZh;
+        this.carProject = this.tableDataLeft[0].carTypeProNameZh;
 
         this.getRightData();
       })
@@ -246,12 +324,14 @@ export default {
       this.rightTitleType = true;
       this.partNum = val.partNum;
       this.partName = val.partNameZh;
+      this.carProject = val.carTypeProNameZh;
       this.getRightData();
     },
     editActual(val){
       this.rightTitleType = false;
       this.partNum = val.partNum;
       this.partName = val.partNameZh;
+      this.carProject = val.carTypeProNameZh;
       this.getRightData();
     },
     copyParts(val){
@@ -260,12 +340,14 @@ export default {
     sure(){
       this.getLeftData();
     },
-    reset(){
+    async reset(){
       this.selectOptions = {
         catTypeProName:this.$route.query.carProjectName,
         partNum:"",
+        supplierId:"",
         partName:"",
       }
+      await this.getSupplier();
       this.getLeftData();
     },
   }
