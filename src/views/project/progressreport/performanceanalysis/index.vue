@@ -124,7 +124,7 @@ export default {
                 id:10,
             },{
                 select:false,
-                name:this.$t("Commodity定点完成情况报告"),
+                name:this.$t("不同Commodity定点完成情况报告"),
                 id:11,
             }
         ];
@@ -160,6 +160,8 @@ export default {
                 if(res?.result){
                     this.carModelList = res.data;
                 }
+            }).catch(res=>{
+                iMessage.error("车型项目数据获取失败")
             })
         },
         jump(val){
@@ -259,6 +261,7 @@ export default {
         getCarProjectEmOntimeDTOInfo(){//6车型项目Em准时完成情况报告
             getCarProjectEmOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
+                year:"3",
             }).then(res=>{
                 if(res.result){
                     this.echartsOption(5,res?.data,[
@@ -271,6 +274,7 @@ export default {
         getCarProjectNomOntimeDTOInfo(){//7车型项目定点准时完成情况报告
             getCarProjectNomOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
+                year:"3",
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
@@ -284,6 +288,7 @@ export default {
         getCarProjectOTSOntimeDTOInfo(){//8车型项目ots准时完成情况报告
             getCarProjectOTSOntimeDTOInfo({
                 cartypeProId:this.cartypeProId,
+                year:"3",
             }).then(res=>{
                 // console.log(res);
                 if(res.result){
