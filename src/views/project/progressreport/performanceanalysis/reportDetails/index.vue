@@ -12,7 +12,7 @@
             </div>
         </div>
         <iCard class="marginTop20">
-            <el-form>
+            <el-form :inline="true">
                 <el-form-item :label="$t('partsprocure.PARTSPROCUREMODELPROJECT')">
                     <iSelect v-model="cartypeProId" @change="getChange">
                         <el-option
@@ -22,6 +22,11 @@
                         :value="item.value">
                         </el-option>
                     </iSelect>
+                </el-form-item>
+
+                <el-form-item :label="$t('车型项目SOP时间')" v-if="$route.query.type==6 || $route.query.type==7 || $route.query.type==8">
+                    <iInput type="number" class="inputW" v-model="carProjectSopTime" @change="timeChange"></iInput>
+                    <span style="padding-left:10px;">年</span>
                 </el-form-item>
             </el-form>
             <div id="echartsBox" class="flexone"></div>
@@ -216,7 +221,7 @@
 </template>
 
 <script>
-import { iPage,iCard,iButton,iSelect,iPagination,iMessage } from "rise";
+import { iPage,iCard,iButton,iSelect,iPagination,iMessage,iInput } from "rise";
 import tableList from "@/components/commonTable";
 import echarts from "@/utils/echarts";
 import { pageMixins } from '@/utils/pageMixins'
@@ -276,13 +281,14 @@ export default {
         iButton,
         iSelect,
         tableList,
-        iPagination
+        iPagination,
+        iInput
     },
     data(){
         return{
             cartypeProId:"",
             selectOptions1:[],
-
+            carProjectSopTime:"3",
             tableListData:[],
             tableTitle1,
             tableTitle2,
@@ -340,6 +346,8 @@ export default {
                 } else {
                     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
                 }
+            }).catch(res=>{
+                iMessage.error("车型项目数据获取失败")
             })
         },
         getDefaultCarTypePro(){
@@ -353,6 +361,11 @@ export default {
                     this.getData(this.list.type);
                 }
             })
+        },
+        timeChange(val){
+            console.log(val);
+            this.carProjectSopTime = val;
+            this.getData(this.list.type);
         },
         getData(val){
             if(val == 1){
@@ -481,6 +494,7 @@ export default {
             }else if(val == 6){//车型项目Em准时完成情况报告
                 getCarProjectEmOntimeDTOInfo({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                 }).then(res=>{
                     if(res.result){
                         this.echartsOption(5,res?.data,[
@@ -492,6 +506,7 @@ export default {
                 
                 getCarProjectEmOntimeDTOPage({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                     current:this.page.currPage,
                     size:this.page.pageSize,
                 }).then(res=>{
@@ -508,6 +523,7 @@ export default {
             }else if(val == 7){//车型项目定点准时完成情况报告
                 getCarProjectNomOntimeDTOInfo({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                 }).then(res=>{
                     if(res.result){
                         this.echartsOption(6,res?.data,[
@@ -519,6 +535,7 @@ export default {
                 
                 getCarProjectNomOntimeDTOPage({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                     current:this.page.currPage,
                     size:this.page.pageSize,
                 }).then(res=>{
@@ -535,6 +552,7 @@ export default {
             }else if(val == 8){//车型项目ots准时完成情况报告
                 getCarProjectOTSOntimeDTOInfo({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                 }).then(res=>{
                     if(res.result){
                         this.echartsOption(7,res?.data,[
@@ -546,6 +564,7 @@ export default {
                 
                 getCarProjectOTSOntimeDTOPage({
                     cartypeProId:this.cartypeProId,
+                    year:this.carProjectSopTime,
                     current:this.page.currPage,
                     size:this.page.pageSize,
                 }).then(res=>{
@@ -696,4 +715,7 @@ export default {
 .flexone{
 }
 
+.inputW{
+    width: 60px;
+}
 </style>
