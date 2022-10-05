@@ -5,23 +5,25 @@ export const searchList = [
 ]
 
 export const tableTitleLeft = [
-  { props: "carTypeProNameZh", name: "车型项目", key: "", tooltip: true, width:100 },
-  { props: "partNum", name: "零件编号", key: "", tooltip: true, width:100 },
-  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, width:120 },
-  { props: "sendTime", name: "任务发送时间", key: "", tooltip: true, width:140 },
-  { props: "col5", name: "操作", key: "", minWidth:200 },
+  { props: "carTypeProNameZh", name: "车型项目", key: "", tooltip: true, minWidth:100 },
+  { props: "partNum", name: "零件编号", key: "", tooltip: true, minWidth:100 },
+  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, minWidth:100 },
+  { props: "supplier", name: "供应商", key: "GONGYINGSHANG", tooltip: true, minWidth:100 },
+  { props: "sendTime", name: "任务发送时间", key: "", tooltip: true, minWidth:100 },
+  { props: "col5", name: "操作", key: "", minWidth:150,fixed:"right" },
 ]
 
 export const tableTitleRight1 = [
-  { props: "node", name: "节点", key: "", tooltip: true, width:200 },
-  { props: "planStartTime", name: "预计开始(SOLL)", key: "", tooltip: true, width:160 },
-  { props: "planEndTime", name: "预计结束(SOLL)", key: "", tooltip: true, width:160 },
-  { props: "col4", name: "操作", key: "", minWidth:120 },
+  { props: "node", name: "节点", key: "", tooltip: true,},
+  { props: "planStartTime", name: "预计开始(SOLL)", key: "", tooltip: true, minWidth:160 },
+  { props: "planEndTime", name: "预计结束(SOLL)", key: "", tooltip: true, minWidth:160 },
+  { props: "isSend", name: "发送状态", key: "", tooltip: true,},
+  { props: "col4", name: "操作", key: "",},
 ]
 
 export const tableTitleRight2 = [
-  { props: "node", name: "节点", key: "", tooltip: true, width:200 },
+  { props: "node", name: "节点", key: "", tooltip: true,},
   { props: "actualStartTime", name: "实际开始(SOLL)", key: "", tooltip: true, width:160 },
   { props: "actualEndTime", name: "实际结束(SOLL)", key: "", tooltip: true, width:160 },
-  { props: "col4", name: "操作", key: "", minWidth:120 },
+  { props: "col4", name: "操作", key: "",},
 ]

@@ -370,12 +370,15 @@ export default {
     };
   },
   watch: {
-    // tab 页切换到封面表态时，查询数据
-    currentTab(val) {
-      if (val == "cover") {
-        this.getDetail();
-        this.getSearchUserList();
-      }
+    // tab 页切换到审批记录时，查询数据
+    currentTab: {
+      handler(val) {
+        if (val == "cover") {
+          this.getDetail();
+          this.getSearchUserList();
+        }
+      },
+      immediate: true,
     },
     "$i18n.locale"(val) {
       this.rules = fromRules(this, this.basicInfo.isReference);
@@ -399,10 +402,11 @@ export default {
       },
     },
   },
-  // created() {
-  //   this.getDetail();
-  //   this.getSearchUserList();
-  // },
+  created() {
+    console.log(this.currentTab);
+    // this.getDetail();
+    // this.getSearchUserList();
+  },
   methods: {
     // 获取详情
     async getDetail() {
