@@ -570,7 +570,13 @@
                   $route.query.desinateId ? $route.query.desinateId : nominateId
                 }}
               </div>
-              <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+              <div
+                class="singleSourcing cursor"
+                v-if="isSingle"
+                @click="gotoSingle"
+              >
+                Single Sourcing
+              </div>
             </div>
           </div>
         </template>
@@ -1924,6 +1930,14 @@ export default {
             );
           }
         });
+      });
+    },
+    // 调整 Single Sourcing
+    gotoSingle() {
+      const { query } = this.$route;
+      this.$router.push({
+        path: "/designate/decisiondata/singlesourcing",
+        query,
       });
     },
   },
