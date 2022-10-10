@@ -21,6 +21,7 @@ import { iTable, iMessage } from 'rise'
 // import AmapVue from '@amap/amap-vue'
 import './utils/mydirect'
 import './globalComponnets'
+import './utils/selectTranslate'
 
 require('./auto').init()
 Vue.config.productionTip = false

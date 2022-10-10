@@ -52,6 +52,8 @@ export default {
           }
         });
       }
+
+      console.log(dataList);
       this.option = {
         tooltip: {
           trigger: "item",
@@ -70,7 +72,7 @@ export default {
           {
             name: "延迟原因数量",
             type: "pie",
-            radius: ['40%', '75%'],
+            radius: ['40%', '73%'],
             itemStyle: {
               borderRadius: 2,
               borderColor: '#fff',
