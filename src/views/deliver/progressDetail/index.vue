@@ -73,7 +73,7 @@
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
       <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" />
+        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" :titleName="titleName" />
       </el-tab-pane>
       <el-tab-pane name="2" label="普通零件">
         <commonParts ref="commonParts" :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
@@ -127,6 +127,10 @@ export default {
         pageSizes:[1], //每页条数切换
         currPage:1,    //当前页
         layout:"sizes, prev, pager, next, jumper"
+      },
+      titleName:{
+        name:"",
+        nameE:"",
       },
     }
   },
@@ -184,6 +188,8 @@ export default {
             this.partNum = res.data[0].partsNum;
             this.partPage.currPage = res.pageNum;
             this.partPage.totalCount = res.total;
+            this.titleName.name = res.data[0].partNameZh;
+            this.titleName.nameE = res.data[0].partNameDe;
             resolve();
           }
         })

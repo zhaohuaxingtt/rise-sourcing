@@ -52,6 +52,15 @@ export function sample_overviewPage(data) {
     })
 }
 
+// 查询总览页所有数据（新）
+export function sample_overviewallList(data) {
+    return requst({
+        url: '/sample_overview/allList',
+        method: 'POST',
+        data
+    })
+}
+
 // 查询总览-零件列表-所有数据
 export function sample_part_listPage(data) {
     return requst({

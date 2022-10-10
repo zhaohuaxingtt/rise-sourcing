@@ -62,7 +62,7 @@ export const COMFIRMTAB = [
 export const tableTitle = [
   { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true, },
   { props: "rfq", name: "RFQ", key: "", tooltip: true,},
-  { props: "materialGroupCode", name: "材料组编号", key: "", tooltip: true,  },
+  { props: "materialGroupNameZh", name: "材料组编号", key: "", tooltip: true,  },
   { props: "partNum", name: "零件号", key: "", tooltip: true, },
   { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
   { props: "partType", name: "零件类型", key: "", tooltip: true,  },
@@ -112,7 +112,6 @@ export const delayAnalysisSearchList = [
   {prop:'delayReason',label:'延迟原因',key:'YANCHIYUANYIN',type:'input' },
   {prop:'completionStatus',label:'完成状况',key:'WANCHENGZHUANGKUANG',type:'select', selectOption:'completionStatus'},
   {prop:'supplierName',label:'供应商',key:'GONGYINGSHANG',type:'input' },
-
 ]
 
 export const progressDetailSearchList = [
@@ -122,7 +121,8 @@ export const progressDetailSearchList = [
 ]
 
 export const kickOffSearchList = [
-  {prop:'cartypePro',label:'车型项目',key:'',type:'input'},
+  {prop:'carTypeProId',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions',disabled:true},
+  // {prop:'cartypePro',label:'车型项目',key:'',type:'input',disabled:true},
   {prop:'materialGroupNameZh',label:'材料组',key:'',type:'input'},
   {prop:'rfq',label:'RFQ',key:'',type:'input'},
   {prop:'partNum',label:'零件号',key:'',type:'input'},
