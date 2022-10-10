@@ -10,7 +10,7 @@
 <template>
   <iPage class="overview">
     <projectTop />
-    <search :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
+    <search :searchList="searchList" :searchValue="searchParams" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
     <div class="flex-end">
         <iButton>导出</iButton>
     </div>
@@ -36,7 +36,10 @@ import projectTop from "../components/projectHeader";
 import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
-import { sample_overviewPage } from '@/api/project/deliver'
+import { 
+  sample_overviewPage,
+  sample_overviewallList
+} from '@/api/project/deliver'
 
 import {
   material_group_list,
@@ -83,7 +86,8 @@ export default {
   methods: {
     getDataList(){
       this.loading = true;
-      sample_overviewPage(this.searchParams).then(res=>{
+      // sample_overviewPage(this.searchParams).then(res=>{
+      sample_overviewallList(this.searchParams).then(res=>{
         if(res?.result){
           this.tabelDataList = _.cloneDeep(res.data)
         }

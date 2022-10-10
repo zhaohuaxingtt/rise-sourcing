@@ -128,6 +128,8 @@ export default {
         currPage:1,    //当前页
         layout:"sizes, prev, pager, next, jumper"
       },
+      titleName:"",
+      titleNameE:"",
     }
   },
   created(){
@@ -184,6 +186,8 @@ export default {
             this.partNum = res.data[0].partsNum;
             this.partPage.currPage = res.pageNum;
             this.partPage.totalCount = res.total;
+            this.titleName = res.data[0].partNameZh;
+            this.titleNameE = res.data[0].partNameDe;
             resolve();
           }
         })
