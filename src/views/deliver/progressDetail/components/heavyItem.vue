@@ -132,7 +132,7 @@ export default {
         line.style.height = s + "px";
 
         // 设置线
-        this.lineList = [
+        this.lineList = [//目前写死的，真实数据进来的时候再进行筛选，当line数据中的时间time不满足最小时间和最大时间内，就过滤掉
           {
             name:"BF",
             time:"2022-09-02 20:15:30",
