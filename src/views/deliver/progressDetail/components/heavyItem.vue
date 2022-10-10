@@ -1,5 +1,5 @@
 <template>
-  <iCard title="Id.4x后座靠背总成项目管理进度图">
+  <iCard :title="$getLabel(nameZ,nameE)">
     <template slot='header-control'>
       <i-button>导出</i-button>
       <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
@@ -14,9 +14,15 @@
         </div>
       </div>
       <div class="row-item">
-        <div class="first-column-item">
-          <i class="el-icon-circle-plus-outline"></i> 零件A
-        </div>
+        <el-tooltip
+          :content="$getLabel(titleName.name,titleName.nameE)"
+          placement="top" effect="light"
+          >
+          <div class="first-column-item">
+            <!-- <i class="el-icon-circle-plus-outline"></i> -->
+            {{$getLabel(titleName.name,titleName.nameE)}}
+          </div>
+        </el-tooltip>
         <div v-for="item in header" :key="item">
           {{item}}
         </div>
@@ -49,6 +55,10 @@ export default {
     iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect, iMessage, Item,iPagination
   },
   props:{
+    titleName:{
+      type:Object,
+      default:{},
+    },
     carProjectId:{
       type:String,
       default:"",
@@ -75,6 +85,9 @@ export default {
       minT:"",
       maxT:"",
       lineList:[],
+
+      nameZ:"",
+      nameE:"",
     }
   },
   created(){
@@ -176,6 +189,10 @@ export default {
       this.$emit("handleCurrentChange",val)
     },
     setData(data){
+      this.nameZ = this.carProjectOptions.filter(e=>e.cartypeProId == this.carProjectId)[0].cartypeProNameZh
+      this.nameE = this.carProjectOptions.filter(e=>e.cartypeProId == this.carProjectId)[0].cartypeProNameEn
+
+
       var header = [];
       var minTime = "";
       var maxTime = "";
@@ -391,6 +408,12 @@ export default {
     flex: none;
     width: 200px;
     background: #1660f1;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 .wrap-back{
