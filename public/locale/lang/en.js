@@ -68,6 +68,16 @@
 		2059: '2059',
 		2060: '2060',
 		2061: '2061',
+		SANJIANGONGYINGSHANG:'散件供应商',
+        JINGXIAOJIA:'经销价',
+        JIAGEKAISHIRIQI:'价格开始日期',
+        JIAGEJIESHURIQI:'价格结束日期',
+		LK_HUILV: 'Exchange Rate',
+        LK_IDANWEI: 'Unit',
+        LK_LINGJIANMINGCHENG: 'Part Name', //零件名称
+		PART_NO: 'Part number',
+		LK_CAIGOUGONGCHANG: 'Plant',
+
 		delete: 'Delete',
 		deleteSure: 'Are you sure to delete?',
 		all: 'All',
@@ -80,6 +90,8 @@
 		partsign: { enquiry: 'enquiry', volume: 'volume', log: 'log' },
 		rfq: { RFQINQUIRE: 'Search', RFQRESET: 'Reset' },
 		partsprocure: {
+			MBXZ:'模板下载',
+			LJJXJ:'零件经销价',
 			PARTSPROCURENEWPROCUREMENTPROJECT: 'New Procurement Project',
 			PARTSPROCUREGENERATEFSGSNR: 'Generate FSNR/GSNR/SPNR',
 			PARTSPROCURECANCELPARTSPURCHASE: 'Cancel Parts Purchase',

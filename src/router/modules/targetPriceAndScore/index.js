@@ -11,6 +11,7 @@ import modeltargetpriceRoutes from "./modeltargetprice" // 模具目标价
 import supplierscoreRoutes from "./supplierscore" // 供应商评分
 import configscoredeptRoutes from "./configscoredept" // 设置评分部门
 import costanalysismanageRoutes from "./costanalysismanage" // KM成本分析
+import productionCapacity from "./productionCapacity" // 零件台账
 
 export default [
   {
@@ -24,6 +25,7 @@ export default [
       ...supplierscoreRoutes,
       ...configscoredeptRoutes,
       ...costanalysismanageRoutes,
+      ...productionCapacity
     ]
   }
 ]
