@@ -42,18 +42,21 @@ export const tableTitledistribution = [
       key: 'partsprocure.PARTSPROCUREPARTNUMBER',
       align: 'center',
       tooltip: true,
+      width:150,
     }, {
       props: 'partNameZh',
       name: '零件名称',
       key: 'LK_LINGJIANMINGCHENG',
       align: 'center',
       tooltip: true,
+      width:150,
     }, {
       props: 'supplierShortNameZh',
       name: '散件供应商',
       key: 'SANJIANGONGYINGSHANG',
       align: 'center',
       tooltip: true,
+      width:150,
     },{
       props: 'factoryName',
       name: '采购工厂',

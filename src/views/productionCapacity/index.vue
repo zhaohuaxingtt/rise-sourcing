@@ -16,25 +16,25 @@
       <iSearch @sure="sure" @reset="handleSearchReset">
       <el-form>
         <el-form-item :label="$t('PART_NO')">
-          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.buyerName"> </i-input>
+          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.partNum"> </i-input>
         </el-form-item>
         <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">
-          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.buyerName"> </i-input>
+          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.partName"> </i-input>
         </el-form-item>
         <el-form-item :label="'Bezug'">
-          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.buyerName"> </i-input>
+          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.bezug"> </i-input>
         </el-form-item>
         <el-form-item :label="$t('SANJIANGONGYINGSHANG')">
-          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.buyerName"> </i-input>
+          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.supplierName"> </i-input>
         </el-form-item>
-        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">
-          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.buyerName"> </i-input>
+        <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+          <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.purchaseFactory"> </i-input>
         </el-form-item>
         <el-form-item :label="$t('LK_CHUANGJIANSHIJIAN')">
-            <iDatePicker :placeholder="$t('partsprocure.CHOOSE')" v-model="formData.startTgnEndDate" type="date" :picker-options="pickerOptionsEnd" value-format="yyyy-MM-dd 23:59:59" class="margin-bottom20"></iDatePicker>
+            <iDatePicker :placeholder="$t('partsprocure.CHOOSE')" v-model="formData.createDateBegin" type="date" :picker-options="pickerOptionsEnd" value-format="yyyy-MM-dd 23:59:59" class="margin-bottom20"></iDatePicker>
         </el-form-item>
         <el-form-item :label="$t('JIAGEKAISHIRIQI')">
-            <iDatePicker :placeholder="$t('partsprocure.CHOOSE')" v-model="formData.startTgnEndDate" type="date" :picker-options="pickerOptionsEnd" value-format="yyyy-MM-dd 23:59:59" class="margin-bottom20"></iDatePicker>
+            <iDatePicker :placeholder="$t('partsprocure.CHOOSE')" v-model="formData.startDateBegin" type="date" :picker-options="pickerOptionsEnd" value-format="yyyy-MM-dd 23:59:59" class="margin-bottom20"></iDatePicker>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -42,7 +42,7 @@
       <iCard style="margin-top: 20px">
         <div   class="margin-bottom20 displayFlex">
           <div style="margin-bottom: 20px" class="floatright">
-            <iButton v-permission="PURCHASEORDER_ORDER_DISTRIBUTION_SHANGCHUAN" @click="importFile">
+            <iButton v-permission="PURCHASEORDER_ORDER_DISTRIBUTION_SHANGCHUAN" >
               <el-upload
               action="1"
               accept=".xls, .xlsx"
@@ -67,7 +67,7 @@
   </template>
   
   <script>
-    import { exportTemp, findPriceList,importFile } from '@/api/ws2/productionCapacity/whosale'
+    import { exportTemp, pageWhosalePrice,importFile } from '@/api/ws2/productionCapacity/whosale'
 
   import { pageMixins } from '@/utils/pageMixins'
   import tableList from './components/commonTable'
@@ -102,9 +102,20 @@
       }
     },
     async created() {
-  
+      this.getTableList()
     },
     methods: {
+      sure(){
+        this.page.currPage = 1
+      this.page.pageSize = 10
+        this.getTableList()
+      },
+      handleSearchReset() {
+      this.formData = {}
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.getTableList()
+    },
       async importFile(content) {
         const formData = new FormData();
         formData.append("uploadFile", content.file);
@@ -120,15 +131,17 @@
       getTableList() {
         this.tableLoading = true
         const parms = {
-          partCostBookId:this.costBookDic.id,
-          partNum:this.$route.query.partsNum,
-          type:'3',
-          tmSupplierId:this.costBookDic.tmSupplierId
+          current: this.page.currPage,
+          size: this.page.pageSize,
+        ...this.formData,
         }
-        findPriceList(parms).then((res) => {
-          if (res.cdoe == '200') {
+        pageWhosalePrice(parms).then((res) => {
+          console.log(res)
+          if (res.code == '200') {
             this.tableLoading = false
-            this.tableData = res.data
+            this.tableListData = res.data.data
+            this.page.totalCount = res.data.total
+
           } else {
             this.tableLoading = false
           }
