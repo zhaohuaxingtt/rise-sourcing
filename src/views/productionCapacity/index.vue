@@ -118,10 +118,10 @@
     },
       async importFile(content) {
         const formData = new FormData();
-        formData.append("uploadFile", content.file);
+        formData.append("file", content.file);
           const res = await importFile(formData)
           console.log(res.result)
-          if (res.result=='200') {
+          if (res.code=='200') {
             this.getTableList()
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           } else {
