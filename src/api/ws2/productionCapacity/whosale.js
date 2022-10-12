@@ -26,3 +26,11 @@ export function importFile(data) {
         data
     })
 }
+//查询
+export function pageWhosalePrice(data) {
+    return request({
+        url: `/wholesale/pageWhosalePrice`,
+        method: 'POST',
+        data
+    })
+}
