@@ -21,21 +21,23 @@ class SetSize {
 		const clientWidth = document.documentElement.clientWidth
 		const scale = clientWidth / 1920
 		// 设置页面根节点字体大小（“Math.min(scale, 2)” 指最高放大比例为2，可根据实际业务需求调整）
-		if (scale) {
-			document.documentElement.style.fontSize =
-				this.size * Math.min(scale, 1) + 'px'
-		} else {
-			document.documentElement.style.fontSize = '14px'
-		}
-		if (clientWidth > 1920) {
-			const zoom = clientWidth / 1920
-			document.documentElement.style.zoom = clientWidth / 1920
-			localStorage.setItem('isLargeScreen', 'yes')
-			localStorage.setItem('zoom', zoom)
-		} else {
-			localStorage.setItem('isLargeScreen', 'no')
-			localStorage.setItem('zoom', 1)
-		}
+		// if (scale) {
+		document.documentElement.style.fontSize =
+			this.size * Math.min(scale, 1) + 'px'
+		// } else {
+		// 	document.documentElement.style.fontSize = '14px'
+		// }
+
+		// zoom 影响页面分页器定位计算
+		// if (clientWidth > 1920) {
+		// 	const zoom = clientWidth / 1920
+		// 	document.documentElement.style.zoom = clientWidth / 1920
+		// 	localStorage.setItem('isLargeScreen', 'yes')
+		// 	localStorage.setItem('zoom', zoom)
+		// } else {
+		// 	localStorage.setItem('isLargeScreen', 'no')
+		// 	localStorage.setItem('zoom', 1)
+		// }
 	}
 	init() {
 		this.setRem()
