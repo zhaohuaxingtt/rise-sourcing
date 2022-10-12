@@ -66,24 +66,24 @@
             :tableTitle="tableTitleRight1"
             >
             <template #planStartTime="scope">
-              <iDatePicker
+              <!-- <iDatePicker
                 v-if="!scope.row.isSend"
                 v-model="scope.row.planStartTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
-              </iDatePicker>
-              <span v-else>{{scope.row.planStartTime?scope.row.planStartTime.split(" ")[0]:'/'}}</span>
+              </iDatePicker> -->
+              <span>{{scope.row.planStartTime?scope.row.planStartTime.split(" ")[0]:'/'}}</span>
             </template>
             <template #planEndTime="scope">
-              <iDatePicker
+              <!-- <iDatePicker
                 v-if="!scope.row.isSend"
                 v-model="scope.row.planEndTime"
                 type="date"
                 :placeholder="$t('LK_QINGXUANZE')"
                 >
-              </iDatePicker>
-              <span v-else>{{scope.row.planEndTime?scope.row.planEndTime.split(" ")[0]:'/'}}</span>
+              </iDatePicker> -->
+              <span>{{scope.row.planEndTime?scope.row.planEndTime.split(" ")[0]:'/'}}</span>
             </template>
             <template #isSend="scope">
               <span>{{scope.row.isSend?scope.row.isFeedback?"已反馈":"已发送":"未发送"}}</span>
@@ -251,7 +251,7 @@ export default {
       }
       var sendType = true;
       this.selectData.forEach(e=>{
-        if(!e.isSend){
+        if(e.isSend){
           sendType = false;
         }
       })
@@ -358,7 +358,7 @@ export default {
 .deliverPlan{
   ::v-deep .el-col{
     .card{
-      height: calc(100vh - 320px);
+      min-height: calc(100vh - 320px);
       .flex-box{
         display: flex;
         justify-content: space-between;

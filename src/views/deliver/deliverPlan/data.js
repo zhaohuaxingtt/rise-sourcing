@@ -8,7 +8,7 @@ export const tableTitleLeft = [
   { props: "carTypeProNameZh", name: "车型项目", key: "", tooltip: true, minWidth:100 },
   { props: "partNum", name: "零件编号", key: "", tooltip: true, minWidth:100 },
   { props: "partNameZh", name: "零件名称", key: "", tooltip: true, minWidth:100 },
-  { props: "supplier", name: "供应商", key: "GONGYINGSHANG", tooltip: true, minWidth:100 },
+  { props: "supplierName", name: "供应商", key: "GONGYINGSHANG", tooltip: true, minWidth:100 },
   { props: "sendTime", name: "任务发送时间", key: "", tooltip: true, minWidth:100 },
   { props: "col5", name: "操作", key: "", minWidth:150,fixed:"right" },
 ]
