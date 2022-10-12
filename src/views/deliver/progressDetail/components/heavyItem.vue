@@ -1,25 +1,26 @@
 <template>
   <iCard :title="$getLabel(nameZ,nameE)">
     <template slot='header-control'>
-      <i-button>导出</i-button>
+      <i-button @click="derivationClick">导出</i-button>
       <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
       <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
     </template>
-    <div class="wrap-back">
+    <div class="wrap-back" id="qrCodeDiv">
       <div class="wrap-div"></div>
       <div class="line-div">
-        <div class="line-samll" v-for="(item,index) in lineList" :key="index" :style="{left:item.w+'%'}">
+        <div class="line-samll" v-for="(item,index) in lineListNew" :key="index" :style="{left:item.w+'%'}">
           <div :class="item.garyShow?'gray':'line-line'"></div>
           <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
         </div>
       </div>
-      <div class="row-item">
+      <div class="row-item" id="row-item">
         <el-tooltip
           :content="$getLabel(titleName.name,titleName.nameE)"
           placement="top" effect="light"
           >
           <div class="first-column-item">
-            <!-- <i class="el-icon-circle-plus-outline"></i> -->
+            <i class="el-icon-circle-plus-outline" style="cursor:pointer;" @click="upOpen" v-if="!openShow"></i>
+            <i class="el-icon-remove-outline" style="cursor:pointer;" @click="upOpen" v-else></i>
             {{$getLabel(titleName.name,titleName.nameE)}}
           </div>
         </el-tooltip>
@@ -28,8 +29,8 @@
         </div>
       </div>
       <item :list="list" @refresh="refresh" :key="i" :header="header"/>
-
-      <iPagination v-update
+    </div>
+    <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -39,7 +40,6 @@
         :page-size="partPage.pageSize"
         :layout="partPage.layout"
         :total="partPage.totalCount" />
-    </div>
   </iCard>
 </template>
 
@@ -49,6 +49,7 @@ import Item from "./item.vue";
 import {
   getGanttChart,
 } from "@/api/project/deliver";
+import { downloadPDF, dataURLtoFile, transverseDownloadPDFNew } from '@/utils/pdf'
 
 export default {
   components:{
@@ -84,10 +85,30 @@ export default {
       list:[],
       minT:"",
       maxT:"",
-      lineList:[],
-
       nameZ:"",
       nameE:"",
+
+      lineList:[
+        {
+          name:"BF",
+          time:"2022-09-02 20:15:30",
+        },{
+          name:"VFF",
+          time:"2022-09-08 20:15:30",
+        },{
+          name:"PVS",
+          time:"2022-09-20 20:15:30",
+        },{
+          name:"OS",
+          time:"2022-10-20 20:15:30",
+        },{
+          name:"SOP",
+          time:"2022-11-26 20:15:30",
+        },
+      ],
+      lineListNew:[],
+
+      openShow:false,
     }
   },
   created(){
@@ -97,6 +118,46 @@ export default {
 
   },
   methods:{
+    upOpen(){
+      this.openShow = !this.openShow;
+      var listE = _.cloneDeep(this.list);
+      listE.forEach(e=>{
+        if(this.openShow){
+          e.showChlid = true;
+        }else{
+          e.showChlid = false;
+        }
+      })
+      this.list = _.cloneDeep(listE);
+      this.refresh();
+    },
+    derivationClick(){
+      var name = "甘特图"
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      transverseDownloadPDFNew({
+        idEle: 'qrCodeDiv',
+        pdfName: name,
+        exportPdf: true,
+        // waterMark: true,
+        title:'#row-item',
+        callback: async (pdf, pdfName) => {
+          console.log(pdf)
+          try {
+            loading.close()
+            const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
+            const pdfFile = pdf.output('datauristring')
+            const blob = dataURLtoFile(pdfFile, filename)
+          } catch {
+            iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'))
+          }
+        }
+      })
+    },
     refresh(){
       this.$nextTick(()=>{
         const s = document.getElementsByClassName("table-content")[0].offsetHeight;
@@ -113,9 +174,11 @@ export default {
     },
     noTodayWrap(){
       var div = document.getElementsByClassName("row-item")[0];
-      var width = div.offsetWidth - 200//div宽度,零件Adiv宽度200，需要减去
-      var nowTimeCode = this.timeOff("2022-09-15 12:15:30");//当前时间
-      // var nowTimeCode = Math.round(new Date().getTime()/1000);
+      var parts = document.getElementsByClassName("first-column-item")[0];
+      var width = div.offsetWidth - parts.offsetWidth//div宽度,零件Adiv宽度200，需要减去
+      var back = document.getElementsByClassName("row-item")[0];
+      // var nowTimeCode = this.timeOff("2022-09-15 12:15:30");//当前时间
+      var nowTimeCode = Math.round(new Date().getTime()/1000);
 
       const start = this.header[0] + "-01 00:00:00"
       const end = this.header[this.header.length-1] + "-30 23:59:59"
@@ -138,6 +201,7 @@ export default {
         const h = s-50
         y.style.height = h + "px";
         y.style.width = w + "%";
+        y.style.top = back.offsetHeight + 70 + "px";
 
         // 设置line的div宽高
         const line = document.getElementsByClassName("line-div")[0];
@@ -145,26 +209,9 @@ export default {
         line.style.height = s + "px";
 
         // 设置线
-        this.lineList = [//目前写死的，真实数据进来的时候再进行筛选，当line数据中的时间time不满足最小时间和最大时间内，就过滤掉
-          {
-            name:"BF",
-            time:"2022-09-02 20:15:30",
-          },{
-            name:"VFF",
-            time:"2022-09-08 20:15:30",
-          },{
-            name:"PVS",
-            time:"2022-09-20 20:15:30",
-          },{
-            name:"OS",
-            time:"2022-09-25 20:15:30",
-          },{
-            name:"SOP",
-            time:"2022-09-26 20:15:30",
-          },
-        ]
-
-        this.lineList.forEach(e=>{
+        var lineArr = _.cloneDeep(this.lineList)
+        var lineArrNew = [];
+        lineArr.forEach(e=>{
           const lineS = this.timeOff(e.time)
           var lineOneW = 0;
           if(lineS >= startTimeCode && lineS <= endTimeCode){
@@ -177,9 +224,13 @@ export default {
           }
           e.w = lineOneW;
         })
-
-
-        console.log(this.lineList);
+        lineArr.forEach(e=>{
+          console.log(e.w)
+          if(e.w != 0){
+            lineArrNew.push(e);
+          }
+        })
+        this.lineListNew = lineArrNew;
       })
     },
     handleSizeChange(val){
@@ -350,7 +401,8 @@ export default {
     },
     timeOff(val){
       if(val){
-        return new Date(val).getTime();
+        // return new Date(val).getTime();
+        return (new Date(val)).getTime()/1000;
       }else{
         return null;
       }
@@ -420,13 +472,13 @@ export default {
   width:100%;
   height:100%;
   position: relative;
+  padding: 20px;
 }
 .wrap-div{
   position: absolute;
-  right:0;
-  top:100px;
+  right:20px;
   background:black;
-  opacity:0.02;
+  opacity:0.03;
   // vertical-align: top;
   -webkit-pointer-events: none;
   -moz-pointer-events: none;
@@ -436,8 +488,8 @@ export default {
 }
 .line-div{
   position: absolute;
-  right:0;
-  top:50px;
+  right:20px;
+  top:70px;
   // background:#1660f1;
   display: flex;
   flex-wrap: wrap;
