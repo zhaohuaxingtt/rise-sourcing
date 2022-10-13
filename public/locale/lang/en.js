@@ -77,6 +77,7 @@
         LK_LINGJIANMINGCHENG: 'Part Name', //零件名称
 		PART_NO: 'Part number',
 		LK_CAIGOUGONGCHANG: 'Plant',
+		LK_CAIGOUGONGCHANGCODE: 'Plant Code',
 
 		delete: 'Delete',
 		deleteSure: 'Are you sure to delete?',

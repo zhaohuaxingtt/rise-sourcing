@@ -27,7 +27,7 @@
         <el-form-item :label="$t('SANJIANGONGYINGSHANG')">
           <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.supplierName"> </i-input>
         </el-form-item>
-        <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+        <el-form-item :label="$t('LK_CAIGOUGONGCHANGCODE')">
           <i-input :placeholder="$t('partsprocure.PLEENTER')" class="margin-bottom20" v-model="formData.purchaseFactory"> </i-input>
         </el-form-item>
         <el-form-item :label="$t('LK_CHUANGJIANSHIJIAN')">
@@ -56,8 +56,8 @@
           </div>
         </div>
         <tableList :tableData="tableListData" border :tableTitle="tableTitle" :tableLoading="tableLoading" openPageProps="partsCode" :openPageGetRowData="true"  @openPage="handleOpenPage">
-          <template #item="scope">
-            <div class="link" @click="openPreDetail(scope.row)">{{ scope.row.item }}</div>
+          <template #factoryName="scope">
+           <span>{{scope.row.factoryName}}-{{scope.row.procureFactory}}</span>
           </template>
         </tableList>
         <iPagination v-update  @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
