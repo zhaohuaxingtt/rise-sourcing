@@ -49,7 +49,7 @@ export const tableTitledistribution = [
       key: 'LK_LINGJIANMINGCHENG',
       align: 'center',
       tooltip: true,
-      width:150,
+      width:120,
     }, {
       props: 'supplierShortNameZh',
       name: '散件供应商',
@@ -63,6 +63,7 @@ export const tableTitledistribution = [
       key: 'LK_CAIGOUGONGCHANG',
       align: 'center',
       tooltip: true,
+      width:150,
     },{
       props: 'price',
       name: '经销价',

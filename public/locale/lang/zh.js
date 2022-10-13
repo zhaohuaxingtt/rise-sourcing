@@ -78,6 +78,7 @@
     LK_LINGJIANMINGCHENG: '零件名称', //零件名称
     PART_NO: '零件号',
     LK_CAIGOUGONGCHANG: '采购工厂',
+    LK_CAIGOUGONGCHANGCODE: '采购工厂编号',
 
     delete: '删除',
     deleteSure: '您确定要执行删除操作吗？',
