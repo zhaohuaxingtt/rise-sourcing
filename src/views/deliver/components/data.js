@@ -67,8 +67,21 @@ export const tableTitle = [
   { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
   { props: "partType", name: "零件类型", key: "", tooltip: true,  },
   { props: "soll", name: "Soll", key: "", tooltip: true,  },
-  { props: "progress", name: "进度", key: "", tooltip: true,  },
+  { props: "delayWk", name: "进度", key: "", tooltip: true,  },
   { props: "delayRemaks", name: "延迟原因备注", key: "", tooltip: true, minWidth:200 },
+  { props: "supplierNames", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
+] 
+
+export const tableTitleA = [
+  { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true, },
+  { props: "rfq", name: "RFQ", key: "", tooltip: true,},
+  { props: "materialGroupNameZh", name: "材料组编号", key: "", tooltip: true,  },
+  { props: "partNum", name: "零件号", key: "", tooltip: true, },
+  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
+  { props: "partType", name: "零件类型", key: "", tooltip: true,  },
+  { props: "soll", name: "Soll", key: "", tooltip: true,  },
+  { props: "progress", name: "进度", key: "", tooltip: true,  },
+  { props: "delayRemark", name: "延迟原因备注", key: "", tooltip: true, minWidth:200 },
   { props: "supplierName", name: "零件所属供应商", key: "", tooltip: true, minWidth:200 },
 ] 
 

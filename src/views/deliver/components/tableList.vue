@@ -6,7 +6,9 @@
       }}</iButton>
     </template>
     <div>
+      <!-- 延误清单 -->
       <tableList
+        v-if="$route.path == '/deliver/delayanalysis'"
         class="table"
         ref="tableList"
         :lang="true"
@@ -34,6 +36,45 @@
           </div>
         </template>
       </tableList>
+      <!-- 总览下零件清单 -->
+      <tableList
+        v-else
+        class="table"
+        ref="tableList"
+        :lang="true"
+        :tableData="dataList"
+        :tableTitle="tableTitleA"
+        :tableLoading="loading"
+        :selection='false'
+      >
+        <!-- 延迟级别 -->
+        <template #progress="scope">
+          <!-- 延期 -->
+          <div class="table-item-aeko" v-if="scope.row.progress == 1">
+            <img
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/red.png')"
+            >
+            <span>延期{{ scope.row.delayWeek }}周</span>
+          </div>
+          <!-- 临近 -->
+          <div class="table-item-aeko" v-if="scope.row.progress == 2">
+            <img
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/yellow.png')"
+            >
+            <span>临近</span>
+          </div>
+          <!-- 正常 -->
+          <div class="table-item-aeko" v-if="scope.row.progress == 3">
+            <img
+              class="margin-right5 img_deng"
+              :src="require('@/assets/images/icon/click-green.png')"
+            >
+            <span>正常</span>
+          </div>
+        </template>
+      </tableList>
       <!-- 分页 -->
       <iPagination
         v-update
@@ -54,7 +95,7 @@
 import { iCard, iPagination, iButton, icon } from "rise";
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import { tableTitle } from "./data.js";
+import { tableTitle,tableTitleA } from "./data.js";
 
 export default {
   components: {
@@ -75,6 +116,7 @@ export default {
       downloadLoading: false,
       loading: false,
       tableTitle,
+      tableTitleA,
     };
   },
   created(){
