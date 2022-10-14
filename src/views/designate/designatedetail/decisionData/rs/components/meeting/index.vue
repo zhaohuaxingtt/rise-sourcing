@@ -1935,10 +1935,11 @@ export default {
     // 调整 Single Sourcing
     gotoSingle() {
       const { query } = this.$route;
-      this.$router.push({
+      let routeUrl = this.$router.resolve({
         path: "/designate/decisiondata/singlesourcing",
         query,
       });
+      window.open(routeUrl.href, "_blank");
     },
   },
 };
