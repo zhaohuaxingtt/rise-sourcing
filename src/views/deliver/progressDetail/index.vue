@@ -201,7 +201,7 @@ export default {
           partNum:this.partNum,
         }).then(res=>{
           if(res?.result){
-            this.$refs.heavyItem.setData(res.data);
+            this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId(res.data,this.searchParams.carTypeProId);
           }
         })
       }else{

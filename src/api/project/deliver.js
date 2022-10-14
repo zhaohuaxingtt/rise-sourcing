@@ -219,3 +219,13 @@ export function ordinaryPart(data) {
         data
     })
 }
+
+// 普通零件查询接口
+export function queryPepNodeTimeByCarTypeProId(data) {
+    return requst({
+        url: `/sample_part_actityty/web/queryPepNodeTimeByCarTypeProId`,
+        method: 'POST',
+        data
+    })
+}
+

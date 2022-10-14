@@ -48,6 +48,7 @@ import { iPage, iCard,iTabsList, iInput, iSearch, iButton, iDatePicker, iSelect,
 import Item from "./item.vue";
 import {
   getGanttChart,
+  queryPepNodeTimeByCarTypeProId
 } from "@/api/project/deliver";
 import { downloadPDF, dataURLtoFile, transverseDownloadPDFNew } from '@/utils/pdf'
 
@@ -89,22 +90,22 @@ export default {
       nameE:"",
 
       lineList:[
-        {
-          name:"BF",
-          time:"2022-09-02 20:15:30",
-        },{
-          name:"VFF",
-          time:"2022-09-08 20:15:30",
-        },{
-          name:"PVS",
-          time:"2022-09-20 20:15:30",
-        },{
-          name:"OS",
-          time:"2022-10-20 20:15:30",
-        },{
-          name:"SOP",
-          time:"2022-11-26 20:15:30",
-        },
+        // {
+        //   name:"BF",
+        //   time:"2022-09-02 20:15:30",
+        // },{
+        //   name:"VFF",
+        //   time:"2022-09-08 20:15:30",
+        // },{
+        //   name:"PVS",
+        //   time:"2022-09-20 20:15:30",
+        // },{
+        //   name:"OS",
+        //   time:"2022-10-20 20:15:30",
+        // },{
+        //   name:"SOP",
+        //   time:"2022-11-26 20:15:30",
+        // },
       ],
       lineListNew:[],
 
@@ -118,6 +119,33 @@ export default {
 
   },
   methods:{
+    queryPepNodeTimeByCarTypeProId(val,id){
+      queryPepNodeTimeByCarTypeProId({
+        carTypeProId:id,
+      }).then(res=>{
+        if(res.data){
+          this.lineList = [
+            {
+              name:"BF",
+              time:res.data?.pepBf?res.data?.pepBf:null,
+            },{
+              name:"VFF",
+              time:res.data?.pepVff?res.data?.pepVff:null,
+            },{
+              name:"PVS",
+              time:res.data?.pepPvs?res.data?.pepPvs:null,
+            },{
+              name:"OS",
+              time:res.data?.pepOs?res.data?.pepOs:null,
+            },{
+              name:"SOP",
+              time:res.data?.pepSop?res.data?.pepSop:null,
+            },
+          ]
+        }
+        this.setData(val);
+      })
+    },
     upOpen(){
       this.openShow = !this.openShow;
       var listE = _.cloneDeep(this.list);
