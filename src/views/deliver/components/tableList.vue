@@ -74,6 +74,9 @@
             <span>正常</span>
           </div>
         </template>
+        <template #materialGroupNameZh="scope">
+          <span>{{scope.row.materialGroupCode}}-{{scope.row.materialGroupNameZh}}</span>
+        </template>
       </tableList>
       <!-- 分页 -->
       <iPagination

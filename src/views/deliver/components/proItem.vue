@@ -4,7 +4,7 @@
       <div class="wrap-flex">
         <div class="left">
           <h2>{{dataList.carTypeProNameZh}}</h2>
-          <h2>{{dataList.carTypeProNameEn}}</h2>
+          <!-- <h2>{{dataList.carTypeProNameEn}}</h2> -->
           <div>
             <p>零件总个数：<span>{{dataList.partCount}}</span></p>
             <p>当前定点完成数量：<span>{{dataList.cscNotFinishCount}}</span></p>

@@ -1,27 +1,29 @@
 <template>
-  <iCard :title="$getLabel(nameZ,nameE)">
+  <iCard :title="$getLabel(nameZ,nameE)+'-'+$getLabel(titleName.name,titleName.nameE)">
     <template slot='header-control'>
       <i-button @click="derivationClick">导出</i-button>
       <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
       <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
     </template>
     <div class="wrap-back" id="qrCodeDiv">
-      <div class="wrap-div"></div>
       <div class="line-div">
-        <div class="line-samll" v-for="(item,index) in lineListNew" :key="index" :style="{left:item.w+'%'}">
-          <div :class="item.garyShow?'gray':'line-line'"></div>
-          <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
+        <div class="wrap-div"></div>
+        <div style="width:100%;height:100%;">
+          <div class="line-samll" v-for="(item,index) in lineListNew" :key="index" :style="{left:item.w+'%'}">
+            <div :class="item.garyShow?'gray':'line-line'"></div>
+            <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
+          </div>
         </div>
       </div>
       <div class="row-item" id="row-item">
         <el-tooltip
-          :content="$getLabel(titleName.name,titleName.nameE)"
+          :content="$getLabel(titleName.name,titleName.nameE)+'-'+titleName.number"
           placement="top" effect="light"
           >
           <div class="first-column-item">
             <i class="el-icon-circle-plus-outline" style="cursor:pointer;" @click="upOpen" v-if="!openShow"></i>
             <i class="el-icon-remove-outline" style="cursor:pointer;" @click="upOpen" v-else></i>
-            {{$getLabel(titleName.name,titleName.nameE)}}
+            {{$getLabel(titleName.name,titleName.nameE)}}-{{titleName.number}}
           </div>
         </el-tooltip>
         <div v-for="item in header" :key="item">
@@ -90,26 +92,33 @@ export default {
       nameE:"",
 
       lineList:[
-        // {
-        //   name:"BF",
-        //   time:"2022-09-02 20:15:30",
-        // },{
-        //   name:"VFF",
-        //   time:"2022-09-08 20:15:30",
-        // },{
-        //   name:"PVS",
-        //   time:"2022-09-20 20:15:30",
-        // },{
-        //   name:"OS",
-        //   time:"2022-10-20 20:15:30",
-        // },{
-        //   name:"SOP",
-        //   time:"2022-11-26 20:15:30",
-        // },
+        {
+          name:"BF",
+          time:null,
+          code:null,
+        },{
+          name:"VFF",
+          time:null,
+          code:null,
+        },{
+          name:"PVS",
+          time:null,
+          code:null,
+        },{
+          name:"OS",
+          time:null,
+          code:null,
+        },{
+          name:"SOP",
+          time:null,
+          code:null,
+        },
       ],
       lineListNew:[],
 
       openShow:false,
+
+      headerShow:false,
     }
   },
   created(){
@@ -123,25 +132,56 @@ export default {
       queryPepNodeTimeByCarTypeProId({
         carTypeProId:id,
       }).then(res=>{
-        if(res.data){
+        if(res.data?.createBy){
           this.lineList = [
             {
               name:"BF",
               time:res.data?.pepBf?res.data?.pepBf:null,
+              code:this.timeOff(res.data?.pepBf)
             },{
               name:"VFF",
               time:res.data?.pepVff?res.data?.pepVff:null,
+              code:this.timeOff(res.data?.pepVff)
             },{
               name:"PVS",
               time:res.data?.pepPvs?res.data?.pepPvs:null,
+              code:this.timeOff(res.data?.pepPvs)
             },{
               name:"OS",
               time:res.data?.pepOs?res.data?.pepOs:null,
+              code:this.timeOff(res.data?.pepOs)
             },{
               name:"SOP",
               time:res.data?.pepSop?res.data?.pepSop:null,
+              code:this.timeOff(res.data?.pepSop)
             },
           ]
+          this.headerShow = true;
+        }else{
+          this.lineList = [
+            {
+              name:"BF",
+              time:null,
+              code:null,
+            },{
+              name:"VFF",
+              time:null,
+              code:null,
+            },{
+              name:"PVS",
+              time:null,
+              code:null,
+            },{
+              name:"OS",
+              time:null,
+              code:null,
+            },{
+              name:"SOP",
+              time:null,
+              code:null,
+            }
+          ]
+          this.headerShow = false;
         }
         this.setData(val);
       })
@@ -205,7 +245,7 @@ export default {
       var parts = document.getElementsByClassName("first-column-item")[0];
       var width = div.offsetWidth - parts.offsetWidth//div宽度,零件Adiv宽度200，需要减去
       var back = document.getElementsByClassName("row-item")[0];
-      // var nowTimeCode = this.timeOff("2022-09-15 12:15:30");//当前时间
+      // var nowTimeCode = this.timeOff("2022-09-05 15:20:00");//当前时间
       var nowTimeCode = Math.round(new Date().getTime()/1000);
 
       const start = this.header[0] + "-01 00:00:00"
@@ -216,10 +256,16 @@ export default {
 
       var w = 0;
 
+      console.log(startTimeCode)
+      console.log(endTimeCode)
+      console.log(nowTimeCode)
+
       if(nowTimeCode >= startTimeCode && nowTimeCode<=endTimeCode){
         const t = nowTimeCode - startTimeCode;
-        const divW = t/difference*100
+        const divW = 100 - t/difference*100
         w = Number(divW.toFixed(2))
+
+        console.log(w);
       }
       this.$nextTick(()=>{
         const y = document.getElementsByClassName("wrap-div")[0];
@@ -229,7 +275,8 @@ export default {
         const h = s-50
         y.style.height = h + "px";
         y.style.width = w + "%";
-        y.style.top = back.offsetHeight + 70 + "px";
+        // y.style.top = back.offsetHeight + "px";
+        y.style.top = "50px";
 
         // 设置line的div宽高
         const line = document.getElementsByClassName("line-div")[0];
@@ -271,118 +318,147 @@ export default {
       this.nameZ = this.carProjectOptions.filter(e=>e.cartypeProId == this.carProjectId)[0].cartypeProNameZh
       this.nameE = this.carProjectOptions.filter(e=>e.cartypeProId == this.carProjectId)[0].cartypeProNameEn
 
-
-      var header = [];
       var minTime = "";
       var maxTime = "";
+      var headerConcat = [];
 
-      // console.log(header);
-      data.forEach(e => {
-        // console.log(e);
-        header.push({
-          time:e.actualEndTime,
-          code:this.timeOff(e.actualEndTime),
+      if(data.length<1){
+        this.list = [];
+
+        headerConcat = headerConcat.concat(this.lineList)
+        const headerList = headerConcat.filter(item => item.code)
+        minTime = Math.min.apply(null,headerList.map((item,index) => {
+          return item.code
+        }))
+        maxTime = Math.max.apply(null,headerList.map((item,index) => {
+          return item.code
+        }))
+        headerList.forEach(e=>{
+          if(e.code.toString() == minTime.toString()){
+            this.minT = e.time;
+          }
+          if(e.code.toString() == maxTime.toString()){
+            this.maxT = e.time;
+          }
         })
-        header.push({
-          time:e.actualStartTime,
-          code:this.timeOff(e.actualStartTime),
-        })
-        header.push({
-          time:e.planEndTime,
-          code:this.timeOff(e.planEndTime),
-        })
-        header.push({
-          time:e.planStartTime,
-          code:this.timeOff(e.planStartTime),
-        })
-        if(!e.planStartTime && e.planEndTime){
-          e.pointRangTop = [[e.planEndTime.split(" ")[0].split("-")[0],e.planEndTime.split(" ")[0].split("-")[1]].join("-")]
-          e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-        }else if(e.planStartTime && e.planEndTime){
-          e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)
-          e.barRangTopRight = (e.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-          e.barWidthTopLeft = (e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-          e.barWidthTopLeftWidth = (100-(e.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+
+        if(this.headerShow){
+          this.header = this.yearMake(this.maxT,this.minT);
+        }else{
+          this.header = [];
         }
-        if(!e.actualStartTime && e.actualEndTime){
-          e.pointRangBottom = [[e.actualEndTime.split(" ")[0].split("-")[0],e.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
-          e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-        }else if(e.actualStartTime && e.actualEndTime){
-          e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)
-          e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-          e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-          e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
-        }
-        e.showChlid = false;
+        this.noTodayWrap();
+      }else{
+        var header = [];
+        
 
-        if(e.childList.length>0){
-          e.childList.forEach(item => {
-            header.push({
-              time:item.actualEndTime,
-              code:this.timeOff(item.actualEndTime),
-            })
-            header.push({
-              time:item.actualStartTime,
-              code:this.timeOff(item.actualStartTime),
-            })
-            header.push({
-              time:item.planEndTime,
-              code:this.timeOff(item.planEndTime),
-            })
-            header.push({
-              time:item.planStartTime,
-              code:this.timeOff(item.planStartTime),
-            })
-
-            if(!item.planStartTime && item.planEndTime){
-              item.pointRangTop = [[item.planEndTime.split(" ")[0].split("-")[0],item.planEndTime.split(" ")[0].split("-")[1]].join("-")]
-              item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-            }else if(item.planStartTime && item.planEndTime){
-              this.yearAll = [];
-              this.minYear = item.planStartTime;
-              this.maxYear = item.planEndTime;
-              item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)
-              item.barRangTopRight = (item.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-              item.barWidthTopLeft = (item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-              item.barWidthTopLeftWidth = (100-(item.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
-            }
-            if(!item.actualStartTime && item.actualEndTime){
-              item.pointRangBottom = [[item.actualEndTime.split(" ")[0].split("-")[0],item.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
-              item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-            }else if(item.actualStartTime && item.actualEndTime){
-              this.yearAll = [];
-              this.minYear = item.actualStartTime;
-              this.maxYear = item.actualEndTime;
-              item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)
-              item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-              item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-              item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
-            }
-
+        // console.log(header);
+        data.forEach(e => {
+          // console.log(e);
+          header.push({
+            time:e.actualEndTime,
+            code:this.timeOff(e.actualEndTime),
           })
-        }
-      });
-      const headerList = header.filter(item => item.code)
-      minTime = Math.min.apply(null,headerList.map((item,index) => {
-        return item.code
-      }))
-      maxTime = Math.max.apply(null,headerList.map((item,index) => {
-        return item.code
-      }))
-      headerList.forEach(e=>{
-        if(e.code.toString() == minTime.toString()){
-          this.minT = e.time;
-        }
-        if(e.code.toString() == maxTime.toString()){
-          this.maxT = e.time;
-        }
-      })
-      this.header = this.yearMake(this.maxT,this.minT);
+          header.push({
+            time:e.actualStartTime,
+            code:this.timeOff(e.actualStartTime),
+          })
+          header.push({
+            time:e.planEndTime,
+            code:this.timeOff(e.planEndTime),
+          })
+          header.push({
+            time:e.planStartTime,
+            code:this.timeOff(e.planStartTime),
+          })
+          if(!e.planStartTime && e.planEndTime){
+            e.pointRangTop = [[e.planEndTime.split(" ")[0].split("-")[0],e.planEndTime.split(" ")[0].split("-")[1]].join("-")]
+            e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+          }else if(e.planStartTime && e.planEndTime){
+            e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)
+            e.barRangTopRight = (e.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+            e.barWidthTopLeft = (e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+            e.barWidthTopLeftWidth = (100-(e.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+          }
+          if(!e.actualStartTime && e.actualEndTime){
+            e.pointRangBottom = [[e.actualEndTime.split(" ")[0].split("-")[0],e.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
+            e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+          }else if(e.actualStartTime && e.actualEndTime){
+            e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)
+            e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+            e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+            e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+          }
+          e.showChlid = false;
 
-      console.log(headerList);
-      this.list = _.cloneDeep(data);
+          if(e.childList.length>0){
+            e.childList.forEach(item => {
+              header.push({
+                time:item.actualEndTime,
+                code:this.timeOff(item.actualEndTime),
+              })
+              header.push({
+                time:item.actualStartTime,
+                code:this.timeOff(item.actualStartTime),
+              })
+              header.push({
+                time:item.planEndTime,
+                code:this.timeOff(item.planEndTime),
+              })
+              header.push({
+                time:item.planStartTime,
+                code:this.timeOff(item.planStartTime),
+              })
 
-      this.noTodayWrap();
+              if(!item.planStartTime && item.planEndTime){
+                item.pointRangTop = [[item.planEndTime.split(" ")[0].split("-")[0],item.planEndTime.split(" ")[0].split("-")[1]].join("-")]
+                item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+              }else if(item.planStartTime && item.planEndTime){
+                this.yearAll = [];
+                this.minYear = item.planStartTime;
+                this.maxYear = item.planEndTime;
+                item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)
+                item.barRangTopRight = (item.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                item.barWidthTopLeft = (item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                item.barWidthTopLeftWidth = (100-(item.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+              }
+              if(!item.actualStartTime && item.actualEndTime){
+                item.pointRangBottom = [[item.actualEndTime.split(" ")[0].split("-")[0],item.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
+                item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
+              }else if(item.actualStartTime && item.actualEndTime){
+                this.yearAll = [];
+                this.minYear = item.actualStartTime;
+                this.maxYear = item.actualEndTime;
+                item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)
+                item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+              }
+
+            })
+          }
+        });
+        headerConcat = headerConcat.concat(header).concat(this.lineList)
+        const headerList = headerConcat.filter(item => item.code)
+        minTime = Math.min.apply(null,headerList.map((item,index) => {
+          return item.code
+        }))
+        maxTime = Math.max.apply(null,headerList.map((item,index) => {
+          return item.code
+        }))
+        headerList.forEach(e=>{
+          if(e.code.toString() == minTime.toString()){
+            this.minT = e.time;
+          }
+          if(e.code.toString() == maxTime.toString()){
+            this.maxT = e.time;
+          }
+        })
+        this.header = this.yearMake(this.maxT,this.minT);
+        this.list = _.cloneDeep(data);
+
+        this.noTodayWrap();
+      }
     },
     yearMake(max,min){
       var maxYear = max;
@@ -504,7 +580,7 @@ export default {
 }
 .wrap-div{
   position: absolute;
-  right:20px;
+  right:0;
   background:black;
   opacity:0.03;
   // vertical-align: top;
@@ -521,6 +597,11 @@ export default {
   // background:#1660f1;
   display: flex;
   flex-wrap: wrap;
+  -webkit-pointer-events: none;
+  -moz-pointer-events: none;
+  -ms-pointer-events: none;
+  -o-pointer-events: none;
+  pointer-events: none;
 }
 .line-samll{
   position:absolute;

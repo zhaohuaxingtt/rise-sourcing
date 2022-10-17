@@ -165,9 +165,11 @@ export default {
       this.getData();
     },
     reset() {
-      this.searchParams = this.searchParamsOld;
+      this.searchParams = _.cloneDeep(this.searchParamsOld);
       this.page.currPage = 1;
       this.page.pageSize = 10;
+      
+      console.log(this.searchParams)
       this.getData();
     },
   },

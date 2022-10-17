@@ -73,11 +73,11 @@ export const tableTitle = [
 ] 
 
 export const tableTitleA = [
-  { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true, },
+  { props: "cartypeProNameZh", name: "车型项目", key: "", tooltip: true,minWidth:100 },
   { props: "rfq", name: "RFQ", key: "", tooltip: true,},
-  { props: "materialGroupNameZh", name: "材料组编号", key: "", tooltip: true,  },
+  { props: "materialGroupNameZh", name: "材料组编号", key: "", tooltip: true,minWidth:150 },
   { props: "partNum", name: "零件号", key: "", tooltip: true, },
-  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, },
+  { props: "partNameZh", name: "零件名称", key: "", tooltip: true,minWidth:120 },
   { props: "partType", name: "零件类型", key: "", tooltip: true,  },
   { props: "soll", name: "Soll", key: "", tooltip: true,  },
   { props: "progress", name: "进度", key: "", tooltip: true,  },

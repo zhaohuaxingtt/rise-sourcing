@@ -9,7 +9,7 @@
           <span class="form-title lineH40">车型项目：</span>
           <el-form inline class="form">
             <el-form-item>
-                <iSelect filterable v-model="searchParams.carTypeProId" :placeholder="language('QINGXUANZE','请选择')">
+                <iSelect filterable v-model="searchParams.carTypeProId" :placeholder="language('QINGXUANZE','请选择')" @change="carChange" >
                   <el-option
                     v-for="item in carProjectOptions"
                     :key="item.cartypeProId"
@@ -131,6 +131,7 @@ export default {
       titleName:{
         name:"",
         nameE:"",
+        number:"",
       },
     }
   },
@@ -138,6 +139,12 @@ export default {
     this.getData();
   },
   methods:{
+    carChange(val){
+      this.getGroup(val);//获取车型项目材料组下拉
+      this.searchParams.materialGroupId = "";
+      this.searchParams.partNum = "";
+      this.searchParams.supplierId = "";
+    },
     async sure(){
       this.partPage.currPage = 1;
       await this.partsPage();
@@ -185,11 +192,19 @@ export default {
           size:1,
         }).then(res=>{
           if(res?.result){
-            this.partNum = res.data[0].partsNum;
             this.partPage.currPage = res.pageNum;
             this.partPage.totalCount = res.total;
-            this.titleName.name = res.data[0].partNameZh;
-            this.titleName.nameE = res.data[0].partNameDe;
+            if(res.data.length>0){
+              this.partNum = res.data[0].partsNum;
+              this.titleName.name = res.data[0].partNameZh;
+              this.titleName.nameE = res.data[0].partNameDe;
+              this.titleName.number = res.data[0].partsNum;
+            }else{
+              this.partNum = "";
+              this.titleName.name = "";
+              this.titleName.nameE = "";
+              this.titleName.number = "";
+            }
             resolve();
           }
         })
@@ -197,13 +212,17 @@ export default {
     },
     getPartNode(){
       if(this.tabVal == 1){
-        getPartNode({
-          partNum:this.partNum,
-        }).then(res=>{
-          if(res?.result){
-            this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId(res.data,this.searchParams.carTypeProId);
-          }
-        })
+        if(this.partNum){
+          getPartNode({
+            partNum:this.partNum,
+          }).then(res=>{
+            if(res?.result){
+              this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId(res.data,this.searchParams.carTypeProId);
+            }
+          })
+        }else{
+          this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId([],this.searchParams.carTypeProId);
+        }
       }else{
         ordinaryPart({
           ...this.searchParams,
