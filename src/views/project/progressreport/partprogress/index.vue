@@ -29,7 +29,8 @@
       <div class="toolingcost-content-item lineClass"></div>
       <div class="toolingcost-content-item">Tooling budget:<span>{{tooling.generalBudget}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
-      <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.bmAmount}}mio</span></div>
+      <!-- <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.bmAmount}}mio</span></div> -->
+      <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.fixedAmount}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
       <div class="toolingcost-content-item">Tooling nominated. / %:<span>{{tooling.fixedAmount}}mio / {{tooling.percentage}}</span></div>
     </iCard>
