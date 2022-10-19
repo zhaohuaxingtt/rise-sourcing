@@ -9,6 +9,17 @@
 <template>
     <div>
         <div class="model_analysis">
+            <div>
+                <span style="font-size:14px;margin-right:5px;">{{$t('partsprocure.PARTSPROCUREMODELPROJECT')}}：</span>
+                <iSelect v-model="cartypeProId" @change="carModelSearch" style="width:200px;">
+                    <el-option
+                        v-for="(item,index) in carModelList || []"
+                        :key="index"
+                        :label="item.cartypeProjectZh"
+                        :value="item.id">
+                    </el-option>
+                </iSelect>
+            </div>
             <!-- <iButton @click="myReport">{{$t("我的报告")}}</iButton> -->
             <div class="model_font flexend">
                 <div @click="checkedBtn" class="model_font marginRright20">
@@ -45,7 +56,7 @@
 </template>
 
 <script>
-import { iButton,iMessage } from "rise";
+import { iButton,iMessage,iSelect } from "rise";
 import { echartsSupplerEM } from "./data";
 import echarts from "@/utils/echarts";
 import {
@@ -65,12 +76,12 @@ import {
     getSupplierTryOutOntimeInfo,
     getCommodityNomOntimeInfo,
 } from '@/api/project/projectprogressreport'
-
 import { getSelectCarType } from '@/api/project'
 
 export default {
     components:{
         iButton,
+        iSelect,
     },
     data(){
         return{
@@ -78,6 +89,7 @@ export default {
             picImg:[],
             cartypeProId:'',
             carTypeName:"",
+            carModelList:[],
         }
     },
     created(){
@@ -131,6 +143,17 @@ export default {
         
     },
     methods:{
+        carModelSearch(val){//选择顶部搜索车型项目
+            this.cartypeProId = val;
+            this.carTypeName = this.carModelList.find(item => item.id === val).cartypeProjectCode
+
+            this.checked = false;
+            this.picImg.forEach((e,index)=>{
+                e.select = this.checked
+            })
+
+            this.setEchart();
+        },
         async getDefaultCarTypePro(){
             await getDefaultCarTypePro().then(res=>{
                 console.log(res);
@@ -138,22 +161,24 @@ export default {
                     this.cartypeProId = res.data;
                     this.carTypeName = this.carModelList.find(item => item.id === res.data).cartypeProjectCode
                     // this.cartypeProId = "50024008";
-
-                    this.getSupplierEmOntimeInfo();
-                    this.getSupplierOtsOntimeInfo();
-                    this.getFGNomiOntimeInfo();
-                    this.getCommodityEmOntimeInfo();
-                    this.getCommodityOntimeInfo();
-
-                    this.getCarProjectEmOntimeDTOInfo();
-                    this.getCarProjectNomOntimeDTOInfo();
-                    this.getCarProjectOTSOntimeDTOInfo();
-
-                    this.getFGBFNomiOntimeInfo();
-                    this.getSupplierTryOutOntimeInfo();
-                    this.getCommodityNomOntimeInfo();
+                    this.setEchart();
                 }
             })
+        },
+        setEchart(){
+            this.getSupplierEmOntimeInfo();
+            this.getSupplierOtsOntimeInfo();
+            this.getFGNomiOntimeInfo();
+            this.getCommodityEmOntimeInfo();
+            this.getCommodityOntimeInfo();
+
+            this.getCarProjectEmOntimeDTOInfo();
+            this.getCarProjectNomOntimeDTOInfo();
+            this.getCarProjectOTSOntimeDTOInfo();
+
+            this.getFGBFNomiOntimeInfo();
+            this.getSupplierTryOutOntimeInfo();
+            this.getCommodityNomOntimeInfo();
         },
         async getSelectCarType(){
             await getSelectCarType().then(res=>{
