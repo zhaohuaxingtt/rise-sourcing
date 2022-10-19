@@ -141,45 +141,45 @@ import itemParts from "./itemParts.vue";
                 return;
             }
             data[0].nodeList = [
-                {
-                    actualEndTime:"2022-12-09 23:11:32",
-                    actualStartTime: "2022-10-03 23:11:32",
-                    id: 1,
-                    nodeName: "1",
-                    num: "1.0",
-                    parentId: 0,
-                    planEndTime: "2022-12-02 23:11:32",
-                    planStartTime: "2022-10-02 23:11:32",
-                },
-                {
-                    actualEndTime: null,
-                    actualStartTime:null,
-                    id: 1,
-                    nodeName: "2",
-                    num: "1.0",
-                    parentId: 0,
-                    planEndTime: "2023-02-02 23:11:32",
-                    planStartTime: "2022-09-20 23:11:32",
-                },
-                {
-                    actualEndTime: null,
-                    actualStartTime: null,
-                    id: 1,
-                    nodeName: "3",
-                    num: "1.0",
-                    parentId: 0,
-                    planEndTime: "2023-02-02 23:11:32",
-                    planStartTime: "2022-09-10 23:11:32",
-                },{
-                    actualEndTime: null,
-                    actualStartTime: null,
-                    id: 1,
-                    nodeName: "4",
-                    num: "1.0",
-                    parentId: 0,
-                    planEndTime: "2023-02-02 23:11:32",
-                    planStartTime: "2021-09-01 23:11:32",
-                },
+                // {
+                //     actualEndTime:"2022-12-09 23:11:32",
+                //     actualStartTime: "2022-10-03 23:11:32",
+                //     id: 1,
+                //     nodeName: "1",
+                //     num: "1.0",
+                //     parentId: 0,
+                //     planEndTime: "2022-12-02 23:11:32",
+                //     planStartTime: "2022-10-02 23:11:32",
+                // },
+                // {
+                //     actualEndTime: null,
+                //     actualStartTime:null,
+                //     id: 1,
+                //     nodeName: "2",
+                //     num: "1.0",
+                //     parentId: 0,
+                //     planEndTime: "2023-02-02 23:11:32",
+                //     planStartTime: "2022-09-20 23:11:32",
+                // },
+                // {
+                //     actualEndTime: null,
+                //     actualStartTime: null,
+                //     id: 1,
+                //     nodeName: "3",
+                //     num: "1.0",
+                //     parentId: 0,
+                //     planEndTime: "2023-02-02 23:11:32",
+                //     planStartTime: "2022-09-10 23:11:32",
+                // },{
+                //     actualEndTime: null,
+                //     actualStartTime: null,
+                //     id: 1,
+                //     nodeName: "4",
+                //     num: "1.0",
+                //     parentId: 0,
+                //     planEndTime: "2023-02-02 23:11:32",
+                //     planStartTime: "2021-09-01 23:11:32",
+                // },
                 ...data[0].nodeList,
             ]
 
@@ -267,7 +267,7 @@ import itemParts from "./itemParts.vue";
 
             var year = time.split(" ")[0].split("-")[0].slice(2)
 
-            return weekTotal+"W-"+year;r
+            return weekTotal+"W-"+year;
         },
         timeOff(val){
             if(val){
