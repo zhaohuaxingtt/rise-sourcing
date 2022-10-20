@@ -47,6 +47,7 @@ import {
   level_summary,
   reason_summary,
   delayOffen,
+  partType,
 } from "@/api/project/deliver";
 
 import { navList } from "./data";
@@ -172,18 +173,29 @@ import { navList } from "./data";
         })
       },
       getDic(){
-        selectDictByKeyss([//零件类型
-          "SAMPLE_PART_TYPE",
-        ]).then(res=>{
-          if(res.result){
-            const list = res.data.SAMPLE_PART_TYPE;
+        partType({}).then(res=>{
+          if(res?.result){
+            const list = res.data;
             list.forEach(e => {
-              e.value = e.id;
-              e.label = e.name;
+              e.value = e.partType;
+              e.label = e.partType;
             });
             this.selectOptions.partType = list;
           }
         })
+
+        // selectDictByKeyss([//零件类型
+        //   "SAMPLE_PART_TYPE",
+        // ]).then(res=>{
+        //   if(res.result){
+        //     const list = res.data.SAMPLE_PART_TYPE;
+        //     list.forEach(e => {
+        //       e.value = e.id;
+        //       e.label = e.name;
+        //     });
+        //     this.selectOptions.partType = list;
+        //   }
+        // })
 
         cartype_pro_List({}).then(res=>{
           if(res?.result){

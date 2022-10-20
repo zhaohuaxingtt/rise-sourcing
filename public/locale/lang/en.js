@@ -6458,6 +6458,8 @@
 		"定点准时完成率":"On time completion rate of Nomi.",
 		"OTS总数":"Total OTS",
 		"OTS完成数量":"OTS completed quantity",
+
+		"车型项目状态":"Model project status",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

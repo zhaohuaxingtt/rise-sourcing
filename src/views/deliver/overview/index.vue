@@ -69,11 +69,21 @@ export default {
         carProjectOptions: [//车型项目
           
         ],
+        statusList:[
+          {
+            value:0,
+            label:"未SOP车型",
+          },{
+            value:1,
+            label:"已SOP车型",
+          },
+        ],
       },
       searchParams: {
         buyerIds:[],//采购员
         cartypeProIds:[],//车型项目
         materialGroupIds:[],//材料组
+        cartypeStatus:"",
       },
       tabelDataList:[],
       loading:false,

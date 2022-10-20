@@ -229,3 +229,12 @@ export function queryPepNodeTimeByCarTypeProId(data) {
     })
 }
 
+// 查询零件类型
+export function partType(params) {
+    return requst({
+        url: `/sample_part_list/partType`,
+        method: 'GET',
+        params
+    })
+}
+

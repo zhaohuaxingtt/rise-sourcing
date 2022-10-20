@@ -6462,6 +6462,8 @@
 		"定点准时完成率":"定点准时完成率",
 		"OTS总数":"OTS总数",
 		"OTS完成数量":"OTS完成数量",
+
+    "车型项目状态":"车型项目状态",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })

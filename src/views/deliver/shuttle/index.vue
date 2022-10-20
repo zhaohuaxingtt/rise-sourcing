@@ -101,7 +101,7 @@ export default {
             e.parts.forEach(item=>{
               item.name = item.partNameZh
               item.nameEn = item.partNameDe
-              item.code = item.partNum
+              item.code = item.partSixNum
             })
           }
         })
@@ -123,7 +123,7 @@ export default {
             e.parts.forEach(item=>{
               item.name = item.partNameZh
               item.nameEn = item.partNameDe
-              item.code = item.partNum
+              item.code = item.partSixNum
             })
           }
         })
@@ -264,7 +264,7 @@ export default {
                     list.push(e);
                   }
                 }
-                if(item.partNum.indexOf(val) != -1){
+                if(item.code.indexOf(val) != -1){
                   if(list.length>0){
                     if((list.filter(el => {return el.id == e.id})).length<1){
                       list.push(e);
@@ -328,7 +328,7 @@ export default {
                     list.push(e);
                   }
                 }
-                if(item.partNum.indexOf(val) != -1){
+                if(item.code.indexOf(val) != -1){
                   if(list.length>0){
                     if((list.filter(el => {return el.id == e.id})).length<1){
                       list.push(e);

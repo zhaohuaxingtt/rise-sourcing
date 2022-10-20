@@ -112,6 +112,7 @@ export const searchList = [
   {prop:'materialGroupIds',label:'材料组',key:'CAILIAOZU',type:'select', selectOption:'deptOptions',multiple:true},
   {prop:'buyerIds',label:'采购员',key:'CAIGOUYUAN',type:'select', selectOption:'buyerList',multiple:true},
   {prop:'cartypeProIds',label:'车型项目',key:'CHEXINGXIANGMU',type:'select', selectOption:'carProjectOptions',multiple:true},
+  {prop:'cartypeStatus',label:'车型项目状态',key:'CHEXINGXIANGMUZHUANGTAI',type:'select', selectOption:'statusList'},
 ]
 
 export const delayAnalysisSearchList = [

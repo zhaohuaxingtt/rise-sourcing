@@ -193,7 +193,7 @@ import itemParts from "./itemParts.vue";
 
             var list = _.cloneDeep(data);
             list.forEach(e=>{
-                e.name = e.partNameZh;
+                e.name = e.partNameZh + "-" + e.partNum;
                 e.nameEn = e.partNameDe;
 
                 //图标状态
