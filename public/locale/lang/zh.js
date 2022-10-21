@@ -6471,6 +6471,8 @@
 		"OTS总数":"OTS总数",
 		"OTS完成数":"OTS完成数",
     "车型项目SOP时间":"车型项目SOP时间",
+
+    "无需确认":"无需确认",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })

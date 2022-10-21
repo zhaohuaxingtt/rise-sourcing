@@ -77,6 +77,7 @@ export const selStatus = [
 export const signSheetselStatus = [
   {id:'CONFIRMED',name:'已确认',key:'LK_SELYIQUEREN'},
   {id:'UNAMORTIZED',name:'未分摊',key:'LK_SELWEIFENTAN'},
+  {id:'NOTCONFIRMED',name:'无需确认',key:'无需确认'},
 ]
 // 报价一致性校验
 export const priceConsistentStatus = [
