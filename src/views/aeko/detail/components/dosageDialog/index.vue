@@ -18,17 +18,21 @@
         {{ language("ZHUANGCHELVMEICHEYONGLIANG", "装⻋率/每⻋⽤量") }}
       </p>
       <div class="control" id="control">
+        <iButton v-if="!disabled" @click="batchEdit">{{
+          language("BATCHEDIT", "批量编辑")
+        }}</iButton>
         <iButton
           v-if="!disabled"
           :loading="saveLoading"
           @click="handleSave"
-          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE|保存"
-          >{{ language("BAOCUN", "保存") }}</iButton>
-        <iButton
-          v-if="!disabled"
-          :loading="saveLoading"
-          @click="reset"
-          >{{ language("CHONGZHI", "重置") }}</iButton>
+          v-permission.auto="
+            AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE | 保存
+          "
+          >{{ language("BAOCUN", "保存") }}</iButton
+        >
+        <iButton v-if="!disabled" :loading="saveLoading" @click="reset">{{
+          language("CHONGZHI", "重置")
+        }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
@@ -77,11 +81,17 @@
         </el-form-item>
       </el-form>
       <el-table
-        v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE|装车率_表格"
+        v-permission.auto="
+          AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE | 装车率_表格
+        "
         class="table margin-top30"
         height="480"
         :data="tableData"
+        @selection-change="handleSelectionChange"
       >
+      <el-table-column
+      type="selection"
+      width="55">
         <template v-for="item in tableTitle">
           <el-table-column
             v-if="item.required"
@@ -142,9 +152,9 @@
           >
             <template slot-scope="scope">
               <!-- 装车率加个% -->
-              <template v-if="item.props == 'assemblyRate'"
-                >{{ scope.row.assemblyRate&&calculatePercentage(scope.row)+'%'}}</template
-              >
+              <template v-if="item.props == 'assemblyRate'">{{
+                scope.row.assemblyRate && calculatePercentage(scope.row) + "%"
+              }}</template>
               <template v-else>{{ scope.row[item.props] }}</template>
             </template>
           </el-table-column>
@@ -159,17 +169,45 @@
       </el-table>
       <i class="dashes"></i>
     </div>
+    <iDialog :visible.sync="visibleEdit" :title="language('BATCHEDIT', '批量编辑')">
+      <el-form>
+        <el-form-item label="原用量" v-model="newVal"></el-form-item>
+        <el-form-item label="新用量" v-model="oldVal"></el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visibleEdit = false">取 消</el-button>
+        <el-button type="primary" @click="sure">确 定</el-button>
+      </span>
+    </iDialog>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage, iMessageBox } from "rise"
-import tableList from "@/views/partsign/editordetail/components/tableList"
-import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
-import { numberProcessor } from "@/utils"
-import filters from "@/utils/filters"
-import { getAekoCarProject, getAekoCarDosage, getAekoCarDosageByCarTypeProjectCode, saveAekoCarDosage } from "@/api/aeko/detail"
-import {cutOutNum} from "@/utils/cutOutNum";
+import {
+  iDialog,
+  iButton,
+  iFormGroup,
+  iFormItem,
+  iSelect,
+  iText,
+  iInput,
+  iMessage,
+  iMessageBox,
+} from "rise";
+import tableList from "@/views/partsign/editordetail/components/tableList";
+import {
+  dosageDialogForm as form,
+  dosageDialogTableTitle as tableTitle,
+} from "../data";
+import { numberProcessor } from "@/utils";
+import filters from "@/utils/filters";
+import {
+  getAekoCarProject,
+  getAekoCarDosage,
+  getAekoCarDosageByCarTypeProjectCode,
+  saveAekoCarDosage,
+} from "@/api/aeko/detail";
+import { cutOutNum } from "@/utils/cutOutNum";
 
 export default {
   components: {
@@ -227,8 +265,11 @@ export default {
         this.$emit("update:visible", value);
       },
     },
-    tableData(){
-      return Array.isArray(this.dosage.aekoProjectCarDosageList)&&this.dosage.aekoProjectCarDosageList.length ? this.dosage.aekoProjectCarDosageList: [{}]
+    tableData() {
+      return Array.isArray(this.dosage.aekoProjectCarDosageList) &&
+        this.dosage.aekoProjectCarDosageList.length
+        ? this.dosage.aekoProjectCarDosageList
+        : [{}];
     },
     summary() {
       let result = {};
@@ -253,10 +294,12 @@ export default {
     },
     disabled() {
       // AEKO状态为撤销以及从AEKO查看跳转过来的
-      const {query} = this.$route;
-      const {from=''} = query;
-      const {auditType=''} = query; // 我的申请详情页内嵌页面
-      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check' || !!auditType;
+      const { query } = this.$route;
+      const { from = "" } = query;
+      const { auditType = "" } = query; // 我的申请详情页内嵌页面
+      return (
+        this.aekoInfo.aekoStatus == "CANCELED" || from == "check" || !!auditType
+      );
     },
   },
   data() {
@@ -270,16 +313,35 @@ export default {
       saveLoading: false,
       isUpdate: false,
       sums: [],
+      multipleSelection: [],
+      visibleEdit: false,
+      newVal: "",
+      oldVal: "",
     };
   },
   methods: {
-
-    calculatePercentage(row){
-      return Number(row.assemblyRate*100).toFixed(0)
+    sure() {
+      this.multipleSelection.map((item) => {
+        this.$set(item, "originPerCarDosage", this.oldVal);
+        this.$set(item, "perCarDosage", this.newVal);
+      });
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    batchEdit() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn("请选择需要修改的数据");
+      this.visibleEdit = true;
+    },
+    calculatePercentage(row) {
+      return Number(row.assemblyRate * 100).toFixed(0);
     },
     // 提交时校验一下沿⽤原零件份额:usePortion
     validateData() {
-      this.dosage.aekoProjectCarDosageList = JSON.parse(JSON.stringify(this.tableData))
+      this.dosage.aekoProjectCarDosageList = JSON.parse(
+        JSON.stringify(this.tableData)
+      );
       let isValidate = true;
       // 沿⽤原零件份额
       if (!this.dosage["usePortion"]) {
@@ -291,10 +353,16 @@ export default {
       }
       // originPerCarDosage:原零件
       // perCarDosage:新零件
-      let validList = this.dosage.aekoProjectCarDosageList.filter((i)=> i.perCarDosage&&i.originPerCarDosage)
-      if(!(Array.isArray(validList)&&validList.length>0)){
-        const tips = this.language('ZHISHAOYAOYOUYIHANG','至少要有一行') + this.language('YUANLINGJIANYONGLIANG','原零件用量')+'、'+this.language('XINLINGJIANYONGLIANG','新零件⽤量')+
-        this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");
+      let validList = this.dosage.aekoProjectCarDosageList.filter(
+        (i) => i.perCarDosage && i.originPerCarDosage
+      );
+      if (!(Array.isArray(validList) && validList.length > 0)) {
+        const tips =
+          this.language("ZHISHAOYAOYOUYIHANG", "至少要有一行") +
+          this.language("YUANLINGJIANYONGLIANG", "原零件用量") +
+          "、" +
+          this.language("XINLINGJIANYONGLIANG", "新零件⽤量") +
+          this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");
         iMessage.warn(tips);
         isValidate = false;
       }
@@ -382,11 +450,17 @@ export default {
         .catch(() => (this.loading = false));
     },
     handleChangeByCarTypeProject(value) {
-      this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
-      const {carProjectOptionsList=[]} = this;
-      carProjectOptionsList.map((item)=>{
-        if(item.carTypeProjectCode === value){
-          this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
+      this.dosage.carTypeProjectZh = this.carProjectOptions.find(
+        (item) => item.value === value
+      ).label;
+      const { carProjectOptionsList = [] } = this;
+      carProjectOptionsList.map((item) => {
+        if (item.carTypeProjectCode === value) {
+          this.dosage.aekoProjectCarDosageList = Array.isArray(
+            item.aekoProjectChange
+          )
+            ? item.aekoProjectChange
+            : [];
         }
       });
 
@@ -413,16 +487,20 @@ export default {
       }
     },
     // 重置
-    reset(){
+    reset() {
       iMessageBox(
-        this.language('CHONGZHIQINGQUEREN','重置后，当前页面所有信息将被恢复至默认状态，请确认！'), // 暂时处理
-        this.language('CHONGZHITISHI','重置提示'),{
-          showCancelButton:false
+        this.language(
+          "CHONGZHIQINGQUEREN",
+          "重置后，当前页面所有信息将被恢复至默认状态，请确认！"
+        ), // 暂时处理
+        this.language("CHONGZHITISHI", "重置提示"),
+        {
+          showCancelButton: false,
         }
-      ).then(()=>{
+      ).then(() => {
         this.getAekoCarProject();
         this.getAekoCarDosage();
-      })
+      });
     },
     // 保存
     handleSave() {
