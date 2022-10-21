@@ -6467,6 +6467,8 @@
 		"OTS总数":"Total OTS",
 		"OTS完成数":"OTS completed quantity",
 		"车型项目SOP时间":"SOP time of vehicle type project",
+
+		"无需确认":"No confirmation required",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
