@@ -10,7 +10,7 @@ import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 const requst = axios(process.env.VUE_APP_PURCHASE)
 const downLoad = download(process.env.VUE_APP_PURCHASE)
-const requstPartResource = axios(process.env.VUE_APP_BASE_INFO + '/web')
+const requstPartResource = axios(process.env.VUE_APP_DIC_API + '/web')
 const INVESTMENT = axios(process.env.VUE_APP_TOOLING + '/investment')
 
 /**
