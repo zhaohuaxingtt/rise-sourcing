@@ -220,10 +220,13 @@ export default {
   },
   watch: {
     // tab 页切换到审批记录时，查询数据
-    currentTab(val) {
-      if (val == "cover") {
-        this.queryData();
-      }
+    currentTab: {
+      handler(val) {
+        if (val == "cover") {
+          this.queryData();
+        }
+      },
+      immediate: true,
     },
   },
   computed: {
