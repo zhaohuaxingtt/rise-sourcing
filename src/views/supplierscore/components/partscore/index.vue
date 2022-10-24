@@ -59,7 +59,8 @@
                   <span v-else>{{ scope.row[item.props] }}</span>
                 </template>
                 <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
-                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                   <!-- @input="handleInputByWeek($event, item.props, scope.row)"  -->
+                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" type="number" @input="handlePutByZ($event, item.props, scope.row)"  />
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
@@ -105,7 +106,8 @@
                   </template>
                   <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
                     <template v-if="scope.row.rateTag == 'MQ'">
-                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                       <!-- @input="handleInputByWeek($event, item.props, scope.row)" -->
+                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" type="number" @input="handlePutByZ($event, item.props, scope.row)"  />
                       <span v-else>{{ scope.row.confirmCycle }}</span>
                     </template>
                   </template>
@@ -154,7 +156,8 @@
                   </template>
                   <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
                     <template v-if="scope.row.rateTag == 'EP'">
-                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                      <!-- @input="handleInputByWeek($event, item.props, scope.row)" -->
+                      <iInput v-if="editStatus" v-model="scope.row.confirmCycle" type="number" @input="handlePutByZ($event, item.props, scope.row)"  />
                       <span v-else>{{ scope.row.confirmCycle }}</span>
                     </template>
                   </template>
@@ -456,6 +459,10 @@ export default {
     handleInputByWeek(value, key, row) {
       let week = numberProcessor(value, 0)
       if (+week > 53) week = "53"
+      this.$set(row, key, week)
+    },
+    handlePutByZ(value, key, row){
+      let week = numberProcessor(value, 0)
       this.$set(row, key, week)
     },
     // 附件评分的文本展示
