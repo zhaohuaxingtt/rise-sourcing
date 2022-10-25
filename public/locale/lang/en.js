@@ -6460,6 +6460,8 @@
 		"OTS完成数量":"OTS completed quantity",
 
 		"车型项目状态":"Model project status",
+		"节点发送状态":"Node sending status",
+		"延误状态":"Delay status",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
