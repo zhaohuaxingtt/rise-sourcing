@@ -1936,7 +1936,7 @@ export default {
     gotoSingle() {
       const { query } = this.$route;
       let routeUrl = this.$router.resolve({
-        path: "/designate/decisiondata/singlesourcing",
+        path: "/designate/designateCirculateSingleSourcing",
         query,
       });
       window.open(routeUrl.href, "_blank");
