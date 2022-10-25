@@ -89,9 +89,7 @@
         :data="tableData"
         @selection-change="handleSelectionChange"
       >
-      <el-table-column
-      type="selection"
-      width="55">
+        <el-table-column type="selection" width="55"> </el-table-column>
         <template v-for="item in tableTitle">
           <el-table-column
             v-if="item.required"
@@ -169,10 +167,19 @@
       </el-table>
       <i class="dashes"></i>
     </div>
-    <iDialog :visible.sync="visibleEdit" :title="language('BATCHEDIT', '批量编辑')">
-      <el-form>
-        <el-form-item label="原用量" v-model="newVal"></el-form-item>
-        <el-form-item label="新用量" v-model="oldVal"></el-form-item>
+    <iDialog
+      :visible.sync="visibleEdit"
+      :title="language('BATCHEDIT', '批量编辑')"
+      width="400px"
+      append-to-body
+    >
+      <el-form label-position="left" label-width="80px">
+        <el-form-item label="原用量">
+          <i-input v-model="oldVal"></i-input>
+        </el-form-item>
+        <el-form-item label="新用量">
+          <i-input v-model="newVal"></i-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="visibleEdit = false">取 消</el-button>
@@ -325,6 +332,7 @@ export default {
         this.$set(item, "originPerCarDosage", this.oldVal);
         this.$set(item, "perCarDosage", this.newVal);
       });
+      this.visibleEdit = false;
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
