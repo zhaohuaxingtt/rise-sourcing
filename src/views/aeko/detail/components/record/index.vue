@@ -144,6 +144,7 @@ import {
   auditFileSave,
   auditFileDelete,
   getHistoricByParams,
+  getInstDetail,
 } from "@/api/aeko/detail/approveRecord";
 import { getAuditFilePage } from "@/api/aeko/detail/approveAttach";
 import * as dateUtils from "@/utils/date";
@@ -181,6 +182,10 @@ export default {
       if (this.tableListData == null || this.tableListData.length <= 0)
         return false;
 
+      // 状态3为补充材料
+      if (this.approveStatus == 4) {
+        return true;
+      }
       let valid = false;
       const validItems = this.tableListData.filter(
         (o) => o.activityName === "【补充材料通知】补充材料"
@@ -219,6 +224,7 @@ export default {
       attachAekoCode: "",
       attachReadOnly: false,
       currentRow: {},
+      approveStatus: "", // 流程状态
     };
   },
   watch: {
@@ -334,6 +340,8 @@ export default {
               item.disabled = item.activityName != "【补充材料通知】补充材料";
               return item;
             });
+            if (this.tableListData.length)
+              this.getInstDetail(this.tableListData[0].processInstanceId);
           }
         });
       }
@@ -353,11 +361,19 @@ export default {
     itemExplainShow(row) {
       return row.activityName == "【解释说明回复】";
     },
+    getInstDetail(processInstanceId) {
+      getInstDetail({ processInstanceId }).then((res) => {
+        if (res.result) {
+          this.approveStatus = res.data.stateCode;
+        }
+      });
+    },
     itemIsCanReply(row, index = null) {
       // 第一行如果是补充材料就允许编辑
-      if (row.activityName == "【补充材料通知】补充材料") return index !== 0;
+      if (this.approveStatus == 3) return index !== 0;
       //不用回复
-      return row.disabled;
+      return true;
+      // return row.disabled;
     },
 
     /**
