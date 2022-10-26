@@ -425,19 +425,24 @@
                 </div>
                 <div v-else>
                   <div class="padding-top10">
-                    <p
-                      v-for="(exchangeRate, index) in exchangeRates"
-                      :key="index"
-                    >
-                      Exchange rate{{
-                        exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                      }}: {{ exchangeRate.str
-                      }}{{
-                        exchangeRate.fsNumsStr
-                          ? `（${exchangeRate.fsNumsStr}）`
-                          : ""
-                      }}
-                    </p>
+                    <template v-if="basicData.currency == 'RMB'">
+                      Exchange rate: 1RMB=1RMB
+                    </template>
+                    <template v-else>
+                      <p
+                        v-for="(exchangeRate, index) in exchangeRates"
+                        :key="index"
+                      >
+                        Exchange rate{{
+                          exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                        }}: {{ exchangeRate.str
+                        }}{{
+                          exchangeRate.fsNumsStr
+                            ? `（${exchangeRate.fsNumsStr}）`
+                            : ""
+                        }}
+                      </p>
+                    </template>
                   </div>
                 </div>
                 <!-- hasLastPage为false，remarkList:备注也不分页，签字栏不用另起一页 -->
@@ -669,19 +674,24 @@
               </div>
               <div v-else>
                 <div class="margin-top10">
-                  <p
-                    v-for="(exchangeRate, index) in exchangeRates"
-                    :key="index"
-                  >
-                    Exchange rate{{
-                      exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                    }}: {{ exchangeRate.str
-                    }}{{
-                      exchangeRate.fsNumsStr
-                        ? `（${exchangeRate.fsNumsStr}）`
-                        : ""
-                    }}
-                  </p>
+                  <template v-if="basicData.currency == 'RMB'">
+                    Exchange rate: 1RMB=1RMB
+                  </template>
+                  <template v-else>
+                    <p
+                      v-for="(exchangeRate, index) in exchangeRates"
+                      :key="index"
+                    >
+                      Exchange rate{{
+                        exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                      }}: {{ exchangeRate.str
+                      }}{{
+                        exchangeRate.fsNumsStr
+                          ? `（${exchangeRate.fsNumsStr}）`
+                          : ""
+                      }}
+                    </p>
+                  </template>
                 </div>
               </div>
               <!-- hasLastPage为false，签字栏不用另起一页 -->

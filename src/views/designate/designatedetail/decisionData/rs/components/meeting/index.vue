@@ -422,16 +422,24 @@
                 </span>
               </div>
               <div class="padding-top10" v-else>
-                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-                  Exchange rate{{
-                    exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                  }}: {{ exchangeRate.str
-                  }}{{
-                    exchangeRate.fsNumsStr
-                      ? `（${exchangeRate.fsNumsStr}）`
-                      : ""
-                  }}
-                </p>
+                <template v-if="basicData.currency == 'RMB'">
+                  Exchange rate: 1RMB=1RMB
+                </template>
+                <template v-else>
+                  <p
+                    v-for="(exchangeRate, index) in exchangeRates"
+                    :key="index"
+                  >
+                    Exchange rate{{
+                      exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                    }}: {{ exchangeRate.str
+                    }}{{
+                      exchangeRate.fsNumsStr
+                        ? `（${exchangeRate.fsNumsStr}）`
+                        : ""
+                    }}
+                  </p>
+                </template>
               </div>
             </div>
           </div>
@@ -951,14 +959,21 @@
           </div>
           <div v-else>
             <div class="margin-top10">
-              <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-                Exchange rate{{
-                  exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                }}: {{ exchangeRate.str
-                }}{{
-                  exchangeRate.fsNumsStr ? `（${exchangeRate.fsNumsStr}）` : ""
-                }}
-              </p>
+              <template v-if="basicData.currency == 'RMB'">
+                Exchange rate: 1RMB=1RMB
+              </template>
+              <template v-else>
+                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
+                  Exchange rate{{
+                    exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                  }}: {{ exchangeRate.str
+                  }}{{
+                    exchangeRate.fsNumsStr
+                      ? `（${exchangeRate.fsNumsStr}）`
+                      : ""
+                  }}
+                </p>
+              </template>
             </div>
           </div>
         </div>
