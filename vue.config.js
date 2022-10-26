@@ -262,7 +262,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_APPROVAL]: {
-				target: `${BASE_IP}/approval`,
+				target: `${BASE_IP}/approval/web`,
 				// target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/approvalApi',
 				changeOrigin: true,
 				pathRewrite: {
