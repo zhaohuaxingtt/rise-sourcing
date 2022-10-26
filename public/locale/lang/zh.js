@@ -6473,6 +6473,7 @@
     "车型项目SOP时间":"车型项目SOP时间",
 
     "无需确认":"无需确认",
+    "请选择部门":"请选择部门",
   }
   i18n.setLocaleMessage('zh', oldLanguage)
 })
