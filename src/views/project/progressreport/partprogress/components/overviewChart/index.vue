@@ -39,7 +39,7 @@ export default {
         tenantId: '8716a3b9-b827-484b-92ad-ed90aaf4d707',
         clientSecret: '6cpyeTY~dAmL-Uub2X8Om30Mm2EUk-d.TS',
         workspaceId:process.env.NODE_ENV === "production"?"c272ae69-a6b4-4407-bd0e-f67953de36ce":"876776a9-f959-442e-a011-b4bade0dd862",
-        reportId: process.env.NODE_ENV === "production"?"":"b45a3f28-ade2-4628-9f6a-ddd74c2bf1d4",
+        reportId: process.env.NODE_ENV === "production"?"d79d9df2-4b77-4283-9b7e-b1382979c591":"b45a3f28-ade2-4628-9f6a-ddd74c2bf1d4",
       },
       config: {
         type: "",
