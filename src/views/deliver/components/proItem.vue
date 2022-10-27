@@ -6,9 +6,9 @@
           <h2>{{dataList.carTypeProNameZh}}</h2>
           <!-- <h2>{{dataList.carTypeProNameEn}}</h2> -->
           <div>
-            <p>零件总个数：<span>{{dataList.partCount}}</span></p>
-            <p>当前定点完成数量：<span>{{dataList.cscNotFinishCount}}</span></p>
-            <p>当前已完成送样数量：<span>{{dataList.sendSampleNotFinishCount}}</span></p>
+            <p>{{$t("零件总个数")}}：<span>{{dataList.partCount}}</span></p>
+            <p>{{$t("当前定点完成数量")}}：<span>{{dataList.cscNotFinishCount}}</span></p>
+            <p>{{$t("当前已完成送样数量")}}：<span>{{dataList.sendSampleNotFinishCount}}</span></p>
           </div>
         </div>
         <div class="right">

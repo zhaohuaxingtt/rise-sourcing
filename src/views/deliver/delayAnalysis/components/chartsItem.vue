@@ -1,7 +1,7 @@
 <template>
-  <iCard title="延迟级别汇总">
+  <iCard :title="$t('延迟级别汇总')">
     <div ref="charts1" class="charts" v-show="chartsType"></div>
-    <p class="nodata-yanwu"  v-show="!chartsType">暂无数据</p>
+    <p class="nodata-yanwu"  v-show="!chartsType">{{$t("LK_ZANWUSHUJU")}}</p>
   </iCard>
 </template>
 

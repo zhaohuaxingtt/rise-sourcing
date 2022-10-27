@@ -2,14 +2,14 @@
   <iPage>
     <h1>HeavyItem</h1>
     <div class="shuttle-box">
-      <iCard class="shuttle-item" title="备选清单">
+      <iCard class="shuttle-item" :title="$t('备选清单')">
         <div class="search">
-          <span>查询条件：</span>
+          <span>{{$t("查询条件")}}：</span>
           <div class="search-input">
             <iInput
               v-model="leftSearch"
               @change="leftChange"
-              placeholder="材料组/材料名称/零件编号/零件名称"
+              :placeholder="$t('材料组/材料名称/零件编号/零件名称')"
             ></iInput>
           </div>
         </div>
@@ -23,17 +23,17 @@
           highlight-current-row />
       </iCard>
       <div class="shuttle-btn-box">
-        <i class="el-icon-caret-right font64" @click="toRight"></i>
-        <i class="el-icon-caret-left font64" @click="toLeft"></i>
+        <i class="el-icon-caret-right font64" @click="toRight" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_LINGJIANSHEZHI_SHEZHI"></i>
+        <i class="el-icon-caret-left font64" @click="toLeft" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_LINGJIANSHEZHI_SHEZHI"></i>
       </div>
-      <iCard class="shuttle-item" title="HeavyItem清单">
+      <iCard class="shuttle-item" :title="$t('备选清单')">
         <div class="search">
-          <span>查询条件：</span>
+          <span>{{$t("查询条件")}}：</span>
           <div class="search-input">
             <iInput
               v-model="rightSearch"
               @change="rightChange"
-              placeholder="材料组/材料名称/零件编号/零件名称"
+              :placeholder="$t('材料组/材料名称/零件编号/零件名称')"
             ></iInput>
           </div>
         </div>

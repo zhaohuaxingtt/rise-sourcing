@@ -1,7 +1,7 @@
 <template>
-  <iCard title="Offen类型汇总">
+  <iCard :title="$t('Offen类型汇总')">
     <div ref="charts3" class="charts" v-show="chartsType"></div>
-    <p class="nodata-yanwu" v-show="!chartsType">暂无数据</p>
+    <p class="nodata-yanwu" v-show="!chartsType">{{$t("LK_ZANWUSHUJU")}}</p>
   </iCard>
 </template>
 

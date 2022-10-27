@@ -1,8 +1,10 @@
 <template>
   <iCard title="">
     <template slot='header-control'>
-      <i-button>设置排序</i-button>
-      <i-button>导出</i-button>
+      <i-button  v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_PUTONGLINGJIAN_SHEZHIPAIXU">{{$t("设置排序")}}</i-button>
+      <i-button  v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_PUTONGLINGJIAN_DAOCHU">{{
+        language("DAOCHU", "导出")
+      }}</i-button>
     </template>
     <div>
         

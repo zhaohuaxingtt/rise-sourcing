@@ -1,9 +1,9 @@
 <template>
-  <iCard :title="$getLabel(nameZ,nameE)+'-'+$getLabel(titleName.name,titleName.nameE)">
+  <iCard :title="$getLabel(nameZ,nameE)+'-'+$getLabel(titleName.name,titleName.nameE)+'-'+supplierName">
     <template slot='header-control'>
-      <i-button @click="derivationClick">导出</i-button>
-      <i-button @click="jumpHeavy">heavyItem零件设置</i-button>
-      <i-button @click="jumpSupplier">发送供应商填写计划</i-button>
+      <i-button @click="derivationClick" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_DAOCHU">{{$t("DAOCHU")}}</i-button>
+      <i-button @click="jumpHeavy" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_LINGJIANSHEZHI">{{$t("heavyItem零件设置")}}</i-button>
+      <i-button @click="jumpSupplier" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_FASONGTIANXIEJIHUA">{{$t("发送供应商填写计划")}}</i-button>
     </template>
     <div class="wrap-back" id="qrCodeDiv">
       <div class="line-div">
@@ -11,7 +11,12 @@
         <div style="width:100%;height:100%;">
           <div class="line-samll" v-for="(item,index) in lineListNew" :key="index" :style="{left:item.w+'%'}">
             <div :class="item.garyShow?'gray':'line-line'"></div>
-            <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
+            <el-tooltip
+              :content="item.time"
+              placement="left" effect="light"
+              >
+                <span :class="item.garyShow?'gray-name':''">{{item.name}}</span>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -27,7 +32,14 @@
           </div>
         </el-tooltip>
         <div v-for="item in header" :key="item">
-          {{item}}
+          <el-tooltip
+            :content="item"
+            placement="top" effect="light"
+            >
+            <div>
+              {{item}}
+            </div>
+          </el-tooltip>
         </div>
       </div>
       <item :list="list" @refresh="refresh" :key="i" :header="header"/>
@@ -80,6 +92,10 @@ export default {
     carProjectOptions:{
       type:Array,
       default:[],
+    },
+    supplierName:{
+      type:String,
+      default:""
     }
   },
   data() {
@@ -114,11 +130,11 @@ export default {
           code:null,
         },
       ],
-      lineListNew:[],
+      lineListNew:[],//线vff,bf,pvs,os,sop集合
 
-      openShow:false,
+      openShow:false,//左侧菜单集合图标显示
 
-      headerShow:false,
+      headerShow:false,//判断横坐标年份集合是否为空
     }
   },
   created(){
@@ -240,7 +256,7 @@ export default {
         line.style.height = s + "px";
       })
     },
-    noTodayWrap(){
+    noTodayWrap(){//绘制线和today阴影的dom节点
       var div = document.getElementsByClassName("row-item")[0];
       var parts = document.getElementsByClassName("first-column-item")[0];
       var width = div.offsetWidth - parts.offsetWidth//div宽度,零件Adiv宽度200，需要减去
@@ -371,23 +387,36 @@ export default {
             time:e.planStartTime,
             code:this.timeOff(e.planStartTime),
           })
-          if(!e.planStartTime && e.planEndTime){
+          if(!e.planStartTime && e.planEndTime){//计划点
             e.pointRangTop = [[e.planEndTime.split(" ")[0].split("-")[0],e.planEndTime.split(" ")[0].split("-")[1]].join("-")]
-            e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-          }else if(e.planStartTime && e.planEndTime){
-            e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)
-            e.barRangTopRight = (e.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-            e.barWidthTopLeft = (e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-            e.barWidthTopLeftWidth = (100-(e.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
+          }else if(e.planStartTime && e.planEndTime){//计划线
+            if(e.planStartTime.split(" ")[0].split("-")[1] == e.planEndTime.split(" ")[0].split("-")[1]){//同月份
+              e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)//绘制的所有月份集合
+              e.barRangTopWidth = ((e.planEndTime.split(" ")[0].split("-")[2] - e.planStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
+              e.barRangTopMarginLeft = ((e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//开始时间的线距
+            }else{
+              e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)//绘制的所有月份集合
+              e.barRangTopRight = (e.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";//结束时间的线距
+              e.barWidthTopLeft = (e.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";//开始时间的线距
+              e.barWidthTopLeftWidth = (100-(e.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";//宽
+            }
           }
-          if(!e.actualStartTime && e.actualEndTime){
+          if(!e.actualStartTime && e.actualEndTime){//实际点
             e.pointRangBottom = [[e.actualEndTime.split(" ")[0].split("-")[0],e.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
-            e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-          }else if(e.actualStartTime && e.actualEndTime){
-            e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)
-            e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-            e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-            e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
+          }else if(e.actualStartTime && e.actualEndTime){//实际线
+
+            if(e.actualStartTime.split(" ")[0].split("-")[1] == e.actualEndTime.split(" ")[0].split("-")[1]){
+              e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)//绘制的所有月份集合
+              e.barRangBottomWidth = ((e.actualEndTime.split(" ")[0].split("-")[2] - e.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
+              e.barRangBottomMarginLeft = ((e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//开始时间的线距
+            }else{
+              e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)
+              e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+              e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            }
           }
           e.showChlid = false;
 
@@ -410,31 +439,39 @@ export default {
                 code:this.timeOff(item.planStartTime),
               })
 
-              if(!item.planStartTime && item.planEndTime){
+              if(!item.planStartTime && item.planEndTime){//计划点
                 item.pointRangTop = [[item.planEndTime.split(" ")[0].split("-")[0],item.planEndTime.split(" ")[0].split("-")[1]].join("-")]
-                item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-              }else if(item.planStartTime && item.planEndTime){
-                this.yearAll = [];
-                this.minYear = item.planStartTime;
-                this.maxYear = item.planEndTime;
-                item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)
-                item.barRangTopRight = (item.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-                item.barWidthTopLeft = (item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-                item.barWidthTopLeftWidth = (100-(item.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
+              }else if(item.planStartTime && item.planEndTime){//计划线
+                // this.yearAll = [];
+                // this.minYear = item.planStartTime;
+                // this.maxYear = item.planEndTime;
+                if(item.planStartTime.split(" ")[0].split("-")[1] == item.planEndTime.split(" ")[0].split("-")[1]){//同一月份
+                  item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)//绘制的所有月份集合
+                  item.barRangTopWidth = ((item.planEndTime.split(" ")[0].split("-")[2] - item.planStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//结束时间的线距
+                  item.barRangTopMarginLeft = ((item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//结束时间的线距
+                }else{//不同月份
+                  item.barRangTop = this.yearMake(item.planEndTime,item.planStartTime)//绘制的所有月份集合
+                  item.barRangTopRight = (item.planEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";//结束时间的线距
+                  item.barWidthTopLeft = (item.planStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";//开始时间的线距
+                  item.barWidthTopLeftWidth = (100-(item.planStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";//宽
+                }
               }
-              if(!item.actualStartTime && item.actualEndTime){
+              if(!item.actualStartTime && item.actualEndTime){//实际点
                 item.pointRangBottom = [[item.actualEndTime.split(" ")[0].split("-")[0],item.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
-                item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[3]/30).toFixed(0) + "%";
-              }else if(item.actualStartTime && item.actualEndTime){
-                this.yearAll = [];
-                this.minYear = item.actualStartTime;
-                this.maxYear = item.actualEndTime;
-                item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)
-                item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-                item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
-                item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
+              }else if(item.actualStartTime && item.actualEndTime){//实际线
+                if(item.actualEndTime.split(" ")[0].split("-")[1] == item.actualStartTime.split(" ")[0].split("-")[1]){//同一月份
+                  item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)//绘制的所有月份集合
+                  item.barRangBottomWidth = ((item.actualEndTime.split(" ")[0].split("-")[2] - item.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//结束时间的线距
+                  item.barRangBottomMarginLeft = ((item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//结束时间的线距
+                }else{//不同月份
+                  item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)
+                  item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                  item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                  item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                }
               }
-
             })
           }
         });
@@ -608,7 +645,7 @@ export default {
   height:100%;
   top: 0;
   left:10%;
-  display: flex;
+  // display: flex;
   .line-line{
     height: 100%;
     width: 2px;
@@ -626,6 +663,9 @@ export default {
     margin-top: 18px;
     font-size: 14px;
     font-weight: bold;
+    position: absolute;
+    top: 0;
+    pointer-events:all;
   }
   .gray-name{
     color:#a9a9a9;

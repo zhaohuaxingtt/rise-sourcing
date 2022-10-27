@@ -1,6 +1,6 @@
 <template>
   <iPage class="deliverPlan">
-    <H1>送样计划</H1>
+    <H1>{{$t("送样计划")}}</H1>
     <div style="margin:20px 0;">
       <iSearch @sure="sure" @reset="reset">
         <el-form class="margin-top10">
@@ -55,23 +55,23 @@
     </div>
     <el-row :gutter="40">
       <el-col :span="9">
-        <iCard :title="'送样零件'">
+        <iCard :title="$t('送样零件')">
           <tableList :tableData="tableDataLeft" :tableTitle="tableTitleLeft" index :indexLabel="'#'" :selection='false'>
             <template #col5="scope">
-              <iButton type="text" @click="editPlan(scope.row)">查看</iButton>
+              <iButton type="text" @click="editPlan(scope.row)">{{$t("CHAKAN")}}</iButton>
             </template>
           </tableList>
         </iCard>
       </el-col>
       <el-col :span="15">
-        <iCard :title="'车型项目:' + carProject + '  零件：' + partName">
+        <iCard :title="$t('CHEXINGXIANGMU')+':' + carProject + ' ' + $t('LINGJIAN') +'：' + partName">
           <div class="flex-box">
             <div>
               <span></span>
               <span style="display:inline-block;margin-left:20px;"></span>
             </div>
             <div>
-              <iButton @click="sendOut">批量发送</iButton>
+              <iButton @click="sendOut" v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_PLAN_PLFASONG">{{$t("批量发送")}}</iButton>
             </div>
           </div>
 
@@ -86,7 +86,7 @@
             <el-table-column width="70"
               prop="node"
               align="center"
-              label="节点"
+              :label="$t('节点')"
             >
               <template slot-scope="scope">
                 <span>{{scope.row.node}}</span>
@@ -96,12 +96,12 @@
             <el-table-column
               prop=""
               align="center"
-              label="计划"
+              :label="$t('计划')"
             >
               <el-table-column
                 prop="planStartTime"
                 align="center"
-                label="预计开始(SOLL)"
+                :label="$t('预计开始')+'(SOLL)'"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
@@ -111,7 +111,7 @@
               <el-table-column
                 prop="planEndTime"
                 align="center"
-                label="预计结束(SOLL)"
+                :label="$t('预计结束')+'(SOLL)'"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
@@ -123,12 +123,12 @@
             <el-table-column
               prop=""
               align="center"
-              label="实际"
+              :label="$t('实际')"
             >
               <el-table-column
                 prop="actualStartTime"
                 align="center"
-                label="实际开始(SOLL)"
+                :label="$t('实际开始')+'(SOLL)'"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
@@ -138,7 +138,7 @@
               <el-table-column
                 prop="actualEndTime"
                 align="center"
-                label="实际结束(SOLL)"
+                :label="$t('实际结束')+'(SOLL)'"
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
@@ -151,11 +151,13 @@
               width="80"
               prop=""
               align="center"
-              label="操作"
+              :label="$t('CAOZUO')"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.isSend">发送</span>
-                <span v-else class="submit-plan" @click="sendOne(scope.row)">发送</span>
+                <div v-permission="SONGYANGGUANLI_GUOCHENGJIANKONG_PLAN_FASONG">
+                  <span v-if="scope.row.isSend">{{$t('FASONG')}}</span>
+                  <span v-else class="submit-plan" @click="sendOne(scope.row)">{{$t('FASONG')}}</span>
+                </div>
               </template>
             </el-table-column>
           </el-table>

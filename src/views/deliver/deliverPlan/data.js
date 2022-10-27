@@ -5,12 +5,12 @@ export const searchList = [
 ]
 
 export const tableTitleLeft = [
-  { props: "carTypeProNameZh", name: "车型项目", key: "", tooltip: true, minWidth:100 },
-  { props: "partNum", name: "零件编号", key: "", tooltip: true, minWidth:100 },
-  { props: "partNameZh", name: "零件名称", key: "", tooltip: true, minWidth:100 },
+  { props: "carTypeProNameZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true, minWidth:100 },
+  { props: "partNum", name: "零件编号", key: "LINGJIAHAO", tooltip: true, minWidth:100 },
+  { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, minWidth:100 },
   { props: "supplierName", name: "供应商", key: "GONGYINGSHANG", tooltip: true, minWidth:100 },
-  { props: "sendTime", name: "任务发送时间", key: "", tooltip: true, minWidth:100 },
-  { props: "col5", name: "操作", key: "", minWidth:60,fixed:"right" },
+  { props: "sendTime", name: "任务发送时间", key: "任务发送时间", tooltip: true, minWidth:100 },
+  { props: "col5", name: "操作", key: "CAOZUO", minWidth:65,fixed:"right" },
 ]
 
 export const tableTitleRight1 = [
@@ -19,5 +19,5 @@ export const tableTitleRight1 = [
   { props: "planEndTime", name: "预计结束(SOLL)", key: "", tooltip: true},
   { props: "actualStartTime", name: "实际开始(SOLL)", key: "", tooltip: true },
   { props: "actualEndTime", name: "实际结束(SOLL)", key: "", tooltip: true },
-  { props: "col4", name: "操作", key: "", minWidth:60,fixed:"right"},
+  { props: "col4", name: "操作", key: "CAOZUO", minWidth:65,fixed:"right"},
 ]

@@ -14,24 +14,121 @@
       </el-tooltip>
     </div>
     <div class="column-item" :key="index" v-for="(item,index) in header">
+      <!-- 计划 -->
       <template>
+        <!-- 计划点 -->
         <template v-if="(data.pointRangTop||[]).includes(item)">
-          <i v-if="!data.planStartTime && data.planEndTime" class="el-icon-caret-top point point-hui" :style="{width:(data.pointRangTop.indexOf(item)!=-1)&&data.pointWidthTop||'100%'}"></i>
+          <el-tooltip
+            :content="'计划结束时间：'+data.planEndTime"
+            placement="top" effect="light"
+            >
+            <i v-if="!data.planStartTime && data.planEndTime" class="el-icon-caret-top point point-hui" :style="{width:(data.pointRangTop.indexOf(item)!=-1)&&data.pointWidthTop||'100%'}"></i>
+          </el-tooltip>
         </template>
+        <!-- 计划线 -->
         <template v-else-if="(data.barRangTop||[]).includes(item)">
-          <div v-if="data.actualStartTime && data.actualEndTime && data.barRangTop[data.barRangTop.length-1].indexOf(item) != -1" class="progress hui" :style="{width:data.barRangTopRight}"></div>
-          <div v-else-if="data.actualStartTime && data.actualEndTime && data.barRangTop[0].indexOf(item) != -1" class="progress hui" :style="{marginLeft:data.barWidthTopLeft,width:data.barWidthTopLeftWidth}"></div>
-          <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress hui" style="width:100%"></div>
+          <!-- 同月份 -->
+          <template v-if="data.barRangTop[data.barRangTop.length-1] == data.barRangTop[0]">
+            <el-tooltip
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>计划开始时间：{{data.planStartTime}}</span><br/>
+                <span>计划结束时间：{{data.planEndTime}}</span>
+              </div>
+              
+              <div style="height:15px!important;" class="progress hui" :style="{width:data.barRangTopWidth,marginLeft:data.barRangTopMarginLeft}"></div>
+            </el-tooltip>
+          </template>
+          <!-- 不同月份 -->
+          <template v-else>
+            <el-tooltip
+              v-if="data.actualStartTime && data.actualEndTime && data.barRangTop[data.barRangTop.length-1].indexOf(item) != -1"
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>计划开始时间：{{data.planStartTime}}</span><br/>
+                <span>计划结束时间：{{data.planEndTime}}</span>
+              </div>
+              
+              <div style="height:15px!important;" class="progress hui" :style="{width:data.barRangTopRight}"></div>
+            </el-tooltip>
+
+            <el-tooltip
+              v-else-if="data.actualStartTime && data.actualEndTime && data.barRangTop[0].indexOf(item) != -1"
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>计划开始时间：{{data.planStartTime}}</span><br/>
+                <span>计划结束时间：{{data.planEndTime}}</span>
+              </div>
+              
+              <div style="height:15px!important;" class="progress hui" :style="{marginLeft:data.barWidthTopLeft,width:data.barWidthTopLeftWidth}"></div>
+            </el-tooltip>
+            
+            <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress hui" style="width:100%;height:15px!important;"></div>
+          </template>
         </template>
         <div v-else :style="{height:data.pointRangTop?'50%':'15px'}"></div>
       </template>
-      <template v-if="(data.pointRangBottom||[]).includes(item)">
-        <i v-if="!data.actualStartTime && data.actualEndTime" class="el-icon-caret-top point point-green" :style="{width:(data.pointRangBottom.indexOf(item)!=-1)&&data.pointWidthBottom||'100%'}"></i>
-      </template>
-      <template v-else-if="(data.barRangBottom||[]).includes(item)">
-        <div v-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[data.barRangBottom.length-1].indexOf(item) != -1" class="progress green" :style="{width:data.barWidthBottomRight}"></div>
-        <div v-else-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[0].indexOf(item) != -1" class="progress green" :style="{marginLeft:data.barWidthBottomLeft,width:data.barWidthBottomLeftWidth}"></div>
-        <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress green" style="width:100%"></div>
+      <!-- 实际 -->
+      <template>
+        <!-- 实际点 -->
+        <template v-if="(data.pointRangBottom||[]).includes(item)">
+          <el-tooltip
+            :content="'实际结束时间：'+data.actualEndTime"
+            placement="top" effect="light"
+            >
+            <i @click="ttttt(data)" v-if="!data.actualStartTime && data.actualEndTime" class="el-icon-caret-top point point-green" :style="{width:(data.pointRangBottom.indexOf(item)!=-1)&&data.pointWidthBottom||'100%'}"></i>
+          </el-tooltip>
+        </template>
+        <!-- 实际线 -->
+        <template v-else-if="(data.barRangBottom||[]).includes(item)">
+          <!-- 同月份 -->
+          <template v-if="data.barRangBottom[data.barRangBottom.length-1] == data.barRangBottom[0]">
+            <el-tooltip
+              :content="'实际结束时间：'+data.actualEndTime"
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>实际开始时间：{{data.actualStartTime}}</span><br/>
+                <span>实际结束时间：{{data.actualEndTime}}</span>
+              </div>
+
+              <div style="height:15px!important;" class="progress green" :style="{width:data.barRangBottomWidth,marginLeft:data.barRangBottomMarginLeft}"></div>
+            </el-tooltip>
+          </template>
+          <!-- 不同月份 -->
+          <template v-else>
+            <el-tooltip
+              v-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[data.barRangBottom.length-1].indexOf(item) != -1" 
+              :content="'实际结束时间：'+data.actualEndTime"
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>实际开始时间：{{data.actualStartTime}}</span><br/>
+                <span>实际结束时间：{{data.actualEndTime}}</span>
+              </div>
+
+              <div style="height:15px!important;" class="progress green" :style="{width:data.barWidthBottomRight}"></div>
+            </el-tooltip>
+
+            <el-tooltip 
+              v-else-if="data.actualStartTime && data.actualEndTime && data.barRangBottom[0].indexOf(item) != -1" 
+              :content="'实际结束时间：'+data.actualEndTime"
+              placement="top" effect="light"
+              >
+              <div slot="content">
+                <span>实际开始时间：{{data.actualStartTime}}</span><br/>
+                <span>实际结束时间：{{data.actualEndTime}}</span>
+              </div>
+
+              <div style="height:15px!important;" class="progress green" :style="{marginLeft:data.barWidthBottomLeft,width:data.barWidthBottomLeftWidth}"></div>
+            </el-tooltip>
+
+            <div v-else-if="data.actualStartTime && data.actualEndTime" class="progress green" style="width:100%;height:15px!important;"></div>
+          </template>
+        </template>
       </template>
     </div>
   </div>
@@ -45,6 +142,9 @@
       data:{ type: Object, default:()=>({})}
     },
     methods:{
+      ttttt(val){
+        console.log(val);
+      },
       change(data){
         data.showChlid = !data.showChlid
         this.$emit("refresh")

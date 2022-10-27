@@ -13,8 +13,8 @@
     </div>
     <search :searchList="searchList" :searchValue="searchForm" :selectOptions="selectOptions" :icon="false" @sure="sure" @reset="reset"></search>
     <iTabsList v-model='defaultTab' type="card" @tab-click="tableClick">
-      <el-tab-pane label="延迟图" name="1"></el-tab-pane>
-      <el-tab-pane label="offen图" name="2" v-if="offenShow"></el-tab-pane>
+      <el-tab-pane :label="$t('延迟图')" name="1"></el-tab-pane>
+      <el-tab-pane :label="$t('offen图')" name="2" v-if="offenShow"></el-tab-pane>
     </iTabsList>
     <template v-if="defaultTab==1">
       <el-row :gutter="20">
@@ -25,7 +25,7 @@
     <template v-else>
       <offenChartsItem ref="offenChartsItem" :offenData="offenData" />
     </template>
-    <tableList title="零件清单列表" class="margin-top20" :dataList="dataList" ref="partsListTable" :page="page" 
+    <tableList :title="$t('零件清单列表')" class="margin-top20" :dataList="dataList" ref="partsListTable" :page="page" 
       @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"
     />
   </iPage>

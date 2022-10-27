@@ -6,7 +6,7 @@
       <div class="flex-top">
         <!-- language('CHEXINGXIANGMU','车型项目') -->
         <div class="flex-title">
-          <span class="form-title lineH40">车型项目：</span>
+          <span class="form-title lineH40">{{$t("CHEXINGXIANGMU")}}：</span>
           <el-form inline class="form">
             <el-form-item>
                 <iSelect filterable v-model="searchParams.carTypeProId" :placeholder="language('QINGXUANZE','请选择')" @change="carChange" >
@@ -26,7 +26,7 @@
       </div>
       <el-divider></el-divider>
       <div class="flex-bottom">
-        <span class="form-title lineH60">零件进度：</span>
+        <span class="form-title lineH60">{{$t("LINGJIANJINDU")}}：</span>
         <div class="flex-top flex1">
           <el-form class="margin-top10">
             <el-form-item :label="language('CAILIAOZU', '材料组')">
@@ -64,18 +64,18 @@
 
           </el-form>
           <div class="sreach-button">
-            <iButton @click="sure">查询</iButton>
-            <iButton @click="reset">重置</iButton>
+            <iButton @click="sure">{{$t("BIDDING_CHAXUN")}}</iButton>
+            <iButton @click="reset">{{$t("LK_CHONGZHI")}}</iButton>
           </div>
         </div>
       </div>
       <!-- </template> -->
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
-      <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" :titleName="titleName" />
+      <el-tab-pane name="1" :label="$t('HeavyItem零件')">
+        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" :titleName="titleName" :supplierName="supplierName" />
       </el-tab-pane>
-      <el-tab-pane name="2" label="普通零件">
+      <el-tab-pane name="2" :label="$t('普通零件')">
         <commonParts ref="commonParts" :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
       </el-tab-pane>
     </iTabsList>
@@ -119,6 +119,7 @@ export default {
 
       selectOptions:{},
       tabVal:'1',
+      supplierName:"",
 
       partNum:'',
       partPage:{
@@ -196,11 +197,17 @@ export default {
             this.partPage.totalCount = res.total;
             if(res.data.length>0){
               this.partNum = res.data[0].partsNum;
+              if(res.data[0].supplierName){
+                this.supplierName = res.data[0].supplierName;
+              }else{
+                this.supplierName = "";
+              }
               this.titleName.name = res.data[0].partNameZh;
               this.titleName.nameE = res.data[0].partNameDe;
               this.titleName.number = res.data[0].partsNum;
             }else{
               this.partNum = "";
+              this.supplierName = "";
               this.titleName.name = "";
               this.titleName.nameE = "";
               this.titleName.number = "";

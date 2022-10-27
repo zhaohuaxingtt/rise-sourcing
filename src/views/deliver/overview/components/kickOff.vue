@@ -18,7 +18,7 @@
       @reset="reset"
       :icon="false"
     ></search>
-    <tableList :page="page" :title="titleName+' 列表'" :dataList="dataList" class="margin-top20" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" />
+    <tableList :page="page" :title="titleName+' '+$t('列表')" :dataList="dataList" class="margin-top20" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" />
   </iPage>
 </template>
 

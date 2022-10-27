@@ -12,7 +12,7 @@
     <projectTop />
     <search :searchList="searchList" :searchValue="searchParams" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
     <div class="flex-end">
-        <iButton>导出</iButton>
+        <iButton v-permission="SONGYANGGUANLI_OVERVIEW_DAOCHU">{{$t("DAOCHU")}}</iButton>
     </div>
     <div class="margin-top20" v-loading="loading">
       <template v-for="(item,index) in tabelDataList">

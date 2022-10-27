@@ -1,7 +1,10 @@
 <template>
   <iCard :title="title">
     <template #header-control>
-      <iButton :loading="downloadLoading" @click="handleDownload">{{
+      <iButton v-if="$route.path=='/deliver/delayanalysis'" :loading="downloadLoading" @click="handleDownload" v-permission="SONGYANGGUANLI_YANWULIST_DAOCHU">{{
+        language("DAOCHU", "导出")
+      }}</iButton>
+      <iButton v-else :loading="downloadLoading" @click="handleDownload" v-permission="SONGYANGGUANLI_OVERVIEW_INFOR_DAOCHU">{{
         language("DAOCHU", "导出")
       }}</iButton>
     </template>
