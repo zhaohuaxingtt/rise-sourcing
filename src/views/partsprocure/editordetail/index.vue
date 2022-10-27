@@ -77,7 +77,9 @@
             v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP | 启动项目"
             v-if="
               detailData.status ==
-              getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')
+                getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END') ||
+              detailData.status ==
+                getEnumValue('PURCHASE_PROJECT_STATE_ENUM.CANCEL')
             "
             >{{ language("LK_QIDONGXIANGMU", "启动项目") }}</iButton
           >
