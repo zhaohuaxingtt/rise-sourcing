@@ -847,7 +847,6 @@ export default {
   },
   created() {
     this.getDict();
-    this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
     this.searchCartypeProject();
     this.getDictByCode();
     this.procureFactorySelectVo();
@@ -917,7 +916,6 @@ export default {
     selfChange(val){
       if(val == 1){
         this.form.linieDeptId = "";
-        this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
         this.linieValue = "";
       }else{
 
@@ -1071,10 +1069,15 @@ export default {
     init() {
       this.loading = true;
 
+      if(this.lookYourselfValue == 1){
+        this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
+      }else{
+        this.form.linieId = this.linieValue
+      }
+
       const form = {};
       Object.keys({
         ...this.form,
-        linieId:this.linieValue,
       }).forEach(
         (key) =>
           (form[key] =
