@@ -15,7 +15,7 @@
           <iprogress :carProjectId="dataList.carTypeProId"></iprogress>
           
           <el-table :data="tableListData" class="margin-top20">
-            <el-table-column width="70"
+            <el-table-column width="75"
               prop="type"
               align="center"
               label="分类"
@@ -24,37 +24,44 @@
                 <span>{{scope.row.partType}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="70"
+            <el-table-column width="75"
               prop="csc"
               align="center"
               label="CSC"
             >
               <template slot-scope="scope">
                 <!-- <span :style="scope.row.cscNotFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('csc','CSC',scope.row.cscNotFinishCount)">{{scope.row.cscNotFinishCount}}</span> | <span>{{scope.row.cscFinishCount}}</span> -->
-                <span :style="scope.row.cscNotFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('csc','CSC',scope.row.cscNotFinishCount,0,scope.row)">{{scope.row.cscNotFinishCount}}</span> | <span :style="scope.row.cscFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('csc','CSC',scope.row.cscFinishCount,1,scope.row)">{{scope.row.cscFinishCount}}</span>
+                <span :style="scope.row.cscNotFinishCount!=0?'color:orange;cursor:pointer;':''" @click="jump('csc','CSC',scope.row.cscNotFinishCount,0,scope.row)">{{scope.row.cscNotFinishCount}}</span> | <span :style="scope.row.cscFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('csc','CSC',scope.row.cscFinishCount,1,scope.row)">{{scope.row.cscFinishCount}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="70"
+            <el-table-column width="75"
               prop="Kickoff"
               align="center"
               label="Kickoff"
             >
               <template slot-scope="scope">
                 <!-- <span :style="scope.row.kickoffNotFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('Kickoff','Kickoff',scope.row.kickoffNotFinishCount)">{{scope.row.kickoffNotFinishCount}}</span> | <span>{{scope.row.kickoffFinishCount}}</span> -->
-                <span :style="scope.row.kickoffNotFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('Kickoff','Kickoff',scope.row.kickoffNotFinishCount,0,scope.row)">{{scope.row.kickoffNotFinishCount}}</span> | <span :style="scope.row.kickoffFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('Kickoff','Kickoff',scope.row.kickoffFinishCount,1,scope.row)">{{scope.row.kickoffFinishCount}}</span>
+                <span :style="scope.row.kickoffNotFinishCount!=0?'color:orange;cursor:pointer;':''" @click="jump('Kickoff','Kickoff',scope.row.kickoffNotFinishCount,0,scope.row)">{{scope.row.kickoffNotFinishCount}}</span> | <span :style="scope.row.kickoffFinishCount!=0?'color:blue;cursor:pointer;':''" @click="jump('Kickoff','Kickoff',scope.row.kickoffFinishCount,1,scope.row)">{{scope.row.kickoffFinishCount}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="70"
+            <el-table-column width="115"
               prop="BF"
               align="center"
-              label="BF"
+              label="Data Confirm(BF)"
             >
+              <template slot="header">
+                <div>
+                  <span>Data</span>
+                  <br/>
+                  <span>Confirm(BF)</span>
+                </div>
+              </template>
               <template slot-scope="scope">
                 <!-- <span  :style="scope.row.bfNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('bf','BF',scope.row.bfNotFinishCount)">{{scope.row.bfNotFinishCount}}</span> | <span>{{scope.row.bfFinishCount}}</span> -->
-                <span  :style="scope.row.bfNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('bf','BF',scope.row.bfNotFinishCount,0,scope.row)">{{scope.row.bfNotFinishCount}}</span> | <span :style="scope.row.bfFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('bf','BF',scope.row.bfFinishCount,1,scope.row)">{{scope.row.bfFinishCount}}</span>
+                <span  :style="scope.row.bfNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('bf','Data Confirm(BF)',scope.row.bfNotFinishCount,0,scope.row)">{{scope.row.bfNotFinishCount}}</span> | <span :style="scope.row.bfFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('bf','Data Confirm(BF)',scope.row.bfFinishCount,1,scope.row)">{{scope.row.bfFinishCount}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="70"
+            <!-- <el-table-column width="70"
               prop="Data"
               align="center"
               label="Data Confirm"
@@ -68,10 +75,9 @@
                 </div>
               </template>
               <template slot-scope="scope">
-                <!-- <span  :style="scope.row.dataConfirmNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('',scope.row.dataConfirmNotFinishCount)">{{scope.row.dataConfirmNotFinishCount}}</span> | <span>{{scope.row.dataConfirmFinishCount}}</span> -->
                 <span>{{scope.row.dataConfirmNotFinishCount}}</span> | <span>{{scope.row.dataConfirmFinishCount}}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="Start"
               align="center"
@@ -90,7 +96,7 @@
               </template>
             </el-table-column>
 
-             <el-table-column width="70"
+             <el-table-column width="75"
               prop="T0"
               align="center"
               label="T0"
@@ -108,7 +114,7 @@
             >
               <template slot-scope="scope">
                 <!-- <span  :style="scope.row.oneStTryoutNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('oneStTryout','1st Tryout',scope.row.oneStTryoutNotFinishCount)">{{scope.row.oneStTryoutNotFinishCount}}</span> | <span>{{scope.row.oneStTryoutFinishCount}}</span> -->
-                <span  :style="scope.row.oneStTryoutNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('oneStTryout','1st Tryout',scope.row.oneStTryoutNotFinishCount,0,scope.row)">{{scope.row.oneStTryoutNotFinishCount}}</span> | <span :style="scope.row.oneStTryoutFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('oneStTryout','1st Tryout',scope.row.oneStTryoutFinishCount,1,scope.row)">{{scope.row.oneStTryoutFinishCount}}</span>
+                <span  :style="scope.row.oneStTryoutNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('oneStTryout','1st Tryout',scope.row.oneStTryoutNotFinishCount,0,scope.row)">{{scope.row.oneStTryoutNotFinishCount}}</span> | <span :style="scope.row.oneStTryoutFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('oneStTryout','1st Tryout',scope.row.oneStTryoutFinishCount,1,scope.row)">{{scope.row.oneStTryoutFinishCount}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -128,14 +134,14 @@
                 <span>{{scope.row.toolTestingNotFinishCount}}</span> | <span>{{scope.row.toolTestingFinishCount}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="70"
+            <el-table-column width="75"
               prop="OTS"
               align="center"
               label="OTS"
             >
               <template slot-scope="scope">
                 <!-- <span  :style="scope.row.otsNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('ots','OTS',scope.row.otsNotFinishCount)">{{scope.row.otsNotFinishCount}}</span> | <span>{{scope.row.otsFinishCount}}</span> -->
-                <span  :style="scope.row.otsNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('ots','OTS',scope.row.otsNotFinishCount,0,scope.row)">{{scope.row.otsNotFinishCount}}</span> | <span :style="scope.row.otsFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('ots','OTS',scope.row.otsFinishCount,1,scope.row)">{{scope.row.otsFinishCount}}</span>
+                <span  :style="scope.row.otsNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('ots','OTS',scope.row.otsNotFinishCount,0,scope.row)">{{scope.row.otsNotFinishCount}}</span> | <span :style="scope.row.otsFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('ots','OTS',scope.row.otsFinishCount,1,scope.row)">{{scope.row.otsFinishCount}}</span>
               </template>
             </el-table-column>
 
@@ -144,25 +150,25 @@
               prop="EM" 
               align="center"
             >
-              <el-table-column  width="70"
+              <el-table-column  width="75"
                 label="M" 
                 prop="M" 
                 align="center"
               >
                 <template slot-scope="scope">
                   <!-- <span  :style="scope.row.emMNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emM','EM-M',scope.row.emMNotFinishCount)">{{scope.row.emMNotFinishCount}}</span> | <span>{{scope.row.emMFinishCount}}</span> -->
-                  <span  :style="scope.row.emMNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emM','EM-M',scope.row.emMNotFinishCount,0,scope.row)">{{scope.row.emMNotFinishCount}}</span> | <span :style="scope.row.emMFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emM','EM-M',scope.row.emMFinishCount,1,scope.row)">{{scope.row.emMFinishCount}}</span>
+                  <span  :style="scope.row.emMNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('emM','EM-M',scope.row.emMNotFinishCount,0,scope.row)">{{scope.row.emMNotFinishCount}}</span> | <span :style="scope.row.emMFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emM','EM-M',scope.row.emMFinishCount,1,scope.row)">{{scope.row.emMFinishCount}}</span>
                 </template>
               </el-table-column>
 
-              <el-table-column  width="70"
+              <el-table-column  width="75"
                 label="D" 
                 prop="D" 
                 align="center"
               >
                 <template slot-scope="scope">
                   <!-- <span  :style="scope.row.emDNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emD','EM-D',scope.row.emDNotFinishCount)">{{scope.row.emDNotFinishCount}}</span> | <span>{{scope.row.emDFinishCount}}</span> -->
-                  <span  :style="scope.row.emDNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emD','EM-D',scope.row.emDNotFinishCount,0,scope.row)">{{scope.row.emDNotFinishCount}}</span> | <span :style="scope.row.emDFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emD','EM-D',scope.row.emDFinishCount,1,scope.row)">{{scope.row.emDFinishCount}}</span>
+                  <span  :style="scope.row.emDNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('emD','EM-D',scope.row.emDNotFinishCount,0,scope.row)">{{scope.row.emDNotFinishCount}}</span> | <span :style="scope.row.emDFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emD','EM-D',scope.row.emDFinishCount,1,scope.row)">{{scope.row.emDFinishCount}}</span>
                 </template>
               </el-table-column>
 
@@ -176,14 +182,14 @@
                 </template>
               </el-table-column> -->
 
-              <el-table-column  width="70"
+              <el-table-column  width="75"
                 label="G" 
                 prop="G" 
                 align="center"
               >
                 <template slot-scope="scope">
                   <!-- <span  :style="scope.row.emGNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emG','EM-G',scope.row.emGNotFinishCount)">{{scope.row.emGNotFinishCount}}</span> | <span>{{scope.row.emGFinishCount}}</span> -->
-                  <span  :style="scope.row.emGNotFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emG','EM-G',scope.row.emGNotFinishCount,0,scope.row)">{{scope.row.emGNotFinishCount}}</span> | <span :style="scope.row.emGFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emG','EM-G',scope.row.emGFinishCount,1,scope.row)">{{scope.row.emGFinishCount}}</span>
+                  <span  :style="scope.row.emGNotFinishCount!=0?'color:orange;cursor:pointer;':''"  @click="jump('emG','EM-G',scope.row.emGNotFinishCount,0,scope.row)">{{scope.row.emGNotFinishCount}}</span> | <span :style="scope.row.emGFinishCount!=0?'color:blue;cursor:pointer;':''"  @click="jump('emG','EM-G',scope.row.emGFinishCount,1,scope.row)">{{scope.row.emGFinishCount}}</span>
                 </template>
               </el-table-column>
             </el-table-column>

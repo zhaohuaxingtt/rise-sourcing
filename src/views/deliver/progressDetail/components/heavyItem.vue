@@ -36,7 +36,7 @@
             :content="item"
             placement="top" effect="light"
             >
-            <div>
+            <div class="header-tag">
               {{item}}
             </div>
           </el-tooltip>
@@ -493,9 +493,36 @@ export default {
         })
         this.header = this.yearMake(this.maxT,this.minT);
         this.list = _.cloneDeep(data);
-
         this.noTodayWrap();
       }
+
+      // 设置header文字大小
+      this.$nextTick(()=>{
+        this.setHeaderW();
+      })
+    },
+    setHeaderW(){
+      this.$nextTick(()=>{
+        // setTimeout(() => {
+          const rowW = document.getElementsByClassName("row-item")[0];
+          const hNode = document.getElementsByClassName("header-tag");
+          const hNodeW = hNode[hNode.length-1].offsetWidth;
+          console.log(hNodeW)
+          if(hNodeW<=70){
+            console.log(1)
+            rowW.style.fontSize = "12px";
+          }else if(hNodeW>70 && hNodeW<=80){
+            console.log(2)
+            rowW.style.fontSize = "14px";
+          }else if(hNodeW>80 && hNodeW<=90){
+            console.log(3)
+            rowW.style.fontSize = "15px";
+          }else if(hNodeW>90){
+            console.log(4)
+            rowW.style.fontSize = "16px";
+          }
+        // }, 200);
+      })
     },
     yearMake(max,min){
       var maxYear = max;
@@ -601,6 +628,7 @@ export default {
     flex: none;
     width: 200px;
     background: #1660f1;
+    font-size: 16px;
 
     white-space: nowrap;
     overflow: hidden;
@@ -671,5 +699,7 @@ export default {
     color:#a9a9a9;
   }
 }
+.header-tag{
 
+}
 </style>
