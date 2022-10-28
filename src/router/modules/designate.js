@@ -405,6 +405,16 @@ export default [
       import('@/views/designate/designatedetail/decisionData/rs/preview'),
   },
   {
+    path: '/designate/designateCirculateSingleSourcing',
+    name: 'designateSuggestion',
+    meta: {
+      title: '定点管理-singleSourcing',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/decisionData/singleSourcing/preview'),
+  },
+  {
     path: '/sourcing/partsnomination/signSheet/preview',
     name: 'designateSignSheetPreview',
     meta: {

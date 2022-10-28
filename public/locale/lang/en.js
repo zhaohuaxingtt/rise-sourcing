@@ -6445,6 +6445,15 @@
 		"FG组定点准时完成情况报告":"On time completion report of FG group",
 		"不同CommodityEM完成情况报告":"Report on completion of different CommodityEM",
 		"不同Commodity项目完成情况报告":"Report on completion of different commodity projects",
+		"不同CommodityOTS完成情况报告":"Report on completion of OTS of different communities",
+
+		"车型项目Em准时完成情况报告":"On time completion report of vehicle model project Em",
+		"车型项目定点准时完成情况报告":"On time completion report of vehicle model project",
+		"车型项目ots准时完成情况报告":"OTS on-time completion report of vehicle type project",
+		"FG组BF完成情况报告":"FG group BF completion report",
+		"供应商1stTryout完成情况报告":"Supplier's 1st Tryout Completion Report",
+		"不同Commodity定点完成情况报告":"Fixed point completion report of different commodities",
+
 		"OTS准时完成率":"OTS on-time completion rate",
 		"定点总数":"Nomi. Total",
 		"定点完成数量":"Fixed point completion quantity",
@@ -6495,6 +6504,11 @@
 		"送样计划":"Sample delivery plan",
 		"设置排序":"Set Sort",
 
+		"OTS完成数":"OTS completed quantity",
+		"车型项目SOP时间":"SOP time of vehicle type project",
+
+		"无需确认":"No confirmation required",
+		"请选择部门":"Please select a department",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

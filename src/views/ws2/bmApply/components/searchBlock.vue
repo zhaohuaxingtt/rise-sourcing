@@ -137,6 +137,16 @@
       <el-form-item :label="$t('LK_BMDANHAO')">
         <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['bmNum']" ></iInput>
       </el-form-item>
+
+      <!-- BM单流水号 -->
+      <el-form-item :label="$t('BM单流水号')">
+        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['bmSerial']" ></iInput>
+      </el-form-item>
+
+      <!-- WBS编号 -->
+      <el-form-item :label="$t('LK_WBSBIANHAO')">
+        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['wbsCode']" ></iInput>
+      </el-form-item>
     </el-form>
   </iSearch>
 </template>
@@ -266,5 +276,9 @@ export default {
   ::v-deep .el-range-separator{
     width: 20px !important;
   }
+}
+::v-deep .el-form {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

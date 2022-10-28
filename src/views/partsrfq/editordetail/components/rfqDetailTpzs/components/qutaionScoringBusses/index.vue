@@ -7,9 +7,9 @@
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\qutaionScoringBusses\index.vue
 -->
 <script>
-import buMonitor from '@/views/designate/suggestion/components/buMonitor'
-import { icardData } from '../data'
-import { downloadPdfMixins } from '@/utils/pdf'
+import buMonitor from "@/views/designate/suggestion/components/buMonitor";
+import { icardData } from "../data";
+import { downloadPdfMixins } from "@/utils/pdf";
 export default {
   extends: buMonitor,
   mixins: [downloadPdfMixins],
@@ -21,35 +21,35 @@ export default {
     },
     cardTitle: {
       type: String,
-      default: '业务分配模拟',
+      default: "业务分配模拟",
     },
     title: {
       type: String,
-      default: '',
+      default: "",
     },
   },
-  inject: ['getDisabled'],
+  inject: ["getDisabled"],
   computed: {
     disabled() {
-      return this.getDisabled()
+      return this.getDisabled();
     },
   },
   data() {
     return {
       cardShow: JSON.parse(JSON.stringify(icardData)),
       rfqId: this.$route.query.id,
-    }
+    };
   },
   mounted() {
-    let domElement = this.$el
-    var box = domElement.getElementsByClassName('title_content')[0]
-    var span = document.createElement('span')
-    span.className = 'cursor '
-    box.appendChild(span)
-    window['addFileMn'] = (id) => {
-      this.addFile(false, 5, '业务分配模拟')
-    }
-    span.innerHTML = `<i onclick="addFileMn()" style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
+    // let domElement = this.$el
+    // var box = domElement.getElementsByClassName('title_content')[0]
+    // var span = document.createElement('span')
+    // span.className = 'cursor '
+    // box.appendChild(span)
+    window["addFileMn"] = (id) => {
+      this.addFile(false, 5, "业务分配模拟");
+    };
+    // span.innerHTML = `<i onclick="addFileMn()" style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
   },
-}
+};
 </script>

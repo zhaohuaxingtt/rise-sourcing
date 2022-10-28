@@ -1,5 +1,6 @@
 <template>
   <div class="block">
+    <SearchBlock @sure="allSerch" />
     <iCard>
       <div class="table-head">
         <div class="tmCartypePro">
@@ -65,6 +66,8 @@
 </template>
 
 <script>
+import SearchBlock from "./searchBlock";
+
 import {
   iTableList
 } from '@/components';
@@ -78,15 +81,15 @@ import {
   iSelect,
 } from "rise";
 import UnitExplain from "./unitExplain";
-import { bmTableHead } from "./data";
+import { bmTableHead,bmApplyForm } from "./data";
 import { bmCarTypePullDown, findBmWaitConfirmList, bmCancel, bmConfirm } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import { excelExport } from '@/utils/filedowLoad';
-
+import Moment from 'moment';
 export default {
   components: {
     iTableList, iCard, iButton, iPagination,
-    UnitExplain, iSelect
+    UnitExplain, iSelect,SearchBlock
   },
 
   props: {
@@ -118,6 +121,7 @@ export default {
       },
       bmCancelLoading: false,
       confirmApplyLoading: false,
+      form: _.cloneDeep(bmApplyForm),
     }
   },
 
@@ -127,7 +131,7 @@ export default {
   },
 
   methods: {
-
+    
     //  预览RSpdf
     openViewPdf(scope){
       const roleList = this.$store.state.permission.userInfo.roleList;
@@ -224,10 +228,16 @@ export default {
         }
       })
     },
-
+    allSerch(data){
+      this.form = data;
+      this.getTableData();
+    },
     getTableData(){
       this.allTableLoading = true;
       const param = {
+        ...this.form,
+        startDate: this.form.startDate ? Moment(this.form.startDate).format('YYYY-MM-DD') : '',
+        endDate: this.form.endDate ? Moment(this.form.endDate).format('YYYY-MM-DD') : '',
         current: this.page.currPage,
         size: this.page.pageSize,
         tmCartypeProId: this.tmCartypeProId

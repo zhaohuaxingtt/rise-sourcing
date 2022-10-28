@@ -10,6 +10,8 @@ export const bmApplyForm = {
   endDate: '',  //  结束时间
   linieId: '',  //  linie
   bmNum: '',  //  BM单号
+  bmSerial:"",// BM单流水号
+  wbsCode:"",// WBS编号
 }
 
 //  所有BM单申请表头

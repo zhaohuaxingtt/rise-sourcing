@@ -46,7 +46,7 @@
         </el-form>
     </iSearch>
 
-    <iCard title="Calculation Model VSI" class="margin-top20">
+    <iCard collapse title="Calculation Model VSI" class="margin-top20">
         <template v-slot:header-control>
             <iButton @click="cancelVSI" v-if="!VSIeditType">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
             <iButton @click="editVSI"  v-if="VSIeditType" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_EDIT">{{ language("BIANJI", "编辑") }}</iButton>
@@ -329,7 +329,7 @@
 </template>
 
 <script>
-import { iSelect,iSearch,iInput,iCard,iButton,iFormGroup,iFormItem,iLabel,iPagination,iMessage,iMessageBox,iMultiLineInput } from 'rise'
+import { iSelect,iPage,iSearch,iInput,iCard,iButton,iFormGroup,iFormItem,iLabel,iPagination,iMessage,iMessageBox,iMultiLineInput } from 'rise'
 import tableList from "@/components/commonTable";
 import {
     getSelectCarType,
@@ -364,6 +364,7 @@ export default {
         iSelect,
         iSearch,
         iInput,
+        iPage,
         iCard,
         iMultiLineInput,
         iButton,

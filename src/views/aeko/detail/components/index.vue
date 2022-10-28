@@ -49,13 +49,13 @@
           ></icon
         ></span>
         <!-- <template v-show="currentTab==tab.name"> -->
+        <!-- v-for="(component, $componentIndex) in tab.components" -->
+        <!-- :class="$componentIndex !== 0 ? 'margin-top20' : ''" -->
+        <!-- :key="$componentIndex" -->
         <component
           :ref="tab.name"
-          :is="component"
+          :is="tab.component"
           :currentTab="currentTab"
-          v-for="(component, $componentIndex) in tab.components"
-          :class="$componentIndex !== 0 ? 'margin-top20' : ''"
-          :key="$componentIndex"
           :aekoInfo="aekoInfo"
           @getBbasicInfo="getBbasicInfo"
         />
@@ -251,7 +251,8 @@ export default {
           name: "partsList",
           key: "LINGJIANQINGDAN",
           permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST",
-          components: ["partsList"],
+          // components: ["partsList"],
+          component: "partsList",
           index: 3,
           checkIndex: 3,
         },
@@ -260,7 +261,8 @@ export default {
           name: "contentDeclare",
           key: "NEIRONGBIAOTAI",
           permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE",
-          components: ["contentDeclare"],
+          // components: ["contentDeclare"],
+          component: "contentDeclare",
           index: 1,
           checkIndex: 1,
         },
@@ -269,7 +271,8 @@ export default {
           name: "cover",
           key: "FENGMIANBIAOTAI",
           permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE",
-          components: ["cover"],
+          // components: ["cover"],
+          component: "cover",
           index: 2,
           checkIndex: 2,
         },
@@ -278,7 +281,8 @@ export default {
           name: "attachment",
           key: "SHENPIFUJIAN",
           permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT",
-          components: ["attachment"],
+          // components: ["attachment"],
+          component: "attachment",
           index: 4,
         },
         {
@@ -286,7 +290,8 @@ export default {
           name: "record",
           key: "SHENPIFUJIAN",
           permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD",
-          components: ["record"],
+          // components: ["record"],
+          component: "record",
           index: 5,
           checkIndex: 4,
         },
