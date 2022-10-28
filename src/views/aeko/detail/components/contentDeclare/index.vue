@@ -227,7 +227,7 @@
             @change="deptChange"
           >
             <el-option
-              :value="item.deptNum"
+              :value="item.code"
               :label="item.deptNum"
               v-for="(item, index) in fromGroup.LINIE_DEPT"
               :key="index"
@@ -242,7 +242,7 @@
           <iSelect
             filterable
             clearable
-            v-model="form.linieId"
+            v-model="linieValue"
             :placeholder="
               $t('QINGXUANZECAIGOUYUAN')
             "
@@ -841,12 +841,13 @@ export default {
         }
       ],
       lookYourselfValue:1,
+
+      linieValue:'',
     };
   },
   created() {
     this.getDict();
     this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
-    
     this.searchCartypeProject();
     this.getDictByCode();
     this.procureFactorySelectVo();
@@ -917,14 +918,18 @@ export default {
       if(val == 1){
         this.form.linieDeptId = "";
         this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
+        this.linieValue = "";
+      }else{
+
       }
     },
     deptChange(val){
+      var data = this.fromGroup["LINIE_DEPT"].filter(e=>e.code == val);
       this.lookYourselfValue = 2;
       if(!val){
         this.fromGroup["LINIE"] = [];
       }else{
-        this.getLinie(val);
+        this.getLinie(data[0].deptNum);
       }
     },
     getLinie(id){
@@ -1067,7 +1072,10 @@ export default {
       this.loading = true;
 
       const form = {};
-      Object.keys(this.form).forEach(
+      Object.keys({
+        ...this.form,
+        linieId:this.linieValue,
+      }).forEach(
         (key) =>
           (form[key] =
             typeof this.form[key] === "string"
@@ -1182,8 +1190,6 @@ export default {
           )
         );
       }
-
-      this.page.currPage = 1;
       this.init();
     },
     reset() {
