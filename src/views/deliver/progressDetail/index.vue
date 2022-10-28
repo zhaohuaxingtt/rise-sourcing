@@ -241,19 +241,25 @@ export default {
       }
     },
     getGroup(val){
-      getCartypeProMaterialGroup(val).then(res=>{
+      var id = "";
+      if(val){
+        id = val;
+      }else{r
+        id = 0;
+      }
+      getCartypeProMaterialGroup(id).then(res=>{
         if(res?.result){
           this.deptList = res.data;
         }
       })
 
-      getCartypeProPart(val).then(res=>{
+      getCartypeProPart(id).then(res=>{
         if(res?.result){
           this.partList = res.data;
         }
       })
 
-      getCartypeProSupplier(val).then(res=>{
+      getCartypeProSupplier(id).then(res=>{
         if(res?.result){
           this.supplierList = res.data;
         }
