@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import { iDialog, iMessage, iButton } from "rise";
-import { icon } from "@/components";
+import { iDialog, iMessage, iButton, icon } from "rise";
 export default {
   props: {
     visible: { type: Boolean, default: false },
