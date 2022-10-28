@@ -9,7 +9,7 @@ const openProcess = true
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-  inserted: function(el, binding, vnode) {
+  inserted: function (el, binding, vnode) {
     // console.log(binding)
 
 
@@ -63,7 +63,7 @@ Vue.directive('permission', {
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
-      
+
       if (splitValue.length > 1) {
         // store.dispatch('uploadResource', splitValue)
       }
@@ -95,7 +95,7 @@ Vue.directive('permission', {
   },
 })
 Vue.directive('permissionArr', {
-  inserted: function(el, binding) {
+  inserted: function (el, binding) {
     // dist
     if (binding.modifiers.disabled) {
       if (
@@ -116,7 +116,7 @@ Vue.directive('permissionArr', {
 //切换I8n动态更新element值
 // eslint-disable-next-line no-undef
 Vue.directive('update', {
-  bind: function(el, binding, vnode) {
+  bind: function (el, binding, vnode) {
     vnode.key = Hash()
   },
 })
@@ -124,7 +124,7 @@ Vue.directive('update', {
 // 实现拖拽功能
 // eslint-disable-next-line no-undef
 Vue.directive('dragabled', {
-  bind: function(el, binding, vnode, oldVnode) {
+  bind: function (el, binding, vnode, oldVnode) {
     if (!binding) return
     el.onmousedown = (e) => {
       // 鼠标按下，计算当前元素距离可视区的距离
@@ -132,7 +132,7 @@ Vue.directive('dragabled', {
       let disY = e.clientY
       el.style.cursor = 'move'
 
-      document.onmousemove = function(e) {
+      document.onmousemove = function (e) {
         e.preventDefault() // 移动时禁用默认事件
 
         // 通过事件委托，计算移动的距离
@@ -145,7 +145,7 @@ Vue.directive('dragabled', {
         el.scrollTop += -top
       }
 
-      document.onmouseup = function(e) {
+      document.onmouseup = function (e) {
         el.style.cursor = 'auto'
         document.onmousemove = null
         document.onmouseup = null
@@ -160,9 +160,9 @@ export function Hash() {
 // Input 整数输入
 // eslint-disable-next-line no-undef
 Vue.directive('Int', {
-  bind: function(el, binding, vnode) {
+  bind: function (el, binding, vnode) {
     const input = el.getElementsByTagName('input')[0]
-    
+
     input.addEventListener("input", () => {
       const _v = input.value
       input.value = (input.value + "").replace(/\D/g, "")
@@ -179,7 +179,7 @@ Vue.directive('areaSelect', {
     let mouseDownFlag = false
     let mouseUpFlag = false
     let cells = []
-    el.addEventListener('mousedown', function(event) {
+    el.addEventListener('mousedown', function (event) {
       mouseDownFlag = true
       mouseUpFlag = false
       cells = []
@@ -212,7 +212,7 @@ Vue.directive('areaSelect', {
     }
 
     el.addEventListener('mousemove', mouseMove)
-    el.addEventListener('mouseup', function(evt) {
+    el.addEventListener('mouseup', function (evt) {
       mouseUpFlag = true
       mouseDownFlag = false
       // 框选逻辑
@@ -320,7 +320,7 @@ Vue.directive('lazySelect', {
     const dom = el.querySelector(
       '.el-select-dropdown .el-select-dropdown__wrap'
     )
-    dom.addEventListener('scroll', function() {
+    dom.addEventListener('scroll', function () {
       if (Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight)
         binding.value()
     })
@@ -328,7 +328,7 @@ Vue.directive('lazySelect', {
 })
 
 Vue.directive('moneyInput', {
-  inserted: function(el, binding) {
+  inserted: function (el, binding) {
     let input = el.querySelector('input')
     input.addEventListener('keyup', () => {
       input.value = input.value

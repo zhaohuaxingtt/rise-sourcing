@@ -35,6 +35,15 @@ export function getHistoricByParams(data) {
   })
 }
 
+// 通过processInstanceId获取流程信息
+export function getInstDetail(params) {
+  return approve({
+    url: '/taskInfo/getInstDetail',
+    method: 'GET',
+    params
+  })
+}
+
 // 提交审批记录
 export function submitForApproval(data) {
   return requst({

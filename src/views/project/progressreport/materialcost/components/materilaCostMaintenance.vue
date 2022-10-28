@@ -46,10 +46,10 @@
         </el-form>
     </iSearch>
 
-    <iCard title="Calculation Model VSI" class="margin-top20">
+    <iCard collapse title="Calculation Model VSI" class="margin-top20">
         <template v-slot:header-control>
             <iButton @click="cancelVSI" v-if="!VSIeditType">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
-            <iButton @click="editVSI"  v-if="VSIeditType">{{ language("BIANJI", "编辑") }}</iButton>
+            <iButton @click="editVSI"  v-if="VSIeditType" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_EDIT">{{ language("BIANJI", "编辑") }}</iButton>
             <iButton @click="saveVSI" v-if="!VSIeditType">{{language("BAOCUN", "保存")}}</iButton>
         </template>
         <iFormGroup row="3" v-loading="loading"
@@ -82,10 +82,10 @@
 
     <iCard :title="$t('XIANGQINGLIEBIAO')" class="margin-top20">
         <template v-slot:header-control>
-            <iButton v-if="!editType" @click="exportExcel">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
-            <iButton v-if="!editType" @click="downModel">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
+            <iButton v-if="!editType" @click="exportExcel" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_DAOCHU">{{$t("BIDDING_DAOCHU") }}</iButton><!-- 导出 -->
+            <iButton v-if="!editType" @click="downModel" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_XIAZAI">{{$t("下载上传模板")}}</iButton><!-- 下载上传模板 -->
             <!-- 批量上传 -->
-            <iButton v-if="!editType" @click="batchUpload" style="display: inline-block; margin-right: 10px">{{$t("批量上传")}}</iButton>
+            <iButton v-if="!editType" @click="batchUpload" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_PILIANGSHANGCHUAN" style="display: inline-block; margin-right: 10px">{{$t("批量上传")}}</iButton>
             <el-upload class="upload-demo" v-show="false"
                         style="display: inline-block; margin-right: 10px"
                         multiple
@@ -99,10 +99,10 @@
                         >
                 <iButton ref="clickBtn" @click="batchload">{{ $t("批量上传") }}</iButton>
             </el-upload>
-            <iButton v-if="!editType" @click="refresh">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
-            <iButton v-if="!editType" @click="add">{{$t("XINZENG")}}</iButton><!-- 新增 -->
-            <iButton v-if="!editType" @click="delModelCar">{{$t("LK_DELETE")}}</iButton><!-- 删除 -->
-            <iButton v-if="!editType" @click="editBtn">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
+            <iButton v-if="!editType" @click="refresh" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_REFRESH">{{$t("LK_SHUAXIN")}}</iButton><!-- 刷新 -->
+            <iButton v-if="!editType" @click="add" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_ADD">{{$t("XINZENG")}}</iButton><!-- 新增 -->
+            <iButton v-if="!editType" @click="delModelCar" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_DEL">{{$t("LK_DELETE")}}</iButton><!-- 删除 -->
+            <iButton v-if="!editType" @click="editBtn" v-permission="PROJECTMGT_PROJECTPROGRESSREPORT_MASTERIALCOST_TABLE_EDIT">{{$t("EDITBTN")}}</iButton><!-- 编辑 -->
             <iButton v-if="editType" @click="cancel">{{$t("QUXIAO")}}</iButton><!-- 取消 -->
             <iButton v-if="editType" @click="save">{{$t("SAVE")}}</iButton><!-- 保存 -->
             <!-- <iButton v-if="!editType" @click="editTitle">{{$t("编辑表头")}}</iButton> -->
@@ -329,7 +329,7 @@
 </template>
 
 <script>
-import { iSelect,iSearch,iInput,iCard,iButton,iFormGroup,iFormItem,iLabel,iPagination,iMessage,iMessageBox,iMultiLineInput } from 'rise'
+import { iSelect,iPage,iSearch,iInput,iCard,iButton,iFormGroup,iFormItem,iLabel,iPagination,iMessage,iMessageBox,iMultiLineInput } from 'rise'
 import tableList from "@/components/commonTable";
 import {
     getSelectCarType,
@@ -364,6 +364,7 @@ export default {
         iSelect,
         iSearch,
         iInput,
+        iPage,
         iCard,
         iMultiLineInput,
         iButton,
@@ -498,7 +499,12 @@ export default {
             })
         },
         commitPart(val){//选择零件后同步表格数据
-            console.log(val);
+            this.partDialogVisible.dialogVisible = false;
+            var editData = this.tableListData[val.oldList.index];
+            this.dataPoint.forEach(e=>{
+                editData[e.props] = val.newList[e.props]
+            })
+
         },
         pointerNum(val){//VSI参考零件号
             if(val.vsiPartNum){
@@ -873,8 +879,8 @@ export default {
                 return false;
             }
             downloadFile({
-                carTypeProId:"50024008"
-                // carTypeProId:this.searchParams.search1
+                // carTypeProId:"50024008"
+                carTypeProId:this.searchParams.search1
             })
         },
         uploadSuccess (res, file) {

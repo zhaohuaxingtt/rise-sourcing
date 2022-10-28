@@ -30,6 +30,7 @@
       <div class="toolingcost-content-item">Tooling budget:<span>{{tooling.generalBudget}}mio</span></div>
       <div class="toolingcost-content-item lineClass"></div>
       <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.bmAmount}}mio</span></div>
+      <!-- <div class="toolingcost-content-item">Tooling investment applied:<span>{{tooling.fixedAmount}}mio</span></div> -->
       <div class="toolingcost-content-item lineClass"></div>
       <div class="toolingcost-content-item">Tooling nominated. / %:<span>{{tooling.fixedAmount}}mio / {{tooling.percentage}}</span></div>
     </iCard>
@@ -131,7 +132,7 @@ export default {
         cartypeProId:[val],
         localFactoryName: "",
         showHistory: "0",
-        showSelf: "Y",
+        showSelf: "N",
         sopBegin: "",
         sopEnd: "",
       }).then(res=>{
@@ -142,9 +143,13 @@ export default {
               percentage = ((res.data[0].fixedAmount/res.data[0].generalBudget).toFixed(4))*100 + "%"
             }
             this.tooling = {
-              generalBudget:this.getMioValue(res.data[0].generalBudget),//总预算
-              bmAmount:this.getMioValue(res.data[0].bmAmount),//已申请且审批通过金额
-              fixedAmount:this.getMioValue(res.data[0].fixedAmount),//定点金额
+              // generalBudget:this.getMioValue(res.data[0].generalBudget),//总预算
+              generalBudget:res.data[0].generalBudget,//总预算
+              // bmAmount:this.getMioValue(res.data[0].bmAmount),//已申请且审批通过金额
+              // bmAmount:res.data[0].bmAmount,//已申请且审批通过金额
+              bmAmount:res.data[0].applyAmount,//已申请且审批通过金额
+              // fixedAmount:this.getMioValue(res.data[0].fixedAmount),//定点金额
+              fixedAmount:res.data[0].fixedAmount,//定点金额
               percentage:percentage,//已定点金额/总预算 百分比
             }
           }else{

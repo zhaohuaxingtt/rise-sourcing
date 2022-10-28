@@ -25,7 +25,7 @@
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
-        <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'
+        <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' :sortable="items.sortable"
                          v-if='items.props === openPageProps' :prop="items.props"
                          :label="language ? language(items.key, items.name) : $t(items.key)" :fixed="items.fixed">
           <template slot-scope="scope">
@@ -39,7 +39,7 @@
         </el-table-column>
         <!--输入框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
-                         v-else-if='inputProps.includes(items.props)' :prop="items.props"
+                         v-else-if='inputProps.includes(items.props)' :prop="items.props" :sortable="items.sortable"
                          :label="language ? language(items.key, items.name) : $t(items.key)">
           <template #header>
             {{ language ? language(items.key, items.name) : $t(items.key) }}
@@ -61,7 +61,7 @@
         </el-table-column>
         <!--普通下拉框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
-                         v-else-if='selectProps.includes(items.props)' :prop="items.props"
+                         v-else-if='selectProps.includes(items.props)' :prop="items.props" :sortable="items.sortable"
                          :label="language ? language(items.key, items.name) : $t(items.key)">
           <template #header>
             {{ language ? language(items.key, items.name) : $t(items.key) }}
@@ -78,7 +78,7 @@
         </el-table-column>
         <!--文件大小-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
-                         v-else-if='items.props === fileSizeProps' :prop="items.props"
+                         v-else-if='items.props === fileSizeProps' :prop="items.props" :sortable="items.sortable"
                          :label="language ? language(items.key, items.name) : $t(items.key)">
           <template slot-scope="scope">
             <el-form-item>
@@ -88,7 +88,7 @@
         </el-table-column>
         <!--纯展示-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else
-                         :label="language ? language(items.key, items.name) : $t(items.key)"
+                         :label="language ? language(items.key, items.name) : $t(items.key)" :sortable="items.sortable"
                          :prop="items.props" :fixed="items.fixed">
           <!--自定义嵌入-->
           <template #header>

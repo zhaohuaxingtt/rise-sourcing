@@ -31,12 +31,12 @@
         </el-form-item>
         <!-- 专业采购员 -->
         <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
+          <!-- remote
+              reserve-keyword
+              :remote-method="remoteMethod" -->
           <i-select
               v-model.trim="queryAkeoForm.buyerId"
               filterable
-              remote
-              reserve-keyword
-              :remote-method="remoteMethod"
               :loading="loading"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
@@ -226,7 +226,6 @@ import {lookDetails} from './lib'
 import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
 import { setLogCount, setLogMenu } from "@/utils";
 import buttonTableSetting from '@/components/buttonTableSetting'
-
 export default {
   name: "AKEOPendingPage",
   mixins: [pageMixins, tableSortMixins],
@@ -400,6 +399,8 @@ export default {
     //重置查询表单
     restQueryForm() {
       this.$refs.AKEOQueryFormRef.resetFields()
+      this.queryAkeoForm.current = 1
+      this.queryAkeoForm.size = this.page.pageSize
       this.loadPendingAKEOList()
     },
     //远程搜索专业采购员
@@ -433,7 +434,8 @@ export default {
       } else {
         const {deptDTO = {}} = userInfo;
         const deptId = deptDTO.id;
-        searchLinie({tagId: configUser.LINLIE, deptId,}).then((res) => {
+        //  deptId,
+        searchLinie({tagId: configUser.LINLIE,}).then((res) => {
           const {code, data} = res;
           if (code == 200) {
             data.map((item) => {

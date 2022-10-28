@@ -109,8 +109,7 @@ export default {
         deptId : val,
         roleCode : "PJCGY",
       }
-      listUserByDepartId(data).then(res=>{
-      // listUserByDepartIdAndRoleCode(data).then(res=>{
+      listUserByDepartIdAndRoleCode(data).then(res=>{
         this.purchaseBuyerOptions = res.data || []
       })
     },
