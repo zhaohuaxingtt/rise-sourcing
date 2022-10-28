@@ -11,13 +11,14 @@
   <iPage class="overview">
     <projectTop />
     <search
+      :searchValue="searchParams"
       :searchList="kickOffSearchList"
       :selectOptions="selectOptions"
       @sure="sure"
       @reset="reset"
       :icon="false"
     ></search>
-    <tableList :title="titleName+' 列表'" :dataList="dataList" class="margin-top20" />
+    <tableList :page="page" :title="titleName+' '+$t('列表')" :dataList="dataList" class="margin-top20" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" />
   </iPage>
 </template>
 
@@ -28,9 +29,10 @@ import search from "../../components/search";
 import tableList from "../../components/tableList";
 import { kickOffSearchList } from "../../components/data";
 import { selectDictByKeyss } from "@/api/dictionary"
-import { sample_part_listPage } from '@/api/project/deliver'
-
-
+import { 
+  sample_part_listPage,
+  cartype_pro_List
+} from '@/api/project/deliver'
 export default {
   components: {
     iPage,
@@ -42,16 +44,34 @@ export default {
   },
   data() {
     return {
+      page:{
+        totalCount:0, //总条数
+        pageSize:10,   //每页多少条
+        pageSizes:[10,20,50,100,300], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
       dataList:[],
       kickOffSearchList,
       selectOptions: {
+        carProjectOptions:[],//车型项目
         partTypeOptions: [//零件类型
         ],
         proessOptions: [//进度状态
         ],
       },
       searchParams: {
-        cartypePro: "",
+        carTypeProId: "",
+        materialGroupNameZh: "",
+        rfq: "",
+        partNum: "",
+        partName: "",
+        partType: "",//零件类型
+        supplier: "",
+        completion: "",//进度状态
+      },
+      searchParamsOld:{
+        carTypeProId: "",
         materialGroupNameZh: "",
         rfq: "",
         partNum: "",
@@ -61,18 +81,33 @@ export default {
         completion: "",//进度状态
       },
       titleName:"",
+      partSource:"",
     };
   },
   created() {
     this.titleName = this.$route.query?.type;
+    this.partSource = this.$route.query?.value;
+    this.searchParams.carTypeProId = Number(this.$route.query?.id);
+    this.searchParamsOld.carTypeProId = Number(this.$route.query?.id);
+
     this.getDic();
     this.getData();
   },
   methods: {
     getData(){
-      sample_part_listPage(this.searchParams).then(res=>{
+      sample_part_listPage({
+        ...this.searchParams,
+        partSource:this.partSource,
+        current:this.page.currPage,
+        size:this.page.pageSize,
+        completion:this.$route.query?.completion,
+        partType:this.$route.query?.partType,
+      }).then(res=>{
         if(res.result){
           this.dataList = res.data;
+          this.page.totalCount = res.total;
+          this.page.pageSize = res.pageSize;
+          this.page.currPage = res.pageNum;
         }
       })
     },
@@ -102,6 +137,27 @@ export default {
           this.selectOptions.proessOptions = res.data.SAMPLE_PART_PROGRESS;
         }
       })
+
+      cartype_pro_List({}).then(res=>{
+        if(res?.result){
+          var carList = res.data.filter(res => res)
+          carList.forEach(e=>{
+            e.value = e.cartypeProId;
+            e.label = e.cartypeProNameZh;
+          })
+          this.selectOptions.carProjectOptions = carList;
+        }
+      })
+    },
+    handleSizeChange(val){
+      this.page.currPage = val.currPage;
+      this.page.pageSize = val.size;
+      this.getData();
+    },
+    handleCurrentChange(val){
+      this.page.currPage = val.currPage;
+      this.page.pageSize = val.size;
+      this.getData();
     },
     sure(form) {
       console.log(form);
@@ -109,7 +165,12 @@ export default {
       this.getData();
     },
     reset() {
-      this.searchParams = {};
+      this.searchParams = _.cloneDeep(this.searchParamsOld);
+      this.page.currPage = 1;
+      this.page.pageSize = 10;
+      
+      console.log(this.searchParams)
+      this.getData();
     },
   },
 };

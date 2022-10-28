@@ -6,10 +6,10 @@
       <div class="flex-top">
         <!-- language('CHEXINGXIANGMU','车型项目') -->
         <div class="flex-title">
-          <span class="form-title lineH40">车型项目：</span>
+          <span class="form-title lineH40">{{$t("CHEXINGXIANGMU")}}：</span>
           <el-form inline class="form">
             <el-form-item>
-                <iSelect filterable v-model="searchParams.carProject" :placeholder="language('QINGXUANZE','请选择')">
+                <iSelect filterable v-model="searchParams.carTypeProId" :placeholder="language('QINGXUANZE','请选择')" @change="carChange" >
                   <el-option
                     v-for="item in carProjectOptions"
                     :key="item.cartypeProId"
@@ -21,16 +21,16 @@
           </el-form>
         </div>
         <div class="isearch-top">
-          <iprogress v-if="searchParams.carProject" :carProjectId="searchParams.carProject"></iprogress>
+          <iprogress v-if="searchParams.carTypeProId" :carProjectId="searchParams.carTypeProId"></iprogress>
         </div>
       </div>
       <el-divider></el-divider>
       <div class="flex-bottom">
-        <span class="form-title lineH60">零件进度：</span>
+        <span class="form-title lineH60">{{$t("LINGJIANJINDU")}}：</span>
         <div class="flex-top flex1">
           <el-form class="margin-top10">
             <el-form-item :label="language('CAILIAOZU', '材料组')">
-              <iSelect filterable v-model="searchParams.dept"  :placeholder="language('QINGXUANZE','请选择')">
+              <iSelect filterable v-model="searchParams.materialGroupId"  :placeholder="language('QINGXUANZE','请选择')">
                 <el-option
                   v-for="item in deptList"
                   :key="item.materialGroupId"
@@ -41,7 +41,7 @@
             </el-form-item>
 
             <el-form-item :label="language('LINGJIAN', '零件')">
-              <iSelect filterable v-model="searchParams.part" :placeholder="language('QINGXUANZE','请选择')">
+              <iSelect filterable v-model="searchParams.partNum" :placeholder="language('QINGXUANZE','请选择')">
                 <el-option
                   v-for="item in partList"
                   :key="item.partNum"
@@ -52,7 +52,7 @@
             </el-form-item>
 
             <el-form-item :label="language('GONGYINGSHANG', '供应商')">
-              <iSelect filterable v-model="searchParams.supplier" :placeholder="language('QINGXUANZE','请选择')">
+              <iSelect filterable v-model="searchParams.supplierId" :placeholder="language('QINGXUANZE','请选择')">
                 <el-option
                   v-for="item in supplierList"
                   :key="item.id"
@@ -64,19 +64,19 @@
 
           </el-form>
           <div class="sreach-button">
-            <iButton>查询</iButton>
-            <iButton>重置</iButton>
+            <iButton @click="sure">{{$t("BIDDING_CHAXUN")}}</iButton>
+            <iButton @click="reset">{{$t("LK_CHONGZHI")}}</iButton>
           </div>
         </div>
       </div>
       <!-- </template> -->
     </iSearch>
     <iTabsList type="card" class='margin-top20' v-model="tabVal" @tab-click="changeTab" >
-      <el-tab-pane name="1" label="HeavyItem零件">
-        <heavyItem :carProjectId="searchParams.carProject" v-if="searchParams.carProject" />
+      <el-tab-pane name="1" :label="$t('HeavyItem零件')">
+        <heavyItem ref="heavyItem" :partPage="partPage" :carProjectId="searchParams.carTypeProId" :carProjectOptions="carProjectOptions" @handleCurrentChange="handleCurrentChange" v-if="searchParams.carTypeProId" :titleName="titleName" :supplierName="supplierName" />
       </el-tab-pane>
-      <el-tab-pane name="2" label="普通零件">
-        <commonParts :carProjectId="searchParams.carProject" v-if="searchParams.carProject" />
+      <el-tab-pane name="2" :label="$t('普通零件')">
+        <commonParts ref="commonParts" :carProjectId="searchParams.carTypeProId" v-if="searchParams.carTypeProId" />
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -93,6 +93,9 @@ import {
   getCartypeProMaterialGroup,
   getCartypeProPart,
   getCartypeProSupplier,
+  partsPage,
+  getPartNode,
+  ordinaryPart,
 } from "@/api/project/deliver";
 
 export default {
@@ -102,35 +105,140 @@ export default {
   data() {
     return {
       searchParams: {
-        carProject:"",
-        dept:"",
-        part:"",
-        supplier:"",
+        carTypeProId:"",
+        materialGroupId:"",
+        partNum:"",
+        supplierId:"",
       },
+      carTypeProIdOld:"",
 
       carProjectOptions:[],
       deptList:[],
       partList:[],
       supplierList:[],
 
-
       selectOptions:{},
       tabVal:'1',
+      supplierName:"",
+
+      partNum:'',
+      partPage:{
+        totalCount:0, //总条数
+        pageSize:1,   //每页多少条
+        pageSizes:[1], //每页条数切换
+        currPage:1,    //当前页
+        layout:"sizes, prev, pager, next, jumper"
+      },
+      titleName:{
+        name:"",
+        nameE:"",
+        number:"",
+      },
     }
   },
   created(){
     this.getData();
   },
   methods:{
-    getData(){
-      cartype_pro_List({}).then(res=>{
-        if(res?.result){
-          this.carProjectOptions = res.data.filter(res => res)
-          this.searchParams.carProject = this.carProjectOptions[0]?.cartypeProId;
-
-          this.getGroup(this.searchParams.carProject);//获取车型项目材料组下拉
-        }
+    carChange(val){
+      this.getGroup(val);//获取车型项目材料组下拉
+      this.searchParams.materialGroupId = "";
+      this.searchParams.partNum = "";
+      this.searchParams.supplierId = "";
+    },
+    async sure(){
+      this.partPage.currPage = 1;
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    async reset(){
+      this.partPage.currPage = 1;
+      this.searchParams = {
+        carTypeProId : this.carTypeProIdOld,
+        materialGroupId : "",
+        partNum : "",
+        supplierId : "",
+      }
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    async handleCurrentChange(val){
+      this.partPage.currPage = val;
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    async getData(){
+      await this.getCarType();
+      await this.partsPage();
+      this.getPartNode(this.partNum);
+    },
+    getCarType(){
+      return new Promise((resolve,reject) => {
+        cartype_pro_List({}).then(res=>{
+          if(res?.result){
+            this.carProjectOptions = res.data.filter(res => res)
+            this.searchParams.carTypeProId = this.carProjectOptions[0]?.cartypeProId;
+            this.carTypeProIdOld = this.carProjectOptions[0]?.cartypeProId;
+            this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
+            resolve();
+          }
+        })
       })
+    },
+    partsPage(){
+      return new Promise((resolve,reject) => {
+        partsPage({
+          ...this.searchParams,
+          current:this.partPage.currPage,
+          size:1,
+        }).then(res=>{
+          if(res?.result){
+            this.partPage.currPage = res.pageNum;
+            this.partPage.totalCount = res.total;
+            if(res.data.length>0){
+              this.partNum = res.data[0].partsNum;
+              if(res.data[0].supplierName){
+                this.supplierName = res.data[0].supplierName;
+              }else{
+                this.supplierName = "";
+              }
+              this.titleName.name = res.data[0].partNameZh;
+              this.titleName.nameE = res.data[0].partNameDe;
+              this.titleName.number = res.data[0].partsNum;
+            }else{
+              this.partNum = "";
+              this.supplierName = "";
+              this.titleName.name = "";
+              this.titleName.nameE = "";
+              this.titleName.number = "";
+            }
+            resolve();
+          }
+        })
+      })
+    },
+    getPartNode(){
+      if(this.tabVal == 1){
+        if(this.partNum){
+          getPartNode({
+            partNum:this.partNum,
+          }).then(res=>{
+            if(res?.result){
+              this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId(res.data,this.searchParams.carTypeProId);
+            }
+          })
+        }else{
+          this.$refs.heavyItem.queryPepNodeTimeByCarTypeProId([],this.searchParams.carTypeProId);
+        }
+      }else{
+        ordinaryPart({
+          ...this.searchParams,
+        }).then(res=>{
+          if(res?.result){
+            this.$refs.commonParts.setData(res.data);
+          }
+        })
+      }
     },
     getGroup(val){
       getCartypeProMaterialGroup(val).then(res=>{
@@ -151,8 +259,9 @@ export default {
         }
       })
     },
-    changeTab(){
-
+    changeTab(val){
+      this.tabVal = val.name;
+      this.getPartNode();
     }
   }
 }

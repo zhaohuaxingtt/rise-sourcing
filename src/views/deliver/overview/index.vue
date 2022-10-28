@@ -10,9 +10,9 @@
 <template>
   <iPage class="overview">
     <projectTop />
-    <search :searchList="searchList" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
+    <search :searchList="searchList" :searchValue="searchParams" :selectOptions="selectOptions" @sure="sure" @reset="reset"></search>
     <div class="flex-end">
-        <iButton>导出</iButton>
+        <iButton v-permission="SONGYANGGUANLI_OVERVIEW_DAOCHU">{{$t("DAOCHU")}}</iButton>
     </div>
     <div class="margin-top20" v-loading="loading">
       <template v-for="(item,index) in tabelDataList">
@@ -36,7 +36,10 @@ import projectTop from "../components/projectHeader";
 import search from "../components/search";
 import proItem from "../components/proItem";
 import { searchList } from "../components/data";
-import { sample_overviewPage } from '@/api/project/deliver'
+import { 
+  sample_overviewPage,
+  sample_overviewallList
+} from '@/api/project/deliver'
 
 import {
   material_group_list,
@@ -66,11 +69,21 @@ export default {
         carProjectOptions: [//车型项目
           
         ],
+        statusList:[
+          {
+            value:0,
+            label:"未SOP车型",
+          },{
+            value:1,
+            label:"已SOP车型",
+          },
+        ],
       },
       searchParams: {
         buyerIds:[],//采购员
         cartypeProIds:[],//车型项目
         materialGroupIds:[],//材料组
+        cartypeStatus:"",
       },
       tabelDataList:[],
       loading:false,
@@ -83,7 +96,8 @@ export default {
   methods: {
     getDataList(){
       this.loading = true;
-      sample_overviewPage(this.searchParams).then(res=>{
+      // sample_overviewPage(this.searchParams).then(res=>{
+      sample_overviewallList(this.searchParams).then(res=>{
         if(res?.result){
           this.tabelDataList = _.cloneDeep(res.data)
         }

@@ -1,12 +1,12 @@
 <template>
   <div class="table-content">
     <div style="width:100%;height:50px;"></div>
-    <template v-for="(data,key) in list">
-      <row-item :data="data" :list="list" :header="header" :key="key"></row-item>
+    <template v-for="data in list">
+      <row-item :data="data" :list="list" :header="header" @refresh="refresh" :key="data.num"></row-item>
       <template v-if="data.showChlid">
         <!-- 层级数据渲染 -->
-        <template v-for="(child,key) in data.children">
-          <row-item :data="child" :list="list" :key="key" :header="header"></row-item>
+        <template v-for="child in data.childList">
+          <row-item :data="child" :list="list" :key="child.num" @refresh="refresh" :header="header"></row-item>
         </template>
       </template>
     </template>
@@ -26,6 +26,9 @@ import rowItem from "./rowItem.vue";
     methods:{
       change(data){
         data.showChlid = !data.showChlid
+      },
+      refresh(){
+        this.$emit("refresh")
       }
     }
   }

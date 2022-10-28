@@ -1,7 +1,7 @@
 <template>
-  <iCard title="延迟原因汇总">
+  <iCard :title="$t('延迟原因汇总')">
     <div ref="charts2" class="charts" v-show="chartsType"></div>
-    <p class="nodata_yanwu" v-show="!chartsType">暂无数据</p>
+    <p class="nodata_yanwu" v-show="!chartsType">{{$t("LK_ZANWUSHUJU")}}</p>
   </iCard>
 </template>
 
@@ -52,6 +52,8 @@ export default {
           }
         });
       }
+
+      console.log(dataList);
       this.option = {
         tooltip: {
           trigger: "item",
@@ -70,7 +72,7 @@ export default {
           {
             name: "延迟原因数量",
             type: "pie",
-            radius: ['40%', '75%'],
+            radius: ['40%', '73%'],
             itemStyle: {
               borderRadius: 2,
               borderColor: '#fff',
