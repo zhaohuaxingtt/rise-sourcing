@@ -217,13 +217,13 @@
 
 
          <el-form-item
-          :label="$t('BUMEN')"
+          :label="$t('LK_KESHI')"
         >
           <iSelect
             filterable
             clearable
             v-model="form.linieDeptId"
-            :placeholder="$t('请选择部门')"
+            :placeholder="$t('LK_QINGXUANZHE')"
             @change="deptChange"
           >
             <el-option
