@@ -399,6 +399,8 @@ export default {
     //重置查询表单
     restQueryForm() {
       this.$refs.AKEOQueryFormRef.resetFields()
+      this.queryAkeoForm.current = 1
+      this.queryAkeoForm.size = this.page.pageSize
       this.loadPendingAKEOList()
     },
     //远程搜索专业采购员

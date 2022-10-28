@@ -35,9 +35,6 @@
           <i-select
               v-model.trim="queryAkeoForm.linieId"
               filterable
-              remote
-              reserve-keyword
-              :remote-method="remoteMethod"
               :loading="loading"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
@@ -387,9 +384,18 @@ export default {
     },
     //重置查询表单
     restQueryForm() {
-      this.$refs.AKEOQueryFormRef.resetFields()
-      this.queryAkeoForm.current = 1
-      this.queryAkeoForm.size = this.page.pageSize
+      // this.$refs.AKEOQueryFormRef.resetFields()
+      this.queryAkeoForm = {
+        aekoCode: '',//aeko号
+        auditStatus: null,//审批状态
+        costChangeMax: '',//成本变化上限
+        costChangeMin: '',//成本变化下限
+        current: 1,//当前页
+        size: 10,//分页大小
+        linieName: '',//专业采购员
+        supplierName: '',//供应商简称
+        partNum: '',//零件号
+      }
       this.loadApprovedList()
     },
     queryAllLin() {
@@ -406,7 +412,7 @@ export default {
       } else {
         const {deptDTO = {}} = userInfo;
         const deptId = deptDTO.id;
-        searchLinie({tagId: configUser.LINLIE, deptId,}).then((res) => {
+        searchLinie({tagId: configUser.LINLIE,}).then((res) => {
           const {code, data} = res;
           if (code == 200) {
             data.map((item) => {
@@ -415,7 +421,8 @@ export default {
               item.enName = item.nameEn
               item.zhName = item.nameZh
             })
-            this.options = buyerName
+            console.log(data);
+            this.options = data
             this.buyerUsers = data;
           } else {
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
