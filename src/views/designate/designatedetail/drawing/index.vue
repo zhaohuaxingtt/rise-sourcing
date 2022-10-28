@@ -119,7 +119,6 @@ export default {
         pageSize: 10,
         totalCount: 0,
       },
-      imgList: [],
       photoListShow: false,
     };
   },
@@ -129,6 +128,11 @@ export default {
       nominationDisabled: (state) => state.nomination.nominationDisabled,
       rsDisabled: (state) => state.nomination.rsDisabled,
     }),
+    imgList() {
+      return this.dataList.map((item) => {
+        return item.filePath;
+      });
+    },
   },
   components: {
     iCard,
@@ -143,8 +147,6 @@ export default {
   },
   methods: {
     openPhotoList(item) {
-      console.log(item);
-      this.imgList = [item.filePath];
       this.photoListShow = true;
     },
     async batchDownloadAll() {
