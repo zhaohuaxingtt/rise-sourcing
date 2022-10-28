@@ -422,16 +422,24 @@
                 </span>
               </div>
               <div class="padding-top10" v-else>
-                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-                  Exchange rate{{
-                    exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                  }}: {{ exchangeRate.str
-                  }}{{
-                    exchangeRate.fsNumsStr
-                      ? `（${exchangeRate.fsNumsStr}）`
-                      : ""
-                  }}
-                </p>
+                <template v-if="basicData.currency == 'RMB'">
+                  Exchange rate: 1RMB=1RMB
+                </template>
+                <template v-else>
+                  <p
+                    v-for="(exchangeRate, index) in exchangeRates"
+                    :key="index"
+                  >
+                    Exchange rate{{
+                      exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                    }}: {{ exchangeRate.str
+                    }}{{
+                      exchangeRate.fsNumsStr
+                        ? `（${exchangeRate.fsNumsStr}）`
+                        : ""
+                    }}
+                  </p>
+                </template>
               </div>
             </div>
           </div>
@@ -570,7 +578,13 @@
                   $route.query.desinateId ? $route.query.desinateId : nominateId
                 }}
               </div>
-              <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+              <div
+                class="singleSourcing cursor"
+                v-if="isSingle"
+                @click="gotoSingle"
+              >
+                Single Sourcing
+              </div>
             </div>
           </div>
         </template>
@@ -951,14 +965,21 @@
           </div>
           <div v-else>
             <div class="margin-top10">
-              <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-                Exchange rate{{
-                  exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                }}: {{ exchangeRate.str
-                }}{{
-                  exchangeRate.fsNumsStr ? `（${exchangeRate.fsNumsStr}）` : ""
-                }}
-              </p>
+              <template v-if="basicData.currency == 'RMB'">
+                Exchange rate: 1RMB=1RMB
+              </template>
+              <template v-else>
+                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">
+                  Exchange rate{{
+                    exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                  }}: {{ exchangeRate.str
+                  }}{{
+                    exchangeRate.fsNumsStr
+                      ? `（${exchangeRate.fsNumsStr}）`
+                      : ""
+                  }}
+                </p>
+              </template>
             </div>
           </div>
         </div>
@@ -1926,6 +1947,15 @@ export default {
         });
       });
     },
+    // 调整 Single Sourcing
+    gotoSingle() {
+      const { query } = this.$route;
+      let routeUrl = this.$router.resolve({
+        path: "/designate/designateCirculateSingleSourcing",
+        query,
+      });
+      window.open(routeUrl.href, "_blank");
+    },
   },
 };
 </script>
@@ -2418,6 +2448,9 @@ export default {
         font-size: 13px !important;
       }
     }
+    .complete {
+      color: rgb(104, 193, 131);
+    }
   }
   ::v-deep .checkList {
     display: flex;
@@ -2451,10 +2484,6 @@ export default {
     &-item:last-child {
       margin-right: 0;
     }
-  }
-
-  ::v-deep .complete {
-    color: rgb(104, 193, 131);
   }
 
   ::v-deep .cancel {

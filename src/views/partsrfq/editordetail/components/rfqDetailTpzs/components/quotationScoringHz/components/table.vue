@@ -606,17 +606,6 @@ export default{
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
       height:auto!important;
-      td{
-        border-bottom: 1px solid #ebeef5;
-        overflow: hidden;
-      }
-    }
-    ::v-deep.el-table__fixed-body-wrapper{
-      overflow:visible;
-      height:auto!important;
-      td{
-        border-bottom: 1px solid #ebeef5;
-      }
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);

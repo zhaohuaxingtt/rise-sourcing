@@ -1,5 +1,6 @@
 <template>
   <div class="block">
+    <SearchBlock @sure="allSerch" />
     <iCard>
       <div class="table-head">
         <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
@@ -46,6 +47,7 @@
 import {
   iTableList
 } from '@/components';
+import SearchBlock from "./searchBlock";
 import {
   iMessage,
   iButton,
@@ -55,15 +57,15 @@ import {
   iInput,
   iSelect,
 } from "rise";
-import { aekoTableHead } from "./data";
+import { aekoTableHead,bmApplyForm } from "./data";
 import { excelExport } from '@/utils/filedowLoad';
 import { findBmAekoAddList, bmCancel, bmConfirm } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import UnitExplain from "./unitExplain";
-
+import Moment from 'moment';
 export default {
   components: {
-    iTableList, iCard, iButton, iPagination, UnitExplain
+    iTableList, iCard, iButton, iPagination, UnitExplain,SearchBlock
   },
 
   props: {
@@ -92,6 +94,7 @@ export default {
         pageSize: 10,
       },
       confirmApplyLoading: false,
+      form: _.cloneDeep(bmApplyForm),
     }
   },
 
@@ -171,11 +174,17 @@ export default {
     openBMDetail(scope){
       this.$emit('openBMDetail', scope);
     },
-
+    allSerch(data){
+      this.form = data;
+      this.findBmAekoAddList();
+    },
     findBmAekoAddList(){
       this.allTableLoading = true;
 
       const param = {
+        ...this.form,
+        startDate: this.form.startDate ? Moment(this.form.startDate).format('YYYY-MM-DD') : '',
+        endDate: this.form.endDate ? Moment(this.form.endDate).format('YYYY-MM-DD') : '',
         current: this.page.currPage,
         size: this.page.pageSize,
       }

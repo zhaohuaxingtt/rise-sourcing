@@ -98,10 +98,10 @@
             <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
           <!-- 跳转项目进度报告 -->
-          <!-- <div class="cursor margin-top30" @click="openReport(dataItem)">
+          <div class="cursor margin-top30" @click="openReport(dataItem)">
             <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
             <span class="openLinkText">{{$t('TIAOZHUANXIANGMUJINDUBAOGAO')}}</span>
-          </div> -->
+          </div>
         </div>
         <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
         <!---------------------------------------------------------------------->

@@ -213,6 +213,69 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+
+
+
+         <el-form-item
+          :label="$t('LK_KESHI')"
+        >
+          <iSelect
+            filterable
+            clearable
+            v-model="form.linieDeptId"
+            :placeholder="$t('LK_QINGXUANZHE')"
+            @change="deptChange"
+          >
+            <el-option
+              :value="item.code"
+              :label="item.deptNum"
+              v-for="(item, index) in fromGroup.LINIE_DEPT"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+
+
+        <el-form-item
+          :label="$t('CAIGOUYUAN')"
+        >
+          <iSelect
+            filterable
+            clearable
+            v-model="linieValue"
+            :placeholder="
+              $t('QINGXUANZECAIGOUYUAN')
+            "
+          >
+            <el-option
+              :value="item.code"
+              :label="item.name"
+              v-for="(item, index) in fromGroup.LINIE"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+
+        <el-form-item
+          :label="$t('MODEL-ORDER.LK_JINKANZIJI')"
+        >
+          <iSelect
+            filterable
+            clearable
+            v-model="lookYourselfValue"
+            @change="selfChange"
+            :placeholder="
+              $t('QINGXUANZECAIGOUYUAN')
+            "
+          >
+            <el-option
+              :value="item.code"
+              :label="item.name"
+              v-for="(item, index) in lookYourself"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
@@ -663,7 +726,10 @@ import buttonTableSetting from "@/components/buttonTableSetting";
 import assignDialog from "./components/assignDialog";
 import { roleMixins } from "@/utils/roleMixins";
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
-
+import {
+  purchasingDept,
+  purchasingLiline,
+} from "@/api/partsprocure/editordetail";
 export default {
   components: {
     iSearch,
@@ -760,9 +826,28 @@ export default {
       addTableTitle: [],
       importItemExcel: importItemExcel,
       singleAssign: [],
+
+      fromGroup:{
+        LINIE_DEPT:[],
+        LINIE:[],
+      },
+      lookYourself:[
+        {
+          code:1,
+          name:"是"
+        },{
+          code:2,
+          name:"否"
+        }
+      ],
+      lookYourselfValue:1,
+
+      linieValue:'',
     };
   },
   created() {
+    this.getDict();
+    this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
     this.searchCartypeProject();
     this.getDictByCode();
     this.procureFactorySelectVo();
@@ -829,6 +914,39 @@ export default {
     this.init();
   },
   methods: {
+    selfChange(val){
+      if(val == 1){
+        this.form.linieDeptId = "";
+        this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
+        this.linieValue = "";
+      }else{
+
+      }
+    },
+    deptChange(val){
+      var data = this.fromGroup["LINIE_DEPT"].filter(e=>e.code == val);
+      this.lookYourselfValue = 2;
+      if(!val){
+        this.fromGroup["LINIE"] = [];
+      }else{
+        this.getLinie(data[0].deptNum);
+      }
+    },
+    getLinie(id){
+      if (!id) return;
+      purchasingLiline(id).then((r) => {
+        if (r.code == 200) {
+          this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
+        }
+      });
+    },
+    getDict() {
+      purchasingDept().then((r) => {
+        if (r.code == 200) {
+          this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : [];
+        }
+      });
+    },
     floatFixNum,
     // 判断是否能操作数据
     canEdit(row) {
@@ -954,7 +1072,10 @@ export default {
       this.loading = true;
 
       const form = {};
-      Object.keys(this.form).forEach(
+      Object.keys({
+        ...this.form,
+        linieId:this.linieValue,
+      }).forEach(
         (key) =>
           (form[key] =
             typeof this.form[key] === "string"
@@ -1069,8 +1190,6 @@ export default {
           )
         );
       }
-
-      this.page.currPage = 1;
       this.init();
     },
     reset() {

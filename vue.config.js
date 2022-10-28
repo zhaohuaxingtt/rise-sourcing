@@ -13,8 +13,8 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 
-// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -212,6 +212,24 @@ module.exports = {
 					['^' + process.env.VUE_APP_DIC_API]: '',
 				},
 			},
+			// 主数据
+			[process.env.VUE_APP_DIC]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo/web`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC]: '',
+				},
+			},
+			// 主数据
+			[process.env.VUE_APP_DIC_API]: {
+				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
+				target: `${BASE_IP}/baseinfo`,
+				changeOrigin: true,
+				pathRewrite: {
+					['^' + process.env.VUE_APP_DIC_API]: '',
+				},
+			},
 
 			[process.env.VUE_APP_SOURCING]: {
 				target: `${BASE_IP}/sourcing/web`,
@@ -262,7 +280,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_APPROVAL]: {
-				target: `${BASE_IP}/approval`,
+				target: `${BASE_IP}/approval/web`,
 				// target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/approvalApi',
 				changeOrigin: true,
 				pathRewrite: {
