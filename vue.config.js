@@ -232,7 +232,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_SOURCING]: {
-				target: `${BASE_IP}/sourcing/webweb`,
+				target: `${BASE_IP}/sourcing/web`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',
