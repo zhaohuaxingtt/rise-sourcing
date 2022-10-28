@@ -270,18 +270,16 @@ export default {
       var endTimeCode = this.timeOff(end)
       var difference = endTimeCode - startTimeCode//最大时间-最小时间的差值
 
-      var w = 0;
-
-      console.log(startTimeCode)
-      console.log(endTimeCode)
-      console.log(nowTimeCode)
+      var w = 0;//阴影div的宽度
 
       if(nowTimeCode >= startTimeCode && nowTimeCode<=endTimeCode){
         const t = nowTimeCode - startTimeCode;
         const divW = 100 - t/difference*100
         w = Number(divW.toFixed(2))
-
-        console.log(w);
+      }else if(nowTimeCode<=startTimeCode){
+        w = 100;
+      }else if(nowTimeCode>=endTimeCode){
+        w = 0;
       }
       this.$nextTick(()=>{
         const y = document.getElementsByClassName("wrap-div")[0];
