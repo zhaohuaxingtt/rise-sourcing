@@ -9,46 +9,46 @@ const openProcess = true
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-  inserted: function(el, binding, vnode) {
+  inserted: function (el, binding, vnode) {
     // console.log(binding)
 
 
-//     //如果是个变量则使用变量，否则当做字符串处理
-//     // const value = binding.value ? binding.value : binding.expression.trim()
+    //如果是个变量则使用变量，否则当做字符串处理
+    // const value = binding.value ? binding.value : binding.expression.trim()
 
-//     // 修改-----------------------------------
-//     if (binding.modifiers.auto && binding.modifiers.array) {
-//       let removeFlag = false
-//       if (Array.isArray(binding.value)) {
-//         removeFlag = binding.value.every(item => {
-//           const splitValue = item.split('|')
-//           const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
-//           return !store.state.permission.whiteBtnList[pagePermission]
-//         })
-//       }
+    // 修改-----------------------------------
+    if (binding.modifiers.auto && binding.modifiers.array) {
+      let removeFlag = false
+      if (Array.isArray(binding.value)) {
+        removeFlag = binding.value.every(item => {
+          const splitValue = item.split('|')
+          const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
+          return !store.state.permission.whiteBtnList[pagePermission]
+        })
+      }
 
-//       if (removeFlag && openProcess && el.parentNode) el.parentNode.removeChild(el)
-//       return
-//     }
+      if (removeFlag && openProcess && el.parentNode) el.parentNode.removeChild(el)
+      return
+    }
 
-//     var value = ''
-//     if (binding.value == 0) {
-//       value = binding.expression.trim()
-//     } else if (binding.value == undefined) {
-//       value = binding.expression
-//     } else {
-//       value = binding.value
-//     }
-//     const splitValue = value.split('|')
-//     //去除控件传参中存在换行空格等情况
-//     const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
-//     // 修改-----------------------------------
+    var value = ''
+    if (binding.value == 0) {
+      value = binding.expression.trim()
+    } else if (binding.value == undefined) {
+      value = binding.expression
+    } else {
+      value = binding.value
+    }
+    const splitValue = value.split('|')
+    //去除控件传参中存在换行空格等情况
+    const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
+    // 修改-----------------------------------
 
-//     // dynamic、auto共用时处理
-//     if (binding.modifiers.dynamic && binding.modifiers.auto) {
-//       binding.modifiers.dynamic = false
-//       binding.expression = binding.value
-//     }
+    // dynamic、auto共用时处理
+    if (binding.modifiers.dynamic && binding.modifiers.auto) {
+      binding.modifiers.dynamic = false
+      binding.expression = binding.value
+    }
 
     if (binding.modifiers.disabled) {
       if (!store.state.permission.whiteBtnList[value]) {
@@ -63,7 +63,7 @@ Vue.directive('permission', {
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
-      
+
       if (splitValue.length > 1) {
         // store.dispatch('uploadResource', splitValue)
       }
