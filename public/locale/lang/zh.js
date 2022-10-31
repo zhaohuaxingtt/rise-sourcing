@@ -69,6 +69,17 @@
     2060: '2060',
     2061: '2061',
     '#': '#',
+    SANJIANGONGYINGSHANG:'散件供应商',
+    JINGXIAOJIA:'经销价',
+    JIAGEKAISHIRIQI:'价格开始日期',
+    JIAGEJIESHURIQI:'价格结束日期',
+    LK_HUILV: '汇率',
+    LK_IDANWEI: '单位',
+    LK_LINGJIANMINGCHENG: '零件名称', //零件名称
+    PART_NO: '零件号',
+    LK_CAIGOUGONGCHANG: '采购工厂',
+    LK_CAIGOUGONGCHANGCODE: '采购工厂编号',
+
     delete: '删除',
     deleteSure: '您确定要执行删除操作吗？',
     revokeSure: '您确定要执行撤回操作吗？',
@@ -88,6 +99,8 @@
     partsign: { enquiry: '询价资料', volume: '每车用量', log: '操作日志' },
     rfq: { RFQINQUIRE: '查询', RFQRESET: '重置' },
     partsprocure: {
+      MBXZ:'模板下载',
+      LJJXJ:'零件经销价',
       PARTSPROCURENEWPROCUREMENTPROJECT: '零件采购项目管理',
       PARTSPROCUREGENERATEFSGSNR: '生成零件采购项目号',
       PARTSPROCURECANCELPARTSPURCHASE: '取消零件采购项目',
