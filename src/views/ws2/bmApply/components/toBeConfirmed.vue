@@ -4,7 +4,7 @@
     <iCard>
       <div class="table-head">
         <div class="tmCartypePro">
-          <div>{{$t('LK_CHEXINXIANGMU')}}</div>
+          <!-- <div>{{$t('LK_CHEXINXIANGMU')}}</div>
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="tmCartypeProId"
@@ -19,7 +19,7 @@
                 v-for="(item, index) in fromGroup"
                 :key="index"
             ></el-option>
-          </iSelect>
+          </iSelect> -->
         </div>
         <div>
           <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
@@ -240,7 +240,7 @@ export default {
         endDate: this.form.endDate ? Moment(this.form.endDate).format('YYYY-MM-DD') : '',
         current: this.page.currPage,
         size: this.page.pageSize,
-        tmCartypeProId: this.tmCartypeProId
+        // tmCartypeProId: this.tmCartypeProId
       }
       findBmWaitConfirmList(param).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
