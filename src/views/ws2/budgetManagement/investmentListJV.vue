@@ -168,14 +168,27 @@
 						<iButton v-show="pageEdit" @click="referenceModelShow = true">{{
 							$t('LK_CANKAOCHEXIN')
 						}}</iButton>
-						<iButton @click="downloadList">{{
-							$t('LK_XIAZHAITOUZHIQINDAN')
-						}}</iButton>
 						<iButton v-show="pageEdit" @click="conversionRatioShow = true">{{
 							$t('LK_ANBILIZHESUAN')
 						}}</iButton>
 						<iButton @click="toJV">{{
 							language('LK_CHAKANCOMMONYUSUAN', '查看Common预算')
+						}}</iButton>
+
+						<el-upload class="upload-demo"
+								style="display: inline-block; margin-right: 10px"
+								multiple
+								:action="uploadUrl"
+								:show-file-list="false"
+								:on-success="uploadSuccess"
+								:on-progress="uploadProgress"
+								:data="uploadData"
+								:before-upload="beforeUpload"
+								:on-exceed="handleExceed">
+							<iButton>{{ $t('SHANGCHUANFUJIJAN') }}</iButton>
+						</el-upload>
+						<iButton @click="downloadList">{{
+							$t('LK_XIAZHAITOUZHIQINDAN')
 						}}</iButton>
 					</div>
 				</div>
@@ -528,6 +541,11 @@ export default {
 	},
 	data() {
 		return {
+			uploadUrl: process.env.VUE_APP_TOOLING  + 'investment/import',
+			uploadData: {},
+
+
+
 			aekoPercent: '',
 			AEKOMoney: '',
 			contingencyPercent: '',
@@ -598,6 +616,11 @@ export default {
 	},
 	computed: {},
 	created() {
+		this.uploadData = {
+			versionId: this.$route.query.id
+		}
+
+
 		// this.isAdd = this.$route.query.id == 'add' ? true : false
 		// this.getInvestmentData()
 		this.params = this.$route.query
@@ -609,6 +632,39 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		UploadFile(){//上传附件
+
+		},
+		uploadSuccess (res, file) {
+			if (res.code == 200 && res.result) {
+				this.getInvestmentVerisionList()
+			} else {
+				if (res.data == null) {
+					iMessage.error(res.desZh)
+				} else {
+					// this.errorList = res.data
+					// this.cancelNo = true
+				}
+			}
+		},
+		beforeUpload (file) {
+			const isLt2M = file.size / 1024 / 1024 < 20
+			if (!isLt2M) {
+				iMessage.error('上传文件大小不能超过 20MB!')
+			}
+			return isLt2M
+		},
+		handleExceed (files, fileList) {
+			iMessage.warn(
+				`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
+				} 个文件`
+			)
+		},
+
+
+
+
+
 		refreshList() {
 			this.findInvestmentList()
 		},
