@@ -28,7 +28,8 @@
           :selection="false"
         >
           <template slot="currentSort" slot-scope="scope">
-            <div v-if="role === 'supplier' && form.resultOpenForm == '02'"
+            <!-- <div v-if="role === 'supplier' && form.resultOpenForm == '02'" -->
+            <div v-if="form.resultOpenForm == '02'"
               :class="
                 scope.row['trafficLight'] == '01'
                   ? 'green-ball'
