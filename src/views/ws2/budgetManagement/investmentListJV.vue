@@ -179,6 +179,7 @@
 								style="display: inline-block; margin-right: 10px"
 								multiple
 								:action="uploadUrl"
+								:headers="uploadHeader"
 								:show-file-list="false"
 								:on-success="uploadSuccess"
 								:on-progress="uploadProgress"
@@ -481,6 +482,7 @@
 </template>
 <script>
 import { iButton, iCard, iMessage, icon, iInput, iSelect } from 'rise'
+import { getToken } from "@/utils";
 import { iTableList } from '@/components'
 import { Popover } from 'element-ui'
 import { pageMixins } from '@/utils/pageMixins'
@@ -543,6 +545,9 @@ export default {
 		return {
 			uploadUrl: process.env.VUE_APP_TOOLING  + 'investment/import',
 			uploadData: {},
+			uploadHeader:{
+				token:""
+			},
 
 
 
@@ -616,6 +621,7 @@ export default {
 	},
 	computed: {},
 	created() {
+		this.uploadHeader.token = getToken()
 		this.uploadData = {
 			versionId: this.$route.query.id
 		}
