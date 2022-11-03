@@ -116,7 +116,7 @@ export default {
       let transmitObj = {
           option: 4,
           aekoApprovalDetails: {
-            linieId: roleList.id,
+            linieId: row.linieId,
             aekoNum: row.aekoNum,
             requirementAekoId: row.requirementAekoId,
             aekoManageId: row.aekoManageId,

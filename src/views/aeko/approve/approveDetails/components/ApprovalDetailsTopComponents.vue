@@ -2,7 +2,7 @@
   <div class="margin-bottom25 header-nav" >
     <span class="akeoTitle">{{language('LK_AEKOHAO_APPROVEDETAILS','AEKO号')}}:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
-      <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
+      <iNavMvp v-if="show && $route.query.key!=='rsAeko'" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
       <i-button v-if="!disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
       <i-button v-if="show" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
       <switchPost />
@@ -81,30 +81,10 @@ export default {
           permissionKey:'AEKO_APPROVAL_DETAIL_TAB_EXPLAINATTACH',
         },
       ],
-      subNavListAeko: [
-        {
-          value: 1,
-          name: "审批单",
-          message: 0,
-          url: "/aeko/AEKOApprovalDetails/Approvalform",
-          activePath: "Approvalform",
-          key: "审批单",
-          permissionKey:'AEKO_APPROVAL_DETAIL_TAB_APPROVALFORM',
-        },
-        {
-          value: 2,
-          name: "审批单",
-          message: 0,
-          url: "/aeko/AEKOApprovalDetails/Approvalform",
-          activePath: "Approvalform",
-          key: "审批单",
-          permissionKey:'AEKO_APPROVAL_DETAIL_TAB_APPROVALFORM',
-        },
-      ],
       disabled:false,
       showDialog: false,
       show: true,
-      bizId: ''
+      bizId: '',
     }
   },
   methods: {
@@ -144,6 +124,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .header-nav{
   display: flex;
   justify-content: space-between;
