@@ -199,7 +199,7 @@
                 <el-option
                   :value="item.code"
                   :label="item.name"
-                  v-for="(item, index) in fromGroup.PART_TYPE"
+                  v-for="(item, index) in fromGroup.SPT"
                   :key="index"
                 ></el-option>
               </iSelect>
@@ -1524,7 +1524,7 @@ export default {
         { keys: "TERMS_PAYMENT" },
         { keys: "TERMS_PURCHASE" },
         { keys: "PP_CSTMGMT_CURRENCY" },
-        // { keys: "CAR_TYPE_PRO" }
+        { keys: "SPT" }, // 寻源零件类型，去除总成类型
       ]).then((res) => {
         if (res.code == 200) {
           Object.keys(res.data || {}).forEach((key) => {

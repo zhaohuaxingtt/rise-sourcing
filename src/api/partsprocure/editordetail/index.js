@@ -305,12 +305,22 @@ export function purchasingDept(){
     method: "GET"
   })
 }
+
 export function purchasingLiline(dptId){
 	return sourcing({
     url: `/purchasing-project-parts/linie/${dptId}`,
     method: "GET"
   })
 }
+
+export function listLines(params){
+	return sourcing({
+    url: `/purchasing-project-parts/listLines`,
+    method: "GET",
+	params
+  })
+}
+
 
 export function batchMaintainOutPutPlan(data) {
 	return  requestOutputPart ({
