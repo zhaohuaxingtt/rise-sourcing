@@ -61,7 +61,7 @@ export default {
           value: 2,
           name: "审批记录",
           message: 0,
-          key: "SHENPIFUJIAN",
+          key: "SHENPIJILU",
         },
       ],
       aekoInfo:{},
