@@ -729,6 +729,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import {
   purchasingDept,
   purchasingLiline,
+  listLines,
 } from "@/api/partsprocure/editordetail";
 export default {
   components: {
@@ -847,6 +848,7 @@ export default {
   },
   created() {
     this.getDict();
+    this.getLinie();
     this.searchCartypeProject();
     this.getDictByCode();
     this.procureFactorySelectVo();
@@ -917,26 +919,38 @@ export default {
       if(val == 1){
         this.form.linieDeptId = "";
         this.linieValue = "";
+        this.getLinie();
       }else{
 
       }
     },
     deptChange(val){
-      var data = this.fromGroup["LINIE_DEPT"].filter(e=>e.code == val);
+      // var data = this.fromGroup["LINIE_DEPT"].filter(e=>e.code == val);
       this.lookYourselfValue = 2;
+      this.linieValue = "";
       if(!val){
-        this.fromGroup["LINIE"] = [];
+        this.getLinie();
       }else{
-        this.getLinie(data[0].deptNum);
+        // this.getLinie(data[0].deptNum);
+        this.getLinie(val);
       }
     },
     getLinie(id){
-      if (!id) return;
-      purchasingLiline(id).then((r) => {
-        if (r.code == 200) {
-          this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
-        }
-      });
+      if(id){
+        listLines({
+          deptId:id,
+        }).then((r) => {
+          if (r.code == 200) {
+            this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
+          }
+        });
+      }else{
+        listLines({}).then((r) => {
+          if (r.code == 200) {
+            this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
+          }
+        });
+      }
     },
     getDict() {
       purchasingDept().then((r) => {
@@ -1066,6 +1080,26 @@ export default {
         }
       });
     },
+    sure() {
+      // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
+      if (this.form.partNum && this.form.partNum.trim().length < 3) {
+        return iMessage.warn(
+          this.language(
+            "LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI",
+            "查询零件号不足,请补充至3位或以上"
+          )
+        );
+      }
+      this.init();
+    },
+    reset() {
+      this.page.currPage = 1;
+      this.lookYourselfValue = 1;
+      this.linieValue = "";
+      this.getLinie();
+      this.form = cloneDeep(contentDeclareQueryForm);
+      this.sure();
+    },
     init() {
       this.loading = true;
 
@@ -1182,23 +1216,6 @@ export default {
           this.loading = false;
         })
         .catch(() => (this.loading = false));
-    },
-    sure() {
-      // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
-      if (this.form.partNum && this.form.partNum.trim().length < 3) {
-        return iMessage.warn(
-          this.language(
-            "LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI",
-            "查询零件号不足,请补充至3位或以上"
-          )
-        );
-      }
-      this.init();
-    },
-    reset() {
-      this.page.currPage = 1;
-      this.form = cloneDeep(contentDeclareQueryForm);
-      this.sure();
     },
     handleSelectionChange(list) {
       this.multipleSelection = list;

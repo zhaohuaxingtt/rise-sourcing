@@ -65,6 +65,7 @@ import {
   queryPepNodeTimeByCarTypeProId
 } from "@/api/project/deliver";
 import { downloadPDF, dataURLtoFile, transverseDownloadPDFNew } from '@/utils/pdf'
+import { GanTeDelayColor,getNowDate } from "./data";
 
 export default {
   components:{
@@ -385,10 +386,13 @@ export default {
             time:e.planStartTime,
             code:this.timeOff(e.planStartTime),
           })
+          // 1:计划点 2:实际点 3:计划线 4:实际线
           if(!e.planStartTime && e.planEndTime){//计划点
+            e.colorTypePlan = GanTeDelayColor(e.planStartTime,e.planEndTime,e.actualStartTime,e.actualEndTime,1)
             e.pointRangTop = [[e.planEndTime.split(" ")[0].split("-")[0],e.planEndTime.split(" ")[0].split("-")[1]].join("-")]
             e.pointWidthTop = (e.planEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
           }else if(e.planStartTime && e.planEndTime){//计划线
+            e.colorTypePlan = GanTeDelayColor(e.planStartTime,e.planEndTime,e.actualStartTime,e.actualEndTime,3)
             if(e.planStartTime.split(" ")[0].split("-")[1] == e.planEndTime.split(" ")[0].split("-")[1]){//同月份
               e.barRangTop = this.yearMake(e.planEndTime,e.planStartTime)//绘制的所有月份集合
               e.barRangTopWidth = ((e.planEndTime.split(" ")[0].split("-")[2] - e.planStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
@@ -401,11 +405,12 @@ export default {
             }
           }
           if(!e.actualStartTime && e.actualEndTime){//实际点
+            e.colorTypeSJ = GanTeDelayColor(e.planStartTime,e.planEndTime,e.actualStartTime,e.actualEndTime,2)
             e.pointRangBottom = [[e.actualEndTime.split(" ")[0].split("-")[0],e.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
             e.pointWidthBottom = (e.actualEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
           }else if(e.actualStartTime && e.actualEndTime){//实际线
-
-            if(e.actualStartTime.split(" ")[0].split("-")[1] == e.actualEndTime.split(" ")[0].split("-")[1]){
+            e.colorTypeSJ = GanTeDelayColor(e.planStartTime,e.planEndTime,e.actualStartTime,e.actualEndTime,4)
+            if(e.actualStartTime.split(" ")[0].split("-")[1] == e.actualEndTime.split(" ")[0].split("-")[1]){//同月份
               e.barRangBottom = this.yearMake(e.actualEndTime,e.actualStartTime)//绘制的所有月份集合
               e.barRangBottomWidth = ((e.actualEndTime.split(" ")[0].split("-")[2] - e.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
               e.barRangBottomMarginLeft = ((e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//开始时间的线距
@@ -414,6 +419,22 @@ export default {
               e.barWidthBottomRight = (e.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
               e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
               e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+            }
+          }else if(e.actualStartTime && !e.actualEndTime){//实际线
+            e.colorTypeSJ = GanTeDelayColor(e.planStartTime,e.planEndTime,e.actualStartTime,e.actualEndTime,4)
+            if(e.planStartTime && e.planEndTime){//只判断线
+              if(this.timeOff(e.actualStartTime)<Math.round(new Date().getTime()/1000)){//同月份
+                if(e.actualStartTime.split(" ")[0].split("-")[1] == getNowDate().split(" ")[0].split("-")[1]){
+                  e.barRangBottom = this.yearMake(getNowDate(),e.actualStartTime)
+                  e.barRangBottomWidth = ((getNowDate().split(" ")[0].split("-")[2] - e.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
+                  e.barRangBottomMarginLeft = ((getNowDate().split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//开始时间的线距
+                }else{
+                  e.barRangBottom = this.yearMake(getNowDate(),e.actualStartTime)
+                  e.barWidthBottomRight = (getNowDate().split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                  e.barWidthBottomLeft = (e.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                  e.barWidthBottomLeftWidth = (100-(e.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                }
+              }
             }
           }
           e.showChlid = false;
@@ -438,9 +459,11 @@ export default {
               })
 
               if(!item.planStartTime && item.planEndTime){//计划点
+                item.colorTypePlan = GanTeDelayColor(item.planStartTime,item.planEndTime,item.actualStartTime,item.actualEndTime,1)
                 item.pointRangTop = [[item.planEndTime.split(" ")[0].split("-")[0],item.planEndTime.split(" ")[0].split("-")[1]].join("-")]
                 item.pointWidthTop = (item.planEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
               }else if(item.planStartTime && item.planEndTime){//计划线
+                item.colorTypePlan = GanTeDelayColor(item.planStartTime,item.planEndTime,item.actualStartTime,item.actualEndTime,3)
                 // this.yearAll = [];
                 // this.minYear = item.planStartTime;
                 // this.maxYear = item.planEndTime;
@@ -456,9 +479,11 @@ export default {
                 }
               }
               if(!item.actualStartTime && item.actualEndTime){//实际点
+                item.colorTypeSJ = GanTeDelayColor(item.planStartTime,item.planEndTime,item.actualStartTime,item.actualEndTime,2)
                 item.pointRangBottom = [[item.actualEndTime.split(" ")[0].split("-")[0],item.actualEndTime.split(" ")[0].split("-")[1]].join("-")]
                 item.pointWidthBottom = (item.actualEndTime.split(" ")[0].split("-")[2]/30).toFixed(0) + "%";
               }else if(item.actualStartTime && item.actualEndTime){//实际线
+                item.colorTypeSJ = GanTeDelayColor(item.planStartTime,item.planEndTime,item.actualStartTime,item.actualEndTime,4)
                 if(item.actualEndTime.split(" ")[0].split("-")[1] == item.actualStartTime.split(" ")[0].split("-")[1]){//同一月份
                   item.barRangBottom = this.yearMake(item.actualEndTime,item.actualStartTime)//绘制的所有月份集合
                   item.barRangBottomWidth = ((item.actualEndTime.split(" ")[0].split("-")[2] - item.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//结束时间的线距
@@ -468,6 +493,22 @@ export default {
                   item.barWidthBottomRight = (item.actualEndTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
                   item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
                   item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                }
+              }else if(item.actualStartTime && !item.actualEndTime){
+                item.colorTypeSJ = GanTeDelayColor(item.planStartTime,item.planEndTime,item.actualStartTime,item.actualEndTime,4)
+                if(item.planStartTime && item.planEndTime){//只判断线
+                  if(this.timeOff(item.actualStartTime)<Math.round(new Date().getTime()/1000)){
+                    if(item.actualStartTime.split(" ")[0].split("-")[1] == getNowDate().split(" ")[0].split("-")[1]){//同月份
+                      item.barRangBottom = this.yearMake(getNowDate(),item.actualStartTime)
+                      item.barRangBottomWidth = ((getNowDate().split(" ")[0].split("-")[2] - item.actualStartTime.split(" ")[0].split("-")[2])/30*100).toFixed(0) + "%";//宽
+                      item.barRangBottomMarginLeft = ((getNowDate().split(" ")[0].split("-")[2]/30*100).toFixed(0)) + "%";//开始时间的线距
+                    }else{
+                      item.barRangBottom = this.yearMake(getNowDate(),item.actualStartTime)
+                      item.barWidthBottomRight = (getNowDate().split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                      item.barWidthBottomLeft = (item.actualStartTime.split(" ")[0].split("-")[2]/30*100).toFixed(0) + "%";
+                      item.barWidthBottomLeftWidth = (100-(item.actualStartTime.split(" ")[0].split("-")[2]/30*100)).toFixed(0) + "%";
+                    }
+                  }
                 }
               }
             })
