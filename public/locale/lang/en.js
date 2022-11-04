@@ -6509,6 +6509,7 @@
 
 		"无需确认":"No confirmation required",
 		"请选择部门":"Please select a department",
+		"定点来源类型":"Nomi. source type",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

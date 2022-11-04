@@ -78,6 +78,78 @@
             end-placeholder="YYYY-MM-DD">
           </el-date-picker>
         </el-form-item>
+
+        <!-- 专业科室 -->
+        <el-form-item :label="$t('LK_ZHUANYEKESHI')">
+          <iSelect
+              :placeholder="$t('partsprocure.CHOOSE')"
+              v-model="form['locationFactoryId']"
+              filterable
+              ref=""
+              clearable
+          >
+            <el-option
+                :value="item.locationFactoryId"
+                :label="item.locationFactoryName"
+                v-for="(item, index) in factoryList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+
+        <!-- 零件号 -->
+        <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
+          <iSelect
+              :placeholder="$t('partsprocure.CHOOSE')"
+              v-model="form['locationFactoryId']"
+              filterable
+              ref=""
+              clearable
+          >
+            <el-option
+                :value="item.locationFactoryId"
+                :label="item.locationFactoryName"
+                v-for="(item, index) in factoryList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+
+        <!-- 供应商 -->
+        <el-form-item :label="$t('GONGYINGSHANG')">
+          <iSelect
+              :placeholder="$t('partsprocure.CHOOSE')"
+              v-model="form['locationFactoryId']"
+              filterable
+              ref=""
+              clearable
+          >
+            <el-option
+                :value="item.locationFactoryId"
+                :label="item.locationFactoryName"
+                v-for="(item, index) in factoryList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+
+        <!-- 定点来源类型 -->
+        <el-form-item :label="$t('定点来源类型')">
+          <iSelect
+              :placeholder="$t('partsprocure.CHOOSE')"
+              v-model="form['locationFactoryId']"
+              filterable
+              ref=""
+              clearable
+          >
+            <el-option
+                :value="item.value"
+                :label="item.label"
+                v-for="(item, index) in sourceType"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
         
       </el-form>
     </iSearch>
@@ -123,6 +195,18 @@ export default {
       factoryList: [],
       budgetStatus: [],
       pickerDate: '',
+      sourceType:[
+        {
+          value:1,
+          label:"定点"
+        },{
+          value:2,
+          label:"AEKO增值"
+        },{
+          value:3,
+          label:"AEKO减值"
+        },
+      ]
     }
   },
 
@@ -192,6 +276,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.el-form{
+  display: flex;
+  flex-wrap: wrap;
+}
 .giSearch{
 
   ::v-deep .el-form-item {
