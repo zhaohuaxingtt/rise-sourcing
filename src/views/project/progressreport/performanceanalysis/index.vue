@@ -46,11 +46,18 @@
                     <div :id="'echarts_'+index" class="echarts"></div>
                 </div>
             </div>
-            <!-- <div class="model_supplierEm">
-                <div>
-
+            <div class="model_supplierEm">
+                <div class="free-div">
+                    <div class="free-add">
+                        <div style="text-align:center;cursor: pointer;" @click="goNavFree">
+                            <img 
+                                :src="require('@/assets/images/icon/add.png')"
+                                :fit="fit" />
+                            <p>自定义配置报告</p>
+                        </div>
+                    </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -140,9 +147,15 @@ export default {
                 id:11,
             }
         ];
-        
     },
     methods:{
+        goNavFree(){//跳转自定义配置报告
+            const routeData = this.$router.resolve({
+                path:'/projectmgt/performanceanalysis/freeDetails',
+                query:{}
+            })
+            window.open(routeData.href, '_blank')
+        },
         carModelSearch(val){//选择顶部搜索车型项目
             this.cartypeProId = val;
             this.carTypeName = this.carModelList.find(item => item.id === val).cartypeProjectCode
@@ -383,6 +396,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.free-div{
+    width:100%;
+    height:100%;
+}
+.free-add{
+    display: flex;
+    width:100%;
+    height:100%;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+
+    img{
+        width:100px;
+    }
+    p{
+        margin-top:15px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
 .model_analysis{
     display: flex;
     justify-content: space-between;

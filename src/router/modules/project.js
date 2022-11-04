@@ -235,9 +235,17 @@ export default [
             title: "项目管理-项目进度报告-项目管理绩效分析-报告详情",
             activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
-        component: () =>
-            import ("@/views/project/progressreport/performanceanalysis/reportDetails"),
-    },
+        component: () => import ("@/views/project/progressreport/performanceanalysis/reportDetails"),
+      },
+      {
+        path: "performanceanalysis/freeDetails",
+        name: "freeDetails",
+        meta: {
+            title: "项目管理-项目进度报告-项目管理绩效分析-自定义配置报告",
+            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+        },
+        component: () => import ("@/views/project/progressreport/performanceanalysis/freeDetails"),
+      },
     ]
   }
 ]
