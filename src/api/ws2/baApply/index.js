@@ -108,3 +108,12 @@ export function getSupplierList(data) {
         params: data
     })
 }
+
+//  BA申请-零件状态修改
+export function updatePartsApply(parmars) {
+    return VUE_APP_APPLY({
+        url: '/updatePartsApply',
+        method: 'POST',
+        data: parmars
+    })
+}
