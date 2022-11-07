@@ -19,6 +19,7 @@
               :placeholder="$t('partsprocure.CHOOSE')"
               v-model="form['tmCartypeProId']"
               filterable
+              clearable
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
           >
@@ -83,15 +84,15 @@
         <el-form-item :label="$t('LK_ZHUANYEKESHI')">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['locationFactoryId']"
+              v-model="form['deptId']"
               filterable
               ref=""
               clearable
           >
             <el-option
-                :value="item.locationFactoryId"
-                :label="item.locationFactoryName"
-                v-for="(item, index) in factoryList"
+                :value="item.deptId"
+                :label="item.deptName"
+                v-for="(item, index) in deptList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -99,45 +100,38 @@
 
         <!-- 零件号 -->
         <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-          <iSelect
-              :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['locationFactoryId']"
-              filterable
-              ref=""
-              clearable
-          >
-            <el-option
-                :value="item.locationFactoryId"
-                :label="item.locationFactoryName"
-                v-for="(item, index) in factoryList"
-                :key="index"
-            ></el-option>
-          </iSelect>
+          <!-- <input-custom 
+              v-model="form['partNum']"
+              style="width:100%"
+              :editPlaceholder="language('QINGSHURU','请输入')"
+              :placeholder="language('QINGSHURU','请输入')"> </input-custom> -->
+          <iInput v-model="form['partNum']"></iInput>
         </el-form-item>
 
         <!-- 供应商 -->
         <el-form-item :label="$t('GONGYINGSHANG')">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['locationFactoryId']"
+              v-model="form['supplierId']"
               filterable
               ref=""
               clearable
           >
             <el-option
-                :value="item.locationFactoryId"
-                :label="item.locationFactoryName"
-                v-for="(item, index) in factoryList"
+                :value="item.supplierId"
+                :label="item.supplierName"
+                v-for="(item, index) in supperlierList"
                 :key="index"
             ></el-option>
           </iSelect>
+          <!-- <iInput v-model="form['locationFactoryId']"></iInput> -->
         </el-form-item>
 
         <!-- 定点来源类型 -->
         <el-form-item :label="$t('定点来源类型')">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['locationFactoryId']"
+              v-model="form['sourceType']"
               filterable
               ref=""
               clearable
@@ -158,8 +152,15 @@
 
 <script>
 import { detailsForm } from "./data";
+import inputCustom from '@/components/inputCustom'
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
-import { getPurchaseFactoryPullDown, getBudgetStatusPullDown, getBaCarPullDown } from "@/api/ws2/baApply";
+import { 
+  getPurchaseFactoryPullDown,
+  getBudgetStatusPullDown,
+  getBaCarPullDown,
+  getDeptList,
+  getSupplierList,
+} from "@/api/ws2/baApply";
 import Moment from 'moment';
 import {
   iButton,
@@ -175,6 +176,8 @@ export default {
   components: {
     iSearch,
     iSelect,
+    iInput,
+    inputCustom,
   },
   props: {
   },
@@ -192,7 +195,7 @@ export default {
       addCarTypeProject: '',
       iDialogAddCarTypeProject: false,
       fromGroup: [],
-      factoryList: [],
+      factoryList:[],
       budgetStatus: [],
       pickerDate: '',
       sourceType:[
@@ -206,7 +209,9 @@ export default {
           value:3,
           label:"AEKO减值"
         },
-      ]
+      ],
+      deptList:[],
+      supperlierList:[],
     }
   },
 
@@ -241,10 +246,12 @@ export default {
     getComponentsData(){
       this.loadingiSearch = true;
       //  采购工厂列表、模具预算状态、AccountType、车型项目
-      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaCarPullDown()]).then(res => {
+      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaCarPullDown(),getDeptList(),getSupplierList()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        const result3 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        const result4 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
         if(res[0].data){
           this.factoryList = res[0].data;
         }else{
@@ -261,6 +268,18 @@ export default {
           this.fromGroup = res[2].data;
         }else{
           iMessage.error(result2);
+        }
+
+        if(res[3].data){
+          this.deptList = res[3].data;
+        }else{
+          iMessage.error(result3);
+        }
+
+        if(res[4].data){
+          this.supperlierList = res[4].data;
+        }else{
+          iMessage.error(result4);
         }
         this.loadingiSearch = false;
       }).catch(err => {
@@ -284,12 +303,18 @@ export default {
 .giSearch{
 
   ::v-deep .el-form-item {
-    width: auto !important;
+    // width: auto !important;
   }
 
   ::v-deep .el-range-separator{
     width: 20px !important;
   }
-
+  
+  ::v-deep .el-date-editor {
+    width:110%;
+  }
+  // ::v-deep .el-range__close-icon{
+  //   display: none;
+  // }
 }
 </style>

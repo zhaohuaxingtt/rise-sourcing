@@ -11,6 +11,10 @@ export const detailsForm = {
   'locationFactoryId': '',  //  采购工厂
   'startDate': '', //  申请开始时间
   'endDate': '',  //  申请结束时间
+  "partNum":"",//零件号
+  "deptId":"",//专业科室
+  "sourceType":"",//定点来源类型
+  "supplierId":"",//供应商
 }
 
 //  BA申请table表头1
