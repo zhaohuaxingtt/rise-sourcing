@@ -1,0 +1,195 @@
+<!--
+ * @Author: Luoshuang
+ * @Date: 2021-10-12 10:30:30
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-13 11:13:15
+ * @Description: 
+ * @FilePath: \front-web\src\views\project\progressreport\partprogress\components\overviewChart\index.vue
+-->
+
+<template>
+    <iPage class="overviewChartWrapper iframe-powerbi">
+        <div class="flex">
+            <span>自定义配置报告</span>
+        </div>
+        <iCard class="marginTop20">
+            <div id='powerBi'></div>
+        </iCard>
+    </iPage>
+  </template>
+  
+  <script>
+  import { iCard,iPage } from 'rise'
+  import * as pbi from "powerbi-client";
+  import { getReportBobOverview } from "@/api/project/projectprogressreport";
+  export default {
+    components: { 
+      iCard, 
+      iPage,
+    },
+    props: {
+      cartypeId:{
+        type:String,
+        default:""
+      }
+    },
+    data() {
+      return {
+        formData: {
+          cleintId: '66e3fa4b-152e-4bfb-8a9d-18b820459df1',
+          tenantId: '8716a3b9-b827-484b-92ad-ed90aaf4d707',
+          clientSecret: '6cpyeTY~dAmL-Uub2X8Om30Mm2EUk-d.TS',
+          workspaceId:process.env.NODE_ENV === "production"?"c272ae69-a6b4-4407-bd0e-f67953de36ce":"876776a9-f959-442e-a011-b4bade0dd862",
+          reportId: process.env.NODE_ENV === "production"?"20daacf7-c2c5-4dc5-aae5-05e262e9a73b":"884b5348-a383-4615-844a-09abded0bf86",
+        },
+        config: {
+          type: "",
+          tokenType: "",
+          accessToken: "",
+          embedUrl: "",
+          pageName: "",
+          settings: {
+          panes: {
+              filters: {
+                  visible: false,
+              },
+              pageNavigation: {
+                  visible: false,
+              },
+              },
+          },
+        },
+        url: {
+          accessToken: "", //验证token
+          embedUrl: "", //报告信息内嵌地址
+          tokenExpiry: "", //token过期时间
+        },
+        reportContainer:null,
+        report:null,//pbi容器
+  
+        filterParameter:{},//pbi请求刷新参数
+      }
+    },
+    computed: {
+      
+    },
+    mounted() {
+      this.getUrl();
+    },
+    methods: {
+      getUrl(){
+        getReportBobOverview({
+          ...this.formData
+        }).then(res=>{
+          this.url = res.data
+          this.init()
+        })
+      },
+      init(){
+        this.renderBi();
+      },
+      changeRefresh(val){
+        // console.log(this.cartypeId,33333333)
+        var cartypeId = "";
+        if(val){
+          cartypeId = val;
+        }else{
+          cartypeId = this.cartypeId;
+        }
+        this.filterParameter.values = [cartypeId];
+        this.report.setFilters([this.filterParameter]);
+      },
+      renderBi(){
+        
+  
+        var that = this;
+        let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
+        var config = {
+          type: 'report',
+          tokenType: pbi.models.TokenType.Embed,
+          accessToken: this.url.accessToken,
+          embedUrl: this.url.embedUrl,
+          settings: {
+            panes: {
+              filters: {
+                visible: false
+              },
+              pageNavigation: {
+                visible: false
+              }
+            }
+          }
+        };
+        var reportContainer = document.getElementById('powerBi');
+        this.report = powerbi.embed(reportContainer, config);
+        console.log(this.cartypeId)
+        this.report.on("loaded", async function () {
+          //设置参数
+          that.filterParameter = {
+                $schema: "http://powerbi.com/product/schema#basic",
+                target: {
+                  table: "app_proc_pm_part_progress_overview_nt_daily",
+                  column: "CartypeProjectID",
+                },
+                operator: "In",
+                values: [that.cartypeId],
+                filterType: pbi.models.FilterType.BasicFilter,
+                requireSingleSelection: true
+          };
+          //设置筛选器
+          that.report.setFilters([that.filterParameter]);
+        });
+      },
+    }
+  }
+  </script>
+  
+  <style lang="scss" scoped>
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span{
+        font-size:1.25rem;
+        font-weight: bold;
+    }
+}
+  .overviewChartWrapper {
+    .chartTitle {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    ::v-deep .cardBody {
+      // height: 360px;
+      display: flex;
+      & > div {
+        width: 50%;
+      }
+    }
+  }
+  .iframe-powerbi{
+      height: 100%;
+      overflow: auto;
+      #powerBi {
+      width: 100%;
+      height: 1000px;
+      // margin-top: 20px;
+      //   height: calc(100vh - 380px);
+      ::v-deep > iframe{
+          border:none;
+          // height: 100px;
+          
+          }
+      }
+  }
+  .marginTop20{
+    margin-top:20px;
+    width: 100%;
+
+    ::v-deep .cardBody{
+        display: flex;
+        flex-direction: column;
+    }
+}
+  </style>
