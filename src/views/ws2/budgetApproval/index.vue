@@ -120,7 +120,7 @@
         <template #approvalStatus="scope">
           <div>
             <span>{{
-                scope.row.approvalStatus === '1' ? '待审批' : (scope.row.approvalStatus === '2') ? '已通过' : '已拒绝'
+                scope.row.approvalStatus === '1' ? '待审批' : scope.row.approvalStatus === '2' ? '已通过' : scope.row.approvalStatus === '3' ? '已拒绝':"已撤回"
               }}</span>
           </div>
         </template>
