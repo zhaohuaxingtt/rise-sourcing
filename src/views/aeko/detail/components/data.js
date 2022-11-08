@@ -15,8 +15,8 @@ export const contentDeclareQueryForm = {
   procureFactory: "",
   supplierNameZh: "",
   investCarTypePros: [""],
-  // linieDeptId:"",
-  // linieId:"",
+  linieDeptId:"",
+  linieId:"",
 }
 
 export const contentDeclareTableTitle = [
