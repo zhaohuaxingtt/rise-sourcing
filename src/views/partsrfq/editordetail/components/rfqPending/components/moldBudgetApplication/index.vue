@@ -210,7 +210,8 @@ export default {
         iMessage.warn(this.language("partsignLanguage.QingXuanZe", "请选择"));
         return false;
       }
-      const status = ["AGREE","DISAGREE","REVOKED","已审批","已驳回","已撤销"]
+      // const status = ["AGREE","DISAGREE","REVOKED","已审批","已驳回","已撤销"]
+      const status = ["DISAGREE","REVOKED","已驳回","已撤销"]
       let statusFlag = false
       this.selectTableData.forEach(val=>{
         status.includes(val.approvalStatus) || status.includes(val.approvalStatusDesc) ? statusFlag = true : ''
