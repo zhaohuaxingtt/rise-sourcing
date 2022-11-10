@@ -14,7 +14,8 @@
         <div>{{ scope.row.index + 1 }}</div>
       </template>
       <template slot="sort" slot-scope="scope">
-        <div v-if="role === 'supplier' && ruleForm.resultOpenForm == '02'"
+        <!-- <div v-if="role === 'supplier' && ruleForm.resultOpenForm == '02'" -->
+        <div v-if="ruleForm.resultOpenForm == '02'"
           :class="
               scope.row['trafficLight'] == '01'
                 ? 'green-ball'
