@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i-card v-permission.auto="AEKO_APPROVED_RECOMMENDATION_TABLE|AEKO推荐表列表">
+    <i-card v-if="$route.query.key!=='rsAeko'" v-permission.auto="AEKO_APPROVED_RECOMMENDATION_TABLE|AEKO推荐表列表">
       <div class="margin-bottom15">
         <span class="card-title"
             >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatusDesc }}
@@ -12,7 +12,6 @@
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div>
-      
       <tableList
         permissionKey="AEKO_APPROVE_APPROVEDETAILS_COMPONENTS_RECOMMENDATIONTABLEPENDINGAPPROVALCOMPONENTS"
         class="margin-top24"
@@ -43,6 +42,47 @@
         :total="page.totalCount"
       />
     </i-card>
+    <iCard v-else>
+      <div class="margin-bottom15">
+        <span class="card-title"
+            >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatusDesc }}
+            <!-- 待审批的时候显示一个icon -->
+            <icon v-if=" auditContentStatus == 'TO_BE_APPROVAL'" class="icon font22" symbol name="iconjinridaiban" />
+          </span>
+        <span class="floatright">
+          <iButton v-if="show && isMtz" @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+        </span>
+      </div>
+      <tableList
+        class="margin-top24"
+        ref="tableList"
+        :tableTitle="recommendationFormPendingApprovalTitle"
+        :tableData="recommendationFormPendingApprovalList"
+        :titlePopover="false"
+      >
+        <template #supplier="scope">
+          <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
+        </template>
+      </tableList>
+      <!-- <div class="margin-top20 card-bottom-tip">
+        Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder
+        Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder
+        Invest≥10,000,000 RMB
+      </div> -->
+      <!--分页区-->
+      <i-pagination
+        v-update
+        @size-change="handleSizeChange($event, loadRecommendData)"
+        @current-change="handleCurrentChange($event, loadRecommendData)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount"
+      />
+    </iCard>
   </div>
 </template>
 

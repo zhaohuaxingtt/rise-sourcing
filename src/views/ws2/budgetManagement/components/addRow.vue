@@ -18,14 +18,26 @@
       >
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN')">
-            <iInput v-model="zhEnNo" :placeholder="$t('LK_QINGSHURU')" @keyup.enter.native="findAddColumnInvestmentBuild">
+            <!-- <iInput v-model="zhEnNo" :placeholder="$t('LK_QINGSHURU')" @keyup.enter.native="findAddColumnInvestmentBuild">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
-            </iInput>
+            </iInput> -->
+            <input-custom
+              v-model="zhEnNo"
+              :editPlaceholder="language('QINGSHURU', '请输入')"
+              :placeholder="language('QINGSHURU', '请输入')"
+            >
+            </input-custom>
           </el-form-item>
           <el-form-item :label="$t('LK_LINJIANLIUWEIHAO')">
-            <iInput v-model="materialName" :placeholder="$t('LK_QINGSHURU')" maxlength="6" @keyup.enter.native="findAddColumnInvestmentBuild">
+            <!-- <iInput v-model="materialName" :placeholder="$t('LK_QINGSHURU')" maxlength="6" @keyup.enter.native="findAddColumnInvestmentBuild">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
-            </iInput>
+            </iInput> -->
+            <input-custom
+              v-model="materialName"
+              :editPlaceholder="language('QINGSHURU', '请输入')"
+              :placeholder="language('QINGSHURU', '请输入')"
+            >
+            </input-custom>
           </el-form-item>
           <el-form-item :label="$t('MOULDADD.LK_MOJUSHUXIN')">
             <iSelect
@@ -105,6 +117,7 @@ import {
   iInput,
   iSelect
 } from 'rise'
+import inputCustom from '@/components/inputCustom'
 import {
   iTableList
 } from '@/components'
@@ -131,6 +144,7 @@ export default {
     iPagination,
     iInput,
     iSelect,
+    inputCustom,
   },
   props: {
     title: {type: String, default: 'LK_TIANJIAHANG'},
@@ -151,8 +165,8 @@ export default {
       multipleSelection: [],
       modelProtitesList: [],
       DeptPullDown: [],
-      zhEnNo: '',
-      materialName: '',
+      zhEnNo: [],
+      materialName: [],
       mouldAttr: '',
       professionalDepartments: '',
     }
@@ -223,8 +237,8 @@ export default {
         carTypeProId: this.carTypeProId,
         sourceStatus: this.sourceStatus,
         commodity: this.professionalDepartments,
-        materialName: this.zhEnNo,
-        partNum: this.materialName,
+        materialName: this.zhEnNo.join(","),
+        partNum: this.materialName.join(","),
         modelType: this.mouldAttr,
         listVerisonId: this.version,
         sourcePage: this.sourcePage,
@@ -251,8 +265,8 @@ export default {
       this.findAddColumnInvestmentBuild()
     },
     reset() {
-      this.zhEnNo = ''
-      this.materialName = ''
+      this.zhEnNo = []
+      this.materialName = []
       this.mouldAttr = ''
       this.professionalDepartments = ''
     }
@@ -260,8 +274,8 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.zhEnNo = ''
-        this.materialName = ''
+        this.zhEnNo = []
+        this.materialName = []
         this.mouldAttr = ''
         this.professionalDepartments = ''
         this.findAddColumnInvestmentBuild()
@@ -272,10 +286,10 @@ export default {
 </script>
 <style lang='scss' scoped>
 .iDialogAdd.el-dialog__wrapper {
-  overflow: hidden;
+  // overflow: hidden;
   ::v-deep .el-dialog{
-    height: 90%;
-    overflow-y: auto;
+    // height: 90%;
+    // overflow-y: auto;
   }
 }
 
