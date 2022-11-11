@@ -623,7 +623,7 @@ export default {
 	created() {
 		this.uploadHeader.token = getToken()
 		this.uploadData = {
-			versionId: this.$route.query.id
+			versionId: this.form['search.version']
 		}
 
 
