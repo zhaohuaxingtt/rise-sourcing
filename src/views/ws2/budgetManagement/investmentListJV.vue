@@ -176,7 +176,7 @@
 						}}</iButton>
 
 						<el-upload class="upload-demo"
-								style="display: inline-block; margin-right: 10px"
+								style="display: inline-block; margin-right: 10px;margin-left: 10px"
 								multiple
 								:action="uploadUrl"
 								:headers="uploadHeader"
@@ -543,7 +543,7 @@ export default {
 	},
 	data() {
 		return {
-			uploadUrl: process.env.VUE_APP_TOOLING  + 'investment/import',
+			uploadUrl: process.env.VUE_APP_TOOLING  + '/investment/import',
 			uploadData: {},
 			uploadHeader:{
 				token:""
@@ -642,7 +642,8 @@ export default {
 
 		},
 		uploadSuccess (res, file) {
-			if (res.code == 200 && res.result) {
+			if (res.result) {
+				iMessage.success(res.desZh);
 				this.getInvestmentVerisionList()
 			} else {
 				if (res.data == null) {

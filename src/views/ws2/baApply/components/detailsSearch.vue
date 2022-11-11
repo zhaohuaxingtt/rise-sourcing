@@ -203,10 +203,10 @@ export default {
           value:1,
           label:"定点"
         },{
-          value:2,
+          value:3,
           label:"AEKO增值"
         },{
-          value:3,
+          value:2,
           label:"AEKO减值"
         },
       ],

@@ -34,7 +34,7 @@
 				<a v-if="scope.row.dataType == 1" @click="openViewPdf(scope.row)" class="detailed">{{
 					scope.row.rsNum
 				}}</a>
-				<span v-else>{{scope.row.rsNum}}</span>
+				<a class="detailed" v-else @click="openViewAeko(scope.row)">{{scope.row.rsNum}}</a>
 			</template>
 			<template #sourceType="scope">
 				<span>{{scope.row.sourceType==1?"定点":scope.row.sourceType==3?"AEKO增值":scope.row.sourceType==2?"AEKO减值":""}}</span>
@@ -83,7 +83,7 @@
 								v-if="scope.row.dataType == 'Aeko'"
 								maxlength="20"
 							></iInput>
-							<div v-else>{{ scope.row.amount }}</div>
+							<div v-else>{{ $postThousandth(scope.row.amount) }}</div>
 						</template>
 					</iTableList>
 				</template>
@@ -109,15 +109,9 @@
 						<div v-if="scope.row.deptName">{{ scope.row.deptName }}</div>
 						<div v-else></div>
 					</template>
-					<!-- <template #amount="scope">
-						<iInput
-							:placeholder="$t('LK_QINGSHURU')"
-							v-model="scope.row.amount"
-							v-if="scope.row.dataType === 'Aeko'"
-							maxlength="20"
-						></iInput>
-						<div v-else>{{ scope.row.amount }}</div>
-					</template> -->
+					<template #amount="scope">
+						<div>{{ $postThousandth(scope.row.amount) }}</div>
+					</template>
 				</iTableList>
 			</template>
 			
@@ -202,7 +196,19 @@ export default {
 				}else{
 					iMessage.error('操作失败')
 				}
+
+				this.$emit("refresh")
 			})
+		},
+		openViewAeko(row){
+			let routeData = this.$router.resolve({
+				path: '/aeko/aekodetail',
+				query: {
+					from: "stance",
+					requirementAekoId: row.requirementAekoId,
+				},
+			})
+			window.open(routeData.href, '_blank')
 		},
 		//  预览RSpdf
 		openViewPdf(scope) {
@@ -283,11 +289,12 @@ export default {
 					return
 				}
 				if (column.property === 'amount') {
+					console.log(column)
 					//  只有金额字段才需要显示总价
 					const values = data.map((item) => Number(item[column.property]))
 					console.log('values', values)
 					if (!values.every((value) => isNaN(value))) {
-						sums[index] = values.reduce((prev, curr) => {
+						const number = values.reduce((prev, curr) => {
 							const value = Number(curr)
 							if (!isNaN(value)) {
 								return prev + curr
@@ -295,6 +302,7 @@ export default {
 								return prev
 							}
 						}, 0)
+						sums[index] = this.$postThousandth(number);
 					} else {
 						sums[index] = 'N/A'
 					}
