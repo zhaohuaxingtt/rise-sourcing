@@ -199,7 +199,12 @@ export default { //
             }
             const targetCsfCssName = targetCsfCss.label || '';
             const targetLinieName = targetLinie.label || '';
-            const nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
+            var nominateLetterIds = [];
+            if(this.$route.path == "/sourceinquirypoint/sourcing/partsletter/loi"){
+                nominateLetterIds = selectItems.map((item)=>item.id);
+            }else{
+                nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
+            }
             const data = {
                 targetCsfCssId,
                 targetLinieId,
