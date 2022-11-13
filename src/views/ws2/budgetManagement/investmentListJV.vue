@@ -622,11 +622,6 @@ export default {
 	computed: {},
 	created() {
 		this.uploadHeader.token = getToken()
-		this.uploadData = {
-			versionId: this.form['search.version']
-		}
-
-
 		// this.isAdd = this.$route.query.id == 'add' ? true : false
 		// this.getInvestmentData()
 		this.params = this.$route.query
@@ -1427,6 +1422,9 @@ export default {
 							this.form['search.version'] = this.versionList[0]
 								? this.versionList[0].id
 								: ''
+							this.uploadData = {
+								versionId: this.form['search.version']
+							}
 						}
 						this.versionName = this.versionList[0]
 							? this.versionList[0].version
