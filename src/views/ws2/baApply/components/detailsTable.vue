@@ -80,7 +80,7 @@
 							<iInput
 								:placeholder="$t('LK_QINGSHURU')"
 								v-model="scope.row.amount"
-								v-if="scope.row.dataType == 'Aeko'"
+								v-if="scope.row.dataType == '手工调整'"
 								maxlength="20"
 							></iInput>
 							<div v-else>{{ $postThousandth(scope.row.amount) }}</div>
