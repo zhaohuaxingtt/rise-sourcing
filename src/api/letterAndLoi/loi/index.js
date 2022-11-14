@@ -73,6 +73,15 @@ export function getloiList(data) {
     })
   }
 
+  // 转派 
+  export function transferLoi(data) {
+    return requst({
+      url: '/loi/transfer',
+      method: 'POST',
+      data,
+    })
+  }
+
   // 编辑备注 
   export function editRemarkLoi(data) {
     return requst({

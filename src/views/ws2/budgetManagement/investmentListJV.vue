@@ -176,7 +176,7 @@
 						}}</iButton>
 
 						<el-upload class="upload-demo"
-								style="display: inline-block; margin-right: 10px"
+								style="display: inline-block; margin-right: 10px;margin-left: 10px"
 								multiple
 								:action="uploadUrl"
 								:headers="uploadHeader"
@@ -543,7 +543,7 @@ export default {
 	},
 	data() {
 		return {
-			uploadUrl: process.env.VUE_APP_TOOLING  + 'investment/import',
+			uploadUrl: process.env.VUE_APP_TOOLING  + '/investment/import',
 			uploadData: {},
 			uploadHeader:{
 				token:""
@@ -622,11 +622,6 @@ export default {
 	computed: {},
 	created() {
 		this.uploadHeader.token = getToken()
-		this.uploadData = {
-			versionId: this.$route.query.id
-		}
-
-
 		// this.isAdd = this.$route.query.id == 'add' ? true : false
 		// this.getInvestmentData()
 		this.params = this.$route.query
@@ -642,7 +637,8 @@ export default {
 
 		},
 		uploadSuccess (res, file) {
-			if (res.code == 200 && res.result) {
+			if (res.result) {
+				iMessage.success(res.desZh);
 				this.getInvestmentVerisionList()
 			} else {
 				if (res.data == null) {
@@ -1426,6 +1422,9 @@ export default {
 							this.form['search.version'] = this.versionList[0]
 								? this.versionList[0].id
 								: ''
+							this.uploadData = {
+								versionId: this.form['search.version']
+							}
 						}
 						this.versionName = this.versionList[0]
 							? this.versionList[0].version

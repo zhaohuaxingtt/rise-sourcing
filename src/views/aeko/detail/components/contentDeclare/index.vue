@@ -216,7 +216,7 @@
 
 
 
-         <!-- <el-form-item
+         <el-form-item
           :label="$t('LK_KESHI')"
         >
           <iSelect
@@ -233,10 +233,10 @@
               :key="index"
             ></el-option>
           </iSelect>
-        </el-form-item> -->
+        </el-form-item>
 
 
-        <!-- <el-form-item
+        <el-form-item
           :label="$t('CAIGOUYUAN')"
         >
           <iSelect
@@ -254,9 +254,9 @@
               :key="index"
             ></el-option>
           </iSelect>
-        </el-form-item> -->
+        </el-form-item>
 
-        <!-- <el-form-item
+        <el-form-item
           :label="$t('MODEL-ORDER.LK_JINKANZIJI')"
         >
           <iSelect
@@ -275,7 +275,7 @@
               :key="index"
             ></el-option>
           </iSelect>
-        </el-form-item> -->
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
@@ -829,26 +829,26 @@ export default {
       singleAssign: [],
 
       fromGroup:{
-        // LINIE_DEPT:[],
-        // LINIE:[],
+        LINIE_DEPT:[],
+        LINIE:[],
       },
-      // lookYourself:[
-      //   {
-      //     code:1,
-      //     name:"是"
-      //   },{
-      //     code:2,
-      //     name:"否"
-      //   }
-      // ],
-      // lookYourselfValue:1,
+      lookYourself:[
+        {
+          code:1,
+          name:"是"
+        },{
+          code:2,
+          name:"否"
+        }
+      ],
+      lookYourselfValue:1,
 
-      // linieValue:'',
+      linieValue:'',
     };
   },
   created() {
-    // this.getDict();
-    // this.getLinie();
+    this.getDict();
+    this.getLinie();
     this.searchCartypeProject();
     this.getDictByCode();
     this.procureFactorySelectVo();
@@ -917,47 +917,47 @@ export default {
   methods: {
     selfChange(val){
       if(val == 1){
-        // this.form.linieDeptId = "";
-        // this.linieValue = "";
-        // this.getLinie();
+        this.form.linieDeptId = "";
+        this.linieValue = "";
+        this.getLinie();
       }else{
 
       }
     },
     deptChange(val){
       // var data = this.fromGroup["LINIE_DEPT"].filter(e=>e.code == val);
-      // this.lookYourselfValue = 2;
-      // this.linieValue = "";
+      this.lookYourselfValue = 2;
+      this.linieValue = "";
       if(!val){
-        // this.getLinie();
+        this.getLinie();
       }else{
         // this.getLinie(data[0].deptNum);
-        // this.getLinie(val);
+        this.getLinie(val);
       }
     },
     getLinie(id){
-      // if(id){
-      //   listLines({
-      //     deptId:id,
-      //   }).then((r) => {
-      //     if (r.code == 200) {
-      //       // this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
-      //     }
-      //   });
-      // }else{
-      //   listLines({}).then((r) => {
-      //     if (r.code == 200) {
-      //       // this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
-      //     }
-      //   });
-      // }
+      if(id){
+        listLines({
+          deptId:id,
+        }).then((r) => {
+          if (r.code == 200) {
+            this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
+          }
+        });
+      }else{
+        listLines({}).then((r) => {
+          if (r.code == 200) {
+            this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
+          }
+        });
+      }
     },
     getDict() {
-      // purchasingDept().then((r) => {
-      //   if (r.code == 200) {
-      //     this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : [];
-      //   }
-      // });
+      purchasingDept().then((r) => {
+        if (r.code == 200) {
+          this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : [];
+        }
+      });
     },
     floatFixNum,
     // 判断是否能操作数据
@@ -1094,20 +1094,20 @@ export default {
     },
     reset() {
       this.page.currPage = 1;
-      // this.lookYourselfValue = 1;
-      // this.linieValue = "";
-      // this.getLinie();
+      this.lookYourselfValue = 1;
+      this.linieValue = "";
+      this.getLinie();
       this.form = cloneDeep(contentDeclareQueryForm);
       this.sure();
     },
     init() {
       this.loading = true;
 
-      // if(this.lookYourselfValue == 1){
-        // this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
-      // }else{
-        // this.form.linieId = this.linieValue
-      // }
+      if(this.lookYourselfValue == 1){
+        this.form.linieId = JSON.parse(sessionStorage.getItem('userInfo')).id;
+      }else{
+        this.form.linieId = this.linieValue
+      }
 
       const form = {};
       Object.keys({

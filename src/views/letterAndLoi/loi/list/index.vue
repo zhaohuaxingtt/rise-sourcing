@@ -29,6 +29,7 @@
         <div class="margin-bottom20 clearFloat">
          <span class="font18 font-weight">{{language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')}}</span>
             <div class="floatright">
+                <iButton v-permission.auto="LK_LOI_LIST_JIHUO_LOI_ZHUANPAI|定点信LOI-转派" @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
                 <iButton v-permission.auto="LK_LOI_LIST_QUERENBINGTIJIAO|LOI-确认并提交"  :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIEQUEREN|LOI-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIETUIHUI|LOI-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -87,6 +88,9 @@
         />
 
     </iCard>
+
+    <!-- 转派弹窗 -->
+    <turnSendDialog :dialogVisible="turnSendVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
     
     <!-- 关闭定点信弹窗 -->
     <closeLoiDialog v-if="closeLoiVisible" :dialogVisible="closeLoiVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
@@ -117,6 +121,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import closeLoiDialog from './components/closeLoiDialog'
+import turnSendDialog from '../../letter/list/components/turnSendDialog'
 import remarkDialog from './components/remarkDialog'
 import {
     getloiList,
@@ -146,10 +151,12 @@ export default {
         remarkDialog,
         icon,
         iMultiLineInput,
-        buttonTableSetting
+        buttonTableSetting,
+        turnSendDialog
     },
     data(){
         return{
+            turnSendVisible:false,
             letterListSearch:loiListSearch,
             searchParams:{
                 showSelf: true,
@@ -184,6 +191,16 @@ export default {
         this.getList();
     },
     methods:{
+        // 转派
+        async turnSend(){
+            const isNext  = await this.isSelectItem(true);
+            if(isNext){
+                this.changeVisible('turnSendVisible',true);
+                console.log(isNext,'OK');
+            }else{
+                console.log(isNext,'CANCEL');
+            }
+        },
         // 获取列表
         async getList(){
             console.log(this.searchParams);
@@ -391,6 +408,7 @@ export default {
                 console.log(isNext,'CANCEL');
             }
         },
+        
 
         // 激活
         async activate(){
