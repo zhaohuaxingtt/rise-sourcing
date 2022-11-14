@@ -345,7 +345,7 @@ export default {
         iMessage.warn('请先勾选')
         return
       }
-      if (this.multipleSelection.some(item => item.approvalStatus == 2)){
+      if (this.multipleSelection.some(item => item.approvalStatus == 2 || item.approvalStatus == 3)){
         iMessage.warn('请勾选未审批的项目')
         return
       }
