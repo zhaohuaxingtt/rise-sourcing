@@ -1,7 +1,7 @@
 <!--审批单--->
 <template>
   <div>
-    <div class="aeko-wrap">
+    <div class="aeko-wrap" v-if="$route.query.key =='rsAeko'">
       <div class="aeko-title" :class="item.value == numberKey?'aekoC':''" v-for="(item,index) in subNavListAeko" :key="index" @click="aekoClick(item)">
         <span>{{$t(item.key)}}</span>
       </div>
