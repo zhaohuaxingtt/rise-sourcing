@@ -5,6 +5,9 @@
     @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog"
     :destroy-on-close="true"
   >
+    <div class="title-name">
+      <iInput v-model="applyTitleName" @change="inputChange"></iInput>
+    </div>
     <div slot="title">
       <div class="iDialog-head">
         <div>{{$t('LK_APPLYBANUMBER')}}</div>
@@ -20,7 +23,7 @@
 
     <slot name="table"></slot>
 
-
+    <slot name="historyTable"></slot>
   </iDialog>
 </template>
 
@@ -28,26 +31,30 @@
 import {
   iDialog,
   iMessage,
-  iButton,
+  iButton,iInput
 } from 'rise'
 
 export default {
   props: {
     visible: {type: Boolean, default: false},
+    // applyTitleName:{
+    //   type:String,
+    //   default:"",
+    // }
   },
   components: {
     iDialog,
-    iButton,
+    iButton,iInput
   },
 
   data(){
     return {
       buttonLoading: false,
+      applyTitleName:"",
     }
   },
 
   methods: {
-
     clearDiolog(){
       this.buttonLoading = false;
       this.$emit('changeLayer', false);
@@ -56,13 +63,22 @@ export default {
     //  确认
     confirm(){
       this.buttonLoading = true;
-      this.$emit('confirm');
+      this.$emit('confirm',this.applyTitleName);
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
+
+.title-name{
+  position: absolute;
+  top: 20px;
+  left: 140px;
+  font-size: 15px;
+  width:450px;
+}
+
 .iDialog{
 
   .head-msg{

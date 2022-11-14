@@ -89,3 +89,31 @@ export function getProductionFactoryPullDown1() {
         method: 'GET',
     })
 }
+
+
+//  ba申请-科室
+export function getDeptList(data) {
+    return VUE_APP_APPLY({
+        url: '/getDeptList',
+        method: 'GET',
+        params: data
+    })
+}
+
+//  ba申请-供应商
+export function getSupplierList(data) {
+    return VUE_APP_APPLY({
+        url: '/getSupplierList',
+        method: 'GET',
+        params: data
+    })
+}
+
+//  BA申请-零件状态修改
+export function updatePartsApply(parmars) {
+    return VUE_APP_APPLY({
+        url: '/updatePartsApply',
+        method: 'POST',
+        data: parmars
+    })
+}
