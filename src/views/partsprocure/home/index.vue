@@ -488,8 +488,12 @@ export default {
     getCartypeDict() {
       getCartypeDict()
         .then((res) => {
-          this.fromGroup["CARTYPE_CATEGORY"] = res.data;
-          this.$forceUpdate();
+          if (res?.data) {
+            this.fromGroup["CARTYPE_CATEGORY"] = res.data;
+            this.$forceUpdate();
+          } else {
+            this.fromGroup["CARTYPE_CATEGORY"] = [];
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -685,8 +689,8 @@ export default {
         if (res.code == 200) {
           this.fromGroup.CAR_TYPE_PRO = Array.isArray(res.data)
             ? res.data.map((item) => ({
-                // code: item.cartypeProCode,
-                code: item.id,
+                code: item.cartypeProCode,
+                id: item.id,
                 name: item.cartypeProName,
               }))
             : [];
