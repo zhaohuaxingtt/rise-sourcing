@@ -1045,4 +1045,10 @@ export default {
     padding-right:16px;
     color:#C0C4CC;
 }
+
+::v-deep .el-form-item__content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: inherit;
+}
 </style>

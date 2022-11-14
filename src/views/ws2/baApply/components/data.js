@@ -11,6 +11,10 @@ export const detailsForm = {
   'locationFactoryId': '',  //  采购工厂
   'startDate': '', //  申请开始时间
   'endDate': '',  //  申请结束时间
+  "partNum":"",//零件号
+  "deptId":"",//专业科室
+  "sourceType":"",//定点来源类型
+  "supplierId":"",//供应商
 }
 
 //  BA申请table表头1
@@ -25,6 +29,12 @@ export const layerTableHead1 = [
     props: 'locationFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
+    tooltip: false
+  },
+  {
+    props: 'dataType',
+    name: '定点来源类型',
+    key: '定点来源类型',
     tooltip: false
   },
   {
@@ -119,6 +129,11 @@ export const detailsTableHead = [
     name: '零件名称',
     key: 'LK_LINGJIANMINGCHENG',
     tooltip: false
+  },{
+    props: 'nomiType',
+    name: 'BA账户类型',
+    key: 'LK_BAACCOUNTTYPE',
+    tooltip: false
   },
   {
     props: 'designatedSupplierName',
@@ -136,6 +151,11 @@ export const detailsTableHead = [
     props: 'approveName',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
+    tooltip: false
+  }, {
+    props: 'sourceType',
+    name: '定点来源类型',
+    key: '定点来源类型',
     tooltip: false
   },
   {
@@ -183,3 +203,76 @@ export const indexTableHead = [{
   width: 150,
   tooltip: false
 }]
+
+
+export const historyTitle1 = [
+  {
+    props: 'carTypeName',
+    name: '车型项目',
+    key: 'LK_CHEXINGXIANGMU',
+    tooltip: false
+  },
+  {
+    props: 'locationFactoryName',
+    name: '采购工厂',
+    key: 'LK_CAIGOUGONGCHANG',
+    tooltip: false
+  },
+  {
+    props: 'dataType',
+    name: '定点来源类型',
+    key: '定点来源类型',
+    tooltip: false
+  },
+  {
+    props: 'deptName',
+    name: '专业科室',
+    key: 'LK_ZHUANYEKESHI',
+    tooltip: false
+  },
+  {
+    props: 'baNum',
+    name: 'BA号分配',
+    key: 'LK_BANUMBERDISTRIBUTION',
+    tooltip: false
+  },
+  {
+    props: 'amount',
+    name: '金额（RMB）',
+    key: 'LK_AMOUNTMONEYRMB',
+    tooltip: false
+  },
+]
+
+export const historyTitle2 = [
+  {
+    props: 'locationFactoryName',
+    name: '采购工厂',
+    key: 'LK_CAIGOUGONGCHANG',
+    tooltip: false
+  },
+  {
+    props: 'dataType',
+    name: '定点来源类型',
+    key: '定点来源类型',
+    tooltip: false
+  },
+  {
+    props: 'deptName',
+    name: '专业科室',
+    key: 'LK_ZHUANYEKESHI',
+    tooltip: false
+  },
+  {
+    props: 'baNum',
+    name: 'BA号分配',
+    key: 'LK_BANUMBERDISTRIBUTION',
+    tooltip: false
+  },
+  {
+    props: 'amount',
+    name: '金额（RMB）',
+    key: 'LK_AMOUNTMONEYRMB',
+    tooltip: false
+  },
+]
