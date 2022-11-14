@@ -27,13 +27,6 @@ export const allBAATableHead = [
     tooltip: false
   },
   {
-    props: 'applicationTitle',
-    name: 'BA申请标题',
-    key: 'BA申请标题',
-    width: 250,
-    tooltip: false
-  },
-  {
     props: 'sixBa',
     name: 'BA单号',
     key: 'LK_BAODDNUMBERS',
@@ -113,12 +106,6 @@ export const waitBAATableHead =[
     tooltip: false
   },
   {
-    props: 'applicationTitle',
-    name: 'BA申请标题',
-    key: 'BA申请标题',
-    tooltip: false
-  },
-  {
     props: 'currentAmount',
     name: '当前金额',
     key: 'LK_CURRENTAMOUNT',
@@ -187,12 +174,6 @@ export const waitAddTableHead = [
     props: 'localFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
-    tooltip: false
-  },
-  {
-    props: 'applicationTitle',
-    name: 'BA申请标题',
-    key: 'BA申请标题',
     tooltip: false
   },
   {

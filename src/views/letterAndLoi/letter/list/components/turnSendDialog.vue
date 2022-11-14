@@ -80,9 +80,6 @@ import {
     getBuyers,
     transfer,
 }from '@/api/letterAndLoi/letter';
-import {
-    transferLoi,
-}from '@/api/letterAndLoi/loi';
 import { getRfqUserInfoList, getRfqDeptList } from '@/api/partsrfq/home'
 export default { //
     name:'turnSendDialog',
@@ -202,12 +199,7 @@ export default { //
             }
             const targetCsfCssName = targetCsfCss.label || '';
             const targetLinieName = targetLinie.label || '';
-            var nominateLetterIds = [];
-            if(this.$route.path == "/sourceinquirypoint/sourcing/partsletter/loi"){
-                nominateLetterIds = selectItems.map((item)=>item.id);
-            }else{
-                nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
-            }
+            const nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
             const data = {
                 targetCsfCssId,
                 targetLinieId,
@@ -216,36 +208,19 @@ export default { //
                 nominateLetterIds,
             };
             this.isLoading = true;
-
-            if(this.$route.path == "/sourceinquirypoint/sourcing/partsletter/loi"){
-                await transferLoi(data).then((res)=>{
-                    this.isLoading = false;
-                    const { code } = res;
-                    if(code==200){
-                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        this.clearDialog();
-                        this.$emit('getList');
-                    }else{
-                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                    }
-                }).catch((err)=>{ 
-                    this.isLoading = false; 
-                })
-            }else{
-                await transfer(data).then((res)=>{
-                    this.isLoading = false;
-                    const { code } = res;
-                    if(code==200){
-                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        this.clearDialog();
-                        this.$emit('getList');
-                    }else{
-                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                    }
-                }).catch((err)=>{ 
-                    this.isLoading = false; 
-                })
-            }
+            await transfer(data).then((res)=>{
+                this.isLoading = false;
+                const { code } = res;
+                if(code==200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.clearDialog();
+                    this.$emit('getList');
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{ 
+                this.isLoading = false; 
+            })
         },
     }
 }

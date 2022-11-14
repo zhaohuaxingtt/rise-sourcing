@@ -44,7 +44,7 @@
           <div class="signItem"><span class="label">Commodity:</span><span class="line"></span></div>
         </el-col>
         <el-col :span="8">
-          <div class="signItem" style="text-align: right"><span class="label">CSQ:</span><span class="line"></span></div>
+          <div class="signItem" style="text-align: right"><span class="label">CSS:</span><span class="line"></span></div>
         </el-col>
         <el-col :span="8" style="padding-right: 0px;">
           <div class="signItem" style="text-align: right"><span class="label">CFC:</span><span class="line"></span></div>

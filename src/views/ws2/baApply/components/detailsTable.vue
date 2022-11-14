@@ -9,12 +9,6 @@
 <template>
 	<div>
 		<div class="page-head">
-			<iButton @click="takeChange(false)">{{
-				$t('SHIXIAO')
-			}}</iButton>
-			<iButton @click="takeChange(true)">{{
-				$t('SHENGXIAO')
-			}}</iButton>
 			<iButton @click="applyBA" :loading="applyLoading">{{
 				$t('LK_APPLYBANUMBER')
 			}}</iButton>
@@ -31,20 +25,14 @@
 				<div>{{ scope.row.baNum === '' ? '无' : scope.row.baNum }}</div>
 			</template>
 			<template #rsNum="scope">
-				<a v-if="scope.row.dataType == 1" @click="openViewPdf(scope.row)" class="detailed">{{
+				<a @click="openViewPdf(scope.row)" class="detailed">{{
 					scope.row.rsNum
 				}}</a>
-				<a class="detailed" v-else @click="openViewAeko(scope.row)">{{scope.row.rsNum}}</a>
 			</template>
-			<template #sourceType="scope">
-				<span>{{scope.row.sourceType==1?"定点":scope.row.sourceType==3?"AEKO增值":scope.row.sourceType==2?"AEKO减值":""}}</span>
-			</template>
-			
 		</iTableList>
 
 		<!-- 申请BA单弹窗 -->
 		<ApplyPopup
-			ref="ApplyPopup"
 			:visible="visible"
 			@changeLayer="changeLayer"
 			@confirm="layerConfirm"
@@ -80,48 +68,21 @@
 							<iInput
 								:placeholder="$t('LK_QINGSHURU')"
 								v-model="scope.row.amount"
-								v-if="scope.row.dataType == '手工调整'"
+								v-if="scope.row.deptName === 'Aeko'"
 								maxlength="20"
 							></iInput>
-							<div v-else>{{ $postThousandth(scope.row.amount) }}</div>
+							<div v-else>{{ scope.row.amount }}</div>
 						</template>
 					</iTableList>
 				</template>
 			</template>
-			<template slot="historyTable">
-				<div class="hTitle">{{$t("历史申请记录")}}</div>
-				<iTableList
-					:tableData="tableLayerListData.historyList"
-					:tableTitle="historyTitleList"
-					:tableLoading="tableLayerLoading"
-					:selection="false"
-					:key="index"
-					style="margin-bottom: 36px"
-					class="baApply-table"
-				>
-					<template #locationFactoryName="scope">
-						<div v-if="scope.row.locationFactoryName">
-							{{ scope.row.locationFactoryName }}
-						</div>
-						<div v-else></div>
-					</template>
-					<template #deptName="scope">
-						<div v-if="scope.row.deptName">{{ scope.row.deptName }}</div>
-						<div v-else></div>
-					</template>
-					<template #amount="scope">
-						<div>{{ $postThousandth(scope.row.amount) }}</div>
-					</template>
-				</iTableList>
-			</template>
-			
 		</ApplyPopup>
 	</div>
 </template>
 
 <script>
 import { tableHeight } from '@/utils/tableHeight'
-import { detailsTableHead, layerTableHead1, layerTableHead2,historyTitle1,historyTitle2 } from './data'
+import { detailsTableHead, layerTableHead1, layerTableHead2 } from './data'
 import { iButton, iMessage, iInput } from 'rise'
 import {
 	getDetail,
@@ -131,10 +92,6 @@ import {
 import ApplyPopup from './applyPopup'
 import store from '@/store'
 import { iTableList } from '@/components'
-import { 
-  updatePartsApply
-} from "@/api/ws2/baApply";
-
 
 export default {
 	props: {
@@ -153,15 +110,11 @@ export default {
 			tableTitle: detailsTableHead,
 			selectTableData: [],
 			visible: false,
-			tableLayerListData: {
-				listDate:[],
-				historyList:[],
-			},
+			tableLayerListData: {},
 			tableLayerTitle: [],
 			tableLayerLoading: false,
 			applyLoading: false,
 			nameList: '',
-			historyTitleList:[],
 		}
 	},
 	mixins: [tableHeight],
@@ -173,43 +126,6 @@ export default {
 	},
 
 	methods: {
-		takeChange(val){//生效
-			if(this.selectTableData.length<1){
-				return iMessage.error(this.$t("LK_BAAPPLYTISP1"))
-			}
-			const t = this.selectTableData.filter(e=>e.moldStatus == 2 || e.moldStatus == 3)
-			if(t.length>0){
-				return iMessage.error(this.$t("勾选数据中存在模具预算状态为审批中或已审批，不能点击此按钮"))
-			}
-
-			const list = this.selectTableData.reduce((a,b)=>{
-				if(a){
-					return [...a,b.id]
-				}
-			},[])
-			updatePartsApply({
-				ids:list,
-				type:val,
-			}).then(res=>{
-				if(res.result){
-					iMessage.success('操作成功')
-				}else{
-					iMessage.error('操作失败')
-				}
-
-				this.$emit("refresh")
-			})
-		},
-		openViewAeko(row){
-			let routeData = this.$router.resolve({
-				path: '/aeko/aekodetail',
-				query: {
-					from: "stance",
-					requirementAekoId: row.requirementAekoId,
-				},
-			})
-			window.open(routeData.href, '_blank')
-		},
 		//  预览RSpdf
 		openViewPdf(scope) {
 			const nomiType = scope.nomiType || '1'
@@ -254,9 +170,8 @@ export default {
 			})
 		},
 
-		layerConfirm(val) {
+		layerConfirm() {
 			const param = {
-				applyTitleName:val,
 				baAccountType: this.$store.state.baApply.baAcountType,
 				baPartsApplyDTOS: this.tableLayerListData.baPartsApplyDTOS,
 				listDate: this.tableLayerListData.listDate,
@@ -289,12 +204,11 @@ export default {
 					return
 				}
 				if (column.property === 'amount') {
-					console.log(column)
 					//  只有金额字段才需要显示总价
 					const values = data.map((item) => Number(item[column.property]))
 					console.log('values', values)
 					if (!values.every((value) => isNaN(value))) {
-						const number = values.reduce((prev, curr) => {
+						sums[index] = values.reduce((prev, curr) => {
 							const value = Number(curr)
 							if (!isNaN(value)) {
 								return prev + curr
@@ -302,7 +216,6 @@ export default {
 								return prev
 							}
 						}, 0)
-						sums[index] = this.$postThousandth(number);
 					} else {
 						sums[index] = 'N/A'
 					}
@@ -318,11 +231,6 @@ export default {
 			if (!this.selectTableData.length) {
 				return iMessage.warn(this.$t('LK_BAAPPLYTISP1'))
 			}
-			const t = this.selectTableData.filter(e=>e.moldStatus == 5)
-			if(t.length>0){
-				return iMessage.error(this.$t("勾选数据中存在模具预算状态为失效，不能点击此按钮"))
-			}
-			
 			const ksy1 =
 				store.state.permission.whiteBtnList[
 					'TOOLING_BUDGET_BAAPPLICATION_TOTAL'
@@ -345,17 +253,12 @@ export default {
 						] //  是否有汇总页面权限
 					this.tableLayerTitle = ksy1 ? layerTableHead1 : layerTableHead2
 					this.tableLayerListData = res.data
-
-					this.historyTitleList = ksy1 ? historyTitle1 : historyTitle2
 					this.visible = true
-					this.$refs.ApplyPopup.applyTitleName = res.data.applyTitleName
 					this.applyLoading = false
 				} else {
 					iMessage.error(result)
 					this.applyLoading = false
 				}
-			}).catch(res=>{
-				this.applyLoading = false
 			})
 		},
 
@@ -390,10 +293,5 @@ export default {
 	text-decoration: underline;
 	font-family: Arial;
 	cursor: pointer;
-}
-.hTitle{
-	margin-bottom: 20px;
-    font-size: 15px;
-    font-weight: bold;
 }
 </style>

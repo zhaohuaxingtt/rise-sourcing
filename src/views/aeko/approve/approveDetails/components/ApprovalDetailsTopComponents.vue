@@ -1,8 +1,8 @@
 <template>
   <div class="margin-bottom25 header-nav" >
     <span class="akeoTitle">{{language('LK_AEKOHAO_APPROVEDETAILS','AEKO号')}}:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
-    <div style="display: flex;justify-content: space-between;align-items: center" v-if="$route.query.key!=='rsAeko'">
-      <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
+    <div style="display: flex;justify-content: space-between;align-items: center">
+      <iNavMvp v-if="show && $route.query.key!=='rsAeko'" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
       <i-button v-if="!disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
       <i-button v-if="show" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
       <switchPost />

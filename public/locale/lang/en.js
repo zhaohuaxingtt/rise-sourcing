@@ -6509,10 +6509,6 @@
 
 		"无需确认":"No confirmation required",
 		"请选择部门":"Please select a department",
-		"定点来源类型":"Nomi. source type",
-		"单据号":"Document No",
-		"历史申请记录":"Historical application record",
-		"BA申请标题":"BA Application Title",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })

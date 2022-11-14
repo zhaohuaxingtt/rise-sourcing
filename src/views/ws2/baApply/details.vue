@@ -13,7 +13,7 @@
     <DetailsSearch @reset="handleReset" @sure="handleSearchSure" />
 
     <iCard>
-      <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" @refresh="refresh" />
+      <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" />
       <div class="unitExplain">
         <UnitExplain />
       </div>
@@ -87,13 +87,7 @@ export default {
       },
       this.handleSure();
     },
-    refresh(){
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      },
-      this.handleSure();
-    },
+
     //  查询
     handleSure(){
       this.tableLoading = true;

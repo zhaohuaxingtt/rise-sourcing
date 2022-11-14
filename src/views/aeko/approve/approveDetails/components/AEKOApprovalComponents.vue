@@ -10,8 +10,7 @@
               {{  approveQueue !== 0 ? language('AEKOQUERENSHENPITIAOZHUANXAIYIYE', '确认审批，将跳转下一页') : language('QUERENSHENPIGUANBICHUANGKOU', '确认审批，窗口将自动关闭') }}
             </span>
           </i-button>
-          <!-- v-if="transferButtonDisplay&&pageCanOption" -->
-          <i-button @click="transfer" v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE_BUTTON_TRANSFER|AEKO审批单详情页面转派按钮"> {{language('LK_ZHUANPAI', '转派')}}</i-button>
+          <i-button @click="transfer" v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE_BUTTON_TRANSFER|AEKO审批单详情页面转派按钮" v-if="transferButtonDisplay&&pageCanOption"> {{language('LK_ZHUANPAI', '转派')}}</i-button>
         </div>
       </div>
       <el-table :data="localAuditItems" stripe>
