@@ -296,6 +296,12 @@ export const detailedTableHead = [
     tooltip: false
   },
   {
+    props: 'sourceType',
+    name: '来源类型',
+    key: '来源类型',
+    tooltip: false
+  },
+  {
     props: 'moldAmount',
     name: '模具定点金额',
     key: 'LK_MODULFIXEDPOINTMONEY',

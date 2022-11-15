@@ -6510,6 +6510,7 @@
 		"无需确认":"No confirmation required",
 		"请选择部门":"Please select a department",
 		"定点来源类型":"Nomi. source type",
+		"来源类型":"Source Type",
 		"单据号":"Document No",
 		"历史申请记录":"Historical application record",
 		"BA申请标题":"BA Application Title",
