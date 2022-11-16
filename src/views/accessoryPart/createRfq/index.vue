@@ -529,6 +529,7 @@ export default {
         rfqId: this.detailData.rfqId,
         spNums: this.tableData.map((item) => item.spnrNum),
         stuffId: this.tableData[0].stuffId,
+        supplierSvwTempCode: this.tableData[0].supplierSvwTempCode,
         supplierSapCodes: this.tableData.map((item) => item.supplierSapCode),
       };
       const res = await autoInquiry(params);
