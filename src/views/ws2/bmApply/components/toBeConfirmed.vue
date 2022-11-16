@@ -42,10 +42,10 @@
         <!-- RS单号 -->
         <template #rsNum="scope">
           <template v-if="scope.row.rsNum == 'AEKO RS单'">
-            <div  @click="goRsList(scope.row)" class="table-link" v-if="scope.row.aekoNum!=='0'">{{scope.row.aekoNum}}</div>
+            <div  @click="goRsList(scope.row)" class="table-txtStyle" v-if="scope.row.aekoNum!=='0'">{{scope.row.aekoNum}}</div>
           </template>
           <template v-else>
-            <div  @click="openViewPdf(scope.row)" class="table-link" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
           </template>
           <!-- <div @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div> -->
         </template>

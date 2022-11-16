@@ -22,10 +22,10 @@
         <template #rsNum="scope">
           <!-- <div @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'? '' :'table-txtStyle' " v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div> -->
           <template v-if="scope.row.rsNum == 'AEKO RS单'">
-            <div  @click="goRsList(scope.row)" class="table-link" v-if="scope.row.aekoNum!=='0'">{{scope.row.aekoNum}}</div>
+            <div  @click="goRsList(scope.row)" class="table-txtStyle" v-if="scope.row.aekoNum!=='0'">{{scope.row.aekoNum}}</div>
           </template>
           <template v-else>
-            <div  @click="openViewPdf(scope.row)" class="table-link" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
           </template>
         </template>
       </iTableList>
