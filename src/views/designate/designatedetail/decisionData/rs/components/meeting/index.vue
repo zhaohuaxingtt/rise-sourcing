@@ -1009,7 +1009,6 @@
               <iInput
                 class="margin-top10"
                 type="textarea"
-                maxlength="3500"
                 :rows="10"
                 resize="none"
                 v-model="remarks[item.type]"
@@ -1030,7 +1029,6 @@
               <iInput
                 class="margin-top10"
                 type="textarea"
-                maxlength="3500"
                 :rows="10"
                 resize="none"
                 v-model="remarks[item.type]"
