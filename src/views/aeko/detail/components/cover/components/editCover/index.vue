@@ -505,8 +505,8 @@ export default {
       const data = {
         ...basicInfo,
         coverCosts: basicInfo.coverCostsWithCarType || [],
-        fsId: basicInfo.fsName.join(","),
-        fsName: fsName.length ? fsName[0].label : basicInfo.getFsName,
+        // fsId: basicInfo.fsName.join(","),
+        // fsName: fsName.length ? fsName[0].label : basicInfo.getFsName,
         requirementAekoId,
         getFsName: undefined,
       };
@@ -698,38 +698,38 @@ export default {
     },
 
     // 指定前期采购员模糊搜索处理
-    dataFilter(val, props) {
-      // 去除前后空格
-      const trimVal = val.trim();
-      const { selectOptions = [], selectOptionsCopy = [] } = this;
-      if (trimVal) {
-        // 人名要特殊处理 --- 可搜索英文去除大小写
-        if (props == "fsList") {
-          const list = selectOptions[props].filter((item) => {
-            if (
-              !!~item.nameZh.indexOf(trimVal) ||
-              (item.nameEn &&
-                !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))
-            ) {
-              return true;
-            }
-          });
-          this.selectOptions[props] = list;
-        }
-      } else {
-        this.selectOptions[props] = selectOptionsCopy[props];
-      }
-    },
-    selectVisibleChange(visible, key) {
-      switch (key) {
-        case "fsList":
-          if (!visible) {
-            this.selectOptions["fsList"] = this.selectOptionsCopy["fsList"];
-          }
-          break;
-        default:
-      }
-    },
+    // dataFilter(val, props) {
+    //   // 去除前后空格
+    //   const trimVal = val.trim();
+    //   const { selectOptions = [], selectOptionsCopy = [] } = this;
+    //   if (trimVal) {
+    //     // 人名要特殊处理 --- 可搜索英文去除大小写
+    //     if (props == "fsList") {
+    //       const list = selectOptions[props].filter((item) => {
+    //         if (
+    //           !!~item.nameZh.indexOf(trimVal) ||
+    //           (item.nameEn &&
+    //             !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))
+    //         ) {
+    //           return true;
+    //         }
+    //       });
+    //       this.selectOptions[props] = list;
+    //     }
+    //   } else {
+    //     this.selectOptions[props] = selectOptionsCopy[props];
+    //   }
+    // },
+    // selectVisibleChange(visible, key) {
+    //   switch (key) {
+    //     case "fsList":
+    //       if (!visible) {
+    //         this.selectOptions["fsList"] = this.selectOptionsCopy["fsList"];
+    //       }
+    //       break;
+    //     default:
+    //   }
+    // },
 
     // 未保存的情况下 是否相关 字段禁用
     selectDisabled(type) {
@@ -750,15 +750,15 @@ export default {
       this.getDetail();
       resetCover(data);
     },
-    handleMultipleChange(val, props, multiple) {
-      if (props == "fsName" && multiple) {
-        const list = this.selectOptionsCopy["fsList"] || [];
-        const filterList = list.filter((item) => val.includes(item.value));
-        this.basicInfo["getFsName"] = filterList
-          .map((item) => item.label)
-          .join(",");
-      }
-    },
+    // handleMultipleChange(val, props, multiple) {
+    //   if (props == "fsName" && multiple) {
+    //     const list = this.selectOptionsCopy["fsList"] || [];
+    //     const filterList = list.filter((item) => val.includes(item.value));
+    //     this.basicInfo["getFsName"] = filterList
+    //       .map((item) => item.label)
+    //       .join(",");
+    //   }
+    // },
   },
 };
 </script>
