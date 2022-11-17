@@ -289,39 +289,31 @@ export default {
     },
     trnaslateDataForView(data, vmdata) {
       const parmars = ["rate", "externaFee", "addFee", "confirmCycle", "memo"];
-
       vmdata.forEach((vmitems, vmindex) => {
         const templateTitleLast = JSON.parse(
           JSON.stringify(this.templateScoreTitle)
         );
         this.translateTile(vmindex, vmitems, parmars, templateTitleLast);
       });
-
       data.forEach((items, index) => {
         items.companyAddressAndCode =
           items.companyAddressCode + items.companyAddress;
-        vmdata.forEach((vmitems, vmindex) => {
+        items.rateEntity.forEach((vmitems, vmindex) => {
           const obj = {};
           parmars.forEach((item) => {
-            // vmitems[item+(vmindex?vmindex:'')] = vmitems[item]
-            obj[item + (vmindex ? vmindex : "")] = items.rateEntity
-              ? items.rateEntity[vmindex]
-                ? items.rateEntity[vmindex][item]
-                : items.rateEntity[vmindex]
-              : "";
+            obj[item + (vmitems.rateDepartNum ? vmitems.rateDepartNum : "")] =
+              items.rateEntity[vmindex][item] || "";
           });
           items = Object.assign(items, obj);
         });
       });
-
       return data;
     },
     translateTile(index, data, parmars, templateTitleLast) {
       templateTitleLast.name = data.rateDepartNum;
       templateTitleLast.list.forEach((items) => {
-        // parmars.forEach(v=>{
-        items.props = items.props + (index ? index : "");
-        // })
+        items.props =
+          items.props + (data.rateDepartNum ? data.rateDepartNum : "");
       });
       this.tableTitle.push(templateTitleLast);
     },
@@ -423,7 +415,6 @@ export default {
     },
     cancel() {
       this.editStatus = false;
-      console.log(this.tableListData);
       this.supplierProducePlaces = this.tableListData.map((item) => {
         return {
           key: item.companyAddressCode,
