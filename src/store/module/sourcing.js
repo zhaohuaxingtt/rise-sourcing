@@ -423,6 +423,18 @@ const state = {
 			permissionName: '模具目标价',
 			group: 2,
 		},
+    {
+			value: 3,
+			name: '零件经销价',
+			message: 0,
+			url: '/targetpriceandscore/productionCapacity',
+			activePath: 'productionCapacity',
+			key: 'partsprocure.LJJXJ',
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE',
+			// permissionKey: 'FINANCIALMANAGE_MENU_PRODUCTIONCAPACITY',
+			permissionName: '零件经销价',
+			group: 3,
+		},
 	],
 	financialmanageThirdMenu: [
 		{
