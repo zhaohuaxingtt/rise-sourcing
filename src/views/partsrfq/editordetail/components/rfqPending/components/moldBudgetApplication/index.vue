@@ -25,7 +25,7 @@
         <el-popover
           v-else
           placement="right"
-          trigger="click"
+          trigger="hover"
           content="请确保申请预算和实际投资费在同一零件上（定点校验零件模具投资费是否小于等于已审批投资预算）"
         >
           <icon
