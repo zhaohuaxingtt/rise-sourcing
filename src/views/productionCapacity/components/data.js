@@ -29,7 +29,7 @@ export const tabRouterList = [
     url: '/targetpriceandscore/productionCapacity',
     activePath: 'productionCapacity',
     key: 'partsprocure.LJJXJ',
-    permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE',
+    permissionKey: 'FINANCIALMANAGE_MENU_PRODUCTIONCAPACITY',
     // permissionKey: 'FINANCIALMANAGE_MENU_PRODUCTIONCAPACITY',
     permissionName: '零件经销价',
     group: 3,
