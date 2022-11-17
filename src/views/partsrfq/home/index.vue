@@ -107,7 +107,7 @@
               clearable
               filterable
               :placeholder="language('LK_QINGXUANZE', '请选择')"
-              v-model="form.carType"
+              v-model="form.carTypeProjectId"
             >
               <el-option
                 value=""
@@ -115,8 +115,8 @@
               ></el-option>
               <el-option
                 v-for="items in carTypeOptions"
-                :key="items.code"
-                :value="items.code"
+                :key="items.id"
+                :value="items.id"
                 :label="items.name"
               />
             </iSelect>
@@ -595,7 +595,7 @@ export default {
         searchConditions: "",
         rfqId: "",
         rfqName: "",
-        carType: "",
+        carTypeProjectId: "",
         partType: "",
         partName: "",
         rfqStatus: "",
@@ -998,6 +998,7 @@ export default {
         if (res.code == 200) {
           this.carTypeOptions = Array.isArray(res.data)
             ? res.data.map((item) => ({
+                id: item.id,
                 code: item.cartypeProCode,
                 name: item.cartypeProName,
               }))

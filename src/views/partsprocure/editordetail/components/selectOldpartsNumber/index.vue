@@ -96,11 +96,11 @@ export default {
     getPageData() {
       this.loading = true;
       console.log(this.fsNum);
-      let { oldPartNum, carTypeProjectNum, procureFactory } =
+      let { oldPartNum, carTypeProjectId, procureFactory } =
         this.detailData() || {};
       getPageData({
         fsNum: this.fsNum,
-        carTypeProject: carTypeProjectNum,
+        carTypeProjectId: carTypeProjectId,
         partNum: oldPartNum,
         procureFactory: procureFactory,
         current: this.page.currPage,
