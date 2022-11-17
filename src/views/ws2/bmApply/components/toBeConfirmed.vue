@@ -41,7 +41,13 @@
 
         <!-- RS单号 -->
         <template #rsNum="scope">
-          <div @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div>
+          <template v-if="scope.row.rsNum == 'AEKO RS单'">
+            <div  @click="goRsList(scope.row)" class="table-txtStyle" v-if="scope.row.aekoNum!=='0'">{{scope.row.aekoNum}}</div>
+          </template>
+          <template v-else>
+            <div  @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
+          </template>
+          <!-- <div @click="openViewPdf(scope.row)" class="table-txtStyle" v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div> -->
         </template>
       </iTableList>
 
@@ -131,7 +137,30 @@ export default {
   },
 
   methods: {
-    
+    goRsList(row){
+      const roleList = this.$store.state.permission.userInfo;
+      let transmitObj = {
+          option: 4,
+          aekoApprovalDetails: {
+            linieId: row.linieId,
+            aekoNum: row.aekoNum,
+            requirementAekoId: row.requirementAekoId,
+            aekoManageId: row.aekoManageId,
+            workFlowDTOS:[]
+          }
+      }
+      let routeData = this.$router.resolve({
+        path: `/aeko/AEKOApprovalDetails`,
+        query: {
+          from:'aekodetail',
+          key:"rsAeko",
+          requirementAekoId: row.requirementAekoId,
+          aekoManageId: row.aekoManageId,
+          transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+        }
+      })
+      window.open(routeData.href, '_blank')
+    },
     //  预览RSpdf
     openViewPdf(scope){
       const roleList = this.$store.state.permission.userInfo.roleList;

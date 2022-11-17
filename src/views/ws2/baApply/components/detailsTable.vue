@@ -328,7 +328,15 @@ export default {
 					'TOOLING_BUDGET_BAAPPLICATION_TOTAL'
 				] //  是否有汇总页面权限
 			const key = ksy1 ? 'carTypeName' : 'locationFactoryName'
-			this.nameList = this.selectTableData.map((item) => item[key]).join('、')
+
+			var name = [];
+			this.selectTableData.forEach(e=>{
+				if(name.some(item => item === e[key])){}else{
+					name.push(e[key]);
+				}
+			})
+			this.nameList = name.join('、')
+			// this.nameList = this.selectTableData.map((item) => item[key]).join('、')
 			this.getDetail()
 		},
 
