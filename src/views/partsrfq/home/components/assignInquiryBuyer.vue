@@ -79,6 +79,7 @@ export default {
       deptOptions: [],
       loading: false,
       deptCode: "",
+      deptItem: {},
       deptLoading: false,
       linieLoading: false,
     };
@@ -102,6 +103,8 @@ export default {
     },
     getUserList() {
       this.linieLoading = true;
+      this.deptItem =
+        this.deptOptions.find((item) => item.code == this.deptCode) || {};
       getRfqUserInfoList({ deptId: this.deptCode }).then((res) => {
         if (res.result) {
           this.userOptions = res.data?.map((item) => {
@@ -128,11 +131,13 @@ export default {
         return;
       }
       this.loading = true;
-      this.$emit(
-        "handleConfirm",
-        this.userId,
-        this.userOptions?.find((item) => item.value === this.userId)?.label
-      );
+      this.$emit("handleConfirm", {
+        userId: this.userId,
+        userName: this.userOptions?.find((item) => item.value === this.userId)
+          ?.label,
+        linieDept: this.deptItem.deptNum || "",
+        linieDeptName: this.deptItem.name || "",
+      });
     },
     changeLoading(loading) {
       this.loading = loading;

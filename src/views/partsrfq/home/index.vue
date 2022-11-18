@@ -649,11 +649,13 @@ export default {
     ...mapActions(["updateNavList"]),
   },
   methods: {
-    handleTransferConfirm(userId, userName) {
+    handleTransferConfirm(options) {
       const params = {
         rfqIds: this.rfqIds,
         updateUserType: this.inquiryBuyerDialogType === "1" ? "0" : "1",
-        userId,
+        userId: options.userId,
+        linieDept: options.linieDept,
+        linieDeptName: options.linieDeptName,
       };
       transferRfq(params)
         .then((res) => {
