@@ -341,7 +341,7 @@ export default {
       isEdit: true,
       basicTitle: previewBaicFrom,
       basicInfo: {
-        fsName: [],
+        // fsName: [],
         isReference: "",
       },
       selectOptions: {
@@ -418,7 +418,9 @@ export default {
           this.tableLoading = false;
           const { code, data = {} } = res;
           if (code == 200) {
-            const { fsId = "", coverCostsWithCarType = [], fsName } = data;
+            // const { fsId = "", coverCostsWithCarType = [], fsName } = data;
+            // const { fsId = "", coverCostsWithCarType = [] } = data;
+            const { coverCostsWithCarType = [] } = data;
 
             const costData = cloneDeep(coverCostsWithCarType);
             costData.map((item) => {
@@ -439,8 +441,8 @@ export default {
             this.basicInfo = {
               ...data,
               coverCostsWithCarType: costData,
-              fsName: fsId && fsId.split(","),
-              getFsName: fsName,
+              // fsName: fsId && fsId.split(","),
+              // getFsName: fsName,
             };
 
             this.tableData = costData;
@@ -498,7 +500,7 @@ export default {
     async save(type = "save") {
       const { basicInfo, selectOptions } = this;
       const { fsList = [] } = selectOptions;
-      const fsName = fsList.filter((item) => item.value == basicInfo.fsName);
+      // const fsName = fsList.filter((item) => item.value == basicInfo.fsName);
       const { query } = this.$route;
       const { requirementAekoId = "" } = query;
       // 指定前期采购员参数需要处理一下
