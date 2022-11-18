@@ -408,14 +408,14 @@ export default {
         }
       });
       if (isXTR && isPFR) {
-        // 协调人&评分人（包含 JZSPFR、ZLPFR任一角色，且包含JSPFXTY、ZLPFXTY任一角色）：默认查询 待评分、待提交、待审批
+        // 协调人&评分人（包含 JZSPFR、ZLPFR任一角色，且包含JSPFXTY、ZLPFXTY任一角色）：默认查询 待评分、待提交、待审核
         this.form.rateStatus = [
           "WATING_FOR_RATING", // 待评分
           "WATING_FOR_SUBMIT", // 待提交
-          "RATING_FOR_AUDITING", // 待审批
+          "RATING_FOR_AUDITING", // 待审核
         ];
       } else if (isXTR) {
-        // 仅协调人（包含JSPFXTY、ZLPFXTY任一角色，但不包含JZSPFR、ZLPFR）：默认查询 待审批
+        // 仅协调人（包含JSPFXTY、ZLPFXTY任一角色，但不包含JZSPFR、ZLPFR）：默认查询 待审核
         this.form.rateStatus = ["RATING_FOR_AUDITING"];
       } else if (isPFR) {
         // 仅评分人（包含 JZSPFR、ZLPFR任一角色，但不包含JSPFXTY、ZLPFXTY）：默认查询待评分、待提交

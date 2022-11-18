@@ -58,7 +58,7 @@
           "
           >{{ language("LK_TIJIAO", "提交") }}</iButton
         >
-        <!-- 批准 驳回 该评分任务的协调人 待审批 -->
+        <!-- 批准 驳回 该评分任务的协调人 待审核 -->
         <iButton
           v-if="rfqInfo.hasShowApprove"
           :loading="approveLoading"
@@ -691,7 +691,7 @@ export default {
     // 批准
     async handleApprove() {
       const rfqBdlRateIds = this.tableListData
-        .filter((item) => ["待审批"].includes(item.rateStatus))
+        .filter((item) => ["待审核"].includes(item.rateStatus))
         .map((item) => item.id);
       this.approveLoading = true;
 
@@ -723,7 +723,7 @@ export default {
       this.$refs.rejectDialog.updateConfirmLoading(true);
 
       const rfqBdlRateIds = this.tableListData
-        .filter((item) => ["待审批"].includes(item.rateStatus))
+        .filter((item) => ["待审核"].includes(item.rateStatus))
         .map((item) => item.id);
 
       rejectRfqBdlRatings({
