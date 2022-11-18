@@ -573,6 +573,7 @@ export default {
     // 重置
     reset() {
       this.form = cloneDeep(queryForm);
+      this.setDefault();
       this.page.currPage = 1;
       this.searchRfqBdlRatings();
     },
