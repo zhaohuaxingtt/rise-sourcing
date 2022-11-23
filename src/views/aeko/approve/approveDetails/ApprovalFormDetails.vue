@@ -72,9 +72,7 @@ export default {
     this.queryParams = this.$route.query
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
-    this.aekoInfo = {
-      aekoNo:this.transmitObj.aekoApprovalDetails.aekoNum
-    }
+    this.aekoInfo = this.transmitObj.aekoApprovalDetails
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
     // option: 1:待审批, 2:已审批, 3: CSF分配人查看审批单, 4:Linie预览审批单, 5: AEKO查看-审批单查看
     if (this.transmitObj.option===1) {  // 查看待审批
