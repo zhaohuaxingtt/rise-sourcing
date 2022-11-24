@@ -64,9 +64,9 @@ Vue.directive('permission', {
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
 
-      if (splitValue.length > 1) {
-        // store.dispatch('uploadResource', splitValue)
-      }
+      // if (splitValue.length > 1) {
+      // store.dispatch('uploadResource', splitValue)
+      // }
       if (!store.state.permission.whiteBtnList[pagePermission]) {
         if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       } else {
