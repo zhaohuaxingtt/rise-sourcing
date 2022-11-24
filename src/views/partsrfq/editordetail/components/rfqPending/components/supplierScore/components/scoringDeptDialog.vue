@@ -520,7 +520,8 @@ export default {
       });
       if (msg) return iMessage.warn(msg);
       if (this.customAction) {
-        this.$emit("handleSave", list);
+        // RFQ 管理页面 转派任务评分
+        this.$emit("handleSave", this.multipleSelection);
       } else {
         this.saveLoading = true;
         saveRfqRateDeparts({
