@@ -338,3 +338,40 @@ export const approveReCordTableTitle = [
   { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true,minWidth:180, _headerRequiredRight: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true,width: 100 },
 ]
+// aeko 审批类型
+export const aekoApproveTypes = [
+  { id: '1', name: '封面表态+推荐表', key: 'LK_FENGMIANBIAOTAITUIJIANBIAO' },
+  { id: '2', name: '封面表态', key: 'LK_FENGMIANBIAOTAI' },
+  { id: '3', name: '推荐表', key: 'LK_TUIJIANBIAO' },
+]
+// 解释附件表头
+export const attachTableTitle = [
+  {
+    props: 'fileName',
+    name: '文件名',
+    nameEN: 'File Name',
+    key: 'LK_WENJIANMING',
+    tooltip: false
+  },
+  {
+    props: 'fileSize',
+    name: '大小',
+    nameEN: 'File Size',
+    key: 'DAXIAO',
+    tooltip: false
+  },
+  {
+    props: 'createDate',
+    name: '上传日期',
+    nameEN: 'Upload Date',
+    key: 'LK_SHANGCHUANRIQI',
+    tooltip: false
+  },
+  {
+    props: 'userName',
+    name: '上传人',
+    nameEN: 'Upload Person',
+    key: 'LK_SHANGCHUANREN',
+    tooltip: false
+  }
+]
