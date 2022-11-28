@@ -9,8 +9,16 @@
   <iCard class="attachment margin-bottom25">
     <div class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
-        {{ language("Attachment", "Attachment") }}</span
-      >
+        {{ language("Attachment", "Attachment") }}
+      </span>
+      <template v-if="!nominationDisabled">
+        <template v-if="!$store.getters.isPreview">
+          -
+          <span class="tip">{{
+            $t("为获得更好的展示效果，建议上传pdf格式文件")
+          }}</span>
+        </template>
+      </template>
       <div class="floatright">
         <!-- 下载 -->
         <iButton
