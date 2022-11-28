@@ -6,80 +6,136 @@
 <template>
   <iPage class="designateHome">
     <!-- <div class="headerNav-wraper margin-bottom10 margin-top20 margin-left20 margin-right20"> -->
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">
-          {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
+    <div class="margin-bottom20 clearFloat">
+      <span class="font18 font-weight">
+        {{
+          mode === "add"
+            ? language("XINJIANQIANZIDAN", "新建签字单")
+            : language("LK_QIANZIDAN", "签字单")
+        }}</span
+      >
+      <div class="floatright">
+        <span v-if="mode === 'add'">
+          <iButton
+            :loading="updateLoading"
+            @click="save"
+            v-permission.auto="
+              SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE | 签字单详情保存
+            "
+          >
+            {{ language("BAOCUN", "保存") }}
+          </iButton>
+          <iButton
+            :loading="updateLoading"
+            @click="submit"
+            v-permission.auto="
+              SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT | 签字单详情提交
+            "
+          >
+            {{ language("LK_TIJIAO", "提交") }}
+          </iButton>
+          <iButton
+            v-permission.auto="
+              SOURCING_NOMINATION_SIGNSHEET_BACKEDIT | 签字单详情编辑返回
+            "
+            @click="
+              $router.push({ path: '/sourcing/partsnomination/signSheet' })
+            "
+          >
+            {{ language("FANHUI", "返回") }}
+          </iButton>
+        </span>
+        <span v-else>
+          <iButton
+            v-permission.auto="
+              SOURCING_NOMINATION_SIGNSHEET_BACK | 签字单详情返回
+            "
+            @click="
+              $router.push({ path: '/sourcing/partsnomination/signSheet' })
+            "
+          >
+            {{ language("LK_FANHUI", "返回") }}
+          </iButton>
+        </span>
+        <iLoger
+          ref="log"
+          :config="{ bizId_obj_ae: 'id', queryParams: ['bizId_obj_ae'] }"
+          isPage
+          :isUser="true"
+          class="margin-left20"
+        />
+      </div>
+      <headerNav />
+    </div>
+    <div class="headerNav-sub margin-top30 margin-bottom30">
+      <iTabsList type="card" v-model="tab">
+        <el-tab-pane
+          v-for="(tab, $index) in tabs"
+          :key="$index"
+          :label="tab.name"
+          :name="tab.key"
         >
-        <div class="floatright">
-          <span v-if="mode === 'add'">
-            <iButton :loading="updateLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
-              {{ language("BAOCUN",'保存') }}
-            </iButton>
-            <iButton :loading="updateLoading" @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
-              {{ language("LK_TIJIAO",'提交') }}
-            </iButton>
-            <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACKEDIT|签字单详情编辑返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-              {{ language("FANHUI",'返回') }}
-            </iButton>
-          </span>
-          <span v-else>
-            <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACK|签字单详情返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-              {{ language("LK_FANHUI",'返回') }}
-            </iButton>
-          </span>
-          <iLoger ref="log" :config="{ bizId_obj_ae: 'id',queryParams:['bizId_obj_ae']}" isPage  :isUser="true" class="margin-left20" />
-        </div>
-        <headerNav />
-      </div>
-      <div class="headerNav-sub margin-top30 margin-bottom30">
-        <iTabsList type="card" v-model="tab">
-          <el-tab-pane v-for="(tab, $index) in tabs" :key="$index" :label="tab.name" :name="tab.key">
-            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" @deleteData="deleteData" /></div>
-          </el-tab-pane>
-        </iTabsList>
-      </div>
-      <!-- <router-view ref="signSheetCom"></router-view> -->
+          <div class="margin-top20">
+            <component
+              :ref="tab.key"
+              :is="tab.component"
+              :description.sync="description"
+              @deleteData="deleteData"
+            />
+          </div>
+        </el-tab-pane>
+      </iTabsList>
+    </div>
+    <!-- <router-view ref="signSheetCom"></router-view> -->
     <!-- </div> -->
   </iPage>
 </template>
 <script>
-import {MENU, heaederSubMenu} from './components/data'
+import { MENU, heaederSubMenu } from "./components/data";
 import {
   // icon,
   iTabsList,
   iButton,
   iPage,
-  iMessage
+  iMessage,
 } from "rise";
-import { clickMessage } from "@/views/partsign/home/components/data"
-import partDesignateOrders from "@/views/designate/home/signSheet/details"
-import MTZDesignateOrders from "@/views/designate/home/signSheet/mtzDetails"
-import { saveSignSheet, submitSignSheet } from '@/api/designate/nomination/signsheet'
-import iLoger from 'rise/web/components/iLoger'
-
+import { clickMessage } from "@/views/partsign/home/components/data";
+import partDesignateOrders from "@/views/designate/home/signSheet/details";
+import MTZDesignateOrders from "@/views/designate/home/signSheet/mtzDetails";
+import ChipDesignateOrders from "@/views/designate/home/signSheet/chipDetails";
+import {
+  saveSignSheet,
+  submitSignSheet,
+} from "@/api/designate/nomination/signsheet";
+import iLoger from "rise/web/components/iLoger";
 
 // eslint-disable-next-line no-undef
 export default {
   data() {
     return {
       heaederSubMenu,
-      tab: 'partDesignateOrders',
-      mode: this.$route.query.mode || '',
+      tab: "partDesignateOrders",
+      mode: this.$route.query.mode || "",
       tabs: [
         {
-          key:'partDesignateOrders',
-          name:'零件定点申请单',
+          key: "partDesignateOrders",
+          name: "零件定点申请单",
           component: partDesignateOrders,
         },
         {
-          key:'MTZDesignateOrders',
-          name:'MTZ定点申请单',
+          key: "MTZDesignateOrders",
+          name: "MTZ定点申请单",
           component: MTZDesignateOrders,
-        }
+        },
+        {
+          key: "ChipDesignateOrders",
+          name: "芯片定点申请单",
+          component: ChipDesignateOrders,
+        },
       ],
       description: "",
-      updateLoading: false
-    }
+      updateLoading: false,
+    };
   },
   components: {
     // icon,
@@ -89,86 +145,107 @@ export default {
     iMessage,
     partDesignateOrders,
     MTZDesignateOrders,
-    iLoger
+    iLoger,
   },
   created() {
-    const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
-    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
-    this.updateNavList
+    const heaederSubMenuItem = this.heaederSubMenu.find(
+      (o) => o.path === this.$route.path
+    );
+    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : "nomination";
+    this.updateNavList;
   },
   methods: {
-    change() {
-    },
+    change() {},
     // tab切换
-    handleTabClick(){
-      const { query } =  this.$route;
-      const path = this.heaederSubMenu.find(o => o.key === this.tab).path
+    handleTabClick() {
+      const { query } = this.$route;
+      const path = this.heaederSubMenu.find((o) => o.key === this.tab).path;
       this.$router.push({
-          path,
-          query,
+        path,
+        query,
       });
     },
     save() {
       const params = {
         signId: this.$route.query.id,
-        description: this.description
-      }
+        description: this.description,
+      };
 
-      params.nominateIdArr = Array.isArray(this.$refs.partDesignateOrders[0].tableListData) ? this.$refs.partDesignateOrders[0].tableListData.map(item => item.id) : []
-      params.mtzApplyIdAttr = Array.isArray(this.$refs.MTZDesignateOrders[0].tableListData) ? this.$refs.MTZDesignateOrders[0].tableListData.map(item => item.id) : []
+      params.nominateIdArr = Array.isArray(
+        this.$refs.partDesignateOrders[0].tableListData
+      )
+        ? this.$refs.partDesignateOrders[0].tableListData.map((item) => item.id)
+        : [];
+      params.mtzApplyIdAttr = Array.isArray(
+        this.$refs.MTZDesignateOrders[0].tableListData
+      )
+        ? this.$refs.MTZDesignateOrders[0].tableListData.map((item) => item.id)
+        : [];
 
-      this.updateLoading = true
+      this.updateLoading = true;
       saveSignSheet(params)
-      .then(res => {
-        if (res.code == 200) {
-          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          this.$refs.partDesignateOrders[0].getChooseData()
-          this.$refs.partDesignateOrders[0].getSignSheetDetails()
-          this.$refs.MTZDesignateOrders[0].getTableData()
-          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .finally(() => this.updateLoading = false)
+        .then((res) => {
+          if (res.code == 200) {
+            iMessage.success(
+              this.$i18n.locale === "zh" ? res.desZh : res.desEn
+            );
+            this.$refs.partDesignateOrders[0].getChooseData();
+            this.$refs.partDesignateOrders[0].getSignSheetDetails();
+            this.$refs.MTZDesignateOrders[0].getTableData();
+            this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .finally(() => (this.updateLoading = false));
       // this.$refs.signSheetCom.handleSave()
     },
     async submit() {
       const params = {
-        signIdArr: [ this.$route.query.id ],
-      }
+        signIdArr: [this.$route.query.id],
+      };
 
-      const confirmInfo = await this.$confirm(this.language('QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU', '请确定提交之前已经保存数据？'))
-      if (confirmInfo !== 'confirm') return
+      const confirmInfo = await this.$confirm(
+        this.language(
+          "QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU",
+          "请确定提交之前已经保存数据？"
+        )
+      );
+      if (confirmInfo !== "confirm") return;
 
-      this.updateLoading = true
+      this.updateLoading = true;
       submitSignSheet(params)
-      .then(res => {
-        if (res.code == 200) {
-          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          this.$refs.partDesignateOrders[0].getChooseData()
-          this.$refs.partDesignateOrders[0].getSignSheetDetails()
-          this.$refs.MTZDesignateOrders[0].getTableData()
-          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .finally(() => this.updateLoading = false)
+        .then((res) => {
+          if (res.code == 200) {
+            iMessage.success(
+              this.$i18n.locale === "zh" ? res.desZh : res.desEn
+            );
+            this.$refs.partDesignateOrders[0].getChooseData();
+            this.$refs.partDesignateOrders[0].getSignSheetDetails();
+            this.$refs.MTZDesignateOrders[0].getTableData();
+            this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .finally(() => (this.updateLoading = false));
 
       // this.$refs.signSheetCom.handleSubmit()
     },
     remove() {
-      this.$refs.signSheetCom.handleRemove()
+      this.$refs.signSheetCom.handleRemove();
     },
     // 通过待办数跳转
     clickMessage,
     // 关联删除mtz
     deleteData(data) {
-      if (Array.isArray(data)) this.$refs.MTZDesignateOrders[0].forceDelete(data.map(item => item.mtzApplyId))
-    }
-  }
-}
+      if (Array.isArray(data))
+        this.$refs.MTZDesignateOrders[0].forceDelete(
+          data.map((item) => item.mtzApplyId)
+        );
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -177,7 +254,7 @@ export default {
   justify-content: space-between;
   position: relative;
   &:after {
-    content: '';
+    content: "";
     width: 100%;
     height: 1px;
     display: block;
@@ -197,7 +274,7 @@ export default {
         line-height: 25px;
         &:after {
           display: inline-block;
-          content: '';
+          content: "";
           width: 1px;
           height: 16px;
           background: #000000;
@@ -205,7 +282,7 @@ export default {
           position: absolute;
           right: 0px;
           top: 50%;
-          margin-top: -8px
+          margin-top: -8px;
         }
         &:last-child {
           padding-right: 0px;
@@ -256,7 +333,7 @@ export default {
     }
   }
 }
-.pull-right{
+.pull-right {
   float: right;
 }
 </style>
