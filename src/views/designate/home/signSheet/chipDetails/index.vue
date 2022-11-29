@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2022-11-29 22:13:17
+ * @LastEditTime: 2022-11-29 22:27:09
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -10,28 +10,15 @@
   <div>
     <iCard class="margin-top20">
       <el-form :inline="true" :model="infoForm" label-position="left">
-        <el-form-item
-          style="width: 300px; margin-right: 68px"
-          :label="language('QIANZIDANHAO', '签字单号')"
-        >
+        <el-form-item style="width: 300px; margin-right: 68px" :label="language('QIANZIDANHAO', '签字单号')">
           <iInput v-model="infoForm.signCode" :disabled="true" />
         </el-form-item>
-        <el-form-item
-          style="width: 300px; margin-right: 68px"
-          :label="language('ZHUANGTAI', '状态')"
-        >
+        <el-form-item style="width: 300px; margin-right: 68px" :label="language('ZHUANGTAI', '状态')">
           <iInput v-model="infoForm.statusDesc" :disabled="true" />
         </el-form-item>
-        <el-form-item
-          style="width: 500px; margin-right: 68px"
-          :label="language('CAOGAO', '草稿')"
-        >
-          <iInput
-            style="width: 300px"
-            v-model="infoForm.description"
-            :placeholder="language('QINGSHURUMIAOSHU', '请输入描述')"
-            @input="handleInputByDescription"
-          />
+        <el-form-item style="width: 500px; margin-right: 68px" :label="language('CAOGAO', '草稿')">
+          <iInput style="width: 300px" v-model="infoForm.description"
+            :placeholder="language('QINGSHURUMIAOSHU', '请输入描述')" @input="handleInputByDescription" />
         </el-form-item>
       </el-form>
     </iCard>
@@ -40,30 +27,22 @@
         <p class="headTitle">{{ language("XIANGQINGLIEBIAO", "详情列表") }}</p>
         <span class="buttonBox" v-if="$route.query.mode === 'add'">
           <iButton @click="handleClickChoose">{{
-            language("XUANZE", "选择")
+              language("XUANZE", "选择")
           }}</iButton>
           <iButton @click="handleRemove">{{
-            language("YICHU", "移除")
+              language("YICHU", "移除")
           }}</iButton>
         </span>
       </div>
-      <tableList
-        class="margin-top20"
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="loading"
-        :index="true"
-        @handleSelectionChange="handleSelectionChange"
-      >
+      <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"
+        :index="true" @handleSelectionChange="handleSelectionChange">
+        <template #appType="scope">
+          {{ scope.row.appType == '1' ? $t('定点') : $t('变更') }}
+        </template>
       </tableList>
     </iCard>
-    <detail
-      v-model="detailParams.visible"
-      :key="detailParams.key"
-      :params="detailParams.data"
-      @handleCloseModal="handleCloseModal"
-      @handleSubmitAdd="handleSubmitAdd"
-    />
+    <detail v-model="detailParams.visible" :key="detailParams.key" :params="detailParams.data"
+      @handleCloseModal="handleCloseModal" @handleSubmitAdd="handleSubmitAdd" />
   </div>
 </template>
 
@@ -267,6 +246,7 @@ export default {
   position: relative;
   justify-content: space-between;
   width: 100%;
+
   .headTitle {
     display: inline-block;
     font-weight: bold;
@@ -274,6 +254,7 @@ export default {
     color: #000000;
     opacity: 1;
   }
+
   .buttonBox {
     position: absolute;
     right: 0;
