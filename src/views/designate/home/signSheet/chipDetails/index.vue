@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2022-11-29 22:27:09
+ * @LastEditTime: 2022-11-29 22:59:23
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -52,15 +52,10 @@ import tableList from "@/components/ws3/commonTable";
 import { tableTitle } from "./components/data";
 import detail from "./components/detail";
 import {
-  getChipNomiList,
   getsignSheetDetails,
-  submitSignSheet,
-  saveSignSheet,
   getCHIPSignPage,
 } from "@/api/designate/nomination/signsheet";
-import { pageMixins } from "@/utils/pageMixins";
 export default {
-  mixins: [pageMixins],
   components: {
     iCard,
     iButton,
@@ -97,7 +92,7 @@ export default {
   created() {
     this.infoForm.description = this.description;
     this.getTableData();
-    this.getsignSheetDetails();
+    this.getSignSheetDetails();
   },
   methods: {
     // 获取table数据
@@ -113,7 +108,7 @@ export default {
       });
     },
     // 获取MTZ签字单详情
-    getsignSheetDetails() {
+    getSignSheetDetails() {
       getsignSheetDetails({
         signId: this.$route.query.id,
       }).then((res) => {
@@ -151,49 +146,6 @@ export default {
     // 选中数据
     handleSelectionChange(val) {
       this.selection = val;
-    },
-    // 保存
-    async handleSave() {
-      if (!this.tableListData.length) {
-        iMessage.error(
-          this.language("QINGXAUNZEDINGDIANSHENQINGDAN", "请选择定点申请单号")
-        );
-        return;
-      }
-      const confirmInfo = await this.$confirm(
-        this.language("LK_SAVESURE", "您确定要执行保存操作吗？")
-      );
-      console.log("confirmInfo", confirmInfo);
-      if (confirmInfo !== "confirm") return;
-      const params = {
-        signId: Number(this.$route.query.id),
-        description: this.infoForm.description,
-        mtzApplyIdAttr: this.tableListData.map((o) => Number(o.id)),
-      };
-      const res = await saveSignSheet(params);
-      if (res.code === "200") {
-        iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
-        this.getTableData();
-      } else {
-        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-      }
-    },
-    // 提交
-    async handleSubmit() {
-      const confirmInfo = await this.$confirm(
-        this.language("submitSure", "您确定要执行提交操作吗？")
-      );
-      if (confirmInfo !== "confirm") return;
-      submitSignSheet({
-        signIdArr: [Number(this.$route.query.id)],
-      }).then((res) => {
-        if (res.code === "200") {
-          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          this.getTableData();
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-      });
     },
     // 移除
     async handleRemove() {

@@ -128,7 +128,7 @@ export default {
           component: MTZDesignateOrders,
         },
         {
-          key: "ChipDesignateOrders",
+          key: "CHIPDesignateOrders",
           name: "芯片定点申请单",
           component: ChipDesignateOrders,
         },
@@ -176,10 +176,17 @@ export default {
       )
         ? this.$refs.partDesignateOrders[0].tableListData.map((item) => item.id)
         : [];
+        // MTZ
       params.mtzApplyIdAttr = Array.isArray(
         this.$refs.MTZDesignateOrders[0].tableListData
       )
         ? this.$refs.MTZDesignateOrders[0].tableListData.map((item) => item.id)
+        : [];
+        // 芯片
+      params.chipApplyIdAttr = Array.isArray(
+        this.$refs.CHIPDesignateOrders[0].tableListData
+      )
+        ? this.$refs.CHIPDesignateOrders[0].tableListData.map((item) => item.id)
         : [];
 
       this.updateLoading = true;
@@ -193,6 +200,8 @@ export default {
             this.$refs.partDesignateOrders[0].getSignSheetDetails();
             this.$refs.MTZDesignateOrders[0].getTableData();
             this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
+            this.$refs.CHIPDesignateOrders[0].getTableData();
+            this.$refs.CHIPDesignateOrders[0].getSignSheetDetails();
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
