@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-11-08 18:49:51
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-29 17:21:33
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
  */
@@ -127,8 +127,9 @@ export function getMTZSignPage(params) {
   })
 }
 
+// 芯片======================
 // 芯片补差 M签字单
-export function getMtzNomiList(params) {
+export function getChipNomiList(params) {
   return requestChip({
     url: `/chip/mtzNomiList`,
     method: "post",

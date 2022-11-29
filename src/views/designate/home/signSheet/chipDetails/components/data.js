@@ -24,8 +24,6 @@ export const detailTableTitle = [
   {props: 'flowTypeDesc', name: '流程类型', key: 'LIUCHENGLEIXING'},
   {props: 'appStatusDesc', name: '状态', key: 'ZHUANGTAI'},
   {props: 'meetingName', name: '会议', key: 'HUIYI', width: 150, tooltip: true},
-  // {props: 'freezeDate', name: '冻结时间', key: 'DONGJIERIQI'},
-  // {props: 'nominateDate', name: '定点时间', key: 'DINGDIANSHIJIAN'},
-  {props: 'buyerName', name: '采购员', key: 'CAIGOUYUAN'},
+  {props: 'buyer', name: '采购员', key: 'CAIGOUYUAN'},
   {props: 'linieDeptName', name: '科室', key: 'KESHI'},
 ]
