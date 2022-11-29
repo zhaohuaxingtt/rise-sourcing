@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2022-11-29 17:20:39
+ * @LastEditTime: 2022-11-29 21:42:50
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -77,6 +77,7 @@ import {
   getsignSheetDetails,
   submitSignSheet,
   saveSignSheet,
+  getCHIPSignPage,
 } from "@/api/designate/nomination/signsheet";
 import { pageMixins } from "@/utils/pageMixins";
 export default {
@@ -123,7 +124,7 @@ export default {
     // 获取table数据
     getTableData() {
       this.loading = true;
-      getChipNomiList({
+      getCHIPSignPage({
         signId: Number(this.$route.query.id),
       }).then((res) => {
         this.loading = false;

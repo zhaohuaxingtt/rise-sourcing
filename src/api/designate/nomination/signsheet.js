@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2022-11-29 17:21:33
+ * @LastEditTime: 2022-11-29 21:42:40
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
@@ -132,6 +132,15 @@ export function getMTZSignPage(params) {
 export function getChipNomiList(params) {
   return requestChip({
     url: `/chip/mtzNomiList`,
+    method: "post",
+    data: params
+  })
+}
+
+// 签字单-芯片定点申请-分页查询已选择的MTZ申请
+export function getCHIPSignPage(params) {
+  return request({
+    url: `/nominate/sign/nomi/selected-c-page`,
     method: "post",
     data: params
   })
