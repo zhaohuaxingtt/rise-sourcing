@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2022-11-29 21:42:50
+ * @LastEditTime: 2022-11-29 22:13:17
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -163,10 +163,9 @@ export default {
     handleSubmitAdd(val) {
       this.detailParams.visible = false;
       if (val.length)
-        val.map((o) => {
+        val.forEach((o) => {
           // 做前端标记
           o.flagSelect = true;
-          return o;
         });
       this.$set(this, "tableListData", this.tableListData.concat(val));
     },
@@ -219,8 +218,10 @@ export default {
     },
     // 移除
     async handleRemove() {
+      console.log(this.selection);
+      console.log(this.selection.length);
       if (this.selection && this.selection.length == 0) {
-        return iMessage.warn(this.language("QZSXZYTSJ", "请至少选中一条数据"));
+        return iMessage.warn(this.language("QINGZHISHAOXUANZHONGYITIAOSHUJU", "请至少选中一条数据"));
       }
 
       const ids = [];
