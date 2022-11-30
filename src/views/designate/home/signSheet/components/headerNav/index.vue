@@ -233,6 +233,8 @@ export default {
             this.$refs.partDesignateOrders[0].getSignSheetDetails();
             this.$refs.MTZDesignateOrders[0].getTableData();
             this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
+            this.$refs.CHIPDesignateOrders[0].getTableData();
+            this.$refs.CHIPDesignateOrders[0].getSignSheetDetails();
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
