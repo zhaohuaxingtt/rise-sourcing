@@ -24,4 +24,5 @@ export default {
   "评分类型、评分人、协调人信息不可重复，请检查数据": "Rater type, rater and coordinator information cannot be duplicated. Please check the data",
   '质量协调人': 'Quality coordinator',
   '技术协调人': 'Technical Coordinator',
+  '为获得更好的展示效果，建议上传pdf格式文件': 'For better display effect, it is recommended to upload the pdf file'
 }

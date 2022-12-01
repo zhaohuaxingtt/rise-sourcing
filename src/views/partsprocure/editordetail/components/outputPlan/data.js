@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-08 14:11:06
- * @LastEditTime: 2021-12-01 15:32:50
- * @LastEditors:  
+ * @LastEditTime: 2022-12-01 11:39:43
+ * @LastEditors: 余继鹏 917955345@qq.com
  */
 export const outputPlanTableTitle = [
   { props: 'pc', name: '年份', key: 'LK_NIANFEN', tooltip: true },
@@ -27,7 +27,7 @@ export const volumeTableTitle = [
   { props: 'gearType', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI', tooltip: true },
   { props: 'cartypeLevel', name: '等级配置', key: 'LK_DENGJIPEIZHI', tooltip: true },
   { props: 'otherInfo', name: '其他配置', key: 'LK_QITAPEIZHI', tooltip: true },
-  { props: 'ratio', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
+  { props: 'cartypeLevelRate', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
   { props: 'perCarDosage', name: '用量', key: 'LK_YONGLIANG', tooltip: true,type:'input',editable:true }
 ]
 export const carTitle = [
