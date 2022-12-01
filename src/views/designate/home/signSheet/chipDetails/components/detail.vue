@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 18:28:10
- * @LastEditTime: 2022-11-29 22:25:20
+ * @LastEditTime: 2022-12-01 14:06:35
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: MTZ定点申请单详情
  * @FilePath: \front-web\src\views\designate\home\signSheet\mtzDetails\components\detail.vue
@@ -58,7 +58,7 @@
 <script>
 import {iDialog, iInput,iSelect, iButton, iMessage} from 'rise'
 import tableList from '@/components/ws3/commonTable';
-import {tableTitle} from './data'
+import {detailTableTitle as tableTitle} from './data'
 import inputCustom from '@/components/inputCustom'
 import {  getChipNomiList } from "@/api/designate/nomination/signsheet";
 
