@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-04-27 11:55:35
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-01 10:37:43
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -406,14 +406,14 @@
               <iSelect
                 key="carTypeProjectNum"
                 ref="carTypeProjectNum"
-                v-model="detailData.carTypeProjectNum"
+                v-model="detailData.carTypeProjectId"
                 filterable
                 v-if="!disabled && detailData.partProjectSource != 1 && !isGXWW"
                 @change="handleChangeByCarTypeProject"
               >
                 <!-- :disabled='carTypeCanselect()'  -->
                 <el-option
-                  :value="item.code"
+                  :value="item.id"
                   :label="item.name"
                   v-for="(item, index) in fromGroup.CAR_TYPE_PRO"
                   :key="index"
@@ -1780,16 +1780,16 @@ export default {
       }
     },
     // 选择车型项目的时候，需要带出对应车型的SOP时间
-    handleChangeByCarTypeProject(code) {
+    handleChangeByCarTypeProject(id) {
       const currentCarTypeProject =
         (Array.isArray(this.fromGroup.CAR_TYPE_PRO) &&
-          this.fromGroup.CAR_TYPE_PRO.find((item) => item.code === code)) ||
+          this.fromGroup.CAR_TYPE_PRO.find((item) => item.id === id)) ||
         {};
-      this.$set(this.detailData, "carTypeProjectNum", code);
+      this.$set(this.detailData, "carTypeProjectNum", currentCarTypeProject.code);
       this.$set(
         this.detailData,
         "carTypeProjectId",
-        currentCarTypeProject.id || ""
+        id
       );
       this.$set(
         this.detailData,
