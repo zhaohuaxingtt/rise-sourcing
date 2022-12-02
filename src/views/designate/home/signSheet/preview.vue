@@ -1,30 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-11-08 10:28:47
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-02 18:46:02
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
 -->
 <template>
-<!-- <iPage :class="{ isPortal: source === 'portal' }"> -->
   <div class="nomination-wraper">
-    <!-- <iCard collapse title="Summary List For Production Purchasing" > -->
-      <!-- <template #header-control>
-        <iButton @click="exportSignSheet">{{ language('LK_DAOCHU', '导出') }}</iButton>
-      </template> -->
       <div class="signPreview">
-        <!-- <div class="signPreview-header">
-          <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
-          <div class="control">
-            <iButton @click="exportSignSheet">
-              {{ language('LK_DAOCHU', '导出') }}
-            </iButton>
-            <span class="tab-icon" @click="close">
-              <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
-            </span>
-          </div>
-        </div> -->
         <div class="signPreview-body">
           <tablelist
             height="450"
@@ -58,9 +42,7 @@
           <div class="time">{{currentDate}}</div>
         </div>
       </div>
-    <!-- </iCard> -->
   </div>
-<!-- </iPage> -->
 </template>
 <script>
 import {signsheetViewTableTitle as tableTitle} from './components/data'
@@ -68,7 +50,6 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import { toThousands } from "@/utils"
 
 import {
-  // iPage,
   iCard,
   icon,
   iButton,
@@ -77,13 +58,11 @@ import {
 import { 
   signSheetApproveDetail
 } from '@/api/designate/nomination/signsheet'
-import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters ],
   components: {
-    // iPage,
     iCard,
     icon,
     iButton,
@@ -95,15 +74,23 @@ export default {
       if (value && math.hasNumericValue(value)) {
         return math.bignumber(value).toFixed(precision)
       }
-
       return ""
     },
   },
+  props:{
+    tableListData:{
+      type: Array,
+      default:()=>[]
+    },
+    ltcTitle:{
+      type: Array,
+      default:()=>[]
+    }
+  },
   data() {
     return {
-      tableListData: [],
+      // tableListData: [],
       tableLoading: false,
-      // tableTitle: tableTitle,
       ltcTitle: [],
       selectTableData: [],
       startLoding: false,
@@ -111,7 +98,7 @@ export default {
     }
   },
   created() {
-    this.getFetchData()
+    // this.getFetchData()
     this.source = this.$route.query.source
   },
   computed: {
@@ -123,91 +110,67 @@ export default {
     }
   },
   methods: {
-    close() {
-      this.$router.back()
-    },
-    // exportSignSheet() {
+    // 获取定点管理列表
+    // async getFetchData() {
+    //   this.tableLoading = true
     //   const signId = this.$route.query.signId
     //   if (!signId) {
     //     iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
     //     return
     //   }
-    //   const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-    //   // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
-    //   const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${signId}`
-    //   console.log(fileURL)
-    //   window.open(fileURL)
-    // },
-    // 获取定点管理列表
-    async getFetchData(params = {}) {
-      this.tableLoading = true
-      const signId = this.$route.query.signId
-      if (!signId) {
-        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
-        return
-      }
-      try {
-        const res = await signSheetApproveDetail({
-          ...params,
-          signId,
-          current: this.page.currPage,
-          size: this.page.pageSize
-        })
-        // const res = require('./components/moke.json')
-        this.tableLoading = false
-          if (res.code === '200') {
-            if (res.data) {
-              // const ltcTitlt = res.data.ltcList || []
-              this.tableListData = res.data.nomiList || []
-              
-              if (this.tableListData.length) this.$emit("haveData")
-              else this.$emit("noData")
+    //   try {
+    //     const res = await signSheetApproveDetail({
+    //       signId,
+    //     })
+    //     this.tableLoading = false
+    //       if (res.code === '200') {
+    //         if (res.data) {
+    //           this.tableListData = res.data.nomiList || []
+    //           if (this.tableListData.length) this.$emit("haveData")
+    //           else this.$emit("noData")
 
-              // 按年份去取ltc表头
-              const ltcYearObj = {}
-              this.tableListData.forEach(item => {
-                const itemLTC = item.ltcList || []
-                itemLTC.forEach(ltcItem => {
-                  const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
-                  ltcYearObj[ltcYear] = ltcYear
-                })
-              })
-              // 根据年份做数据格式化
-              this.tableListData.map((o) => {
-                const ltcList = o.ltcList || []
-                Object.keys(ltcYearObj).forEach((ltcYear) => {
-                  const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
-                  const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
-                  o[`ltc_${ltcYear}`] = ltcValue
-                  o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
-                  return o
-                })
-              })
-              Object.keys(ltcYearObj).forEach((year, index) => {
-                this.ltcTitle.push({
-                  props: `ltc_${year}`,
-                  name: `LTC ${year}`,
-                  key: `LTC ${year}`,
-                  width: 70,
-                  tooltip: false
-                })
-              })
-              console.log(this.tableListData, ltcYearObj, this.tableTitle)
-            } else {
-              this.$emit("noData")
-            }
+    //           // 按年份去取ltc表头
+    //           const ltcYearObj = {}
+    //           this.tableListData.forEach(item => {
+    //             const itemLTC = item.ltcList || []
+    //             itemLTC.forEach(ltcItem => {
+    //               const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
+    //               ltcYearObj[ltcYear] = ltcYear
+    //             })
+    //           })
+    //           // 根据年份做数据格式化
+    //           this.tableListData.map((o) => {
+    //             const ltcList = o.ltcList || []
+    //             Object.keys(ltcYearObj).forEach((ltcYear) => {
+    //               const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
+    //               const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
+    //               o[`ltc_${ltcYear}`] = ltcValue
+    //               o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
+    //               return o
+    //             })
+    //           })
+    //           Object.keys(ltcYearObj).forEach((year, index) => {
+    //             this.ltcTitle.push({
+    //               props: `ltc_${year}`,
+    //               name: `LTC ${year}`,
+    //               key: `LTC ${year}`,
+    //               width: 70,
+    //               tooltip: false
+    //             })
+    //           })
+    //           console.log(this.tableListData, ltcYearObj, this.tableTitle)
+    //         } else {
+    //           this.$emit("noData")
+    //         }
             
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-      } catch(e) {
-        this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
-    },
-    exportfile() {
-      
-    }
+    //       } else {
+    //         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+    //       }
+    //   } catch(e) {
+    //     this.tableLoading = false
+    //     iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+    //   }
+    // },
   }
 }
 </script>
