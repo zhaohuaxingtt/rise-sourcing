@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-07-07 16:07:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-02 20:18:11
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
@@ -10,7 +10,7 @@
       <iDialog :title="title || language('LK_XINJIANXINXIDANZHUANPAI','新件信息单转派')" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
           <span class="fontSize14">{{ language('LK_CAIGOUYUAN','前期采购员') }}：</span>
-          <iSelect v-model='inquiryBuyer' :placeholder="language('LK_QINGXUANZHEXUNJIACAIGOUYUAN','请选择询价采购员')" value-key="id">
+          <iSelect v-model='inquiryBuyer' :placeholder="language('LK_QINGXUANZHEXUNJIACAIGOUYUAN','请选择询价采购员')" value-key="id" :loading="loading">
            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items' :label="items.nameZh"/>
           </iSelect>
         </div>
@@ -35,7 +35,7 @@ export default{
     return {
 		inquiryBuyer:{id:"",nameZh:""},
 		inquiryBuyerList:[],
-		// list:[{id:12,nameZh:"舒杰"},{id:13,nameZh:"周瑜松"}]
+    loading:false,
 	}
   },
   created(){
@@ -44,7 +44,12 @@ export default{
   methods:{
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
-      purchaseUsers({roleCode:'QQCGY'}).then(res=>this.inquiryBuyerList = res.data || [])
+      this.loading = true
+      purchaseUsers({roleCode:'QQCGY'}).then(res=>{
+        this.inquiryBuyerList = res.data || []
+      }).finally(()=>{
+        this.loading = false
+      })
     },
     clearDiolog(){
       this.inquiryBuyer = {}
