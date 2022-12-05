@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2022-12-02 20:18:11
+ * @LastEditTime: 2022-12-05 21:31:09
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -22,7 +22,7 @@
 </template>
 <script>
 import {iSelect,iButton,iMessage,iDialog} from 'rise'
-import {purchaseUsers} from '@/api/usercenter'
+import {purchaseUsers, getListByRoleCode} from '@/api/usercenter'
 import store from '@/store'
 export default{
   components:{iSelect,iButton,iDialog},
@@ -45,7 +45,8 @@ export default{
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
       this.loading = true
-      purchaseUsers({roleCode:'QQCGY'}).then(res=>{
+      getListByRoleCode('QQCGY').then(res=>{
+      // purchaseUsers({roleCode:'QQCGY'}).then(res=>{
         this.inquiryBuyerList = res.data || []
       }).finally(()=>{
         this.loading = false
