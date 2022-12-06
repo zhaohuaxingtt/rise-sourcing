@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2022-01-11 10:42:41
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-12-05 17:37:18
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
  */
