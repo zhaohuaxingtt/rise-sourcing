@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-04-07 14:31:37
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-12-06 09:41:02
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -421,6 +421,7 @@
           </el-tooltip>
         </iButton>
         <iButton
+          v-if="!disabled"
           @click="transfer"
           v-permission.auto="
             AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_TRANSFER | 转派
