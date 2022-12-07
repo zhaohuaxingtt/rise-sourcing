@@ -189,6 +189,7 @@ import { form } from "@/views/partsprocure/home/components/data";
 import { deleteRfqPart, cancelRef } from "@/api/partsrfq/editordetail";
 import { getTabelData } from "@/api/partsprocure/home";
 import { insertRfqPart as addRfq } from "@/api/partsrfq/home";
+import { applySelTargetPrice } from "@/api/SELTargetPrice";
 import { pageMixins } from "@/utils/pageMixins";
 import applyPrice from "./components/applyPrice";
 import partsTable from "./components/partsTable";
@@ -358,6 +359,15 @@ export default {
         );
       }
       console.log('调用接口');
+      applySelTargetPrice({
+        ids:[],
+        taskDTOList:this.handleSelectArr.map(item=>{
+          item.status = ''
+          return item
+        })
+      }).then(res=>{
+        console.log(res);
+      })
     },
     openPartsDialog(){
       if (this.handleSelectArr.length == 0) {

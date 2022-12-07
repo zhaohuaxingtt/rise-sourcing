@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-11-26 14:27:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-30 17:40:12
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-06 17:00:36
  * @Description: 
  * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\index.js
  */
@@ -12,6 +12,7 @@ import supplierscoreRoutes from "./supplierscore" // 供应商评分
 import configscoredeptRoutes from "./configscoredept" // 设置评分部门
 import costanalysismanageRoutes from "./costanalysismanage" // KM成本分析
 import productionCapacity from "./productionCapacity" // 零件台账
+import SELTargetPriceRoutes from "./SELTargetPrice" // SEL目标价
 
 export default [
   {
@@ -25,7 +26,8 @@ export default [
       ...supplierscoreRoutes,
       ...configscoredeptRoutes,
       ...costanalysismanageRoutes,
-      ...productionCapacity
+      ...productionCapacity,
+      ...SELTargetPriceRoutes,
     ]
   }
 ]

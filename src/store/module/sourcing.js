@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2022-02-22 16:05:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-06 17:20:52
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -435,6 +435,17 @@ const state = {
 			permissionName: '零件经销价',
 			group: 3,
 		},
+		{
+			value: 4,
+			name: 'SEL目标价',
+			message: 0,
+			url: '/targetpriceandscore/seltargetprice/signin',
+			activePath: 'seltargetprice',
+			key: 'SELMUBIAOJIA',
+			permissionName: 'SEL目标价',
+			// permissionKey: 'FINANCIALMANAGE_MENU_SELTARGETPRICE',
+			group: 4,
+		},
 	],
 	financialmanageThirdMenu: [
 		{
@@ -507,6 +518,47 @@ const state = {
 			permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_QUERY',
 			permissionName: '查询',
 			group: 2,
+		},
+		{
+			name: '签收',
+			message: 0,
+			url: '/targetpriceandscore/seltargetprice/signin',
+			activePath: 'signin',
+			key: 'QIANSHOU',
+			// permissionKey: 'FINANCIALMANAGE_MENU_SELTARGETPRICE_SUBMENU_SIGNIN',
+			permissionName: '签收',
+			group: 4,
+		},
+		{
+			name: '维护',
+			message: 0,
+			url: '/targetpriceandscore/seltargetprice/maintenance',
+			activePath: 'maintenance',
+			key: 'WEIHU',
+			// permissionKey:
+				// 'FINANCIALMANAGE_MENU_SELTARGETPRICE_SUBMENU_MAINTENANCE',
+			permissionName: '维护',
+			group: 4,
+		},
+		{
+			name: '审批',
+			message: 0,
+			url: '/targetpriceandscore/seltargetprice/approval',
+			activePath: 'approval',
+			key: 'SHENPI',
+			// permissionKey: 'FINANCIALMANAGE_MENU_SELTARGETPRICE_SUBMENU_APPROVAL',
+			permissionName: '审批',
+			group: 4,
+		},
+		{
+			name: '查询',
+			message: 0,
+			url: '/targetpriceandscore/seltargetprice/query',
+			activePath: 'query',
+			key: 'CHAXUN',
+			// permissionKey: 'FINANCIALMANAGE_MENU_SELTARGETPRICE_SUBMENU_QUERY',
+			permissionName: '查询',
+			group: 4,
 		},
 	],
 
