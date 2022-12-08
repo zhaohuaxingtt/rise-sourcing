@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-11-06 14:15:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-05 21:31:54
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\usercenter\index.js
  */
@@ -19,7 +19,13 @@ export function purchaseUsers(data) {
         data
     })
 }
-
+// 新的转派采购员下拉接口
+export function getListByRoleCode(code) {
+    return requst({
+        url: `/sapUser/getListByRoleCode/${code}`,
+        method: 'POST',
+    })
+}
 export function getGraderIdByDept(deptNUm) {
     return requst({
         url: `/raters?deptNUm=${deptNUm}`,

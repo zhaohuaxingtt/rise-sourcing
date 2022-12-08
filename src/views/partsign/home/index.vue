@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-05-11 17:12:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-05 20:36:54
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
@@ -377,7 +377,7 @@ import {
   clickMessage,
 } from "./components/data";
 import { getTabelData, patchRecords } from "@/api/partsign/home";
-import { purchaseUsers } from "@/api/usercenter";
+import { purchaseUsers,getListByRoleCode } from "@/api/usercenter";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
@@ -454,7 +454,8 @@ export default {
   methods: {
     //获取询价采购员数据。
     getInquiryBuyerListFn() {
-      purchaseUsers({ roleCode: "QQCGY" }).then((res) => {
+      getListByRoleCode('QQCGY').then((res) => {
+      // purchaseUsers({ roleCode: "QQCGY" }).then((res) => {
         let userInfoId = store.state.permission.userInfo.id;
         this.inquiryBuyerList = res.data || [];
         let data = this.inquiryBuyerList;
