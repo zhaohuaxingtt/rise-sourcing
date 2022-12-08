@@ -81,13 +81,8 @@
         "
       >
         <template #budget="scope">
-          <iInput
-            v-model="scope.row.budget"
-            v-if="!scope.row.disabled && !disabled"
-            @input="handleInput($event, scope.row)"
-            @blur="handleBlurByBudget(scope.row.budget, scope.row)"
-          />
-          <span v-else>{{ scope.row.budget }}</span>
+          <thousandsFilterInput v-if="!scope.row.disabled && !disabled" :inputValue="scope.row.budget" :numberProcessor="2" :handleArg="[scope.row]" @handleInput="handleInput" />
+          <span v-else>{{ scope.row.budget | thousandsFilter(2) }}</span>
         </template>
       </tableList>
       <!------------------------------------------------------------------------>
@@ -120,17 +115,15 @@ import { tableTitle } from "./components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
   getModelBudgetList,
-  patchMouldBudget,
-  cancelMoldBudget,
   patchMouldBudgetSubmit,
   patchMouldBudgetWithdrawal,
 } from "@/api/partsrfq/editordetail";
-import store from "@/store";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { numberProcessor } from "@/utils";
+import filters from "@/utils/filters";
 import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data";
-
+import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default {
   components: {
     iCard,
@@ -140,8 +133,9 @@ export default {
     tableList,
     iInput,
     moldBudgetApplicationDialog,
+    thousandsFilterInput
   },
-  mixins: [pageMixins, rfqCommonFunMixins],
+  mixins: [pageMixins, rfqCommonFunMixins,filters],
   props: {
     todo: Boolean,
   },
@@ -175,7 +169,6 @@ export default {
         this.tableLoading = true;
         try {
           const res = await getModelBudgetList(rfqId);
-          console.log(Array.isArray(res.data), res.data, "1111111111");
           if (res && res.code === "200") {
             this.tableListData = Array.isArray(res.data)
               ? res.data.map((item) => ({
@@ -213,10 +206,6 @@ export default {
           this.language("QINGWUXUANZEYITIJIAODESHUJU", "请勿选择已提交的数据")
         );
 
-      //this.selectTableData = this.selectTableData.map(item => {
-      //item.approvalStatus = 'submitted' //后台晓伟指出不转换
-      //return item
-      //})
       const mouldBudgets = this.selectTableData;
       const res = await patchMouldBudgetSubmit(mouldBudgets);
       this.resultMessage(res);
@@ -240,10 +229,6 @@ export default {
             "只有【已提交】状态才可以撤回"
           )
         );
-      // this.selectTableData = this.selectTableData.map(item => {
-      // item.approvalStatus = 'revoked' 晓伟说不用转换
-      // return item
-      // })
       const ids = this.selectTableData.map((val) => {
         if (val.id !== null) {
           return val.id;
@@ -259,9 +244,6 @@ export default {
     },
     handleInput(value, row) {
       this.$set(row, "budget", numberProcessor(value, 2));
-    },
-    handleBlurByBudget(val, row) {
-      this.$set(row, "budget", math.bignumber(val || 0).toFixed(2));
     },
   },
 };

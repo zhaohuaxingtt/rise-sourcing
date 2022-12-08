@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-11 17:11:36
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-02 11:30:58
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -795,28 +795,28 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.moldApportionPrice || "0.00"
+                      scope.row.moldApportionPrice || "0.00" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareInvestPrice || "0.00"
+                      scope.row.unShareInvestPrice || "0.00" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
                 <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p>{{ scope.row.skdInvestFee | thousandsFilter(0) }}</p>
                   <p>
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                    <span>{{ scope.row.investFee | thousandsFilter(0) }}</span>
                   </p>
                 </div>
               </el-popover>
             </div>
             <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+              <p>{{ scope.row.skdInvestFee | thousandsFilter(0) }}</p>
             </span>
             <span v-else>
               <el-popover
@@ -828,12 +828,12 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.moldApportionPrice || "0.00"
+                      scope.row.moldApportionPrice || "0.00" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareInvestPrice || "0.00"
+                      scope.row.unShareInvestPrice || "0.00" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
@@ -841,7 +841,7 @@
                   <span v-if="scope.row.investFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                  <span>{{ scope.row.investFee | thousandsFilter(0) }}</span>
                 </div>
               </el-popover>
             </span>
@@ -858,22 +858,22 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.developApportionPrice || "0.00"
+                      scope.row.developApportionPrice || "0" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareDevPrice || "0.00"
+                      scope.row.unShareDevPrice || "0" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
                 <div slot="reference">
-                  <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                  <p>{{ scope.row.skdDevFee | thousandsFilter(0) }}</p>
                   <p>
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                    <span>{{ scope.row.devFee | thousandsFilter(0) }}</span>
                   </p>
                 </div>
               </el-popover>
@@ -891,12 +891,12 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.developApportionPrice || "0.00"
+                      scope.row.developApportionPrice || "0" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareDevPrice || "0.00"
+                      scope.row.unShareDevPrice || "0" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
@@ -904,7 +904,7 @@
                   <span v-if="scope.row.devFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                  <span>{{ (88*scope.row.devFee) | thousandsFilter(0) }}</span>
                 </div>
               </el-popover>
             </span>
@@ -1130,12 +1130,14 @@ import {
 import { partProjTypes } from "@/config";
 import { findFrontPageSeat, decisionDownloadPdfLogo } from "@/api/designate";
 import { toThousands } from "@/utils";
+import filters from "@/utils/filters";
 import { transverseDownloadPDF } from "@/utils/pdf";
 import rsPdf from "./rsPdf";
 import { uploadUdFile } from "@/api/file/upload";
 import { dateFilter } from "../circulation/data";
 
 export default {
+  mixins:[filters],
   props: {
     isPreview: { type: Boolean, default: false },
     nominateId: { type: String },
