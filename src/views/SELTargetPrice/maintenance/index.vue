@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 17:56:20
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-08 14:40:38
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -17,74 +17,13 @@
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
-    <iSearch @sure="sure" @reset="reset">
-      <el-form>
-        <el-form-item
-          v-for="(item, index) in searchList"
-          :key="index"
-          :label="language(item.i18n_label, item.label)"
-          v-permission.dynamic.auto="item.permission"
-        >
-          <iSelect
-            v-if="item.type === 'select'"
-            v-model="searchParams[item.value]"
-            :placeholder="language('QINGXUANZE', '请选择')"
-          >
-            <el-option
-              v-if="!item.hideAll"
-              value=""
-              :label="language('ALL', '全部')"
-            ></el-option>
-            <el-option
-              v-for="item in selectOptions[item.selectOption] || []"
-              :key="item.code"
-              :label="item.name"
-              :value="
-                item.selectOption === 'LINIE'
-                  ? item.name
-                  : item.selectOption === 'CAR_TYPE_PRO'
-                  ? item.id
-                  : item.code
-              "
-            >
-            </el-option>
-          </iSelect>
-          <carProjectSelect
-            v-else-if="item.type === 'carProjectSelect'"
-            optionType="1"
-            v-model="searchParams[item.value]"
-            valueType="2"
-          />
-          <procureFactorySelect
-            v-else-if="item.type === 'procureFactorySelect'"
-            v-model="searchParams[item.value]"
-          />
-          <iDicoptions
-            v-else-if="item.type === 'selectDict'"
-            :optionAll="true"
-            :optionKey="item.selectOption"
-            v-model="searchParams[item.value]"
-          />
-          <iDatePicker
-            v-else-if="item.type === 'dateRange'"
-            type="daterange"
-            value-format=""
-            v-model="searchParams[item.value]"
-            :default-time="['00:00:00', '23:59:59']"
-          ></iDatePicker>
-          <iMultiLineInput
-            v-else-if="item.type === 'multiLineInput'"
-            v-model="searchParams[item.value]"
-            :title="language(item.i18n_label, item.label)"
-          />
-          <iInput
-            v-else
-            v-model="searchParams[item.value]"
-            :placeholder="language('QINGSHURU', '请输入')"
-          ></iInput>
-        </el-form-item>
-      </el-form>
-    </iSearch>
+    <search
+      @sure="sure"
+      @reset="reset"
+      :searchFormData="searchFormData"
+      :searchForm="searchForm"
+      :options="options"
+    />
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
@@ -98,6 +37,15 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
+          <iButton
+            @click="handleNoInvest"
+            :loading="noInvestLoading"
+            v-permission.auto="
+              MODELTARGETPRICE_SIGNIN_NOINVESTBTN |
+                (模具目标价管理 - 目标价签收 - 无投资按钮)
+            "
+            >{{ language("无目标价", "无目标价") }}</iButton
+          >
           <!--------------------指派按钮----------------------------------->
           <iButton
             @click="openAssignDialog"
@@ -107,6 +55,16 @@
                 (模具目标价管理 - 目标价维护 - 指派)
             "
             >{{ language("ZHIPAI", "指派") }}</iButton
+          >
+          <!--------------------导出按钮----------------------------------->
+          <iButton
+            @click="handleExport"
+            :loading="exportLoading"
+            v-permission.auto="
+              MODELTARGETPRICE_QUERY_EXPORT |
+                (模具目标价管理 - 目标价查询 - 导出)
+            "
+            >{{ language("DAOCHU", "导出") }}</iButton
           >
         </div>
       </div>
@@ -181,7 +139,8 @@ import {
   iMultiLineInput,
 } from "rise";
 import headerNav from "../components/headerNav";
-import { tableTitle, searchList } from "./data";
+import search from "../components/search.vue";
+import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
@@ -194,6 +153,9 @@ import {
   getTargetPriceMaintainPage,
   appoint,
 } from "@/api/modelTargetPrice/index";
+import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import { dictkey } from "@/api/partsprocure/editordetail";
+import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
 
 export default {
@@ -216,12 +178,15 @@ export default {
     approvalRecordDialog,
     assignDialog,
     iMultiLineInput,
+    search
   },
   data() {
     return {
+      options: {},
+      searchForm: {},
+      searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchList: searchList,
       searchParams: {
         partProjectType: "",
         cartypeProjectId: "",
@@ -246,16 +211,49 @@ export default {
     };
   },
   created() {
-    this.selectOptions = {
-      showSelfOptions: [
-        { name: this.language("SHI", "是"), code: true },
-        { name: this.language("FOU", "否"), code: false },
-      ],
-    };
-
+    this.selectDictByKeys();
+    this.procureFactorySelectVo();
+    this.getProcureGroup();
     this.getTableList();
   },
   methods: {
+    selectDictByKeys() {
+      selectDictByKeys([
+        { keys: "PPT" },
+        { keys: "sign_page_apply_type" },
+        { keys: "tooling_target_price_page_task_state" },
+      ]).then((res) => {
+        if (res.data) {
+          this.$set(this.options, "PPT", res.data["PPT"]);
+          this.$set(
+            this.options,
+            "sign_page_apply_type",
+            res.data["sign_page_apply_type"]
+          );
+          this.$set(
+            this.options,
+            "tooling_target_price_page_task_state",
+            res.data["tooling_target_price_page_task_state"]
+          );
+        }
+      });
+    },
+    //获取采购工厂 比字典中多了一个 上汽大众销售公司-配件
+    procureFactorySelectVo() {
+      procureFactorySelectVo().then((res) => {
+        if (res.data) {
+          this.$set(this.options, "PURCHASE_FACTORY", res.data || []);
+        }
+      });
+    },
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
+          this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
+        }
+      });
+    },
     /**
      * @Description: 指派操作
      * @Author: Luoshuang
@@ -285,6 +283,10 @@ export default {
           this.$refs.assignDialog.changeAssigLoading(false);
         });
     },
+    // 无目标价
+    handleNoInvest(){},
+    // 导出
+    handleExport(){},
     /**
      * @Description: 指派
      * @Author: Luoshuang

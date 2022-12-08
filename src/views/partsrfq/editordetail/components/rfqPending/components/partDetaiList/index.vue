@@ -164,6 +164,8 @@
     />
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
+    <!-- 申请SEL目标价 -->
+    <selDialog :todo="todo" :visible.sync="selDialogVisible" @update='updateData' />
     <!-- 组件componentList -->
     <template v-for="(item, index) in componentList">
       <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" />
@@ -189,11 +191,11 @@ import { form } from "@/views/partsprocure/home/components/data";
 import { deleteRfqPart, cancelRef } from "@/api/partsrfq/editordetail";
 import { getTabelData } from "@/api/partsprocure/home";
 import { insertRfqPart as addRfq } from "@/api/partsrfq/home";
-import { applySelTargetPrice } from "@/api/SELTargetPrice";
 import { pageMixins } from "@/utils/pageMixins";
 import applyPrice from "./components/applyPrice";
 import partsTable from "./components/partsTable";
 import moldTargetPrice from "./components/moldTargetPrice";
+import selDialog from "./components/SEL/selDialog";
 import partsTargetPrice from "./components/partsTargetPrice";
 import store from "@/store";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
@@ -231,7 +233,8 @@ export default {
     moduleDialog,
     partsDialog,
     technicalSeminar,
-    selTargetPrice
+    selTargetPrice,
+    selDialog
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -316,6 +319,7 @@ export default {
       hidens: true,
       partsDialogVisible: false,
       moduleDialogVisible: false,
+      selDialogVisible:false,
       todo: false, // 是否待办
       addvisible: false,
       tableTitle,
@@ -358,16 +362,7 @@ export default {
           msg + '采购项目状态为已冻结/已定点，不可申请SEL目标价'
         );
       }
-      console.log('调用接口');
-      applySelTargetPrice({
-        ids:[],
-        taskDTOList:this.handleSelectArr.map(item=>{
-          item.status = ''
-          return item
-        })
-      }).then(res=>{
-        console.log(res);
-      })
+      this.selDialogVisible = true
     },
     openPartsDialog(){
       if (this.handleSelectArr.length == 0) {

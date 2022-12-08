@@ -1,48 +1,43 @@
 /*
- * @Author: Luoshuang
- * @Date: 2021-06-22 17:03:48
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-25 15:37:04
- * @Description: 
- * @FilePath: \front-sourcing\src\views\modelTargetPrice\approval\data.js
+ * @Author: 余继鹏 917955345@qq.com
+ * @Date: 2022-12-07 15:38:01
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-08 15:01:55
+ * @FilePath: \front-web\src\views\SELTargetPrice\approval\data.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-
-
 export const tableTitle = [
-  { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, sortable: true },
-  { props: 'rfqName', name: 'RFQ名称', key: "RFQMINGCHENG", tooltip: true, sortable: true },
-  { props: 'buyerName', name: 'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true },
-  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true },
-  { props: 'cfName', name: 'CF', key: "CF", tooltip: true, width: 100, sortable: true },
-  { props: 'tuzhi', name: '图纸', key: "TUZHI", tooltip: true, sortable: true },
-  { props: 'taskStateDesc', name: '任务状态', key: "RENWUZHUANGTAI", tooltip: true, sortable: true },
-  { props: 'approvalStateDesc', name: '审批状态', key: "SHENPIZHUANGTAI", tooltip: true, sortable: true },
-  { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120, sortable: true },
-  { props: 'endDate', name: '截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120, sortable: true },
-  { props: 'returnDate', name: '返回日期', key: "FANHUIRIQI", tooltip: true, width: 120, sortable: true },
-  { props: 'shenpi', name: '审批记录', key: "SHENPIJILU", tooltip: true, sortable: true },
-  { props: 'remarks', name: '备注', key: "BEIZHU", tooltip: true, width: 120, sortable: true }
+    { props: 'fsNum', name: '零件采购项目号', key: "FSGSSPNO", tooltip: true, width: 145, sortable: true },
+    { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 120, sortable: true },
+    { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 135, sortable: true },
+    { props: 'cartypeProjectZh', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120, sortable: true },
+    { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 110, sortable: true },
+    { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 110, sortable: true },
+    { props: 'applyType', name: '申请类型', key: "申请类型", tooltip: true, width: 110, sortable: true },
+    { props: 'buyerName', name: '询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 120, sortable: true },
+    { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, width: 90, sortable: true },
+    { props: 'cfName', name: 'CF', key: "CF", tooltip: true, width: 100, sortable: true },
+    { props: 'shenpi', name: '审批记录', key: "SHENPIJILU", tooltip: true, width: 120, sortable: true },
+    { props: 'targetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 150, sortable: true },
+    { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, width: 160, sortable: true },
+    { props: 'xj', name: '询价产量', key: "询价产量", tooltip: true, width: 110, sortable: true },
+    { props: 'PlanAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 150, sortable: true },
+    { props: 'applyDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, minWidth: 110, sortable: true },
 ]
 
-export const tableMockData = [
-  { a: 'FS21-0123', a1: '23D4328947', b: 'xxx', c: 'shagnhaihuizhong', d: '10002', e: '', f: '2.13', g: '2.13', h: '100000', i: 'Y', j: '100000', 'k': 'Y', m: '2021-01-01', n: '13%' }
-]
-
-export const searchList = [
-  { value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO', permission: 'MODELTARGETPRICE_APPROVAL_RFQNUM|模具目标价管理-目标价审批-RFQ编号' },
-  { value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP', permission: 'MODELTARGETPRICE_APPROVAL_FSNUM|模具目标价管理-目标价审批-FSGSSPNO' },
-  { value: 'partNum', label: '零件号', type: 'multiLineInput', i18n_label: 'LINGJIANHAO', permission: 'MODELTARGETPRICE_APPROVAL_PARTNUM|模具目标价管理-目标价审批-零件号' },
-  { value: 'partNameZh', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG', permission: 'MODELTARGETPRICE_APPROVAL_PARTNAME|模具目标价管理-目标价审批-零件名称' },
-  { value: 'partProjectType', label: '零件项目类型', type: 'selectDict', i18n_label: 'LINGJIANXIANGMULEIXING', selectOption: 'PPT', permission: 'MODELTARGETPRICE_APPROVAL_PARTPROJECTTYPE|模具目标价管理-目标价审批-零件项目类型' },
-  { value: 'cartypeProjectId', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO', permission: 'MODELTARGETPRICE_APPROVAL_CARPROJECT|模具目标价管理-目标价审批-车型项目' },
-  { value: 'procureFactory', label: '采购工厂', type: 'procureFactorySelect', i18n_label: 'LKCAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', permission: 'MODELTARGETPRICE_APPROVAL_PROFACTORY|模具目标价管理-目标价审批-采购工厂' },
-  { value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN', selectOption: '', permission: 'MODELTARGETPRICE_APPROVAL_BUYER|模具目标价管理-目标价审批-询价采购员' },
-  { value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE', selectOption: 'LINIE', permission: 'MODELTARGETPRICE_APPROVAL_LINIE|模具目标价管理-目标价审批-LINIE' },
-  { value: 'cfName', label: '模具控制员', type: 'input', i18n_label: 'MOJUKONGZHIYUAN', selectOption: 'CF_USER', permission: 'MODELTARGETPRICE_APPROVAL_CF|模具目标价管理-目标价审批-CF' },
-  { value: 'applyType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING', selectOption: 'sign_page_apply_type', permission: 'MODELTARGETPRICE_APPROVAL_APPLYTYPE|模具目标价管理-目标价审批-申请类型' },
-  { value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'MODELTARGETPRICE_APPROVAL_APPLYDATE|模具目标价管理-目标价审批-申请日期起止' },
-  { value: 'toolingPriceIsZeno', label: '模具费为0的RFQ', type: 'selectDict', i18n_label: 'MOJUFEIWEIODERFQ', selectOption: 'target_price_page_tooling_charge_is_zero', permission: 'MODELTARGETPRICE_APPROVAL_MODELFEEZERO|模具目标价管理-目标价审批-模具费为0的RFQ' },
-  { value: 'showSelf', label: '显示自己', type: 'select', selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI', permission: 'MODELTARGETPRICE_APPROVAL_SHOWSELF|模具目标价管理-目标价审批-显示自己' },
+export const searchFormData = [
+  { prop: 'rfqId', label: 'RFQ编号', labelKey: 'RFQBIANHAO' },
+  { prop: 'fsNum', label: 'FS/GS/SP No.', labelKey: 'FSGSSP' },
+  { prop: 'partNum', label: '零件号', type: 'multiLineInput', labelKey: 'LINGJIANHAO' },
+  { prop: 'partNameZh', label: '零件名称', labelKey: 'LINGJIANMINGCHENG' },
+  { prop: 'cartypeProjectId', label: '车型项目', type: 'select', labelKey: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO', multiple:true },
+  { prop: 'procureFactory', label: '采购工厂', type: 'select', labelKey: 'LKCAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', multiple:true },
+  { prop: 'partProjectType', label: '零件项目类型', type: 'select', labelKey: 'LINGJIANXIANGMULEIXING', selectOption: 'PPT', multiple:true },
+  { prop: 'buyerName', label: '询价采购员', labelKey: 'XUNJIACAIGOUYUAN' },
+  { prop: 'linieName', label: 'LINIE', labelKey: 'LINIE' },
+  { prop: 'state', label: '状态', type: 'select', labelKey: 'ZHUANGTAI', selectOption: 'tooling_target_price_page_task_state', multiple:true },
+  { prop: 'applyType', label: '申请类型', type: 'select', labelKey: 'SHENQINGLEIXING', selectOption: 'sign_page_apply_type' },
+  { prop: 'applyDate', label: '申请日期起止', type: 'dateRange', labelKey: 'SHENQINGRIQIQIZHI' },
 ]
 
 export const detailList = [

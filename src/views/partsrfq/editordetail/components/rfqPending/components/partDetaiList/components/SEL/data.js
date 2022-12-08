@@ -69,7 +69,7 @@ export const selDialogTitle = [
     { props: 'carTypeProjectZh', name: '车型项目', key: "LK_CARPROJECT", tooltip: true, minWidth: 140, todoHiddel: true },
     // { props: 'originalTargetPrice', name: '原目标价', key: "YUANMUBIAOJIA", tooltip: true },
     // { props: 'businessTypeDesc', name: '类型', key: "LEIXING", tooltip: true },
-    { props: 'expectedTargetPrice', name: '期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true },
+    { props: 'targetPrice', name: '目标价', key: "MUBIAOJIA", tooltip: true },
 ]
 export const iconName = {
     '已完成': 'iconrs-wancheng',

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-06 18:05:24
+ * @LastEditTime: 2022-12-08 12:00:11
  * @Description: 模具目标价-目标价签收
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -14,74 +14,13 @@
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
-    <iSearch @sure="sure" @reset="reset">
-      <el-form>
-        <el-form-item
-          v-for="(item, index) in searchList"
-          :key="index"
-          :label="language(item.i18n_label, item.label)"
-          v-permission.dynamic.auto="item.permission"
-        >
-          <iSelect
-            v-if="item.type === 'select'"
-            v-model="searchParams[item.value]"
-            :placeholder="language('QINGXUANZE', '请选择')"
-          >
-            <el-option
-              v-if="!item.hideAll"
-              value=""
-              :label="language('all', '全部')"
-            ></el-option>
-            <el-option
-              v-for="item in selectOptions[item.selectOption] || []"
-              :key="item.code"
-              :label="item.name"
-              :value="
-                item.selectOption === 'CAR_TYPE_PRO'
-                  ? item.id
-                  : item.selectOption === 'LINIE'
-                  ? item.name
-                  : item.code
-              "
-            >
-            </el-option>
-          </iSelect>
-          <carProjectSelect
-            v-else-if="item.type === 'carProjectSelect'"
-            v-model="searchParams[item.value]"
-            valueType="2"
-          />
-          <procureFactorySelect
-            v-else-if="item.type === 'procureFactorySelect'"
-            v-model="searchParams[item.value]"
-          />
-          <iDicoptions
-            v-else-if="item.type === 'selectDict'"
-            :optionAll="false"
-            :optionKey="item.selectOption"
-            v-model="searchParams[item.value]"
-          />
-          <iDatePicker
-            v-else-if="item.type === 'dateRange'"
-            value-format=""
-            type="daterange"
-            v-model="searchParams[item.value]"
-            :default-time="['00:00:00', '23:59:59']"
-          ></iDatePicker>
-          <iMultiLineInput
-            v-else-if="item.type === 'multiLineInput'"
-            v-model="searchParams[item.value]"
-            :title="language(item.i18n_label, item.label)"
-          />
-          <iInput
-            v-else
-            v-model="searchParams[item.value]"
-            :placeholder="language('QINGSHURU', '请输入')"
-          ></iInput>
-        </el-form-item>
-      </el-form>
-    </iSearch>
-    <!----------------------------------------------------------------->
+        <search
+      @sure="sure"
+      @reset="reset"
+      :searchFormData="searchFormData"
+      :searchForm="searchForm"
+      :options="options"
+    />
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
     <iCard
@@ -224,7 +163,8 @@ import {
   iMultiLineInput,
 } from "rise";
 import headerNav from "../components/headerNav";
-import { tableTitle, searchList } from "./data";
+import search from "../components/search.vue";
+import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import assignDialog from "./components/assign";
@@ -245,6 +185,9 @@ import procureFactorySelect from "@/views/modelTargetPrice/components/procureFac
 import moment from "moment";
 import sendBackDialog from "./components/sendBack";
 import { roleMixins } from "@/utils/roleMixins";
+import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import { dictkey } from "@/api/partsprocure/editordetail";
+import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
   mixins: [pageMixins, roleMixins],
   components: {
@@ -266,12 +209,15 @@ export default {
     sendBackDialog,
     noInvestConfirmDialog,
     iMultiLineInput,
+    search
   },
   data() {
     return {
+      options: {},
+      searchForm: {},
+      searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchList: searchList,
       searchParams: {
         partProjectType: "",
         cartypeProjectId: "",
@@ -293,15 +239,49 @@ export default {
     };
   },
   created() {
-    this.selectOptions = {
-      showSelfOptions: [
-        { name: this.language("SHI", "是"), code: true },
-        { name: this.language("FOU", "否"), code: false },
-      ],
-    };
+    this.selectDictByKeys();
+    this.procureFactorySelectVo();
+    this.getProcureGroup();
     this.getTableList();
   },
   methods: {
+    selectDictByKeys() {
+      selectDictByKeys([
+        { keys: "PPT" },
+        { keys: "sign_page_apply_type" },
+        { keys: "tooling_target_price_page_task_state" },
+      ]).then((res) => {
+        if (res.data) {
+          this.$set(this.options, "PPT", res.data["PPT"]);
+          this.$set(
+            this.options,
+            "sign_page_apply_type",
+            res.data["sign_page_apply_type"]
+          );
+          this.$set(
+            this.options,
+            "tooling_target_price_page_task_state",
+            res.data["tooling_target_price_page_task_state"]
+          );
+        }
+      });
+    },
+    //获取采购工厂 比字典中多了一个 上汽大众销售公司-配件
+    procureFactorySelectVo() {
+      procureFactorySelectVo().then((res) => {
+        if (res.data) {
+          this.$set(this.options, "PURCHASE_FACTORY", res.data || []);
+        }
+      });
+    },
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
+          this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
+        }
+      });
+    },
     openNoInvest() {
       this.noInvestLoading = false;
       this.changeNoInvestDialogVisible(true);

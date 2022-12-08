@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-07 14:36:12
+ * @LastEditTime: 2022-12-07 17:07:16
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -161,7 +161,7 @@ export function uploadSelTargetFile(data) {
 // 申请sel目标价记录
 export function applySelTargetPriceRecordList(data) {
   return request({
-    url: '/sel_target_price/apply-sel-target-price--record-list',
+    url: '/sel_target_price/apply-sel-target-price-record-list',
     method: 'POST',
     data
   })

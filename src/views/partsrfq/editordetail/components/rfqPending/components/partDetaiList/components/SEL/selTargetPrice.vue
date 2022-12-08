@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-05 18:56:08
+ * @LastEditTime: 2022-12-07 17:06:10
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -69,7 +69,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { getCfPriceEffective } from "@/api/partsrfq/editordetail";
 import { excelExport } from "@/utils/filedowLoad";
 import { iconName, SELTargetPriceTitle as tableTitle } from "./data";
-
+import { getSelTargetPriceTask, exportSelTargetPriceTask } from "@/api/SELTargetPrice";
 export default {
   components: {
     iCard,
@@ -136,16 +136,16 @@ export default {
       console.log('调用接口');
     },
     async getTableList() {
-      console.log('获取申请记录');
       const id = this.$route.query.id;
       if (id) {
         this.tableLoading = true;
         try {
-          const res = await getCfPriceEffective({
+          const res = await getSelTargetPriceTask({
             rfqId: id,
-            currPage: this.page.currPage,
-            pageSize: this.page.pageSize,
+            current: this.page.currPage,
+            size: this.page.pageSize,
           });
+          console.log(res);
           this.tableListData = Array.isArray(res.data) ? res.data : [];
           this.page.totalCount = res.total || 0;
           this.tableLoading = false;
@@ -155,14 +155,21 @@ export default {
       }
     },
     exports() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-          this.language(
-            "LK_QINGXUANZHEXUYAODAOCHUSHUJU",
-            "请选择需要导出的数据"
-          )
-        );
-      excelExport(this.selectTableData, this.tableTitle);
+      // if (this.selectTableData.length == 0)
+      //   return iMessage.warn(
+      //     this.language(
+      //       "LK_QINGXUANZHEXUYAODAOCHUSHUJU",
+      //       "请选择需要导出的数据"
+      //     )
+      //   );
+      // excelExport(this.selectTableData, this.tableTitle);
+      exportSelTargetPriceTask({
+            rfqId: this.$route.query.id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }).then(res=>{
+            console.log(res);
+          })
     },
     //修改表格改动列
     handleSelectionChange(val) {
