@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2022-02-09 20:37:53
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-12-06 09:59:48
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
 -->
@@ -559,6 +559,7 @@ export default {
       const updateInfo = {
         carTypeProjectId: this.carTypeProject.id, // 由code替换为id
         carTypeProjectZh: this.carTypeProject.name,
+        carTypeProjectNum: this.carTypeProject.code,
         cfController: this.batch.cfController,
         linieDept: this.batch.linieDept,
         linieDeptName: this.batch.linieDeptName,
