@@ -104,7 +104,7 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle" v-if="+scope.row.isHideColumn === 1"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          <div class="linkStyle" v-if="+scope.row.isHideColumn === 1"><span @click="clickCategoryBudget(scope.row)">{{ getTousandNum(scope.row.categoryBudget) }}</span>
           </div>
           <div v-else>-</div>
         </template>

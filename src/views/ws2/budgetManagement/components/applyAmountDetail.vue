@@ -16,7 +16,7 @@
             :tableTitle="tableTitle"
         >
           <template #budgetApplyAmount="scope">
-            <div>{{ getTousandNum(Number(scope.row.budgetApplyAmount).toFixed(2)) }}</div>
+            <div>{{ getTousandNum(Number(scope.row.budgetApplyAmount).toFixed(0)) }}</div>
           </template>
         </iTableList>
         <div class="money">{{$t('LK_HUOBI')}}：{{$t('MOULDADD.LK_RENMINGBI')}}  |  {{$t('MOULDADD.LK_DANWEI')}}：{{$t('TPZS.YUAN')}}  |  {{$t('MOULDADD.LK_BUHANSUI')}} </div>
