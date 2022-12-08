@@ -43,7 +43,7 @@
         ></iInput>
       </el-form-item>
       <!-- RFQ编号 -->
-      <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
+      <el-form-item :label="language('LK_RFQBIANHAO','RFQ编号')">
         <iInput
           v-model="form.rfqId"
           v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_RFQID|报表管理-RFQ编号"
@@ -140,7 +140,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: '',
+        order: 'CREATE_ASC',
         partNum: '',
         rfqId: '',
       },
@@ -154,6 +154,16 @@ export default {
           //   name: '',
           //   key: ''
           // },
+          {
+            code: 'CREATE_ASC',
+            name: '创建时间正序',
+            key: '创建时间正序'
+          },
+          {
+            code: 'CRATE_DESC',
+            name: '创建时间倒序',
+            key: '创建时间倒序'
+          },
           {
             code: 'TASK_STATUS',
             name: '按任务状态',
