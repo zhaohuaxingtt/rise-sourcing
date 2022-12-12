@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 11:52:52
+ * @LastEditTime: 2022-12-12 15:39:31
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -179,11 +179,7 @@ import assignDialog from "../components/assign";
 import iDicoptions from "rise/web/components/iDicoptions";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
-import {
-  getTargetPriceMaintainPage,
-  appoint,
-} from "@/api/modelTargetPrice/index";
-import { selCfCESearchPage } from "@/api/SELTargetPrice";
+import { selCfCESearchPage, exportSelCfceMaintained } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
@@ -294,35 +290,6 @@ export default {
     getBusinessDesc(type){
       return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
     },
-    /**
-     * @Description: 指派操作
-     * @Author: Luoshuang
-     * @param {*} cfId 控制员id
-     * @return {*}
-     */
-    targetAppoint(cfId) {
-      const params = {
-        taskIds: this.selectItems.map((item) => item.taskId),
-        userId: cfId,
-      };
-      appoint(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-            this.changeAssignDialogVisible(false);
-            this.getTableList();
-          } else {
-            iMessage.error(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-          }
-        })
-        .finally(() => {
-          this.$refs.assignDialog.changeAssigLoading(false);
-        });
-    },
     // 无目标价
     openNoInvest() {
       if (this.selectItems.length < 1) {
@@ -338,7 +305,41 @@ export default {
       this.noInvestDialogVisible = visible;
     },
     // 导出
-    handleExport() {},
+    handleExport() {
+      let params = _.omit(
+        {
+          ...this.searchParams,
+          searchType: "0",
+          applyStartDate: this.searchParams.applyDate
+            ? moment(this.searchParams.applyDate[0]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )
+            : null,
+          applyEndDate: this.searchParams.applyDate
+            ? moment(this.searchParams.applyDate[1]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )
+            : null,
+          returnStartDate: this.searchParams.responseDate
+            ? moment(this.searchParams.responseDate[0]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )
+            : null,
+          returnEndDate: this.searchParams.responseDate
+            ? moment(this.searchParams.responseDate[1]).format(
+                "YYYY-MM-DD HH:mm:ss"
+              )
+            : null,
+          pageType:2,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+        },
+        ["applyDate", "responseDate"]
+      );
+      exportSelCfceMaintained(params).then(res=>{
+        console.log(res);
+      })
+    },
     /**
      * @Description: 指派
      * @Author: Luoshuang

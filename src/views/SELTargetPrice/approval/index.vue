@@ -12,7 +12,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton @click="batchMaintain">
+          <iButton @click="openMaintain">
             {{ language("WEIHU", "维护") }}
           </iButton>
           <iButton @click="openApprovalDetailDialog">
@@ -62,6 +62,15 @@
       @changeVisible="changeApprovalDialogVisible"
       @handleConfirm="handleConfirm"
     />
+    <!-- 维护弹窗 -->
+    <batchMaintain
+      ref="assignDialog"
+      v-if="maintainVisible"
+      :tableData="selectItems"
+      :options="options"
+      :dialogVisible.sync="maintainVisible"
+      @changeVisible="changeMaintainVisible"
+    />
     <!-- 驳回弹窗 -->
     <recallBackDialog
       ref="sendBackConfirm"
@@ -88,6 +97,7 @@ import {
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import batchMaintain from "../components/batchMaintain.vue";
 import recallBackDialog from "../components/recallBack.vue";
 
 import { tableTitle, searchFormData } from "./data";
@@ -125,6 +135,7 @@ export default {
     approvalRecordDialog,
     approvalDialog,
     iMultiLineInput,
+    batchMaintain,
     search,
     recallBackDialog,
   },
@@ -152,6 +163,7 @@ export default {
       fsNum: "",
       attachmentDialogVisible: false,
       approvalRecordDialogVisible: false,
+      maintainVisible:false,
       recallBackDialogVisible: false,
       taskId: "",
       exportLoading: false,
@@ -167,20 +179,20 @@ export default {
     selectDictByKeys() {
       selectDictByKeys([
         { keys: "PPT" },
-        { keys: "sign_page_apply_type" },
-        { keys: "tooling_target_price_page_task_state" },
+        { keys: "sel_target_business_type" },
+        { keys: "sel_target_price_status" },
       ]).then((res) => {
         if (res.data) {
           this.$set(this.options, "PPT", res.data["PPT"]);
           this.$set(
             this.options,
-            "sign_page_apply_type",
-            res.data["sign_page_apply_type"]
+            "sel_target_business_type",
+            res.data["sel_target_business_type"]
           );
           this.$set(
             this.options,
-            "tooling_target_price_page_task_state",
-            res.data["tooling_target_price_page_task_state"]
+            "sel_target_price_status",
+            res.data["sel_target_price_status"]
           );
         }
       });
@@ -382,6 +394,22 @@ export default {
       });
       window.open(router.href, "_blank");
     },
+
+    // 维护、批量维护
+    openMaintain(){
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+        );
+        return;
+      }
+      this.changeMaintainVisible(true)
+    },
+    changeMaintainVisible(visible){
+      this.maintainVisible = visible
+      console.log(this.maintainVisible);
+    },
+
     /**
      * @Description: 更改编辑状态
      * @Author: Luoshuang

@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-09 11:22:07
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-09 19:18:19
+ * @LastEditTime: 2022-12-12 15:33:23
  * @FilePath: \front-web\src\views\SELTargetPrice\components\approvalDialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -51,7 +51,7 @@
 import { iDialog, iInput, iButton, iMessage } from "rise";
 import tableList from "./tableList";
 import { approvalTableTitle as tableTitle } from "../approval/data";
-import { passApproval, passApprovalAndRemark } from "@/api/SELTargetPrice";
+import { passApproval, passApprovalAndRemark, getSelTargetApprovalRecord } from "@/api/SELTargetPrice";
 export default {
   components: { iDialog, iInput, iButton, iMessage, tableList },
   props: {

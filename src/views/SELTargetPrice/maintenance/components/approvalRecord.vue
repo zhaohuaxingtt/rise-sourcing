@@ -1,24 +1,38 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-08 17:45:37
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-12 15:35:17
  * @Description: 审批记录弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
 <template>
-  <iDialog 
-    :title="language('SHENPIJILU','审批记录')"
+  <iDialog
+    :title="language('SHENPIJILU', '审批记录')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
     class="addPartsDialog"
   >
-    <tableList :activeItems='"a1"' :selection="false" indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+    <tableList
+      :activeItems="'a1'"
+      :selection="false"
+      indexKey
+      :tableData="tableData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+    ></tableList>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
-    <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+    <iPagination
+      v-update
+      @size-change="handleSizeChange($event, getTableList)"
+      @current-change="handleCurrentChange($event, getTableList)"
+      background
+      :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       :layout="page.layout"
       :current-page="page.currPage"
@@ -29,34 +43,32 @@
 </template>
 
 <script>
-import { iDialog, iPagination, iMessage } from 'rise'
-import tableList from '../../components/tableList'
-import { pageMixins } from "@/utils/pageMixins"
-import { approvalTableTitle } from '../data'
-import { getApprovalPage } from "@/api/modelTargetPrice/index"
+import { iDialog, iPagination, iMessage } from "rise";
+import tableList from "../../components/tableList";
+import { pageMixins } from "@/utils/pageMixins";
+import { approvalTableTitle } from "../data";
+import { getSelTargetApprovalRecord } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins],
   components: { iDialog, tableList, iPagination },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    id: {type:String}
+    id: { type: String },
   },
   data() {
     return {
       tableData: [],
       tableTitle: approvalTableTitle,
       tableLoading: false,
-      selectParts: []
-    }
+      selectParts: [],
+    };
   },
   watch: {
     dialogVisible(val) {
-      if(val) {
-        
-        this.getTableList()
-        
+      if (val) {
+        this.getTableList();
       }
-    }
+    },
   },
   methods: {
     /**
@@ -64,47 +76,50 @@ export default {
      * @Author: Luoshuang
      * @param {*} val 选中的行
      * @return {*}
-     */    
+     */
     handleSelectionChange(val) {
-      this.selectParts = val
+      this.selectParts = val;
     },
     /**
      * @Description: 获取列表数据
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getTableList() {
       if (!this.id) {
-        return
+        return;
       }
-      this.tableLoading = true
+      this.tableLoading = true;
       const params = {
         current: this.page.currPage,
-        size: this.page.pageSize
-      }
-      getApprovalPage(this.id, params).then(res => {
-        if(res.result) {
-          this.page = {
-            ...this.page,
-            totalCount: Number(res.total),
-            currPage: Number(res.pageNum),
-            pageSize: Number(res.pageSize)
+        size: this.page.pageSize,
+        rfqId: this.id,
+      };
+      getSelTargetApprovalRecord(params)
+        .then((res) => {
+          if (res.result) {
+            this.page = {
+              ...this.page,
+              totalCount: Number(res.total),
+              currPage: Number(res.pageNum),
+              pageSize: Number(res.pageSize),
+            };
+            this.tableData = res.data;
+          } else {
+            this.tableData = [];
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
-          this.tableData = res.data
-        } else {
-          this.tableData = []
-          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-        }
-      }).finally(() => {
-        this.tableLoading = false
-      })
+        })
+        .finally(() => {
+          this.tableLoading = false;
+        });
     },
     clearDialog() {
-      this.$emit('changeVisible', false)
+      this.$emit("changeVisible", false);
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -112,7 +127,7 @@ export default {
   .card {
     box-shadow: none;
     border-radius: 0;
-    border-bottom: 1px solid rgba(112, 112, 112, .1);
+    border-bottom: 1px solid rgba(112, 112, 112, 0.1);
     ::v-deep .cardBody {
       padding-top: 0;
       padding-left: 0;
