@@ -39,20 +39,22 @@
         </div>
       </div>
       <tableList
-        :activeItems="'fsNum'"
         selection
         indexKey
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        @openPage="openPage"
-        @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
       >
-        <template #rfqId="scope">
-          <span class="link-underline cursor" @click="gotoDetail(scope.row)">{{
-            scope.row.rfqId
+        <template #fsNum="scope">
+          <span class="link-underline cursor" @click="openPage(scope.row)">{{
+            scope.row.fsNum
+          }}</span>
+        </template>
+        <template #businessType="scope">
+          <span>{{
+            getBusinessDesc(scope.row.businessType)
           }}</span>
         </template>
       </tableList>
@@ -96,12 +98,7 @@ import {
   iCard,
   iPagination,
   iButton,
-  iSelect,
-  iDatePicker,
-  iInput,
-  iSearch,
   iMessage,
-  iMultiLineInput,
 } from "rise";
 import search from "../components/search.vue";
 import headerNav from "../components/headerNav";
@@ -109,38 +106,22 @@ import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import approvalRecordDialog from "../maintenance/components/approvalRecord";
-// import { excelExport } from "@/utils/filedowLoad"
-import iDicoptions from "rise/web/components/iDicoptions";
 import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
-import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
-import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
-import {
-  getTargetPriceSelectPage,
-  exportTargetPrice,
-} from "@/api/modelTargetPrice/index";
-import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import { selCfCESearchAllPage, applySelTargetPriceRecordList } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
 export default {
   mixins: [pageMixins],
   components: {
-    iDicoptions,
-    procureFactorySelect,
     iPage,
     headerNav,
     iCard,
     tableList,
     iPagination,
     iButton,
-    iSelect,
-    iDatePicker,
-    iInput,
-    iSearch,
     attachmentDialog,
     approvalRecordDialog,
-    carProjectSelect,
-    iMultiLineInput,
     search,
   },
   data() {
@@ -148,23 +129,14 @@ export default {
       options: {},
       searchForm: {},
       searchFormData,
-      tableTitle: tableTitle,
+      tableTitle,
       tableData: [],
-      searchParams: {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        state: "",
-        showSelf: true,
-      },
       isEdit: false,
       tableLoading: false,
       attachmentDialogVisible: false,
       approvalDialogVisible: false,
       selectItems: [],
       rfqId: "",
-      applyId: "",
       fsNum: "",
       taskId: "",
       exportLoading: false,
@@ -180,20 +152,20 @@ export default {
     selectDictByKeys() {
       selectDictByKeys([
         { keys: "PPT" },
-        { keys: "sign_page_apply_type" },
-        { keys: "tooling_target_price_page_task_state" },
+        { keys: "sel_target_business_type" },
+        { keys: "sel_target_price_status" },
       ]).then((res) => {
         if (res.data) {
           this.$set(this.options, "PPT", res.data["PPT"]);
           this.$set(
             this.options,
-            "sign_page_apply_type",
-            res.data["sign_page_apply_type"]
+            "sel_target_business_type",
+            res.data["sel_target_business_type"]
           );
           this.$set(
             this.options,
-            "tooling_target_price_page_task_state",
-            res.data["tooling_target_price_page_task_state"]
+            "sel_target_price_status",
+            res.data["sel_target_price_status"]
           );
         }
       });
@@ -214,24 +186,14 @@ export default {
         }
       });
     },
-    gotoDetail(row) {
-      const router = this.$router.resolve({
-        path: "/targetpriceandscore/modeltargetprice/detail",
-        query: { ...row, applyType: "4" },
-      });
-      window.open(router.href, "_blank");
+    getBusinessDesc(code){
+      return this.options.sel_target_business_type.find(item=>item.code==code)?.name || code
     },
     handleSelectionChange(val) {
       this.selectItems = val;
     },
     reset() {
-      this.searchParams = {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        state: "",
-      };
+      this.searchForm = {};
       this.sure();
     },
     sure() {
@@ -240,16 +202,6 @@ export default {
         currPage: 1,
       };
       this.getTableList();
-    },
-    /**
-     * @Description: 附件查看
-     * @Author: Luoshuang
-     * @param {*} row
-     * @return {*}
-     */
-    openAttachmentDialog(row) {
-      this.rfqId = row.rfqId || "";
-      this.changeAttachmentDialogVisible(true);
     },
     /**
      * @Description: 修改附件弹窗状态
@@ -297,35 +249,35 @@ export default {
      */
     getTableList() {
       this.tableLoading = true;
-      // eslint-disable-next-line no-undef
       const params = {
         current: this.page.currPage,
         size: this.page.pageSize,
         extendFields: {
-          ...this.searchParams,
-          applyStartDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[0]).format(
+          ...this.searchForm,
+          pageType:4,
+          applyStartDate: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          applyEndDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[1]).format(
+          applyEndDate: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          returnStartDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[0]).format(
+          returnStartDate: this.searchForm.responseDate
+            ? moment(this.searchForm.responseDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          returnEndDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[1]).format(
+          returnEndDate: this.searchForm.responseDate
+            ? moment(this.searchForm.responseDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
         },
       };
-      getSelTargetPriceTask(params)
+      selCfCESearchAllPage(params)
         .then((res) => {
           if (res?.result) {
             this.page = {
@@ -358,7 +310,7 @@ export default {
         return;
       }
       this.exportLoading = true;
-      await exportTargetPrice(this.selectItems.map((item) => item.taskItemId));
+      await applySelTargetPriceRecordList(this.selectItems.map((item) => item.taskItemId));
       this.exportLoading = false;
     },
   },

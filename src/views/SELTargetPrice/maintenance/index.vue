@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-08 14:40:38
+ * @LastEditTime: 2022-12-12 11:52:52
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -37,35 +37,33 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton
-            @click="handleNoInvest"
-            :loading="noInvestLoading"
-            v-permission.auto="
-              MODELTARGETPRICE_SIGNIN_NOINVESTBTN |
-                (模具目标价管理 - 目标价签收 - 无投资按钮)
-            "
-            >{{ language("无目标价", "无目标价") }}</iButton
-          >
+          <iButton @click="openNoInvest" :loading="noInvestLoading">{{
+            language("无目标价", "无目标价")
+          }}</iButton>
           <!--------------------指派按钮----------------------------------->
-          <iButton
-            @click="openAssignDialog"
-            :loading="assignDialogVisible"
-            v-permission.auto="
-              MODELTARGETPRICE_MAINTENANCE_ASSIGN |
-                (模具目标价管理 - 目标价维护 - 指派)
-            "
-            >{{ language("ZHIPAI", "指派") }}</iButton
-          >
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{
+            language("ZHIPAI", "指派")
+          }}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton
-            @click="handleExport"
-            :loading="exportLoading"
-            v-permission.auto="
-              MODELTARGETPRICE_QUERY_EXPORT |
-                (模具目标价管理 - 目标价查询 - 导出)
-            "
-            >{{ language("DAOCHU", "导出") }}</iButton
+          <iButton @click="handleExport" :loading="exportLoading">{{
+            language("DAOCHU", "导出")
+          }}</iButton>
+          <!--------------------导入批量维护按钮----------------------------------->
+          <el-upload
+            class="margin-left10 margin-right10"
+            accept=".xlsx"
+            style="display: inline-block"
+            :http-request="upload"
+            :show-file-list="false"
+            :before-upload="beforeUpload"
           >
+            <iButton :loading="uploadLoading">{{
+              language("DAORUPILIANGWEIHU", "导入批量维护")
+            }}</iButton>
+          </el-upload>
+          <iButton @click="openMaintain" :loading="assignDialogVisible">{{
+            language("维护", "维护")
+          }}</iButton>
         </div>
       </div>
       <tableList
@@ -81,6 +79,17 @@
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
       >
+      
+        <template #businessType="scope">
+          <span>{{
+            getBusinessDesc(scope.row.businessType)
+          }}</span>
+        </template>
+        <template #status="scope">
+          <span>{{
+            getStatus(scope.row.status)
+          }}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -119,8 +128,27 @@
     <assignDialog
       ref="assignDialog"
       :dialogVisible.sync="assignDialogVisible"
+      :selectItems="selectItems"
+      @getTableList="getTableList"
       @changeVisible="changeAssignDialogVisible"
-      @sendAccessory="targetAppoint"
+    />
+    <!-- 维护弹窗 -->
+    <batchMaintain
+      ref="assignDialog"
+      v-if="maintainVisible"
+      :tableData="selectItems"
+      :options="options"
+      :dialogVisible.sync="maintainVisible"
+      @changeVisible="changeMaintainVisible"
+    />
+    
+    <!-- 无目标价确认弹窗 -->
+    <noInvestConfirmDialog
+      ref="noInvestConfirm"
+      :dialogVisible="noInvestDialogVisible"
+      :selectItems="selectItems"
+      @changeVisible="changeNoInvestDialogVisible"
+      @getTableList="getTableList"
     />
   </iPage>
 </template>
@@ -140,12 +168,14 @@ import {
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import batchMaintain from "../components/batchMaintain.vue";
+import noInvestConfirmDialog from "../components/noInvestConfirm";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
 import approvalRecordDialog from "./components/approvalRecord";
-import assignDialog from "../signin/components/assign";
+import assignDialog from "../components/assign";
 import iDicoptions from "rise/web/components/iDicoptions";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
@@ -153,7 +183,7 @@ import {
   getTargetPriceMaintainPage,
   appoint,
 } from "@/api/modelTargetPrice/index";
-import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import { selCfCESearchPage } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
@@ -163,6 +193,7 @@ export default {
   components: {
     carProjectSelect,
     iDicoptions,
+    noInvestConfirmDialog,
     procureFactorySelect,
     iPage,
     headerNav,
@@ -178,7 +209,8 @@ export default {
     approvalRecordDialog,
     assignDialog,
     iMultiLineInput,
-    search
+    batchMaintain,
+    search,
   },
   data() {
     return {
@@ -207,6 +239,8 @@ export default {
       uploadLoading: false,
       exportLoading: false,
       assignDialogVisible: false,
+      noInvestDialogVisible:false,
+      maintainVisible: false,
       taskId: "",
     };
   },
@@ -220,20 +254,20 @@ export default {
     selectDictByKeys() {
       selectDictByKeys([
         { keys: "PPT" },
-        { keys: "sign_page_apply_type" },
-        { keys: "tooling_target_price_page_task_state" },
+        { keys: "sel_target_business_type" },
+        { keys: "sel_target_price_status" },
       ]).then((res) => {
         if (res.data) {
           this.$set(this.options, "PPT", res.data["PPT"]);
           this.$set(
             this.options,
-            "sign_page_apply_type",
-            res.data["sign_page_apply_type"]
+            "sel_target_business_type",
+            res.data["sel_target_business_type"]
           );
           this.$set(
             this.options,
-            "tooling_target_price_page_task_state",
-            res.data["tooling_target_price_page_task_state"]
+            "sel_target_price_status",
+            res.data["sel_target_price_status"]
           );
         }
       });
@@ -253,6 +287,12 @@ export default {
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
         }
       });
+    },
+    getStatus(status){
+      return this.options.sel_target_price_status.find(item=>item.code==status)?.name || status
+    },
+    getBusinessDesc(type){
+      return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
     },
     /**
      * @Description: 指派操作
@@ -284,9 +324,21 @@ export default {
         });
     },
     // 无目标价
-    handleNoInvest(){},
+    openNoInvest() {
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+        );
+        return;
+      }
+      this.changeNoInvestDialogVisible(true);
+    },
+
+    changeNoInvestDialogVisible(visible) {
+      this.noInvestDialogVisible = visible;
+    },
     // 导出
-    handleExport(){},
+    handleExport() {},
     /**
      * @Description: 指派
      * @Author: Luoshuang
@@ -311,6 +363,19 @@ export default {
      */
     changeAssignDialogVisible(visible) {
       this.assignDialogVisible = visible;
+    },
+    openMaintain(){
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+        );
+        return;
+      }
+      this.changeMaintainVisible(true)
+    },
+    changeMaintainVisible(visible){
+      this.maintainVisible = visible
+      console.log(this.maintainVisible);
     },
     beforeUpload() {
       this.uploadLoading = true;
@@ -413,12 +478,13 @@ export default {
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
+          pageType:2,
           current: this.page.currPage,
           size: this.page.pageSize,
         },
         ["applyDate", "responseDate"]
       );
-      getTargetPriceMaintainPage(params)
+      selCfCESearchPage(params)
         .then((res) => {
           if (res?.result) {
             this.page = {
@@ -443,6 +509,21 @@ export default {
           this.tableLoading = false;
         });
     },
+  },
+
+  upload(content) {
+    const formData = new FormData();
+    formData.append("file", content.file);
+    // formData.append('applicationName', 'procurereq-service')
+    // 上传接口
+    let res = true;
+    // 上传成功
+    if (res) {
+      const router = this.$router.resolve({
+        path: "/targetpriceandscore/seltargetprice/batchMaintain",
+      });
+      window.open(router.href, "_blank");
+    }
   },
 };
 </script>

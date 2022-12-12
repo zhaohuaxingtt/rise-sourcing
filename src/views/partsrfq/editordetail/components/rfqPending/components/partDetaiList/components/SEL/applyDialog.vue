@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-12-07 16:33:04
+ * @LastEditTime: 2022-12-09 15:38:43
  * @LastEditors: 余继鹏 917955345@qq.com
 -->
 <template>
@@ -80,7 +80,7 @@ export default {
       if (!rfqId) return;
       this.loading = true;
       applySelTargetPriceRecordList({
-        rfqId: this.$route.query.id,
+        rfqIds: [this.$route.query.id],
         current: this.page.currPage,
         size: this.page.pageSize,
       })

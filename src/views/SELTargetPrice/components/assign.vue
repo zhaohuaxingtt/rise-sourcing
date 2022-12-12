@@ -1,24 +1,16 @@
-<!--
- * @Author: Luoshuang
- * @Date: 2021-05-25 16:11:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 18:09:23
- * @Description: 分配询价采购员弹窗
- * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\assign.vue
--->
-
 <template>
   <iDialog 
-    :title="language('FENPEIMOJUKONGZHIYUAN','分配模具控制员')"
+    :title="language('ZHIPAI','指派')"
     :visible.sync="status"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
+      <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
       <iButton @click="handleConfirm" :loading="loading">{{language('FENPAI','分派')}}</iButton>
     </template>
     <el-form>
-      <el-form-item :label="language('XUANZEFENPEIDEFUZEREN','选择分配的负责人')">
+      <el-form-item :label="language('CF控制员','CF控制员')">
         <iSelect v-model="assign">
           <el-option
             v-for="item in assignOption"
@@ -34,11 +26,12 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { getAppointUser } from '@/api/modelTargetPrice/index'
+import { getCFECUserList, transferSelTargetPrice } from "@/api/SELTargetPrice";
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
     dialogVisible: { type: Boolean, default: false },
+    selectItems: {type:Array, default:()=>[]}
   },
   data() {
     return {
@@ -59,7 +52,7 @@ export default {
   },
   methods: {
     getCF() {
-      getAppointUser().then(res => {
+      getCFECUserList({}).then(res => {
           if (res.code == 200) {
             this.assignOption = res.data.map(item => {
               return {
@@ -82,23 +75,38 @@ export default {
       this.assign = ''
       this.$emit('changeVisible', false)
     },
-    handleCancel() {
-      this.clearDialog()
-    },
     handleConfirm() {
       if (this.assign === '') {
-        iMessage.warn(this.language('QINGXUANZEMOJUKONGZHIYUAN','请选择模具控制员'))
+        iMessage.warn(this.language('请选择CF控制员','请选择CF控制员'))
         return
       }
+      this.transferSelTargetPrice()
+    },
+    // 指派
+    transferSelTargetPrice() {
       this.loading = true
-      this.$emit('sendAccessory', this.assign)
+      const params = {
+        taskId: this.selectItems.map((item) => item.rfqId),
+        cfUserId: this.assign,
+      };
+      transferSelTargetPrice(params)
+        .then((res) => {
+          if (res?.code=='200') {
+            iMessage.success(
+              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+            );
+            this.clearDialog()  // 关闭弹窗
+            this.$emit('getTableList')  // 重新获取数据
+          } else {
+            iMessage.error(
+              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+            );
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        });
     },
-    changeAssigLoading(loading) {
-      this.loading = loading
-    },
-    changeLoading(loading) {
-      this.loading = loading
-    }
   }
 }
 </script>

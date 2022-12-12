@@ -1,3 +1,11 @@
+/*
+ * @Author: 余继鹏 917955345@qq.com
+ * @Date: 2022-12-08 15:38:28
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-09 16:03:17
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\SEL\data.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // SEL目标价
 export const SELTargetPriceTitle = [
     {
@@ -11,10 +19,10 @@ export const SELTargetPriceTitle = [
         name: "零件名（中）",
         key: "LK_LINGJIANMINGZHONG",
     },
-    { props: "applyType", name: "申请类型", key: "LK_SHENQINGLEIXING" },
-    { props: 'cfControllerName', name: 'CF负责人', key: 'LK_CFFUZEREN', width: '180' },
+    { props: "businessTypeName", name: "申请类型", key: "LK_SHENQINGLEIXING" },
+    { props: 'cfUserName', name: 'CF负责人', key: 'LK_CFFUZEREN', width: '180' },
     {
-        props: "expTargetpri",
+        props: "targetPrice",
         name: "目标价",
         key: "LK_MUBIAOJIA",
     },
@@ -42,20 +50,20 @@ export const SELApplyTargetPriceTitle = [
         name: "零件名（中）",
         key: "LK_LINGJIANMINGZHONG",
     },
-    { props: "applyType", name: "申请类型", key: "LK_SHENQINGLEIXING" },
-    { props: 'cfControllerName', name: 'CF负责人', key: 'LK_CFFUZEREN', width: '180' },
+    { props: "businessTypeName", name: "申请类型", key: "LK_SHENQINGLEIXING" },
+    { props: 'cfUserName', name: 'CF负责人', key: 'LK_CFFUZEREN', width: '180' },
     {
-        props: "expTargetpri",
+        props: "targetPrice",
         name: "目标价",
         key: "LK_MUBIAOJIA",
     },
     {
-        props: "remark",
+        props: "remarks",
         name: "备注",
         key: "LK_BEIZHU",
     },
     {
-        props: "endDate",
+        props: "returnDate",
         name: "返回时间",
         key: "返回时间",
     },
@@ -75,4 +83,4 @@ export const iconName = {
     '已完成': 'iconrs-wancheng',
     '未完成': 'icontishi-cheng',
     '未申请': 'iconzhongyaoxinxitishi',
-  }
+}

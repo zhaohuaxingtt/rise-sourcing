@@ -1,76 +1,26 @@
-<!--
- * @Author: Luoshuang
- * @Date: 2021-06-22 11:14:02
- * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-08 12:00:11
- * @Description: 模具目标价-目标价签收
- * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
--->
-
 <template>
-  <iPage
-  >
+  <iPage>
     <headerNav />
-    <!----------------------------------------------------------------->
-    <!---------------------------搜索区域------------------------------->
-    <!----------------------------------------------------------------->
-        <search
+    <search
       @sure="sure"
       @reset="reset"
       :searchFormData="searchFormData"
       :searchForm="searchForm"
       :options="options"
     />
-    <!---------------------------表格区域------------------------------->
-    <!----------------------------------------------------------------->
-    <iCard
-      class="margin-top20"
-      v-permission.auto="
-        MODELTARGETPRICE_SIGNIN_TABLE | (模具目标价管理 - 目标价签收 - 表格)
-      "
-    >
+    <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <!--------------------无目标价按钮----------------------------------->
-          <iButton
-            @click="handleNoInvest"
-            :loading="noInvestLoading"
-            v-permission.auto="
-              MODELTARGETPRICE_SIGNIN_NOINVESTBTN |
-                (模具目标价管理 - 目标价签收 - 无投资按钮)
-            "
-            >{{ language("无目标价", "无目标价") }}</iButton
-          >
-          <!--------------------指派按钮----------------------------------->
-          <iButton
-            @click="openAssignDialog"
-            :loading="assignDialogVisible"
-            v-permission.auto="
-              MODELTARGETPRICE_SIGNIN_ASSIGNBTN |
-                (模具目标价管理 - 目标价签收 - 指派按钮)
-            "
-            >{{ language("LK_ZHIPAI", "指派") }}</iButton
-          >
-          <!--------------------退回按钮----------------------------------->
-          <iButton
-            @click="openSendBack"
-            v-permission.auto="
-              MODELTARGETPRICE_SIGNIN_BACK |
-                (模具目标价管理 - 目标价签收 - 退回按钮)
-            "
-            >{{ language("TUIHUI", "退回") }}</iButton
-          >
-          <!--------------------签收按钮----------------------------------->
-          <iButton
-            @click="handleSignIn"
-            :loading="signLoading"
-            v-permission.auto="
-              MODELTARGETPRICE_SIGNIN_SIGNINBTN |
-                (模具目标价管理 - 目标价签收 - 签收按钮)
-            "
-            >{{ language("QIANSHOU", "签收") }}</iButton
-          >
+          <iButton @click="openNoInvest">{{
+            language("无目标价", "无目标价")
+          }}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{
+            language("LK_ZHIPAI", "指派")
+          }}</iButton>
+          <iButton @click="handleSignIn" :loading="signLoading">{{
+            language("QIANSHOU", "签收")
+          }}</iButton>
         </div>
       </div>
       <tableList
@@ -80,25 +30,24 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        @openAttachmentDialog="openAttachmentDialog"
       >
-        <template #tuzhi="scope">
-          <!-- <span v-if="!$store.state.permission.userInfo.isDeptLead && $store.state.permission.userInfo.deptDTO.level === 'K3' && scope.row.approvalStatus == 0"></span> -->
-          <!-- 角色是财务模具控制员不展示 -->
-          <span
-            v-if="roleList.includes('CWMJKZY') && scope.row.approvalStatus == 0"
-          ></span>
-          <span
-            class="openLinkText cursor"
-            v-else
-            @click="openAttachmentDialog(scope.row)"
-            >{{ language("CHAKAN", "查看") }}</span
-          >
+        <template #fsNum="scope">
+          <span class="link-underline cursor" @click="gotoDetail(scope.row)">{{
+            scope.row.fsNum
+          }}</span>
+        </template>
+        
+        <template #businessType="scope">
+          <span>{{
+            getBusinessDesc(scope.row.businessType)
+          }}</span>
+        </template>
+        <template #status="scope">
+          <span>{{
+            getStatus(scope.row.status)
+          }}</span>
         </template>
       </tableList>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
       <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
@@ -111,40 +60,21 @@
         :total="page.totalCount"
       />
     </iCard>
-    <!------------------------------------------------------------------------>
-    <!--                  附件弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <attachmentDialog
-      :dialogVisible="attachmentDialogVisible"
-      @changeVisible="changeAttachmentDialogVisible"
-      :rfqNum="rfqId"
-    />
-    <!------------------------------------------------------------------------>
-    <!--                  指派弹窗                                      --->
-    <!------------------------------------------------------------------------>
+    <!-- 指派弹窗 -->
     <assignDialog
       ref="assign"
       :dialogVisible.sync="assignDialogVisible"
+      :selectItems="selectItems"
       @changeVisible="changeAssignDialogVisible"
-      @sendAccessory="targetAppoint"
+      @getTableList="getTableList"
     />
-    <!------------------------------------------------------------------------>
-    <!--                  无投资确认弹窗                                      --->
-    <!------------------------------------------------------------------------>
+    <!-- 无目标价确认弹窗 -->
     <noInvestConfirmDialog
       ref="noInvestConfirm"
       :dialogVisible="noInvestDialogVisible"
+      :selectItems="selectItems"
       @changeVisible="changeNoInvestDialogVisible"
-      @handleConfirm="handleNoInvestConfirm"
-    />
-    <!------------------------------------------------------------------------>
-    <!--                  退回弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <sendBackDialog
-      ref="sendBackConfirm"
-      :dialogVisible="sendBackDialogVisible"
-      @changeVisible="changeSendBackDialogVisible"
-      @handleConfirm="handleSendBackConfirm"
+      @getTableList="getTableList"
     />
   </iPage>
 </template>
@@ -167,25 +97,16 @@ import search from "../components/search.vue";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
-import assignDialog from "./components/assign";
-import { getCartypeDict } from "@/api/partsrfq/home";
-import {
-  getTargetPriceSingPage,
-  noInvestment,
-  taskSign,
-  appoint,
-  existValidTargetPrice,
-  sendBack,
-} from "@/api/modelTargetPrice/index";
-import iDicoptions from "rise/web/components/iDicoptions";
-import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
-import noInvestConfirmDialog from "./components/noInvestConfirm";
+import assignDialog from "../components/assign";
+import noInvestConfirmDialog from "../components/noInvestConfirm";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import moment from "moment";
-import sendBackDialog from "./components/sendBack";
 import { roleMixins } from "@/utils/roleMixins";
-import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import {
+  selCfCESearchPage,
+  signSelTargetPrice,
+} from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
@@ -193,7 +114,6 @@ export default {
   components: {
     carProjectSelect,
     procureFactorySelect,
-    iDicoptions,
     iPage,
     headerNav,
     iCard,
@@ -204,12 +124,10 @@ export default {
     iDatePicker,
     iInput,
     iSearch,
-    attachmentDialog,
     assignDialog,
-    sendBackDialog,
     noInvestConfirmDialog,
     iMultiLineInput,
-    search
+    search,
   },
   data() {
     return {
@@ -218,13 +136,7 @@ export default {
       searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchParams: {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        showSelf: true,
-      },
+      searchParams: {},
       tableLoading: false,
       selectOptions: {},
       assignDialogVisible: false,
@@ -234,7 +146,6 @@ export default {
       noInvestDialogVisible: false,
       attachmentDialogVisible: false,
       signLoading: false,
-      noInvestLoading: false,
       sendBackDialogVisible: false,
     };
   },
@@ -248,20 +159,20 @@ export default {
     selectDictByKeys() {
       selectDictByKeys([
         { keys: "PPT" },
-        { keys: "sign_page_apply_type" },
-        { keys: "tooling_target_price_page_task_state" },
+        { keys: "sel_target_business_type" },
+        { keys: "sel_target_price_status" },
       ]).then((res) => {
         if (res.data) {
           this.$set(this.options, "PPT", res.data["PPT"]);
           this.$set(
             this.options,
-            "sign_page_apply_type",
-            res.data["sign_page_apply_type"]
+            "sel_target_business_type",
+            res.data["sel_target_business_type"]
           );
           this.$set(
             this.options,
-            "tooling_target_price_page_task_state",
-            res.data["tooling_target_price_page_task_state"]
+            "sel_target_price_status",
+            res.data["sel_target_price_status"]
           );
         }
       });
@@ -282,103 +193,33 @@ export default {
         }
       });
     },
+    
+    getStatus(status){
+      return this.options.sel_target_price_status.find(item=>item.code==status)?.name || status
+    },
+    getBusinessDesc(type){
+      return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
+    },
+    // 无目标价
     openNoInvest() {
-      this.noInvestLoading = false;
-      this.changeNoInvestDialogVisible(true);
-    },
-    handleSendBackConfirm(memo) {
-      const params = {
-        remarks: memo,
-        taskIds: this.selectItems.map((item) => item.taskId),
-      };
-      sendBack(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-            this.changeSendBackDialogVisible(false);
-            this.getTableList();
-          } else {
-            iMessage.error(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-          }
-        })
-        .finally(() => {
-          this.refs.sendBackConfirm.changeSaveLoading(false);
-        });
-    },
-    changeSendBackDialogVisible(visible) {
-      this.sendBackDialogVisible = visible;
-    },
-    /**
-     * @Description: 无投资
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */
-    async handleNoInvest() {
       if (this.selectItems.length < 1) {
         iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
         return;
       }
-      try {
-        this.noInvestLoading = true;
-        const existValidTargetPriceRes = await existValidTargetPrice(
-          this.selectItems.map((item) => item.rfqId)
-        );
-        if (existValidTargetPriceRes?.result) {
-          if (existValidTargetPriceRes?.data) {
-            this.$confirm(
-              this.language(
-                "RFQHASVALIDTARGETPRICECONFIRMNOINVESTMENT",
-                "RFQ已有目标价返回，是否确认无投资？"
-              ),
-              this.language("WUTOUZIQUEREN", "无投资确认"),
-              {
-                confirmButtonText: this.language("SHI", "是"),
-                cancelButtonText: this.language("FOU", "否"),
-                customClass: "progressmoni-tipsConfirm",
-              }
-            )
-              .then((confirmInfo) => {
-                console.log("confirmInfo", confirmInfo);
-                if (confirmInfo === "confirm") {
-                  this.openNoInvest();
-                }
-              })
-              .catch(() => {
-                this.noInvestLoading = false;
-              });
-          } else {
-            this.openNoInvest();
-          }
-        } else {
-          iMessage.error(
-            this.$i18n.locale === "zh"
-              ? existValidTargetPriceRes?.desZh
-              : existValidTargetPriceRes?.desEn
-          );
-          this.noInvestLoading = false;
-        }
-      } catch (e) {
-        iMessage.error(e.message || e);
-        this.noInvestLoading = false;
-      }
+      this.changeNoInvestDialogVisible(true);
     },
+
+    changeNoInvestDialogVisible(visible) {
+      this.noInvestDialogVisible = visible;
+    },
+
     handleSelectionChange(val) {
       this.selectItems = val;
     },
     reset() {
-      this.searchParams = {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-      };
+      this.searchParams = {};
       this.sure();
     },
     sure() {
@@ -388,60 +229,8 @@ export default {
       };
       this.getTableList();
     },
-    /**
-     * @Description: 附件查看
-     * @Author: Luoshuang
-     * @param {*} row
-     * @return {*}
-     */
-    openAttachmentDialog(row) {
-      this.rfqId = row.rfqId || "";
-      this.changeAttachmentDialogVisible(true);
-    },
-    changeAttachmentDialogVisible(visible) {
-      this.attachmentDialogVisible = visible;
-    },
-    /**
-     * @Description: 指派操作
-     * @Author: Luoshuang
-     * @param {*} cfId 控制员id
-     * @return {*}
-     */
-    targetAppoint(cfId) {
-      const params = {
-        taskIds: this.selectItems.map((item) => item.taskId),
-        userId: cfId,
-      };
-      appoint(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-            this.changeAssignDialogVisible(false);
-            this.getTableList();
-          } else {
-            iMessage.error(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-          }
-        })
-        .finally(() => {
-          this.$refs.assign.changeAssigLoading(false);
-        });
-    },
-    // 获取车型字典
-    getCartypeDict() {
-      getCartypeDict().then((res) => {
-        if (res.code == 200) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            cartTypeOptions: Array.isArray(res.data) ? res.data : [],
-          };
-        }
-      });
-    },
-    openPage(row) {
+    // 跳转FS
+    gotoDetail(row) {
       const router = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
@@ -487,22 +276,23 @@ export default {
       const params = _.omit(
         {
           ...this.searchParams,
-          applyStartDate: this.searchParams.applyDate
+          applyDateStart: this.searchParams.applyDate
             ? moment(this.searchParams.applyDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          applyEndDate: this.searchParams.applyDate
+          applyDateEnd: this.searchParams.applyDate
             ? moment(this.searchParams.applyDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
+          pageType: 1,
           current: this.page.currPage,
           size: this.page.pageSize,
         },
         ["applyDate"]
       );
-      getTargetPriceSingPage(params)
+      selCfCESearchPage(params)
         .then((res) => {
           if (res?.result) {
             this.page = {
@@ -540,74 +330,33 @@ export default {
         );
         return;
       }
-      const params = {
-        taskIds: this.selectItems.map((item) => item.taskId),
-      };
-      this.signLoading = true;
-      taskSign(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-            this.getTableList();
-          } else {
-            iMessage.error(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-          }
+      this.$confirm("是否确认签收所选记录？", "提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "返回",
+      })
+        .then(() => {
+          const params = {
+            taskId: this.selectItems.map((item) => item.id),
+          };
+          this.signLoading = true;
+          signSelTargetPrice(params)
+            .then((res) => {
+              if (res?.result) {
+                iMessage.success(
+                  this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+                );
+                this.getTableList();
+              } else {
+                iMessage.error(
+                  this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
+                );
+              }
+            })
+            .finally(() => {
+              this.signLoading = false;
+            });
         })
-        .finally(() => {
-          this.signLoading = false;
-        });
-    },
-    /**
-     * @Description: 退回
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */
-    openSendBack() {
-      if (this.selectItems.length < 1) {
-        iMessage.warn(
-          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
-        );
-        return;
-      }
-      this.changeSendBackDialogVisible(true);
-    },
-    changeNoInvestDialogVisible(visible) {
-      this.noInvestDialogVisible = visible;
-    },
-    /**
-     * @Description: 无投资确认
-     * @Author: Luoshuang
-     * @param {*} memo 备注
-     * @return {*}
-     */
-    handleNoInvestConfirm(memo) {
-      const params = {
-        remarks: memo,
-        taskIds: this.selectItems.map((item) => item.taskId),
-      };
-      noInvestment(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-            this.changeNoInvestDialogVisible(false);
-
-            this.getTableList();
-          } else {
-            iMessage.error(
-              this.$i18n.locale === "zh" ? res?.desZh : res?.desEn
-            );
-          }
-        })
-        .finally(() => {
-          this.refs.noInvestConfirm.changeSaveLoading(false);
-        });
+        .catch(() => {});
     },
   },
 };

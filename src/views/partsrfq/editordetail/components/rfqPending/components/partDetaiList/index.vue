@@ -78,7 +78,7 @@
             >
           </template>
           <template #partNum="scope">
-          {{ scope.row.partNum }} <span class="sel">SEL</span> </template>
+          {{ scope.row.partNum }} <span v-if="scope.row.isSel" class="sel">SEL</span> </template>
         </tableList>
         <iPagination
           v-update
@@ -165,7 +165,7 @@
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
     <!-- 申请SEL目标价 -->
-    <selDialog :todo="todo" :visible.sync="selDialogVisible" @update='updateData' />
+    <selDialog :todo="todo" :visible.sync="selDialogVisible" @update='updateData' :data="handleSelectArr" />
     <!-- 组件componentList -->
     <template v-for="(item, index) in componentList">
       <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" />

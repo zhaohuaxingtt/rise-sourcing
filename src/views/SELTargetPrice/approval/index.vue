@@ -1,22 +1,6 @@
-<!--
- * @Author: Luoshuang
- * @Date: 2021-06-22 09:12:02
- * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-08 14:56:14
- * @Description: 财务目标价-目标价审批
- * @FilePath: \front-sourcing\src\views\modelTargetPrice\approval\index.vue
--->
-
 <template>
-  <iPage
-    v-permission.auto="
-      MODELTARGETPRICE_APPROVAL_PAGE | (模具目标价管理 - 目标价审批 - 页面)
-    "
-  >
+  <iPage>
     <headerNav />
-    <!----------------------------------------------------------------->
-    <!---------------------------搜索区域------------------------------->
-    <!----------------------------------------------------------------->
     <search
       @sure="sure"
       @reset="reset"
@@ -24,47 +8,20 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <!----------------------------------------------------------------->
-    <!---------------------------表格区域------------------------------->
-    <!----------------------------------------------------------------->
-    <iCard
-      class="margin-top20"
-      v-permission.auto="
-        MODELTARGETPRICE_APPROVAL_TABLE | (模具目标价管理 - 目标价审批 - 表格)
-      "
-    >
+    <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <!--------------------批准按钮----------------------------------->
-          <iButton
-            @click="openApprovalDetailDialog"
-            v-permission.auto="
-              MODELTARGETPRICE_APPROVAL_APPROVALBTN |
-                (模具目标价管理 - 目标价审批 - 批准按钮)
-            "
-            >{{ language("PIZHUN", "批准") }}</iButton
-          >
-          <!--------------------驳回按钮----------------------------------->
-          <iButton
-            @click="recallBack"
-            >{{ language("驳回", "驳回") }}</iButton
-          >
-          <!--------------------编辑按钮----------------------------------->
-          <iButton
-            @click="edit"
-            >{{ language("BIANJI", "编辑") }}</iButton
-          >
-          <!--------------------导出按钮----------------------------------->
-          <iButton
-            @click="handleExport"
-            :loading="exportLoading"
-            v-permission.auto="
-              MODELTARGETPRICE_APPROVAL_EXPORTBTN |
-                (模具目标价管理 - 目标价审批 - 导出按钮)
-            "
-            >{{ language("DAOCHU", "导出") }}</iButton
-          >
+          <iButton @click="batchMaintain">
+            {{ language("WEIHU", "维护") }}
+          </iButton>
+          <iButton @click="openApprovalDetailDialog">
+            {{ language("PIZHUN", "批准") }}
+          </iButton>
+          <iButton @click="recallBack">{{ language("驳回", "驳回") }}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading">{{
+            language("DAOCHU", "导出")
+          }}</iButton>
         </div>
       </div>
       <tableList
@@ -77,12 +34,8 @@
         @handleSelectionChange="handleSelectionChange"
         @openPage="openPage"
         @openApprovalDialog="openApprovalDialog"
-        @openAttachmentDialog="openAttachmentDialog"
       >
       </tableList>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
       <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
@@ -95,30 +48,27 @@
         :total="page.totalCount"
       />
     </iCard>
-    <!------------------------------------------------------------------------>
-    <!--                  附件弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <attachmentDialog
-      :dialogVisible="attachmentDialogVisible"
-      @changeVisible="changeAttachmentDialogVisible"
-      :rfqNum="rfqId"
-    />
-    <!------------------------------------------------------------------------>
-    <!--                  审批记录弹窗                                      --->
-    <!------------------------------------------------------------------------>
+    <!-- 审批记录弹窗 -->
     <approvalRecordDialog
       :dialogVisible="approvalRecordDialogVisible"
       @changeVisible="changeApprovalRecordDialogVisible"
       :id="taskId"
     />
-    <!------------------------------------------------------------------------>
-    <!--                  批准弹窗                                      --->
-    <!------------------------------------------------------------------------>
+    <!-- 批准弹窗 -->
     <approvalDialog
       ref="modelApproval"
+      :tableData="selectItems"
       :dialogVisible="approvalDialogVisible"
       @changeVisible="changeApprovalDialogVisible"
       @handleConfirm="handleConfirm"
+    />
+    <!-- 驳回弹窗 -->
+    <recallBackDialog
+      ref="sendBackConfirm"
+      :selectItems="selectItems"
+      :dialogVisible="recallBackDialogVisible"
+      @changeVisible="changeSendBackDialogVisible"
+      @getTableList="getTableList"
     />
   </iPage>
 </template>
@@ -138,13 +88,13 @@ import {
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import recallBackDialog from "../components/recallBack.vue";
+
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import approvalRecordDialog from "../maintenance/components/approvalRecord";
-import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
-import approvalDialog from "./components/approval";
-import iDicoptions from "rise/web/components/iDicoptions";
+import approvalDialog from "../components/approvalDialog";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import {
@@ -152,13 +102,15 @@ import {
   approve,
   exportApproval,
 } from "@/api/modelTargetPrice/index";
-import { getSelTargetPriceTask } from "@/api/SELTargetPrice";
+import {
+  selCfCESearchApprovalPage,
+  approvalReturn,
+} from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
   mixins: [pageMixins],
   components: {
-    iDicoptions,
     carProjectSelect,
     procureFactorySelect,
     iPage,
@@ -168,14 +120,13 @@ export default {
     iPagination,
     iButton,
     iSelect,
-    iDatePicker,
     iInput,
     iSearch,
-    attachmentDialog,
     approvalRecordDialog,
     approvalDialog,
     iMultiLineInput,
-    search
+    search,
+    recallBackDialog,
   },
   data() {
     return {
@@ -196,11 +147,12 @@ export default {
       tableLoading: false,
       selectOptions: {},
       approvalDialogVisible: false,
-      selectedItems: [],
+      selectItems: [],
       applyId: "",
       fsNum: "",
       attachmentDialogVisible: false,
       approvalRecordDialogVisible: false,
+      recallBackDialogVisible: false,
       taskId: "",
       exportLoading: false,
     };
@@ -258,7 +210,7 @@ export default {
     handleConfirm(reason) {
       const params = {
         remarks: reason,
-        taskIds: this.selectedItems.map((item) => item.taskId),
+        taskIds: this.selectItems.map((item) => item.taskId),
       };
       approve(params)
         .then((res) => {
@@ -351,16 +303,17 @@ export default {
       this.getTableList();
     },
     handleSelectionChange(val) {
-      this.selectedItems = val;
+      this.selectItems = val;
     },
     getTableList() {
       this.tableLoading = true;
       const params = {
         ...this.searchParams,
+          pageType:3,
         current: this.page.currPage,
         size: this.page.pageSize,
       };
-      getTargetPriceApprovalPage(params)
+      selCfCESearchApprovalPage(params)
         .then((res) => {
           if (res?.result) {
             this.page = {
@@ -392,8 +345,9 @@ export default {
       });
       window.open(router.href, "_blank");
     },
+    // 打开审批确认弹窗
     openApprovalDetailDialog(row) {
-      if (this.selectedItems.length < 1) {
+      if (this.selectItems.length < 1) {
         iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
@@ -403,14 +357,31 @@ export default {
     },
     changeApprovalDialogVisible(visible) {
       this.approvalDialogVisible = visible;
-      // if (!visible) {
-      //   this.getTableList()
-      // }
+      if (!visible) {
+        this.getTableList();
+      }
     },
     // 驳回
-    recallBack(){},
-    // 编辑
-    edit(){},
+    recallBack() {
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+        );
+        return;
+      }
+      this.changeSendBackDialogVisible(true);
+    },
+
+    changeSendBackDialogVisible(visible) {
+      this.recallBackDialogVisible = visible;
+    },
+    // 维护、批量维护
+    batchMaintain() {
+      const router = this.$router.resolve({
+        path: "/targetpriceandscore/seltargetprice/batchMaintain",
+      });
+      window.open(router.href, "_blank");
+    },
     /**
      * @Description: 更改编辑状态
      * @Author: Luoshuang
@@ -421,14 +392,14 @@ export default {
       this.isEdit = isEdit;
     },
     async handleExport() {
-      if (this.selectedItems.length < 1) {
+      if (this.selectItems.length < 1) {
         iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
         return;
       }
       this.exportLoading = true;
-      await exportApproval(this.selectedItems.map((item) => item.taskId));
+      await exportApproval(this.selectItems.map((item) => item.taskId));
       this.exportLoading = false;
     },
     handleUpload() {},
