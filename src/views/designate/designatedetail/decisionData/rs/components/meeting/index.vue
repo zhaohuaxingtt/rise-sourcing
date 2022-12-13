@@ -904,7 +904,7 @@
                   <span v-if="scope.row.devFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ (88*scope.row.devFee) | thousandsFilter(0) }}</span>
+                  <span>{{ scope.row.devFee | thousandsFilter(0) }}</span>
                 </div>
               </el-popover>
             </span>
