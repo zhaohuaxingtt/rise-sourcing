@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-30 13:31:57
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-13 10:28:53
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column
             fixed
-            v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
+            v-else-if="item.props == 'selAPrice' ||item.props == 'cfPartAPrice' || item.props == 'partNo'"
             :key="index"
             :label="item.i18n ? $t(item.i18n) : item.label"
             :min-width="item.width"

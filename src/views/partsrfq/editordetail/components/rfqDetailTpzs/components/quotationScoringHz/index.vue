@@ -636,6 +636,7 @@ export default {
               this.layout
             );
             this.title = relTitle.title;
+            console.log(relTitle);
             this.exportTile = relTitle.allExportHiddenOrShow;
             this.reRenderLastChild = relTitle.xhLastChildProps;
             this.exampelData = defaultSort(

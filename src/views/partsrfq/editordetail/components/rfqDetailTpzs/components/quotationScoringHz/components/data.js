@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-30 13:27:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-13 10:28:11
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
@@ -21,6 +21,7 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'selAPrice',label:'CF Part\n A Price',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -37,6 +38,7 @@ export const gstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'selAPrice',label:'CF Part\n A Price',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -125,7 +127,7 @@ export const gstableTileXh = function(index){
  * @param {*}
  * @return {*}
  */
-export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['headerEbr','groupName','partNo','partName','selAPrice','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description: gs横轴默认配置项
  * @param {*}
