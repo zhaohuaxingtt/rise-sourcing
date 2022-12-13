@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 15:39:31
+ * @LastEditTime: 2022-12-13 18:24:50
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -320,21 +320,11 @@ export default {
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          returnStartDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-          returnEndDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
           pageType:2,
           current: this.page.currPage,
           size: this.page.pageSize,
         },
-        ["applyDate", "responseDate"]
+        ["applyDate"]
       );
       exportSelCfceMaintained(params).then(res=>{
         console.log(res);
@@ -469,21 +459,11 @@ export default {
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          returnStartDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-          returnEndDate: this.searchParams.responseDate
-            ? moment(this.searchParams.responseDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
           pageType:2,
           current: this.page.currPage,
           size: this.page.pageSize,
         },
-        ["applyDate", "responseDate"]
+        ["applyDate"]
       );
       selCfCESearchPage(params)
         .then((res) => {

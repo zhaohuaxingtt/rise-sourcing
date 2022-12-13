@@ -53,9 +53,7 @@
           }}</span>
         </template>
         <template #businessType="scope">
-          <span>{{
-            getBusinessDesc(scope.row.businessType)
-          }}</span>
+          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
         </template>
       </tableList>
       <!------------------------------------------------------------------------>
@@ -74,14 +72,6 @@
       />
     </iCard>
     <!------------------------------------------------------------------------>
-    <!--                  附件弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <attachmentDialog
-      :dialogVisible="attachmentDialogVisible"
-      @changeVisible="changeAttachmentDialogVisible"
-      :rfqNum="rfqId"
-    />
-    <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
     <approvalRecordDialog
@@ -93,21 +83,18 @@
 </template>
 
 <script>
-import {
-  iPage,
-  iCard,
-  iPagination,
-  iButton,
-  iMessage,
-} from "rise";
+import { iPage, iCard, iPagination, iButton, iMessage } from "rise";
 import search from "../components/search.vue";
 import headerNav from "../components/headerNav";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import approvalRecordDialog from "../maintenance/components/approvalRecord";
-import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
-import { selCfCESearchAllPage, applySelTargetPriceRecordList } from "@/api/SELTargetPrice";
+import {
+  selCfCESearchAllPage,
+  applySelTargetPriceRecordList,
+  exportSelCfceSearch,
+} from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
@@ -120,7 +107,6 @@ export default {
     tableList,
     iPagination,
     iButton,
-    attachmentDialog,
     approvalRecordDialog,
     search,
   },
@@ -133,12 +119,10 @@ export default {
       tableData: [],
       isEdit: false,
       tableLoading: false,
-      attachmentDialogVisible: false,
       approvalDialogVisible: false,
       selectItems: [],
-      rfqId: "",
-      fsNum: "",
       taskId: "",
+      fsNum: "",
       exportLoading: false,
     };
   },
@@ -186,8 +170,11 @@ export default {
         }
       });
     },
-    getBusinessDesc(code){
-      return this.options.sel_target_business_type.find(item=>item.code==code)?.name || code
+    getBusinessDesc(code) {
+      return (
+        this.options.sel_target_business_type.find((item) => item.code == code)
+          ?.name || code
+      );
     },
     handleSelectionChange(val) {
       this.selectItems = val;
@@ -202,15 +189,6 @@ export default {
         currPage: 1,
       };
       this.getTableList();
-    },
-    /**
-     * @Description: 修改附件弹窗状态
-     * @Author: Luoshuang
-     * @param {*} visible
-     * @return {*}
-     */
-    changeAttachmentDialogVisible(visible) {
-      this.attachmentDialogVisible = visible;
     },
     openPage(row) {
       const router = this.$router.resolve({
@@ -229,7 +207,7 @@ export default {
      * @return {*}
      */
     openApprovalDialog(row) {
-      this.taskId = row.taskId || "";
+      this.taskId = row.id || "";
       this.changeApprovalDialogVisible(true);
     },
     /**
@@ -252,30 +230,14 @@ export default {
       const params = {
         current: this.page.currPage,
         size: this.page.pageSize,
-        extendFields: {
-          ...this.searchForm,
-          pageType:4,
-          applyStartDate: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-          applyEndDate: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-          returnStartDate: this.searchForm.responseDate
-            ? moment(this.searchForm.responseDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-          returnEndDate: this.searchForm.responseDate
-            ? moment(this.searchForm.responseDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
-            : null,
-        },
+        ...this.searchForm,
+        pageType: 4,
+        applyStartDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        applyEndDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
       };
       selCfCESearchAllPage(params)
         .then((res) => {
@@ -303,14 +265,38 @@ export default {
         });
     },
     async handleExport() {
-      if (this.selectItems.length < 1) {
-        iMessage.warn(
-          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
-        );
-        return;
-      }
+      // if (this.selectItems.length < 1) {
+      //   iMessage.warn(
+      //     this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+      //   );
+      //   return;
+      // }
       this.exportLoading = true;
-      await applySelTargetPriceRecordList(this.selectItems.map((item) => item.taskItemId));
+      const params = {
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        ...this.searchForm,
+        pageType: 4,
+        applyStartDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        applyEndDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        returnStartDate: this.searchForm.responseDate
+          ? moment(this.searchForm.responseDate[0]).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : null,
+        returnEndDate: this.searchForm.responseDate
+          ? moment(this.searchForm.responseDate[1]).format(
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : null,
+      };
+      await exportSelCfceSearch(params).then((res) => {
+        console.log(res);
+      });
       this.exportLoading = false;
     },
   },

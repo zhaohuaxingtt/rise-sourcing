@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-12-14 13:39:10
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 12:24:06
+ * @LastEditTime: 2022-12-13 17:58:00
  * @Description: 退回弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\sendBack.vue
 -->
@@ -56,7 +56,7 @@ export default {
       this.saveLoading = true
       approvalReturn({
         remark:this.remark,
-        taskId: this.selectItems.map((item) => item.rfqId),
+        taskId: this.selectItems.map((item) => item.id),
       }).then(res=>{
         if(res?.code=='200'){
           iMessage.success('操作成功')

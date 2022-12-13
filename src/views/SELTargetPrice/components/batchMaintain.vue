@@ -24,7 +24,7 @@
               language("DAORUPILIANGWEIHU", "导入批量维护")
             }}</iButton>
           </el-upload>
-          <i-button>导出</i-button>
+          <i-button @click="exportExcel">导出</i-button>
           <i-button @click="submit">提交</i-button>
         </div>
       </div>
@@ -88,7 +88,7 @@ import tableList from "./tableList";
 import approvalDialog from "./approvalDialog";
 import { pageMixins } from "@/utils/pageMixins";
 import { toBeMaintainTableTitle, applyTableTitle } from "../maintenance/data";
-import { applySelTargetPriceRecordList,submitSelTargetPrice } from "@/api/SELTargetPrice";
+import { applySelTargetPriceRecordList,submitSelTargetPrice, exportSelMaintainedList } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins],
   components: {
@@ -162,9 +162,19 @@ export default {
       // 上传接口 API
       let res = true;
     },
+    exportExcel(){
+      if (this.selectItems.length < 1) {
+        iMessage.warn(
+          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
+        );
+        return;
+      }
+      exportSelMaintainedList({ taskDTOList:this.selectItems}).then(res=>{
+        console.log(res);
+      })
+    },
     // 提交
     submit() {
-      
       if(this.selectItems.length==0) return iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );

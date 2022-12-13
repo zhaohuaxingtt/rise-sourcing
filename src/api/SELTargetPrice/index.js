@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 15:38:52
+ * @LastEditTime: 2022-12-13 18:22:54
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -13,19 +13,30 @@ import axiosDownload from '@/utils/axios.download'
 const request = axios(process.env.VUE_APP_SOURCING)
 const requestDownload = axiosDownload(process.env.VUE_APP_SOURCING)
 
-// sel单据批量确认
-export function comfirmBatch(data) {
+// SEL目标价 - 查询=================================================================================================================================================
+// sel目标价财务查询列表
+export function selCfCESearchAllPage(data) {
   return request({
-    url: '/nominate/sel/comfirm-batch',
+    url: '/sel-target-price/selCfCESearchAllPage',
     method: 'POST',
     data
   })
 }
 
-// 申请sel目标价
-export function applySelTargetPrice(data) {
+// 目标价查询列表页面的导出
+export function exportSelCfceSearch(data) {
+  return requestDownload({
+    url: '/sel-target-price/export-sel-cfce-search',
+    method: 'POST',
+    data
+  })
+}
+
+// SEL目标价 - 审批=================================================================================================================================================
+// sel目标价财务查询审批列表
+export function selCfCESearchApprovalPage(data) {
   return request({
-    url: '/sel-target-price/apply-sel-target-price-list',
+    url: '/sel-target-price/selCfCESearchApprovalPage',
     method: 'POST',
     data
   })
@@ -40,10 +51,84 @@ export function approvalReturn(data) {
   })
 }
 
+// 审批通过 必须填写备注
+export function passApprovalAndRemark(data) {
+  return request({
+    url: '/sel-target-price/passApprovalAndRemark',
+    method: 'POST',
+    data
+  })
+}
+
+// 审批通过 可以不写备注
+export function passApproval(data) {
+  return request({
+    url: '/sel-target-price/passApproval',
+    method: 'POST',
+    data
+  })
+}
+// 维护和审批页面导出接口
+export function exportSelCfceMaintainedApproval(data) {
+  return requestDownload({
+    url: '/sel-target-price/export-sel-cfce-maintained-approval',
+    method: 'POST',
+    data
+  })
+}
+
+// SEL目标价 - 维护=================================================================================================================================================
+// 签收和维护TAB页列表查询，公用
+export function selCfCESearchPage(data) {
+  return request({
+    url: '/sel-target-price/selCfCESearchPage',
+    method: 'POST',
+    data
+  })
+}
+
+// sel目标价维护页面导出
+export function exportSelCfceMaintained(data) {
+  return requestDownload({
+    url: '/sel-target-price/export-sel-cfce-maintained',
+    method: 'POST',
+    data
+  })
+}
+
 // 指派sel目标价
 export function assignSelTargetPrice(data) {
   return request({
     url: '/sel-target-price/assignSelTargetPrice',
+    method: 'POST',
+    data
+  })
+}
+
+// 目标价维护弹窗-列表导出
+export function exportSelMaintainedList(data) {
+  return requestDownload({
+    url: '/sel-target-price/exportSelMaintainedList',
+    method: 'POST',
+    data
+  })
+}
+// SEL目标价 - 签收=================================================================================================================================================
+
+// sel单据批量确认
+export function comfirmBatch(data) {
+  return request({
+    url: '/nominate/sel/comfirm-batch',
+    method: 'POST',
+    data
+  })
+}
+
+// RFQ页面-sel目标价=================================================================================================================================================
+// 申请sel目标价
+export function applySelTargetPrice(data) {
+  return request({
+    url: '/sel-target-price/apply-sel-target-price-list',
     method: 'POST',
     data
   })
@@ -59,14 +144,6 @@ export function exportSelTargetPriceTask(data) {
   })
 }
 
-// 导出维护目标价列表
-export function exportSelMaintainedList(data) {
-  return requestDownload({
-    url: '/sel-target-price/exportSelMaintainedList',
-    method: 'POST',
-    data
-  })
-}
 
 // 查询sel目标价
 export function getSelTargetPriceTask(data) {
@@ -86,50 +163,6 @@ export function getCFECUserList(data) {
   })
 }
 
-// 通过审批 可以不写备注
-export function passApproval(data) {
-  return request({
-    url: '/sel-target-price/passApproval',
-    method: 'POST',
-    data
-  })
-}
-
-// 通过审批还需要添加备注 必须填写备注
-export function passApprovalAndRemark(data) {
-  return request({
-    url: '/sel-target-price/passApprovalAndRemark',
-    method: 'POST',
-    data
-  })
-}
-
-// sel目标价财务查询列表
-export function selCfCESearchAllPage(data) {
-  return request({
-    url: '/sel-target-price/selCfCESearchAllPage',
-    method: 'POST',
-    data
-  })
-}
-
-// sel目标价财务查询审批列表
-export function selCfCESearchApprovalPage(data) {
-  return request({
-    url: '/sel-target-price/selCfCESearchApprovalPage',
-    method: 'POST',
-    data
-  })
-}
-
-// sel目标价财务查询待签收和待维护列表
-export function selCfCESearchPage(data) {
-  return request({
-    url: '/sel-target-price/selCfCESearchPage',
-    method: 'POST',
-    data
-  })
-}
 
 // 无目标价设置
 export function setNullSelTargetPrice(data) {
@@ -187,21 +220,13 @@ export function applySelTargetPriceRecordList(data) {
 }
 
 // 导出sel目标价申请记录
-export function exportSelTargetPriceRecordList(data) {
-  return requestDownload({
-    url: '/sel-target-price/export-sel-target-price--record-list',
-    method: 'POST',
-    data
-  })
-}
-// sel目标价维护页面导出
-export function exportSelCfceMaintained(data) {
-  return requestDownload({
-    url: '/sel-target-price/export-sel-cfce-maintained',
-    method: 'POST',
-    data
-  })
-}
+// export function exportSelTargetPriceRecordList(data) {
+//   return requestDownload({
+//     url: '/sel-target-price/export-sel-target-price--record-list',
+//     method: 'POST',
+//     data
+//   })
+// }
 
 // 查询审批记录
 export function getSelTargetApprovalRecord(data) {

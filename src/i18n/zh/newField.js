@@ -1,3 +1,11 @@
+/*
+ * @Author: 余继鹏 917955345@qq.com
+ * @Date: 2022-12-08 15:38:28
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-13 17:29:41
+ * @FilePath: \front-web\src\i18n\zh\newField.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export default {
   QIANWANGBIANJI: '前往编辑',
   LK_GONGXUWEIWAI: '工序委外',
@@ -24,5 +32,6 @@ export default {
   "评分类型、评分人、协调人信息不可重复，请检查数据": "评分类型、评分人、协调人信息不可重复，请检查数据",
   '质量协调人': '质量协调人',
   '技术协调人': '技术协调人',
-  '为获得更好的展示效果，建议上传pdf格式文件': '为获得更好的展示效果，建议上传pdf格式文件'
+  '为获得更好的展示效果，建议上传pdf格式文件': '为获得更好的展示效果，建议上传pdf格式文件',
+  '审批时间':'审批时间'
 }

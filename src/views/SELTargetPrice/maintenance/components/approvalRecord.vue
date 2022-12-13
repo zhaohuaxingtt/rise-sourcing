@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 15:35:17
+ * @LastEditTime: 2022-12-13 17:10:53
  * @Description: 审批记录弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
@@ -94,7 +94,7 @@ export default {
       const params = {
         current: this.page.currPage,
         size: this.page.pageSize,
-        rfqId: this.id,
+        taskId: this.id,
       };
       getSelTargetApprovalRecord(params)
         .then((res) => {

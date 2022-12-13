@@ -35,6 +35,12 @@
         @openPage="openPage"
         @openApprovalDialog="openApprovalDialog"
       >
+        <template #businessType="scope">
+          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
+        </template>
+        <template #status="scope">
+          <span>{{ getStatus(scope.row.status) }}</span>
+        </template>
       </tableList>
       <iPagination
         v-update
@@ -60,7 +66,6 @@
       :tableData="selectItems"
       :dialogVisible="approvalDialogVisible"
       @changeVisible="changeApprovalDialogVisible"
-      @handleConfirm="handleConfirm"
     />
     <!-- 维护弹窗 -->
     <batchMaintain
@@ -107,15 +112,7 @@ import approvalRecordDialog from "../maintenance/components/approvalRecord";
 import approvalDialog from "../components/approvalDialog";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
-import {
-  getTargetPriceApprovalPage,
-  approve,
-  exportApproval,
-} from "@/api/modelTargetPrice/index";
-import {
-  selCfCESearchApprovalPage,
-  approvalReturn,
-} from "@/api/SELTargetPrice";
+import { selCfCESearchApprovalPage, exportSelCfceMaintainedApproval } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
@@ -146,14 +143,6 @@ export default {
       searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchParams: {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        toolingPriceIsZeno: "",
-        showSelf: true,
-      },
       isEdit: false,
       tableLoading: false,
       selectOptions: {},
@@ -163,7 +152,7 @@ export default {
       fsNum: "",
       attachmentDialogVisible: false,
       approvalRecordDialogVisible: false,
-      maintainVisible:false,
+      maintainVisible: false,
       recallBackDialogVisible: false,
       taskId: "",
       exportLoading: false,
@@ -213,32 +202,18 @@ export default {
         }
       });
     },
-    /**
-     * @Description: 批准
-     * @Author: Luoshuang
-     * @param {*} reason
-     * @return {*}
-     */
-    handleConfirm(reason) {
-      const params = {
-        remarks: reason,
-        taskIds: this.selectItems.map((item) => item.taskId),
-      };
-      approve(params)
-        .then((res) => {
-          if (res?.result) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res.desZh : res.desEn
-            );
-            this.changeApprovalDialogVisible(false);
-            this.getTableList();
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
-        .finally(() => {
-          this.$refs.modelApproval.changeSaveLoading(false);
-        });
+
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status.find((item) => item.code == status)
+          ?.name || status
+      );
+    },
+    getBusinessDesc(type) {
+      return (
+        this.options.sel_target_business_type.find((item) => item.code == type)
+          ?.name || type
+      );
     },
     /**
      * @Description: 附件查看
@@ -276,7 +251,7 @@ export default {
      * @return {*}
      */
     openApprovalDialog(row) {
-      this.taskId = row.taskId || "";
+      this.taskId = row.id || "";
       this.changeApprovalRecordDialogVisible(true);
     },
     /**
@@ -298,13 +273,7 @@ export default {
       this.updateDialogVisible = visible;
     },
     reset() {
-      this.searchParams = {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        toolingPriceIsZeno: "",
-      };
+      this.searchForm = {};
       this.sure();
     },
     sure() {
@@ -320,8 +289,14 @@ export default {
     getTableList() {
       this.tableLoading = true;
       const params = {
-        ...this.searchParams,
-          pageType:3,
+        ...this.searchForm,
+        pageType: 3,
+        applyStartDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        applyEndDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
         current: this.page.currPage,
         size: this.page.pageSize,
       };
@@ -396,17 +371,17 @@ export default {
     },
 
     // 维护、批量维护
-    openMaintain(){
+    openMaintain() {
       if (this.selectItems.length < 1) {
         iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
         return;
       }
-      this.changeMaintainVisible(true)
+      this.changeMaintainVisible(true);
     },
-    changeMaintainVisible(visible){
-      this.maintainVisible = visible
+    changeMaintainVisible(visible) {
+      this.maintainVisible = visible;
       console.log(this.maintainVisible);
     },
 
@@ -420,15 +395,23 @@ export default {
       this.isEdit = isEdit;
     },
     async handleExport() {
-      if (this.selectItems.length < 1) {
-        iMessage.warn(
-          this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
-        );
-        return;
-      }
       this.exportLoading = true;
-      await exportApproval(this.selectItems.map((item) => item.taskId));
-      this.exportLoading = false;
+      const params = {
+        ...this.searchForm,
+        pageType: 3,
+        applyStartDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        applyEndDate: this.searchForm.applyDate
+          ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+          : null,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+      };
+      exportSelCfceMaintainedApproval(params).then(res=>{
+        console.log(res);
+        this.exportLoading = false;
+      });
     },
     handleUpload() {},
     /**
