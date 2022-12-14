@@ -18,7 +18,6 @@
             style="display: inline-block"
             :http-request="upload"
             :show-file-list="false"
-            :before-upload="beforeUpload"
           >
             <iButton :loading="uploadLoading">{{
               language("DAORUPILIANGWEIHU", "导入批量维护")
@@ -161,6 +160,8 @@ export default {
       uploadSelTargetFile(formData).then(res=>{
         if(res?.code=='200'){
           iMessage.success(res.desZh)
+        }else{
+          iMessage.error(res.desZh)
         }
       })
     },

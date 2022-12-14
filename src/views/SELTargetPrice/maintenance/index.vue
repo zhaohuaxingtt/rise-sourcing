@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 10:10:13
+ * @LastEditTime: 2022-12-14 10:18:25
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -55,7 +55,6 @@
             style="display: inline-block"
             :http-request="importSelCfceMaintained"
             :show-file-list="false"
-            :before-upload="beforeUpload"
           >
             <iButton :loading="uploadLoading">{{
               language("DAORUPILIANGWEIHU", "导入批量维护")
@@ -177,7 +176,7 @@ import procureFactorySelect from "@/views/modelTargetPrice/components/procureFac
 import {
   selCfCESearchPage,
   exportSelCfceMaintained,
-  importSelCfceMaintained
+  importSelCfceMaintained,
 } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
@@ -307,14 +306,10 @@ export default {
         {
           ...this.searchForm,
           applyDateStart: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           applyDateEnd: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           pageType: 2,
           current: this.page.currPage,
@@ -363,9 +358,6 @@ export default {
     changeMaintainVisible(visible) {
       this.maintainVisible = visible;
       console.log(this.maintainVisible);
-    },
-    beforeUpload() {
-      this.uploadLoading = true;
     },
     sure() {
       this.page = {
@@ -440,14 +432,10 @@ export default {
           ...this.searchForm,
           searchType: "0",
           applyDateStart: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           applyDateEnd: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           pageType: 2,
           current: this.page.currPage,
@@ -480,19 +468,18 @@ export default {
           this.tableLoading = false;
         });
     },
-  },
 
-  importSelCfceMaintained(content) {
-    const formData = new FormData();
-    formData.append("file", content.file);
-    importSelCfceMaintained(formData).then(res=>{
-      if(res?.code=='200'){
-        const router = this.$router.resolve({
-          path: "/targetpriceandscore/seltargetprice/batchMaintain",
-        });
-        window.open(router.href, "_blank");  
-      }
-    })
+    importSelCfceMaintained(content) {
+      const formData = new FormData();
+      formData.append("file", content.file);
+      importSelCfceMaintained(formData).then((res) => {
+        if (res?.code == "200") {
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+        }
+      });
+    },
   },
 };
 </script>
