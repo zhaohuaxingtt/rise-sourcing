@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-12-01 10:37:43
+ * @LastEditTime: 2022-12-14 11:11:59
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -503,8 +503,9 @@
               <!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
               <!---------------2022/02/15 取消零件来源为手工(code: 2)的才能编辑的限制----------------------------------------->
               <!---------------有自带sop日期的车型项目，不可编辑，没有则可以----------------------------------------->
+              <!---------------未加入RFQ、已加入RFQ、已申请定点状态，SOP日期都可编辑----------------------------------------->
               <iDatePicker
-                v-if="!getSopDateDisabled() && !disabled"
+                v-if="(!getSopDateDisabled() && !disabled) || getRFQStatus()"
                 v-model="detailData.sopDate"
                 type="date"
               ></iDatePicker>
@@ -2193,6 +2194,10 @@ export default {
       } else {
         return true;
       }
+    },
+    // 获取当前RFQ状态，未加入RFQ、已加入RFQ、已申请定点状态，SOP日期都可编辑
+    getRFQStatus() {
+      return ['NOT_IN_RFQ','IN_RFQ','APPLIED_NOM'].includes(this.detailData.status)
     },
     checkCfController() {
       const { detailData = {} } = this;
