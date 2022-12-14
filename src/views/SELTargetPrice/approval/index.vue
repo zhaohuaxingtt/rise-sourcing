@@ -112,7 +112,10 @@ import approvalRecordDialog from "../maintenance/components/approvalRecord";
 import approvalDialog from "../components/approvalDialog";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
-import { selCfCESearchApprovalPage, exportSelCfceMaintainedApproval } from "@/api/SELTargetPrice";
+import {
+  selCfCESearchApprovalPage,
+  exportSelCfceMaintainedApproval,
+} from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
@@ -291,10 +294,10 @@ export default {
       const params = {
         ...this.searchForm,
         pageType: 3,
-        applyStartDate: this.searchForm.applyDate
+        applyDateStart: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
           : null,
-        applyEndDate: this.searchForm.applyDate
+        applyDateEnd: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
           : null,
         current: this.page.currPage,
@@ -399,16 +402,16 @@ export default {
       const params = {
         ...this.searchForm,
         pageType: 3,
-        applyStartDate: this.searchForm.applyDate
+        applyDateStart: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
           : null,
-        applyEndDate: this.searchForm.applyDate
+        applyDateEnd: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
           : null,
         current: this.page.currPage,
         size: this.page.pageSize,
       };
-      exportSelCfceMaintainedApproval(params).then(res=>{
+      exportSelCfceMaintainedApproval(params).then((res) => {
         console.log(res);
         this.exportLoading = false;
       });

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-13 18:24:50
+ * @LastEditTime: 2022-12-14 09:50:31
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -79,16 +79,11 @@
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
       >
-      
         <template #businessType="scope">
-          <span>{{
-            getBusinessDesc(scope.row.businessType)
-          }}</span>
+          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
         </template>
         <template #status="scope">
-          <span>{{
-            getStatus(scope.row.status)
-          }}</span>
+          <span>{{ getStatus(scope.row.status) }}</span>
         </template>
       </tableList>
       <!------------------------------------------------------------------------>
@@ -141,7 +136,7 @@
       :dialogVisible.sync="maintainVisible"
       @changeVisible="changeMaintainVisible"
     />
-    
+
     <!-- 无目标价确认弹窗 -->
     <noInvestConfirmDialog
       ref="noInvestConfirm"
@@ -179,7 +174,10 @@ import assignDialog from "../components/assign";
 import iDicoptions from "rise/web/components/iDicoptions";
 import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
-import { selCfCESearchPage, exportSelCfceMaintained } from "@/api/SELTargetPrice";
+import {
+  selCfCESearchPage,
+  exportSelCfceMaintained,
+} from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
@@ -215,14 +213,6 @@ export default {
       searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchParams: {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        state: "",
-        showSelf: true,
-      },
       tableLoading: false,
       selectOptions: {},
       attachmentDialogVisible: false,
@@ -235,7 +225,7 @@ export default {
       uploadLoading: false,
       exportLoading: false,
       assignDialogVisible: false,
-      noInvestDialogVisible:false,
+      noInvestDialogVisible: false,
       maintainVisible: false,
       taskId: "",
     };
@@ -284,11 +274,17 @@ export default {
         }
       });
     },
-    getStatus(status){
-      return this.options.sel_target_price_status.find(item=>item.code==status)?.name || status
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status.find((item) => item.code == status)
+          ?.name || status
+      );
     },
-    getBusinessDesc(type){
-      return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
+    getBusinessDesc(type) {
+      return (
+        this.options.sel_target_business_type.find((item) => item.code == type)
+          ?.name || type
+      );
     },
     // 无目标价
     openNoInvest() {
@@ -308,27 +304,26 @@ export default {
     handleExport() {
       let params = _.omit(
         {
-          ...this.searchParams,
-          searchType: "0",
-          applyStartDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[0]).format(
+          ...this.searchForm,
+          applyDateStart: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          applyEndDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[1]).format(
+          applyDateEnd: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          pageType:2,
+          pageType: 2,
           current: this.page.currPage,
           size: this.page.pageSize,
         },
         ["applyDate"]
       );
-      exportSelCfceMaintained(params).then(res=>{
+      exportSelCfceMaintained(params).then((res) => {
         console.log(res);
-      })
+      });
     },
     /**
      * @Description: 指派
@@ -355,17 +350,17 @@ export default {
     changeAssignDialogVisible(visible) {
       this.assignDialogVisible = visible;
     },
-    openMaintain(){
+    openMaintain() {
       if (this.selectItems.length < 1) {
         iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
         return;
       }
-      this.changeMaintainVisible(true)
+      this.changeMaintainVisible(true);
     },
-    changeMaintainVisible(visible){
-      this.maintainVisible = visible
+    changeMaintainVisible(visible) {
+      this.maintainVisible = visible;
       console.log(this.maintainVisible);
     },
     beforeUpload() {
@@ -379,13 +374,7 @@ export default {
       this.getTableList();
     },
     reset() {
-      this.searchParams = {
-        partProjectType: "",
-        cartypeProjectId: "",
-        procureFactory: "",
-        applyType: "",
-        state: "",
-      };
+      this.searchForm = {};
       this.sure();
     },
     handleSelectionChange(val) {
@@ -447,19 +436,19 @@ export default {
       // eslint-disable-next-line no-undef
       const params = _.omit(
         {
-          ...this.searchParams,
+          ...this.searchForm,
           searchType: "0",
-          applyStartDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[0]).format(
+          applyDateStart: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          applyEndDate: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[1]).format(
+          applyDateEnd: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          pageType:2,
+          pageType: 2,
           current: this.page.currPage,
           size: this.page.pageSize,
         },

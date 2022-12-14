@@ -36,16 +36,12 @@
             scope.row.fsNum
           }}</span>
         </template>
-        
+
         <template #businessType="scope">
-          <span>{{
-            getBusinessDesc(scope.row.businessType)
-          }}</span>
+          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
         </template>
         <template #status="scope">
-          <span>{{
-            getStatus(scope.row.status)
-          }}</span>
+          <span>{{ getStatus(scope.row.status) }}</span>
         </template>
       </tableList>
       <iPagination
@@ -103,10 +99,7 @@ import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSele
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import moment from "moment";
 import { roleMixins } from "@/utils/roleMixins";
-import {
-  selCfCESearchPage,
-  signSelTargetPrice,
-} from "@/api/SELTargetPrice";
+import { selCfCESearchPage, signSelTargetPrice } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
@@ -136,7 +129,6 @@ export default {
       searchFormData,
       tableTitle: tableTitle,
       tableData: [],
-      searchParams: {},
       tableLoading: false,
       selectOptions: {},
       assignDialogVisible: false,
@@ -193,12 +185,18 @@ export default {
         }
       });
     },
-    
-    getStatus(status){
-      return this.options.sel_target_price_status.find(item=>item.code==status)?.name || status
+
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status.find((item) => item.code == status)
+          ?.name || status
+      );
     },
-    getBusinessDesc(type){
-      return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
+    getBusinessDesc(type) {
+      return (
+        this.options.sel_target_business_type.find((item) => item.code == type)
+          ?.name || type
+      );
     },
     // 无目标价
     openNoInvest() {
@@ -219,7 +217,7 @@ export default {
       this.selectItems = val;
     },
     reset() {
-      this.searchParams = {};
+      this.searchForm = {};
       this.sure();
     },
     sure() {
@@ -275,14 +273,14 @@ export default {
       // eslint-disable-next-line no-undef
       const params = _.omit(
         {
-          ...this.searchParams,
-          applyDateStart: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[0]).format(
+          ...this.searchForm,
+          applyDateStart: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[0]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,
-          applyDateEnd: this.searchParams.applyDate
-            ? moment(this.searchParams.applyDate[1]).format(
+          applyDateEnd: this.searchForm.applyDate
+            ? moment(this.searchForm.applyDate[1]).format(
                 "YYYY-MM-DD HH:mm:ss"
               )
             : null,

@@ -232,10 +232,10 @@ export default {
         size: this.page.pageSize,
         ...this.searchForm,
         pageType: 4,
-        applyStartDate: this.searchForm.applyDate
+        applyDateStart: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
           : null,
-        applyEndDate: this.searchForm.applyDate
+        applyDateEnd: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
           : null,
       };
@@ -277,10 +277,10 @@ export default {
         size: this.page.pageSize,
         ...this.searchForm,
         pageType: 4,
-        applyStartDate: this.searchForm.applyDate
+        applyDateStart: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
           : null,
-        applyEndDate: this.searchForm.applyDate
+        applyDateEnd: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
           : null,
         returnStartDate: this.searchForm.responseDate
