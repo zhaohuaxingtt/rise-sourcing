@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 09:50:31
+ * @LastEditTime: 2022-12-14 10:10:13
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -53,7 +53,7 @@
             class="margin-left10 margin-right10"
             accept=".xlsx"
             style="display: inline-block"
-            :http-request="upload"
+            :http-request="importSelCfceMaintained"
             :show-file-list="false"
             :before-upload="beforeUpload"
           >
@@ -177,6 +177,7 @@ import procureFactorySelect from "@/views/modelTargetPrice/components/procureFac
 import {
   selCfCESearchPage,
   exportSelCfceMaintained,
+  importSelCfceMaintained
 } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
@@ -481,19 +482,17 @@ export default {
     },
   },
 
-  upload(content) {
+  importSelCfceMaintained(content) {
     const formData = new FormData();
     formData.append("file", content.file);
-    // formData.append('applicationName', 'procurereq-service')
-    // 上传接口
-    let res = true;
-    // 上传成功
-    if (res) {
-      const router = this.$router.resolve({
-        path: "/targetpriceandscore/seltargetprice/batchMaintain",
-      });
-      window.open(router.href, "_blank");
-    }
+    importSelCfceMaintained(formData).then(res=>{
+      if(res?.code=='200'){
+        const router = this.$router.resolve({
+          path: "/targetpriceandscore/seltargetprice/batchMaintain",
+        });
+        window.open(router.href, "_blank");  
+      }
+    })
   },
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-13 18:22:54
+ * @LastEditTime: 2022-12-14 10:00:42
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -113,6 +113,23 @@ export function exportSelMaintainedList(data) {
     data
   })
 }
+
+// 目标待维护查询页面的导入接口
+export function importSelCfceMaintained(data) {
+  return request({
+    url: '/sel-target-price/import-sel-cfce-maintained',
+    method: 'POST',
+    data
+  })
+}
+// 目标价维护弹窗-批量维护导入
+export function uploadSelTargetFile(data) {
+  return request({
+    url: '/sel-target-price/uploadSelTargetFile',
+    method: 'POST',
+    data
+  })
+}
 // SEL目标价 - 签收=================================================================================================================================================
 
 // sel单据批量确认
@@ -135,7 +152,7 @@ export function applySelTargetPrice(data) {
 }
 
 
-// 导出申请sel目标价记录
+// RFQ页面导出申请sel目标价记录
 export function exportSelTargetPriceTask(data) {
   return requestDownload({
     url: '/sel-target-price/export-sel-target-price-task',
@@ -195,16 +212,6 @@ export function submitSelTargetPrice(data) {
 export function transferSelTargetPrice(data) {
   return request({
     url: '/sel-target-price/transferSelTargetPrice',
-    method: 'POST',
-    data
-  })
-}
-
-
-// 导入目标价接口
-export function uploadSelTargetFile(data) {
-  return request({
-    url: '/sel-target-price/uploadSelTargetFile',
     method: 'POST',
     data
   })

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-07 17:06:10
+ * @LastEditTime: 2022-12-14 09:55:08
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -25,7 +25,7 @@
       <div class="button-box">
         <template v-if="!todo">
           <iButton v-if="isPosition" @click="showDialog">{{ language('CHAKAN','查看') + language('申请记录','申请记录') }}</iButton>
-          <iButton @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
+          <iButton @click="exportExcel">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>
           <iButton v-if="!disabled" @click="applySEL">{{
@@ -154,7 +154,7 @@ export default {
         }
       }
     },
-    exports() {
+    exportExcel() {
       // if (this.selectTableData.length == 0)
       //   return iMessage.warn(
       //     this.language(

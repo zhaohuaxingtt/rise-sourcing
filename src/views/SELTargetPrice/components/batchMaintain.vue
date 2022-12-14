@@ -88,7 +88,7 @@ import tableList from "./tableList";
 import approvalDialog from "./approvalDialog";
 import { pageMixins } from "@/utils/pageMixins";
 import { toBeMaintainTableTitle, applyTableTitle } from "../maintenance/data";
-import { applySelTargetPriceRecordList,submitSelTargetPrice, exportSelMaintainedList } from "@/api/SELTargetPrice";
+import { applySelTargetPriceRecordList,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins],
   components: {
@@ -157,10 +157,12 @@ export default {
     // 导入批量维护
     upload(content) {
       const formData = new FormData();
-      formData.append("file", content.file);
-      // formData.append('applicationName', 'procurereq-service')
-      // 上传接口 API
-      let res = true;
+      formData.append("uploadFile", content.file);
+      uploadSelTargetFile(formData).then(res=>{
+        if(res?.code=='200'){
+          iMessage.success(res.desZh)
+        }
+      })
     },
     exportExcel(){
       if (this.selectItems.length < 1) {
