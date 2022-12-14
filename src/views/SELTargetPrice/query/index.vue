@@ -167,6 +167,9 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
+          this.options['CAR_TYPE_PRO'].forEach(item=>{
+            item.code = item.id
+          })
         }
       });
     },
@@ -282,16 +285,6 @@ export default {
           : null,
         applyDateEnd: this.searchForm.applyDate
           ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
-          : null,
-        returnStartDate: this.searchForm.responseDate
-          ? moment(this.searchForm.responseDate[0]).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )
-          : null,
-        returnEndDate: this.searchForm.responseDate
-          ? moment(this.searchForm.responseDate[1]).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )
           : null,
       };
       await exportSelCfceSearch(params).then((res) => {

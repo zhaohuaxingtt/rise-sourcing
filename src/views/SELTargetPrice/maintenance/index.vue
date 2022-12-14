@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 10:18:25
+ * @LastEditTime: 2022-12-14 10:33:05
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -175,7 +175,7 @@ import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSele
 import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import {
   selCfCESearchPage,
-  exportSelCfceMaintained,
+  exportSelCfceMaintainedApproval,
   importSelCfceMaintained,
 } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
@@ -271,6 +271,9 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
+          this.options['CAR_TYPE_PRO'].forEach(item=>{
+            item.code = item.id
+          })
         }
       });
     },
@@ -317,7 +320,7 @@ export default {
         },
         ["applyDate"]
       );
-      exportSelCfceMaintained(params).then((res) => {
+      exportSelCfceMaintainedApproval(params).then((res) => {
         console.log(res);
       });
     },

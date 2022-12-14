@@ -202,6 +202,9 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
+          this.options['CAR_TYPE_PRO'].forEach(item=>{
+            item.code = item.id
+          })
         }
       });
     },
