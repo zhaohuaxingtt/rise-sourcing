@@ -160,6 +160,8 @@ export default {
       uploadSelTargetFile(formData).then(res=>{
         if(res?.code=='200'){
           iMessage.success(res.desZh)
+          let uploadData = res.data || []
+          this.tableData = [...this.tableData,...uploadData]
         }else{
           iMessage.error(res.desZh)
         }
@@ -187,6 +189,7 @@ export default {
           }).then(res=>{
             if(res?.code=='200'){
               iMessage.success(res.desZh)
+              this.$emit('getTableList')
             }
           })
         }else{

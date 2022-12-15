@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 10:33:05
+ * @LastEditTime: 2022-12-14 18:56:22
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -134,6 +134,7 @@
       :options="options"
       :dialogVisible.sync="maintainVisible"
       @changeVisible="changeMaintainVisible"
+      @getTableList="getTableList"
     />
 
     <!-- 无目标价确认弹窗 -->

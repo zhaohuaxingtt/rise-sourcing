@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-12-09 15:38:43
+ * @LastEditTime: 2022-12-14 18:47:56
  * @LastEditors: 余继鹏 917955345@qq.com
 -->
 <template>
@@ -19,7 +19,11 @@
       :tableTitle="tableTitle"
       :tableLoading="loading"
       :selection="false"
-    ></tablelist>
+    >
+      <template #status="scope">
+        <span>{{ getStatus(scope.row.status) }}</span>
+      </template>
+    </tablelist>
     <iPagination
       class="pagination"
       v-update
@@ -57,6 +61,7 @@ export default {
       type: String,
     },
     visible: { type: Boolean },
+    options:{ type: Object, default: ()=>({})}
   },
   data() {
     return {
@@ -75,6 +80,13 @@ export default {
   },
   created() {},
   methods: {
+    
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status.find((item) => item.code == status)
+          ?.name || status
+      );
+    },
     getTargetPrice() {
       const rfqId = this.$route.query.id;
       if (!rfqId) return;

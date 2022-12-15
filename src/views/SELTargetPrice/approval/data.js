@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-13 18:10:18
+ * @LastEditTime: 2022-12-15 10:32:01
  * @FilePath: \front-web\src\views\SELTargetPrice\approval\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -46,7 +46,7 @@ export const approvalTableTitle = [
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 125, },
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100, },
   { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 90, },
-  { props: 'targetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 110, },
-  { props: 'PlanAPrice', name: 'A价 Delta', key: "A价 Delta", tooltip: true, width: 110, },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 110, },
+  { props: 'estimateShareAPrice', name: 'A价 Delta', key: "A价 Delta", tooltip: true, width: 110, },
   { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, width: 120, },
 ]

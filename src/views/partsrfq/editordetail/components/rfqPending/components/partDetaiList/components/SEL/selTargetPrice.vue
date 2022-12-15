@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-14 09:55:08
+ * @LastEditTime: 2022-12-14 18:48:35
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -24,6 +24,7 @@
     <template slot="header-control">
       <div class="button-box">
         <template v-if="!todo">
+          <iButton v-if="isPosition" @click="changeData">{{ language('修改分摊量','修改分摊量') }}</iButton>
           <iButton v-if="isPosition" @click="showDialog">{{ language('CHAKAN','查看') + language('申请记录','申请记录') }}</iButton>
           <iButton @click="exportExcel">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
@@ -44,7 +45,11 @@
         :index="true"
         :lang="true"
         v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
-      ></tablelist>
+      >
+        <template #status="scope">
+          <span>{{ getStatus(scope.row.status) }}</span>
+        </template>
+      </tablelist>
       <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
@@ -57,7 +62,8 @@
         :total="page.totalCount"
       />
     </div>
-    <applyDialog :visible.sync="visible" :rfqId="$route.query.id" />
+    <applyDialog :visible.sync="visible" :options="options" :rfqId="$route.query.id" />
+    <changeDialog :visible.sync="changeVisible" :options="options" :data="selectTableData" />
   </iCard>
 </template>
 
@@ -65,11 +71,11 @@
 import { iCard, iButton, iPagination, iMessage, icon } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import applyDialog from "./applyDialog";
+import changeDialog from "./changeDialog";
 import { pageMixins } from "@/utils/pageMixins";
-import { getCfPriceEffective } from "@/api/partsrfq/editordetail";
-import { excelExport } from "@/utils/filedowLoad";
 import { iconName, SELTargetPriceTitle as tableTitle } from "./data";
 import { getSelTargetPriceTask, exportSelTargetPriceTask } from "@/api/SELTargetPrice";
+import { selectDictByKeys } from "@/api/dictionary";
 export default {
   components: {
     iCard,
@@ -78,6 +84,7 @@ export default {
     tablelist,
     icon,
     applyDialog,
+    changeDialog
   },
   mixins: [pageMixins],
   props: {
@@ -87,9 +94,11 @@ export default {
     return {
       iconName,
       visible: false,
+      changeVisible:false,
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
+      options:{},
       tableTitle,
     };
   },
@@ -106,9 +115,40 @@ export default {
     }
   },
   created() {
+    this.selectDictByKeys()
     this.getTableList();
   },
   methods: {
+    selectDictByKeys() {
+      selectDictByKeys([
+        { keys: "sel_target_price_status" },
+      ]).then((res) => {
+        if (res.data) {
+          this.$set(
+            this.options,
+            "sel_target_price_status",
+            res.data["sel_target_price_status"]
+          );
+        }
+      });
+    },
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status?.find((item) => item.code == status)
+          ?.name || status
+      );
+    },
+    // 修改分摊量
+    changeData(){
+      if (this.selectTableData.length == 0)
+        return iMessage.warn(
+          this.language(
+            "LK_QINGXUANZEZHISHAOYITIAOSHUJU",
+            "请选择至少一条数据"
+          )
+        );
+      this.changeVisible = true;
+    },
     showDialog() {
       this.visible = true;
     },
