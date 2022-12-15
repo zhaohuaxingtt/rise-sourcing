@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-04 21:02:03
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-12 14:32:13
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -529,7 +529,7 @@ export default {
         rfqId: this.detailData.rfqId,
         spNums: this.tableData.map((item) => item.spnrNum),
         stuffId: this.tableData[0].stuffId,
-        supplierSvwTempCode: this.tableData.map(
+        supplierTempCodes: this.tableData.map(
           (item) => item.supplierSvwTempCode
         ),
         supplierSapCodes: this.tableData.map((item) => item.supplierSapCode),
