@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-13 17:10:53
+ * @LastEditTime: 2022-12-15 11:22:31
  * @Description: 审批记录弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
@@ -134,13 +134,13 @@ export default {
       padding-right: 0;
     }
   }
-  ::v-deep .el-dialog {
-    margin-top: 30px !important;
-    height: 90%;
-    .el-dialog__body {
-      height: calc(100% - 70px);
-      overflow: auto;
-    }
-  }
+  // ::v-deep .el-dialog {
+  //   margin-top: 30px !important;
+  //   height: 90%;
+  //   .el-dialog__body {
+  //     height: calc(100% - 70px);
+  //     overflow: auto;
+  //   }
+  // }
 }
 </style>

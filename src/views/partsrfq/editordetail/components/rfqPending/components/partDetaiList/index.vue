@@ -28,7 +28,7 @@
             </iButton>
             <iButton
               @click="applySEL"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYSELTARGETPRICE|申请SEL目标价">
               {{ language("申请SEL目标价", "申请SEL目标价") }}
             </iButton>
             <iButton

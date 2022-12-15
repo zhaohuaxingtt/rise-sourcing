@@ -86,7 +86,7 @@ export default {
     transferSelTargetPrice() {
       this.loading = true
       const params = {
-        taskId: this.selectItems.map((item) => item.rfqId),
+        taskId: this.selectItems.map((item) => item.id),
         cfUserId: this.assign,
       };
       transferSelTargetPrice(params)

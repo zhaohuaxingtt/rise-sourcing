@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-08 15:38:28
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-12 10:56:41
+ * @LastEditTime: 2022-12-15 13:23:33
  * @FilePath: \front-web\src\views\SELTargetPrice\components\noInvestConfirm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -71,7 +71,7 @@ export default {
       this.saveLoading = true;
       const params = {
         remark: this.remark,
-        taskId: this.selectItems.map((item) => item.rfqId),
+        taskId: this.selectItems.map((item) => item.id),
       };
       setNullSelTargetPrice(params)
         .then((res) => {

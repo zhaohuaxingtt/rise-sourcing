@@ -1,13 +1,6 @@
 <template>
-  <iPage
-    v-permission.auto="
-      MODELTARGETPRICE_QUERY_PAGE | (模具目标价管理 - 目标价查询 - 页面)
-    "
-  >
+  <iPage>
     <headerNav />
-    <!----------------------------------------------------------------->
-    <!---------------------------搜索区域------------------------------->
-    <!----------------------------------------------------------------->
     <search
       @sure="sure"
       @reset="reset"
@@ -15,24 +8,15 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <!---------------------------表格区域------------------------------->
-    <!----------------------------------------------------------------->
-    <iCard
-      class="margin-top20"
-      v-permission.auto="
-        MODELTARGETPRICE_QUERY_TABLE | (模具目标价管理 - 目标价查询 - 表格)
-      "
-    >
+    <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <!--------------------导出按钮----------------------------------->
           <iButton
             @click="handleExport"
             :loading="exportLoading"
             v-permission.auto="
-              MODELTARGETPRICE_QUERY_EXPORT |
-                (模具目标价管理 - 目标价查询 - 导出)
+              SELTARGETPRICE_QUERY_DAOCHU | (SEL目标价管理 - 目标价查询 - 导出)
             "
             >{{ language("DAOCHU", "导出") }}</iButton
           >
@@ -167,15 +151,15 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
-          this.options['CAR_TYPE_PRO'].forEach(item=>{
-            item.code = item.id
-          })
+          this.options["CAR_TYPE_PRO"].forEach((item) => {
+            item.code = item.id;
+          });
         }
       });
     },
     getBusinessDesc(code) {
       return (
-        this.options.sel_target_business_type.find((item) => item.code == code)
+        this.options.sel_target_business_type?.find((item) => item.code == code)
           ?.name || code
       );
     },

@@ -12,13 +12,16 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton @click="openNoInvest">{{
+          <iButton @click="openNoInvest"
+          v-permission.auto="SELTARGETPRICE_SIGNIN_WUMUBIAOJIA|SEL目标价管理-目标价签收-无目标价">{{
             language("无目标价", "无目标价")
           }}</iButton>
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible"
+          v-permission.auto="SELTARGETPRICE_SIGNIN_ZHIPAI|SEL目标价管理-目标价签收-指派">{{
             language("LK_ZHIPAI", "指派")
           }}</iButton>
-          <iButton @click="handleSignIn" :loading="signLoading">{{
+          <iButton @click="handleSignIn" :loading="signLoading"
+          v-permission.auto="SELTARGETPRICE_SIGNIN_QIANSHOU|SEL目标价管理-目标价签收-签收">{{
             language("QIANSHOU", "签收")
           }}</iButton>
         </div>
@@ -81,12 +84,7 @@ import {
   iCard,
   iPagination,
   iButton,
-  iSelect,
-  iDatePicker,
-  iInput,
-  iSearch,
   iMessage,
-  iMultiLineInput,
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
@@ -95,31 +93,21 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import assignDialog from "../components/assign";
 import noInvestConfirmDialog from "../components/noInvestConfirm";
-import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
-import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import moment from "moment";
-import { roleMixins } from "@/utils/roleMixins";
 import { selCfCESearchPage, signSelTargetPrice } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
-  mixins: [pageMixins, roleMixins],
+  mixins: [pageMixins],
   components: {
-    carProjectSelect,
-    procureFactorySelect,
     iPage,
     headerNav,
     iCard,
     tableList,
     iPagination,
     iButton,
-    iSelect,
-    iDatePicker,
-    iInput,
-    iSearch,
     assignDialog,
     noInvestConfirmDialog,
-    iMultiLineInput,
     search,
   },
   data() {
@@ -191,13 +179,13 @@ export default {
 
     getStatus(status) {
       return (
-        this.options.sel_target_price_status.find((item) => item.code == status)
+        this.options.sel_target_price_status?.find((item) => item.code == status)
           ?.name || status
       );
     },
     getBusinessDesc(type) {
       return (
-        this.options.sel_target_business_type.find((item) => item.code == type)
+        this.options.sel_target_business_type?.find((item) => item.code == type)
           ?.name || type
       );
     },

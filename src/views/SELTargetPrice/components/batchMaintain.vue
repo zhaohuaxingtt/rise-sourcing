@@ -74,8 +74,10 @@
     <approval-dialog
       append-to-body
       :tableData="selectItems"
+      :isMaintain="isMaintain"
       :dialogVisible="approvalDialogVisible"
       @changeVisible="changeApprovalDialogVisible"
+      @clearDialog="clearDialog"
       @handleConfirm="handleConfirm"
     ></approval-dialog>
   </iDialog>
@@ -86,8 +88,8 @@ import { iPage, iCard, iDialog, iInput, iPagination, iButton, iMessage } from "r
 import tableList from "./tableList";
 import approvalDialog from "./approvalDialog";
 import { pageMixins } from "@/utils/pageMixins";
-import { toBeMaintainTableTitle, applyTableTitle } from "../maintenance/data";
-import { applySelTargetPriceRecordList,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
+import { toBeMaintainTableTitle, applyTableTitle } from "./data";
+import { getSelTargetApprovalRecord,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins],
   components: {
@@ -123,10 +125,10 @@ export default {
   },
   methods: {
     getStatus(status){
-      return this.options.sel_target_price_status.find(item=>item.code==status)?.name || status
+      return this.options.sel_target_price_status?.find(item=>item.code==status)?.name || status
     },
     getBusinessDesc(type){
-      return this.options.sel_target_business_type.find(item=>item.code==type)?.name || type
+      return this.options.sel_target_business_type?.find(item=>item.code==type)?.name || type
     },
     clearDialog() {
       this.$emit("changeVisible", false);
@@ -143,10 +145,10 @@ export default {
     getApplyTableData() {
       let params = {
         current: this.page.currPage,
-        rfqIds: this.tableData.map((item) => item.rfqId),
+        fsnrGsnrNum: this.tableData.map((item) => item.fsnrGsnrNum),
         size: this.page.pageSize,
       };
-      applySelTargetPriceRecordList(params).then((res) => {
+      getSelTargetApprovalRecord(params).then((res) => {
         if (res?.code == "200") {
           this.applyTableData = res.data;
           this.page.totalCount = res.total
@@ -183,16 +185,17 @@ export default {
       if(this.selectItems.length==0) return iMessage.warn(
           this.language("ZHISHAOXUANZEYITIAOJILU", "至少选择一条记录")
         );
-        if(this.isMaintain){
+        if(this.isMaintain){  // 如果是维护页面
           submitSelTargetPrice({
             taskDTOList:this.selectItems
           }).then(res=>{
             if(res?.code=='200'){
               iMessage.success(res.desZh)
+              this.clearDialog()
               this.$emit('getTableList')
             }
           })
-        }else{
+        }else{  // 审批页面
           this.changeApprovalDialogVisible(true);
         }
     },

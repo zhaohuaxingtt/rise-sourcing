@@ -26,7 +26,10 @@
       </template>
       <!-- 分摊量 -->
       <template #shareCount="scope">
-        <iInput :value="scope.row.shareCount" @input="handleInput($event, scope.row)" />
+        <iInput
+          :value="scope.row.shareCount"
+          @input="handleInput($event, scope.row)"
+        />
       </template>
     </tableList>
   </iDialog>
@@ -37,12 +40,12 @@ import { iDialog, iMessage, iInput, iButton } from "rise";
 import { SELTargetPriceTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
 import { applySelTargetPrice } from "@/api/SELTargetPrice";
-import { numberProcessor } from "@/utils"
+import { numberProcessor } from "@/utils";
 export default {
   props: {
     visible: { type: Boolean },
     data: { type: Array, default: () => [] },
-    options:{ type: Object, default: ()=>({})}
+    options: { type: Object, default: () => ({}) },
   },
   components: { iDialog, tableList, iInput, iButton },
   data() {
@@ -63,10 +66,9 @@ export default {
     },
   },
   methods: {
-    
     getStatus(status) {
       return (
-        this.options.sel_target_price_status.find((item) => item.code == status)
+        this.options.sel_target_price_status?.find((item) => item.code == status)
           ?.name || status
       );
     },
@@ -76,15 +78,9 @@ export default {
     },
     // 保存
     submit() {
-      console.log(this.tableData);
-      if (
-        this.tableData.some(
-          (item) => !(item.shareCount||'').trim()
-        )
-      ) {
+      if (this.tableData.some((item) => !(item.shareCount || "").trim())) {
         return iMessage.warn(this.language("分摊量不能为空", "分摊量不能为空"));
       }
-      return
       this.loading = true;
       applySelTargetPrice({
         ids: [],
@@ -100,6 +96,7 @@ export default {
               this.$i18n.locale === "zh" ? res.desZh : res.desEn
             );
             this.$emit("update:visible", false);
+            this.$emit('getTableList')
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -112,8 +109,12 @@ export default {
      * @Description: 输入限制
      */
     handleInput(value, row) {
-        this.$set(row, 'shareCount', numberProcessor(value, 0));  // 分摊量
-        this.$set(row, 'estimateShareAPrice', numberProcessor(row.shareTargetPrice/row.shareCount, 2)); // 计算预计A价
+      this.$set(row, "shareCount", numberProcessor(value, 0)); // 分摊量
+      this.$set(
+        row,
+        "estimateShareAPrice",
+        numberProcessor(row.shareTargetPrice / row.shareCount, 2)
+      ); // 计算预计A价
     },
   },
 };

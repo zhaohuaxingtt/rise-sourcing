@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-12-14 18:47:56
+ * @LastEditTime: 2022-12-15 16:06:18
  * @LastEditors: 余继鹏 917955345@qq.com
 -->
 <template>
@@ -83,7 +83,7 @@ export default {
     
     getStatus(status) {
       return (
-        this.options.sel_target_price_status.find((item) => item.code == status)
+        this.options.sel_target_price_status?.find((item) => item.code == status)
           ?.name || status
       );
     },

@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-08 15:38:28
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 10:32:13
+ * @LastEditTime: 2022-12-15 14:08:18
  * @FilePath: \front-web\src\views\SELTargetPrice\maintenance\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -39,40 +39,6 @@ export const searchFormData = [
   { prop: 'businessType', label: '申请类型', type: 'select', labelKey: 'SHENQINGLEIXING', selectOption: 'sel_target_business_type' },
   { prop: 'applyDate', label: '申请日期起止', type: 'dateRange', labelKey: 'SHENQINGRIQIQIZHI' },
   { prop: 'cfUserId', label: 'CF控制员', type: 'select', labelKey: 'CF控制员', selectOption: 'CF_CONTROL', multiple: true },
-]
-
-// 待维护列表
-export const toBeMaintainTableTitle = [
-  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LK_FSNR", tooltip: true, width: 135,  },
-  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 100,  },
-  { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 125,  },
-  { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100,  },
-  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 100,  },
-  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, width: 100,  },
-  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, width: 140,  },
-  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, width: 150,  },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 90,  },
-  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 150,  },
-  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 150,  },
-  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 150,  },
-]
-
-// 申请记录
-export const applyTableTitle = [
-  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LK_FSNR", tooltip: true, width: 135,  },
-  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 100,  },
-  { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 125,  },
-  { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100,  },
-  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 100,  },
-  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, width: 100,  },
-  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, width: 140,  },
-  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, width: 150,  },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 90,  },
-  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 110,  },
-  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 110,  },
-  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, width: 120,  },
-  { props: 'applicationDate', name: '申请时间', key: "SHENQINGSHIJIAN", tooltip: true, minWidth: 140,  },
-
 ]
 
 // 审批记录

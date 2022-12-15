@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 15:58:33
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-15 14:08:17
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\data.js
  */
@@ -82,4 +82,38 @@ export const MENU = [
     permissionKey: 'MODELTARGETPRICE_QUERY_PAGE',
     permissionName: '模具目标价管理-目标价查询-页面'
   },
+]
+
+// 待维护列表
+export const toBeMaintainTableTitle = [
+  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LK_FSNR", tooltip: true, width: 135,  },
+  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 100,  },
+  { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 125,  },
+  { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100,  },
+  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 100,  },
+  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, width: 100,  },
+  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, width: 140,  },
+  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, width: 150,  },
+  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 90,  },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 150,  },
+  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 150,  },
+  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 150,  },
+]
+
+// 申请记录
+export const applyTableTitle = [
+  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LK_FSNR", tooltip: true, width: 135,  },
+  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 100,  },
+  { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 125,  },
+  { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100,  },
+  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 100,  },
+  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, width: 100,  },
+  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, width: 140,  },
+  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, width: 150,  },
+  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 90,  },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 110,  },
+  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 110,  },
+  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, width: 120,  },
+  { props: 'applicationDate', name: '申请时间', key: "SHENQINGSHIJIAN", tooltip: true, minWidth: 140,  },
+
 ]

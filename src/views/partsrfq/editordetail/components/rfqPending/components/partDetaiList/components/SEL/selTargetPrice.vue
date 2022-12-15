@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-14 18:48:35
+ * @LastEditTime: 2022-12-15 14:58:14
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -24,12 +24,12 @@
     <template slot="header-control">
       <div class="button-box">
         <template v-if="!todo">
-          <iButton v-if="isPosition" @click="changeData">{{ language('修改分摊量','修改分摊量') }}</iButton>
-          <iButton v-if="isPosition" @click="showDialog">{{ language('CHAKAN','查看') + language('申请记录','申请记录') }}</iButton>
-          <iButton @click="exportExcel">{{ language("LK_DAOCHU", "导出") }}</iButton>
+          <iButton v-if="isPosition" @click="changeData" v-permission.auto="PARTSRFQ_PARTDETAILLIST_SELTARGETPRICE_XIUGAIFENTANLIANG|SEL目标价-修改分摊量">{{ language('修改分摊量','修改分摊量') }}</iButton>
+          <iButton v-if="isPosition" @click="showDialog" v-permission.auto="PARTSRFQ_PARTDETAILLIST_SELTARGETPRICE_CHAKANSHENQINGJILU|SEL目标价-查看申请记录">{{ language('CHAKAN','查看') + language('申请记录','申请记录') }}</iButton>
+          <iButton @click="exportExcel" v-permission.auto="PARTSRFQ_PARTDETAILLIST_SELTARGETPRICE_DAOCHU|SEL目标价-导出">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>
-          <iButton v-if="!disabled" @click="applySEL">{{
+          <iButton v-if="!disabled" @click="applySEL" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYSELTARGETPRICE|申请SEL目标价">{{
             language("LK_SHENQINGMUBIAOJIA", "申请SEL目标价")
           }}</iButton>
         </template>
@@ -44,7 +44,6 @@
         :hide-open-page="true"
         :index="true"
         :lang="true"
-        v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
       >
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
@@ -63,7 +62,7 @@
       />
     </div>
     <applyDialog :visible.sync="visible" :options="options" :rfqId="$route.query.id" />
-    <changeDialog :visible.sync="changeVisible" :options="options" :data="selectTableData" />
+    <changeDialog :visible.sync="changeVisible" :options="options" :data="selectTableData" @getTableList="getTableList" />
   </iCard>
 </template>
 

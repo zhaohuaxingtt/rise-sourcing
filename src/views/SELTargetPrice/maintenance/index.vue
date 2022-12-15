@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 18:56:22
+ * @LastEditTime: 2022-12-15 15:30:41
  * @Description: 模具目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
@@ -37,15 +37,18 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton @click="openNoInvest" :loading="noInvestLoading">{{
+          <iButton @click="openNoInvest" :loading="noInvestLoading"
+          v-permission.auto="SELTARGETPRICE_MAINTENANCE_WUMUBIAOJIA |SEL目标价管理-目标价维护-无目标价">{{
             language("无目标价", "无目标价")
           }}</iButton>
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible"
+          v-permission.auto="SELTARGETPRICE_MAINTENANCE_ZHIPAI |SEL目标价管理-目标价维护-指派">{{
             language("ZHIPAI", "指派")
           }}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" :loading="exportLoading">{{
+          <iButton @click="handleExport" :loading="exportLoading"
+          v-permission.auto="SELTARGETPRICE_MAINTENANCE_DAOCHU |SEL目标价管理-目标价维护-导出">{{
             language("DAOCHU", "导出")
           }}</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
@@ -55,12 +58,14 @@
             style="display: inline-block"
             :http-request="importSelCfceMaintained"
             :show-file-list="false"
+            v-permission.auto="SELTARGETPRICE_MAINTENANCE_PILIANGDAORUWEIHU |SEL目标价管理-目标价维护-导入批量维护"
           >
             <iButton :loading="uploadLoading">{{
               language("DAORUPILIANGWEIHU", "导入批量维护")
             }}</iButton>
           </el-upload>
-          <iButton @click="openMaintain" :loading="assignDialogVisible">{{
+          <iButton @click="openMaintain" :loading="assignDialogVisible"
+            v-permission.auto="SELTARGETPRICE_MAINTENANCE_WEIHU |SEL目标价管理-目标价维护-维护">{{
             language("维护", "维护")
           }}</iButton>
         </div>
@@ -130,7 +135,7 @@
     <batchMaintain
       ref="assignDialog"
       v-if="maintainVisible"
-      :tableData="selectItems"
+      :tableData="maintainTable"
       :options="options"
       :dialogVisible.sync="maintainVisible"
       @changeVisible="changeMaintainVisible"
@@ -172,8 +177,6 @@ import attachmentDialog from "@/views/costanalysismanage/components/home/compone
 import approvalRecordDialog from "./components/approvalRecord";
 import assignDialog from "../components/assign";
 import iDicoptions from "rise/web/components/iDicoptions";
-import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
-import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import {
   selCfCESearchPage,
   exportSelCfceMaintainedApproval,
@@ -186,10 +189,8 @@ import moment from "moment";
 export default {
   mixins: [pageMixins],
   components: {
-    carProjectSelect,
     iDicoptions,
     noInvestConfirmDialog,
-    procureFactorySelect,
     iPage,
     headerNav,
     iCard,
@@ -223,6 +224,7 @@ export default {
       rfqId: "",
       fsNum: "",
       selectItems: [],
+      maintainTable:[],
       uploadLoading: false,
       exportLoading: false,
       assignDialogVisible: false,
@@ -280,13 +282,13 @@ export default {
     },
     getStatus(status) {
       return (
-        this.options.sel_target_price_status.find((item) => item.code == status)
+        this.options.sel_target_price_status?.find((item) => item.code == status)
           ?.name || status
       );
     },
     getBusinessDesc(type) {
       return (
-        this.options.sel_target_business_type.find((item) => item.code == type)
+        this.options.sel_target_business_type?.find((item) => item.code == type)
           ?.name || type
       );
     },
@@ -306,21 +308,19 @@ export default {
     },
     // 导出
     handleExport() {
-      let params = _.omit(
-        {
-          ...this.searchForm,
-          applyDateStart: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
-            : null,
-          applyDateEnd: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
-            : null,
+      let params = {
+          // ...this.searchForm,
+          // applyDateStart: this.searchForm.applyDate
+          //   ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+          //   : null,
+          // applyDateEnd: this.searchForm.applyDate
+          //   ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+          //   : null,
           pageType: 2,
-          current: this.page.currPage,
-          size: this.page.pageSize,
-        },
-        ["applyDate"]
-      );
+          // current: this.page.currPage,
+          // size: this.page.pageSize,
+          excelList:this.selectItems,
+        }
       exportSelCfceMaintainedApproval(params).then((res) => {
         console.log(res);
       });
@@ -350,6 +350,7 @@ export default {
     changeAssignDialogVisible(visible) {
       this.assignDialogVisible = visible;
     },
+    // 维护
     openMaintain() {
       if (this.selectItems.length < 1) {
         iMessage.warn(
@@ -376,6 +377,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.selectItems = val;
+      this.maintainTable = val
     },
     openPage(row) {
       const router = this.$router.resolve({
@@ -478,6 +480,8 @@ export default {
       formData.append("file", content.file);
       importSelCfceMaintained(formData).then((res) => {
         if (res?.code == "200") {
+          this.maintainTable = res.data
+          this.changeMaintainVisible(true)
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);

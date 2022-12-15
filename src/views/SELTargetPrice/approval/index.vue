@@ -12,14 +12,18 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton @click="openMaintain">
+          <iButton @click="openMaintain"
+            v-permission.auto="SELTARGETPRICE_APPROVAL_WEIHU |SEL目标价管理-目标价审批-维护">
             {{ language("WEIHU", "维护") }}
           </iButton>
-          <iButton @click="openApprovalDetailDialog">
+          <iButton @click="openApprovalDetailDialog"
+            v-permission.auto="SELTARGETPRICE_APPROVAL_PIZHUN |SEL目标价管理-目标价审批-批准">
             {{ language("PIZHUN", "批准") }}
           </iButton>
-          <iButton @click="recallBack">{{ language("驳回", "驳回") }}</iButton>
-          <iButton @click="handleExport" :loading="exportLoading">{{
+          <iButton @click="recallBack"
+            v-permission.auto="SELTARGETPRICE_APPROVAL_BOHUI |SEL目标价管理-目标价审批-驳回">{{ language("驳回", "驳回") }}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading"
+            v-permission.auto="SELTARGETPRICE_APPROVAL_DAOCHU |SEL目标价管理-目标价审批-导出">{{
             language("DAOCHU", "导出")
           }}</iButton>
         </div>
@@ -64,6 +68,7 @@
     <approvalDialog
       ref="modelApproval"
       :tableData="selectItems"
+      :isApproval="true"
       :dialogVisible="approvalDialogVisible"
       @changeVisible="changeApprovalDialogVisible"
     />
@@ -73,6 +78,7 @@
       v-if="maintainVisible"
       :tableData="selectItems"
       :options="options"
+      :isMaintain="false"
       :dialogVisible.sync="maintainVisible"
       @changeVisible="changeMaintainVisible"
     />
@@ -110,8 +116,6 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
 import approvalRecordDialog from "../maintenance/components/approvalRecord";
 import approvalDialog from "../components/approvalDialog";
-import carProjectSelect from "@/views/modelTargetPrice/components/carProjectSelect";
-import procureFactorySelect from "@/views/modelTargetPrice/components/procureFactorySelect";
 import {
   selCfCESearchApprovalPage,
   exportSelCfceMaintainedApproval,
@@ -121,8 +125,6 @@ import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 export default {
   mixins: [pageMixins],
   components: {
-    carProjectSelect,
-    procureFactorySelect,
     iPage,
     headerNav,
     iCard,
@@ -211,13 +213,13 @@ export default {
 
     getStatus(status) {
       return (
-        this.options.sel_target_price_status.find((item) => item.code == status)
+        this.options.sel_target_price_status?.find((item) => item.code == status)
           ?.name || status
       );
     },
     getBusinessDesc(type) {
       return (
-        this.options.sel_target_business_type.find((item) => item.code == type)
+        this.options.sel_target_business_type?.find((item) => item.code == type)
           ?.name || type
       );
     },
