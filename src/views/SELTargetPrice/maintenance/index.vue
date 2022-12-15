@@ -392,7 +392,7 @@ export default {
      * @return {*}
      */
     openApprovalDialog(row) {
-      this.taskId = row.taskId || "";
+      this.taskId = row.id || "";
       this.changeApprovalDialogVisible(true);
     },
     /**
