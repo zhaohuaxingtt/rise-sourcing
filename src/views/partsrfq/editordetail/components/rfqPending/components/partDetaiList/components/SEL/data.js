@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-08 15:38:28
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-14 18:40:22
+ * @LastEditTime: 2022-12-15 17:51:00
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\SEL\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,7 +28,7 @@ export const SELTargetPriceTitle = [
         key: "目标价·分摊",
     },
     {
-        props: "shareCount",
+        props: "releaseOutput",
         name: "分摊量",
         key: "分摊量",
     },
@@ -70,7 +70,7 @@ export const SELApplyTargetPriceTitle = [
         key: "目标价·分摊",
     },
     {
-        props: "shareCount",
+        props: "releaseOutput",
         name: "分摊量",
         key: "分摊量",
     },

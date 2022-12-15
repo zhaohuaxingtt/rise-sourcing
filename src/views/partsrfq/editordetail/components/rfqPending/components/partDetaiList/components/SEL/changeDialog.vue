@@ -25,9 +25,9 @@
         <span>{{ getStatus(scope.row.status) }}</span>
       </template>
       <!-- 分摊量 -->
-      <template #shareCount="scope">
+      <template #releaseOutput="scope">
         <iInput
-          :value="scope.row.shareCount"
+          :value="scope.row.releaseOutput"
           @input="handleInput($event, scope.row)"
         />
       </template>
@@ -78,7 +78,7 @@ export default {
     },
     // 保存
     submit() {
-      if (this.tableData.some((item) => !(item.shareCount || "").trim())) {
+      if (this.tableData.some((item) => !(item.releaseOutput || "").trim())) {
         return iMessage.warn(this.language("分摊量不能为空", "分摊量不能为空"));
       }
       this.loading = true;
@@ -109,11 +109,11 @@ export default {
      * @Description: 输入限制
      */
     handleInput(value, row) {
-      this.$set(row, "shareCount", numberProcessor(value, 0)); // 分摊量
+      this.$set(row, "releaseOutput", numberProcessor(value, 0)); // 分摊量
       this.$set(
         row,
         "estimateShareAPrice",
-        numberProcessor(row.shareTargetPrice / row.shareCount, 2)
+        numberProcessor(row.targetPrice / row.releaseOutput, 2)
       ); // 计算预计A价
     },
   },

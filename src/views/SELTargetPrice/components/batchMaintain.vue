@@ -134,7 +134,7 @@ export default {
       this.$emit("changeVisible", false);
     },
     changeEstimateShareAPrice(row){
-      this.$set(row,'estimateShareAPrice', (row.releaseOutput/row.shareTargetPrice) || 0)
+      this.$set(row,'estimateShareAPrice', (row.targetPrice/row.releaseOutput) || 0)
     },
     handleSelectionChange(val){
       this.selectItems = val

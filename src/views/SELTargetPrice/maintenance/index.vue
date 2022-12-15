@@ -1,22 +1,6 @@
-<!--
- * @Author: Luoshuang
- * @Date: 2021-06-22 09:12:31
- * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 15:30:41
- * @Description: 模具目标价-目标价维护
- * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
--->
-
 <template>
-  <iPage
-    v-permission.auto="
-      MODELTARGETPRICE_MAINTENANCE_PAGE | (模具目标价管理 - 目标价维护 - 页面)
-    "
-  >
+  <iPage>
     <headerNav />
-    <!----------------------------------------------------------------->
-    <!---------------------------搜索区域------------------------------->
-    <!----------------------------------------------------------------->
     <search
       @sure="sure"
       @reset="reset"
@@ -24,33 +8,39 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <!----------------------------------------------------------------->
-    <!---------------------------表格区域------------------------------->
-    <!----------------------------------------------------------------->
-    <iCard
-      class="margin-top20"
-      v-permission.auto="
-        MODELTARGETPRICE_MAINTENANCE_TABLE |
-          (模具目标价管理 - 目标价维护 - 表格)
-      "
-    >
+    <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
-          <iButton @click="openNoInvest" :loading="noInvestLoading"
-          v-permission.auto="SELTARGETPRICE_MAINTENANCE_WUMUBIAOJIA |SEL目标价管理-目标价维护-无目标价">{{
-            language("无目标价", "无目标价")
-          }}</iButton>
+          <iButton
+            @click="openNoInvest"
+            :loading="noInvestLoading"
+            v-permission.auto="
+              SELTARGETPRICE_MAINTENANCE_WUMUBIAOJIA |
+                (SEL目标价管理 - 目标价维护 - 无目标价)
+            "
+            >{{ language("无目标价", "无目标价") }}</iButton
+          >
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible"
-          v-permission.auto="SELTARGETPRICE_MAINTENANCE_ZHIPAI |SEL目标价管理-目标价维护-指派">{{
-            language("ZHIPAI", "指派")
-          }}</iButton>
+          <iButton
+            @click="openAssignDialog"
+            :loading="assignDialogVisible"
+            v-permission.auto="
+              SELTARGETPRICE_MAINTENANCE_ZHIPAI |
+                (SEL目标价管理 - 目标价维护 - 指派)
+            "
+            >{{ language("ZHIPAI", "指派") }}</iButton
+          >
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" :loading="exportLoading"
-          v-permission.auto="SELTARGETPRICE_MAINTENANCE_DAOCHU |SEL目标价管理-目标价维护-导出">{{
-            language("DAOCHU", "导出")
-          }}</iButton>
+          <iButton
+            @click="handleExport"
+            :loading="exportLoading"
+            v-permission.auto="
+              SELTARGETPRICE_MAINTENANCE_DAOCHU |
+                (SEL目标价管理 - 目标价维护 - 导出)
+            "
+            >{{ language("DAOCHU", "导出") }}</iButton
+          >
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class="margin-left10 margin-right10"
@@ -58,16 +48,24 @@
             style="display: inline-block"
             :http-request="importSelCfceMaintained"
             :show-file-list="false"
-            v-permission.auto="SELTARGETPRICE_MAINTENANCE_PILIANGDAORUWEIHU |SEL目标价管理-目标价维护-导入批量维护"
+            v-permission.auto="
+              SELTARGETPRICE_MAINTENANCE_PILIANGDAORUWEIHU |
+                (SEL目标价管理 - 目标价维护 - 导入批量维护)
+            "
           >
             <iButton :loading="uploadLoading">{{
               language("DAORUPILIANGWEIHU", "导入批量维护")
             }}</iButton>
           </el-upload>
-          <iButton @click="openMaintain" :loading="assignDialogVisible"
-            v-permission.auto="SELTARGETPRICE_MAINTENANCE_WEIHU |SEL目标价管理-目标价维护-维护">{{
-            language("维护", "维护")
-          }}</iButton>
+          <iButton
+            @click="openMaintain"
+            :loading="assignDialogVisible"
+            v-permission.auto="
+              SELTARGETPRICE_MAINTENANCE_WEIHU |
+                (SEL目标价管理 - 目标价维护 - 维护)
+            "
+            >{{ language("维护", "维护") }}</iButton
+          >
         </div>
       </div>
       <tableList
@@ -224,7 +222,7 @@ export default {
       rfqId: "",
       fsNum: "",
       selectItems: [],
-      maintainTable:[],
+      maintainTable: [],
       uploadLoading: false,
       exportLoading: false,
       assignDialogVisible: false,
@@ -274,16 +272,17 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
-          this.options['CAR_TYPE_PRO'].forEach(item=>{
-            item.code = item.id
-          })
+          this.options["CAR_TYPE_PRO"].forEach((item) => {
+            item.code = item.id;
+          });
         }
       });
     },
     getStatus(status) {
       return (
-        this.options.sel_target_price_status?.find((item) => item.code == status)
-          ?.name || status
+        this.options.sel_target_price_status?.find(
+          (item) => item.code == status
+        )?.name || status
       );
     },
     getBusinessDesc(type) {
@@ -309,18 +308,18 @@ export default {
     // 导出
     handleExport() {
       let params = {
-          // ...this.searchForm,
-          // applyDateStart: this.searchForm.applyDate
-          //   ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
-          //   : null,
-          // applyDateEnd: this.searchForm.applyDate
-          //   ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
-          //   : null,
-          pageType: 2,
-          // current: this.page.currPage,
-          // size: this.page.pageSize,
-          excelList:this.selectItems,
-        }
+        // ...this.searchForm,
+        // applyDateStart: this.searchForm.applyDate
+        //   ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+        //   : null,
+        // applyDateEnd: this.searchForm.applyDate
+        //   ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+        //   : null,
+        pageType: 2,
+        // current: this.page.currPage,
+        // size: this.page.pageSize,
+        excelList: this.selectItems,
+      };
       exportSelCfceMaintainedApproval(params).then((res) => {
         console.log(res);
       });
@@ -377,7 +376,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.selectItems = val;
-      this.maintainTable = val
+      this.maintainTable = val;
     },
     openPage(row) {
       const router = this.$router.resolve({
@@ -480,8 +479,8 @@ export default {
       formData.append("file", content.file);
       importSelCfceMaintained(formData).then((res) => {
         if (res?.code == "200") {
-          this.maintainTable = res.data
-          this.changeMaintainVisible(true)
+          this.maintainTable = res.data;
+          this.changeMaintainVisible(true);
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);
