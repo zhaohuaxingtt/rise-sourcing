@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 10:27:54
+ * @LastEditTime: 2022-12-15 16:15:08
  * @FilePath: \front-web\src\views\SELTargetPrice\query\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,6 +21,7 @@ export const tableTitle = [
   { props: 'targetPrice', name: '目标价', key: "MUBIAOJIA", tooltip: true, width: 150, sortable: true },
   { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 110, sortable: true },
   { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 150, sortable: true },
+  { props: 'status', name: '状态', key: "ZHUANGTAI", tooltip: true, width: 80, sortable: true },
   { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, minWidth: 110, sortable: true },
 ]
 

@@ -39,6 +39,9 @@
         <template #businessType="scope">
           <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
         </template>
+        <template #status="scope">
+          <span>{{ getStatus(scope.row.status) }}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -156,6 +159,12 @@ export default {
           });
         }
       });
+    },
+    getStatus(status) {
+      return (
+        this.options.sel_target_price_status?.find((item) => item.code == status)
+          ?.name || status
+      );
     },
     getBusinessDesc(code) {
       return (
