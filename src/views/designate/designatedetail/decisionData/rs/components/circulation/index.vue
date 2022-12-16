@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 11:05:56
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-13 15:08:09
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -162,18 +162,18 @@
                   </div>
                 </div>
                 <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p>{{ (scope.row.skdInvestFee || 0) | toThousands(true) }}</p>
                   <p>
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                    <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
                   </p>
                 </div>
               </el-popover>
             </div>
             <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+              <p>{{ (scope.row.skdInvestFee || 0) | toThousands(true) }}</p>
             </span>
             <span v-else>
               <el-popover
@@ -194,7 +194,7 @@
                   <span v-if="scope.row.investFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                  <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
                 </div>
               </el-popover>
             </span>
@@ -563,18 +563,18 @@
                   </div>
                 </div>
                 <div slot="reference">
-                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p>{{ (scope.row.skdInvestFee || 0) | toThousands(true) }}</p>
                   <p>
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                    <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
                   </p>
                 </div>
               </el-popover>
             </div>
             <span v-else-if="scope.row.status === 'SKD'">
-              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+              <p>{{ (scope.row.skdInvestFee || 0) | toThousands(true) }}</p>
             </span>
             <span v-else>
               <el-popover
@@ -595,7 +595,7 @@
                   <span v-if="scope.row.investFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                  <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
                 </div>
               </el-popover>
             </span>
