@@ -87,6 +87,10 @@
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
         </template>
+        <!-- 期望目标价·分摊 -->
+        <template #expectedShareTargetPrice="scope">
+          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -103,14 +107,6 @@
         :total="page.totalCount"
       />
     </iCard>
-    <!------------------------------------------------------------------------>
-    <!--                  附件弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <attachmentDialog
-      :dialogVisible="attachmentDialogVisible"
-      @changeVisible="changeAttachmentDialogVisible"
-      :rfqNum="rfqId"
-    />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -171,7 +167,6 @@ import noInvestConfirmDialog from "../components/noInvestConfirm";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
-import attachmentDialog from "@/views/costanalysismanage/components/home/components/downloadFiles/index";
 import approvalRecordDialog from "./components/approvalRecord";
 import assignDialog from "../components/assign";
 import iDicoptions from "rise/web/components/iDicoptions";
@@ -183,9 +178,10 @@ import {
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
+import filters from '@/utils/filters'
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: {
     iDicoptions,
     noInvestConfirmDialog,
@@ -199,7 +195,6 @@ export default {
     iDatePicker,
     iInput,
     iSearch,
-    attachmentDialog,
     approvalRecordDialog,
     assignDialog,
     iMultiLineInput,

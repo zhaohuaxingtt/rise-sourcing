@@ -42,6 +42,15 @@
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
         </template>
+        
+        <!-- 目标价-分摊 -->
+        <template #shareTargetPrice="scope">
+          <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 预计A价分摊 -->
+        <template #estimateShareAPrice="scope">
+          <span>{{ scope.row.estimateShareAPrice | thousandsFilter(2)}}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -85,8 +94,9 @@ import {
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
+import filters from '@/utils/filters'
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: {
     iPage,
     headerNav,

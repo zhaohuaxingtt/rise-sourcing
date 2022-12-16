@@ -31,6 +31,18 @@
           @input="handleInput($event, scope.row)"
         />
       </template>
+      <!-- 目标价·分摊 -->
+      <template #shareTargetPrice="scope">
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 目标价·一次性 -->
+      <template #targetPrice="scope">
+        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 预计A价分摊 -->
+      <template #estimateShareAPrice="scope">
+        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+      </template>
     </tableList>
   </iDialog>
 </template>
@@ -41,12 +53,14 @@ import { SELTargetPriceTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
 import { applySelTargetPrice } from "@/api/SELTargetPrice";
 import { numberProcessor } from "@/utils";
+import filters from '@/utils/filters'
 export default {
   props: {
     visible: { type: Boolean },
     data: { type: Array, default: () => [] },
     options: { type: Object, default: () => ({}) },
   },
+  mixins:[filters],
   components: { iDialog, tableList, iInput, iButton },
   data() {
     return {

@@ -22,10 +22,12 @@
     >
       <!-----------期望目标价--------------------------->
       <template #expectedShareTargetPrice="scope">
-        <iInput
-          :value="scope.row.expectedShareTargetPrice"
-          maxlength="8"
-          @input="handleInput($event, scope.row, 'expectedShareTargetPrice')"
+        <thousandsFilterInput
+          class="thousandsFilterInput"
+          :numProcessor="0"
+          :inputValue="scope.row['expectedShareTargetPrice']"
+          style="width: 100px"
+          @handleInput="handleInput($event,scope.row,'expectedShareTargetPrice')"
         />
       </template>
     </tableList>
@@ -36,7 +38,7 @@
 import { iDialog, iMessage, iText, iInput, iButton } from "rise";
 import { selDialogTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
-import { thousandsFilter } from "@/utils/filters.js";
+import thousandsFilterInput from "rise/web/aeko/quotationdetail/components/thousandsFilterInput";
 import { applySelTargetPrice } from "@/api/SELTargetPrice";
 export default {
   props: {
@@ -44,7 +46,7 @@ export default {
     visible: { type: Boolean },
     data: { type: Array, default: () => [] },
   },
-  components: { iDialog, iText, tableList, iInput, iButton },
+  components: { iDialog, iText, tableList, iInput, iButton, thousandsFilterInput },
   data() {
     return {
       // isEdit: false,
@@ -70,6 +72,9 @@ export default {
     },
   },
   methods: {
+    handleInput(value, row, name) {
+        this.$set(row, name, value); // 填充数据
+    },
     /**
      * @Description: 申请目标价提交
      * @Author: Luoshuang
@@ -139,6 +144,9 @@ export default {
   }
   .table {
     padding-bottom: 20px;
+    .thousandsFilterInput {
+      margin: 0 auto;
+    }
   }
   .applyMemo {
     display: flex;

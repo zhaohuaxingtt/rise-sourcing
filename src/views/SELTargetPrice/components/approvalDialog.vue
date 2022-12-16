@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-09 11:22:07
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 11:38:56
+ * @LastEditTime: 2022-12-16 19:25:30
  * @FilePath: \front-web\src\views\SELTargetPrice\components\approvalDialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -43,7 +43,20 @@
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
       class="padding-bottom20"
-    ></tableList>
+    >
+      <!-- 目标价·分摊 -->
+      <template #shareTargetPrice="scope">
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0) }}</span>
+      </template>
+      <!-- 目标价·一次性 -->
+      <template #targetPrice="scope">
+        <span>{{ scope.row.targetPrice | thousandsFilter(0) }}</span>
+      </template>
+      <!-- 预计A价分摊 -->
+      <template #estimateShareAPrice="scope">
+        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+      </template>
+    </tableList>
   </iDialog>
 </template>
 
@@ -52,8 +65,10 @@ import { iDialog, iInput, iButton, iMessage } from "rise";
 import tableList from "./tableList";
 import { approvalTableTitle as tableTitle } from "../approval/data";
 import { passApproval, passApprovalAndRemark } from "@/api/SELTargetPrice";
+import filters from "@/utils/filters";
 export default {
   components: { iDialog, iInput, iButton, iMessage, tableList },
+  mixins: [filters],
   props: {
     dialogVisible: { type: Boolean, default: false },
     tableData: { type: Array, default: () => [] },
@@ -75,7 +90,7 @@ export default {
       this.$emit("changeVisible", false);
     },
     handleConfirm() {
-      let submit = this.isMaintain ?  passApproval: passApprovalAndRemark;
+      let submit = this.isMaintain ? passApproval : passApprovalAndRemark;
       submit({
         remark: this.remark,
         taskId: this.tableData.map((item) => item.id),
@@ -84,7 +99,7 @@ export default {
           if (res?.code == "200") {
             iMessage.success("操作成功");
             this.clearDialog();
-            this.$emit('clearDialog')
+            this.$emit("clearDialog");
           }
         })
         .finally(() => {

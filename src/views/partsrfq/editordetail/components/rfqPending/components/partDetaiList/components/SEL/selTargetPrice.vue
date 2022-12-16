@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-15 14:58:14
+ * @LastEditTime: 2022-12-16 18:00:44
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -48,6 +48,18 @@
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
         </template>
+        <!-- 目标价·分摊 -->
+        <template #shareTargetPrice="scope">
+          <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 目标价·一次性 -->
+        <template #targetPrice="scope">
+          <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 预计A价分摊 -->
+        <template #estimateShareAPrice="scope">
+          <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+        </template>
       </tablelist>
       <iPagination
         v-update
@@ -75,6 +87,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { iconName, SELTargetPriceTitle as tableTitle } from "./data";
 import { getSelTargetPriceTask, exportSelTargetPriceTask } from "@/api/SELTargetPrice";
 import { selectDictByKeys } from "@/api/dictionary";
+import filters from '@/utils/filters'
 export default {
   components: {
     iCard,
@@ -85,7 +98,7 @@ export default {
     applyDialog,
     changeDialog
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins,filters],
   props: {
     todo: Boolean,
   },
@@ -194,14 +207,6 @@ export default {
       }
     },
     exportExcel() {
-      // if (this.selectTableData.length == 0)
-      //   return iMessage.warn(
-      //     this.language(
-      //       "LK_QINGXUANZHEXUYAODAOCHUSHUJU",
-      //       "请选择需要导出的数据"
-      //     )
-      //   );
-      // excelExport(this.selectTableData, this.tableTitle);
       exportSelTargetPriceTask({
             rfqId: this.$route.query.id,
             current: this.page.currPage,

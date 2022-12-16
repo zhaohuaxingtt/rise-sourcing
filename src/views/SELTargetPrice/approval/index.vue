@@ -45,6 +45,18 @@
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
         </template>
+      <!-- 目标价·分摊 -->
+      <template #shareTargetPrice="scope">
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 目标价·一次性 -->
+      <template #targetPrice="scope">
+        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 预计A价分摊 -->
+      <template #estimateShareAPrice="scope">
+        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+      </template>
       </tableList>
       <iPagination
         v-update
@@ -122,8 +134,9 @@ import {
 } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
+import filters from '@/utils/filters'
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: {
     iPage,
     headerNav,

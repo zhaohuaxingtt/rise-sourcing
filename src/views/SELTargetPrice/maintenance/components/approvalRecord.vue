@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 11:22:31
+ * @LastEditTime: 2022-12-16 18:14:59
  * @Description: 审批记录弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
@@ -23,7 +23,20 @@
       :tableLoading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
       @openPage="openPage"
-    ></tableList>
+    >
+      <!-- 目标价·分摊 -->
+      <template #shareTargetPrice="scope">
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 目标价·一次性 -->
+      <template #targetPrice="scope">
+        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 预计A价分摊 -->
+      <template #estimateShareAPrice="scope">
+        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+      </template>
+    </tableList>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
@@ -48,8 +61,9 @@ import tableList from "../../components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { approvalTableTitle } from "../data";
 import { getSelTargetApprovalRecord } from "@/api/SELTargetPrice";
+import filters from '@/utils/filters'
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: { iDialog, tableList, iPagination },
   props: {
     dialogVisible: { type: Boolean, default: false },

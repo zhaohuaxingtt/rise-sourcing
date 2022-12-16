@@ -21,6 +21,7 @@
       width="50"
       align="center"
       label="#"
+      :fixed="indexFixed"
     >
       <template slot-scope="scope">
         {{ tableIndexString + (scope.$index + 1) }}
@@ -39,6 +40,7 @@
         :label="items.key ? language(items.key, items.name) : items.name"
         :sortable="items.sortable || false"
         :sort-method="items.sortMethod"
+        :fixed="items.fixed"
       >
         <template slot="header">
           <span>{{
@@ -79,6 +81,7 @@
         :prop="items.props"
         :sortable="items.sortable || false"
         :sort-method="items.sortMethod"
+        :fixed="items.fixed"
       >
         <template slot="header">
           <span v-if="items.enName"
@@ -117,8 +120,10 @@
 <script>
 import { iSelect, iInput } from "rise";
 import { _getMathNumber } from "@/utils";
+import filters from '@/utils/filters'
 export default {
   components: { iSelect, iInput },
+  mixins:[filters],
   props: {
     tableData: { type: Array },
     tableTitle: { type: Array },
@@ -137,6 +142,11 @@ export default {
     isEdit: { type: Boolean, default: false },
   },
   inject: ["vm"],
+  computed:{
+    indexFixed(){
+      return this.tableTitle.some(item=>item?.fixed)
+    }
+  },
   methods: {
     changeValue(val, row, item) {
       if (item.isNumber) {

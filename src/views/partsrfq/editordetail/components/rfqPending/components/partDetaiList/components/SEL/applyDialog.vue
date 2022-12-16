@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-12-15 16:06:18
+ * @LastEditTime: 2022-12-16 18:03:13
  * @LastEditors: 余继鹏 917955345@qq.com
 -->
 <template>
@@ -22,6 +22,18 @@
     >
       <template #status="scope">
         <span>{{ getStatus(scope.row.status) }}</span>
+      </template>
+      <!-- 目标价·分摊 -->
+      <template #shareTargetPrice="scope">
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 目标价·一次性 -->
+      <template #targetPrice="scope">
+        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+      </template>
+      <!-- 预计A价分摊 -->
+      <template #estimateShareAPrice="scope">
+        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
       </template>
     </tablelist>
     <iPagination
@@ -51,11 +63,12 @@ import {
 import tablelist from "@/views/partsign/editordetail/components/tableList";
 import { getCfTargetApplyHistory } from "@/api/financialTargetPrice/index";
 import { pageMixins } from "@/utils/pageMixins";
+import filters from '@/utils/filters'
 import { SELApplyTargetPriceTitle as tableTitle } from "./data";
 import { applySelTargetPriceRecordList } from "@/api/SELTargetPrice";
 export default {
   components: { iFormGroup, iFormItem, iText, iPagination, tablelist, iDialog },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   props: {
     rfqId: {
       type: String,

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-12-14 13:39:10
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-13 17:58:00
+ * @LastEditTime: 2022-12-16 19:24:21
  * @Description: 退回弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\sendBack.vue
 -->
@@ -53,6 +53,9 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      if(!this.remark.trim()){
+        return iMessage.warn('请输入驳回意见')
+      }
       this.saveLoading = true
       approvalReturn({
         remark:this.remark,

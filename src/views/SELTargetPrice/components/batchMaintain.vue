@@ -39,25 +39,72 @@
       <template #businessType="scope">
         {{getBusinessDesc(scope.row.businessType)}}
       </template>
+      <!-----------目标价·分摊--------------------------->
       <template #shareTargetPrice="scope">
-        <i-input v-model="scope.row['shareTargetPrice']" @input="handleInput($event, scope.row, 'shareTargetPrice')"></i-input>
+        <thousandsFilterInput
+          class="thousandsFilterInput"
+          :numProcessor="0"
+          :inputValue="scope.row['shareTargetPrice']"
+          style="width: 100px"
+          @handleInput="handleInput($event,scope.row,'shareTargetPrice')"
+        />
       </template>
+      <!-----------目标价·一次性--------------------------->
       <template #targetPrice="scope">
-        <i-input v-model="scope.row['targetPrice']" @input="handleInput($event, scope.row, 'targetPrice')"></i-input>
+        <thousandsFilterInput
+          class="thousandsFilterInput"
+          :numProcessor="0"
+          :inputValue="scope.row['targetPrice']"
+          style="width: 100px"
+          @handleInput="handleInput($event,scope.row,'targetPrice')"
+        />
       </template>
+        <!-- 期望目标价-分摊 -->
+        <template #expectedShareTargetPrice="scope">
+          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 期望目标价-一次性 -->
+        <template #expectedDisposableTargetPrice="scope">
+          <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 预计A价分摊 -->
+        <template #estimateShareAPrice="scope">
+          <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+        </template>
       </tableList>
     </iCard>
     <iCard class="margin-top20" title="申请记录">
       <tableList
         indexKey
+        :selection="false"
         :tableData="applyTableData"
         :tableTitle="applyTableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
-      <template #businessType="scope">
-        {{getBusinessDesc(scope.row.businessType)}}
-      </template>
+        <template #businessType="scope">
+          {{getBusinessDesc(scope.row.businessType)}}
+        </template>
+        <!-- 期望目标价-分摊 -->
+        <template #expectedShareTargetPrice="scope">
+          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 期望目标价-一次性 -->
+        <template #expectedDisposableTargetPrice="scope">
+          <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 目标价·分摊 -->
+        <template #shareTargetPrice="scope">
+          <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 目标价·一次性 -->
+        <template #targetPrice="scope">
+          <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+        </template>
+        <!-- 预计A价分摊 -->
+        <template #estimateShareAPrice="scope">
+          <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+        </template>
       </tableList>
       <iPagination
         v-update
@@ -90,9 +137,11 @@ import approvalDialog from "./approvalDialog";
 import { pageMixins } from "@/utils/pageMixins";
 import { toBeMaintainTableTitle, applyTableTitle } from "./data";
 import { numberProcessor } from "@/utils";
+import filters from '@/utils/filters'
+import thousandsFilterInput from "rise/web/aeko/quotationdetail/components/thousandsFilterInput";
 import { getSelTargetApprovalRecord,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: {
     iPage,
     iCard,
@@ -102,6 +151,7 @@ export default {
     iPagination,
     iButton,
     approvalDialog,
+    thousandsFilterInput
   },
   props: {
     dialogVisible: { type: Boolean, default: false },
@@ -136,10 +186,10 @@ export default {
     // 输入整数，计算预计A价
     handleInput(value, row, name) {
       if(name=='shareTargetPrice'){
-        this.$set(row, name, numberProcessor(value, 0)); // 目标价·分摊，输入整数
+        this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
         this.$set(row, "estimateShareAPrice",numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)); // 计算预计A价=  目标价·分摊/分摊量(询价产量)
       }else{
-        this.$set(row, name, numberProcessor(value, 0)); // 目标价·分摊，输入整数
+        this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
       }
     },
     handleSelectionChange(val){
@@ -199,6 +249,8 @@ export default {
               iMessage.success(res.desZh)
               this.clearDialog()
               this.$emit('getTableList')
+            }else{
+              iMessage.error(res.desZh)
             }
           })
         }else{  // 审批页面
