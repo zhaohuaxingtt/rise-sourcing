@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-12-14 13:39:10
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-16 19:24:21
+ * @LastEditTime: 2022-12-16 19:53:04
  * @Description: 退回弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\sendBack.vue
 -->
@@ -65,7 +65,9 @@ export default {
           iMessage.success('操作成功')
           this.clearDialog()
           this.$emit('getTableList')
-        }
+        }else{
+              iMessage.error(res.desZh)
+            }
       }).finally(()=>{
         this.saveLoading = false
       })
