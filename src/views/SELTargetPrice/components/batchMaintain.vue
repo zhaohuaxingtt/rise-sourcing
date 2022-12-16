@@ -40,10 +40,10 @@
         {{getBusinessDesc(scope.row.businessType)}}
       </template>
       <template #shareTargetPrice="scope">
-        <i-input v-model="scope.row['shareTargetPrice']" @change="changeEstimateShareAPrice(scope.row)"></i-input>
+        <i-input v-model="scope.row['shareTargetPrice']" @input="handleInput($event, scope.row, 'shareTargetPrice')"></i-input>
       </template>
       <template #targetPrice="scope">
-        <i-input v-model="scope.row['targetPrice']"></i-input>
+        <i-input v-model="scope.row['targetPrice']" @input="handleInput($event, scope.row, 'targetPrice')"></i-input>
       </template>
       </tableList>
     </iCard>
@@ -89,6 +89,7 @@ import tableList from "./tableList";
 import approvalDialog from "./approvalDialog";
 import { pageMixins } from "@/utils/pageMixins";
 import { toBeMaintainTableTitle, applyTableTitle } from "./data";
+import { numberProcessor } from "@/utils";
 import { getSelTargetApprovalRecord,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins],
@@ -120,7 +121,6 @@ export default {
   },
 
   created() {
-    console.log("res");
     this.getApplyTableData()
   },
   methods: {
@@ -133,8 +133,14 @@ export default {
     clearDialog() {
       this.$emit("changeVisible", false);
     },
-    changeEstimateShareAPrice(row){
-      this.$set(row,'estimateShareAPrice', (row.targetPrice/row.releaseOutput) || 0)
+    // 输入整数，计算预计A价
+    handleInput(value, row, name) {
+      if(name=='shareTargetPrice'){
+        this.$set(row, name, numberProcessor(value, 0)); // 目标价·分摊，输入整数
+        this.$set(row, "estimateShareAPrice",numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)); // 计算预计A价=  目标价·分摊/分摊量(询价产量)
+      }else{
+        this.$set(row, name, numberProcessor(value, 0)); // 目标价·分摊，输入整数
+      }
     },
     handleSelectionChange(val){
       this.selectItems = val

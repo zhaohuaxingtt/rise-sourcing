@@ -113,8 +113,8 @@ export default {
       this.$set(
         row,
         "estimateShareAPrice",
-        numberProcessor(row.targetPrice / row.releaseOutput, 2)
-      ); // 计算预计A价
+        numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)
+      ); // 计算预计A价=  目标价·分摊/分摊量(询价产量)
     },
   },
 };

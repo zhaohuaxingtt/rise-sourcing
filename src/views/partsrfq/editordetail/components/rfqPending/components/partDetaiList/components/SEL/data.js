@@ -1,11 +1,3 @@
-/*
- * @Author: 余继鹏 917955345@qq.com
- * @Date: 2022-12-08 15:38:28
- * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 17:51:00
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\SEL\data.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 // SEL目标价
 export const SELTargetPriceTitle = [
     {
@@ -107,9 +99,7 @@ export const selDialogTitle = [
     { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true },
     { props: 'procureFactoryName', name: '采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, todoHiddel: true },
     { props: 'carTypeProjectZh', name: '车型项目', key: "LK_CARPROJECT", tooltip: true, minWidth: 140, todoHiddel: true },
-    // { props: 'originalTargetPrice', name: '原目标价', key: "YUANMUBIAOJIA", tooltip: true },
-    // { props: 'businessTypeDesc', name: '类型', key: "LEIXING", tooltip: true },
-    { props: 'targetPrice', name: '目标价', key: "MUBIAOJIA", tooltip: true },
+    { props: 'expectedShareTargetPrice', name: '期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true }, // 填写的是期望目标价·分摊
 ]
 export const iconName = {
     '已完成': 'iconrs-wancheng',
