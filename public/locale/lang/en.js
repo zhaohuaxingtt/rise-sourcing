@@ -6527,6 +6527,7 @@
 		"单据号":"Document No",
 		"历史申请记录":"Historical application record",
 		"BA申请标题":"BA Application Title",
+		"若要继续执行请点击确认":",To continue, click OK",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
