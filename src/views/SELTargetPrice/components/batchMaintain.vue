@@ -28,7 +28,7 @@
         </div>
       </div>
     </template>
-    <iCard collapse class="margin-top20" title="待维护列表">
+    <iCard collapse title="待维护列表">
       <tableList
         indexKey
         :tableData="tableData"
