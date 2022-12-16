@@ -284,6 +284,7 @@ import {
   iButton,
   iPagination,
   iMessage,
+  iMessageBox,
   iMultiLineInput,
 } from "rise";
 import {
@@ -821,8 +822,11 @@ export default {
                   this.language(
                     "LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI",
                     "行零件已表态,linie无法修改"
-                  );
-                return iMessage.warn(tips);
+                  )+this.$t("若要继续执行请点击确认");
+
+                  iMessageBox(tips).then(() => {
+                    this.assignVisible = true;
+                  });
               } else {
                 this.assignVisible = true;
               }
@@ -851,14 +855,16 @@ export default {
                 (item) => item.isOperate || item.coverIsSubmit
               );
               if (arr.length) {
-                const arrIndex = arr.map((item) => item.lineIndex);
                 const tips =
-                  arrIndex.toString() +
+                  arr[0].lineIndex +
                   this.language(
                     "LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI",
                     "行零件已表态,linie无法修改"
-                  );
-                iMessage.warn(tips);
+                  )+this.$t("若要继续执行请点击确认");
+
+                iMessageBox(tips).then(() => {
+                  this.assignVisible = true;
+                });
               } else {
                 this.assignVisible = true;
               }
