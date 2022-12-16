@@ -21,11 +21,11 @@
       :tableLoading="loading"
     >
       <!-----------期望目标价--------------------------->
-      <template #targetPrice="scope">
+      <template #expectedShareTargetPrice="scope">
         <iInput
-          :value="scope.row.targetPrice"
+          :value="scope.row.expectedShareTargetPrice"
           maxlength="8"
-          @input="handleInput($event, scope.row, 'targetPrice')"
+          @input="handleInput($event, scope.row, 'expectedShareTargetPrice')"
         />
       </template>
     </tableList>
@@ -79,10 +79,10 @@ export default {
     handleSubmit() {
       if (
         this.tableData.some(
-          (item) => !item.targetPrice || item.targetPrice === ""
+          (item) => !item.expectedShareTargetPrice || item.expectedShareTargetPrice === ""
         )
       ) {
-        iMessage.warn(this.language("目标价不能为空", "目标价不能为空"));
+        iMessage.warn(this.language("期望目标价不能为空", "期望目标价不能为空"));
         return;
       }
       this.loading = true;
