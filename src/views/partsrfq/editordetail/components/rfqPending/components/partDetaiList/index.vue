@@ -79,6 +79,8 @@
           </template>
           <template #partNum="scope">
           {{ scope.row.partNum }} <span v-if="scope.row.isSel" class="sel">SEL</span> </template>
+          <template #carTypeProjectZh="scope">
+          {{ scope.row.carTypeProjectZh || scope.row.carTypeProjectNum }}</template>
         </tableList>
         <iPagination
           v-update
