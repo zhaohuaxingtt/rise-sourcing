@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-15 14:01:18
+ * @LastEditTime: 2022-12-19 11:55:17
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -170,6 +170,16 @@ export function getSelTargetPriceTask(data) {
     data
   })
 }
+
+// 修改分摊量
+export function updateSelTargetPriceReleaseOut(data) {
+  return request({
+    url: '/sel-target-price/update-sel-target-price-releaseOut',
+    method: 'POST',
+    data
+  })
+}
+
 
 // 查询cffce用户
 export function getCFECUserList(data) {

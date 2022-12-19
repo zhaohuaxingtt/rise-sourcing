@@ -51,7 +51,7 @@
 import { iDialog, iMessage, iInput, iButton } from "rise";
 import { SELTargetPriceTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
-import { applySelTargetPrice } from "@/api/SELTargetPrice";
+import { updateSelTargetPriceReleaseOut } from "@/api/SELTargetPrice";
 import { numberProcessor } from "@/utils";
 import filters from '@/utils/filters'
 export default {
@@ -96,13 +96,8 @@ export default {
         return iMessage.warn(this.language("分摊量不能为空", "分摊量不能为空"));
       }
       this.loading = true;
-      applySelTargetPrice({
-        ids: [],
-        taskDTOList: this.tableData.map((item) => {
-          item.status = "";
-          item.purchasingProjectPartId = item.id;
-          return item;
-        }),
+      updateSelTargetPriceReleaseOut({
+        taskDTOList: this.tableData
       })
         .then((res) => {
           if (res?.result) {
