@@ -127,7 +127,7 @@ export function importAeko(data) {
 // 模板下载
 export function templateDowmload(params) {
   return fileRequst({
-    url: '/template/dowmload',
+    url: '/aeko/aeko-project/export-template',
     method: 'GET',
     params,
   })
