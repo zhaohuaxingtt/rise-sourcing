@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-25 15:18:17
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-20 19:03:51
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -44,7 +44,13 @@
           <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
-        <template slot-scope="scope">
+        <template
+          v-if="$scopedSlots[items.props] || $slots[items.props]"
+          v-slot="scope"
+        >
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+        <template v-else slot-scope="scope">
           <!------------------图纸列--------------------------->
           <span class="openLinkText cursor" v-if="items.props === 'tuzhi'" @click="$emit('openAttachmentDialog',scope.row)">{{language('CHAKAN','查看')}}</span>
           <!------------------操作列--------------------------->

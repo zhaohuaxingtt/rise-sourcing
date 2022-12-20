@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-12-13 10:28:53
+ * @LastEditTime: 2022-12-20 20:33:03
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column
             fixed
-            v-else-if="item.props == 'selAPrice' ||item.props == 'cfPartAPrice' || item.props == 'partNo'"
+            v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
             :key="index"
             :label="item.i18n ? $t(item.i18n) : item.label"
             :min-width="item.width"
@@ -52,7 +52,20 @@
             :sortable='"custom"'
           >
             <template slot-scope="scope">
-              <span :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
+              <template v-if="item.props == 'cfPartAPrice'">
+                <!-- 有SEL分摊 -->
+                <el-tooltip  effect='light' v-if='+scope.row.selAPrice'>
+                  <template slot="content">
+                    <div>零件目标价A价：{{ scope.row.cfPartAPrice | thousandsFilter }} RMB</div>
+                    <div>SEL目标价A价：{{scope.row.selAPrice | thousandsFilter}} RMB</div>
+                  </template>
+                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ (Number(scope.row.cfPartAPrice) + Number(scope.row.selAPrice)) | thousandsFilter  }}</span>
+                </el-tooltip>
+                <!-- 无SEL分摊 -->
+                <span v-else :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ scope.row.cfPartAPrice | thousandsFilter  }}</span>
+                <span style="color:red;" v-if='+scope.row.selAPrice'>*</span>
+              </template>
+              <span v-else :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
             </template>
           </el-table-column>
           <!-----------------表格中内容模块------------------------>
@@ -219,8 +232,10 @@
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon,iMessage} from 'rise'
 import moment from 'moment'
+import filter from "@/utils/filters";
 export default{
   components:{icon},
+  mixins:[filter],
   props:{
     height: {type: Number, default:''},
     tableData:{

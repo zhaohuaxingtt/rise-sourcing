@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 11:05:56
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-20 20:31:34
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -470,16 +470,40 @@
             <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
           </template>
           <template #cfTargetAPrice="scope">
-            <div v-if="scope.row.cfApplyType === 'SKDLC'">
-              <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
-              <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
-            </div>
-            <span v-else-if="scope.row.cfApplyType === 'SKD'">{{
-              scope.row.cfTargetSkdAPrice | toThousands(true)
-            }}</span>
-            <span v-else>{{
-              scope.row.cfTargetAPrice | toThousands(true)
-            }}</span>
+            <el-popover
+              placement="top-start"
+              trigger="hover"
+              :disabled="!scope.row.selAPrice"
+            >
+              <div>
+                <div>
+                  {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                    (scope.row.partTargetPrice || "0.00") | toThousands(true)
+                  }}
+                </div>
+                <div>
+                  {{ language("SEL目标价A价", "SEL目标价A价") }}：{{
+                    (scope.row.selAPrice || "0.00") | toThousands(true)
+                  }}
+                </div>
+              </div>
+              <div slot="reference">
+                <p>
+                  <span v-if="scope.row.cfTargetSkdAPrice||scope.row.cfTargetAPrice" style="color: red"
+                    >*</span>
+                  <template v-if="scope.row.cfApplyType === 'SKDLC'">
+                    <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
+                    <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
+                  </template>
+                  <span v-else-if="scope.row.cfApplyType === 'SKD'">{{
+                    scope.row.cfTargetSkdAPrice | toThousands(true)
+                  }}</span>
+                  <span v-else>{{
+                    scope.row.cfTargetAPrice | toThousands(true)
+                  }}</span>
+                </p>
+              </div>
+            </el-popover>
             <!-- <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span> -->
           </template>
           <template #cfTargetBPrice="scope">
