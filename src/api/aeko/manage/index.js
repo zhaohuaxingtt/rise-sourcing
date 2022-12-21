@@ -125,11 +125,10 @@ export function importAeko(data) {
 }
 
 // 模板下载
-export function templateDowmload(params) {
+export function templateDowmload() {
   return fileRequst({
-    url: '/template/dowmload',
-    method: 'GET',
-    params,
+    url: '/aeko/aeko-project/export-template',
+    method: 'POST',
   })
 }
 

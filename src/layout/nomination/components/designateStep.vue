@@ -61,7 +61,7 @@
       <div class="btnList flex-align-center">
         <iButton
           @click="gotoRsMainten"
-          v-if="designateType === 'MEETING'"
+          v-if="designateType === 'MEETING' && showBtn"
           v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE | RS单维护"
           >{{ language("LK_RSWEIHUDAN", "RS单维护") }}</iButton
         >
@@ -343,6 +343,11 @@ export default {
     },
     isSingle() {
       return this.$store.getters.isSingle;
+    },
+    // 是否显示RS维护按钮
+    showBtn(){
+      const rsStatus = this.$route.query.rsStatus
+      return !['FROZEN'].includes(rsStatus)
     },
     // 是否显示下载按钮
     showExport() {
