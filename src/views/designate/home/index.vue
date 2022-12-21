@@ -335,6 +335,7 @@ export default {
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
             businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
+            rsStatus: row.rsStatus || ''
           }
         })
         window.open(routeData.href, '_blank')
