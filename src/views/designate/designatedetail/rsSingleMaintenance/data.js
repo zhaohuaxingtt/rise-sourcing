@@ -18,7 +18,7 @@ export const rsTableTitle = [
   {props:'bprice',name:'B价', key: "BJIA", tooltip: false, width: 100, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
   {props:'investFee',name:'投资费(不含税)', key: "TOUZIFEI_BUHANSHUI", width: 200, tooltip: false, editable: true, required: true, type: 'input', isChange: 'investFeeIsChange'},
   {props:'investFeeIsShared',name:'是否分摊', key: "SHIFOUFENTAN", width: 180, tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'investFeeIsSharedIsChange'},
-  {props:'devFee',name:'开发费(含税)', key: "KAIFAFEI_BUHANSHUI", width: 180, tooltip: false, editable: true, required: true, type: 'input', isChange: 'devFeeIsChange'},
+  {props:'devFee',name:'开发费(不含税)', key: "KAIFAFEI_BUHANSHUI", width: 180, tooltip: false, editable: true, required: true, type: 'input', isChange: 'devFeeIsChange'},
   {props:'devFeeIsShared',name:'是否分摊', key: "SHIFOUFENTAN", width: 180, tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'devFeeIsSharedIsChange'},
   {props:'addFee',name:'认可费', key: "RENKEFEI", tooltip: false, width: 150, editable: true, required: true, type: 'input', isChange: 'addFeeIsChange'},
   {props:'savingFee',name:'估算节约值', key: "GUSUANJIEYUEZHI", tooltip: false, width: 200, editable: true, required: true, type: 'input', isChange: 'savingFeeIsChange'},
