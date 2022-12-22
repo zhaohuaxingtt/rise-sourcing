@@ -245,12 +245,13 @@ export default {
           submitSelTargetPrice({
             taskDTOList:this.selectItems
           }).then(res=>{
+            console.log('res=>',res);
             if(res?.code=='200'){
               iMessage.success(res.desZh)
               this.clearDialog()
               this.$emit('getTableList')
             }else{
-              iMessage.error(res.desZh)
+              iMessage.error(res?.desZh || '提交失败')
             }
           })
         }else{  // 审批页面
