@@ -124,21 +124,45 @@ export default {
       })
     },
     gotoRs() {
-      let  desinateId =this.$route.query.desinateId
-      let  designateType =this.$route.query.designateType
-      let  partProjType =this.$route.query.partProjType
-      const openPageRs = this.$router.resolve({
-        path:'/rspreview/view',
-        query:{
-          route: 'force',
-          isPreview: 1,
-          desinateId,
-          designateType,
-          partProjType,
-          businessKey:partProjType
+      if(this.$route.query.partProjType == "AEKO零件"){
+        let transmitObj = {
+            option: 4,
+            aekoApprovalDetails: {
+              linieId: this.detailData.linieId,
+              aekoNum: this.detailData.aekoCode,
+              requirementAekoId: this.detailData.requirementAekoId,
+              aekoManageId: this.detailData.aekoManageId,
+              workFlowDTOS:[]
+            }
         }
-      })
-      window.open(openPageRs.href,'_blank')
+        let routeData = this.$router.resolve({
+          path: `/aeko/AEKOApprovalDetails`,
+          query: {
+            from:'aekodetail',
+            key:"rsAeko",
+            requirementAekoId: this.detailData.requirementAekoId,
+            aekoManageId: this.detailData.aekoManageId,
+            transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+          }
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        let  desinateId =this.$route.query.desinateId
+        let  designateType =this.$route.query.designateType
+        let  partProjType =this.$route.query.partProjType
+        const openPageRs = this.$router.resolve({
+          path:'/rspreview/view',
+          query:{
+            route: 'force',
+            isPreview: 1,
+            desinateId,
+            designateType,
+            partProjType,
+            businessKey:partProjType
+          }
+        })
+        window.open(openPageRs.href,'_blank')
+      }
     },
        // 单独处理下年降或年降计划
     resetLtcData (row,type) {
