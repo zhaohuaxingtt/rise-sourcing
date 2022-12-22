@@ -1900,7 +1900,7 @@
     BJIA: 'B价',
     TOUZIFEI_BUHANSHUI: '投资费(不含税)',
     SHIFOUFENTAN: '是否分摊',
-    KAIFAFEI_BUHANSHUI: '开发费(含税)',
+    KAIFAFEI_BUHANSHUI: '开发费(不含税)',
     NIANJIANGKAISHI: '年降开始',
     nominationSuggestion_ShuaXinShiJian: '刷新时间',
     nominationSupplier_Reset: '重置',
