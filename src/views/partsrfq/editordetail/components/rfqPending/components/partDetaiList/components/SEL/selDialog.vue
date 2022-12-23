@@ -22,13 +22,7 @@
     >
       <!-----------期望目标价--------------------------->
       <template #expectedShareTargetPrice="scope">
-        <thousandsFilterInput
-          class="thousandsFilterInput"
-          :numProcessor="0"
-          :inputValue="scope.row['expectedShareTargetPrice']"
-          style="width: 100px"
-          @handleInput="handleInput($event,scope.row,'expectedShareTargetPrice')"
-        />
+        <iInput :value="scope.row.expectedShareTargetPrice" @input="handleInput($event, scope.row, 'expectedShareTargetPrice')" />
       </template>
     </tableList>
   </iDialog>
@@ -38,15 +32,15 @@
 import { iDialog, iMessage, iText, iInput, iButton } from "rise";
 import { selDialogTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
-import thousandsFilterInput from "rise/web/aeko/quotationdetail/components/thousandsFilterInput";
 import { applySelTargetPrice } from "@/api/SELTargetPrice";
+import { numberProcessor } from '@/utils'
 export default {
   props: {
     todo: { type: Boolean },
     visible: { type: Boolean },
     data: { type: Array, default: () => [] },
   },
-  components: { iDialog, iText, tableList, iInput, iButton, thousandsFilterInput },
+  components: { iDialog, iText, tableList, iInput, iButton },
   data() {
     return {
       // isEdit: false,
@@ -73,23 +67,18 @@ export default {
   },
   methods: {
     handleInput(value, row, name) {
-        this.$set(row, name, value); // 填充数据
+        this.$set(row, name, numberProcessor(value,2)); // 填充数据
     },
-    /**
-     * @Description: 申请目标价提交
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */
+    // 提交
     handleSubmit() {
-      if (
-        this.tableData.some(
-          (item) => !item.expectedShareTargetPrice || item.expectedShareTargetPrice === ""
-        )
-      ) {
-        iMessage.warn(this.language("期望目标价不能为空", "期望目标价不能为空"));
-        return;
-      }
+      // if (
+      //   this.tableData.some(
+      //     (item) => !item.expectedShareTargetPrice || item.expectedShareTargetPrice === ""
+      //   )
+      // ) {
+      //   iMessage.warn(this.language("期望目标价不能为空", "期望目标价不能为空"));
+      //   return;
+      // }
       this.loading = true;
       applySelTargetPrice({
         ids: [],
@@ -115,19 +104,6 @@ export default {
           this.loading = false;
         });
     },
-    /**
-     * @Description: 输入限制
-     * @Author: Luoshuang
-     * @param {*} value
-     * @param {*} row
-     * @param {*} name
-     * @return {*}
-     */
-    handleInput(value, row, name) {
-      if (/^\d*$/.test(value)) {
-        this.$set(row, name, value);
-      }
-    },
   },
 };
 </script>
@@ -144,9 +120,6 @@ export default {
   }
   .table {
     padding-bottom: 20px;
-    .thousandsFilterInput {
-      margin: 0 auto;
-    }
   }
   .applyMemo {
     display: flex;

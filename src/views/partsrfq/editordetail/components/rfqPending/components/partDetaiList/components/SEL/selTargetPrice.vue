@@ -1,12 +1,12 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-16 18:00:44
+ * @LastEditTime: 2022-12-23 17:19:11
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
 <template>
-  <iCard collapse :title="language('SEL目标价', 'SEL目标价')" :defalutCollVal="status == '已完成' || !todo">
+  <iCard v-if="hasData" collapse :title="language('SEL目标价', 'SEL目标价')" :defalutCollVal="status == '已完成' || !todo">
     <template slot="subInfo">
       <div
         v-if="todo"
@@ -104,6 +104,7 @@ export default {
   },
   data() {
     return {
+      hasData:false,
       iconName,
       visible: false,
       changeVisible:false,
@@ -127,8 +128,10 @@ export default {
     }
   },
   created() {
-    this.selectDictByKeys()
-    this.getTableList();
+    if(!this.todo){
+      this.selectDictByKeys()
+      this.getTableList();
+    }
   },
   methods: {
     selectDictByKeys() {
@@ -189,6 +192,7 @@ export default {
     },
     async getTableList() {
       const id = this.$route.query.id;
+      this.hasData = false
       if (id) {
         this.tableLoading = true;
         try {
@@ -197,10 +201,10 @@ export default {
             current: this.page.currPage,
             size: this.page.pageSize,
           });
-          console.log(res);
           this.tableListData = Array.isArray(res.data) ? res.data : [];
           this.page.totalCount = res.total || 0;
           this.tableLoading = false;
+          if(res.total) this.hasData = true
         } finally {
           this.tableLoading = false;
         }

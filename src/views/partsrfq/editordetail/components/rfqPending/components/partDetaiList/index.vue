@@ -294,14 +294,13 @@ export default {
     return {
       componentArr:[
           {
-            label:'SEL目标价',
-            component:'selTargetPrice',
-            statusCode: 'selPriceStatusDesc'
-          },
-          {
             label: '零件目标价',
             component: 'partsTargetPrice',
             statusCode: 'cfPriceStatusDesc'
+          },{
+            label:'SEL目标价',
+            component:'selTargetPrice',
+            statusCode: 'selPriceStatusDesc',
           },{
             label: '模具目标价',
             component: 'moldTargetPrice',
@@ -318,7 +317,6 @@ export default {
           },
       ],
       iconName,
-      hidens: true,
       partsDialogVisible: false,
       moduleDialogVisible: false,
       selDialogVisible:false,
