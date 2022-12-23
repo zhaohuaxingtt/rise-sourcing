@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-06 12:18:22
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-02 15:44:12
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -190,5 +190,14 @@ export function updateRsMemo(data) {
     url: `/rs/updateRsMemo`,
     method: 'POST',
     data
+  })
+}
+
+// 芯片-M签字单
+export function getApproveSignChipDetail(params) {
+  return requst({
+    url: `/mtz/approveSign/chipDetail`,
+    method: 'GET',
+    params
   })
 }
