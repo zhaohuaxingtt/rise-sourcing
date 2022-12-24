@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 18:28:10
- * @LastEditTime: 2022-12-01 14:06:35
+ * @LastEditTime: 2022-12-24 12:47:24
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: MTZ定点申请单详情
  * @FilePath: \front-web\src\views\designate\home\signSheet\mtzDetails\components\detail.vue
@@ -26,15 +26,15 @@
           </el-form-item>
         </el-form>
         <div class="searchButton">
-          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_SUBMIT|MTZ签字单确认" @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
-          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_RESET|MTZ签字单重置"  @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_SUBMIT|芯片签字单确认" @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_RESET|芯片签字单重置"  @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
         </div>
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="contentBox" >
         <div class="tableOptionBox">
           <p class="tableTitle">{{language('DINGDIANSHENQINGLIEBIAO', '定点申请列表')}}</p>
-          <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_CHOOSE|MTZ签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
+          <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_CHOOSE|芯片签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
         </div>
         <tableList
           ref="addTable"
@@ -44,7 +44,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @click="handleSubmitChoose"
-          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_TABLE|MTZ签字表格" 
+          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_TABLE|芯片签字表格" 
           >
           <template #appType="scope">
             {{scope.row.appType=='1'?$t('定点'):$t('变更')}}
