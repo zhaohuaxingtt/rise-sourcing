@@ -1,6 +1,6 @@
 <template>
   <iPage>
-    <headerNav />
+    <headerNav :config="config" />
     <search
       @sure="sure"
       @reset="reset"
@@ -121,6 +121,10 @@ export default {
   },
   data() {
     return {
+      config:{
+            module_obj_ae: '', 
+            menuName_obj_ae: 'SEL-MANAGER-103'
+          },
       options: {},
       searchForm: {},
       searchFormData,
