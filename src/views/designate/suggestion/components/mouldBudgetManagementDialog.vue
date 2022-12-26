@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-07-23 10:41:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-26 22:05:10
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
 -->
@@ -251,6 +251,9 @@ export default {
     padding-bottom: $bottom !important;
   }
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .title {
     font-size: 18px;
     font-weight: bold;
@@ -270,11 +273,11 @@ export default {
 
   ::v-deep .el-dialog {
     width: 1745px !important;
-    position: absolute;
+    // position: absolute;
     margin: 0 !important;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
     overflow-x: hidden;
 
     .body {

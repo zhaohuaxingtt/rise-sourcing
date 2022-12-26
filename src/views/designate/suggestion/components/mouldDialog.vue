@@ -124,7 +124,7 @@ export default {
 
   ::v-deep .el-dialog {
     width: 1745px!important;
-    position: absolute;
+    // position: absolute;
     margin: 0!important;
     // top: 50%;
     // left: 50%;
