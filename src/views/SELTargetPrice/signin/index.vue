@@ -122,9 +122,9 @@ export default {
   data() {
     return {
       config:{
-            module_obj_ae: '', 
-            menuName_obj_ae: 'SEL-财务管理-SEL目标价工作台-签收'
-          },
+        module_obj_ae: '', 
+        menuName_obj_ae: 'SEL-财务管理-SEL目标价工作台-签收'
+      },
       options: {},
       searchForm: {},
       searchFormData,
