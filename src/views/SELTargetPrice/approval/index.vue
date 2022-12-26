@@ -158,7 +158,7 @@ export default {
     return {
       config:{
             module_obj_ae: '', 
-            menuName_obj_ae: 'SEL-MANAGER-105'
+            menuName_obj_ae: 'SEL-财务管理-SEL目标价工作台-审批'
           },
       options: {},
       searchForm: {},

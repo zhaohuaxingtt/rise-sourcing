@@ -204,9 +204,9 @@ export default {
   data() {
     return {
       config:{
-            module_obj_ae: '', 
-            menuName_obj_ae: 'SEL-MANAGER-104'
-          },
+        module_obj_ae: '', 
+        menuName_obj_ae: 'SEL-财务管理-SEL目标价工作台-维护'
+      },
       options: {},
       searchForm: {},
       searchFormData,
