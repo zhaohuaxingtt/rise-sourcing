@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: YoHo
+ * @LastEditors: 余继鹏 917955345@qq.com
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -25,6 +25,11 @@
               v-if="getisRfqStatus && baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
               @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonitor记录">
               {{ language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录') }}
+            </iButton>
+            <iButton
+              @click="applySEL"
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYSELTARGETPRICE|申请SEL目标价">
+              {{ language("申请SEL目标价", "申请SEL目标价") }}
             </iButton>
             <iButton
               @click="openPartsDialog"
@@ -72,6 +77,10 @@
               >{{ scope.row.fsnrGsnrNum }}</span
             >
           </template>
+          <template #partNum="scope">
+          {{ scope.row.partNum }} <span v-if="scope.row.isSel" class="sel">SEL</span> </template>
+          <template #carTypeProjectZh="scope">
+          {{ scope.row.carTypeProjectZh || scope.row.carTypeProjectNum }}</template>
         </tableList>
         <iPagination
           v-update
@@ -157,6 +166,8 @@
     />
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
+    <!-- 申请SEL目标价 -->
+    <selDialog :todo="todo" :visible.sync="selDialogVisible" @update='updateData' :data="handleSelectArr" />
     <!-- 组件componentList -->
     <template v-for="(item, index) in componentList">
       <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" />
@@ -186,6 +197,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import applyPrice from "./components/applyPrice";
 import partsTable from "./components/partsTable";
 import moldTargetPrice from "./components/moldTargetPrice";
+import selDialog from "./components/SEL/selDialog";
 import partsTargetPrice from "./components/partsTargetPrice";
 import store from "@/store";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
@@ -197,6 +209,7 @@ import moldBudgetApplication from "../moldBudgetApplication";
 import supplierScore from "../supplierScore";
 
 import moduleDialog from "./components/moduleDialog";
+import selTargetPrice from "./components/SEL/selTargetPrice";
 import partsDialog from "./components/partsDialog";
 import technicalSeminar from "../technicalSeminar";
 import { iconName, partDetaiListTitle as tableTitle } from "./data";
@@ -221,7 +234,9 @@ export default {
     iDialog,
     moduleDialog,
     partsDialog,
-    technicalSeminar
+    technicalSeminar,
+    selTargetPrice,
+    selDialog
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -264,7 +279,7 @@ export default {
     },
     componentList() {
       return this.componentArr.map(i=>{
-        i.status = this.$store.state.rfq.todoObj[i.statusCode].status
+        i.status = this.$store.state.rfq.todoObj[i.statusCode]?.status || '已完成'
         i.order = 0
         if(this.todo){
           if(i.status=='未申请') i.order = 1
@@ -283,6 +298,10 @@ export default {
             component: 'partsTargetPrice',
             statusCode: 'cfPriceStatusDesc'
           },{
+            label:'SEL目标价',
+            component:'selTargetPrice',
+            statusCode: 'selPriceStatusDesc',
+          },{
             label: '模具目标价',
             component: 'moldTargetPrice',
             statusCode: 'mouldPriceStatusDesc'
@@ -298,9 +317,9 @@ export default {
           },
       ],
       iconName,
-      hidens: true,
       partsDialogVisible: false,
       moduleDialogVisible: false,
+      selDialogVisible:false,
       todo: false, // 是否待办
       addvisible: false,
       tableTitle,
@@ -322,6 +341,29 @@ export default {
     };
   },
   methods: {
+    // 申请SEL目标价
+    applySEL(){
+      if (this.handleSelectArr.length == 0) {
+        return iMessage.warn(
+          this.language(
+            "抱歉，您当前还未选择需要申请SEL目标价的采购项目！",
+            "抱歉，您当前还未选择需要申请SEL目标价的采购项目！"
+          )
+        );
+      }
+      let msg = ''
+      this.handleSelectArr.forEach(item=>{
+        if(['已冻结','已定点'].includes(item.statusDesc)){
+          msg+=item.fsnrGsnrNum
+        }
+      })
+      if(msg){
+        return iMessage.error(
+          msg + '采购项目状态为已冻结/已定点，不可申请SEL目标价'
+        );
+      }
+      this.selDialogVisible = true
+    },
     openPartsDialog(){
       if (this.handleSelectArr.length == 0) {
         iMessage.warn(
@@ -632,5 +674,12 @@ export default {
       }
     }
   }
+}
+.sel{
+  color: #3986e5;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 2px 10px;
+    font-weight: 600;
 }
 </style>
