@@ -784,7 +784,7 @@ export default {
 				getModelProtitesPullDown(),
 				getCartypePulldown(),
 				proDeptPullDown(),
-				liniePullDownByDept({ deptId: '' }),
+				liniePullDownByDept({ deptId: [""] }),
 			])
 				.then((res) => {
 					const result0 =
