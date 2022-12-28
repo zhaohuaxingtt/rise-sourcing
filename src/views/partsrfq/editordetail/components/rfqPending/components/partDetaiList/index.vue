@@ -677,9 +677,9 @@ export default {
 }
 .sel{
   color: #3986e5;
-    border: 1px solid;
-    border-radius: 10px;
-    padding: 2px 10px;
-    font-weight: 600;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 0 5px;
+  font-weight: 600;
 }
 </style>
