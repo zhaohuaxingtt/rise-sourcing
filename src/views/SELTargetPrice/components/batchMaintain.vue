@@ -45,7 +45,6 @@
           class="thousandsFilterInput"
           :numProcessor="0"
           :inputValue="scope.row['shareTargetPrice']"
-          style="width: 100px"
           @handleInput="handleInput($event,scope.row,'shareTargetPrice')"
         />
       </template>
@@ -55,7 +54,6 @@
           class="thousandsFilterInput"
           :numProcessor="0"
           :inputValue="scope.row['targetPrice']"
-          style="width: 100px"
           @handleInput="handleInput($event,scope.row,'targetPrice')"
         />
       </template>

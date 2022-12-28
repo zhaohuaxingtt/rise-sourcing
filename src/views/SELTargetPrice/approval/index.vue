@@ -8,10 +8,21 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <iCard class="margin-top20">
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight"></span>
-        <div class="floatright">
+    
+    <CardTableList
+      selection
+      indexKey
+      permissionKey="SEL_APPROVAL"
+      :tableData="tableData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @openApprovalDialog="openApprovalDialog"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+      @gotoRFQ="gotoRFQ"
+      :options="options"
+    >
+      <template v-slot:header-btn>
           <iButton @click="openMaintain"
             v-permission.auto="SELTARGETPRICE_APPROVAL_WEIHU |SEL目标价管理-目标价审批-维护">
             {{ language("WEIHU", "维护") }}
@@ -26,50 +37,21 @@
             v-permission.auto="SELTARGETPRICE_APPROVAL_DAOCHU |SEL目标价管理-目标价审批-导出">{{
             language("DAOCHU", "导出")
           }}</iButton>
-        </div>
-      </div>
-      <tableList
-        :activeItems="'rfqId'"
-        selection
-        indexKey
-        :tableData="tableData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
-        @openPage="openPage"
-        @openApprovalDialog="openApprovalDialog"
-      >
-        <template #businessType="scope">
-          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
-        </template>
-        <template #status="scope">
-          <span>{{ getStatus(scope.row.status) }}</span>
-        </template>
-      <!-- 目标价·分摊 -->
-      <template #shareTargetPrice="scope">
-        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
       </template>
-      <!-- 目标价·一次性 -->
-      <template #targetPrice="scope">
-        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+      <template v-slot:table-page>
+        <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page="page.currPage"
+          :total="page.totalCount"
+        />
       </template>
-      <!-- 预计A价分摊 -->
-      <template #estimateShareAPrice="scope">
-        <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
-      </template>
-      </tableList>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
-    </iCard>
+    </CardTableList>
     <!-- 审批记录弹窗 -->
     <approvalRecordDialog
       :dialogVisible="approvalRecordDialogVisible"
@@ -120,6 +102,7 @@ import {
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import CardTableList from "../components/CardtableList";
 import batchMaintain from "../components/batchMaintain.vue";
 import recallBackDialog from "../components/recallBack.vue";
 
@@ -153,6 +136,7 @@ export default {
     batchMaintain,
     search,
     recallBackDialog,
+    CardTableList
   },
   data() {
     return {
@@ -350,10 +334,22 @@ export default {
           this.tableLoading = false;
         });
     },
+    // 跳转FS
     openPage(row) {
       const router = this.$router.resolve({
-        path: "/targetpriceandscore/modeltargetprice/detail",
-        query: { ...row, applyType: "3" },
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
+        query: {
+          projectId: row.purchasingProjectPartId,
+          businessKey: row.partProjectType,
+        },
+      });
+      window.open(router.href, "_blank");
+    },
+    // 跳转RFQ
+    gotoRFQ(row) {
+      const router = this.$router.resolve({
+        path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
+        query: { id: row.rfqCode },
       });
       window.open(router.href, "_blank");
     },

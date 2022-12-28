@@ -8,65 +8,57 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <iCard class="margin-top20">
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight"></span>
-        <div class="floatright">
-          <iButton @click="openNoInvest"
-          v-permission.auto="SELTARGETPRICE_SIGNIN_WUMUBIAOJIA|SEL目标价管理-目标价签收-无目标价">{{
-            language("无目标价", "无目标价")
-          }}</iButton>
-          <iButton @click="openAssignDialog" :loading="assignDialogVisible"
-          v-permission.auto="SELTARGETPRICE_SIGNIN_ZHIPAI|SEL目标价管理-目标价签收-指派">{{
-            language("LK_ZHIPAI", "指派")
-          }}</iButton>
-          <iButton @click="handleSignIn" :loading="signLoading"
-          v-permission.auto="SELTARGETPRICE_SIGNIN_QIANSHOU|SEL目标价管理-目标价签收-签收">{{
-            language("QIANSHOU", "签收")
-          }}</iButton>
-        </div>
-      </div>
-      <tableList
-        selection
-        indexKey
-        :tableData="tableData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
-      >
-        <template #fsNum="scope">
-          <span class="link-underline cursor" @click="gotoDetail(scope.row)">{{
-            scope.row.fsNum
-          }}</span>
-        </template>
-
-        <template #businessType="scope">
-          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
-        </template>
-        <template #status="scope">
-          <span>{{ getStatus(scope.row.status) }}</span>
-        </template>
-        <!-- 期望目标价-分摊 -->
-        <template #expectedShareTargetPrice="scope">
-          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
-        </template>
-        <!-- 期望目标价-一次性 -->
-        <template #expectedDisposableTargetPrice="scope">
-          <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
-        </template>
-      </tableList>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
-    </iCard>
+    <CardTableList
+      selection
+      indexKey
+      permissionKey="SEL_SIGN"
+      :tableData="tableData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+      :options="options"
+    >
+      <template v-slot:header-btn>
+        <iButton
+          @click="openNoInvest"
+          v-permission.auto="
+            SELTARGETPRICE_SIGNIN_WUMUBIAOJIA |
+              (SEL目标价管理 - 目标价签收 - 无目标价)
+          "
+          >{{ language("无目标价", "无目标价") }}</iButton
+        >
+        <iButton
+          @click="openAssignDialog"
+          :loading="assignDialogVisible"
+          v-permission.auto="
+            SELTARGETPRICE_SIGNIN_ZHIPAI | (SEL目标价管理 - 目标价签收 - 指派)
+          "
+          >{{ language("LK_ZHIPAI", "指派") }}</iButton
+        >
+        <iButton
+          @click="handleSignIn"
+          :loading="signLoading"
+          v-permission.auto="
+            SELTARGETPRICE_SIGNIN_QIANSHOU | (SEL目标价管理 - 目标价签收 - 签收)
+          "
+          >{{ language("QIANSHOU", "签收") }}</iButton
+        >
+      </template>
+      <template v-slot:table-page>
+        <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page="page.currPage"
+          :total="page.totalCount"
+        />
+      </template>
+    </CardTableList>
     <!-- 指派弹窗 -->
     <assignDialog
       ref="assign"
@@ -87,15 +79,10 @@
 </template>
 
 <script>
-import {
-  iPage,
-  iCard,
-  iPagination,
-  iButton,
-  iMessage,
-} from "rise";
+import { iPage, iCard, iPagination, iButton, iMessage } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import CardTableList from "../components/CardtableList";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
@@ -105,9 +92,8 @@ import moment from "moment";
 import { selCfCESearchPage, signSelTargetPrice } from "@/api/SELTargetPrice";
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
-import filters from '@/utils/filters'
 export default {
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins],
   components: {
     iPage,
     headerNav,
@@ -118,12 +104,13 @@ export default {
     assignDialog,
     noInvestConfirmDialog,
     search,
+    CardTableList,
   },
   data() {
     return {
-      config:{
-        module_obj_ae: '', 
-        menuName_obj_ae: 'SEL-财务管理-SEL目标价工作台-签收'
+      config: {
+        module_obj_ae: "",
+        menuName_obj_ae: "SEL-财务管理-SEL目标价工作台-签收",
       },
       options: {},
       searchForm: {},
@@ -183,17 +170,18 @@ export default {
         if (res.data) {
           this.$set(this.options, "CAR_TYPE_PRO", res.data.CAR_TYPE_PRO || []);
           this.$set(this.options, "CF_CONTROL", res.data.CF_CONTROL || []);
-          this.options['CAR_TYPE_PRO'].forEach(item=>{
-            item.code = item.id
-          })
+          this.options["CAR_TYPE_PRO"].forEach((item) => {
+            item.code = item.id;
+          });
         }
       });
     },
 
     getStatus(status) {
       return (
-        this.options.sel_target_price_status?.find((item) => item.code == status)
-          ?.name || status
+        this.options.sel_target_price_status?.find(
+          (item) => item.code == status
+        )?.name || status
       );
     },
     getBusinessDesc(type) {
@@ -232,7 +220,7 @@ export default {
       this.getTableList();
     },
     // 跳转FS
-    gotoDetail(row) {
+    openPage(row) {
       const router = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
@@ -279,14 +267,10 @@ export default {
         {
           ...this.searchForm,
           applyDateStart: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[0]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           applyDateEnd: this.searchForm.applyDate
-            ? moment(this.searchForm.applyDate[1]).format(
-                "YYYY-MM-DD HH:mm:ss"
-              )
+            ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
             : null,
           pageType: 1,
           current: this.page.currPage,

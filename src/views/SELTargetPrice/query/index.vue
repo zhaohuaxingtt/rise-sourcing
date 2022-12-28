@@ -8,68 +8,42 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <iCard class="margin-top20">
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight"></span>
-        <div class="floatright">
-          <iButton
-            @click="handleExport"
-            :loading="exportLoading"
-            v-permission.auto="
-              SELTARGETPRICE_QUERY_DAOCHU | (SEL目标价管理 - 目标价查询 - 导出)
-            "
-            >{{ language("DAOCHU", "导出") }}</iButton
-          >
-        </div>
-      </div>
-      <template v-slot:header-control>
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+    <CardTableList
+      selection
+      indexKey
+      permissionKey="SEL_QUERY"
+      :tableData="tableData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
+      @openApprovalDialog="openApprovalDialog"
+      @openPage="openPage"
+      :options="options"
+    >
+      <template v-slot:header-btn>
+        <iButton
+          @click="handleExport"
+          :loading="exportLoading"
+          v-permission.auto="
+            SELTARGETPRICE_QUERY_DAOCHU | (SEL目标价管理 - 目标价查询 - 导出)
+          "
+          >{{ language("DAOCHU", "导出") }}</iButton
+        >
       </template>
-      <tableList
-        selection
-        indexKey
-        :tableData="tableData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
-        @openApprovalDialog="openApprovalDialog"
-      >
-        <template #fsNum="scope">
-          <span class="link-underline cursor" @click="openPage(scope.row)">{{
-            scope.row.fsNum
-          }}</span>
-        </template>
-        <template #businessType="scope">
-          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
-        </template>
-        <template #status="scope">
-          <span>{{ getStatus(scope.row.status) }}</span>
-        </template>
-        
-        <!-- 目标价-分摊 -->
-        <template #shareTargetPrice="scope">
-          <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
-        </template>
-        <!-- 预计A价分摊 -->
-        <template #estimateShareAPrice="scope">
-          <span>{{ scope.row.estimateShareAPrice | thousandsFilter(2)}}</span>
-        </template>
-      </tableList>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
-    </iCard>
+      <template v-slot:table-page>
+        <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page="page.currPage"
+          :total="page.totalCount"
+        />
+      </template>
+    </CardTableList>
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -88,6 +62,7 @@ import headerNav from "../components/headerNav";
 import { tableTitle, searchFormData } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "../components/tableList";
+import CardTableList from "../components/CardtableList";
 import approvalRecordDialog from "../maintenance/components/approvalRecord";
 import {
   selCfCESearchAllPage,
@@ -97,10 +72,8 @@ import {
 import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
-import filters from '@/utils/filters'
-import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins],
   components: {
     iPage,
     headerNav,
@@ -110,7 +83,7 @@ export default {
     iButton,
     approvalRecordDialog,
     search,
-    buttonTableSetting
+    CardTableList,
   },
   data() {
     return {
@@ -177,8 +150,9 @@ export default {
     },
     getStatus(status) {
       return (
-        this.options.sel_target_price_status?.find((item) => item.code == status)
-          ?.name || status
+        this.options.sel_target_price_status?.find(
+          (item) => item.code == status
+        )?.name || status
       );
     },
     getBusinessDesc(code) {

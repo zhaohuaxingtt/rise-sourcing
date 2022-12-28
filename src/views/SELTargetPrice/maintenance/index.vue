@@ -8,10 +8,21 @@
       :searchForm="searchForm"
       :options="options"
     />
-    <iCard class="margin-top20">
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight"></span>
-        <div class="floatright">
+    
+    <CardTableList
+      selection
+      indexKey
+      permissionKey="SEL_MAINTENANCE"
+      :tableData="tableData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @openApprovalDialog="openApprovalDialog"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+      @gotoRFQ="gotoRFQ"
+      :options="options"
+    >
+      <template v-slot:header-btn>
           <iButton
             @click="openNoInvest"
             :loading="noInvestLoading"
@@ -66,47 +77,21 @@
             "
             >{{ language("维护", "维护") }}</iButton
           >
-        </div>
-      </div>
-      <tableList
-        ref="tableList"
-        :activeItems="'rfqId'"
-        selection
-        indexKey
-        :tableData="tableData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
-        @openPage="openPage"
-        @openAttachmentDialog="openAttachmentDialog"
-        @openApprovalDialog="openApprovalDialog"
-      >
-        <template #businessType="scope">
-          <span>{{ getBusinessDesc(scope.row.businessType) }}</span>
-        </template>
-        <template #status="scope">
-          <span>{{ getStatus(scope.row.status) }}</span>
-        </template>
-        <!-- 期望目标价·分摊 -->
-        <template #expectedShareTargetPrice="scope">
-          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
-        </template>
-      </tableList>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
-    </iCard>
+      </template>
+      <template v-slot:table-page>
+        <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page="page.currPage"
+          :total="page.totalCount"
+        />
+      </template>
+    </CardTableList>
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -162,6 +147,7 @@ import {
 } from "rise";
 import headerNav from "../components/headerNav";
 import search from "../components/search.vue";
+import CardTableList from "../components/CardtableList";
 import batchMaintain from "../components/batchMaintain.vue";
 import noInvestConfirmDialog from "../components/noInvestConfirm";
 import { tableTitle, searchFormData } from "./data";
@@ -200,6 +186,7 @@ export default {
     iMultiLineInput,
     batchMaintain,
     search,
+    CardTableList
   },
   data() {
     return {
@@ -377,10 +364,22 @@ export default {
       this.selectItems = val;
       this.maintainTable = val;
     },
+    // 跳转FS
     openPage(row) {
       const router = this.$router.resolve({
-        path: "/targetpriceandscore/modeltargetprice/detail",
-        query: { ...row, applyType: "2" },
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
+        query: {
+          projectId: row.purchasingProjectPartId,
+          businessKey: row.partProjectType,
+        },
+      });
+      window.open(router.href, "_blank");
+    },
+    // 跳转RFQ
+    gotoRFQ(row) {
+      const router = this.$router.resolve({
+        path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
+        query: { id: row.rfqCode },
       });
       window.open(router.href, "_blank");
     },

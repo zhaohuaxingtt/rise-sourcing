@@ -2,27 +2,27 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-27 20:43:08
+ * @LastEditTime: 2022-12-28 19:04:05
  * @FilePath: \front-web\src\views\SELTargetPrice\query\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 export const tableTitle = [
-  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "FSGSSPNO", tooltip: true, width: 145, sortable: true },
-  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, width: 120, sortable: true },
+  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "FSGSSPNO", tooltip: true, minWidth: 145, sortable: true },
+  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120, sortable: true },
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 140, sortable: true },
-  { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120, sortable: true },
-  { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 110, sortable: true },
-  { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, width: 90, sortable: true },
-  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, width: 110, sortable: true },
-  { props: 'status', name: '状态', key: "ZHUANGTAI", tooltip: true, width: 80, sortable: true },
-  { props: 'buyerName', name: '询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 130, sortable: true },
-  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, width: 90, sortable: true },
-  { props: 'cfUserName', name: 'CF', key: "CF", tooltip: true, width: 80, sortable: true },
-  { props: 'shenpi', name: '审批记录', key: "SHENPIJILU", tooltip: true, width: 110, sortable: true },
-  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, width: 130, sortable: true },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, width: 110, sortable: true },
-  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, width: 130, sortable: true },
-  { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, width: 180, sortable: true },
+  { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120, sortable: true },
+  { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 110, sortable: true },
+  { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 90, sortable: true },
+  { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 110, sortable: true },
+  { props: 'status', name: '状态', key: "ZHUANGTAI", tooltip: true, minWidth: 80, sortable: true },
+  { props: 'buyerName', name: '询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, minWidth: 130, sortable: true },
+  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, minWidth: 90, sortable: true },
+  { props: 'cfUserName', name: 'CF', key: "CF", tooltip: true, minWidth: 80, sortable: true },
+  { props: 'shenpi', name: '审批记录', key: "SHENPIJILU", tooltip: true, minWidth: 110, sortable: true },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 130, sortable: true },
+  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, minWidth: 110, sortable: true },
+  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, minWidth: 130, sortable: true },
+  { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, minWidth: 180, sortable: true },
 ]
 
 export const searchFormData = [
