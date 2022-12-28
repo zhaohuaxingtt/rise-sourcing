@@ -58,6 +58,7 @@ import {iDialog, iInput, iMessage, iButton, iPagination } from 'rise'
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {tableApplyTitle as tableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
+import { numberProcessor } from "@/utils";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {
   patchMouldBudgetSubmit,
@@ -158,7 +159,10 @@ export default {
     },
     confirm() {
       this.$emit('confirm', '')
-    }
+    },
+    handleInput(value, row) {
+      this.$set(row, "budget", numberProcessor(value, 2));
+    },
   }
 }
 </script>
