@@ -22,6 +22,9 @@
           >
         </div>
       </div>
+      <template v-slot:header-control>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+      </template>
       <tableList
         selection
         indexKey
@@ -95,6 +98,7 @@ import { dictkey } from "@/api/partsprocure/editordetail";
 import { procureFactorySelectVo, selectDictByKeys } from "@/api/dictionary";
 import moment from "moment";
 import filters from '@/utils/filters'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -106,6 +110,7 @@ export default {
     iButton,
     approvalRecordDialog,
     search,
+    buttonTableSetting
   },
   data() {
     return {
