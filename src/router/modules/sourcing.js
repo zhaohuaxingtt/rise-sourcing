@@ -322,7 +322,8 @@ export default [
                     ]
                 },
             component: () =>
-                import ("@/views/partsrfq/assistant"),
+                // import ("@/views/partsrfq/assistant"),
+                import ("@/views/partsrfq/editordetail"),
             },
             {
             path: "partsrfq/editordetail/partScoring", //零件评分
