@@ -415,19 +415,30 @@ export default {
     changeEdit(isEdit) {
       this.isEdit = isEdit;
     },
-    async handleExport() {
+    // async handleExport() {
+    //   const params = {
+    //     ...this.searchForm,
+    //     pageType: 3,
+    //     applyDateStart: this.searchForm.applyDate
+    //       ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
+    //       : null,
+    //     applyDateEnd: this.searchForm.applyDate
+    //       ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
+    //       : null,
+    //     current: this.page.currPage,
+    //     size: this.page.pageSize,
+    //   };
+    //   exportSelCfceMaintainedApproval(params).then((res) => {
+    //     console.log(res);
+    //   });
+    // },
+    
+    // 导出
+    handleExport() {
       this.exportLoading = true;
-      const params = {
-        ...this.searchForm,
+      let params = {
         pageType: 3,
-        applyDateStart: this.searchForm.applyDate
-          ? moment(this.searchForm.applyDate[0]).format("YYYY-MM-DD HH:mm:ss")
-          : null,
-        applyDateEnd: this.searchForm.applyDate
-          ? moment(this.searchForm.applyDate[1]).format("YYYY-MM-DD HH:mm:ss")
-          : null,
-        current: this.page.currPage,
-        size: this.page.pageSize,
+        excelList: this.selectItems,
       };
       exportSelCfceMaintainedApproval(params).then((res) => {
         console.log(res);
