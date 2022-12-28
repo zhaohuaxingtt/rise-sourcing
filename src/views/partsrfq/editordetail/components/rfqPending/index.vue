@@ -8,7 +8,7 @@
   <iTabsList type="card" @tab-click="handleTabClick" v-model="activityTabIndex"  class="margin-top20 cardss">
     <template v-for="item of tabs">
       <el-tab-pane :label="language(item.key,item.label)" :key="item.label" :name='item.index' v-if='showTab(item.index)' v-permission.dynamic.auto='item.permissionKey'>
-        <component class="componentClass" :ref='item.component' :key='hashCode'  :is="item.component" v-if="activityTabIndex === item.index" @jump='jump' :todoObj="todoObj" :baseInfo="baseInfo"/>
+        <component class="componentClass" :ref='item.component' :key='hashCode' :rfqInfoData="rfqInfoData" :is="item.component" v-if="activityTabIndex === item.index" @jump='jump' :todoObj="todoObj" :baseInfo="baseInfo"/>
       </el-tab-pane>
     </template>
   </iTabsList>
@@ -23,6 +23,10 @@ import Inquiry from "./components/Inquiry";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
 import inquiryManagement from '@/views/biddingManage/bidding/project/inquiry';
+
+import quotationAnalysis from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/quotationAnalysis';
+import analysisTools from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/analysisTools';
+import basicNegotiation from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/basicNegotiation';
 // import { partProjTypes } from "@/config"
 
 export default {
@@ -34,7 +38,11 @@ export default {
     moldBudgetApplication,
     technicalSeminar,
     inquiryManagement,
-    toDoList
+    toDoList,
+
+    quotationAnalysis,
+    analysisTools,
+    basicNegotiation
   },
   props:{
     canRegiste:{
@@ -52,7 +60,8 @@ export default {
     isPosition:{
       type:Boolean,
       default:false
-    }
+    },
+    rfqInfoData: { type: Object },
   },
   inject:['getbaseInfoData','registerFn'],
   data() {
@@ -93,8 +102,29 @@ export default {
           component: 'toDoList',
           permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TODOLIST',
           key: 'LK_DAIBANRENWU'
+        },
+        {
+          index: '5',
+          label: '报价分析',
+          component: 'quotationAnalysis',
+          permissionKey: 'RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU',
+          key: 'BAOJIAFENXI'
+        },
+        {
+          index: '6',
+          label: '专项分析工具',
+          component: 'analysisTools',
+          permissionKey: 'RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU',
+          key: 'TPZS.ZXFXGJ'
+        },
+        {
+          index: '7',
+          label: '谈判基本信息',
+          component: 'basicNegotiation',
+          permissionKey: 'RFQ_DETAIL_TIPS_TANPANJIBENXINXI',
+          key: 'TPZS.TPJBXX'
         }
-      ]
+      ],
     };
   },
   computed:{
@@ -126,6 +156,8 @@ export default {
           }
         )
       }
+
+      console.log(newTable)
       return newTable
       // if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
       // return this.tabList
@@ -133,6 +165,10 @@ export default {
   },
   // 推迟事件注册时间(首次获取数据之后再注册)，
   watch:{
+    rfqInfoData(val) {
+      this.rfqInfoData = val;
+      console.log(val);
+    },
     canRegiste(val){
       if(val){
         this.registerFn(this.updateTabs)
@@ -161,7 +197,7 @@ export default {
     },
     updateTabs(){
       this.hashCode = Math.random() * 10000000000
-    }
+    },
   }
 };
 </script>

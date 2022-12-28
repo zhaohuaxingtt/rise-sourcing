@@ -12,12 +12,12 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? 'RFQ' : language('LK_XINJIANRFQ', '新建RFQ') }}</span>
-        <iNavMvp lang
+        <!-- <iNavMvp lang
                  :query="$route.query"
                  :lev="2"
                  routerPage
                  :list="navList"
-                 @change="changeRouter"></iNavMvp>
+                 @change="changeRouter"></iNavMvp> -->
       </div>
       <div class="btnList">
         <iButton 
@@ -241,7 +241,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending ref="rfqPending" :canRegiste="canRegiste" 
+    <rfqPending ref="rfqPending" :canRegiste="canRegiste" :rfqInfoData="rfqInfo"
                 :isPosition="isPosition"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
                 :activityTabIndex="activityTabIndex"></rfqPending>
@@ -462,12 +462,12 @@ export default {
               query:this.$route.query
             })
           }else{
-            this.changeActivityTabIndex('4')
+            this.changeActivityTabIndex('0')
           }
         }
         // 有未申请就跳到待办
         if(result){
-          this.changeActivityTabIndex('4')
+          this.changeActivityTabIndex('0')
         }
       }
     },

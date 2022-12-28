@@ -28,11 +28,11 @@
         v-show="visible"
         class="table"
         :lang="true"
+        :selection="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :cellClassName="cellClass"
-        :selectable="selectable"
         @handleSelectionChange="handleSelectionChange">
         <!-- <template #sendKmFlag="scope">
           <span>{{ scope.row.cbdLevelCode == "3" ? scope.row.sendKmFlag : "" }}</span>
@@ -56,7 +56,7 @@
 
 <script>
 import { iDialog, iButton, iPagination, iMessage } from "rise"
-import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from '@/views/partsign/home/components/tableList'
 import { kmDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
