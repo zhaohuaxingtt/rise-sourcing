@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-11-01 10:26:55
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-09 11:49:36
+ * @LastEditTime: 2022-12-29 15:55:59
  * @Description: 模具目标价相关路由
  * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\modeltargetprice.js
  */
 export default [
   {
     path: "seltargetprice",
-    meta: { title: "模具目标价管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+    meta: { title: "SEL目标价管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
     component: () => import("@/views/routerView"),
     redirect: "seltargetprice/signin",
     children: [
@@ -36,12 +36,6 @@ export default [
         name: "targetPriceQuery",
         meta: { title: "目标价查询", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
         component: () => import("@/views/SELTargetPrice/query"),
-      },
-      {
-        path: "detail",
-        name: "targetPriceDetail",
-        meta: { title: "目标价详情", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
-        component: () => import("@/views/SELTargetPrice/targetPriceDetail"),
       },
       {
         path: "batchMaintain",

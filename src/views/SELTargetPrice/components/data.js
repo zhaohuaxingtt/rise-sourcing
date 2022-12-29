@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-29 14:43:49
+ * @LastEditTime: 2022-12-29 16:00:07
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\data.js
  */
@@ -92,12 +92,12 @@ export const toBeMaintainTableTitle = [
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100,  },
   { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
   { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 90,  },
-  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, minWidth: 140,  },
-  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, minWidth: 150,  },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, minWidth: 110,  },
-  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 130,  },
+  { props: 'expectedShareTargetPrice', name: '期望目标价·分摊', key: "期望目标价·分摊", tooltip: true, minWidth: 140,  },
+  { props: 'expectedDisposableTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true, minWidth: 150,  },
+  { props: 'releaseOutput', name: '分摊量', key: "分摊量", tooltip: true, minWidth: 110,  },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 130, required:true  },
   { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, minWidth: 130,  },
-  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 130,  },
+  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 130, required:true  },
 ]
 
 // 申请记录
@@ -108,9 +108,9 @@ export const applyTableTitle = [
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100,  },
   { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
   { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 90,  },
-  { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, minWidth: 140,  },
-  { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, minWidth: 150,  },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, minWidth: 90,  },
+  { props: 'expectedShareTargetPrice', name: '期望目标价·分摊', key: "期望目标价·分摊", tooltip: true, minWidth: 140,  },
+  { props: 'expectedDisposableTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true, minWidth: 150,  },
+  { props: 'releaseOutput', name: '分摊量', key: "分摊量", tooltip: true, minWidth: 90,  },
   { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 110,  },
   { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, minWidth: 110,  },
   { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 120,  },

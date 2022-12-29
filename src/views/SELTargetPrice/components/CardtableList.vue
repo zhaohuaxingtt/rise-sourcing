@@ -30,11 +30,11 @@
       <template #estimateShareAPrice="scope">
         <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
       </template>
-      <!-- 期望目标价-分摊 -->
+      <!-- 期望目标价·分摊 -->
       <template #expectedShareTargetPrice="scope">
         <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
       </template>
-      <!-- 期望目标价-一次性 -->
+      <!-- 期望目标价·一次性 -->
       <template #expectedDisposableTargetPrice="scope">
         <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
       </template>

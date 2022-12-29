@@ -369,7 +369,7 @@ export default {
       const router = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
-          projectId: row.purchasingProjectPartId,
+          projectId: row.purchasingProjectId,
           businessKey: row.partProjectType,
         },
       });

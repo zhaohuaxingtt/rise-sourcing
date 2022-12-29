@@ -57,11 +57,11 @@
           @handleInput="handleInput($event,scope.row,'targetPrice')"
         />
       </template>
-        <!-- 期望目标价-分摊 -->
+        <!-- 期望目标价·分摊 -->
         <template #expectedShareTargetPrice="scope">
           <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
         </template>
-        <!-- 期望目标价-一次性 -->
+        <!-- 期望目标价·一次性 -->
         <template #expectedDisposableTargetPrice="scope">
           <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
         </template>
@@ -83,11 +83,11 @@
         <template #businessType="scope">
           {{getBusinessDesc(scope.row.businessType)}}
         </template>
-        <!-- 期望目标价-分摊 -->
+        <!-- 期望目标价·分摊 -->
         <template #expectedShareTargetPrice="scope">
           <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
         </template>
-        <!-- 期望目标价-一次性 -->
+        <!-- 期望目标价·一次性 -->
         <template #expectedDisposableTargetPrice="scope">
           <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
         </template>
@@ -137,7 +137,7 @@ import { toBeMaintainTableTitle, applyTableTitle } from "./data";
 import { numberProcessor } from "@/utils";
 import filters from '@/utils/filters'
 import thousandsFilterInput from "rise/web/aeko/quotationdetail/components/thousandsFilterInput";
-import { getSelTargetApprovalRecord,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
+import { getSelTargetPriceRecordList,submitSelTargetPrice, exportSelMaintainedList, uploadSelTargetFile } from "@/api/SELTargetPrice";
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -185,7 +185,7 @@ export default {
     handleInput(value, row, name) {
       if(name=='shareTargetPrice'){
         this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
-        this.$set(row, "estimateShareAPrice",numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)); // 计算预计A价=  目标价·分摊/分摊量(询价产量)
+        this.$set(row, "estimateShareAPrice",numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)); // 计算预计A价=  目标价·分摊/分摊量
       }else{
         this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
       }
@@ -202,7 +202,7 @@ export default {
         fsnrGsnrNum: this.tableData.map((item) => item.fsnrGsnrNum),
         size: this.page.pageSize,
       };
-      getSelTargetApprovalRecord(params).then((res) => {
+      getSelTargetPriceRecordList(params).then((res) => {
         if (res?.code == "200") {
           this.applyTableData = res.data;
           this.page.totalCount = res.total

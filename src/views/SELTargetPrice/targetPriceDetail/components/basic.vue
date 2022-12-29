@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-04 19:25:21
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-29 15:54:10
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -251,7 +251,7 @@ export default {
       }
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId: row.purchasingProjectPartId, businessKey: row.partProjectType }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId: row.purchasingProjectId, businessKey: row.partProjectType }})
       window.open(router.href,'_blank')
     },
     gotoQuery() {

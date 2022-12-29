@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-19 11:55:17
+ * @LastEditTime: 2022-12-29 15:46:15
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -235,7 +235,7 @@ export function applySelTargetPriceRecordList(data) {
     data
   })
 }
-// 查询零件申请sel目标价记录
+// 查询SEL目标价管理维护弹窗申请记录
 export function getSelTargetPriceRecordList(data) {
   return request({
     url: '/sel-target-price/get-sel-target-price-record-list',

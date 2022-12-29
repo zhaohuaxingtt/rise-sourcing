@@ -95,6 +95,7 @@
           <span v-else>{{
             items.key ? language(items.key, items.name) : items.name
           }}</span>
+          <span v-if="items.required" style="color: red">*</span>
         </template>
         <template
           v-if="$scopedSlots[items.props] || $slots[items.props]"

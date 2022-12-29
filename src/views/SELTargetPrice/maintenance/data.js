@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-08 15:38:28
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-28 20:13:14
+ * @LastEditTime: 2022-12-29 15:49:40
  * @FilePath: \front-web\src\views\SELTargetPrice\maintenance\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,7 +11,7 @@ export const tableTitle = [
   { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120, sortable: true },
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 135, sortable: true },
   { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120, sortable: true },
-  { props: 'releaseOutput', name: '询价产量', key: "询价产量", tooltip: true, minWidth: 110, sortable: true },
+  { props: 'releaseOutput', name: '分摊量', key: "分摊量", tooltip: true, minWidth: 110, sortable: true },
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 110, sortable: true },
   { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 110, sortable: true },
   { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 110, sortable: true },
@@ -49,7 +49,7 @@ export const approvalTableTitle = [
   { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 100,  },
   { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 110,  },
   { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, minWidth: 110,  },
-  { props: 'targetPrice', name: '目标价-一次性', key: "目标价-一次性", tooltip: true, minWidth: 120,  },
+  { props: 'targetPrice', name: '目标价·一次性', key: "目标价·一次性", tooltip: true, minWidth: 120,  },
   { props: 'approvalUserName', name: '审批人', key: "SHENPIREN", tooltip: true },
   { props: 'approvalStatus', name: '状态', key: "ZHUANGTAI", tooltip: true },
   { props: 'remarks', name: '备注', key: "BEIZHU", tooltip: true },

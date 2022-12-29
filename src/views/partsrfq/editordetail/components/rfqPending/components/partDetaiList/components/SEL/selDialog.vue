@@ -20,7 +20,11 @@
       :tableTitle="tableTitle"
       :tableLoading="loading"
     >
-      <!-----------期望目标价--------------------------->
+      <!-----------期望目标价·一次性--------------------------->
+      <template #expectedTargetPrice="scope">
+        <iInput :value="scope.row.expectedTargetPrice" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
+      </template>
+      <!-----------期望目标价·分摊--------------------------->
       <template #expectedShareTargetPrice="scope">
         <iInput :value="scope.row.expectedShareTargetPrice" @input="handleInput($event, scope.row, 'expectedShareTargetPrice')" />
       </template>

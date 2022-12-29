@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-23 17:19:11
+ * @LastEditTime: 2022-12-29 16:24:52
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -47,6 +47,18 @@
       >
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
+        </template>
+        <template #partNum="scope">
+          <span>{{ scope.row.partNum }}</span>
+          <template v-solt="icon">
+            <el-popover
+              trigger="hover"
+              content="待确定"
+              placement="top-start"
+            >
+              <icon slot="reference" symbol name="iconzhongyaoxinxitishi"></icon>
+            </el-popover>
+          </template>
         </template>
         <!-- 目标价·分摊 -->
         <template #shareTargetPrice="scope">
