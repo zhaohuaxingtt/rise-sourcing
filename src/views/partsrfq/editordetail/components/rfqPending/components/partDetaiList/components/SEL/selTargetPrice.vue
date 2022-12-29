@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-12-29 16:24:52
+ * @LastEditTime: 2022-12-29 18:04:08
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
@@ -20,6 +20,19 @@
         <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
         <span class="status">{{ status }}</span>
       </div>
+      <el-popover
+          v-else
+          placement="right"
+          trigger="hover"
+          :content="$t('请与FOP确认该零件有SEL预算')"
+        >
+          <icon
+            slot="reference"
+            symbol
+            name="iconzhongyaoxinxitishi"
+            class="tishi-icon"
+          ></icon>
+        </el-popover>
     </template>
     <template slot="header-control">
       <div class="button-box">
@@ -47,18 +60,6 @@
       >
         <template #status="scope">
           <span>{{ getStatus(scope.row.status) }}</span>
-        </template>
-        <template #partNum="scope">
-          <span>{{ scope.row.partNum }}</span>
-          <template v-solt="icon">
-            <el-popover
-              trigger="hover"
-              content="待确定"
-              placement="top-start"
-            >
-              <icon slot="reference" symbol name="iconzhongyaoxinxitishi"></icon>
-            </el-popover>
-          </template>
         </template>
         <!-- 目标价·分摊 -->
         <template #shareTargetPrice="scope">

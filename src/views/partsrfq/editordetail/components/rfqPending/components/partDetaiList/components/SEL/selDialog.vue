@@ -20,6 +20,10 @@
       :tableTitle="tableTitle"
       :tableLoading="loading"
     >
+      <!-----------分摊量--------------------------->
+      <template #releaseOutput="scope">
+        <iInput :value="scope.row.releaseOutput" @input="handleInput($event, scope.row, 'releaseOutput',0)" />
+      </template>
       <!-----------期望目标价·一次性--------------------------->
       <template #expectedTargetPrice="scope">
         <iInput :value="scope.row.expectedTargetPrice" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
@@ -70,8 +74,8 @@ export default {
     },
   },
   methods: {
-    handleInput(value, row, name) {
-        this.$set(row, name, numberProcessor(value,2)); // 填充数据
+    handleInput(value, row, name, len=2) {
+        this.$set(row, name, numberProcessor(value,len)); // 填充数据
     },
     // 提交
     handleSubmit() {

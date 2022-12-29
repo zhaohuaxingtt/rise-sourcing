@@ -99,8 +99,9 @@ export const selDialogTitle = [
     { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true },
     { props: 'procureFactoryName', name: '采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, todoHiddel: true },
     { props: 'carTypeProjectZh', name: '车型项目', key: "LK_CARPROJECT", tooltip: true, minWidth: 140, todoHiddel: true },
-    { props: 'expectedShareTargetPrice', name: '期望目标价·分摊', key: "期望目标价·分摊", tooltip: true }, // 填写的是期望目标价·分摊
-    { props: 'expectedTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true }, // 填写的是期望目标价·一次性
+    { props: 'releaseOutput', name: '分摊量', key: "分摊量", tooltip: true }, // 填写的是分摊量
+    { props: 'expectedShareTargetPrice', name: '期望目标价·分摊', key: "期望目标价·分摊", tooltip: true, minWidth: 140 }, // 填写的是期望目标价·分摊
+    { props: 'expectedTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true, minWidth: 140 }, // 填写的是期望目标价·一次性
 ]
 export const iconName = {
     '已完成': 'iconrs-wancheng',
