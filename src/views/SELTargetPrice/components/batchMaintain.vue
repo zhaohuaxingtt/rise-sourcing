@@ -62,8 +62,8 @@
           <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
         </template>
         <!-- 期望目标价·一次性 -->
-        <template #expectedDisposableTargetPrice="scope">
-          <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
+        <template #expectedTargetPrice="scope">
+          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(0)}}</span>
         </template>
         <!-- 预计A价分摊 -->
         <template #estimateShareAPrice="scope">
@@ -88,8 +88,8 @@
           <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
         </template>
         <!-- 期望目标价·一次性 -->
-        <template #expectedDisposableTargetPrice="scope">
-          <span>{{ scope.row.expectedDisposableTargetPrice | thousandsFilter(0)}}</span>
+        <template #expectedTargetPrice="scope">
+          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(0)}}</span>
         </template>
         <!-- 目标价·分摊 -->
         <template #shareTargetPrice="scope">

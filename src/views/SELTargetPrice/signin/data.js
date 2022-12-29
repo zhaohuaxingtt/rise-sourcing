@@ -18,7 +18,7 @@ export const tableTitle = [
   { props: 'buyerName', name: '询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, minWidth: 120, sortable: true },
   { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, minWidth: 90, sortable: true },
   { props: 'expectedShareTargetPrice', name: '期望目标价·分摊', key: "期望目标价·分摊", tooltip: true, minWidth: 170, sortable: true },
-  { props: 'expectedDisposableTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true, minWidth: 180, sortable: true },
+  { props: 'expectedTargetPrice', name: '期望目标价·一次性', key: "期望目标价·一次性", tooltip: true, minWidth: 180, sortable: true },
   { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, minWidth: 180, sortable: true },
 ]
 
