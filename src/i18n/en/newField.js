@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-08 15:31:56
+ * @LastEditTime: 2022-12-29 17:09:01
  * @FilePath: \front-web\src\i18n\en\newField.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -35,4 +35,5 @@ export default {
   '为获得更好的展示效果，建议上传pdf格式文件': 'For better display effect, it is recommended to upload the pdf file',
   创建时间正序: 'Create time order',
   创建时间倒序: 'Create time reverse order',
+  '搜索结果: 当前列表不包含只有A价、没有报价明细的记录':'Search results: The current list does not contain records with only A price and no quotation details'
 }

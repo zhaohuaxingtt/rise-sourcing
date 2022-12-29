@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2022-03-08 10:53:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-29 17:08:01
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
 -->
@@ -47,7 +47,7 @@
     </div>
     <div class="searchContent">
       <div class="title">
-        <span>搜索结果</span>
+        <span>搜索结果: 当前列表不包含只有A价、没有报价明细的记录</span>
         <iButton @click="add">{{ $t("LK_TIANJIA") }}</iButton>
       </div>
       <tableList :tableData="confirmTableData"
