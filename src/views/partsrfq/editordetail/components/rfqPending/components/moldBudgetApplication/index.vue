@@ -102,6 +102,7 @@
     </iCard>
     <!-- 申请模具预算弹窗 -->
     <moldBudgetApplicationDialog
+      :tableListData="tableListData"
       :visible.sync="moldBudgetApplicationVisible"
       @updateTable="getTableList"
     />
