@@ -7,7 +7,9 @@
   >
     <template slot="title">
       <div class="el-dialog__title header">
-        <span>{{ language("申请SEL目标价", "申请SEL目标价") }}</span>
+        <span>{{ language("申请SEL目标价", "申请SEL目标价") }}
+          <span style="font-size:14px;font-weight:500">自动带出的当前零件询价产量，如分摊量有更新请手动维护</span>
+        </span>
         <iButton class="btn" @click="handleSubmit">{{
           language("LK_APPLAY", "申请")
         }}</iButton>
@@ -40,7 +42,7 @@
 import { iDialog, iMessage, iText, iInput, iButton } from "rise";
 import { selDialogTitle } from "./data";
 import tableList from "pages/modelTargetPrice/components/tableList.vue";
-import { applySelTargetPrice } from "@/api/SELTargetPrice";
+import { applySelTargetPrice, getReleaseOutput } from "@/api/SELTargetPrice";
 import { numberProcessor } from '@/utils'
 export default {
   props: {
@@ -76,6 +78,20 @@ export default {
   methods: {
     handleInput(value, row, name, len=2) {
         this.$set(row, name, numberProcessor(value,len)); // 填充数据
+    },
+    // 获取分摊量
+    getReleaseOutput(){
+      let purchasingProjectPartIds = this.tableData.map(item => item.id)
+      getReleaseOutput({purchasingProjectPartIds}).then(res=>{
+        if(res?.code==200){
+          let obj = res.data
+          this.tableData.map(item => {
+            if(obj[item.id]){
+              this.$set(item,'releaseOutput',obj[item.id])
+            }
+          })
+        }
+      })
     },
     // 提交
     handleSubmit() {

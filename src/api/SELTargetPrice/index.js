@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-29 15:46:15
+ * @LastEditTime: 2022-12-29 20:49:46
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -245,13 +245,13 @@ export function getSelTargetPriceRecordList(data) {
 }
 
 // 导出sel目标价申请记录
-// export function exportSelTargetPriceRecordList(data) {
-//   return requestDownload({
-//     url: '/sel-target-price/export-sel-target-price--record-list',
-//     method: 'POST',
-//     data
-//   })
-// }
+export function getReleaseOutput(data) {
+  return requestDownload({
+    url: '/sel-target-price/get-sel-target-price-release-output',
+    method: 'POST',
+    data
+  })
+}
 
 // 查询审批记录
 export function getSelTargetApprovalRecord(data) {
