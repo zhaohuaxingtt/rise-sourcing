@@ -1674,9 +1674,9 @@ export default {
         })
         .finally(() => {
           this.tableLoading = false;
-          this.loading = false;
           this.$nextTick(() => {
             this.getHeight();
+            this.loading = false;
           });
         });
     },

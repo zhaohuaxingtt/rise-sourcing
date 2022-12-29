@@ -1016,7 +1016,6 @@ export default {
     remarkProcess,
     dateFilter,
     getHeight() {
-      setTimeout(() => {
         this.hasTitle = this.$refs.tabTitle?.offsetHeight;
         let headerHeight =
           this.$refs.demo.getElementsByClassName("cardHeader")[0].offsetHeight; // Title 区域高度
@@ -1120,7 +1119,9 @@ export default {
           this.hasLastPage = false;
           this.residualRemark = this.getRemarkAll;
         }
-      }, 1000);
+        this.$nextTick(()=>{
+          this.loading = false;
+        })
     },
     downloadFile() {
       if (this.fileTableSelect.length == 0)
@@ -1327,7 +1328,6 @@ export default {
         })
         .finally(() => {
           this.tableLoading = false;
-          this.loading = false;
           this.$nextTick(() => {
             this.getHeight();
           });
@@ -1380,7 +1380,6 @@ export default {
         })
         .finally(() => {
           this.tableLoading = false;
-          this.loading = false;
           this.$nextTick(() => {
             this.getHeight();
           });
