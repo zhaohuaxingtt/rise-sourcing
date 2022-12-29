@@ -123,7 +123,7 @@ export default {
         row,
         "estimateShareAPrice",
         numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)
-      ); // 计算预计A价=  目标价·分摊/分摊量(询价产量)
+      ); // 计算预计A价=  目标价·分摊/分摊量
     },
   },
 };

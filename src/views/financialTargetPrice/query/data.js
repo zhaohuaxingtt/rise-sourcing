@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-20 18:33:40
+ * @LastEditTime: 2022-12-29 20:55:34
  * @Description: 
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\data.js
  */
@@ -21,7 +21,7 @@ export const tableTitle = [
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, sortable: true},
   {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true, width: 90, sortable: true},
   {props:'estimateShareAPrice',name:'SEL目标价', key: "SEL目标价", tooltip: true, width: 130, sortable: true},
-  {props:'releaseOutput',name:'询价产量', key: "询价产量", tooltip: true, width: 110, sortable: true},
+  {props:'releaseOutput',name:'分摊量', key: "分摊量", tooltip: true, width: 110, sortable: true},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 110, sortable: true},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 170, sortable: true},
   {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120, sortable: true},

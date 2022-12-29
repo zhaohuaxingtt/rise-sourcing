@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-20 19:14:53
+ * @LastEditTime: 2022-12-29 20:56:07
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\index.vue
 -->
@@ -66,7 +66,7 @@
         <template #lcBPrice="scope">
           <span>{{ scope.row.lcBPrice | thousandsFilter }}</span>
         </template>
-        <!-- 询价产量 -->
+        <!-- 分摊量 -->
         <template #releaseOutput="scope">
           <span>{{ scope.row.releaseOutput | fixed }}</span>
         </template>
