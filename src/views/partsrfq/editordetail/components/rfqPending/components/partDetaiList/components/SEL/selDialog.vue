@@ -75,13 +75,19 @@ export default {
       return this.$route.query.taskId || "";
     },
   },
+  watch:{
+    tableData(val){
+      this.getReleaseOutput()
+    }
+  },
   methods: {
     handleInput(value, row, name, len=2) {
         this.$set(row, name, numberProcessor(value,len)); // 填充数据
     },
     // 获取分摊量
     getReleaseOutput(){
-      let purchasingProjectPartIds = this.tableData.map(item => item.id)
+      let purchasingProjectPartIds = this.tableData.map(item => item.id)||[]
+      if(purchasingProjectPartIds.length)
       getReleaseOutput({purchasingProjectPartIds}).then(res=>{
         if(res?.code==200){
           let obj = res.data
