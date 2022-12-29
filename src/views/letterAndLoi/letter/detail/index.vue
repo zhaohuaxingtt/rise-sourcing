@@ -82,8 +82,9 @@
             </div>
         </iCard>
 
+        <!-- v-if="radioType=='NonStandard'"  -->
         <!-- 非标准定点信 -->
-        <nonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nominateLetterId" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER|非标准定点信" />
+        <nonStandard class="margin-top20" :isEdit="isEdit" :nomiAppId="nominateLetterId" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER|非标准定点信" />
 
         <!-- 历史定点信弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>
