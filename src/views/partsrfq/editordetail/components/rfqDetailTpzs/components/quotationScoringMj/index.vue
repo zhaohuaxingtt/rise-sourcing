@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2022-01-27 14:40:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-27 11:31:38
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
 -->
@@ -128,11 +128,13 @@ export default {
         getRfqSupplierList({ rfqId: this.partInfo.rfqId })
           .then((res) => {
             if (res && res.code == 200) {
+              this.supplierList = Array.isArray(res.data) ? res.data : [];
+              this.$nextTick(()=>{
               this.supplierId =
                 Array.isArray(res.data) && res.data.length
                   ? res.data[0].supplierId
                   : "";
-              this.supplierList = Array.isArray(res.data) ? res.data : [];
+              })
               r(res);
             }
           })

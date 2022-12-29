@@ -22,14 +22,19 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange">
+        
         <template #budget="scope">
+          <thousandsFilterInput v-if="!scope.row.disabled && !disabled" :inputValue="scope.row.budget" :numberProcessor="2" :handleArg="[scope.row]" @handleInput="handleInput" />
+          <span v-else>{{ scope.row.budget | thousandsFilter(2) }}</span>
+        </template>
+        <!-- <template #budget="scope">
           <iInput
             v-model="scope.row.budget"
             v-if="!disabled"
             :placeholder="language('LK_QINGSHURU','请输入')"
           />
           <span v-else>{{ scope.row.budget }}</span>
-        </template>
+        </template> -->
       </tableList>
     </div>
     <!-- <div slot="footer" class="footer">
@@ -53,17 +58,17 @@ import {iDialog, iInput, iMessage, iButton, iPagination } from 'rise'
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {tableApplyTitle as tableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
+import { numberProcessor } from "@/utils";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {
-  getModelBudgetList,
-  patchMouldBudget,
-  cancelMoldBudget,
   patchMouldBudgetSubmit,
   patchMouldBudgetWithdrawal
 } from "@/api/partsrfq/editordetail";
+import filters from "@/utils/filters";
+import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default {
-  components: { iDialog, iButton, iInput, tableList, iPagination},
-  mixins: [pageMixins,rfqCommonFunMixins],
+  components: { iDialog, iButton, iInput, tableList, iPagination, thousandsFilterInput},
+  mixins: [pageMixins,rfqCommonFunMixins, filters],
   props: {
     visible: {
       type: Boolean,
@@ -73,18 +78,14 @@ export default {
       type: Boolean,
       default: false
     },
-  },
-  watch: {
-    visible(state) {
-      if (state) {
-        this.getTableList()
-      }
+    tableListData:{
+      type: Array,
+      default:()=>[]
     }
   },
   data() {
     return {
       tableTitle,
-      tableListData: [],
       selectTableData: [],
       tableLoading: false
     }
@@ -93,25 +94,6 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val
 
-    },
-    async getTableList() {
-      const rfqId = this.$route.query.id;
-      if (rfqId) {
-        this.tableLoading = true;
-        try {
-          const res = await getModelBudgetList(
-           rfqId
-          );
-          if (res && res.code === '200') {
-            this.tableListData = res.data || []
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-          }
-          this.tableLoading = false;
-        } catch {
-          this.tableLoading = false;
-        }
-      }
     },
     async submit() {
       if (this.selectTableData.length == 0) {
@@ -142,9 +124,11 @@ export default {
         mouldBudgets
       );
       this.resultMessage(res);
-      this.getTableList();
-      this.$store.dispatch('setTodoObj',this.$route.query.id);
-      this.$emit('updateTable')
+      // this.getTableList();
+      if(res?.code=='200'){
+        this.$store.dispatch('setTodoObj',this.$route.query.id);
+        this.$emit('updateTable')
+      }
     },
     async recall() {
       if (this.selectTableData.length == 0) {
@@ -167,7 +151,7 @@ export default {
       })
       const res = await patchMouldBudgetWithdrawal(ids);
       this.resultMessage(res);
-      this.getTableList();
+      // this.getTableList();
     },
     close() {
       this.$emit('update:visible', false)
@@ -175,7 +159,10 @@ export default {
     },
     confirm() {
       this.$emit('confirm', '')
-    }
+    },
+    handleInput(value, row) {
+      this.$set(row, "budget", numberProcessor(value, 2));
+    },
   }
 }
 </script>

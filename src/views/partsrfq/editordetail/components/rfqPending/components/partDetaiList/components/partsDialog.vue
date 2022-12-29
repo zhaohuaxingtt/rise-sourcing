@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-09 16:53:30
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-23 16:15:02
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -21,7 +21,7 @@
     <tableList ref="tableList" class="table" :tableData="tableData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange" @select="select">
       <!-----------期望目标价--------------------------->
       <template #expectedTargetPrice="scope">
-        <iInput v-if="scope.row.isEdit" :value="scope.row.expectedTargetPrice" maxlength="8" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
+        <iInput v-if="scope.row.isEdit" :value="scope.row.expectedTargetPrice" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
         <iText v-else>{{scope.row.expectedTargetPrice}}</iText>
       </template>
       <!-- 财务控制人 -->
@@ -59,6 +59,7 @@ import { applyPartTarget } from '@/api/financialTargetPrice/index'
 import { dictkey } from '@/api/partsprocure/editordetail'
 import { partsDialogTitle as tableTitle } from "../data";
 import { partProjTypes } from "@/config";
+import { numberProcessor } from "@/utils";
 export default {
   props: {
     visible:{type:Boolean},
@@ -159,10 +160,18 @@ export default {
       })
     },
     select(selection){
-      selection.row.isEdit = !selection.row.isEdit
+      // selection.row.isEdit = !selection.row.isEdit
     },
     handleSelectionChange(val) {
       this.selectList = val
+      const FS = val.map(item=>item.fsnrGsnrNum) || []
+      this.tableData.map(item=>{
+        if(FS.includes(item.fsnrGsnrNum)){
+          this.$set(item,'isEdit',true)
+        }else{
+          this.$set(item,'isEdit',false)
+        }
+      })
     },
     /**
      * @Description: 输入限制
@@ -173,9 +182,7 @@ export default {
      * @return {*}
      */    
     handleInput(value, row, name) {
-      if (/^\d*$/.test(value)) {
-        this.$set(row, name, value)
-      }
+      this.$set(row, name, numberProcessor(value,2))
     },
     openPage(row) {
       const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId: row.purchasingProjectPartId, businessKey: row.partProjectType }})

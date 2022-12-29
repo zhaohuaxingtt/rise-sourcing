@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Please set LastEditors
+ * @LastEditors: 余继鹏 917955345@qq.com
 * @Description: BDL表格数据
  -->
 <template>
@@ -15,8 +15,10 @@
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
 					<!-- <span class="flexRow"> -->
             			<span class="openLinkText cursor " @click="openPage(scope.row)"> {{ scope.row.supplierNameZh }}
-							<el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
-          					<span v-if="getStatus(scope.row.frm)">
+							<!-- <el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm"> -->
+							<el-tooltip effect="light" :content="`FRM评级：C Rating`">
+          					<!-- <span v-if="getStatus(scope.row.frm)"> -->
+          					<span v-if="scope.row.frm">
             					<icon symbol class="cursor margin-left8" name="iconzhongyaoxinxitishi" />
         			 	 	</span>
         					</el-tooltip>
