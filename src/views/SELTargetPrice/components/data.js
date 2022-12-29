@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-28 20:05:22
+ * @LastEditTime: 2022-12-29 14:43:49
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\data.js
  */
@@ -90,7 +90,7 @@ export const toBeMaintainTableTitle = [
   { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120,fixed: true,   },
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 125,  },
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100,  },
-  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
+  { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
   { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 90,  },
   { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, minWidth: 140,  },
   { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, minWidth: 150,  },
@@ -106,7 +106,7 @@ export const applyTableTitle = [
   { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120,  },
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 125,  },
   { props: 'rfqCode', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100,  },
-  { props: 'materialGroup', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
+  { props: 'categoryName', name: '材料组', key: "CAILIAOZU", tooltip: true, minWidth: 100,  },
   { props: 'businessType', name: '申请类型', key: "申请类型", tooltip: true, minWidth: 90,  },
   { props: 'expectedShareTargetPrice', name: '期望目标价-分摊', key: "期望目标价-分摊", tooltip: true, minWidth: 140,  },
   { props: 'expectedDisposableTargetPrice', name: '期望目标价-一次性', key: "期望目标价-一次性", tooltip: true, minWidth: 150,  },
