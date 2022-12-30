@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-30 12:39:26
+ * @LastEditTime: 2022-12-30 16:07:51
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->

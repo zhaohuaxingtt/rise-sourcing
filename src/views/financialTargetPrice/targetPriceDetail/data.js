@@ -50,7 +50,7 @@ export const detailList = [
   {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'LK_SKDHUOBI',selectOption: '', editable: true},
   {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'LK_CKDHUOBI',selectOption: '', editable: true},
   {value: 'rwPrice', label: 'RW价', type: 'input', i18n_label: 'RWJIA',},
-  {value: 'applyMemo', label: '申请备注', type: 'input', i18n_label: 'SHENQINGBEIZHU',row: 2, editable: true},
+  {value: 'applyMemo', label: '申请备注', i18n_label: 'SHENQINGBEIZHU',row: 2,},
   {value: 'modifyReason', label: '修改备注', type: 'input', i18n_label: 'XIUGAIBEIZHU',row: 2, editable: true}
 ]
 
