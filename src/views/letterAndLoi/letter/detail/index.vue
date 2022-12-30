@@ -45,7 +45,7 @@
         </div>
         </div>
         <iCard class="margin-top30" v-permission.auto="LK_LETTER_DETAIL_FORM|表单">
-           <el-radio-group v-model="radioType" :disabled="!isEdit">
+           <el-radio-group v-model="radioType" :disabled="!isEdit" @change="changeRadio">
                 <el-radio :label="'standard'">{{language('LK_BIAOZHUNDINGDIANXIN','标准定点信')}}</el-radio>
                 <el-radio :label="'NonStandard'">{{language('LK_FEIBIAOZHUNDINGDIANXIN','⾮标准定点信')}}</el-radio>
             </el-radio-group>
@@ -84,7 +84,7 @@
 
         <!-- v-if="radioType=='NonStandard'"  -->
         <!-- 非标准定点信 -->
-        <nonStandard class="margin-top20" :isEdit="isEdit" :nomiAppId="nominateLetterId" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER|非标准定点信" />
+        <nonStandard ref="ddxTable" class="margin-top20" :radioType="radioType" :isEdit="isEdit" v-if="typeShow" :nomiAppId="nominateLetterId" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER|非标准定点信" />
 
         <!-- 历史定点信弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>
@@ -157,7 +157,8 @@ export default {
                 complete:false,
             },
             showLogDialog:false,
-            module:'定点信'
+            module:'定点信',
+            typeShow:false,
 
         }
     },
@@ -166,6 +167,13 @@ export default {
 
     },
     methods:{
+        changeRadio(val){
+            if(val == "standard"){//标准定点信
+                this.$refs.ddxTable.getFetchDataList();
+            }else if(val == "NonStandard"){//非标准定点信
+                this.$refs.ddxTable.getFetchDataList();
+            }
+        },
         // 编辑状态变更
         changeEditStatus(){
             const { isEdit } = this;
@@ -195,8 +203,9 @@ export default {
                     this.detailInfo = data;
                     this.radioType = templateType==0 ? 'standard' : 'NonStandard';
                     this.nominateLetterId = nominateLetterId;
-                    this.getUserList(supplierId);
 
+                    this.typeShow = true;
+                    this.getUserList(supplierId);
                 }else{
                      iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
