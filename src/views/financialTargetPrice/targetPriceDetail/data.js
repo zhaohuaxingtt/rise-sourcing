@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 15:13:44
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-30 09:53:59
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -50,7 +50,8 @@ export const detailList = [
   {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'LK_SKDHUOBI',selectOption: '', editable: true},
   {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'LK_CKDHUOBI',selectOption: '', editable: true},
   {value: 'rwPrice', label: 'RW价', type: 'input', i18n_label: 'RWJIA',},
-  {value: 'modifyReason', label: '备注', type: 'input', i18n_label: 'BEIZHU',row: 2, editable: true}
+  {value: 'applyMemo', label: '申请备注', type: 'input', i18n_label: 'SHENQINGBEIZHU',row: 2, editable: true},
+  {value: 'modifyReason', label: '修改备注', type: 'input', i18n_label: 'XIUGAIBEIZHU',row: 2, editable: true}
 ]
 
 export const designateSearchList = [

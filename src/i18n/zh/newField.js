@@ -21,6 +21,7 @@ export default {
   QINGXUANZECAIGOUSHENQINGLEIXING: '请选择采购申请类型',
   QINGTIANJIASHUJU: '请添加数据',
   'QUANBUXIANGCI': '该申请下的全部项次',
+  'XIUGAIBEIZHU':'修改备注',
   "评分类型、评分人、协调人信息不可重复，请检查数据": "评分类型、评分人、协调人信息不可重复，请检查数据",
   '质量协调人': '质量协调人',
   '技术协调人': '技术协调人',

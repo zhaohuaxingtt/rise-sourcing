@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-02 09:56:35
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-30 12:39:26
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -24,7 +24,7 @@
         </template>
         <iText v-else>{{detailData[item.value]}}</iText>
       </iFormItem>
-      <iFormItem :class="'row2'" style="text-align:right">
+      <iFormItem style="width:100%; text-align:right">
         <iButton v-if="!isEdit" @click="changeBasicIsEdit(true)">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
           <iButton @click="handleBasicSave" :loading="loading">{{language('BAOCUN','保存')}}</iButton>

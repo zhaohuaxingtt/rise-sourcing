@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-29 17:09:01
+ * @LastEditTime: 2022-12-30 12:41:12
  * @FilePath: \front-web\src\i18n\en\newField.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,6 +29,7 @@ export default {
   QINGXUANZECAIGOUSHENQINGLEIXING: 'Please select the type of purchase requisition',
   QINGTIANJIASHUJU: 'Please add data',
   'QUANBUXIANGCI': 'All items under the application',
+  'XIUGAIBEIZHU':'Change Remark',
   "评分类型、评分人、协调人信息不可重复，请检查数据": "Rater type, rater and coordinator information cannot be duplicated. Please check the data",
   '质量协调人': 'Quality coordinator',
   '技术协调人': 'Technical Coordinator',
