@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-12-14 11:11:59
+ * @LastEditTime: 2022-12-30 15:24:22
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -422,8 +422,8 @@
               </iSelect>
               <iText v-else>{{
                 getName(
-                  detailData.carTypeProjectNum,
-                  "code",
+                  detailData.carTypeProjectId,
+                  "id",
                   fromGroup.CAR_TYPE_PRO
                 )
               }}</iText>

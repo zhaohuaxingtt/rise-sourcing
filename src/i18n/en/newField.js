@@ -29,6 +29,7 @@ export default {
   QINGXUANZECAIGOUSHENQINGLEIXING: 'Please select the type of purchase requisition',
   QINGTIANJIASHUJU: 'Please add data',
   'QUANBUXIANGCI': 'All items under the application',
+  'XIUGAIBEIZHU':'Change Remark',
   "评分类型、评分人、协调人信息不可重复，请检查数据": "Rater type, rater and coordinator information cannot be duplicated. Please check the data",
   '质量协调人': 'Quality coordinator',
   '技术协调人': 'Technical Coordinator',
