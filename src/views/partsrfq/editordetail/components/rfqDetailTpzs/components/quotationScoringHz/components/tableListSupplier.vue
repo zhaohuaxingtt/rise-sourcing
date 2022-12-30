@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2022-01-28 13:17:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-21 12:16:15
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
   <el-table class="table" :class="isRoutePreview?'isRoutePreview':''" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18 ? (headerWidth?(headerWidth[index]-3)*2*4+"px":""): fixWidth(index)'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :min-width='tabelTitle.length >= 18 ? (headerWidth?(headerWidth[index]-3)*2*4+"px":""): fixWidth(index)'>
       <template slot-scope="scope">
         <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
         <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
