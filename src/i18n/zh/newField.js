@@ -1,3 +1,11 @@
+/*
+ * @Author: 余继鹏 917955345@qq.com
+ * @Date: 2022-12-08 15:38:28
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-30 19:21:37
+ * @FilePath: \front-web\src\i18n\zh\newField.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export default {
   QIANWANGBIANJI: '前往编辑',
   LK_GONGXUWEIWAI: '工序委外',
@@ -27,5 +35,6 @@ export default {
   '为获得更好的展示效果，建议上传pdf格式文件': '为获得更好的展示效果，建议上传pdf格式文件',
   创建时间正序: "创建时间正序",
   创建时间倒序: "创建时间倒序",
+  '审批时间':'审批时间',
   '搜索结果: 当前列表不包含只有A价、没有报价明细的记录':'搜索结果: 当前列表不包含只有A价、没有报价明细的记录'
 }

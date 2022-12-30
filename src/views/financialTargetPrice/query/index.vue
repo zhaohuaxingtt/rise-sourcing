@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 17:15:30
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2022-12-29 20:56:07
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\index.vue
 -->
@@ -58,6 +58,22 @@
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
       >
+        <!-- LC_A -->
+        <template #lcAPrice="scope">
+          <span>{{ scope.row.lcAPrice | thousandsFilter }}</span>
+        </template>
+        <!-- LC_B -->
+        <template #lcBPrice="scope">
+          <span>{{ scope.row.lcBPrice | thousandsFilter }}</span>
+        </template>
+        <!-- 分摊量 -->
+        <template #releaseOutput="scope">
+          <span>{{ scope.row.releaseOutput | fixed }}</span>
+        </template>
+        <!-- 预计分摊A价 -->
+        <template #estimateShareAPrice="scope">
+          <span>{{ scope.row.estimateShareAPrice | thousandsFilter }}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -135,6 +151,23 @@ export default {
       rfqId: '',
       applyId: '',
       fsNum: ''
+    }
+  },
+  filters:{
+    // 金额千分位
+    thousandsFilter(num, len = 2) {
+      if(num==null) return num
+      num = String(num).replace(/[^0-9.-]/ig, '');
+      num = Number(num).toFixed(len);
+      const numArray = String(num).split('.');
+      numArray[0] = parseFloat(numArray[0]).toLocaleString();
+      const value = numArray.join('.');
+      return value || 0;
+    },
+    // 取整
+    fixed(num,len=0){
+      if(num==null) return num
+      return Number(num).toFixed(len);
     }
   },
   created() {
@@ -298,7 +331,7 @@ export default {
     getCartypeDict() {
       getCartypeDict()
       .then(res => {
-        if (res.code == 200) {
+        if (res?.code == 200) {
           this.selectOptions = {
             ...this.selectOptions,
             cartTypeOptions: Array.isArray(res.data) ? res.data : []
