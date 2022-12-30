@@ -9,7 +9,8 @@
 <script>
 import quotationDetail from "rise/web/quotationdetail"
 import {iMessage} from 'rise'
-import {quotations, getNoticeStatus} from '@/api/rfqManageMent/workingRfq'
+import {quotations} from '@/api/rfqManageMent/workingRfq'
+import {getNoticeStatus} from "@/api/rfqManageMent/quotationdetail"
 export default {
   extends: quotationDetail,
   created(){
@@ -39,6 +40,38 @@ export default {
       if (!status) return
       
       this.quotations(1)
+    },
+
+    getNoticeStatus() {
+      this.agentQutationLoading = true
+
+      return new Promise(resolve => {
+        getNoticeStatus({
+          serverCode:this.$route.query.rfqId,
+          supplierId: this.supplierId,
+          type: "RFQ" // 该字段必传，但是这个把RFQ和CARBON的状态都返回了，所以这个接口只用调一次
+        })
+        .then(res => {
+          if (res.code == 200) {
+            // rfqStatus 询价承诺书状态  carbonStatus 可再生能源使用承诺书状态
+            if (!+res.data.rfqStatus) { // 0 拒绝  1同意 
+              iMessage.warn(this.language("GONGYINGSHANGWEIQIANSHUXUNJIACHENGNUOSHU", "供应商未签署《询价承诺书》，不可代报价"))
+              resolve(false)
+            } else {
+              if (!+res.data.agreementStatus) { // 0 拒绝  1同意 
+                iMessage.warn(this.$t("供应商未签署合规协议告知书不可代报价"))
+                resolve(false)
+              } else {
+                resolve(true)
+              }
+            }
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            resolve(false)
+          }
+        })
+        .finally(() => this.agentQutationLoading = false)
+      })
     },
     /**
      * @description: 签收拒绝 

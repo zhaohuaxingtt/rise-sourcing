@@ -6529,6 +6529,7 @@
 		"BA申请标题":"BA Application Title",
 		"报价单提交时间":"Quotation submission time",
 		"若要继续执行请点击确认":",To continue, click OK",
+		"供应商未签署合规协议告知书不可代报价":"If the supplier does not sign the Notification of Compliance Agreement, it is not allowed to quote on behalf of others",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
