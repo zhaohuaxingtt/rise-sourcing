@@ -10,7 +10,7 @@
 export const tableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
   {props:'sapCode',name:'供应商号', enName: 'Supplier No.', key: "GONGYINGSHANGHAO", tooltip: true},
-  {props:'location',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
+  {props:'plantLocations',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
   {props:'isMbdl',name:'是否MBDL', enName: 'MBDL', key: "MBDL", tooltip: true},
   {props:'isQuotation',name:'已报价', enName: 'Completely Quoted', key: "YIBAOJIA", tooltip: true, width: 150},
   {props:'isPartQuotation',name:'部分报价', enName: 'Partial Quoted', key: "BUFENBAOJIA", tooltip: true},

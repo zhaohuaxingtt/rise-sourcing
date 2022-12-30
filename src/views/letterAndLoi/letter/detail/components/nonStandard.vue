@@ -12,7 +12,7 @@
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
                     v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_UPLOAD|非标准定点信上传"
-                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '119',hostId:nomiAppId}), getFetchDataList)"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType:radioType == 'standard'?'118':'119',hostId:nomiAppId}), getFetchDataList)"
                     
                 />
             </span>
@@ -82,6 +82,10 @@ export default {
         nomiAppId:{
             type:String,
             default:'',
+        },
+        radioType:{
+            type:String,
+            default:'',
         }
     },
     components:{
@@ -102,11 +106,21 @@ export default {
     methods:{
         // 获取列表
         async getFetchDataList() {
-            const params = {
-                nomiAppId: this.nomiAppId,
-                sortColumn: 'sort',
-                isAsc: true,
-                fileType: '119',
+            var params = {};
+            if(this.radioType == "standard"){//标准定点信
+                params = {
+                    nomiAppId: this.nomiAppId,
+                    sortColumn: 'sort',
+                    isAsc: true,
+                    fileType: '118',
+                }
+            }else if(this.radioType == "NonStandard"){//非标准定点信
+                params = {
+                    nomiAppId: this.nomiAppId,
+                    sortColumn: 'sort',
+                    isAsc: true,
+                    fileType: '119',
+                }
             }
             await this.getDataList(params)
         },
