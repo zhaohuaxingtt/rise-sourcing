@@ -95,7 +95,7 @@ export const SELApplyTargetPriceTitle = [
 // 申请SEL目标价弹窗表格
 export const selDialogTitle = [
     { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true, width: 140 },
-    { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true },
+    { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 110 },
     { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true },
     { props: 'procureFactoryName', name: '采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, todoHiddel: true },
     { props: 'carTypeProjectZh', name: '车型项目', key: "LK_CARPROJECT", tooltip: true, minWidth: 140, todoHiddel: true },

@@ -8,7 +8,7 @@
     <template slot="title">
       <div class="el-dialog__title header">
         <span>{{ language("申请SEL目标价", "申请SEL目标价") }}
-          <span style="font-size:14px;font-weight:500">自动带出的当前零件询价产量，如分摊量有更新请手动维护</span>
+          <span class="tips">自动带出的当前零件询价产量，如分摊量有更新请手动维护</span>
         </span>
         <iButton class="btn" @click="handleSubmit">{{
           language("LK_APPLAY", "申请")
@@ -76,7 +76,8 @@ export default {
     },
   },
   watch:{
-    tableData(val){
+    visible(val){
+      if(val)
       this.getReleaseOutput()
     }
   },
@@ -146,6 +147,10 @@ export default {
     justify-content: space-between;
     .btn {
       margin-right: 20px;
+    }
+    .tips{
+      font-size:14px;
+      font-weight:500
     }
   }
   .table {
