@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2022-12-29 19:52:12
+ * @LastEditTime: 2022-12-30 15:52:13
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
@@ -209,7 +209,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item
-          v-show="batch.type==partProjTypes.DBYICHIXINGCAIGOU"
+          v-show="batch.type==partProjTypes.DBLINGJIAN"
           :label="language('LK_HUOBI', '货币')"
         >
           <iSelect
