@@ -3037,10 +3037,10 @@
 		LK_WULIUPINGFEN: '',
 		LK_SUPPLIER_WEIWANCHENGNIANDUGONGYINGSHANGXINXIQUEREN: '',
 		LK_TIPS_YIXIAGONGYINGSHANGXUNJIASHOUKONGWUFAFASONGXUNJIA: '',
-		LK_SHENQINGLINGJIANMUBIAOJIA: '',
+		LK_SHENQINGLINGJIANMUBIAOJIA: 'Part Target Price App.',
 		LK_SHENQINGMUJUMUBIAOJIA: 'Tooling Target Price',
 		SHENQINGMUJUYUSUAN: '',
-		LK_APPLAY: '',
+		LK_APPLAY: 'Apply',
 		DANGQIANLUNCIBAOJIAZHUANGTAI: '',
 		CAIWUKONGZHIYUAN: '',
 		SHENQINGLEIBIE: '',
@@ -3055,7 +3055,7 @@
 		LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGLINGJIANMUBIAOJIADECAIGOUXIANGMU: '',
 		DAIBANTISHI: '',
 		QIANWANGRENWULIEBIAO: '',
-		SHENQINGMUJUMUBIAOJIA: '',
+		SHENQINGMUJUMUBIAOJIA: 'Tooling Target Price App.',
 		LK_GONGYINGSHANGGONGCHANGMINGCHEN: '',
 		QINGWEIHUBITIANXIANG: '',
 		'BIDDING_PM（JDZD）': 'Auction (the lowest price gets)',
@@ -6529,6 +6529,7 @@
 		"BA申请标题":"BA Application Title",
 		"报价单提交时间":"Quotation submission time",
 		"若要继续执行请点击确认":",To continue, click OK",
+		"供应商未签署合规协议告知书不可代报价":"If the supplier does not sign the Notification of Compliance Agreement, it is not allowed to quote on behalf of others",
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
