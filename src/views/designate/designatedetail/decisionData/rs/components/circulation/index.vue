@@ -1807,19 +1807,20 @@ export default {
     }
   }
   .rsTable {
-    font-size: 8px; /*no*/
+    font-size: 8px;
     &::before {
       height: 0;
     }
     ::v-deep .el-table__header th {
-      padding-top: 8px; /*no*/
-      padding-bottom: 8px; /*no*/
+      padding-top: 8px;
+      padding-bottom: 8px;
       & > .cell {
-        padding-left: 3px; /*no*/
-        padding-right: 3px; /*no*/
-        line-height: 14px; /*no*/
+        padding-left: 3px;
+        padding-right: 3px;
+        line-height: unset;
+        font-size: 12px;
         p {
-          min-height: 16px; /*no*/
+          min-height: 16px;
         }
       }
     }
@@ -1829,12 +1830,13 @@ export default {
       td {
         border-top: 1px solid #ccc;
         .cell {
-          padding-right: 1px; /*no*/
-          padding-left: 1px; /*no*/
+          padding-right: 1px;
+          padding-left: 1px;
+          line-height: unset;
         }
         &:first-child {
           .cell {
-            padding-left: 8px; /*no*/
+            padding-left: 8px;
           }
         }
       }
@@ -1849,7 +1851,7 @@ export default {
   .rsCard {
     box-shadow: none;
     & + .rsCard {
-      margin-top: 20px; /*no*/
+      margin-top: 20px;
     }
     ::v-deep .cardHeader {
       padding: 30px 0px;
@@ -1858,41 +1860,6 @@ export default {
       padding: 0px;
     }
   }
-  // .mainTable {
-  //   font-size: 8px; /*no*/
-  //   &::before {
-  //     height: 0;
-  //   }
-  //   ::v-deep .el-table__header th {
-  //     padding-top: 8px; /*no*/
-  //     padding-bottom: 8px; /*no*/
-  //     & > .cell {
-  //       padding-left: 3px; /*no*/
-  //       padding-right: 3px; /*no*/
-  //       line-height: 14px; /*no*/
-  //       p {
-  //         min-height: 16px; /*no*/
-  //       }
-  //     }
-  //   }
-  //   ::v-deep .el-table__row {
-  //     border-left: 1px solid #ebeef5;
-  //     border-bottom: 1px solid #ebeef5;
-  //     td {
-  //       border-top: 1px solid #ccc;
-  // 			.cell {
-  // 					padding-right: 1px; /*no*/
-  // 					padding-left: 1px; /*no*/
-  // 			}
-  // 			&:first-child {
-  // 				.cell{
-  // 					padding-left: 8px; /*no*/
-  // 				}
-  // 			}
-  //       }
-  // 	}
-  // }
-  // }
   .beizhu {
     background-color: rgba(22, 96, 241, 0.03);
     // height: 40px;
@@ -1970,7 +1937,7 @@ export default {
   ::v-deep .rsCard {
     box-shadow: none;
     & + .rsCard {
-      margin-top: 20px; /*no*/
+      margin-top: 20px;
     }
 
     .cardHeader {
@@ -1987,18 +1954,18 @@ export default {
   }
 
   ::v-deep .rsTable {
-    font-size: 8px; /*no*/
+    font-size: 8px;
     .el-table__header th {
-      padding-top: 8px; /*no*/
-      padding-bottom: 8px; /*no*/
-      line-height: 14px; /*no*/
+      padding-top: 8px;
+      padding-bottom: 8px;
       & > .cell {
-        padding-left: 3px; /*no*/
-        padding-right: 3px; /*no*/
+        padding-left: 3px;
+        padding-right: 3px;
+        line-height: unset;
         p {
           margin: 0;
-          min-height: 16px; /*no*/
-          line-height: 14px; /*no*/
+          min-height: 16px;
+          line-height: 14px;
         }
       }
     }
@@ -2007,18 +1974,19 @@ export default {
       border-bottom: 1px solid #ebeef5;
       td {
         border-top: 1px solid #ccc;
-        line-height: 23px; /*no*/
+        line-height: 23px;
         .cell {
-          padding-right: 1px; /*no*/
-          padding-left: 1px; /*no*/
+          padding-right: 1px;
+          padding-left: 1px;
+          line-height: unset;
           p {
-            line-height: 23px; /*no*/
+            line-height: 23px;
             margin: 0;
           }
         }
         &:first-child {
           .cell {
-            padding-left: 8px; /*no*/
+            padding-left: 8px;
           }
         }
       }
