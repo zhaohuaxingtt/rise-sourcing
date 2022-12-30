@@ -582,7 +582,7 @@ export default {
 	.rsCard {
 		box-shadow: none;
 		& + .rsCard {
-			margin-top: 20px; /*no*/
+			margin-top: 20px;
 		}
 
 		::v-deep .cardHeader {
@@ -603,7 +603,7 @@ export default {
 		&.el-table--border {
 			border-color: #ccc;
 		}
-		font-size: 8px; /*no*/
+		font-size: 8px;
 		&::before,
 		&::after {
 			background-color: #ccc;
@@ -613,14 +613,14 @@ export default {
 			background-color: #ccc;
 		}
 		::v-deep thead th {
-			padding-top: 8px; /*no*/
-			padding-bottom: 8px; /*no*/
+			padding-top: 8px;
+			padding-bottom: 8px;
 			& > .cell {
-				padding-left: 3px; /*no*/
-				padding-right: 3px; /*no*/
-				line-height: 14px; /*no*/
+				padding-left: 3px;
+				padding-right: 3px;
+				line-height: 14px;
 				p {
-					min-height: 16px; /*no*/
+					min-height: 16px;
 				}
 			}
 		}
@@ -630,12 +630,13 @@ export default {
 			td {
 				border-top: 1px solid #ccc;
 				.cell {
-					padding-right: 1px; /*no*/
-					padding-left: 1px; /*no*/
+					padding-right: 1px;
+					padding-left: 1px;
+					line-height: unset;
 				}
 				&:first-child {
 					.cell {
-						padding-left: 8px; /*no*/
+						padding-left: 8px;
 					}
 				}
 			}

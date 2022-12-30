@@ -1196,15 +1196,15 @@ export default {
       & > .cell {
         padding-left: 3px;
         padding-right: 3px;
-        line-height: 16px;
+        line-height: unset;
         font-size: 12px;
         p {
           margin: 0;
           min-height: 16px;
         }
-        p + p {
-          margin-top: 8px;
-        }
+        // p + p {
+        //   margin-top: 8px;
+        // }
       }
     }
 
@@ -1215,6 +1215,7 @@ export default {
           margin: 0;
           padding-left: 3px;
           padding-right: 3px;
+					line-height: unset;
         }
       }
       &:nth-child(even) {

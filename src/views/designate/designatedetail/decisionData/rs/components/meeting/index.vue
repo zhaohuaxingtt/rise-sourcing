@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-02 11:30:58
+ * @LastEditTime: 2022-12-30 14:58:30
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -2041,15 +2041,15 @@ export default {
     & > .cell {
       padding-left: 3px;
       padding-right: 3px;
-      line-height: 16px;
+      line-height: unset;
       font-size: 12px;
       p {
         min-height: 16px;
       }
 
-      p + p {
-        margin-top: 8px;
-      }
+      // p + p {
+      //   margin-top: 8px;
+      // }
     }
   }
 
@@ -2063,6 +2063,7 @@ export default {
     .cell {
       padding-left: 3px;
       padding-right: 3px;
+      line-height: unset;
     }
   }
 }
@@ -2395,14 +2396,14 @@ export default {
       & > .cell {
         padding-left: 3px;
         padding-right: 3px;
-        line-height: 16px;
+        line-height: unset;
         font-size: 12px;
         p {
           min-height: 16px;
         }
-        p + p {
-          margin-top: 8px;
-        }
+        // p + p {
+        //   margin-top: 8px;
+        // }
       }
     }
 
@@ -2412,6 +2413,7 @@ export default {
         & > .cell {
           padding-left: 3px;
           padding-right: 3px;
+					line-height: unset;
         }
       }
       &:nth-child(even) {
