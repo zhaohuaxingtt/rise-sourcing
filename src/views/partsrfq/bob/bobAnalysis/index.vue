@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-03-08 11:26:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-01-04 18:18:34
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
 -->
@@ -316,6 +316,14 @@ export default {
         });
       },
     },
+    "$i18n.locale"(val){
+      this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'all',
+              schemaId: this.schemaId,
+              groupId: this.groupId,
+            })
+    }
   },
   methods: {
     formatIfNumber (val) {
@@ -545,6 +553,10 @@ export default {
     },
     chargeRetrieve (params) {
       this.onDataLoading = true;
+      params = {
+        ...params,
+        language: this.$i18n.locale == 'zh' ? 'CN' : 'EN' // 添加入参
+      }
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
