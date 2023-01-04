@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-26 16:26:09
+ * @LastEditTime: 2023-01-04 23:48:08
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -489,7 +489,7 @@
               </div>
               <div slot="reference">
                 <p>
-                  <span v-if="scope.row.cfTargetSkdAPrice||scope.row.cfTargetAPrice" style="color: red"
+                  <span v-if="+scope.row.selAPrice" style="color: red"
                     >*</span>
                   <template v-if="scope.row.cfApplyType === 'SKDLC'">
                     <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
