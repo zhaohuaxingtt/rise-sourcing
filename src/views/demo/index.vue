@@ -10,7 +10,7 @@
       <div class="search-wrapper"
            v-if="typeof searchMethod === 'function'">
         <el-input v-model="query"
-                  placeholder="开始搜索吧..."
+                  :placeholder="language('KAISHISOUSUOBA','开始搜索吧...')"
                   @input="handleInputChange"
                   ref="searchInput"></el-input>
       </div>
@@ -18,16 +18,16 @@
            v-if="multiple">
         <el-button-group>
           <el-button @click="handleSelect(true)"
-                     :disabled="multiple && multipleLimit">全选</el-button>
+                     :disabled="multiple && multipleLimit">{{language('QUANXUAN','全选')}}</el-button>
           <el-button @click="handleSelect(false)">
-            全不选
+            {{language('QUANBUXUAN','全不选')}}
           </el-button>
         </el-button-group>
       </div>
       <div class="list-container">
         <div class="selected-container"
              v-if="selectedData.length">
-          <div class="title">已选择</div>
+          <div class="title">{{language('YIXUANZHE','已选择')}}</div>
           <div v-for="(item, index) in selectedData"
                :key="index"
                @click="handleSelectItem(item)"
@@ -73,7 +73,7 @@
         <el-input :disabled="disabled"
                   v-if="multiple"
                   :readonly="true"
-                  placeholder="请选择"
+                  :placeholder="language('LK_QINGXUANZE','请选择')"
                   :title="inputData"
                   ref="selectInput"
                   @focus="handleFocus">
@@ -82,7 +82,7 @@
                   v-else
                   v-model="inputData"
                   :readonly="true"
-                  placeholder="请选择"
+                  :placeholder="language('LK_QINGXUANZE','请选择')"
                   :title="inputData"
                   ref="selectInput"
                   @focus="handleFocus">

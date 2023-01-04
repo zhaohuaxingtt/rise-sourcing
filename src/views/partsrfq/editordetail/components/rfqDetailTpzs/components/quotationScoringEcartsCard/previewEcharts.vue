@@ -13,13 +13,13 @@
   <div>
     <div class="margin-bottom20 echarts">
       <el-form inline>
-          <el-form-item label="价格维度" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT|价格维度">
+          <el-form-item :label="language('PI.JIAGEWEIDU','价格维度')" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT|价格维度">
             <iSelect style="width:90PX;" :placeholder="language('partsprocure.CHOOSE','请选择')" v-model="form.priceLatitude">
               <el-option label="MixPrice" value='1'></el-option>
               <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="供应商" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商" >
+          <el-form-item :label="language('costanalysismanage.GongYingShang','供应商')" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商" >
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="supplierSelectlist" @change="onFilteDataChange($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
