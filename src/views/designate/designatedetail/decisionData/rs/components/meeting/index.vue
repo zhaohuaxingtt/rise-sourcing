@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-26 16:26:22
+ * @LastEditTime: 2023-01-04 23:46:56
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -761,7 +761,7 @@
               </div>
               <div slot="reference">
                 <p>
-                  <span v-if="scope.row.cfTargetSkdAPrice||scope.row.cfTargetAPrice" style="color: red"
+                  <span v-if="+scope.row.selAPrice" style="color: red"
                     >*</span
                   >
                 <template v-if="scope.row.cfApplyType === 'SKDLC'">
