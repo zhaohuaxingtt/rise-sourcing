@@ -1,8 +1,8 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-02 10:42:01
- * @LastEditTime: 2022-05-31 16:39:33
- * @LastEditors: zhaohuaxing vinzhao@deloitte.com.cn
+ * @LastEditTime: 2022-12-30 18:43:29
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\data.js
  */
@@ -16,6 +16,7 @@ export const tableTitle = [
     name2: '零件名称',
     key2: 'LJMC',
     tooltip: true,
+    minWidth: 140,
   },
   {
     props: 'categoryName',
@@ -24,14 +25,14 @@ export const tableTitle = [
     name2: '工艺组名称',
     key2: 'GYZMC',
     tooltip: true,
-    width: 200,
+    width: 160,
   },
   {
     props: 'fsnrGsnrNum',
     name: 'FSNR/GSNR',
     key: 'FSNRGSNRCODE',
     tooltip: true,
-    width: 180,
+    width: 130,
   },
   { props: 'rfqId', name: 'RFQ编号', key: 'RFQBH', tooltip: true },
   {
@@ -39,11 +40,16 @@ export const tableTitle = [
     name: '零件采购项目类型',
     key: 'LJCGXMLX',
     tooltip: true,
+    minWidth: 120,
   },
-  { props: 'carTypeProj', name: '车型项目名称', key: 'CXXMMC', tooltip: true },
-  { props: 'supplierNameCn', name: '定点供应商', key: 'DDGYS', tooltip: true },
-  { props: 'nominatePrice', name: '定点金额', key: 'DDJE', tooltip: true },
-  { props: 'nominateTime', name: '定点时间', key: 'DDSJ', tooltip: true },
+  { props: 'carTypeProj', name: '车型项目名称', key: 'CXXMMC', tooltip: true,
+  minWidth: 100 },
+  { props: 'supplierNameCn', name: '定点供应商', key: 'DDGYS', tooltip: true,
+  minWidth: 100 },
+  { props: 'nominatePrice', name: '定点金额', key: 'DDJE', tooltip: true,
+  minWidth: 100 },
+  { props: 'nominateTime', name: '定点时间', key: 'DDSJ', tooltip: true,
+  minWidth: 90 },
 ]
 
 export const tableTitleExport = [

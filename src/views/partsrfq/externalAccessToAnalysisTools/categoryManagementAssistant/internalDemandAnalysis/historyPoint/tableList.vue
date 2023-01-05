@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 14:15:26
- * @LastEditTime: 2022-05-19 17:09:37
- * @LastEditors: zhaohuaxing 5359314+zhaohuaxing@user.noreply.gitee.com
+ * @LastEditTime: 2022-12-30 18:38:08
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: SOURCING TABLE 封装
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\tableList.vue
 -->
@@ -25,7 +25,8 @@
                        :label="language(item.key,item.name)"
                        :prop="item.props"
                        :show-overflow-tooltip="item.tooltip"
-                       :width="item.width">
+                       :width="item.width"
+                       :minWidth="item.minWidth">
         <template slot="header">
           <p class="tableTitleSolt">
             <span>{{language(item.key,item.name)}}</span>
@@ -62,7 +63,8 @@
                        :label="language(item.key,item.name)"
                        :prop="item.props"
                        :show-overflow-tooltip="item.tooltip"
-                       :width="item.width">
+                       :width="item.width"
+                       :minWidth="item.minWidth">
         <template slot="header">
           <p class="tableTitleSolt">
             <span>{{language(item.key,item.name)}}</span>
@@ -83,7 +85,8 @@
                        :label="language(item.key,item.name)"
                        :prop="item.props"
                        :show-overflow-tooltip="item.tooltip"
-                       :width="item.width">
+                       :width="item.width"
+                       :minWidth="item.minWidth">
         <template slot-scope="scope">
           <span>{{getMoney(scope.row.nominatePrice)}}</span>
         </template>
@@ -95,7 +98,8 @@
                        :label="language(item.key,item.name)"
                        :prop="item.props"
                        :show-overflow-tooltip="item.tooltip"
-                       :width="item.width">
+                       :width="item.width"
+                       :minWidth="item.minWidth">
       </el-table-column>
     </template>
   </el-table>

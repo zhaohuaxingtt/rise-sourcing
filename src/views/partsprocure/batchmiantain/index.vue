@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2022-12-06 09:59:48
+ * @LastEditTime: 2022-12-30 15:52:13
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
@@ -204,6 +204,22 @@
               :value="item.id"
               :label="item.name"
               v-for="(item, index) in fromGroup.CF_CONTROL"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item
+          v-show="batch.type==partProjTypes.DBLINGJIAN"
+          :label="language('LK_HUOBI', '货币')"
+        >
+          <iSelect
+            :placeholder="language('LK_QINGXUANZE', '请选择')"
+            v-model="batch.currencyCode"
+          >
+            <el-option
+              :value="item.code"
+              :label="item.name"
+              v-for="(item, index) in fromGroup.CURRENCY_TYPE"
               :key="index"
             ></el-option>
           </iSelect>
@@ -567,6 +583,7 @@ export default {
         linieId: this.linie.code,
         partProjectType: this.batch.type,
         partType: this.batch.partType,
+        currencyCode: this.batch.currencyCode,
         procureFactory: this.batch.procureFactory,
         procureFactoryName: factoryItems ? factoryItems.name : null,
         unit: this.batch.unit,
