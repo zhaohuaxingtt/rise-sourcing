@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-05 17:40:00
- * @LastEditors: YoHo
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
@@ -21,6 +21,7 @@ export const tableApplyTitle = [
     { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
     { props: 'partName', name: '零件名(中)', key: 'LINGJIANMINGZHONG' },
     { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
-    { props: 'csfPDiretor', name: 'CSF(P)负责⼈', key: 'LK_CSFPFUZEREN', width: 150 },
+    { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
+    { props: 'approvalStatusDesc', name: '审批状态', key: 'LK_SHENPIZHUANGTAI' },
     { props: 'budget', name: '投资预算', key: 'LK_TOUZIYUSUAN' },
 ]
