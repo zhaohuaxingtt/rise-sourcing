@@ -8,6 +8,7 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTS
 
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
+const requstParts = axios(process.env.VUE_APP_PART)
 const sourcing = axios(process.env.VUE_APP_SOURCING)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING)
 const quotation = axios(process.env.VUE_APP_SOURCING)
@@ -29,6 +30,14 @@ export function autonomi(params) {
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
 		url: '/materialGroupByPartNum',
+		method: 'GET',
+		params: params
+	})
+}
+// 采购项目-根据材料组code获取材料组信息
+export function getMaterialGroupByCategoryCode(params) {
+	return requstParts({
+		url: '/materialGroupByCategoryCode',
 		method: 'GET',
 		params: params
 	})
