@@ -13,11 +13,11 @@
           <iButton class="margin-left30" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_SAVE"
                    @click="saveDialog">{{ $t('LK_BAOCUN') }}</iButton>
           <!--BoB分析库-->
-          <iButton @click="goToBob" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_FENXIKU">BoB{{ $t('分析库') }}</iButton>
+          <iButton @click="goToBob" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_FENXIKU">BoB{{ $t('FENXIKU') }}</iButton>
           <!--查找零件-->
           <iButton class="margin-left30" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_CHAZHAOLINGJIAN"
                    @click="findPart"
-                   v-if="!inside">{{ $t('查找零件') }}</iButton>
+                   v-if="!inside">{{ $t('TPZS.CZLJ') }}</iButton>
         </div>
       </div>
       <el-row :gutter="20"
@@ -31,15 +31,15 @@
               <el-row class="margin-bottom20">
                 <div v-if="inside">
                   <!--比较类型-->
-                  <el-form-item :label="$t('比较类型')">
+                  <el-form-item :label="$t('BIJIAOLEIXING')">
                     <iSelect v-model="chartType"
                              @change="changeBy">
                       <el-option value="supplier"
-                                 :label="$t('按供应商比较')"> </el-option>
+                                 :label="$t('ANGONGYINGSHANGBIJIAO')"> </el-option>
                       <el-option value="turn"
-                                 :label="$t('按轮次比较')"></el-option>
+                                 :label="$t('ANLUNCIBIJIAO')"></el-option>
                       <el-option value="spareParts"
-                                 :label="$t('按零件号比较')"></el-option>
+                                 :label="$t('ANLINGJIANHAOBIJIAO')"></el-option>
                     </iSelect>
                   </el-form-item>
                   <!--供应商-->
@@ -59,19 +59,19 @@
                     </el-select>
                   </el-form-item>
                   <!--轮次-->
-                  <el-form-item :label="$t('轮次')">
+                  <el-form-item :label="$t('LUNCI')">
                     <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
                       <el-option :value="Number(-1)"
-                                 label="最新"
+                                 :label="$t('ZUIXIN')"
                                  v-if="chartType !== 'turn'"></el-option>
                       <el-option v-for="i in turnList"
                                  :key="i.turn"
                                  :value="i.turn"
-                                 :label="'第' + i.turn + '轮'"></el-option>
+                                 :label="$t('DI') + i.turn + $t('LUN')"></el-option>
                     </el-select>
                   </el-form-item>
                   <!--零件号-->
@@ -89,14 +89,14 @@
                   </el-form-item>
                 </div>
                 <div v-else>
-                  <el-form-item :label="$t('比较类型')">
+                  <el-form-item :label="$t('BIJIAOLEIXING')">
                     <iSelect v-model="chartType"
                              @change="changeBy">
                       <el-option value="combination"
-                                 :label="$t('混合比较')"> </el-option>
+                                 :label="$t('HUNHEBIJIAO')"> </el-option>
                     </iSelect>
                   </el-form-item>
-                  <el-form-item :label="$t('FS号-零件号-供应商')">
+                  <el-form-item :label="$t('FSLINGJIANHAOGONGYINGSHANG')">
                     <custom-select :data="options"
                                    label="nameZh"
                                    value="key"
@@ -137,8 +137,8 @@
                   <li v-for="(item, index) in anchorList"
                       :key="index">
                     <i class="circle"
-                       :style="color(item)"></i>
-                    <span style="vertical-align: baseline">{{ item }}</span>
+                       :style="color(item.zh)"></i>
+                    <span style="vertical-align: baseline">{{ $t(item.i18n) }}</span>
                   </li>
                 </ul>
               </div>
@@ -151,6 +151,7 @@
                            :maxData="maxData"
                            :type="bobType"
                            :by="chartType"
+                           :supplierList="supplierList"
                            @select="showSelect"
                            @type-changed="bobTypeChanged" />
               </div>
@@ -158,6 +159,7 @@
                        :maxData="maxData"
                        :isPreview="isPreview"
                        preview
+                      :supplierList="supplierList"
                        @del="delOut"
                        @change="changeOut"
                        @find-part="findPart"
@@ -176,8 +178,8 @@
               <ul class="anchorList flex">
                 <li v-for="(i, index) in anchorList"
                     :key="index"
-                    @click="doActive(i, index)"
-                    :class="{ active: index == current }">{{ i }}</li>
+                    @click="doActive(i.zh, index)"
+                    :class="{ active: index == current }">{{ $t(i.i18n) }}</li>
               </ul>
             </iCard>
           </bob-pin>
@@ -191,6 +193,7 @@
                        :formUpdata="formUpdata"
                        :propSchemeId="analysisSchemeId"
                        :propGroupId="groupId"
+                       :supplierList="supplierList"
                        @groupToList="groupToList"
                        :isPreview="isPreview"></bobAnalysis>
         </el-col>
@@ -229,30 +232,30 @@
              :propGroupId="groupId"
              :reportName="reportName"
              @closeDialog="closePreView"></preview>
-    <iDialog title="保存"
+    <iDialog :title="$t('BAOCUN')"
              :visible.sync="dialogVisible"
              width="20%"
              @close="close">
       <div>
         <div class="margin-bottom15 flex-between-center">
-          <label for="">保存在分析库</label>
+          <label for="">{{$t('TPZS.BCZFXK')}}</label>
           <el-checkbox v-model="analysisSave"></el-checkbox>
         </div>
         <iInput v-model="analysisName"
-                placeholder="请输入文件名称" />
+                :placeholder="$t('TPZS.QSRWJMC')" />
       </div>
       <div class="margin-top20">
         <div class="margin-bottom15 flex-between-center">
-          <label for="">保存为报告</label>
+          <label for="">{{$t('TPZS.BCWBK')}}</label>
           <el-checkbox v-model="reportSave"></el-checkbox>
         </div>
         <iInput v-model="reportName"
-                placeholder="请输入文件名称" />
+                :placeholder="$t('TPZS.QSRWJMC')" />
       </div>
       <span slot="footer"
             class="dialog-footer">
         <iButton type="primary"
-                 @click="save">确 定</iButton>
+                 @click="save">{{$t('QUEDING')}}</iButton>
       </span>
     </iDialog>
   </iPage>
@@ -318,7 +321,7 @@ export default {
       dialogVisible: false,
       analysisSave: false,
       reportSave: false,
-      anchorList: ['原材料/散件成本', '制造成本', '报废成本', '管理费用', '其他费用', '利润'],
+      anchorList: [{zh:'原材料/散件成本',i18n:'YUANCAILIAOSANJIANCHENGBEN'}, {zh:'制造成本',i18n:'ZHIZAOCHENGBEN'}, {zh:'报废成本',i18n:'BAOFEICHENGBEN'}, {zh:'管理费用',i18n:'GUANLIFEI'}, {zh:'其他费用',i18n:'LK_QITAFEIYONG'}, {zh:'利润',i18n:'LIRUN'}],
       current: null,
       isCover: true,
       label: '',

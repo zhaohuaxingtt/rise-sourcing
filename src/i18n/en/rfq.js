@@ -1,8 +1,8 @@
 /*
  * @Author: YoHo
  * @Date: 2022-03-11 16:51:30
- * @LastEditTime: 2022-04-07 14:01:35
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-01-04 17:30:48
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: rfq管理
  */
 export default {
@@ -28,5 +28,22 @@ export default {
 	TONGPILIANG: 'Same with Series A Price',
 	YIQIANSHOUQZPJGLYMJXFPCGYDCZ: 'has been signed for. Please go to the Parts management page to assign purchasers',
 	QINHXIANTIANJIASHUJU: 'Please add data first',
-	NINHAIWEIXUANZEPINGFENBUMEN: 'You have not selected a rating department yet!'
+	NINHAIWEIXUANZEPINGFENBUMEN: 'You have not selected a rating department yet!',
+  ZANWUYULAN:'Sorry there is no preview file for the current type',
+  BIJIAOLEIXING:'Comparison of type',
+  ANGONGYINGSHANGBIJIAO :'Comparison by supplier',
+  ANLUNCIBIJIAO: 'Compare by turn',
+  ANLINGJIANHAOBIJIAO: 'Compare by part number',
+  HUNHEBIJIAO: 'Mixed comparison',
+  LUNCI: 'rounds',
+  ZUIXIN: 'The latest',
+  DI:'The',
+  LUN:'round',
+  FSLINGJIANHAOGONGYINGSHANG:'FS No. - Part No. - Supplier',
+  HUANYUAN:'reduction',
+  SHUJUFENZU:'Data grouping',
+  YICHU:'Remove',
+  BAOCUNFENZU:'Save grouping',
+  FENZUZHI:'Group to',
+  DAITIANJIA:'To add'
 }
