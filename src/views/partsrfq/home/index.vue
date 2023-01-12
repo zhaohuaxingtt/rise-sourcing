@@ -636,12 +636,17 @@ export default {
     };
   },
   created() {
+  
     this.getCartypeDict();
     this.getDict();
     this.getTableList();
     this.getCarTypeOptions();
     // this.getPartTypeOptions()
     // this.getRfqStatusOptions()
+    if(this.$route.query.supplierName){
+      this.form.supplierName=this.$route.query.supplierName
+      this.sure()
+    }
     this.updateNavList;
   },
   computed: {
