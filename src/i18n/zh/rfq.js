@@ -1,8 +1,8 @@
 /*
  * @Author: YoHo
  * @Date: 2022-03-11 16:51:30
- * @LastEditTime: 2022-04-07 14:00:54
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-01-04 17:31:04
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: rfq管理
  */
 export default {
@@ -25,5 +25,22 @@ export default {
 	TONGPILIANG: '同批量',
 	YIQIANSHOUQZPJGLYMJXFPCGYDCZ: '已签收，请至配件管理页面进行分配采购员的操作',
 	QINHXIANTIANJIASHUJU: '请先添加数据',
-	NINHAIWEIXUANZEPINGFENBUMEN: '您当前还未选择评分部门！'
+	NINHAIWEIXUANZEPINGFENBUMEN: '您当前还未选择评分部门！',
+  ZANWUYULAN: '抱歉当前类型暂无预览文件',
+  BIJIAOLEIXING: '比较类型',
+  ANGONGYINGSHANGBIJIAO: '按供应商比较',
+  ANLUNCIBIJIAO: '按轮次比较',
+  ANLINGJIANHAOBIJIAO: '按零件号比较',
+  HUNHEBIJIAO: '混合比较',
+  LUNCI: '轮次',
+  ZUIXIN: '最新',
+  DI:'第',
+  LUN:'轮',
+  FSLINGJIANHAOGONGYINGSHANG:'FS号-零件号-供应商',
+  HUANYUAN:'还原',
+  SHUJUFENZU:'数据分组',
+  YICHU: '移除',
+  BAOCUNFENZU:'保存分组',
+  FENZUZHI:'分组至',
+  DAITIANJIA:'待添加'
 }

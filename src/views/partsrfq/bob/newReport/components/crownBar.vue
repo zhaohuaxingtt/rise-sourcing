@@ -99,6 +99,10 @@ export default {
     maxData: {
       type: String,
       default: "",
+    },
+    supplierList: {
+      type: Array,
+      default:()=>[]
     }
   },
   data () {
@@ -122,6 +126,7 @@ export default {
         "其他费用",
         "利润",
       ],
+      anchorList: [{zh:'原材料/散件成本',i18n:'YUANCAILIAOSANJIANCHENGBEN'}, {zh:'制造成本',i18n:'ZHIZAOCHENGBEN'}, {zh:'报废成本',i18n:'BAOFEICHENGBEN'}, {zh:'管理费用',i18n:'GUANLIFEI'}, {zh:'其他费用',i18n:'LK_QITAFEIYONG'}, {zh:'利润',i18n:'LIRUN'}],
       bobType: "",
       dataArray: [],
       subtext: "",
@@ -142,13 +147,13 @@ export default {
   },
   methods: {
     getCrownBarName (row) {
-      let name = row.supplierName
-
+      let supplier = this.supplierList.find((item)=>item.supplierId==row.supplierId)
+      let name = this.$i18n.locale==='zh'?supplier.shortNameZh:supplier.shortNameEn
       if (this.chartType === "num") {
         name = row.spareParts;
         this.partList.forEach(value => {
           if (name == value.spareParts) {
-            name = value.shortNameZh
+            name = this.$i18n.locale==='zh'?value.shortNameZh:value.shortNameEn
           }
         })
       }
@@ -446,8 +451,9 @@ export default {
           if (i === 0) {
             tempArr[this.bobType] = [];
           }
+          let langItem = this.anchorList.find((item)=>item.zh==row)
           this.dataArray.push({
-            name: row,
+            name: this.language(langItem.i18n,langItem.zh),
             type: "bar",
             // stack:"lv",
             barGap: "-100%",
@@ -490,7 +496,7 @@ export default {
             data: [...dataList1[row], this.sum(minList)],
           });
           this.dataArray.push({
-            name: row + "lv",
+            name: this.language(langItem.i18n,langItem.zh) + "lv",
             type: "bar",
             stack: "lv",
             // emphasis: {
