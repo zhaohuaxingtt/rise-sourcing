@@ -42,8 +42,21 @@
             @handleSelectionChange="handleSelectionChange"
             :activeItems="'partNum'"
         >
+        <!-- $postThousandth -->
           <template #carTypeProjectName="scope">
             <a class="table-a" href="javascript: ;" @click="jumpDetails(scope)">{{scope.row.carTypeProjectName}}</a>
+          </template>
+          <!-- 总预算金额 -->
+          <template #totalAmount="scope">
+            <span>{{$postThousandth(scope.row.totalAmount)}}</span>
+          </template>
+          <!-- 总申请投资金额 -->
+          <template #totalApplyAmount="scope">
+            <span>{{$postThousandth(scope.row.totalApplyAmount)}}</span>
+          </template>
+          <!-- 总定点投资金额 -->
+          <template #totalPointAmount="scope">
+            <span>{{$postThousandth(scope.row.totalPointAmount)}}</span>
           </template>
         </iTableList>
         <div class="unitExplain">
