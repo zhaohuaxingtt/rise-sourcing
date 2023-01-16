@@ -206,40 +206,43 @@ export default {
              this.$router.push(tab.name)
         },
         getSelectKpiList(params){
-            slelectkpiList({...params,orderByUpload:true}).then(res=>{
+            slelectkpiList({...params,orderByUpload:true}).then(async res=>{
                 this.dropDownOptions=res.data
                 if(this.dropDownOptions.length>0){
-                    this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化表头
-                    this.getDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化最新版本数据
+                    await this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化表头
+                    await this.getDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化最新版本数据
                     this.selectValue=this.dropDownOptions[this.dropDownOptions.length-1].value
                 }
             })
         },
         // 获取表格数据
         getDetail(templateId){
-            kpiDetail({
-            templateId: templateId,
-            ...this.ipagnation}).then(res=>{
-                if(res.code=="200"){
-                    if(res.data.length<1){
-                        this.allData=[]
-                        return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
-                    } 
-                    this.allData=JSON.parse(JSON.stringify(res.data))
-
-                    this.tbodyData=JSON.parse(JSON.stringify(res.data))
-                    this.tbodyData.forEach(x=>{
-                        x.list.forEach(y=>{
-                            y.isShowChildren=false
-                            y.children.forEach(z=>{
-                                z.isShowChildren=false
+            return new Promise((r,j)=>{
+                kpiDetail({
+                templateId: templateId,
+                ...this.ipagnation}).then(res=>{
+                    if(res.code=="200"){
+                        if(res.data.length<1){
+                            this.allData=[]
+                            return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
+                        } 
+                        this.allData=JSON.parse(JSON.stringify(res.data))
+    
+                        this.tbodyData=JSON.parse(JSON.stringify(res.data))
+                        this.tbodyData.forEach(x=>{
+                            x.list.forEach(y=>{
+                                y.isShowChildren=false
+                                y.children.forEach(z=>{
+                                    z.isShowChildren=false
+                                })
                             })
                         })
-                    })
-                    this.page.totalCount = res.total
-                    this.ipagnation.pageNo = res.pageNum
-                    this.ipagnation.pageSize = res.pageSize
-                }
+                        this.page.totalCount = res.total
+                        this.ipagnation.pageNo = res.pageNum
+                        this.ipagnation.pageSize = res.pageSize
+                    }
+                    r()
+                })
             })
         },
         handleFoldCell(index,lev,id){
@@ -308,9 +311,12 @@ export default {
                    })
                })
         },
-        handleChange(){
-            this.getTittleDetail(this.selectValue)
-            this.getDetail(this.selectValue)
+        async handleChange(){
+            if(this.loading) return
+            this.loading = true
+            await this.getTittleDetail(this.selectValue)
+            await this.getDetail(this.selectValue)
+            this.loading = false
         },
         handleupLoad(){
            this.isShowDialog=true
@@ -394,35 +400,38 @@ export default {
         // },
         // 获取表头
         getTittleDetail(x){
-            templateDetail({pageNo: 1,
-            pageSize: 100,
-            templateId: x}).then(res=>{
-                if(res.code=="200"){
-                    this.tittleData=JSON.parse(JSON.stringify(res.data))
-                    this.tittleData.forEach(x=>{
-                        x.isShowChildren=true
-                        x.children.forEach(z=>{
-                            z.isShowChildren=true
-                            z.children.forEach(k=>{k.isShowChildren=true})
+            return new Promise((r,j)=>{
+                templateDetail({pageNo: 1,
+                pageSize: 100,
+                templateId: x}).then(res=>{
+                    if(res.code=="200"){
+                        this.tittleData=JSON.parse(JSON.stringify(res.data))
+                        this.tittleData.forEach(x=>{
+                            x.isShowChildren=true
+                            x.children.forEach(z=>{
+                                z.isShowChildren=true
+                                z.children.forEach(k=>{k.isShowChildren=true})
+                            })
                         })
-                    })
-                    
-                    this.jointTittle()
-                    
-                    //默认折叠
-                    let showLev1= []
-                    this.theadData.map(z=>{
-                        if(z.lev==1){
-                            showLev1.push(z)
-                        }
-                    })
-                    this.theadData=[...showLev1]
-                   
-                    // this.tbodyData.forEach(score=>{
-                    //     score.list.forEach
-                    //     score.isShowChildren=false
-                    // })
-                }
+                        
+                        this.jointTittle()
+                        
+                        //默认折叠
+                        let showLev1= []
+                        this.theadData.map(z=>{
+                            if(z.lev==1){
+                                showLev1.push(z)
+                            }
+                        })
+                        this.theadData=[...showLev1]
+                       
+                        // this.tbodyData.forEach(score=>{
+                        //     score.list.forEach
+                        //     score.isShowChildren=false
+                        // })
+                    }
+                    r()
+                })
             })
 
         },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-12-06 09:41:02
+ * @LastEditTime: 2023-01-16 12:14:23
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -222,6 +222,7 @@
           <iSelect
             filterable
             clearable
+            :disabled="selfLoading"
             v-model="form.linieDeptId"
             :placeholder="$t('LK_QINGXUANZHE')"
             @change="deptChange"
@@ -262,6 +263,7 @@
           <iSelect
             filterable
             clearable
+            :disabled="selfLoading"
             v-model="lookYourselfValue"
             @change="selfChange"
             :placeholder="
@@ -845,6 +847,7 @@ export default {
       lookYourselfValue:1,
 
       linieValue:'',
+      selfLoading:false
     };
   },
   created() {
@@ -937,6 +940,8 @@ export default {
       }
     },
     getLinie(id){
+      if(this.selfLoading) return
+      this.selfLoading = true
       if(id){
         listLines({
           deptId:id,
@@ -944,12 +949,16 @@ export default {
           if (r.code == 200) {
             this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
           }
+        }).finally(()=>{
+          this.selfLoading = false
         });
       }else{
         listLines({}).then((r) => {
           if (r.code == 200) {
             this.fromGroup["LINIE"] = Array.isArray(r.data) ? r.data : [];
           }
+        }).finally(()=>{
+          this.selfLoading = false
         });
       }
     },

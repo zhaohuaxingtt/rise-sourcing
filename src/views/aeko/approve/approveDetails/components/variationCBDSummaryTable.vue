@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2022-01-20 11:14:17
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-01-16 11:28:22
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
 <template>
@@ -87,6 +87,7 @@
       :workFlowId="workFlowId"
       :noLinie="noLinie"
       :tableData="switchPartsTable"
+      :changeLoading="loading"
       @getCbdDataQuery="getCbdDataQuery"
     />
     <iTabsList

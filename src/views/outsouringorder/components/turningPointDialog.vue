@@ -14,6 +14,7 @@
         <iSelect
           :placeholder="$t('LK_QINGXUANZE')"
           v-model="department"
+          :disabled="loading"
           @change="selDeptOnChange"
           value-key="id"
         >
@@ -79,6 +80,7 @@ export default {
       userList: [],
       handleLoading: false,
       isAllItem: true,
+      loading:false,
     };
   },
   watch: {
@@ -131,6 +133,8 @@ export default {
     },
     //选中部分发生变化//获取部门用户
     selDeptOnChange() {
+      if(this.loading) return
+      this.loading = true
       this.buyer = {};
       let parmars = { deptId: this.department.id };
       listByDeptId(parmars)
@@ -139,7 +143,9 @@ export default {
             this.userList = res.data;
           }
         })
-        .catch((err) => {});
+        .catch((err) => {}).finally(()=>{
+          this.loading = false
+        });
     },
   },
 };

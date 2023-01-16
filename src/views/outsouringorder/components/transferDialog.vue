@@ -12,6 +12,7 @@
           :placeholder="$t('LK_QINGXUANZE')"
           v-model="department"
           @change="selDeptOnChange"
+          :disabled="loading"
           value-key="deptId"
         >
           <!-- <el-option :value="{}" :label="$t('all')"/> -->
@@ -112,6 +113,8 @@ export default {
     },
     //选中部分发生变化//获取部门用户
     selDeptOnChange() {
+      if(this.loading) return
+      this.loading = true
       this.userId = "";
       let parmars = { deptId: this.department.deptId };
       getRfqUserInfoList(parmars)
@@ -122,7 +125,10 @@ export default {
             });
           }
         })
-        .catch((err) => {});
+        .catch((err) => {})
+        .finally(()=>{
+          this.loading = false
+        });
     },
   },
   data() {
@@ -132,6 +138,7 @@ export default {
       deptList: [],
       userList: [],
       isAllItem: true,
+      loading:false
     };
   },
   watch: {
