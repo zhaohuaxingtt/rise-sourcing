@@ -250,7 +250,7 @@ export default {
           }
         })
       }else{
-        this.$alert(msg, '保存失败', {
+        this.$alert(msg, '导出失败', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,
         });
