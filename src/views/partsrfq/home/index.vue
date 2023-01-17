@@ -592,6 +592,7 @@ export default {
       selectTableData: [],
       diologAssignmentOfScroingTasks: false,
       form: {
+        supplierName:'',
         searchConditions: "",
         rfqId: "",
         rfqName: "",
