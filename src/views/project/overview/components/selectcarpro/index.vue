@@ -37,7 +37,7 @@
         <!-- v-permission="PROJECTMGT_CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN" -->
         <iButton @click="handleSave" >{{language('BAOCUN', '保存')}}</iButton>
       </div>
-      <tableList ref="table"  :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
+      <tableList v-updata ref="table" :rowKey="rowKey" :tableTitle="tableTitle" :tableData="tableData.slice((this.page - 1) * this.size, (this.page - 1) * this.size + this.size)" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -54,7 +54,9 @@
 <script>
 import { iDialog, iButton, iSearch, iSelect, iMessage } from 'rise'
 import { tableTitle } from './data'
-import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
+import { cloneDeep } from "lodash";
+
+import tableList from '@/views/project/schedulingassistant/progroup/components/tableList/tablesitCopy'
 import { getSelectCarType, updateSelectCarType, getCarTypePro } from '@/api/project'
 export default {
   components: { iDialog, iButton, tableList, iSearch, iSelect },
@@ -88,16 +90,28 @@ export default {
     this.getCarProjectOptions()
   },
   methods: {
-   
+    rowKey(row) {
+
+      return row.id;
+
+    },
     // 修改页大小
     handleSizeChange(val) {
       this.size = val;
-      this.getSelectCarPro();
+      // this.$nextTick(() => {
+      //     this.$refs.table.toggleSelection(this.tableData.filter(item => item.isSelect))
+      // })
+
       },
-// 修改页码
+    // 修改页码
       handleCurrentChange(val) {
         this.page = val;
-        this.getSelectCarPro();
+        // this.$nextTick(() => {
+        //   this.tableData.forEach(val=>{
+        //     this.$refs.table.toggleSelection(this.tableData.filter(item => item.isSelect))
+        //   })
+        // })
+
       },
     /**
      * @Description: 列表选中项改变
@@ -137,7 +151,7 @@ export default {
      */    
     handleSave() {
       this.tableLoading = true
-      const tableList = this.tableDataCopy.map(item => {
+      const tableList = this.tableData.map(item => {
         return {
           ...item,
           isSelect: this.selectTableList.some(selectItem => selectItem.id === item.id)
@@ -165,19 +179,17 @@ export default {
       try {
         const res = await getSelectCarType(carTypeProId)
         if (res?.result) {
-          var that = this;
-          this.tableData = res.data || []
-          this.tableDataCopy = res.data || []
-          this.tableData= this.tableData.filter(//前端假分页
-            (item, index) =>
-                index < that.page * that.size &&
-                index >= that.size * (that.page - 1)
-          ); //根据页数显示相应的内容
+          this.tableData =res.data || []
           this.total = res.data.length;
           this.$nextTick(() => {
-            this.$refs.table.toggleSelection(this.tableData.filter(item => item.isSelect))
+            this.tableData.forEach(val=>{
+              if(val.isSelect){
+                this.$refs.table.$refs.multipleTable.toggleRowSelection(val,true) 
+              }
+            })
+            // this.$refs.table.toggleSelection(this.tableData.filter(item => item.isSelect))
           })
-          console.log(this.tableData)
+
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
