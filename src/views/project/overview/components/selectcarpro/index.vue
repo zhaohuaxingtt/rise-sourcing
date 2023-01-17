@@ -34,9 +34,19 @@
     </iSearch>
     <div class="tableBox padding-bottom40">
       <div class="tableBox-btn">
-        <iButton @click="handleSave" v-permission="PROJECTMGT_CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN">{{language('BAOCUN', '保存')}}</iButton>
+        <!-- v-permission="PROJECTMGT_CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN" -->
+        <iButton @click="handleSave" >{{language('BAOCUN', '保存')}}</iButton>
       </div>
-      <tableList ref="table" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
+      <tableList ref="table"  :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="page"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+     </el-pagination>
     </div>
   </iDialog>
 </template>
@@ -68,13 +78,27 @@ export default {
       tableLoading: false,
       tableData: [{}],
       carProjectOptions: [],
-      selectTableList: []
+      selectTableList: [],
+      page: 1,
+      size: 10,
+      total:0
     }
   },
   created() {
     this.getCarProjectOptions()
   },
   methods: {
+   
+    // 修改页大小
+    handleSizeChange(val) {
+      this.size = val;
+      this.getSelectCarPro();
+      },
+// 修改页码
+      handleCurrentChange(val) {
+        this.page = val;
+        this.getSelectCarPro();
+      },
     /**
      * @Description: 列表选中项改变
      * @Author: Luoshuang
@@ -91,6 +115,7 @@ export default {
      * @return {*}
      */    
     handleReset() {
+      this.page=1
       this.carProject = ''
       this.getSelectCarPro()
     },
@@ -101,6 +126,7 @@ export default {
      * @return {*}
      */    
     handleSure() {
+      this.page=1
       this.getSelectCarPro(this.carProject)
     },
     /**
@@ -111,7 +137,7 @@ export default {
      */    
     handleSave() {
       this.tableLoading = true
-      const tableList = this.tableData.map(item => {
+      const tableList = this.tableDataCopy.map(item => {
         return {
           ...item,
           isSelect: this.selectTableList.some(selectItem => selectItem.id === item.id)
@@ -139,10 +165,19 @@ export default {
       try {
         const res = await getSelectCarType(carTypeProId)
         if (res?.result) {
+          var that = this;
           this.tableData = res.data || []
+          this.tableDataCopy = res.data || []
+          this.tableData= this.tableData.filter(//前端假分页
+            (item, index) =>
+                index < that.page * that.size &&
+                index >= that.size * (that.page - 1)
+          ); //根据页数显示相应的内容
+          this.total = res.data.length;
           this.$nextTick(() => {
-            this.$refs.table.toggleSelection(res.data.filter(item => item.isSelect))
+            this.$refs.table.toggleSelection(this.tableData.filter(item => item.isSelect))
           })
+          console.log(this.tableData)
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
