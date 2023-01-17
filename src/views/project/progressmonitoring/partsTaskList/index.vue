@@ -219,22 +219,44 @@ export default {
      * @return {*}
      */
     handleExport(flag){
-      let ids = [];
-      this.selectRows.forEach(d => {
-        ids.push(d.id);
-      })
-      const params = {
-        ids:ids,
-        cartypeProId:this.searchParams.cartypeProId,
-        downPartSort:flag,
+      if(this.selectRows.length>0){
+        var msg=``
+        var p=true
+        this.selectRows.forEach(val=>{
+          if(val.partSort!=1&&flag=='1'){
+            msg+=`<p>零件号${val.partNum}，零件分类不为EP需确认，不能导出EP确认清单</p>`
+            p=false
+          }else if(val.partSort!=2&&flag=='2'){
+            msg+=`<p>零件号${val.partNum}，零件分类不为MQ需确认，不能导出MQ确认清单</p>`
+            p=false
+          }
+        })
+     
       }
-      downLoadPartScheduleFile(params).then(res => {
-        this.getTableList();
-        if (!res?.result) {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      if(p){
+        let ids = [];
+        this.selectRows.forEach(d => {
+          ids.push(d.id);
+        })
+        const params = {
+          ids:ids,
+          cartypeProId:this.searchParams.cartypeProId,
+          downPartSort:flag,
         }
-      })
-    },
+        downLoadPartScheduleFile(params).then(res => {
+          this.getTableList();
+          if (!res?.result) {
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          }
+        })
+      }else{
+        this.$alert(msg, '保存失败', {
+          confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
+        });
+      }
+      
+  },
     /**
      * @Description: 批量更新弹出框
      * @Author: leobao
