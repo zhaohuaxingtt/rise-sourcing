@@ -13,7 +13,7 @@
       <el-form>
 
         <!-- 车型项目 -->
-        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="!isShow">
+        <el-form-item :label="$t('LK_CHEXINXIANGMU')" >
         <!-- <el-form-item :label="$t('LK_CHEXINXIANGMU')"> -->
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
