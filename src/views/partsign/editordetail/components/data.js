@@ -1,8 +1,8 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2022-03-09 11:25:27
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-01-12 14:21:59
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
  */
@@ -116,7 +116,7 @@ export const volumeUnconfirmedTableTitle = [
   { props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true ,minWidth:15},
   { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
   { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN', tooltip: true },
-  { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },
+  { props: 'dealTime', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },	// publishDate=>dealTime 修改取值字段
   { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI', tooltip: true }
 ]
 
