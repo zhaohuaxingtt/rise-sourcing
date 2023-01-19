@@ -592,6 +592,7 @@ export default {
       selectTableData: [],
       diologAssignmentOfScroingTasks: false,
       form: {
+        supplierName:'',
         searchConditions: "",
         rfqId: "",
         rfqName: "",
@@ -636,12 +637,18 @@ export default {
     };
   },
   created() {
+  
     this.getCartypeDict();
     this.getDict();
-    this.getTableList();
     this.getCarTypeOptions();
     // this.getPartTypeOptions()
     // this.getRfqStatusOptions()
+    if(this.$route.query.supplierName){
+      this.form.supplierName=this.$route.query.supplierName
+      this.sure()
+    }else{
+       this.getTableList();
+    }
     this.updateNavList;
   },
   computed: {

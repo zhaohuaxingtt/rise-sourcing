@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-12-13 15:50:11
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2023-01-09 18:36:52
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
 -->
@@ -68,7 +68,7 @@ import infos from './components/infos'
 import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff} from '@/api/partsprocure/editordetail'
+import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff, getMaterialGroupByCategoryCode} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 import { cloneDeep } from "lodash"
@@ -145,33 +145,14 @@ export default {
         this.$set(this.info,'categoryNameZh',this.detailData.categoryName)
         this.$set(this.info,'categoryNameDe',this.detailData.categoryName)
       }
-      // if (this.isAttach) {
-        // materialTitle.forEach(mitem => {
-        //   const detailDataLength = Object.keys(this.detailData).length
-        //   this.info[mitem.props] = detailDataLength ? this.detailData[mitem.props] : ''
-        // })
-
-        // 获取附件材料工艺组数据
-        // if (!this.tableListData.length) {
-        //   await this.getAttachMeterialStuff()
-        // }
-        
-        // 根据材料组编号，工艺号在附件类型的材料工艺列表中找到 该工艺组，补全数据
-        // categoryCode = categoryCode || this.detailData.categoryCode || ''
-        // stuffCode = stuffCode || this.detailData.stuffCode || ''
-        // const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === String(categoryCode) && o.stuffCode === String(stuffCode))
-        // materialTitle.forEach(mitem => {
-        //   this.info[mitem.props] = tarAttachMaterialItem ? tarAttachMaterialItem[mitem.props] : ''
-        // })
-        
-      // }
     },
     // 获取材料组数据
     getMaterialGroup(categoryCode=null, stuffCode=null) {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
-      getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id })
+      // getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id }) // 根据零件六位号查询
+      getMaterialGroupByCategoryCode({ categoryCode:this.detailData.categoryCode, pprjId: this.params.id })  // 根据材料组code查询
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
