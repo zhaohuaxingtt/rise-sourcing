@@ -157,7 +157,7 @@ import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/e
 import { 
   getPurchaseFactoryPullDown,
   getBudgetStatusPullDown,
-  getBaCarPullDown,
+  getBaCarPullDown2,
   getDeptList,
   getSupplierList,
 } from "@/api/ws2/baApply";
@@ -246,7 +246,7 @@ export default {
     getComponentsData(){
       this.loadingiSearch = true;
       //  采购工厂列表、模具预算状态、AccountType、车型项目
-      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaCarPullDown(),getDeptList(),getSupplierList()]).then(res => {
+      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaCarPullDown2(),getDeptList(),getSupplierList()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
