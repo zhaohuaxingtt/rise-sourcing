@@ -23,7 +23,7 @@
           <div class="margin-right10" v-if="!todo">
             <iButton
               v-if="!editStatus"
-              @click="editStatus = true"
+              @click="handleEdit"
               v-permission.auto="
                 PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT |
                   供应商评分编辑
@@ -50,6 +50,7 @@
               >{{ language("LK_BAOCUN", "保存") }}</iButton
             >
             <iButton
+              v-if="!editStatus"
               @click="setScoringDept"
               v-permission.auto="
                 PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT |
@@ -60,6 +61,7 @@
           </div>
           <!-- <iButton @click="sendTaskForRating" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton> -->
           <iButton
+            v-if="!editStatus"
             @click="setScoringPush"
             :loading="pushLoading"
             v-permission.auto="
@@ -402,7 +404,7 @@ export default {
                   label: `${item.province}_${item.city}_${item.address}`,
                   value: item.code,
                   companyAddressAndCode:
-                    item.code + item.province + item.city + item.address,
+                    item.code + `${item.province}_${item.city}_${item.address}`,
                 }))
               : [];
           } else {
@@ -413,8 +415,26 @@ export default {
         })
         .catch(() => (this.supplierProducePlacesLoading = false));
     },
+    // 编辑
+    handleEdit(){
+      this.oldData = JSON.parse(JSON.stringify(this.tableListData))
+      this.editStatus = true
+      this.tableListData.forEach((item) => {
+        item.companyAddress = item.companyAddress || item.defaultCompanyAddress
+        item.companyAddressCode = item.companyAddressCode || item.defaultCompanyAddressCode
+      });
+      this.supplierProducePlaces = this.tableListData.map((item) => {
+        return {
+          key: item.companyAddressCode,
+          value: item.companyAddressCode,
+          label: item.companyAddress,
+          companyAddressAndCode: item.companyAddressAndCode,
+        };
+      });
+    },
     cancel() {
       this.editStatus = false;
+      this.tableListData = JSON.parse(JSON.stringify(this.oldData))
       this.supplierProducePlaces = this.tableListData.map((item) => {
         return {
           key: item.companyAddressCode,
@@ -440,6 +460,7 @@ export default {
             iMessage.success(
               this.$i18n.locale === "zh" ? res.desZh : res.desEn
             );
+            this.editStatus = false;
             this.getTableList();
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
