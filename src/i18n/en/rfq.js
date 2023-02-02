@@ -45,5 +45,6 @@ export default {
   YICHU:'Remove',
   BAOCUNFENZU:'Save grouping',
   FENZUZHI:'Group to',
-  DAITIANJIA:'To add'
+  DAITIANJIA:'To add',
+  供应商地址不一致:'The supplier address is inconsistent',
 }
