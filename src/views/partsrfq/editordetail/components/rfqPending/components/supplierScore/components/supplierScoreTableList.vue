@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:33:00
- * @LastEditors: YoHo
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: RFQ-table组件。
 -->
 <template>
@@ -52,6 +52,16 @@
               </el-option>
             </iSelect>
             <span v-else>{{ scope.row.companyAddress }}</span>
+            <el-popover
+              placement="top"
+              trigger="hover"
+              popper-class="tableTitleTip"
+              :visible-arrow="false">
+              <p>{{$t('供应商地址不一致')}}</p>
+              <span slot="reference">
+                <icon v-if="scope.row.addressChangeFlag" class="margin-left4" symbol name="icontishi-cheng" />
+              </span>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-else-if="items.props == 'svwCode'" :width="100">
@@ -78,10 +88,10 @@
   </el-table>
 </template>
 <script>
-import { iSelect } from "rise"
+import { iSelect, icon } from "rise"
 
 export default {
-  components: { iSelect },
+  components: { iSelect, icon },
   props: {
     tableData: {type: Array},
     tableTitle: {type: Array},

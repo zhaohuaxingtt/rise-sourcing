@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2022-03-11 16:51:30
- * @LastEditTime: 2023-01-04 17:31:04
+ * @LastEditTime: 2023-01-31 14:54:52
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: rfq管理
  */
@@ -42,5 +42,6 @@ export default {
   YICHU: '移除',
   BAOCUNFENZU:'保存分组',
   FENZUZHI:'分组至',
-  DAITIANJIA:'待添加'
+  DAITIANJIA:'待添加',
+  供应商地址不一致:'供应商地址不一致',
 }

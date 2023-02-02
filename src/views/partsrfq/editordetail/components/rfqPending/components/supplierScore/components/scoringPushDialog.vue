@@ -83,13 +83,26 @@
             </el-option>
           </iSelect>
         </template>
+        <template #companyAddress="scope">
+          <span>{{ scope.row.companyAddress }}</span>
+            <el-popover
+              placement="top"
+              trigger="hover"
+              popper-class="tableTitleTip"
+              :visible-arrow="false">
+              <p>{{$t('供应商地址不一致')}}</p>
+              <span slot="reference">
+                <icon v-if="scope.row.addressChangeFlag" class="margin-left4" symbol name="icontishi-cheng" />
+              </span>
+            </el-popover>
+        </template>
       </tableList>
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iSelect, iText, iButton, iMessage } from "rise";
+import { iDialog, iSelect, iText, iButton, iMessage, icon } from "rise";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { scoringDeptTitle as tableTitle, supplierSubTitle } from "./data";
 import { dictkey } from "@/api/partsprocure/editordetail";
@@ -107,7 +120,7 @@ import {
 import axios from "axios";
 
 export default {
-  components: { tableList, iDialog, iSelect, iText, iButton },
+  components: { tableList, iDialog, iSelect, iText, iButton, icon },
   mixins: [pageMixins],
   props: {
     ...iDialog.props,

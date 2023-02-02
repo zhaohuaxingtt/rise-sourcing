@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2023-01-09 18:36:52
+ * @LastEditTime: 2023-01-30 17:47:23
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -148,11 +148,12 @@ export default {
     },
     // 获取材料组数据
     getMaterialGroup(categoryCode=null, stuffCode=null) {
+      if(!(categoryCode||this.detailData.categoryCode)) return // 如果没有categoryCode不调用查询接口
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
       // getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id }) // 根据零件六位号查询
-      getMaterialGroupByCategoryCode({ categoryCode:this.detailData.categoryCode, pprjId: this.params.id })  // 根据材料组code查询
+      getMaterialGroupByCategoryCode({ categoryCode:categoryCode||this.detailData.categoryCode, pprjId: this.params.id })  // 根据材料组code查询
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
