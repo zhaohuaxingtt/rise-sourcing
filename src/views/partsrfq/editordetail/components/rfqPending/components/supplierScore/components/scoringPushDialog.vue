@@ -300,7 +300,9 @@ export default {
         supplierDTOS: this.selectTableData.map((item) => {
           return {
             companyAddress: item.companyAddress,
-            companyAddressCode: item.companyAddressCode,
+            companyAddressCode: item.isNoCodeData
+            ? null
+            : item.companyAddressCode,
             factoryName: item.factoryName,
             factoryNameId: item.factoryNameId,
             rfqBdlId: item.rfqBdlId,
