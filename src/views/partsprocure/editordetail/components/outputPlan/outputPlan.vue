@@ -23,7 +23,7 @@
               <span v-else>{{ startYear }}</span>
             </template>
             <template v-slot="scope">
-              <iInput class="input" v-model="scope.row[startYear]" v-if="!disabled" @input="handleInput($event, startYear)"/>
+              <iInput :title="scope.row[items.props]" class="input" v-model="scope.row[startYear]" v-if="!disabled" @input="handleInput($event, startYear)"/>
               <span v-else>{{ scope.row[startYear] }}</span>
             </template>
           </el-table-column>
@@ -34,7 +34,7 @@
           </el-table-column>
           <el-table-column v-else :key="$index" align="center" :label="language(items.key,items.name)" :prop="items.props">
             <template v-slot="scope">
-              <iInput class="input" v-if="!disabled" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
+              <iInput :title="scope.row[items.props]" class="input" v-if="!disabled" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
               <span v-else>{{ scope.row[items.props] }}</span>
             </template>
           </el-table-column>
@@ -224,6 +224,8 @@ export default {
 
     ::v-deep input {
       height: 30px!important;
+      text-align: center;
+      padding: 0;
     }
   }
 }
