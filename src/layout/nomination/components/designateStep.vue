@@ -520,7 +520,8 @@ export default {
       console.log(path, "当前路径");
 
       const routeData = this.$router.resolve({
-        path: `/desinatepreview/${path.replace(/.*\/(.+)$/, "$1")}`,
+        // path: `/desinatepreview/${path.replace(/.*\/(.+)$/, "$1")}`,
+        path: `/previewCSC/${path.replace(/.*\/(.+)$/, "$1")}`, // 暂时使用
         query: {
           ...query,
           isPreview: "1",

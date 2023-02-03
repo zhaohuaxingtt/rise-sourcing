@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-12-08 09:55:48
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2023-02-01 16:21:24
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -164,6 +164,166 @@ const nominationpages = [
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/strategy'),
+  },
+]
+
+
+const nominationpages_copy = [
+  // {
+  //   path: 'title',
+  //   name: 'designateDecisionData',
+  //   meta: {
+  //     title: '定点管理-决策资料-title',
+  //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+  //   },
+  //   component: () =>
+  //     import('@/views/designate/designatedetail/previewCSC/title'),
+  // },
+  {
+    path: 'partlist',
+    name: 'designateDecisionDataPartList',
+    meta: {
+
+      title: '定点管理-决策资料-Part List',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/partList'),
+  },
+  {
+    path: 'singlesourcing',
+    name: 'designateDecisionDataSingleSourcing',
+    meta: {
+      title: '定点管理-决策资料-Single Sourcing',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import(
+        '@/views/designate/designatedetail/previewCSC/singleSourcing'
+      ),
+  },
+  {
+    path: 'timeline',
+    name: 'designateDecisionDataTimeLine',
+    meta: {
+      title: '定点管理-决策资料-Time Line',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/timeLine'),
+  },
+  {
+    path: 'bdl',
+    name: 'designateDecisionDataBDL',
+    meta: {
+      title: '定点管理-决策资料-BDL',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/bdl'),
+  },
+  {
+    path: 'drawing',
+    name: 'designateDecisionDrawing',
+    meta: {
+      title: '定点管理-决策资料-drawing',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/drawing'),
+  },
+  {
+    path: 'mtz',
+    name: 'designateDecisionDataMTZ',
+    meta: {
+      title: '定点管理-决策资料-MTZ',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/mtz'),
+  },
+  {
+    path: 'attachment',
+    name: 'designateDecisionAttachment',
+    meta: {
+      title: '定点管理-决策资料-attachment',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/attachment'),
+  },
+  {
+    path: 'tasks',
+    name: 'designateDecisionTasks',
+    meta: {
+      title: '定点管理-决策资料-tasks',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () => import('@/views/designate/designatedetail/previewCSC/tasks'),
+  },
+  {
+    path: 'awardingscenario',
+    name: 'designateDecisionAwardingscenario',
+    meta: {
+      title: '定点管理-决策资料-awardingscenario',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/awardingscenario'),
+  },
+  {
+    path: 'rs',
+    name: 'designateDecisionRS',
+    meta: {
+      title: '定点管理-决策资料-RS',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/rs/home'),
+  },
+  {
+    path: 'rscapacityexpan',
+    name: 'designateDecisionRSexpan',
+    meta: {
+      title: '定点管理-决策资料-扩产能',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import(
+        '@/views/designate/designatedetail/previewCSC/rsCapacityExpan'
+      ),
+  },
+  {
+    path: 'abprice',
+    name: 'designateDecisionAbPrice',
+    meta: {
+      title: '定点管理-决策资料-abprice',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/abPrice'),
+  },
+  {
+    path: 'costanalysis',
+    name: 'designateDecisionRS',
+    meta: {
+      title: '定点管理-决策资料-costanalysis',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import(
+        '@/views/designate/designatedetail/previewCSC/costanalysis'
+      ),
+  },
+  {
+    path: 'strategy',
+    name: 'designateDecisionRS',
+    meta: {
+      title: '定点管理-决策资料-strategy',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/strategy'),
   },
 ]
 
@@ -470,4 +630,37 @@ export default [
       return route
     })
   },
+  {
+    path: '/previewCSC',
+    name: 'previewCSC',
+    meta: {
+      title: 'CSC预览',
+      layoutPath: '/previewCSC',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () => import('@/views/designate/designatedetail/previewCSC/index'),
+    redirect: '/previewCSC/partlist',
+    children: cloneDeep(nominationpages_copy).map((route, index) => {
+      if (route && route.path && route.meta) {
+        // 通过此字段判断决策资料预览模式
+        route.meta.layoutPath = '/desinatepreview'
+        // 隐藏关闭按钮
+        route.meta.hideCloseButton = true
+        // 复制路径
+        route.meta.path = route.path
+      }
+      return route
+    })
+  },
+  {
+
+    path: '/previewCSC/title',
+    name: 'designatePreviewtitle',
+    meta: {
+      title: '定点管理-决策资料预览',
+      layoutPath: '/desinatepreview',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () => import('@/views/designate/designatedetail/previewCSC/title'),
+  }
 ]

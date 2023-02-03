@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2022-01-07 14:45:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-02 21:50:45
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
  */
@@ -26,7 +26,6 @@ export function gsPartsAsRow(mimoId){
 export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
   return nego({
       url: `/nego-assistant/nego-analysis-summary/analysisSummaryArrayNomi`,
-      //url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
       method: 'post',
       data:{
           hideList:hideList,
@@ -34,5 +33,14 @@ export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
           nomiId:nomiId,
           round:round
       }
+  })
+}
+
+//supplier-横向
+export function analysisSummaryNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/supplier/analysisSummaryNomi`,
+      method: 'post',
+      data
   })
 }
