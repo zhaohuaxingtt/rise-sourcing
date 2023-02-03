@@ -359,6 +359,7 @@ export default {
       analysisSummaryNomi({
         nomiId: "60003714" || this.$route.query.desinateId,
       }).then((res) => {
+        if(res?.code!=200) return
         this.supplierList = res.data.headList || [];
         this.tableData =
           res.data.nomiAnalysisSummarySuppliers.map((item) => {
