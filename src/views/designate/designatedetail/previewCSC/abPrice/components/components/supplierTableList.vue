@@ -1,6 +1,6 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div>
+  <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
       class="header"
@@ -9,7 +9,7 @@
       :cell-class-name="colClass"
     >
       <!-- 固定表头 -->
-      <el-table-column label="Unit：RMB" align="center">
+      <el-table-column label="Unit：RMB">
         <el-table-column>
           <el-table-column>
             <el-table-column>
@@ -27,12 +27,6 @@
         </el-table-column>
       </el-table-column>
       <el-table-column label="part No.">
-        <template slot="header" slot-scope="scope">
-          <div>
-            part No.
-            <div class="leftAllow" @click="leftAllow($event)"></div>
-          </div>
-        </template>
         <el-table-column label="part Name">
           <el-table-column label="Carline">
             <el-table-column label="Volume">
@@ -44,19 +38,40 @@
                       label="E"
                       width="50"
                       align="center"
-                    ></el-table-column>
+                    >
+                      <template slot-scope="scope">
+                        <span class="red" v-if="isCLevel(scope.row.te)">{{
+                          scope.row.te
+                        }}</span>
+                        <span v-else>{{ scope.row.te }}</span>
+                      </template>
+                    </el-table-column>
                     <el-table-column
                       prop="q"
                       label="Q"
                       width="50"
                       align="center"
-                    ></el-table-column>
+                    >
+                      <template slot-scope="scope">
+                        <span class="red" v-if="isCLevel(scope.row.q)">{{
+                          scope.row.q
+                        }}</span>
+                        <span v-else>{{ scope.row.q }}</span>
+                      </template></el-table-column
+                    >
                     <el-table-column
                       prop="l"
                       label="L"
                       width="50"
                       align="center"
-                    ></el-table-column>
+                    >
+                      <template slot-scope="scope">
+                        <span class="red" v-if="isCLevel(scope.row.l)">{{
+                          scope.row.l
+                        }}</span>
+                        <span v-else>{{ scope.row.l }}</span>
+                      </template></el-table-column
+                    >
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -65,12 +80,20 @@
         </el-table-column>
       </el-table-column>
       <!-- 循环供应商 -->
-      <template v-for="(item, index) in supplierList">
-        <el-table-column :key="item.partNum" align="center">
+      <template v-for="(item, index) in partList">
+        <el-table-column
+          :key="item.partNum + item.fsNum || index"
+          align="center"
+        >
           <div slot="header" slot-scope="scope">
             {{ item.partNum || "-" }}
             <div
-              v-if="index == supplierList.length - 1"
+              v-if="index == 0"
+              class="leftAllow"
+              @click="leftAllow($event)"
+            ></div>
+            <div
+              v-if="index == partList.length - 1"
               class="rightAllow"
               @click="rightAllow($event)"
             ></div>
@@ -145,7 +168,7 @@
           </el-table-column>
         </el-table-column>
       </el-table-column>
-      <template v-for="item in fledTitle">
+      <template v-for="item in fixedTitle">
         <el-table-column :key="item.prop">
           <el-table-column>
             <el-table-column>
@@ -183,7 +206,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <template v-if="supplierList.length">
+    <template v-if="partAllData.length > 1">
       <div class="left" :style="left" @click="prev"></div>
       <div class="right" :style="right" @click="next"></div>
     </template>
@@ -192,111 +215,19 @@
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
+import allow from "./allow.js";
 export default {
+  mixins: [allow],
+  props: {
+    row: {
+      type: Array,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      supplierList: [],
-      supplierList1: [
-        {
-          supplierName: "供应商1",
-          sapCode: "001",
-          partName: "供应商1-零件号",
-          Carline: "供应商1-Carline",
-          Volume: "供应商1-Volume",
-          BudgetA: "供应商1-BudgetA",
-          BudgetB: "供应商1-BudgetB",
-          "F-TargetA": "供应商1-F-TargetA",
-          "F-TargetB": "供应商1-F-TargetB",
-          FSNo: "供应商1-FSNo",
-        },
-        {
-          supplierName: "供应商2",
-          sapCode: "002",
-          partName: "供应商2-零件号",
-          Carline: "供应商2-Carline",
-          Volume: "供应商2-Volume",
-          BudgetA: "供应商2-BudgetA",
-          BudgetB: "供应商2-BudgetB",
-          "F-TargetA": "供应商2-F-TargetA",
-          "F-TargetB": "供应商2-F-TargetB",
-          FSNo: "供应商2-FSNo",
-        },
-        {
-          supplierName: "供应商3",
-          sapCode: "003",
-          partName: "供应商3-零件号",
-          Carline: "供应商3-Carline",
-          Volume: "供应商3-Volume",
-          BudgetA: "供应商3-BudgetA",
-          BudgetB: "供应商3-BudgetB",
-          "F-TargetA": "供应商3-F-TargetA",
-          "F-TargetB": "供应商3-F-TargetB",
-          FSNo: "供应商3-FSNo",
-        },
-        {
-          supplierName: "供应商4",
-          sapCode: "004",
-          partName: "供应商4-零件号",
-          Carline: "供应商4-Carline",
-          Volume: "供应商4-Volume",
-          BudgetA: "供应商4-BudgetA",
-          BudgetB: "供应商4-BudgetB",
-          "F-TargetA": "供应商4-F-TargetA",
-          "F-TargetB": "供应商4-F-TargetB",
-          FSNo: "供应商4-FSNo",
-        },
-      ],
-      supplierList2: [
-        {
-          supplierName: "供应商12",
-          sapCode: "001",
-          partName: "供应商1-零件号",
-          Carline: "供应商1-Carline",
-          Volume: "供应商1-Volume",
-          BudgetA: "供应商1-BudgetA",
-          BudgetB: "供应商1-BudgetB",
-          "F-TargetA": "供应商1-F-TargetA",
-          "F-TargetB": "供应商1-F-TargetB",
-          FSNo: "供应商1-FSNo",
-        },
-        {
-          supplierName: "供应商22",
-          sapCode: "002",
-          partName: "供应商2-零件号",
-          Carline: "供应商2-Carline",
-          Volume: "供应商2-Volume",
-          BudgetA: "供应商2-BudgetA",
-          BudgetB: "供应商2-BudgetB",
-          "F-TargetA": "供应商2-F-TargetA",
-          "F-TargetB": "供应商2-F-TargetB",
-          FSNo: "供应商2-FSNo",
-        },
-        {
-          supplierName: "供应商32",
-          sapCode: "003",
-          partName: "供应商3-零件号",
-          Carline: "供应商3-Carline",
-          Volume: "供应商3-Volume",
-          BudgetA: "供应商3-BudgetA",
-          BudgetB: "供应商3-BudgetB",
-          "F-TargetA": "供应商3-F-TargetA",
-          "F-TargetB": "供应商3-F-TargetB",
-          FSNo: "供应商3-FSNo",
-        },
-        {
-          supplierName: "供应商4",
-          sapCode: "004",
-          partName: "供应商4-零件号",
-          Carline: "供应商4-Carline",
-          Volume: "供应商4-Volume",
-          BudgetA: "供应商4-BudgetA",
-          BudgetB: "供应商4-BudgetB",
-          "F-TargetA": "供应商4-F-TargetA",
-          "F-TargetB": "供应商4-F-TargetB",
-          FSNo: "供应商4-FSNo",
-        },
-      ],
-      fledTitle: [
+      ref: "supplier-table",
+      fixedTitle: [
         {
           prop: "ltcList",
           label: "LTC",
@@ -331,175 +262,161 @@ export default {
       tableData: [],
       targetMixAPrice: "",
       targetMixBPrice: "",
-      left: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-      },
-      right: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-      },
+      loading: false,
+      showLength:4,
+      partAllData: [],
+      index: 0,
     };
   },
-  // 暂定,数据变化时重新触发定位
-  updated() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.positionAllow();
-      }, 32);
-    });
+  computed: {
+    partList() {
+      return this.partAllData[this.index] || [];
+    },
   },
   created() {
     this.analysisSummaryNomi();
   },
+  mounted() {
+    // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
+    this.$nextTick(() => {
+      this.setColSpan();
+    });
+  },
   methods: {
+    isCLevel(val) {
+      return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
     analysisSummaryNomi() {
+      this.loading = true;
       analysisSummaryNomi({
         nomiId: "60003714" || this.$route.query.desinateId,
-      }).then((res) => {
-        if(res?.code!=200) return
-        this.supplierList = res.data.headList || [];
-        this.tableData =
-          res.data.nomiAnalysisSummarySuppliers.map((item) => {
-            let ltcList = [];
-            let ltcStartDateList = [];
-            item.analysisSummaryParts.forEach((child) => {
-              item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
-              item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
-              if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
-              if (!ltcStartDateList.includes(child.ltcStartDate))
-                ltcStartDateList.push(child.ltcStartDate);
-            });
-            item.ltcList = ltcList;
-            item.ltcStartDateList = ltcStartDateList;
-            return item;
-          }) || [];
-        this.targetMixAPrice = res.data.targetMixAPrice;
-        this.targetMixBPrice = res.data.targetMixBPrice;
-        this.fledTitle[2].budget = res.data.sumBudgetTotalInvest;
-        this.fledTitle[2].target = res.data.targetTotalInvest;
-        this.fledTitle[3].target = res.data.targetSelTotalSel;
-        this.fledTitle[4].target = res.data.sumTotalTurnover;
-        this.$nextTick(function () {
-          // if (this.supplierList.length) {
-          this.setColSpan();
-          this.positionAllow();
-          // }
+        fsGsNumList: this.row?.partPrjCode ? [this.row.partPrjCode] : undefined,
+      })
+        .then((res) => {
+          if (res?.code != 200) return;
+          this.partAllData = _.chunk(res.data.headList, this.showLength);
+          this.index = 0;
+          this.tableData =
+            res.data.nomiAnalysisSummarySuppliers.map((item) => {
+              let ltcList = [];
+              let ltcStartDateList = [];
+              item.analysisSummaryParts.forEach((child) => {
+                item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
+                item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
+                if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
+                if (!ltcStartDateList.includes(child.ltcStartDate))
+                  ltcStartDateList.push(child.ltcStartDate);
+              });
+              item.ltcList = ltcList;
+              item.ltcStartDateList = ltcStartDateList;
+              return item;
+            }) || [];
+          this.targetMixAPrice = res.data.targetMixAPrice;
+          this.targetMixBPrice = res.data.targetMixBPrice;
+          this.fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
+          this.fixedTitle[2].target = res.data.targetTotalInvest;
+          this.fixedTitle[3].target = res.data.targetSelTotalSel;
+          this.fixedTitle[4].target = res.data.sumTotalTurnover;
+        })
+        .finally(() => {
+          this.loading = false;
         });
-      });
     },
     prev() {
-      console.log("更新表格数据:上一页");
-      this.supplierList = this.supplierList1;
+      if (this.index < this.partAllData.length - 1) {
+        this.index++;
+      } else {
+        this.index = 0;
+      }
     },
     next() {
-      console.log("更新表格数据:下一页");
-      this.supplierList = this.supplierList2;
+      if (this.index > 0) {
+        this.index--;
+      } else {
+        this.index = this.partAllData.length - 1;
+      }
     },
-
+    // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0 && columnIndex == 0) {
-        return "white-bg";
+        return "white-bg unit";
       }
       if (rowIndex < 6 && columnIndex > 1) {
         return "white-bg";
       }
     },
+    // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
-      if(['partAPrice','partBPrice'].includes(column.label)){
-        return row[column.property]&&(row[column.property]<20) ? 'blue-border' : ''
+      if (["partAPrice", "partBPrice"].includes(column.label)) {
+        return row[column.property] && row[column.property] < 20
+          ? "blue-border"
+          : "";
       }
     },
     // 表头合并
     setColSpan() {
-      const row = document.getElementsByClassName("el-table__header")[0].rows;
+      const row =
+        this.$refs["supplier-table"].getElementsByClassName(
+          "el-table__header"
+        )[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 6, "rowSpan");
       this.merge(row, 6, 2, 2, "colSpan");
-      if (this.supplierList.length > 0) this.merge(row, 6, 4, 2, "colSpan");
-      if (this.supplierList.length > 1) this.merge(row, 6, 6, 2, "colSpan");
-      if (this.supplierList.length > 2) this.merge(row, 6, 8, 2, "colSpan");
-      if (this.supplierList.length > 3) this.merge(row, 6, 10, 2, "colSpan");
-      this.merge(row, 0, this.supplierList.length + 2, 7, "colSpan");
-      this.merge(row, 0, this.supplierList.length + 2, 4, "rowSpan");
+      if (this.partList.length > 0) this.merge(row, 6, 4, 2, "colSpan");
+      if (this.partList.length > 1) this.merge(row, 6, 6, 2, "colSpan");
+      if (this.partList.length > 2) this.merge(row, 6, 8, 2, "colSpan");
+      if (this.partList.length > 3) this.merge(row, 6, 10, 2, "colSpan");
+      this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
+      this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
       const col = row[rowIndex].cells;
       if (!(row || col)) return;
       if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
+      let colSpan = row[rowIndex].cells[colIndex].colSpan;
       if (type == "colSpan") {
-        let colSpan = row[rowIndex].cells[colIndex].colSpan;
-        for (let i = 1; i < span; i++) {
-          let index = i + colIndex;
-          colSpan += row[rowIndex].cells[index].colSpan;
-          if (colSpan == span) {
-            row[rowIndex].cells[index].style.display = "none";
-            break;
+        for (let r = 0; r < rowSpan; r++) {
+          let rIndex = r + rowIndex;
+          let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+          for (let i = 1; i < span; i++) {
+            let cIndex = i + colIndex;
+            colSpan_ += row[rIndex].cells[cIndex].colSpan;
+            if (colSpan_ == span) {
+              row[rIndex].cells[cIndex].style.display = "none";
+              break;
+            }
+            if (colSpan_ > span) {
+              row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+              break;
+            }
+            row[rIndex].cells[cIndex].style.display = "none";
           }
-          if (colSpan > span) {
-            row[rowIndex].cells[index].colSpan = colSpan - span;
-            break;
-          }
-          row[rowIndex].cells[index].style.display = "none";
         }
       }
       if (type == "rowSpan") {
-        let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
-        for (let i = 1; i < span; i++) {
-          let index = i + rowIndex;
-          rowSpan += row[index].cells[colIndex].rowSpan;
-
-          if (rowSpan == span) {
-            row[index].cells[colIndex].style.display = "none";
-            break;
+        for (let c = 0; c < colSpan; c++) {
+          let cIndex = c + colIndex;
+          let rowSpan_ = row[rowIndex].cells[cIndex].rowSpan || 1;
+          for (let i = 1; i < span; i++) {
+            let rIndex = i + rowIndex;
+            rowSpan_ += row[rIndex].cells[cIndex].rowSpan;
+            if (rowSpan_ == span) {
+              row[rIndex].cells[cIndex].style.display = "none";
+              break;
+            }
+            if (rowSpan_ > span) {
+              row[rIndex].cells[cIndex].rowSpan = rowSpan_ - span;
+              break;
+            }
+            row[rIndex].cells[cIndex].style.display = "none";
           }
-          if (rowSpan > span) {
-            row[index].cells[colIndex].rowSpan = rowSpan - span;
-            break;
-          }
-          row[index].cells[colIndex].style.display = "none";
         }
       }
       row[rowIndex].cells[colIndex][type] = span;
     },
-    // 点击事件触发定位右箭头
-    rightAllow(event) {
-      this.right.top = -event.layerY + "px";
-      this.right.left = -event.layerX + "px";
-    },
-    // 点击事件触发定位左箭头
-    leftAllow(event) {
-      this.left.top = -event.layerY + "px";
-      this.left.left = -event.layerX + "px";
-    },
-    // 触发定位元素,点击事件
-    positionAllow() {
-      const rightAllow = document.getElementsByClassName("rightAllow")[0];
-      rightAllow && rightAllow.click();
-      const leftAllow = document.getElementsByClassName("leftAllow")[0];
-      leftAllow && leftAllow.click();
-    },
-    resize(){
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.positionAllow();
-      });
-    }
   },
-
-  mounted() {
-    window.addEventListener("resize", this.resize);
-    // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-    this.$nextTick(() => {
-      this.setColSpan();
-    });
-  },
-  destroyed(){
-    window.removeEventListener('resize',this.resize)
-  }
 };
 </script>
 
@@ -508,7 +425,7 @@ export default {
   ::v-deep th {
     padding: 0;
     .cell {
-      padding: 0;
+      padding: 0 10px;
     }
   }
 }
@@ -521,8 +438,11 @@ export default {
         color: #000 !important;
       }
     }
+    .unit {
+      vertical-align: top;
+    }
   }
-  .blue-border{
+  .blue-border {
     background: #bdd7ee;
   }
   .leftAllow {
@@ -537,6 +457,9 @@ export default {
     padding: 0;
     background: red;
     float: right;
+  }
+  .red {
+    color: #f00;
   }
 }
 .left {

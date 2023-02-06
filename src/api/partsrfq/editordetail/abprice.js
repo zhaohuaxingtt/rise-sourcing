@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2023-02-02 21:50:45
+ * @LastEditTime: 2023-02-06 14:59:58
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -40,6 +40,31 @@ export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
 export function analysisSummaryNomi(data){
   return nego({
       url: `/nego-assistant/nego-analysis-summary/supplier/analysisSummaryNomi`,
+      method: 'post',
+      data
+  })
+}
+//Bar获取车型项目
+export function analysisNomiCarProject(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/supplier/analysisNomiCarProject`,
+      method: 'post',
+      data
+  })
+}
+
+//Recommendation
+export function getAnalysisRecommendationNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getAnalysisRecommendationNomi`,
+      method: 'post',
+      data
+  })
+}
+// BestBall
+export function getAnalysisBestBallNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getAnalysisBestBallNomi`,
       method: 'post',
       data
   })

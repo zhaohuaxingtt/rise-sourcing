@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-03 17:23:52
+ * @LastEditTime: 2023-02-05 19:10:45
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,11 +19,7 @@
           v-if="!$route.meta.hideTabLV3"
         />
       </div>
-      <div
-        class="nomination-content"
-        v-loading="loading"
-        id="pdfHide"
-      >
+      <div class="nomination-content" v-loading="loading" id="pdfHide">
         <router-view></router-view>
       </div>
     </div>
@@ -184,6 +180,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  position:relative
 }
 #preview-csc {
   background-color: transparent;
@@ -198,17 +195,17 @@ export default {
       background-color: transparent;
     }
   }
-  ::v-deep.el-tabs--card{
-    .el-tabs__header{
+  ::v-deep.el-tabs--card {
+    .el-tabs__header {
       margin-bottom: 15px;
     }
-    .el-tabs__nav-wrap{
+    .el-tabs__nav-wrap {
       height: unset;
     }
-  } 
+  }
   ::v-deep .el-table {
     border-radius: 0;
-      // background-color:transparent;
+    // background-color:transparent;
     .el-table__header {
       background-color: #364d6e;
       th {
@@ -218,6 +215,9 @@ export default {
           line-height: 20px;
         }
       }
+      // .gutter {
+      //   background: #ffffff !important; //因为我改了我的默认表格背景颜色，所以要跟着改
+      // }
       tr:nth-child(even) {
         background-color: #364d6e;
       }

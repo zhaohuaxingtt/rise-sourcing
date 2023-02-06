@@ -1,129 +1,133 @@
-<!-- AB价-零件表格 -->
+<!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div>
-    <el-table :data="tableData" class="header" ref="table">
-      <el-table-column>
-        <el-table-column>
+  <div ref="part-table" v-loading='loading'>
+    <el-table
+      :data="tableData"
+      class="header"
+      ref="table"
+      border
+      max-height="600px"
+      :header-cell-class-name="cellClass"
+      :cell-class-name="colClass"
+    >
+      <!-- 左侧固定表头 -->
+      <template v-for="item in fixedTitle">
+        <el-table-column :key="item.prop" label="Unit：RMB">
           <el-table-column>
             <el-table-column>
               <el-table-column>
-                <el-table-column>
-                  <el-table-column
-                    prop="supplier"
-                    label="Supplier"
-                    align="center"
-                  ></el-table-column>
+                <el-table-column
+                  v-if="item.prop == 'partPrjCode'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :minWidth="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <span class="link" @click="gotoDetail(scope.row)">{{
+                      scope.row[item.prop]
+                    }}</span>
+                  </template>
                 </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="part No.">
-        <el-table-column label="part Name">
-          <el-table-column label="Carline">
-            <el-table-column label="Volume">
-              <el-table-column label="Budget">
-                <el-table-column label="F-Target">
-                  <el-table-column label="Rating" align="center">
-                    <el-table-column
-                      prop="E"
-                      label="E"
-                      width="50"
-                      align="center"
-                    ></el-table-column>
-                    <el-table-column
-                      prop="Q"
-                      label="Q"
-                      width="50"
-                      align="center"
-                    ></el-table-column>
-                    <el-table-column
-                      prop="L"
-                      label="L"
-                      width="50"
-                      align="center"
-                    ></el-table-column>
-                  </el-table-column>
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </el-table-column>
-      </el-table-column>
-      <template v-for="item in supplierList">
-        <el-table-column
-          :label="item.supplierName"
-          :key="item.sapCode"
-          align="center"
-        >
-          <el-table-column :label="item.partName" align="center">
-            <el-table-column :label="item.Carline" align="center">
-              <el-table-column :label="item.Volume" align="center">
-                <el-table-column :label="item.BudgetA" align="center">
-                  <el-table-column :label="item['F-TargetA']" align="center">
-                    <el-table-column :label="item.FSNo" align="center">
-                      <el-table-column
-                        prop="aPrice"
-                        label="A price"
-                        align="center"
-                      ></el-table-column>
-                    </el-table-column>
-                  </el-table-column>
-                </el-table-column>
-                <el-table-column :label="item.BudgetA" align="center">
-                  <el-table-column :label="item['F-TargetB']" align="center">
-                    <el-table-column :label="item.FSNo" align="center">
-                      <el-table-column
-                        prop="bPrice"
-                        label="B price"
-                      ></el-table-column>
-                    </el-table-column>
-                  </el-table-column>
-                </el-table-column>
+                <el-table-column
+                  v-else
+                  :prop="item.prop"
+                  :label="item.label"
+                  :minWidth="item.width"
+                  align="center"
+                ></el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
       </template>
-
-      <el-table-column>
-        <el-table-column>
+      <el-table-column label="Supplier" align="center">
+        <el-table-column label="Rating" align="center">
           <el-table-column>
             <el-table-column>
-              <el-table-column>
-                <el-table-column>
-                  <el-table-column label="Mixed Price" align="center">
-                    <el-table-column
-                      prop="aPrice"
-                      label="A price"
-                      align="center"
-                    ></el-table-column>
-                    <el-table-column
-                      prop="bPrice"
-                      label="B price"
-                      align="center"
-                    ></el-table-column>
-                  </el-table-column>
+              <el-table-column label="F-target" align="center">
+                <el-table-column
+                  label="A Price"
+                  prop="cfPartAPrice"
+                  minWidth="80"
+                  align="center"
+                >
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="E" align="center">
+          <el-table-column label="Q" align="center">
+            <el-table-column label="L" align="center">
+              <el-table-column label="F-target" align="center">
+                <el-table-column
+                  label="B Price"
+                  prop="cfPartBPrice"
+                  minWidth="80"
+                  align="center"
+                >
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
       </el-table-column>
-      <template v-for="item in fledTitle">
-        <el-table-column :key="item.prop">
-          <el-table-column>
-            <el-table-column>
-              <el-table-column>
-                <el-table-column>
-                  <el-table-column>
-                    <el-table-column
-                      :prop="item.prop"
-                      :label="item.label"
-                      align="center"
-                    ></el-table-column>
-                  </el-table-column>
+      <template v-for="(item, index) in supplierList">
+        <el-table-column
+          :label="item.supplier"
+          :key="item.supplierId + index"
+          align="center"
+        >
+          <div slot="header" slot-scope="scope">
+            {{ item.supplier || "-" }}
+            <div
+              v-if="index == 0"
+              class="leftAllow"
+              @click="leftAllow($event)"
+            ></div>
+            <div
+              v-if="index == supplierList.length - 1"
+              class="rightAllow"
+              @click="rightAllow($event)"
+            ></div>
+          </div>
+          <el-table-column :label="item.TE" align="center">
+            <template slot-scope="scope" slot="header">
+              <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
+              <span v-else>{{ item.TE }}</span>
+            </template>
+            <el-table-column :label="item.Q" align="center">
+              <template slot-scope="scope" slot="header">
+                <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
+                <span v-else>{{ item.Q }}</span>
+              </template>
+              <el-table-column :label="item.L" align="center">
+                <template slot-scope="scope" slot="header">
+                  <span class="red" v-if="isCLevel(item.L)">{{ item.L }}</span>
+                  <span v-else>{{ item.L }}</span>
+                </template>
+                <el-table-column
+                  :prop="item.supplierId + 'aPrice'"
+                  label="A price(LC)"
+                  align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>A price</p>
+                    <p>(LC)</p>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :prop="item.supplierId + 'bPrice'"
+                  label="B price(LC)"
+                  align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>B price</p>
+                    <p>(LC)</p>
+                  </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -131,173 +135,393 @@
         </el-table-column>
       </template>
     </el-table>
+    <div :style="{ 'padding-right': gutter }">
+      <el-table
+        class="total-table"
+        border
+        :data="totalData"
+        :show-header="false"
+        :span-method="totalCellClass"
+        :cell-class-name="totalColClass"
+      >
+        <!-- 左侧固定表头 -->
+        <template v-for="(item, index) in fixedTitle">
+          <el-table-column :key="index">
+            <el-table-column
+              :prop="item.prop"
+              :label="item.label"
+              :minWidth="item.width"
+              align="right"
+            ></el-table-column>
+          </el-table-column>
+        </template>
+        <el-table-column prop="Supplier" label="Supplier">
+          <el-table-column
+            label="A Price"
+            prop="aPrice"
+            minWidth="80"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            label="B Price"
+            prop="bPrice"
+            minWidth="80"
+            align="center"
+          >
+          </el-table-column>
+        </el-table-column>
+        <template v-for="(item, index) in supplierList">
+          <el-table-column
+            :label="item.supplier"
+            :key="item.supplierId + index"
+            align="center"
+          >
+            <el-table-column
+              :prop="item.supplierId + 'aPrice'"
+              label="A price(LC)"
+              align="center"
+              minWidth="80"
+            >
+              <template slot="header" slot-scope="scope">
+                <p>A price</p>
+                <p>(LC)</p>
+              </template>
+              <template slot-scope="scope">
+                <template v-if="scope.$index==1">
+                  <p v-for="text,index in scope.row[item.supplierId + 'aPrice']" :key="index">{{text.ltc}} from {{text.ltcStartDate}}</p>
+                </template>
+                <template v-else>{{scope.row[item.supplierId + 'aPrice']}}</template>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :prop="item.supplierId + 'bPrice'"
+              label="B price(LC)"
+              align="center"
+              minWidth="80"
+            >
+              <template slot="header" slot-scope="scope">
+                <p>B price</p>
+                <p>(LC)</p>
+              </template>
+            </el-table-column>
+          </el-table-column>
+        </template>
+      </el-table>
+    </div>
+    <partTableDetail :visible.sync="visible" :row="row" />
+    <template v-if="supplierAllData.length > 1">
+      <div class="left" :style="left" @click="prev"></div>
+      <div class="right" :style="right" @click="next"></div>
+    </template>
   </div>
 </template>
 
 <script>
+
+import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
+import partTableDetail from "./partTableDetail";
+import allow from "./allow.js";
 export default {
+  mixins:[allow],
+  components: { partTableDetail },
   data() {
     return {
-      supplierList: [
+      ref:'part-table',
+      fixedTitle: [
         {
-          supplierName: "供应商1",
-          sapCode: "001",
-          partName: "供应商1-零件号",
-          Carline: "供应商1-Carline",
-          Volume: "供应商1-Volume",
-          BudgetA: "供应商1-BudgetA",
-          BudgetB: "供应商1-BudgetB",
-          "F-TargetA": "供应商1-F-TargetA",
-          "F-TargetB": "供应商1-F-TargetB",
-          FSNo: "供应商1-FSNo",
+          prop: "partPrjCode",
+          label: "FS No. (Plant)",
+          width: 120,
         },
         {
-          supplierName: "供应商2",
-          sapCode: "002",
-          partName: "供应商2-零件号",
-          Carline: "供应商2-Carline",
-          Volume: "供应商2-Volume",
-          BudgetA: "供应商2-BudgetA",
-          BudgetB: "供应商2-BudgetB",
-          "F-TargetA": "供应商2-F-TargetA",
-          "F-TargetB": "供应商2-F-TargetB",
-          FSNo: "供应商2-FSNo",
+          prop: "partNo",
+          label: "Part No.",
+          width: 120,
         },
         {
-          supplierName: "供应商3",
-          sapCode: "003",
-          partName: "供应商3-零件号",
-          Carline: "供应商3-Carline",
-          Volume: "供应商3-Volume",
-          BudgetA: "供应商3-BudgetA",
-          BudgetB: "供应商3-BudgetB",
-          "F-TargetA": "供应商3-F-TargetA",
-          "F-TargetB": "供应商3-F-TargetB",
-          FSNo: "供应商3-FSNo",
+          prop: "partName",
+          label: "Part Name",
+          width: 120,
         },
         {
-          supplierName: "供应商4",
-          sapCode: "004",
-          partName: "供应商4-零件号",
-          Carline: "供应商4-Carline",
-          Volume: "供应商4-Volume",
-          BudgetA: "供应商4-BudgetA",
-          BudgetB: "供应商4-BudgetB",
-          "F-TargetA": "供应商4-F-TargetA",
-          "F-TargetB": "供应商4-F-TargetB",
-          FSNo: "供应商4-FSNo",
+          prop: "carProType",
+          label: "Carline",
+          width: 80,
+        },
+        {
+          prop: "ebr",
+          label: "EBR",
+          width: 80,
+        },
+        {
+          prop: "ebrCalculatedValue",
+          label: "Mixed Qty",
+          width: 80,
+        },
+        {
+          prop: "volume",
+          label: "Volume",
+          width: 80,
         },
       ],
-      fledTitle: [
+      tableData: [],
+      visible: false,
+      row: {},
+      totalData: [
         {
-          prop: "LTC",
-          label: "LTC",
+          carProType: "Mixed Price",
+          aPrice: "",
+          bPrice: "",
         },
         {
-          prop: "LTC Start Date",
-          label: "LTC Start Date",
+          carProType: "LTC from Start Date",
         },
         {
-          prop: "Total Invest",
-          label: "Total Invest",
+          carProType: "Total Invest",
+          volume: "Target",
+          aPrice: "",
         },
         {
-          prop: "Total Develop Cost",
-          label: "Total Develop Cost",
+          carProType: "Total Invest",
+          volume: "Budget",
+          aPrice: "",
         },
         {
-          prop: "Turnover",
-          label: "Total Turnover",
-        },
-      ],
-      tableData: [
-        {
-          label: "label",
-          prop: "prop",
-          col: "col1",
+          carProType: "Total Development",
+          volume: "Target",
+          aPrice: "",
         },
         {
-          label: "label",
-          prop: "prop",
-          col: "col2",
+          carProType: "Total Development",
+          volume: "Budget",
+          aPrice: "",
         },
         {
-          label: "label",
-          prop: "prop",
-          col: "col3",
-        },
-        {
-          label: "label",
-          prop: "prop",
-          col: "col4",
-        },
-        {
-          label: "label",
-          prop: "prop",
-          col: "col5",
+          carProType: "Total Turnover",
         },
       ],
+      index:0,
+      showLength:1,
+      supplierAllData:[],
+      loading:false
     };
   },
-
+  computed:{
+    supplierList(){
+      return this.supplierAllData[this.index] ||[]
+    }
+  },
+  created() {
+    this.getData();
+  },
+  mounted() {
+    // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
+    this.$nextTick(function () {
+      this.setColSpan();
+    });
+  },
   methods: {
+    getData() {
+      this.loading = true
+      fsPartsAsRow("60003714" || this.$route.query.desinateId).then(res=>{
+        if(res?.code=='200'){
+          const tableData = res.data.partInfoList?.map((item) => {
+            item.bdlInfoList.forEach(child=>{
+              item[child.supplierId+'aPrice'] = child.lcAPrice
+              item[child.supplierId+'bPrice'] = child.lcBPrice
+            })
+            return item
+          })||[];
+          const totalData = JSON.parse(JSON.stringify(this.totalData))
+          let obj = {}
+          res.data.bdlPriceTotalInfoList?.forEach(item=>{
+            obj[item.supplierId] = item
+          })
+          res.data.bdlRateInfoList?.forEach(item=>{
+            obj[item.supplierId][item.rateType] = item.rate
+            obj[item.supplierId].supplier = item.supplierName
+            obj[item.supplierId].supplierEn = item.supplierNameEn
+          })
+          const supplierList = Object.values(obj).map((item) => {
+            totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
+            totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
+            totalData[1][item.supplierId + "aPrice"] = item.priceReduceDTOList;
+            totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
+            totalData[4][item.supplierId + "aPrice"] = item.aPrice;
+            totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
+            return item
+          });
+          totalData[0]["aPrice"] = res.data.fsPriceInfo?.targetMixLcAPrice||'';
+          totalData[0]["bPrice"] = res.data.fsPriceInfo?.targetMixLcBPrice||'';
+          totalData[2]["aPrice"] = res.data.fsPriceInfo?.targetTotalInvest||'';
+          totalData[3]["aPrice"] = res.data.fsPriceInfo?.budgetTotalInvest||'';
+          totalData[6]["aPrice"] = res.data.fsPriceInfo?.targetSelTotalSel||'';
+          this.index = 0
+          this.supplierAllData = _.chunk(supplierList,this.showLength)
+          this.totalData = totalData
+          this.tableData = tableData
+        }
+      }).finally(()=>{
+        this.loading = false
+      })
+    },
+    spliceData() {},
+    isCLevel(val) {
+      return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
     setColSpan() {
-      const row = document.getElementsByClassName("el-table__header")[0].rows;
+      const row =
+        this.$refs["part-table"].getElementsByClassName("el-table__header")[0]
+          .rows;
       //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 6, "rowSpan");
-      this.merge(row, 6, 2, 2, "colSpan");
-      this.merge(row, 6, 4, 2, "colSpan");
-      this.merge(row, 6, 6, 2, "colSpan");
-      this.merge(row, 6, 8, 2, "colSpan");
-      this.merge(row, 6, 10, 2, "colSpan");
+      this.merge(row, 0, 0, 7, "colSpan");
+      this.merge(row, 0, 0, 4, "rowSpan");
+      this.merge(row, 1, 7, 3, "rowSpan");
+      this.merge(row, 4, 7, 2, "colSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
       const col = row[rowIndex].cells;
       if (!(row || col)) return;
       if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
+      let colSpan = row[rowIndex].cells[colIndex].colSpan;
       if (type == "colSpan") {
-        let colSpan = row[rowIndex].cells[colIndex].colSpan;
-        for (let i = 1; i < span; i++) {
-          let index = i + colIndex;
-          colSpan += row[rowIndex].cells[index].colSpan;
-          if (colSpan == span) {
-            row[rowIndex].cells[index].style.display = "none";
-            break;
+        for (let r = 0; r < rowSpan; r++) {
+          let rIndex = r + rowIndex;
+          let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+          for (let i = 1; i < span; i++) {
+            let cIndex = i + colIndex;
+            colSpan_ += row[rIndex].cells[cIndex].colSpan;
+            if (colSpan_ == span) {
+              row[rIndex].cells[cIndex].style.display = "none";
+              break;
+            }
+            if (colSpan_ > span) {
+              row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+              break;
+            }
+            row[rIndex].cells[cIndex].style.display = "none";
           }
-          if (colSpan > span) {
-            row[rowIndex].cells[index].colSpan = colSpan - span;
-            break;
-          }
-          row[rowIndex].cells[index].style.display = "none";
         }
       }
       if (type == "rowSpan") {
-        let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
-        for (let i = 1; i < span; i++) {
-          let index = i + rowIndex;
-          rowSpan += row[index].cells[colIndex].rowSpan;
-
-          if (rowSpan == span) {
-            row[index].cells[colIndex].style.display = "none";
-            break;
+        for (let c = 0; c < colSpan; c++) {
+          let cIndex = c + colIndex;
+          let rowSpan_ = row[rowIndex].cells[cIndex].rowSpan || 1;
+          for (let i = 1; i < span; i++) {
+            let rIndex = i + rowIndex;
+            rowSpan_ += row[rIndex].cells[cIndex].rowSpan;
+            if (rowSpan_ == span) {
+              row[rIndex].cells[cIndex].style.display = "none";
+              break;
+            }
+            if (rowSpan_ > span) {
+              row[rIndex].cells[cIndex].rowSpan = rowSpan_ - span;
+              break;
+            }
+            row[rIndex].cells[cIndex].style.display = "none";
           }
-          if (rowSpan > span) {
-            row[index].cells[colIndex].rowSpan = rowSpan - span;
-            break;
-          }
-          row[index].cells[colIndex].style.display = "none";
         }
       }
       row[rowIndex].cells[colIndex][type] = span;
     },
-  },
-
-  mounted() {
-    // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-    this.$nextTick(function () {
-      this.setColSpan();
-    });
+    // 计算统计表表头合并
+    totalCellClass({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex == 0 && rowIndex == 0) {
+        return [7, 3];
+      } else if (columnIndex < 3 && rowIndex < 7) {
+        return [0, 0];
+      }
+      if ([0, 1, 6].includes(rowIndex)) {
+        if (columnIndex == 3) {
+          return [1, 4];
+        } else if ([4, 5, 6].includes(columnIndex)) {
+          return [0, 0];
+        }
+      }
+      if ([2, 4].includes(rowIndex)) {
+        if (columnIndex == 3) {
+          return [2, 3];
+        } else if ([4, 5].includes(columnIndex)) {
+          return [0, 0];
+        }
+      }
+      if ([3, 5].includes(rowIndex)) {
+        if (columnIndex == 3) {
+          return [0, 0];
+        } else if ([4, 5].includes(columnIndex)) {
+          return [0, 0];
+        }
+      }
+      if ([7].includes(columnIndex) && rowIndex > 0) {
+        return [1, 2];
+      }
+      if ([8].includes(columnIndex) && rowIndex > 0) {
+        return [0, 0];
+      }
+      for (let i = 0; i < this.supplierList.length; i++) {
+        if ([2 * i + 9].includes(columnIndex)) {
+          if ([1, 6].includes(rowIndex)) {
+            return [1, 2];
+          } else if ([2, 4].includes(rowIndex)) {
+            return [2, 2];
+          } else if ([3, 5].includes(rowIndex)) {
+            return [0, 0];
+          }
+        }
+        if ([2 * i + 10].includes(columnIndex) && rowIndex > 0) {
+          return [0, 0];
+        }
+      }
+    },
+    prev() {
+      if (this.index < this.supplierAllData.length - 1) {
+        this.index++;
+      } else {
+        this.index = 0;
+      }
+    },
+    next() {
+      if (this.index > 0) {
+        this.index--;
+      } else {
+        this.index = this.supplierAllData.length - 1;
+      }
+    },
+    // 表头单元格背景调整
+    cellClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex == 0 && columnIndex == 0) {
+        return "white-bg unit";
+      }
+      if (rowIndex == 0 && columnIndex > 7) {
+        return "white-bg";
+      }
+      if (rowIndex < 4 && columnIndex > 8) {
+        return "white-bg";
+      }
+    },
+    // 内容单元格蓝色背景调整
+    colClass({ row, column, rowIndex, columnIndex }) {
+      if (["partAPrice", "partBPrice"].includes(column.label)) {
+        return row[column.property] && row[column.property] < 20
+          ? "blue-border"
+          : "";
+      }
+    },
+    totalColClass({ row, column, rowIndex, columnIndex }) {
+      if ([3, 4, 5, 6].includes(columnIndex)) {
+        return "table-header";
+      }
+    },
+    gotoDetail(row) {
+      this.row = row;
+      console.log(row);
+      this.$nextTick(() => {
+        this.visible = true;
+      });
+    },
   },
 };
 </script>
@@ -320,31 +544,76 @@ export default {
   }
 }
 ::v-deep .el-table {
+  .hidden {
+    display: none;
+  }
+  .el-table__header {
+    background: transparent;
+    .white-bg {
+      background: #f8f9fa;
+      .cell {
+        color: #000 !important;
+      }
+    }
+    .unit {
+      vertical-align: top;
+    }
+  }
+  .blue-border {
+    background: #bdd7ee;
+  }
   .leftAllow {
     position: relative;
     padding: 0;
-    &::after {
-      content: "";
-      width: 20px;
-      height: 100px;
-      background: red;
-      position: fixed;
-      z-index: 999;
-      margin-left: -20px;
-    }
+    background: red;
+    float: left;
   }
-  
+
   .rightAllow {
     position: relative;
     padding: 0;
-    &::before {
-      content: "";
-      width: 20px;
-      height: 100px;
-      background: red;
-      position: fixed;
-      z-index: 999;
+    background: red;
+    float: right;
+  }
+  .red {
+    color: #f00;
+  }
+}
+
+.total-table {
+  ::v-deep tr {
+    .table-header {
+      background: #364d6e;
+      .cell {
+        font-weight: 700;
+        color: #fff;
+      }
     }
+    &:hover > td.table-header {
+      background-color: #364d6e;
+    }
+  }
+}
+.left {
+  width: 14px;
+  height: 60px;
+  background: red;
+  border-radius: 10px;
+  transform: translate(0px, 20%);
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+}
+.right {
+  width: 14px;
+  height: 60px;
+  background: red;
+  border-radius: 10px;
+  transform: translate(-16px, 20%);
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
   }
 }
 </style>

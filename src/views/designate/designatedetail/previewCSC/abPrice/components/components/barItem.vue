@@ -6,26 +6,25 @@
 export default {
   props: {
     barName: String,
+    data:Object
   },
   data() {
     return {
       key: "",
-      carts: null,
+      charts: null,
     };
-  },
-  created(){
-    this.APrice = parseFloat(32 * Math.random()).toFixed(2)
-    this.BPrice = parseFloat(32 * Math.random()).toFixed(2)
-    this.Total = (Number(this.APrice)+Number(this.BPrice)).toFixed(2)
   },
   mounted() {
     window.addEventListener("resize", this.resize);
-    this.drawLine();
+    this.drawBar();
+    this.resize();
+  },
+  updated() {
+    this.resize();
   },
   methods: {
-    // 英式曲线图
-    drawLine() {
-      this.carts = this.$echarts.init(this.$refs.chart);
+    drawBar() {
+      this.charts = this.$echarts.init(this.$refs.chart);
       let options = {
         title: {
           show: false,
@@ -77,11 +76,11 @@ export default {
               position: "inside",
             },
             // barWidth:'60',
-            barMaxWidth:'140',
-            barMinWidth:'40',
-            barMinHeight:"10",
+            barMaxWidth: "140",
+            barMinWidth: "40",
+            barMinHeight: "10",
             stack: "Supplier",
-            data: [this.APrice],
+            data: [this.data.aPrice],
             itemStyle: {
               color: "#516894",
             },
@@ -93,11 +92,11 @@ export default {
               show: true,
               position: "inside",
             },
-            barMaxWidth:'140',
-            barMinWidth:'40',
-            barMinHeight:"10",
+            barMaxWidth: "140",
+            barMinWidth: "40",
+            barMinHeight: "10",
             stack: "Supplier",
-            data: [this.BPrice],
+            data: [this.data.bPrice],
             itemStyle: {
               color: "#d8ddd7",
             },
@@ -108,25 +107,25 @@ export default {
             label: {
               show: true,
               position: "top",
-              distance:15,
-              fontWeight:'bold',
-              formatter:()=>{
-                return this.Total
-              }
+              distance: 15,
+              fontWeight: "bold",
+              formatter: () => {
+                return (Number(this.data.aPrice) + Number(this.data.bPrice)).toFixed(2)||'';
+              },
             },
             stack: "Supplier",
             data: [0],
           },
         ],
       };
-      this.carts.setOption(options);
+      this.charts.setOption(options);
       this.$nextTick(this.resize());
     },
     resize() {
       this.$nextTick(() => {
-        setTimeout(()=>{
-          this.carts.resize();
-        },0)
+        setTimeout(() => {
+          this.charts.resize();
+        }, 32);
       });
     },
   },
