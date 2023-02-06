@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2021-11-09 17:02:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-06 18:25:08
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
 -->
@@ -41,7 +41,7 @@
 <script>
 import { iMessage } from 'rise'
 import { login } from '@/api/usercenter'
-import { setToken, encryptPwd } from '@/utils'
+import { setToken, getToken, encryptPwd } from '@/utils'
 
 export default {
 	data() {
@@ -101,9 +101,19 @@ export default {
 		if (this.$route.path.indexOf('superLogin') > -1) {
 			//nothing to do
 		} else {
-			if (process.env.VUE_APP_LOGIN_URL) {
+			const token = getToken()
+			let redirectUrl = ''
+			if (token) {
+				redirectUrl =
+				process.env.VUE_APP_LOGOUT_URL || process.env.VUE_APP_LOGIN_URL
+			} else {
+				redirectUrl =
+				process.env.VUE_APP_LOGIN_URL+`?state=${encodeURIComponent(this.$route.query.state)}` || process.env.VUE_APP_LOGOUT_URL
+			}
+			// 有重定向地址则跳转
+			if (redirectUrl && this.$route.query.state) {
 				this.ssoLogin = true
-				location.href = process.env.VUE_APP_LOGIN_URL
+				location.href = redirectUrl
 			}
 		}
 	},
