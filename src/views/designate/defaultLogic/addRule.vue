@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 10:52:28
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2023-01-16 14:16:07
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
@@ -42,7 +42,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== ''" :label="' '">
-        <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="item.input2" @change="val => handleSelectChange(val, item)">
+        <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="item.input2" :disabled="changeLoading" @change="val => handleSelectChange(val, item)">
           <el-option
             v-for="item in (item.input1 === 0 ? partTypeOptions : item.input1 === 4 ? tradeOptions : input2Options )"
             :key="item.value"
@@ -129,7 +129,8 @@ export default {
       }, {
         value: 4,
         label: '不小于'
-      }]
+      }],
+      changeLoading:false
     }
   },
   computed: {
@@ -139,10 +140,13 @@ export default {
   },
   methods: {
     getFuelType(val) {
+      if(this.changeLoading) return
+      this.changeLoading = true
       findFuelTypeList(val).then(res => {
         if (res?.result) {
           this.tradeOptions = res.data.map(item => {return {value: item, label: item}})
         }
+        this.changeLoading = false
       })
     },
     /**

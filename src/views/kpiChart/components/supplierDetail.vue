@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-19 10:02:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-01-16 14:24:00
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
 -->
@@ -15,7 +15,7 @@
                   <el-form>
                     <el-row>
                       <el-col>
-                        <iSelect v-model="reportData" @change="selectChange"> 
+                        <iSelect v-model="reportData" :disabled="loading" @change="selectChange"> 
                           <el-option v-for="(item, index) in reportList" :key="index" :value="item.id" :label="item.title">{{item.title}}</el-option>
                         </iSelect>
                       </el-col>
@@ -96,7 +96,8 @@ export default {
         supplierId: this.$route.query.supplierId,
         tableData:[],
         columns: [],
-        reasonData: []
+        reasonData: [],
+        loading:false
       }
     },
     created () {
@@ -139,6 +140,8 @@ export default {
         })
       },
       fetchReportDetail() {
+        if(this.loading) return
+        this.loading = true
         const params = {
           id: this.reportData,
           supplierId: this.supplierId,
@@ -162,6 +165,7 @@ export default {
               })
             }
           } else iMessage.error(res.desZh)
+          this.loading = false
         })
       },
       fetchInfo() {

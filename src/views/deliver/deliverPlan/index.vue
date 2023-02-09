@@ -5,7 +5,7 @@
       <iSearch @sure="sure" @reset="reset">
         <el-form class="margin-top10">
           <el-form-item :label="$t('CHEXINGXIANGMU')">
-            <iSelect filterable v-model="selectOptions.catTypeProName" :placeholder="language('QINGXUANZE','请选择')" @change="projectChange">
+            <iSelect filterable v-model="selectOptions.catTypeProName" :disabled="loading" :placeholder="language('QINGXUANZE','请选择')" @change="projectChange">
               <el-option
                 v-for="(item,index) in carProjectOptions"
                 :key="index"
@@ -243,6 +243,7 @@ export default {
       carProjectOptions:[],//车型项目
 
       selectData:[],
+      loading:false,
     }
   },
   created(){
@@ -269,12 +270,15 @@ export default {
       })
     },
     getSupplier(){
+      if(this.loading) return
+      this.loading = true
       this.selectOptions.supplierId = "";
       var supplierId = this.carProjectOptions.filter(e => e.cartypeProNameZh == this.selectOptions.catTypeProName)
       return new Promise((resolve,reject) => {
         getCartypeProSupplier(supplierId[0].cartypeProId).then(res=>{
           if(res?.result){
             this.supplierList = res.data;
+            this.loading = false
             resolve();
           }
         })

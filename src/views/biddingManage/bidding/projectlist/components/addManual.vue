@@ -41,6 +41,7 @@
             <iLabel :label="language('BIDDING_SGJJLX', '手工竞价类型')" slot="label" required></iLabel>
             <iSelect
               v-model="form.manualBiddingType"
+              :disabled="loading"
               :placeholder="language('BIDDING_QXZSGJJLX', '请选择手工竞价类型')"
               @change="handleChangeType"
             >
@@ -136,13 +137,17 @@ export default {
       RFQTurnList,
       procureTypeList,
       manualBiddingTypeList,
+      loading: false
     };
   },
 
   methods: {
     async handleChangeType(){
+      if(this.loading) return
+      this.loading = true
       this.form.rfqCode='';
       const res = await getRfqIdList({manualBiddingType:this.form.manualBiddingType});
+      this.loading = false
       this.rfqCodeList = res.data.map((item) => ({ label: item, value: item }));
     },
     handleCancel() {

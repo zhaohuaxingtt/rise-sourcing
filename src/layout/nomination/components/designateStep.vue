@@ -47,7 +47,7 @@
         <iSelect
           v-model="designateType"
           @change="updateNominate"
-          :disabled="disableNominationType || nominationDisabled || rsDisabled"
+          :disabled="disableNominationType || nominationDisabled || rsDisabled || loading"
           v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE | 定点申请类型"
         >
           <el-option
@@ -398,10 +398,12 @@ export default {
       exportLoading: false,
       showExportPdf: false,
       showData: true,
+      loading:false
     };
   },
   methods: {
     async updateNominate(data) {
+      if(this.loading) return
       if (this.desinateId) {
         this.$confirm(
           this.language(
@@ -415,6 +417,7 @@ export default {
               meetingType: data,
               nominateAppId: this.desinateId,
             };
+            this.loading = true
             updateNominate(params)
               .then((res) => {
                 if (res.code === "200") {
@@ -437,6 +440,8 @@ export default {
               })
               .catch((e) => {
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+              }).finally(()=>{
+                this.loading = false
               });
           })
           .catch((e) => {

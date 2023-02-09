@@ -9,7 +9,7 @@
           <span class="form-title lineH40">{{$t("CHEXINGXIANGMU")}}：</span>
           <el-form inline class="form">
             <el-form-item>
-                <iSelect filterable v-model="searchParams.carTypeProId" :placeholder="language('QINGXUANZE','请选择')" @change="carChange" >
+                <iSelect filterable v-model="searchParams.carTypeProId" :disabled="loading" :placeholder="language('QINGXUANZE','请选择')" @change="carChange" >
                   <el-option
                     v-for="item in carProjectOptions"
                     :key="item.cartypeProId"
@@ -134,14 +134,15 @@ export default {
         nameE:"",
         number:"",
       },
+      loading:false
     }
   },
   created(){
     this.getData();
   },
   methods:{
-    carChange(val){
-      this.getGroup(val);//获取车型项目材料组下拉
+    async carChange(val){
+      await this.getGroup(val);//获取车型项目材料组下拉
       this.searchParams.materialGroupId = "";
       this.searchParams.partNum = "";
       this.searchParams.supplierId = "";
@@ -174,12 +175,12 @@ export default {
     },
     getCarType(){
       return new Promise((resolve,reject) => {
-        cartype_pro_List({}).then(res=>{
+        cartype_pro_List({}).then(async res=>{
           if(res?.result){
             this.carProjectOptions = res.data.filter(res => res)
             this.searchParams.carTypeProId = this.carProjectOptions[0]?.cartypeProId;
             this.carTypeProIdOld = this.carProjectOptions[0]?.cartypeProId;
-            this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
+            await this.getGroup(this.searchParams.carTypeProId);//获取车型项目材料组下拉
             resolve();
           }
         })
@@ -241,29 +242,46 @@ export default {
       }
     },
     getGroup(val){
+      if(this.loading) return 
+      this.loading = true
       var id = "";
       if(val){
         id = val;
       }else{
         id = 0;
       }
-      getCartypeProMaterialGroup(id).then(res=>{
-        if(res?.result){
+      promise.all([getCartypeProMaterialGroup(id),getCartypeProPart(id),getCartypeProSupplier(id)]).then(res=>{
+        let res0 = res[0]
+        let res1 = res[1]
+        let res2 = res[2]
+        if(res0?.result){
           this.deptList = res.data;
         }
-      })
-
-      getCartypeProPart(id).then(res=>{
-        if(res?.result){
+        if(res1?.result){
           this.partList = res.data;
         }
-      })
-
-      getCartypeProSupplier(id).then(res=>{
-        if(res?.result){
+        if(res2?.result){
           this.supplierList = res.data;
         }
+        this.loading = false
       })
+      // getCartypeProMaterialGroup(id).then(res=>{
+      //   if(res?.result){
+      //     this.deptList = res.data;
+      //   }
+      // })
+
+      // getCartypeProPart(id).then(res=>{
+      //   if(res?.result){
+      //     this.partList = res.data;
+      //   }
+      // })
+
+      // getCartypeProSupplier(id).then(res=>{
+      //   if(res?.result){
+      //     this.supplierList = res.data;
+      //   }
+      // })
     },
     changeTab(val){
       this.tabVal = val.name;

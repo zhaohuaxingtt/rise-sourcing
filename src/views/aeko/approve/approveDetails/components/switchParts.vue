@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2022-03-23 15:33:09
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-01-16 11:29:21
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 
 -->
 <template>
@@ -15,6 +15,7 @@
       <span class="title">{{ language("QIEHUANLINGJIAN", "切换零件") }}:</span>
       <div class="i-select mb-20">
         <iSelect
+          :disabled="changeLoading"
           v-model="partsId"
           :placeholder="language('QINGXUANZE', '请选择')"
           @change="getCbdDataQuery"
@@ -99,6 +100,10 @@ export default {
     noLinie: {
       type: Boolean,
       default: true
+    },
+    changeLoading: {
+      type: Boolean,
+      default: false
     },
     workFlowId: {
       type: String,
@@ -191,6 +196,7 @@ export default {
         });
     },
     getCbdDataQuery() {
+      if(this.changeLoading) return
       let workFlowId = this.partsObj[this.partsId]&&this.partsObj[this.partsId].workFlowId || ''
       this.$emit("getCbdDataQuery", this.partsId, workFlowId);
     },
