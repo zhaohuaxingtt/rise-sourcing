@@ -1,5 +1,5 @@
 <template>
-  <iPage
+  <div
     class="title"
     ref="reTitle"
     v-permission.auto="SOURCING_NOMINATION_ATTATCH_TITLE | (决策资料 - title)"
@@ -7,59 +7,13 @@
     <div class="imgBox" @click="gotoPartList">
       <img src="@/assets/images/CSC_bg.png" alt="" />
     </div>
-    <div class="content margin-top20">
-      <iFormGroup row="1" class="infos">
-        <div class="col">
-          <template v-for="(item, index) in items">
-            <iFormItem
-              v-if="!item.hidden"
-              :key="index"
-              :label="`${item.label}:`"
-            >
-              <p>{{ data[item.key] }}</p>
-            </iFormItem>
-          </template>
-        </div>
-      </iFormGroup>
-    </div>
-    <div class="pdf-item">
-      <div class="pageCard-main" ref="rsPdfCard">
-        <div ref="tabTitle" style="padding: 1px">
-          <slot name="tabTitle"></slot>
-        </div>
-        <iCard class="rsTitle pageCard rsPdfCard" title="Title">
-          <iFormGroup row="1" :style="{ height: cntentHeight + 'px' }">
-            <div class="col">
-              <template v-for="(item, index) in items">
-                <iFormItem
-                  v-if="!item.hidden"
-                  :key="index"
-                  :label="`${item.label}:`"
-                >
-                  <iText>{{ data[item.key] }}</iText>
-                </iFormItem>
-              </template>
-            </div>
-          </iFormGroup>
-          <div class="page-logo" ref="logo">
-            <img
-              src="../../../../../assets/images/logo.png"
-              alt=""
-              :height="46 * 0.6 + 'px'"
-              :width="126 * 0.6 + 'px'"
-            />
-            <div>
-              <p class="pageNum"></p>
-            </div>
-            <div>
-              <p>{{ userName }}</p>
-              <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
-            </div>
-          </div>
-        </iCard>
+    <div class="content">
+      <div class="infos" v-for="item in items" :key="item.label">
+        <div class="label">{{ item.label }}:</div>
+        <div class="value">{{ data[item.key] }}</div>
       </div>
     </div>
-  </iPage>
+  </div>
 </template>
 
 <script>
@@ -80,9 +34,6 @@ export default {
         ? this.$store.state.permission.userInfo.nameZh
         : this.$store.state.permission.userInfo.nameEn;
     },
-    // hasTitle(){
-    //   return this.$slots.tabTitle && 116 || 0
-    // }
   },
   components: {
     iPage,
@@ -100,17 +51,6 @@ export default {
   },
   created() {
     this.findLayoutTitleInfo();
-  },
-  mounted() {
-    this.width = this.$refs.reTitle.offsetWidth;
-    this.hasTitle = this.$refs.tabTitle.offsetHeight;
-    // let headerHeight = 84
-    // if(this.$refs.rsPdfCard.$el)
-    let headerHeight =
-      this.$refs.rsPdfCard.getElementsByClassName("cardHeader")[0].offsetHeight; // Title 区域高度
-    let pageLogo = this.$refs.logo.offsetHeight; // logo 区域高度
-    this.cntentHeight =
-      (this.width / 841.89) * 595.28 - headerHeight - pageLogo - this.hasTitle; // 横版A4一页对应的高度
   },
   methods: {
     gotoPartList() {
@@ -169,18 +109,43 @@ export default {
 
 <style lang="scss" scoped>
 .title {
+  height: 100%;
+  padding: 0 40px;
+  overflow: auto;
+  display: flex;
+  flex-flow: column;
   background: #fff;
 }
 .imgBox {
   width: 100%;
+  height: 470px;
   img {
+    height: 100%;
     width: 100%;
   }
 }
 .content {
+  height: calc(100% - 525px);
   padding: 20px;
   border: 1px solid #ddd;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: column;
+  margin-top: 20px;
+  margin-bottom: 35px;
   .infos {
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 50px;
+    .label {
+      width: 300px;
+    }
+    .value {
+      flex: 1;
+    }
     ::v-deep .el-form-item__label {
       font-size: 18px;
       font-weight: bold;
@@ -188,6 +153,9 @@ export default {
     ::v-deep .el-form-item__content {
       font-size: 18px;
       font-weight: bold;
+    }
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 }

@@ -1812,6 +1812,7 @@ export default {
       height: 0;
     }
     ::v-deep .el-table__header th {
+      background-color: #364d6e;
       padding-top: 8px;
       padding-bottom: 8px;
       & > .cell {

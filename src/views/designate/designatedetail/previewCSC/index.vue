@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-05 19:10:45
+ * @LastEditTime: 2023-02-09 23:21:41
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,16 +11,10 @@
     <div
       id="preview-csc"
       class="nomination-wraper"
-      :class="{ isPreview: isPreview === '1' }"
     >
-      <div class="nomination-layout">
-        <decisionDataHeader
-          :isPreview="isPreview"
-          v-if="!$route.meta.hideTabLV3"
-        />
-      </div>
+      <decisionDataHeader class="tab-nav"/>
       <div class="nomination-content" v-loading="loading" id="pdfHide">
-        <router-view></router-view>
+        <router-view class="page-content"></router-view>
       </div>
     </div>
   </iPage>
@@ -133,17 +127,9 @@ export default {
   position: relative;
 }
 .nomination-wraper {
-  &.isPreview {
-    box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-    border-radius: 0.375rem;
-    background: #fff;
-    .nomination-content {
-      ::v-deep.card {
-        box-shadow: none !important;
-      }
-    }
-  }
-
+  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
+  border-radius: 0.375rem;
+  background: #fff;
   .tip {
     font-size: 24px;
     font-weight: 600;
@@ -180,21 +166,36 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  position:relative
+  position: relative;
+  background: #fff;
 }
 #preview-csc {
-  background-color: transparent;
+  height: 100%;
+  padding-bottom: 5px;
+  overflow: auto;
+  ::v-deep * {
+    font-family: 'Arial', 'Helvetica', 'sans-serif';
+  }
+  .tab-nav{
+    height: 54px;
+  }
+  .nomination-content {
+    height: calc(100% - 54px);
+    .page-content{
+      height: 100%;
+    }
+  }
   ::v-deep .decision-header.preview-header {
     padding: 0;
     background-color: transparent;
   }
-  ::v-deep .card {
-    background-color: transparent;
-    .cardBody {
-      padding: 0;
-      background-color: transparent;
-    }
-  }
+  // ::v-deep .card {
+  //   background-color: transparent;
+  //   .cardBody {
+  //     padding: 0;
+  //     background-color: transparent;
+  //   }
+  // }
   ::v-deep.el-tabs--card {
     .el-tabs__header {
       margin-bottom: 15px;
@@ -207,7 +208,7 @@ export default {
     border-radius: 0;
     // background-color:transparent;
     .el-table__header {
-      background-color: #364d6e;
+      // background-color: #364d6e;
       th {
         border-color: #d9d9d9;
         .cell {
@@ -218,20 +219,32 @@ export default {
       // .gutter {
       //   background: #ffffff !important; //因为我改了我的默认表格背景颜色，所以要跟着改
       // }
-      tr:nth-child(even) {
-        background-color: #364d6e;
-      }
     }
-    td {
-      border-color: #d9d9d9;
-      border-top: 1px solid #d9d9d9;
-      .cell {
-        line-height: 20px;
+    .el-table__body-wrapper{
+      tr:nth-child(even) {
+        background-color: #FFFFFF;
+      }
+      
+      tr:last-of-type {
+        td{
+          border-bottom: 1px solid #d9d9d9;
+        }
+      }
+
+      td {
+        border-color: #d9d9d9;
+        border-top: 1px solid #d9d9d9;
+        .cell {
+          line-height: 20px;
+        }
       }
     }
     tr {
-      // background-color:transparent;
       border-top: 1px solid #d9d9d9;
+      .link{
+        color: #364d6e;
+        text-decoration: underline;
+      }
     }
   }
   ::v-deep .i-pagination {

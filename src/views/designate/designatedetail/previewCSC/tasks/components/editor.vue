@@ -1,56 +1,20 @@
 
 <template>
-  <iCard class="editor">
-    <div class="clearFloat">
-      <span class="font18 font-weight" v-if='higth'>
-        {{ language("Background & Objective","Background & Objective") }}</span
-      >
-      <span class="font18 font-weight" v-else>
-        {{ language("Highlights","Highlights") }}</span
-      >
-      <div class="floatright">
-        <span v-if="multiEditControl">
-          <upload
-            class="upload-trigger margin-right10"
-            :hideTip="true"
-            :accept="'.jpg,.jpeg,.png,.gif'"
-            :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
-            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD|上传图片"
-            @on-success="onUploadsucess"
-          />
-          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE|保存备注">
-            {{ language("LK_BAOCUN",'保存') }}
-          </iButton>
-          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT|结束编辑备注">
-            {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
-          </iButton>
-        </span>
-        <span v-else>
-          <template v-if='higth'>
-            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
-              {{ language("LK_BIANJI",'编辑') }}
-            </iButton>
-          </template>
-          <div v-else>
-            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
-              {{ language("LK_BIANJI",'编辑') }}
-            </iButton>
-          </div>
-        </span>
-      </div>
-      <div class="clearfix"></div>
-      <iEditor
-        class="editor-content margin-top20"
-        id="textEditor"
-        :showMenus="false"
-        :disabled="!multiEditControl"
-        v-model="content"
-        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
-        ref="editor"
+  <div>
+    <span class="font18 font-weight">
+      {{ language("Background & Objective","Background & Objective") }}</span
+    >
+    <iEditor
+      class="editor-content margin-top20"
+      id="textEditor"
+      :showMenus="false"
+      :disabled="!multiEditControl"
+      v-model="content"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
+      ref="editor"
 
-       />
-    </div>
-  </iCard>
+      />
+  </div>
 </template>
 
 <script>
@@ -81,7 +45,6 @@ export default {
       pictures: [],
       submiting: false,
       multiEditControl: false,
-      higth:true,
       task:''
     }
   },
@@ -106,7 +69,7 @@ export default {
     upload
   },
   mounted() {
-    this.getFetchData()
+    // this.getFetchData()
   },
   methods: {
     onUploadsucess(data) {
@@ -155,19 +118,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.clearfix {
-  clear: both
-}
 #textEditor {
   border: 1px solid #ebebeb;
   border-radius: 5px;
+  height: calc(100% - 41px);
   ::v-deep.w-e-toolbar {
     display: none;
   }
+  ::v-deep #editor{
+    height: 100%;
+  }
   ::v-deep.w-e-text-container {
-    height: auto !important;
-    min-height: 100px;
-    max-height: 500px;
+    height: 100% !important;
+    // min-height: 100px;
+    // max-height: 500px;
     border: 0px !important;
     .w-e-text {
       font-size: 12px !important;

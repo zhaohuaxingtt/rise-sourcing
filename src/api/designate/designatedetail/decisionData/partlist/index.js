@@ -24,3 +24,10 @@ export function partUpdate(data) {
         data,
     })
 }
+// 保存
+export function latestVersionInfo(purchasingRequirementId ) {
+    return requst({
+        url: `/tp-records/perCarDosage/latestVersionInfo/${purchasingRequirementId }`,
+        method: "GET",
+    })
+}

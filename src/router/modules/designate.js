@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2023-02-01 16:21:24
+ * @LastEditTime: 2023-02-08 15:44:40
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -250,7 +250,7 @@ const nominationpages_copy = [
       activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/attachment'),
+      import('@/views/designate/designatedetail/previewCSC/attachment'),
   },
   {
     path: 'tasks',
@@ -269,7 +269,7 @@ const nominationpages_copy = [
       activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/awardingscenario'),
+      import('@/views/designate/designatedetail/previewCSC/awardingscenario'),
   },
   {
     path: 'rs',

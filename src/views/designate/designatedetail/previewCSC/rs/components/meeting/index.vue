@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-01-04 23:46:56
+ * @LastEditTime: 2023-02-08 14:30:38
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
 
 <template>
   <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
-    <div class="demo" :style="{ width: pageWidth + 'px' }" v-if="showpdf">
+    <!-- <div class="demo" :style="{ width: pageWidth + 'px' }" v-if="showpdf">
       <div ref="tabTitle" style="padding: 1px">
         <slot name="tabTitle"></slot>
       </div>
@@ -158,13 +158,10 @@
                 </p>
               </div>
             </template>
-
-            <!-- 年降 -->
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
 
-            <!-- 年降开始时间 -->
             <template #beginYearReduce="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
             </template>
@@ -180,12 +177,6 @@
             <template #svwCode="scope">
               <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
             </template>
-            <!-- <template #demand="scope">
-              <span>{{ scope.row.demand | kFilter }}</span>
-            </template>
-            <template #output="scope">
-              <span>{{ scope.row.output | kFilter }}</span>
-            </template> -->
             <template #presentPrice="scope">
               <span>{{ scope.row.presentPrice | toThousands }}</span>
             </template>
@@ -376,7 +367,6 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-          <!-- v-if="isPreview" -->
           <div class="require-start">
             <div style="margin-left: 20px">
               <span style="color: red">*</span><span>代表投资费已分摊</span>
@@ -553,7 +543,7 @@
         </template>
       </rsPdf>
       <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
-    </div>
+    </div> -->
     <div id="hide">
       <iCard class="rsCard">
         <template #header>
@@ -596,8 +586,7 @@
               :key="index"
             >
               <div class="rsTop-left-item-title">
-                <p>{{ item.name }}</p>
-                <p>{{ item.enName }}</p>
+                <p>{{ item.name }}{{ item.enName }}:</p>
               </div>
               <div class="rsTop-left-item-value">
                 {{ basicData[item.props] }}
@@ -632,7 +621,7 @@
               </template>
               <template v-else>
                 <div class="rsTop-right-item-title">
-                  {{ item.name }}<br />{{ item.enName }}
+                  {{ item.name }} {{ item.enName }}:
                 </div>
                 <div
                   class="rsTop-right-item-value"
@@ -691,10 +680,11 @@
         <tableList
           v-update
           :selection="false"
+          indexKey
           :tableLoading="tableLoading"
           :tableTitle="tableTitle"
           :tableData="tableData"
-          class="rsTable"
+          class="rsTable table"
           border
         >
           <template #fsnrGsnrNum="scope">
@@ -710,6 +700,12 @@
             </div>
           </template>
 
+          <!-- 供应商 -->
+          <template #supplierName="scope">
+            <span>{{ scope.row.supplierName }}</span>
+            <br />
+            <span>{{ scope.row.supplierNameEn }}</span>
+          </template>
           <!-- 年降 -->
           <template #ltc="scope">
             <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
@@ -1141,6 +1137,9 @@ import {
   dbTableTitle,
   resetLtcData,
   remarkProcess,
+  leftTitle,
+  rightTitle,
+  RSTableTitle
 } from "./data";
 import tableList from "@/views/designate/designatedetail/components/tableList";
 import {
@@ -1176,9 +1175,11 @@ export default {
       // 零件项目类型
       partProjTypes,
       remarks: {},
+      leftTitle,
+      rightTitle,
       // leftTitle: nomalDetailTitle,
       // rightTitle: nomalDetailTitleBlue,
-      // tableTitle: nomalTableTitle,
+      // tableTitle: RSTableTitle,
       tableData: [],
       basicData: {},
       remarkItem: [],
@@ -1239,54 +1240,63 @@ export default {
       }
       return [];
     },
-    leftTitle() {
-      // GS
-      if (
-        [partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
-          this.projectType
-        )
-      ) {
-        return nomalDetailTitleGS;
-      }
-      // 配附件
-      if (
-        [partProjTypes.PEIJIAN, partProjTypes.FUJIAN].includes(this.projectType)
-      ) {
-        return nomalDetailTitlePF;
-      }
-      // 其他
-      return nomalDetailTitle;
-    },
-    rightTitle() {
-      // GS
-      if (
-        [partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
-          this.projectType
-        )
-      ) {
-        return nomalDetailTitleBlue;
-      }
-      // 其他
-      return gsDetailTitleBlue;
-    },
+    // leftTitle() {
+    //   // GS
+    //   if (
+    //     [partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
+    //       this.projectType
+    //     )
+    //   ) {
+    //     return nomalDetailTitleGS;
+    //   }
+    //   // 配附件
+    //   if (
+    //     [partProjTypes.PEIJIAN, partProjTypes.FUJIAN].includes(this.projectType)
+    //   ) {
+    //     return nomalDetailTitlePF;
+    //   }
+    //   // 其他
+    //   return nomalDetailTitle;
+    // },
+    // rightTitle() {
+    //   // GS
+    //   if (
+    //     [partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(
+    //       this.projectType
+    //     )
+    //   ) {
+    //     return nomalDetailTitleBlue;
+    //   }
+    //   // 其他
+    //   return gsDetailTitleBlue;
+    // },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
+        console.log('PEIJIAN');
         return sparePartTableTitle;
       } else if (this.projectType === partProjTypes.FUJIAN) {
+        console.log('FUJIAN');
+
         return accessoryTableTitle;
       } else if (
         this.projectType === partProjTypes.GSLINGJIAN ||
         this.projectType === partProjTypes.GSCOMMONSOURCING
       ) {
+        console.log('GSLINGJIAN');
+
         //GS零件
         return gsTableTitle;
       } else if (
         this.projectType === partProjTypes.DBLINGJIAN ||
         this.projectType === partProjTypes.DBYICHIXINGCAIGOU
       ) {
+        console.log('DBLINGJIAN');
+
         //DB零件,DB一次性采购
         return dbTableTitle;
       }
+              console.log('nomalTableTitle');
+
       return nomalTableTitle;
     },
     pageWidth() {
@@ -1680,8 +1690,8 @@ export default {
                 ? supplierData.join("\n")
                 : "-";
               val.suppliersNow = supplierData.replace(/\n/g, "<br/>");
-              if (val.supplierNameEn)
-                val.supplierName = `${val.supplierName}/${val.supplierNameEn}`;
+              // if (val.supplierNameEn)
+              //   val.supplierName = `${val.supplierName}/${val.supplierNameEn}`;
               if (val.partNameDe)
                 // val.partName = `${val.partName}/${val.partNameDe}`
                 val.partName = val.partNameDe;
@@ -1818,8 +1828,8 @@ export default {
                 ? supplierData.join("\n")
                 : "-";
               val.suppliersNow = supplierData.replace(/\n/g, "<br/>");
-              if (val.supplierNameEn)
-                val.supplierName = `${val.supplierName}/${val.supplierNameEn}`;
+              // if (val.supplierNameEn)
+              //   val.supplierName = `${val.supplierName}/${val.supplierNameEn}`;
               if (val.partNameDe)
                 // val.partName = `${val.partName}/${val.partNameDe}`
                 val.partName = val.partNameDe;
@@ -2060,6 +2070,9 @@ export default {
   &::before {
     height: 0;
   }
+  ::v-deep .el-table__header {
+    background-color: #364d6e;
+  }
   ::v-deep thead th {
     padding-top: 8px;
     padding-bottom: 8px;
@@ -2116,25 +2129,16 @@ export default {
     display: flex;
     flex-wrap: wrap;
     &-item {
-      width: 50%;
+      width: 33%;
       font-size: 12px;
       display: flex;
-      margin-bottom: 12px;
-      &:last-of-type {
-        margin-bottom: 26px;
-      }
       &-title {
         font-weight: bold;
-        width: 40%;
-      }
-      &:nth-of-type(odd) {
-        .rsTop-left-item-title {
-          width: 33%;
-        }
+        width: 50%;
       }
       &-value {
         font-weight: 400;
-        width: 60%;
+        width: 50%;
       }
     }
   }
@@ -2143,20 +2147,22 @@ export default {
     display: flex;
     flex-wrap: wrap;
     border: 1px solid rgba(197, 204, 214, 0.42);
+    border-bottom: 0;
     border-radius: 5px 5px 0 0;
     &-item {
-      width: 45%;
+      width: 55%;
       display: flex;
       border-bottom: 1px solid rgba(197, 204, 214, 0.42);
       &:nth-of-type(odd) {
-        width: 55%;
+        width: 45%;
         border-right: 1px solid rgba(197, 204, 214, 0.42);
       }
       &-title {
-        background-color: rgba(22, 96, 241, 0.06);
+        background-color: #364d6e;
         border-right: 1px solid rgba(197, 204, 214, 0.42);
         padding: 6px 12px;
-        width: 40%;
+        width: 60%;
+        color: #fff;
         font-weight: bold;
         // line-height: 29px;
         display: flex;
@@ -2164,7 +2170,7 @@ export default {
         justify-content: center;
       }
       &-value {
-        width: 60%;
+        width: 40%;
         padding: 6px 12px;
         // line-height: 29px;
         background-color: #fff;
@@ -2326,7 +2332,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
       &-item {
-        width: 50%;
+        width: 33%;
         font-size: 12px;
         display: flex;
         margin-bottom: 12px;
@@ -2384,10 +2390,10 @@ export default {
         }
         &:nth-of-type(even) {
           .rsTop-right-item-title {
-            width: 40%;
+            width: 50%;
           }
           .rsTop-right-item-value {
-            width: 60%;
+            width: 50%;
           }
         }
       }

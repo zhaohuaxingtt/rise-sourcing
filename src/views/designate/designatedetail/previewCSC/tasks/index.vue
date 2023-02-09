@@ -1,15 +1,15 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-12-03 14:37:47
+ * @LastEditTime: 2023-02-09 22:19:26
  * @description: 决策资料 - tasks
 -->
 <template>
-  <div v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS|决策资料-tasks">
+  <div class="task" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS|决策资料-tasks">
     <!-- 备注信息 -->
-    <editor :isTask="true"/>
+    <editor class="editor" :isTask="true"/>
     <!-- 表单信息 -->
-    <taskTable />
+    <taskTable class="margin-top20 task-table" />
   </div>
 </template>
 <script>
@@ -23,3 +23,16 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.task{
+  height: 100%;
+  padding-top: 10px;
+  .editor{
+    height: 250px;
+    overflow: auto;
+  }
+  .task-table{
+    height: calc(100% - 270px);
+  }
+}
+</style>

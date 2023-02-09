@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-06 12:43:06
+ * @LastEditTime: 2023-02-10 00:12:12
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -27,6 +27,7 @@
       ref="table"
       :highlight-current-row="false"
       :cell-class-name="colClass"
+      :row-class-name="rowClass"
       :show-header="false"
       :span-method="arraySpanMethod"
     >
@@ -111,7 +112,7 @@ export default {
     return {
       tableData: [
         {
-          label: "A-B Price Comparison",
+          label: "A-B Price \n Comparison",
         },
         {
           label: "Rating",
@@ -145,11 +146,11 @@ export default {
           KGF: "",
           VSI: "",
         },
-        {
-          label: "Strategy",
-          remark: `这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文
-                字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述`,
-        },
+        // {
+        //   label: "Strategy",
+        //   remark: `这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文
+        //         字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述这是一段文字描述描述`,
+        // },
       ],
       columnLabel: [
         "bar",
@@ -177,8 +178,10 @@ export default {
         fsGsNumList: this.detail?.fsGsList || undefined,
       }).then((res) => {
         if (res?.code != 200) return;
+        try {
+          
         this.supplierList =
-          res.data.nomiAnalysisSummarySuppliers.map((item) => {
+          (res.data.nomiAnalysisSummarySuppliers||[]).map((item) => {
             let ltcList = [];
             let ltcStartDateList = [];
             item.aPrice = item.mixAPrice;
@@ -192,10 +195,10 @@ export default {
             item.ltcStartDateList = ltcStartDateList;
             return item;
           }) || [];
-        this.fixedList[0].aPrice = res.data.recommendationNomi.lcMixAPrice || ''
-        this.fixedList[0].bPrice = res.data.recommendationNomi.lcMixAPrice || ''
-        this.fixedList[1].aPrice = ''
-        this.fixedList[1].bPrice = ''
+        this.fixedList[0].aPrice = res.data.recommendationNomi?.lcMixAPrice || ''
+        this.fixedList[0].bPrice = res.data.recommendationNomi?.lcMixBPrice || ''
+        this.fixedList[1].aPrice = res.data.targetMixAPrice
+        this.fixedList[1].bPrice = res.data.targetMixBPrice
         this.fixedList[2].aPrice = ''
         this.fixedList[2].bPrice = ''
         this.fixedList[3].aPrice = ''
@@ -205,14 +208,20 @@ export default {
         this.tableData[5]["F-Target"] = "222,000";
         this.tableData[5]["KGF"] = "222,000";
         this.tableData[6].Recommendation = "222,000";
+        } catch (error) {
+          console.log(error);
+        }
         return;
       }).finally(()=>{
-        
-      this.loading = false
+        this.loading = false
       });
     },
     colClass({ row, column, rowIndex, columnIndex }) {
       if (columnIndex < 2) {
+        console.log(rowIndex);
+        if(rowIndex == 0){
+          return 'table-header bar'
+        }
         return "table-header";
       }
     },
@@ -273,6 +282,11 @@ export default {
       .cell {
         font-weight: 700;
         color: #fff;
+      }
+    }
+    td.bar {
+      .cell{
+        min-height: 500px;
       }
     }
     &:hover > td.table-header {

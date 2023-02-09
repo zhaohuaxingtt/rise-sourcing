@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2023-02-01 16:39:19
+ * @LastEditTime: 2023-02-09 16:19:09
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: table组件
 -->
@@ -464,6 +464,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .iFileTableList {
+  height: 100%;
   // ::v-deep.el-table__body-wrapper {
   //   height: auto!important;
   // }

@@ -2,12 +2,13 @@
 <template>
   <div :ref="ref">
     <!-- 内容表 -->
+    <div class="table-box">
     <el-table
       :data="tableData"
-      class="header"
+      class="header table"
       ref="table"
+      height="100%"
       border
-      max-height="600px"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
     >
@@ -84,6 +85,7 @@
           ></el-table-column>
         </el-table-column>
     </el-table>
+    </div>
     <!-- 汇总表 -->
     <div :style="{ 'padding-right': gutter }">
       <el-table
@@ -372,6 +374,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-box{
+  height: calc(100% - 120px);
+}
 .header {
   ::v-deep th {
     padding: 0;
@@ -410,14 +415,12 @@ export default {
   .leftAllow {
     position: relative;
     padding: 0;
-    background: red;
     float: left;
   }
 
   .rightAllow {
     position: relative;
     padding: 0;
-    background: red;
     float: right;
   }
   .red {
@@ -442,7 +445,7 @@ export default {
 .left {
   width: 14px;
   height: 40px;
-  background: red;
+  background: #00b0f0;
   border-radius: 10px;
   transform: translate(-8px, 20%);
   opacity: 0.3;
@@ -453,12 +456,21 @@ export default {
 .right {
   width: 14px;
   height: 40px;
-  background: red;
+  background: #00b0f0;
   border-radius: 10px;
   transform: translate(-8px, 20%);
   opacity: 0.3;
   &:hover {
     opacity: 1;
+  }
+}
+
+.table{
+  ::v-deep .el-table__header {
+    background-color: #364d6e;
+    tr:nth-child(even){
+      background-color: #364d6e;
+    }
   }
 }
 </style>

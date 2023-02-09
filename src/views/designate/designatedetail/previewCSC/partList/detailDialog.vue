@@ -17,20 +17,18 @@
         :selection="false"
         :tableData="tableListData"
         :tableTitle="tableTitle"
-        :tableLoading="loading">
-          <template #fileName="scope">
-            <span class="link-underline" >{{ scope.row.fileName }}</span>
-          </template>
+        :tableLoading="loading"
+      >
       </tableList>
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iMessage } from "rise"
-// import tableList from "@/views/partsign/editordetail/components/tableList"
+import { iDialog, iMessage } from "rise";
+import { latestVersionInfo } from "@/api/designate/designatedetail/decisionData/partlist";
 import tableList from "@/components/iTableSort";
-import { detailTableTitle as tableTitle } from "./data"
+import { detailTableTitle as tableTitle } from "./data";
 
 export default {
   components: { iDialog, tableList },
@@ -40,74 +38,48 @@ export default {
       type: Boolean,
       default: false,
     },
-    nominateAppId: {
-      type: String,
-      require: true
-    },
     row: {
       type: Object,
-      default:()=>({}),
-      require: true
-    }
+      default: () => ({}),
+      require: true,
+    },
   },
   data() {
     return {
       loading: false,
-      timer: 0,
       tableTitle,
       tableListData: [],
-    }
-  },
-  computed: {
-    // eslint-disable-next-line no-undef
-    ...Vuex.mapState({
-      nominationDisabled: state => state.nomination.nominationDisabled,
-      rsDisabled: state => state.nomination.rsDisabled,
-    }),
-    isDisabled() {
-      return this.isPreview || this.nominationDisabled || this.rsDisabled
-    },
+    };
   },
   watch: {
     visible(nv) {
       if (nv) {
-        this.getData()
+        this.getData();
       } else {
-        this.loading = false
-        this.tableListData = []
-        this.$emit("afterClose")
+        this.loading = false;
+        this.tableListData = [];
+        this.$emit("afterClose");
       }
 
-      this.$emit("update:visible", nv)
+      this.$emit("update:visible", nv);
     },
   },
   methods: {
     // 获取列表
     getData() {
-      this.loading = true
-        
-        this.tableListData = []
-        this.loading = false
-    //   getData({
-    //     nominateAppId: this.nominateAppId, // 定点申请id
-    //     categoryCode: this.categoryCode // 材料组code
-    //   })
-    //   .then(res => {
-    //     if (res.code == 200) {
-    //       try {
-    //         const data = JSON.parse(res.data.reportFiles)
-    //         this.tableListData = Array.isArray(data.fileList) ? data.fileList : []
-    //       } catch(e) {
-    //         this.tableListData = []
-    //       }
-    //     } else {
-    //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-    //     }
-    //   })
-    //   .finally(() => this.loading = false)
+      this.loading = true;
+      latestVersionInfo(this.row.purchasingRequirementId)
+        .then((res) => {
+          if (res?.code == 200) {
+            this.tableListData = res.data;
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .finally(() => (this.loading = false));
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -137,20 +109,14 @@ export default {
     overflow-x: hidden;
 
     .el-dialog__header {
-      @include pdtb(30px, 30px);
+      @include pdtb(25px, 25px);
+      padding-left: 25px !important;
+      padding-right: 25px !important;
     }
 
     .el-dialog__body {
-      @include pdtb(6px, 0);
+      @include pdtb(0, 0);
       margin-bottom: 40px;
-    }
-
-    .pagination {
-      margin-top: 0;
-    }
-
-    .el-dialog__footer {
-      @include pdtb(28px, 28px);
     }
   }
 

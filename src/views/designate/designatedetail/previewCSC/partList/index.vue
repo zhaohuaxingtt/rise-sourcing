@@ -10,114 +10,80 @@
       SOURCING_NOMINATION_ATTATCH_PARTLIST | (决策资料 - PartList)
     "
   >
-    <iCard>
-      <div class="decision-data-partList-content">
-        <h1
-          class="flex-between-center margin-bottom20 font18"
-          v-if="!isPreview"
-        >
-          <span>Part List</span>
-          <div>
-            <!-- <template v-if="isPreview!='1' && !nominationDisabled && !rsDisabled"> -->
-            <template v-if="isPreview != '1'">
-              <iButton
-                @click="goToRfq"
-                v-permission.auto="
-                  SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST |
-                    跳转至零件清单添加
-                "
-                >{{
-                  language(
-                    "LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN",
-                    "跳转至零件清单添加"
-                  )
-                }}</iButton
-              >
-              <iButton
-                :loading="saveLoading"
-                @click="save"
-                v-permission.auto="
-                  SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE | 保存
-                "
-                >{{ language("LK_BAOCUN", "保存") }}</iButton
-              >
-            </template>
-            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
-          </div>
-        </h1>
-        <!-- table区域 -->
-        <tablelist
-          permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
-          ref="tableList"
-          showTitleName
-          :selection="!isPreview"
-          :index="isPreview"
-          v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE | 表格"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-        >
-          <!-- 采购项目编号 -->
-          <template #fsNum="scope">
-            <span>{{ scope.row.fsNum }}</span>
-            <br />
-            <span>({{ scope.row.procureFactory }})</span>
-          </template>
-          <!-- 零件信息 -->
-          <template #partNum="scope">
-            <span>{{ scope.row.partNum }}</span>
-            <icon symbol v-if="scope.row.mtz" name="iconMTZ" />
-            <br />
-            <span>{{ scope.row.partNameZh }}</span>
-          </template>
-          <!-- 项目信息 -->
-          <template #project="scope">
-            <span>{{ scope.row.project }}</span>
-            <br />
-            <span>SOP:{{ scope.row.sopDate ? scope.row.sopDate : "-" }}</span>
-          </template>
-          <!-- 装车率 -->
-          <template #ebrCalculatedValue="scope">
-            <span class="link" @click="openDetail(scope.row)">{{
-              percent(scope.row.ebrCalculatedValue || 0)
-            }}</span>
-          </template>
+    <div class="decision-data-partList-content">
+      <!-- table区域 -->
+      <tablelist
+        height="100%"
+        permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
+        ref="tableList"
+        showTitleName
+        :selection="!isPreview"
+        :index="isPreview"
+        v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE | 表格"
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+      >
+        <!-- 采购项目编号 -->
+        <template #fsNum="scope">
+          <span>{{ scope.row.fsNum }}</span>
+          <br />
+          <span>({{ scope.row.procureFactory }})</span>
+        </template>
+        <!-- 零件信息 -->
+        <template #partNum="scope">
+          <span>{{ scope.row.partNum }}</span>
+          <icon symbol v-if="scope.row.mtz" name="iconMTZ" />
+          <br />
+          <span>{{ scope.row.partNameZh }}</span>
+        </template>
+        <!-- 项目信息 -->
+        <template #project="scope">
+          <span>{{ scope.row.project }}</span>
+          <br />
+          <span>SOP:{{ scope.row.sopDate ? scope.row.sopDate : "-" }}</span>
+        </template>
+        <!-- 装车率 -->
+        <template #ebrConfirmValue="scope">
+          <span class="link" @click="openDetail(scope.row)">{{
+            percent(scope.row.ebrConfirmValue || 0)
+          }}</span>
+        </template>
 
-          <!-- 手工输入EBR值 -->
-          <template #ebrConfirmValue="scope">
-            <span v-if="isPreview == '1' || nominationDisabled || rsDisabled">{{
-              percent(scope.row.ebrConfirmValue || 0)
-            }}</span>
-            <iInput
-              v-else
-              v-model="scope.row.ebrConfirmValue"
-              @input="handleInputLimit($event, scope.row)"
-              @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)"
-              @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"
-            />
-          </template>
-          <template #lifeTime="scope">
-            <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
-          </template>
-          <template #paVolume="scope">
-            <span>{{ scope.row.paVolume | toThousands(true) }}</span>
-          </template>
-        </tablelist>
-        <iPagination
-          class="margin-bottom20"
-          @size-change="handleSizeChange($event, getListData)"
-          @current-change="handleCurrentChange($event, getListData)"
-          background
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :current-page="page.currPage"
-          :total="page.totalCount"
-          v-update
-        />
-      </div>
-    </iCard>
-    <detailDialog :visible.sync="visible" :row="row"/>
+        <!-- 手工输入EBR值 -->
+        <template #ebrCalculatedValue="scope">
+          <span v-if="isPreview == '1' || nominationDisabled || rsDisabled">{{
+            scope.row.ebrCalculatedValue
+          }}</span>
+          <iInput
+            v-else
+            v-model="scope.row.ebrConfirmValue"
+            @input="handleInputLimit($event, scope.row)"
+            @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)"
+            @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"
+          />
+        </template>
+        <template #lifeTime="scope">
+          <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
+        </template>
+        <template #paVolume="scope">
+          <span>{{ scope.row.paVolume | toThousands(true) }}</span>
+        </template>
+      </tablelist>
+    </div>
+    <iPagination
+      class="iPagination"
+      @size-change="handleSizeChange($event, getListData)"
+      @current-change="handleCurrentChange($event, getListData)"
+      background
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :current-page="page.currPage"
+      :total="page.totalCount"
+      v-update
+    />
+    <detailDialog :visible.sync="visible" :row="row" />
   </div>
 </template>
 
@@ -145,7 +111,7 @@ export default {
     icon,
     tablelist,
     buttonTableSetting,
-    detailDialog
+    detailDialog,
   },
   filters: {
     toThousands,
@@ -155,12 +121,12 @@ export default {
   },
   data() {
     return {
-      visible:false,
+      visible: false,
       loading: false,
       saveLoading: false,
       tableListData: [],
       tableTitle,
-      row:{}
+      row: {},
     };
   },
   computed: {
@@ -180,12 +146,12 @@ export default {
     },
   },
   methods: {
-      openDetail(row){
-         this.row = row
-         this.$nextTick(()=>{
-            this.visible = true
-         })
-      },
+    openDetail(row) {
+      this.row = row;
+      this.$nextTick(() => {
+        this.visible = true;
+      });
+    },
     // 获取列表
     async getListData() {
       const { query } = this.$route;
@@ -206,10 +172,6 @@ export default {
           const { code, data } = res;
           if (code === "200" && data) {
             const { records = [], total } = data;
-            records.forEach((val) =>
-              val.mtz === true ? (val.mtz = "是") : (val.mtz = "否")
-            );
-
             this.tableListData = records.map((item) => {
               const result = { ...item };
 
@@ -226,7 +188,6 @@ export default {
 
               return result;
             });
-
             this.page.totalCount = total;
           }
         })
@@ -305,6 +266,9 @@ export default {
 
 <style lang="scss" scoped>
 .decision-data-partList {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
   ::v-deep .el-table {
     border-radius: 0;
     .el-table__header {
@@ -324,12 +288,24 @@ export default {
       }
     }
   }
+  // 减去分页器高度
+  .decision-data-partList-content {
+    height: calc(100% - 45px);
+    flex: 1;
+  }
+  // 45px
   ::v-deep .i-pagination {
+    height: 35px;
+    margin-top: 10px;
     .pagination {
+      margin-top: 0;
       .el-pager li:not(.disabled).active {
         background-color: #364d6e;
       }
     }
+  }
+  ::v-deep .el-dialog .el-dialog__headerbtn {
+    background: #364d6e;
   }
 }
 </style>

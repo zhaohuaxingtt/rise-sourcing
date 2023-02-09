@@ -1,140 +1,144 @@
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div ref="part-table" v-loading='loading'>
-    <el-table
-      :data="tableData"
-      class="header"
-      ref="table"
-      border
-      max-height="600px"
-      :header-cell-class-name="cellClass"
-      :cell-class-name="colClass"
-    >
-      <!-- 左侧固定表头 -->
-      <template v-for="item in fixedTitle">
-        <el-table-column :key="item.prop" label="Unit：RMB">
-          <el-table-column>
+  <div ref="part-table" v-loading="loading">
+    <div class="table-box">
+      <el-table
+        :data="tableData"
+        class="header table"
+        ref="table"
+        border
+        height="100%"
+        :header-cell-class-name="cellClass"
+        :cell-class-name="colClass"
+      >
+        <!-- 左侧固定表头 -->
+        <template v-for="item in fixedTitle">
+          <el-table-column :key="item.prop" label="Unit：RMB">
             <el-table-column>
               <el-table-column>
-                <el-table-column
-                  v-if="item.prop == 'partPrjCode'"
-                  :prop="item.prop"
-                  :label="item.label"
-                  :minWidth="item.width"
-                  align="center"
-                >
-                  <template slot-scope="scope">
-                    <span class="link" @click="gotoDetail(scope.row)">{{
-                      scope.row[item.prop]
-                    }}</span>
-                  </template>
+                <el-table-column>
+                  <el-table-column
+                    v-if="item.prop == 'partPrjCode'"
+                    :prop="item.prop"
+                    :label="item.label"
+                    :minWidth="item.width"
+                    align="center"
+                  >
+                    <template slot-scope="scope">
+                      <span class="link" @click="gotoDetail(scope.row)">{{
+                        scope.row[item.prop]
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-else
+                    :prop="item.prop"
+                    :label="item.label"
+                    :minWidth="item.width"
+                    align="center"
+                  ></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  v-else
-                  :prop="item.prop"
-                  :label="item.label"
-                  :minWidth="item.width"
-                  align="center"
-                ></el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
-        </el-table-column>
-      </template>
-      <el-table-column label="Supplier" align="center">
-        <el-table-column label="Rating" align="center">
-          <el-table-column>
+        </template>
+        <el-table-column label="Supplier" align="center">
+          <el-table-column label="Rating" align="center">
             <el-table-column>
-              <el-table-column label="F-target" align="center">
-                <el-table-column
-                  label="A Price"
-                  prop="cfPartAPrice"
-                  minWidth="80"
-                  align="center"
-                >
+              <el-table-column>
+                <el-table-column label="F-target" align="center">
+                  <el-table-column
+                    label="A Price"
+                    prop="cfPartAPrice"
+                    minWidth="80"
+                    align="center"
+                  >
+                  </el-table-column>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+          <el-table-column label="E" align="center">
+            <el-table-column label="Q" align="center">
+              <el-table-column label="L" align="center">
+                <el-table-column label="F-target" align="center">
+                  <el-table-column
+                    label="B Price"
+                    prop="cfPartBPrice"
+                    minWidth="80"
+                    align="center"
+                  >
+                  </el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="E" align="center">
-          <el-table-column label="Q" align="center">
-            <el-table-column label="L" align="center">
-              <el-table-column label="F-target" align="center">
-                <el-table-column
-                  label="B Price"
-                  prop="cfPartBPrice"
-                  minWidth="80"
-                  align="center"
-                >
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </el-table-column>
-      </el-table-column>
-      <template v-for="(item, index) in supplierList">
-        <el-table-column
-          :label="item.supplier"
-          :key="item.supplierId + index"
-          align="center"
-        >
-          <div slot="header" slot-scope="scope">
-            {{ item.supplier || "-" }}
-            <div
-              v-if="index == 0"
-              class="leftAllow"
-              @click="leftAllow($event)"
-            ></div>
-            <div
-              v-if="index == supplierList.length - 1"
-              class="rightAllow"
-              @click="rightAllow($event)"
-            ></div>
-          </div>
-          <el-table-column :label="item.TE" align="center">
-            <template slot-scope="scope" slot="header">
-              <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
-              <span v-else>{{ item.TE }}</span>
-            </template>
-            <el-table-column :label="item.Q" align="center">
+        <template v-for="(item, index) in supplierList">
+          <el-table-column
+            :label="item.supplier"
+            :key="item.supplierId + index"
+            align="center"
+          >
+            <div slot="header" slot-scope="scope">
+              {{ item.supplier || "-" }}
+              <div
+                v-if="index == 0"
+                class="leftAllow"
+                @click="leftAllow($event)"
+              ></div>
+              <div
+                v-if="index == supplierList.length - 1"
+                class="rightAllow"
+                @click="rightAllow($event)"
+              ></div>
+            </div>
+            <el-table-column :label="item.TE" align="center">
               <template slot-scope="scope" slot="header">
-                <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
-                <span v-else>{{ item.Q }}</span>
+                <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
+                <span v-else>{{ item.TE }}</span>
               </template>
-              <el-table-column :label="item.L" align="center">
+              <el-table-column :label="item.Q" align="center">
                 <template slot-scope="scope" slot="header">
-                  <span class="red" v-if="isCLevel(item.L)">{{ item.L }}</span>
-                  <span v-else>{{ item.L }}</span>
+                  <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
+                  <span v-else>{{ item.Q }}</span>
                 </template>
-                <el-table-column
-                  :prop="item.supplierId + 'aPrice'"
-                  label="A price(LC)"
-                  align="center"
-                  minWidth="80"
-                >
-                  <template slot="header" slot-scope="scope">
-                    <p>A price</p>
-                    <p>(LC)</p>
+                <el-table-column :label="item.L" align="center">
+                  <template slot-scope="scope" slot="header">
+                    <span class="red" v-if="isCLevel(item.L)">{{
+                      item.L
+                    }}</span>
+                    <span v-else>{{ item.L }}</span>
                   </template>
-                </el-table-column>
-                <el-table-column
-                  :prop="item.supplierId + 'bPrice'"
-                  label="B price(LC)"
-                  align="center"
-                  minWidth="80"
-                >
-                  <template slot="header" slot-scope="scope">
-                    <p>B price</p>
-                    <p>(LC)</p>
-                  </template>
+                  <el-table-column
+                    :prop="item.supplierId + 'aPrice'"
+                    label="A price(LC)"
+                    align="center"
+                    minWidth="80"
+                  >
+                    <template slot="header" slot-scope="scope">
+                      <p>A price</p>
+                      <p>(LC)</p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    :prop="item.supplierId + 'bPrice'"
+                    label="B price(LC)"
+                    align="center"
+                    minWidth="80"
+                  >
+                    <template slot="header" slot-scope="scope">
+                      <p>B price</p>
+                      <p>(LC)</p>
+                    </template>
+                  </el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
-        </el-table-column>
-      </template>
-    </el-table>
+        </template>
+      </el-table>
+    </div>
     <div :style="{ 'padding-right': gutter }">
       <el-table
         class="total-table"
@@ -188,10 +192,19 @@
                 <p>(LC)</p>
               </template>
               <template slot-scope="scope">
-                <template v-if="scope.$index==1">
-                  <p v-for="text,index in scope.row[item.supplierId + 'aPrice']" :key="index">{{text.ltc}} from {{text.ltcStartDate}}</p>
+                <template v-if="scope.$index == 1">
+                  <p
+                    v-for="(text, index) in scope.row[
+                      item.supplierId + 'aPrice'
+                    ]"
+                    :key="index"
+                  >
+                    {{ text.ltc }} from {{ text.ltcStartDate }}
+                  </p>
                 </template>
-                <template v-else>{{scope.row[item.supplierId + 'aPrice']}}</template>
+                <template v-else>{{
+                  scope.row[item.supplierId + "aPrice"]
+                }}</template>
               </template>
             </el-table-column>
             <el-table-column
@@ -218,16 +231,15 @@
 </template>
 
 <script>
-
 import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import allow from "./allow.js";
 export default {
-  mixins:[allow],
+  mixins: [allow],
   components: { partTableDetail },
   data() {
     return {
-      ref:'part-table',
+      ref: "part-table",
       fixedTitle: [
         {
           prop: "partPrjCode",
@@ -301,16 +313,16 @@ export default {
           carProType: "Total Turnover",
         },
       ],
-      index:0,
-      showLength:1,
-      supplierAllData:[],
-      loading:false
+      index: 0,
+      showLength: 5,
+      supplierAllData: [],
+      loading: false,
     };
   },
-  computed:{
-    supplierList(){
-      return this.supplierAllData[this.index] ||[]
-    }
+  computed: {
+    supplierList() {
+      return this.supplierAllData[this.index] || [];
+    },
   },
   created() {
     this.getData();
@@ -323,48 +335,57 @@ export default {
   },
   methods: {
     getData() {
-      this.loading = true
-      fsPartsAsRow("60003714" || this.$route.query.desinateId).then(res=>{
-        if(res?.code=='200'){
-          const tableData = res.data.partInfoList?.map((item) => {
-            item.bdlInfoList.forEach(child=>{
-              item[child.supplierId+'aPrice'] = child.lcAPrice
-              item[child.supplierId+'bPrice'] = child.lcBPrice
-            })
-            return item
-          })||[];
-          const totalData = JSON.parse(JSON.stringify(this.totalData))
-          let obj = {}
-          res.data.bdlPriceTotalInfoList?.forEach(item=>{
-            obj[item.supplierId] = item
-          })
-          res.data.bdlRateInfoList?.forEach(item=>{
-            obj[item.supplierId][item.rateType] = item.rate
-            obj[item.supplierId].supplier = item.supplierName
-            obj[item.supplierId].supplierEn = item.supplierNameEn
-          })
-          const supplierList = Object.values(obj).map((item) => {
-            totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
-            totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
-            totalData[1][item.supplierId + "aPrice"] = item.priceReduceDTOList;
-            totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
-            totalData[4][item.supplierId + "aPrice"] = item.aPrice;
-            totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
-            return item
-          });
-          totalData[0]["aPrice"] = res.data.fsPriceInfo?.targetMixLcAPrice||'';
-          totalData[0]["bPrice"] = res.data.fsPriceInfo?.targetMixLcBPrice||'';
-          totalData[2]["aPrice"] = res.data.fsPriceInfo?.targetTotalInvest||'';
-          totalData[3]["aPrice"] = res.data.fsPriceInfo?.budgetTotalInvest||'';
-          totalData[6]["aPrice"] = res.data.fsPriceInfo?.targetSelTotalSel||'';
-          this.index = 0
-          this.supplierAllData = _.chunk(supplierList,this.showLength)
-          this.totalData = totalData
-          this.tableData = tableData
-        }
-      }).finally(()=>{
-        this.loading = false
-      })
+      this.loading = true;
+      fsPartsAsRow("60003714" || this.$route.query.desinateId)
+        .then((res) => {
+          if (res?.code == "200") {
+            const tableData =
+              res.data.partInfoList?.map((item) => {
+                item.bdlInfoList.forEach((child) => {
+                  item[child.supplierId + "aPrice"] = child.lcAPrice;
+                  item[child.supplierId + "bPrice"] = child.lcBPrice;
+                });
+                return item;
+              }) || [];
+            const totalData = JSON.parse(JSON.stringify(this.totalData));
+            let obj = {};
+            res.data.bdlPriceTotalInfoList?.forEach((item) => {
+              obj[item.supplierId] = item;
+            });
+            res.data.bdlRateInfoList?.forEach((item) => {
+              obj[item.supplierId][item.rateType] = item.rate;
+              obj[item.supplierId].supplier = item.supplierName;
+              obj[item.supplierId].supplierEn = item.supplierNameEn;
+            });
+            const supplierList = Object.values(obj).map((item) => {
+              totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
+              totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
+              totalData[1][item.supplierId + "aPrice"] =
+                item.priceReduceDTOList;
+              totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
+              totalData[4][item.supplierId + "aPrice"] = item.aPrice;
+              totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
+              return item;
+            });
+            totalData[0]["aPrice"] =
+              res.data.fsPriceInfo?.targetMixLcAPrice || "";
+            totalData[0]["bPrice"] =
+              res.data.fsPriceInfo?.targetMixLcBPrice || "";
+            totalData[2]["aPrice"] =
+              res.data.fsPriceInfo?.targetTotalInvest || "";
+            totalData[3]["aPrice"] =
+              res.data.fsPriceInfo?.budgetTotalInvest || "";
+            totalData[6]["aPrice"] =
+              res.data.fsPriceInfo?.targetSelTotalSel || "";
+            this.index = 0;
+            this.supplierAllData = _.chunk(supplierList, this.showLength);
+            this.totalData = totalData;
+            this.tableData = tableData;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     spliceData() {},
     isCLevel(val) {
@@ -527,6 +548,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-box {
+  height: calc(100% - 275px);
+}
 .header {
   ::v-deep th {
     padding: 0;
@@ -565,14 +589,12 @@ export default {
   .leftAllow {
     position: relative;
     padding: 0;
-    background: red;
     float: left;
   }
 
   .rightAllow {
     position: relative;
     padding: 0;
-    background: red;
     float: right;
   }
   .red {
@@ -597,7 +619,7 @@ export default {
 .left {
   width: 14px;
   height: 60px;
-  background: red;
+  background: #00b0f0;
   border-radius: 10px;
   transform: translate(0px, 20%);
   opacity: 0.3;
@@ -608,12 +630,21 @@ export default {
 .right {
   width: 14px;
   height: 60px;
-  background: red;
+  background: #00b0f0;
   border-radius: 10px;
   transform: translate(-16px, 20%);
   opacity: 0.3;
   &:hover {
     opacity: 1;
+  }
+}
+
+.table {
+  ::v-deep .el-table__header {
+    background-color: #364d6e;
+    tr:nth-child(even) {
+      background-color: #364d6e;
+    }
   }
 }
 </style>

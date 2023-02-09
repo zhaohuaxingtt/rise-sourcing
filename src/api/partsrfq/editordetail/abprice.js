@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2023-02-06 14:59:58
+ * @LastEditTime: 2023-02-08 14:52:50
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -50,6 +50,22 @@ export function analysisNomiCarProject(data){
       url: `/nego-assistant/nego-analysis-summary/supplier/analysisNomiCarProject`,
       method: 'post',
       data
+  })
+}
+
+// Line 获取rfq
+export function getListRfq(nominateId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/list-rfq/${nominateId}`,
+      method: 'GET',
+  })
+}
+
+// Line 根据rfqId获取折线图数据
+export function getLine(rfqId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/quotation-line-chart/${rfqId}`,
+      method: 'GET',
   })
 }
 

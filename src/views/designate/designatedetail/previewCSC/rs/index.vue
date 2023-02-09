@@ -1,108 +1,183 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 16:22:15
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2023-02-08 14:02:56
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
 
 <template>
   <div>
-    <div v-if="isApproval">
-      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" >
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-      </circulation>
-      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" >
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-      </meeting>
-    </div>
-    <div v-else v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS|定点记录-RS']">
-      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_CIRCULATION|定点记录-circulation']" >
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-      </circulation>
-      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_METTING|定点记录-meeting']" >
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-      </meeting>
-    </div>
+    <!-- <div class="page-nav">
+    <iTabsList class="preview-tabs" type="card" v-model="tab">
+      <el-tab-pane name="Brief">
+        <span slot="label"
+          ><icon symbol name="iconshenrupingji" class="margin-right10"></icon
+          >Brief</span
+        >
+      </el-tab-pane>
+      <el-tab-pane name="Detail">
+        <span slot="label"
+          ><icon symbol name="iconchubupingji" class="margin-right10"></icon
+          >Detail</span
+        >
+      </el-tab-pane>
+    </iTabsList>
+    </div> -->
+    <!-- <div v-if="tab == 'Brief'" style="position: relative">
+      <brief :nominateId="nominateId" />
+    </div> -->
+    <!-- <template v-else> -->
+      <div v-if="isApproval">
+        <circulation
+          ref="circulation"
+          v-if="isCirculation"
+          :isPreview="isPreview || nominationDisabled || rsDisabled"
+          :nominateId="nominateId"
+          :projectType="projectType"
+        >
+          <template #tabTitle>
+            <slot name="tabTitle"></slot>
+          </template>
+        </circulation>
+        <meeting
+          ref="meeting"
+          v-else
+          :isPreview="isPreview || nominationDisabled || rsDisabled"
+          :nominateId="nominateId"
+          :projectType="projectType"
+          :showSignatureForm="showSignatureForm"
+        >
+          <template #tabTitle>
+            <slot name="tabTitle"></slot>
+          </template>
+        </meeting>
+      </div>
+      <div
+        v-else
+        v-permission.auto.array="[
+          'SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs',
+          'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS|定点记录-RS',
+        ]"
+      >
+        <circulation
+          ref="circulation"
+          v-if="isCirculation"
+          :isPreview="isPreview || nominationDisabled || rsDisabled"
+          :nominateId="nominateId"
+          :projectType="projectType"
+          v-permission.auto.array="[
+            'SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation',
+            'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_CIRCULATION|定点记录-circulation',
+          ]"
+        >
+          <template #tabTitle>
+            <slot name="tabTitle"></slot>
+          </template>
+        </circulation>
+        <meeting
+          ref="meeting"
+          v-else
+          :isPreview="isPreview || nominationDisabled || rsDisabled"
+          :nominateId="nominateId"
+          :projectType="projectType"
+          :showSignatureForm="showSignatureForm"
+          v-permission.auto.array="[
+            'SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting',
+            'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_METTING|定点记录-meeting',
+          ]"
+        >
+          <template #tabTitle>
+            <slot name="tabTitle"></slot>
+          </template>
+        </meeting>
+      </div>
+    <!-- </template> -->
   </div>
 </template>
 
 <script>
-import meeting from './components/meeting'
-import circulation from './components/circulation'
-import { getList, nominateAppSDetail } from '@/api/designate/decisiondata/rs'
+import { iCard, iTabsList, icon } from "rise";
+import meeting from "./components/meeting";
+import brief from "./components/meeting/brief";
+import circulation from "./components/circulation";
+import { getList, nominateAppSDetail } from "@/api/designate/decisiondata/rs";
 
 export default {
-  components: { meeting, circulation },
+  components: { iTabsList, icon, meeting, brief, circulation },
   props: {
-    otherPreview: {type: Boolean, default: false},
-    otherNominationType: {type:String},
-    otherNominationId: {type:String},
-    otherPartProjectType: {type:String},
-    showSignatureForm: {type:Boolean, default: false}
+    otherPreview: { type: Boolean, default: false },
+    otherNominationType: { type: String },
+    otherNominationId: { type: String },
+    otherPartProjectType: { type: String },
+    showSignatureForm: { type: Boolean, default: false },
   },
   data() {
     return {
-      nominateProcessType:''
-    }
+      tab: "Brief",
+      nominateProcessType: "",
+    };
   },
   mounted() {
-    this.init()
+    this.init();
   },
   created() {
-    let data = this.otherPreview ? this.otherNominationId : this.$route.query.desinateId
+    let data = this.otherPreview
+      ? this.otherNominationId
+      : this.$route.query.desinateId;
 
-    if (!this.$store.getters.nominationType && !this.$route.query.designateType) {
+    if (
+      !this.$store.getters.nominationType &&
+      !this.$route.query.designateType
+    ) {
       nominateAppSDetail({
-        nominateAppId: data
-      })
-      .then(res => {
-        this.nominateProcessType = res.data.nominateProcessType
-      })
+        nominateAppId: data,
+      }).then((res) => {
+        this.nominateProcessType = res.data.nominateProcessType;
+      });
     }
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      nominationDisabled: state => state.nomination.nominationDisabled,
-      rsDisabled: state => state.nomination.rsDisabled,
+      nominationDisabled: (state) => state.nomination.nominationDisabled,
+      rsDisabled: (state) => state.nomination.rsDisabled,
     }),
     /**
      * @Description: 是否是流转类型，如果从其他页面点击预览，则从props里取定点类型，如是定点流程中的rs，则从url上获取定点类型
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    isCirculation(){
-      let processType = this.$route.query.designateType === '' ? this.nominateProcessType :this.$route.query.designateType      
-      return this.otherPreview ? this.otherNominationType === 'TRANFORM' : processType === 'TRANFORM'
+     */
+    isCirculation() {
+      let processType =
+        this.$route.query.designateType === ""
+          ? this.nominateProcessType
+          : this.$route.query.designateType;
+      return this.otherPreview
+        ? this.otherNominationType === "TRANFORM"
+        : processType === "TRANFORM";
     },
     /**
      * @Description: 是否是预览状态
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     isPreview() {
-      return this.$route.query.isPreview == 1 || this.otherPreview
+      return this.$route.query.isPreview == 1 || this.otherPreview;
     },
     /**
      * @Description: 定点id，如果从其他页面点击预览，则从props里取定点id，如是定点流程中的rs，则从url上获取定点id
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     nominateId() {
-      return this.otherPreview ? this.otherNominationId : this.$route.query.desinateId
+      return this.otherPreview
+        ? this.otherNominationId
+        : this.$route.query.desinateId;
     },
     /**
      * @Description: 零件采购项目类型
@@ -128,13 +203,13 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     projectType() {
-      return this.otherPartProjectType
+      return this.otherPartProjectType;
     },
     isApproval() {
-      return this.$route.query.isApproval === "true"
-    }
+      return this.$route.query.isApproval === "true";
+    },
   },
   methods: {
     /**
@@ -142,18 +217,44 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     init() {
       if (this.isCirculation) {
-        this.$refs.circulation?.init && this.$refs.circulation.init()
+        this.$refs.circulation?.init && this.$refs.circulation.init();
       } else {
-        this.$refs.meeting?.init && this.$refs.meeting.init()
+        this.$refs.meeting?.init && this.$refs.meeting.init();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 
+.page-nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  ::v-deep .el-radio-group {
+    &.radio-group {
+      .el-radio-button__inner {
+        display: flex;
+        border-radius: 0;
+        height: 26px;
+        padding: 3px 10px;
+        align-items: center;
+        min-width: 60px;
+        justify-content: center;
+        &:hover {
+          color: #727272;
+        }
+      }
+      .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+        background: #364d6e;
+        color: #fff;
+        border-color: #e0e6ed;
+      }
+    }
+  }
+}
 </style>

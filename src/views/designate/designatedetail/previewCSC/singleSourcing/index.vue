@@ -4,7 +4,8 @@
  * @Description: 决策资料-SingleSourcing
 -->
 <template>
-  <iCard
+  <div
+    class="singleSourcing"
     v-permission.auto="
       SOURCING_NOMINATION_ATTATCH_SINGLESOURCING | (决策资料 - SingleSourcing)
     "
@@ -21,78 +22,77 @@
       </div>
     </div>
 
-    <div class="decision-data-singleSourcing-content">
-      <!-- 表单部分 -->
-      <div class="singleSourcing-table">
-        <tableList
-          :selection="false"
-          class="table"
-          index
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          v-permission.auto="
-            SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_TABLE |
-              (决策资料 - SingleSourcing - 表格)
-          "
-        >
-          <!-- 采购项目编号 -->
-          <template #fsnrGsnrNum="scope">
-            <span>{{ scope.row.fsnrGsnrNum }}</span>
-            <br />
-            <span>({{ scope.row.procureFactory }})</span>
-          </template>
+    <!-- 表单部分 -->
+    <div class="singleSourcing-table">
+      <tableList
+        :selection="false"
+        class="table"
+        height="100%"
+        index
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+        v-permission.auto="
+          SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_TABLE |
+            (决策资料 - SingleSourcing - 表格)
+        "
+      >
+        <!-- 采购项目编号 -->
+        <template #fsnrGsnrNum="scope">
+          <span>{{ scope.row.fsnrGsnrNum }}</span>
+          <br />
+          <span>({{ scope.row.procureFactory }})</span>
+        </template>
 
-          <!-- 零件信息 -->
-          <template #partNum="scope">
-            <span>{{ scope.row.partNum }}</span>
-            <br />
-            <span>{{ scope.row.partNameEn }}</span>
-          </template>
-          <!-- 供应商 -->
-          <template #sapCode="scope">
-            <span class="factoryDesc margin-right5">{{
-              scope.row.suppliersName
-            }}</span>
-            <el-tooltip
-              effect="light"
-              :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
-                scope.row.frmRate
-              }`"
-              v-if="scope.row.isFRMRate === 1 && !isPreview"
-            >
-              <span>
-                <icon symbol name="iconzhongyaoxinxitishi" />
-              </span>
-            </el-tooltip>
-            <br />
-            <span>{{
-              scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-            }}</span>
-            <span> {{ scope.row.suppliersNameEn }}</span>
-          </template>
-          <template #singleReason="scope">
-            <div>
-              <p>{{ scope.row.singleReason }}</p>
-              <p>{{ scope.row.singleReasonEng }}</p>
-            </div>
-          </template>
-        </tableList>
-        <iPagination
-          class="margin-bottom20"
-          @size-change="handleSizeChange($event, getDetail)"
-          @current-change="handleCurrentChange($event, getDetail)"
-          background
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :current-page="page.currPage"
-          :total="page.totalCount"
-          v-update
-        />
-      </div>
+        <!-- 零件信息 -->
+        <template #partNum="scope">
+          <span>{{ scope.row.partNum }}</span>
+          <br />
+          <span>{{ scope.row.partNameEn }}</span>
+        </template>
+        <!-- 供应商 -->
+        <template #sapCode="scope">
+          <span class="factoryDesc margin-right5">{{
+            scope.row.suppliersName
+          }}</span>
+          <el-tooltip
+            effect="light"
+            :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
+              scope.row.frmRate
+            }`"
+            v-if="scope.row.isFRMRate === 1 && !isPreview"
+          >
+            <span>
+              <icon symbol name="iconzhongyaoxinxitishi" />
+            </span>
+          </el-tooltip>
+          <br />
+          <span>{{
+            scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+          }}</span>
+          <span> {{ scope.row.suppliersNameEn }}</span>
+        </template>
+        <template #singleReason="scope">
+          <div>
+            <p>{{ scope.row.singleReason }}</p>
+            <p>{{ scope.row.singleReasonEng }}</p>
+          </div>
+        </template>
+      </tableList>
     </div>
-  </iCard>
+    <iPagination
+      class="margin-bottom20"
+      @size-change="handleSizeChange($event, getDetail)"
+      @current-change="handleCurrentChange($event, getDetail)"
+      background
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :current-page="page.currPage"
+      :total="page.totalCount"
+      v-update
+    />
+  </div>
 </template>
 
 <script>
@@ -212,34 +212,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.singleSourcing-table {
+  height: 100%;
+  height: calc(100% - 84px);
+  ::v-deep .el-table .cell {
+    white-space: pre-line;
+  }
+}
 .infos {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
   font-weight: bold;
-  // .title, .name, .value{
-  //     font-size: 20px;
-  //     font-weight: bold;
-  // }
 }
-.decision-data-singleSourcing-content {
-  .singleSourcing-table {
-    ::v-deep .el-table .cell {
-      white-space: pre-line;
-    }
-  }
-
-  .fromGroup {
-    ::v-deep .el-form-item__label {
-      width: auto;
-    }
-
-    ::v-deep .el-form-item__content {
-      .itext {
-        height: 100%;
-      }
-    }
+.singleSourcing {
+  padding-top: 20px;
+}
+.table {
+  ::v-deep .el-table__header {
+    background-color: #364d6e;
   }
 }
 </style>

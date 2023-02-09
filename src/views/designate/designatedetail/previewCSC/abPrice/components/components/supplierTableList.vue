@@ -3,7 +3,8 @@
   <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
-      class="header"
+      height="100%"
+      class="header table"
       ref="table"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
@@ -433,7 +434,7 @@ export default {
   .el-table__header {
     background: transparent;
     .white-bg {
-      background: #f8f9fa;
+      background: #fff;
       .cell {
         color: #000 !important;
       }
@@ -448,14 +449,14 @@ export default {
   .leftAllow {
     position: relative;
     padding: 0;
-    background: red;
+    background: #00b0f0;
     float: left;
   }
 
   .rightAllow {
     position: relative;
     padding: 0;
-    background: red;
+    background: #00b0f0;
     float: right;
   }
   .red {
@@ -475,5 +476,13 @@ export default {
   background: red;
   border-radius: 10px;
   transform: translate(10%, 20%);
+}
+.table{
+  ::v-deep .el-table__header {
+    background-color: #364d6e;
+    tr:nth-child(even){
+      background-color: #364d6e;
+    }
+  }
 }
 </style>

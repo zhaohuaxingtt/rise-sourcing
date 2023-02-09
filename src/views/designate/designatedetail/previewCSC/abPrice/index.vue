@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-06 14:16:56
+ * @LastEditTime: 2023-02-10 00:08:06
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -45,27 +45,39 @@
         <el-radio-button label="GS Part"></el-radio-button>
         <el-radio-button label="Detailed Worksheet"></el-radio-button>
       </el-radio-group>
+      <!-- 柱状图 -->
       <el-radio-group
         v-show="tab == 'bar'"
         class="radio-group margin-left20"
         v-model="tabBar"
-        @change="changeFS"
+        @change="changeCarType"
       >
       <template v-for="item in carTypeList">
         <el-radio-button :label="item.carTypeProjectNum" :key="item.carTypeProjectNum"></el-radio-button>
       </template>
       </el-radio-group>
+      <!-- 折线图 -->
+      <el-radio-group
+        v-show="tab == 'line'"
+        class="radio-group margin-left20"
+        v-model="tabLine"
+        @change="changeRFQ"
+      >
+      <template v-for="item in rfqList">
+        <el-radio-button :label="item.rfqId" :key="item.rfqId"></el-radio-button>
+      </template>
+      </el-radio-group>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
     <!-- 重点标注: table必须表头固定,不能出现横向滚动条,不然翻页按钮定位会异常 -->
-    <supplierTableList v-if="tab == 'table' && tabTable == 'Supplier'" />
-    <partTableList v-if="tab == 'table' && tabTable == 'Part'" />
-    <bestBallTableList v-if="tab == 'table' && tabTable == 'Best ball'" />
+    <supplierTableList class="content" v-if="tab == 'table' && tabTable == 'Supplier'" />
+    <partTableList class="content" v-if="tab == 'table' && tabTable == 'Part'" />
+    <bestBallTableList class="content" v-if="tab == 'table' && tabTable == 'Best ball'" />
     <!-- <test v-if="tab == 'table' && tabTable == 'Best ball'" /> -->
     <!-- bar -->
-    <supplierBar v-if="tab == 'bar'" :detail="carTypeDetail" />
-    <!-- <supplierBar2 v-if="tab == 'bar'" :detail="carTypeDetail" /> -->
-    <supplierLine v-if="tab == 'line'" :detail="carTypeDetail" />
+    <supplierBar class="content" v-if="tab == 'bar'" :detail="carTypeDetail" />
+    <!-- <supplierBar2 class="content" v-if="tab == 'bar'" :detail="carTypeDetail" /> -->
+    <supplierLine class="content" v-if="tab == 'line'" :detail="rfqDetail" />
     <!-- <iCard v-permission.auto="SOURCING_NOMINATION_ATTATCH_ABPRICE|决策资料-abprice">
       <fsandsupplier preview></fsandsupplier>
   </iCard> -->
@@ -84,7 +96,7 @@ import supplierBar from "./components/components/supplierBar";
 import supplierBar2 from "./components/components/supplierBar2";
 // 折线图
 import supplierLine from "./components/components/supplierLine";
-import { analysisNomiCarProject } from "@/api/partsrfq/editordetail/abprice";
+import { analysisNomiCarProject, getListRfq } from "@/api/partsrfq/editordetail/abprice";
 
 export default {
   components: {
@@ -101,13 +113,17 @@ export default {
   },
   data() {
     return {
-      tab: "table",
+      tab: "line",
       tabTable: "Supplier",
       // tabTable: "Part",
       tabBar: "",
       carTypeList:[],
       carTypeObj:{},
-      carTypeDetail:{}
+      carTypeDetail:{},
+      rfqList:[],
+      rfqObj:{},
+      rfqDetail:{},
+
     };
   },
   computed: {
@@ -116,31 +132,42 @@ export default {
     },
   },
   created(){
-    this.setFS()
+    this.analysisNomiCarProject()
+    this.getListRfq()
   },
   methods: {
-    setFS(){
+    analysisNomiCarProject(){
       this.carTypeObj = {}
       analysisNomiCarProject({
         nomiId: "60003714" || this.$route.query.desinateId,
       }).then(res=>{
-        console.log(res);
         if(res?.code=='200'){
           this.carTypeList = res.data
           this.carTypeList.forEach(item=>{
             this.carTypeObj[item.carTypeProjectNum] = item
           })
-          this.tabBar = this.carTypeList[0].carTypeProjectNum
-          this.changeFS(this.tabBar)
+          this.tabBar = this.carTypeList[0]?.carTypeProjectNum||''
+          this.changeCarType(this.tabBar)
         }
       })
     },
-    changeFS(val){
+    changeCarType(val){
       this.carTypeDetail = this.carTypeObj[val]
-      console.log(this.carTypeDetail);
     },
-    getbaseInfoData() {
-      return {};
+    getListRfq(){
+      getListRfq("60003714" || this.$route.query.desinateId,).then(res=>{
+        if(res?.code=='200'){
+          this.rfqList = res.data
+          this.rfqList.forEach(item=>{
+            this.rfqObj[item.rfqId] = item
+          })
+          this.tabLine = this.rfqList[0]?.rfqId||''
+          this.changeRFQ(this.tabLine)
+        }
+      })
+    },
+    changeRFQ(val) {
+      this.rfqDetail = this.rfqObj[val]
     },
   },
 };
@@ -177,5 +204,9 @@ export default {
       }
     }
   }
+}
+.content{
+  margin-top: 20px;
+  height: calc(100% - 69px);
 }
 </style>
