@@ -6,6 +6,7 @@ const requst = axios(process.env.VUE_APP_PARTS)
 const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTSPROCURE
 // VUE_APP_PARTS
+const requstBasinfo = axios(process.env.VUE_APP_BASE_INFO)
 
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 const requstParts = axios(process.env.VUE_APP_PART)
@@ -18,6 +19,14 @@ const requestPurchase = axios(process.env.VUE_APP_PURCHASE)
 const carApi = axios(process.env.VUE_APP_PARTSPROCURE_API)
 const sourcingDownload = axiosDownload(process.env.VUE_APP_SOURCING)
 
+//自动定点-创建接口
+export function queryProductionFactoryByCondition(params) {
+	return requstBasinfo({
+		url: '/web/queryProductionFactoryByCondition',
+		method: 'POST',
+		data: params
+	})
+}
 //自动定点-创建接口
 export function autonomi(params) {
 	return sourcing({

@@ -1103,6 +1103,7 @@ import {
   purchasingDept,
   getCarTypeSop,
   purchaseFactory,
+  queryProductionFactoryByCondition
 } from "@/api/partsprocure/editordetail";
 import { getCartypeDict } from "@/api/partsrfq/home";
 import {
@@ -1802,6 +1803,26 @@ export default {
         "sopDate",
         currentCarTypeProject.sopDate || ""
       );
+      const werkid=currentCarTypeProject.werk?.split(',')[0]
+      if(werkid){
+        queryProductionFactoryByCondition({id:'1'}).then(res=>{
+          let data=res.data
+          const obj=data.find(val=>val.id==werkid)||{}
+          console.log(werkid)
+          console.log(obj)
+          const obj2=this.fromGroup.PURCHASE_FACTORY.find(val=>obj.procureFactoryCode==val.code)||{}
+          if(obj2){
+            this.$set(
+              this.detailData,
+              "procureFactory",
+              obj2.code || ""
+            );
+          }
+          console.log(obj2)
+
+        })
+      }
+      console.log(currentCarTypeProject)
     },
     // 清除采购项目
     clearCarTypeProject() {
@@ -2173,6 +2194,7 @@ export default {
                 code: item.cartypeProCode,
                 name: item.cartypeProName,
                 sopDate: item.sop,
+                werk:item.werk
               }))
             : [];
 
