@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-12-22 20:37:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-06 18:38:12
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 项目中登录时候获取整个项目的权限以及token.
  * @FilePath: \rise\src\permission.js
  */
@@ -100,7 +100,7 @@ router.beforeEach((to, from, next) => {
             //当前没token，并且路由满足白名单，则按照当前路由来控制。
             next()
         } else {
-            next('/login')
+            next('/login'+`?state=${encodeURIComponent(window.location.href)}`)
         }
     }
 })

@@ -57,7 +57,7 @@
             <iSelect
               v-model="ruleForm.manualBiddingType"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
-              :disabled="ruleForm.biddingStatus !== '01'"
+              :disabled="ruleForm.biddingStatus !== '01' || loading"
               @change="handleChangeType"
             >
               <el-option
@@ -349,6 +349,7 @@ export default {
       procureTypeList,
       roundTypeList,
       rfqNameList: [],
+      loading:false
 
       // pricingBeginTimeOptions: {
 
@@ -441,7 +442,10 @@ export default {
    methods: {
     async handleChangeType(){
       this.ruleForm.rfqCode='';
+      if(this.loading) return
+      this.loading = true
       const res = await getRfqIdList({manualBiddingType:this.ruleForm.manualBiddingType});
+      this.loading = false
       this.rfqNameList = (res.data || []).map((code) => {
       return {
         biddingId: this.biddingId,

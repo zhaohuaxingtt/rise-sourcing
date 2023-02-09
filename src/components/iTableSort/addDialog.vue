@@ -189,6 +189,7 @@ export default {
                 this.addDialogFrom = copyAddDialogFrom;
             }
         },
+        // 没有loading,频繁触发时数据存在不确定性,未找到使用场景,暂未修改
         selectChange(value,props,rateDepartNum='',parentRateDepartNum='',raterList=[],coordinatorList=[]){
             // 选择评分类型的时候动态获取评分股
             if(props == 'rateTag' && value){
