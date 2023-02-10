@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-09 14:44:47
+ * @LastEditTime: 2023-02-10 09:40:14
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -84,12 +84,7 @@
             <!--------------------------------------------------------->
             <!------------------------内容是打叉------------------------>
             <!--------------------------------------------------------->
-            <span
-              v-else
-              class="blue-color"
-            >
-              —
-            </span>
+            <span v-else class="blue-color"> — </span>
             <!--------------------------------------------------------->
             <!------------------------内容是横岗百分比------------------->
             <!--------------------------------------------------------->
@@ -161,6 +156,7 @@ export default {
       supplierList: [],
       fixedList: ["Recommendation", "F-Target", "KGF", "VSI"],
       labelWidth: 200,
+      loading: false,
     };
   },
   created() {},
@@ -244,34 +240,40 @@ export default {
         "#57deda",
         "#9ed4e8",
         "#f49593",
-        "#b2dc9e"
+        "#b2dc9e",
       ];
       console.log(this.detail.rfqId);
-      if (this.detail.rfqId)
-        getLine(this.detail.rfqId).then((res) => {
-          if (res?.code != 200) return;
+      if (this.detail.rfqId) {
+        this.loading = true;
+        getLine(this.detail.rfqId)
+          .then((res) => {
+            if (res?.code != 200) return;
+            // 构建数据
+            this.roundList = res.data.roundTableHead.map(
+              (item) => "round" + item.round
+            );
+            this.tableData = [
+              { type: "line" },
+              ...res.data.roundQuotationVOS.map((item, index) => {
+                let cIndex = index;
+                if (index >= colorList.length)
+                  cIndex = index % colorList.length;
+                item.color = colorList[cIndex];
+                return item;
+              }),
+            ];
 
-          // 构建数据
-          this.roundList = res.data.roundTableHead.map(
-            (item) => "round" + item.round
-          );
-          this.tableData = [
-            { type: "line" },
-            ...res.data.roundQuotationVOS.map((item, index) => {
-              let cIndex = index
-              if(index>=colorList.length) cIndex = index % colorList.length
-              item.color = colorList[cIndex];
-              return item;
-            }),
-          ];
-
-          this.$nextTick(() => {
-            setTimeout(() => {
-              this.drawLine();
-            }, 280);
+            this.$nextTick(() => {
+              setTimeout(() => {
+                this.drawLine();
+              }, 280);
+            });
+            return;
+          })
+          .finally(() => {
+            this.loading = false;
           });
-          return;
-        });
+      }
     },
     colClass({ row, column, rowIndex, columnIndex }) {
       if (columnIndex < 2) {
@@ -297,12 +299,12 @@ export default {
 <style lang="scss" scoped>
 .chart {
   width: 100%;
-  height: 300px;
+  height: 600px;
 }
 .page-header {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 }
 .legend {

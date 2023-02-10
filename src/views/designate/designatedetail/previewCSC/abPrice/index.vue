@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-10 00:08:06
+ * @LastEditTime: 2023-02-10 09:28:14
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -113,10 +113,10 @@ export default {
   },
   data() {
     return {
-      tab: "line",
+      tab: "table",
       tabTable: "Supplier",
-      // tabTable: "Part",
       tabBar: "",
+      tabLine:'',
       carTypeList:[],
       carTypeObj:{},
       carTypeDetail:{},
@@ -139,7 +139,7 @@ export default {
     analysisNomiCarProject(){
       this.carTypeObj = {}
       analysisNomiCarProject({
-        nomiId: "60003714" || this.$route.query.desinateId,
+        nomiId: this.$route.query.desinateId,
       }).then(res=>{
         if(res?.code=='200'){
           this.carTypeList = res.data
@@ -155,7 +155,7 @@ export default {
       this.carTypeDetail = this.carTypeObj[val]
     },
     getListRfq(){
-      getListRfq("60003714" || this.$route.query.desinateId,).then(res=>{
+      getListRfq(this.$route.query.desinateId).then(res=>{
         if(res?.code=='200'){
           this.rfqList = res.data
           this.rfqList.forEach(item=>{
@@ -168,6 +168,7 @@ export default {
     },
     changeRFQ(val) {
       this.rfqDetail = this.rfqObj[val]
+      console.log(this.rfqDetail);
     },
   },
 };

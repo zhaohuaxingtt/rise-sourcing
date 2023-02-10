@@ -290,7 +290,7 @@ export default {
     analysisSummaryNomi() {
       this.loading = true;
       analysisSummaryNomi({
-        nomiId: "60003714" || this.$route.query.desinateId,
+        nomiId: this.$route.query.desinateId,
         fsGsNumList: this.row?.partPrjCode ? [this.row.partPrjCode] : undefined,
       })
         .then((res) => {
@@ -432,7 +432,7 @@ export default {
 }
 ::v-deep .el-table {
   .el-table__header {
-    background: transparent;
+    background: #fff;
     .white-bg {
       background: #fff;
       .cell {

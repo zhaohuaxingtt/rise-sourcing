@@ -153,7 +153,7 @@ export default {
   methods: {
     analysisSummaryNomi() {
       analysisSummaryNomi({
-        nomiId: "60003714" || this.$route.query.desinateId,
+        nomiId: this.$route.query.desinateId,
         fsGsNumList: this.detail?.fsGsList || undefined,
       }).then((res) => {
         if (res?.code != 200) return;

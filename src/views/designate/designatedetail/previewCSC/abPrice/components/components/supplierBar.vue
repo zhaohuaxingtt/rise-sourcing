@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 00:12:12
+ * @LastEditTime: 2023-02-10 09:37:52
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -27,7 +27,6 @@
       ref="table"
       :highlight-current-row="false"
       :cell-class-name="colClass"
-      :row-class-name="rowClass"
       :show-header="false"
       :span-method="arraySpanMethod"
     >
@@ -45,7 +44,7 @@
       <template v-for="item in supplierList">
         <el-table-column :key="item.supplier" align="center" minWidth="140px">
           <template slot-scope="scope">
-            <template v-if="scope.row.label == 'A-B Price Comparison'">
+            <template v-if="scope.$index == 0">
               <barItem
                 :key="item.supplier"
                 :barName="item.supplier"
@@ -73,7 +72,7 @@
           minWidth="140px"
         >
           <template slot-scope="scope">
-            <template v-if="scope.row.label == 'A-B Price Comparison'">
+            <template v-if="scope.$index == 0">
               <barItem :key="item.prop" :barName="item.label" :data="item" />
             </template>
             <template v-else>
@@ -112,7 +111,7 @@ export default {
     return {
       tableData: [
         {
-          label: "A-B Price \n Comparison",
+          label: "A-B Price Comparison",
         },
         {
           label: "Rating",
@@ -168,20 +167,21 @@ export default {
         { prop:'KGF', label: "KGF" },
         { prop:'VSI', label: "VSI" },
       ],
+      loading:false,
     };
   },
   methods: {
     analysisSummaryNomi() {
       this.loading = true
       analysisSummaryNomi({
-        nomiId: "60003714" || this.$route.query.desinateId,
+        nomiId: this.$route.query.desinateId,
         fsGsNumList: this.detail?.fsGsList || undefined,
       }).then((res) => {
         if (res?.code != 200) return;
         try {
           
         this.supplierList =
-          (res.data.nomiAnalysisSummarySuppliers||[]).map((item) => {
+        res.data.nomiAnalysisSummarySuppliers.map((item) => {
             let ltcList = [];
             let ltcStartDateList = [];
             item.aPrice = item.mixAPrice;
@@ -195,6 +195,7 @@ export default {
             item.ltcStartDateList = ltcStartDateList;
             return item;
           }) || [];
+          console.log(this.supplierList);
         this.fixedList[0].aPrice = res.data.recommendationNomi?.lcMixAPrice || ''
         this.fixedList[0].bPrice = res.data.recommendationNomi?.lcMixBPrice || ''
         this.fixedList[1].aPrice = res.data.targetMixAPrice
@@ -203,11 +204,11 @@ export default {
         this.fixedList[2].bPrice = ''
         this.fixedList[3].aPrice = ''
         this.fixedList[3].bPrice = ''
-        this.tableData[4].Recommendation = "222,000";
-        this.tableData[5].Recommendation = "222,000";
-        this.tableData[5]["F-Target"] = "222,000";
-        this.tableData[5]["KGF"] = "222,000";
-        this.tableData[6].Recommendation = "222,000";
+        this.tableData[4].Recommendation = res.data.recommendationNomi?.totalInvest || ''
+        this.tableData[4]["F-Target"] = res.data.targetTotalInvest;
+        this.tableData[5].Recommendation = res.data.recommendationNomi?.totalDevelopCost || ''
+        this.tableData[5]["KGF"] = "";
+        this.tableData[6].Recommendation = res.data.recommendationNomi?.totalTurnover || ''
         } catch (error) {
           console.log(error);
         }
@@ -218,9 +219,8 @@ export default {
     },
     colClass({ row, column, rowIndex, columnIndex }) {
       if (columnIndex < 2) {
-        console.log(rowIndex);
         if(rowIndex == 0){
-          return 'table-header bar'
+          return 'table-header'
         }
         return "table-header";
       }
@@ -257,7 +257,7 @@ export default {
 .page-header {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   .legend {
     display: flex;
@@ -282,11 +282,6 @@ export default {
       .cell {
         font-weight: 700;
         color: #fff;
-      }
-    }
-    td.bar {
-      .cell{
-        min-height: 500px;
       }
     }
     &:hover > td.table-header {

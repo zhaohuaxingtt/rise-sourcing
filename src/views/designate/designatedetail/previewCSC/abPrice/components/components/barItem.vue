@@ -138,6 +138,6 @@ export default {
 <style lang="scss" scoped>
 .bar {
   width: 100%;
-  height: 300px;
+  height: calc(100vh - 500px);
 }
 </style>

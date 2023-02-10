@@ -162,14 +162,14 @@
         <el-table-column prop="Supplier" label="Supplier">
           <el-table-column
             label="A Price"
-            prop="aPrice"
+            prop="cfPartAPrice"
             minWidth="80"
             align="center"
           >
           </el-table-column>
           <el-table-column
             label="B Price"
-            prop="bPrice"
+            prop="cfPartBPrice"
             minWidth="80"
             align="center"
           >
@@ -336,7 +336,7 @@ export default {
   methods: {
     getData() {
       this.loading = true;
-      fsPartsAsRow("60003714" || this.$route.query.desinateId)
+      fsPartsAsRow(this.$route.query.desinateId)
         .then((res) => {
           if (res?.code == "200") {
             const tableData =
@@ -549,7 +549,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-box {
-  height: calc(100% - 275px);
+  height: calc(100% - 280px);
 }
 .header {
   ::v-deep th {
@@ -572,9 +572,9 @@ export default {
     display: none;
   }
   .el-table__header {
-    background: transparent;
+    background: #fff;
     .white-bg {
-      background: #f8f9fa;
+      background: #fff;
       .cell {
         color: #000 !important;
       }

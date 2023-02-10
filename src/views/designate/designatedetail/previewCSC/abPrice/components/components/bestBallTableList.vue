@@ -237,7 +237,7 @@ export default {
       this.tableData = []
       const getData = this.label == 'Recommendation' ? getAnalysisRecommendationNomi : getAnalysisBestBallNomi
       getData({
-        nomiId: "60003714" || this.$route.query.desinateId,
+        nomiId: this.$route.query.desinateId,
       }).then((res) => {
         if (res?.code == "200") {
           const tableData = res.data.analysisNomiPriceInfoList
@@ -345,6 +345,8 @@ export default {
     cellClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0 && columnIndex == 0) {
         return "white-bg unit";
+      } else if (rowIndex == 0) {
+        return "primary-label";
       }
       return "";
     },
@@ -399,8 +401,12 @@ export default {
   }
   .el-table__header {
     background: transparent;
+    .primary-label{
+      line-height: 36px;
+      height: 36px;
+    }
     .white-bg {
-      background: #f8f9fa;
+      background: #fff;
       .cell {
         color: #000 !important;
       }
@@ -444,10 +450,10 @@ export default {
 }
 .left {
   width: 14px;
-  height: 40px;
+  height: 60px;
   background: #00b0f0;
   border-radius: 10px;
-  transform: translate(-8px, 20%);
+  transform: translate(-8px, 0);
   opacity: 0.3;
   &:hover {
     opacity: 1;
@@ -455,10 +461,10 @@ export default {
 }
 .right {
   width: 14px;
-  height: 40px;
+  height: 60px;
   background: #00b0f0;
   border-radius: 10px;
-  transform: translate(-8px, 20%);
+  transform: translate(-8px, 0);
   opacity: 0.3;
   &:hover {
     opacity: 1;

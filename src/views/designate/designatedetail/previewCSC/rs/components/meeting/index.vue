@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-08 14:30:38
+ * @LastEditTime: 2023-02-10 10:32:33
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -545,39 +545,26 @@
       <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
     </div> -->
     <div id="hide">
-      <iCard class="rsCard">
-        <template #header>
-          <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-            <iButton
-              @click="handleExportPdf"
-              :loading="loading"
-              v-permission.auto="
-                SOURCING_NOMINATION_RFQDETAIL_RS_EXPORT | RS单导出
-              "
-              >{{ language("DAOCHURSDAN", "导出RS单") }}</iButton
-            >
-          </div>
+      <div class="rsCard">
+        <div class="page-header">
           <div class="title">
-            <p>CSC定点推荐 - {{ cardTitle }}</p>
-            <p>{{ cardTitleEn }}</p>
+            <p>CSC定点推荐 - {{ cardTitle }} {{ cardTitleEn }}</p>
           </div>
-          <div>
-            <div class="control">
-              <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">
-                定点申请单号：{{
-                  $route.query.desinateId ? $route.query.desinateId : nominateId
-                }}
-              </div>
-              <div
-                class="singleSourcing cursor"
-                v-if="isSingle"
-                @click="gotoSingle"
-              >
-                Single Sourcing
-              </div>
+          <div class="control">
+            <div class="nomiId">
+              定点申请单号：{{
+                $route.query.desinateId ? $route.query.desinateId : nominateId
+              }}
+            </div>
+            <div
+              class="singleSourcing cursor"
+              @click="gotoSingle"
+            >
+              <!-- v-if="isSingle" -->
+              Single Sourcing
             </div>
           </div>
-        </template>
+        </div>
         <div class="rsTop page-top">
           <div class="rsTop-left">
             <div
@@ -757,17 +744,17 @@
               </div>
               <div slot="reference">
                 <p>
-                  <span v-if="+scope.row.selAPrice" style="color: red"
-                    >*</span
-                  >
-                <template v-if="scope.row.cfApplyType === 'SKDLC'">
-                  <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
-                  <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
-                </template>
-                <span v-else-if="scope.row.cfApplyType === 'SKD'">{{
-                  scope.row.cfTargetSkdAPrice | toThousands(true)
-                }}</span>
-                <span v-else>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+                  <span v-if="+scope.row.selAPrice" style="color: red">*</span>
+                  <template v-if="scope.row.cfApplyType === 'SKDLC'">
+                    <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
+                    <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
+                  </template>
+                  <span v-else-if="scope.row.cfApplyType === 'SKD'">{{
+                    scope.row.cfTargetSkdAPrice | toThousands(true)
+                  }}</span>
+                  <span v-else>{{
+                    scope.row.cfTargetAPrice | toThousands(true)
+                  }}</span>
                 </p>
               </div>
             </el-popover>
@@ -816,12 +803,14 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.moldApportionPrice || "0.00" | thousandsFilter(0)
+                      scope.row.moldApportionPrice ||
+                      "0.00" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareInvestPrice || "0.00" | thousandsFilter(0)
+                      scope.row.unShareInvestPrice ||
+                      "0.00" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
@@ -849,12 +838,14 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.moldApportionPrice || "0.00" | thousandsFilter(0)
+                      scope.row.moldApportionPrice ||
+                      "0.00" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
                     {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                      scope.row.unShareInvestPrice || "0.00" | thousandsFilter(0)
+                      scope.row.unShareInvestPrice ||
+                      "0.00" | thousandsFilter(0)
                     }}
                   </div>
                 </div>
@@ -879,7 +870,8 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.developApportionPrice || "0" | thousandsFilter(0)
+                      scope.row.developApportionPrice ||
+                      "0" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
@@ -912,7 +904,8 @@
                 <div>
                   <div>
                     {{ language("FENTANJINE", "分摊金额") }}：{{
-                      scope.row.developApportionPrice || "0" | thousandsFilter(0)
+                      scope.row.developApportionPrice ||
+                      "0" | thousandsFilter(0)
                     }}
                   </div>
                   <div>
@@ -1004,8 +997,8 @@
             </div>
           </div>
         </div>
-      </iCard>
-      <iCard
+      </div>
+      <div
         v-if="!isPreview && !showSignatureForm && !isAuth"
         :title="language('SHANGHUIBEIZHU', '上会备注')"
         class="margin-top20"
@@ -1058,8 +1051,8 @@
             </div>
           </div>
         </div>
-      </iCard>
-      <iCard
+      </div>
+      <div
         v-if="!showSignatureForm && !isAuth"
         class="checkDate Application"
         :class="!isPreview && 'margin-top20'"
@@ -1097,8 +1090,8 @@
             </div>
           </div>
         </div>
-      </iCard>
-      <iCard
+      </div>
+      <div
         title="Prototype Cost List"
         class="margin-top20"
         v-if="!showSignatureForm && PrototypeList.length > 5"
@@ -1113,7 +1106,7 @@
             ></el-table-column>
           </template>
         </el-table>
-      </iCard>
+      </div>
     </div>
     <canvas id="myCanvas"></canvas>
   </div>
@@ -1139,7 +1132,7 @@ import {
   remarkProcess,
   leftTitle,
   rightTitle,
-  RSTableTitle
+  RSTableTitle,
 } from "./data";
 import tableList from "@/views/designate/designatedetail/components/tableList";
 import {
@@ -1161,7 +1154,7 @@ import { uploadUdFile } from "@/api/file/upload";
 import { dateFilter } from "../circulation/data";
 
 export default {
-  mixins:[filters],
+  mixins: [filters],
   props: {
     isPreview: { type: Boolean, default: false },
     nominateId: { type: String },
@@ -1272,17 +1265,17 @@ export default {
     // },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
-        console.log('PEIJIAN');
+        console.log("PEIJIAN");
         return sparePartTableTitle;
       } else if (this.projectType === partProjTypes.FUJIAN) {
-        console.log('FUJIAN');
+        console.log("FUJIAN");
 
         return accessoryTableTitle;
       } else if (
         this.projectType === partProjTypes.GSLINGJIAN ||
         this.projectType === partProjTypes.GSCOMMONSOURCING
       ) {
-        console.log('GSLINGJIAN');
+        console.log("GSLINGJIAN");
 
         //GS零件
         return gsTableTitle;
@@ -1290,12 +1283,12 @@ export default {
         this.projectType === partProjTypes.DBLINGJIAN ||
         this.projectType === partProjTypes.DBYICHIXINGCAIGOU
       ) {
-        console.log('DBLINGJIAN');
+        console.log("DBLINGJIAN");
 
         //DB零件,DB一次性采购
         return dbTableTitle;
       }
-              console.log('nomalTableTitle');
+      console.log("nomalTableTitle");
 
       return nomalTableTitle;
     },
@@ -2042,7 +2035,16 @@ export default {
         margin-bottom: 20px;
       }
     }
-
+    .page-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      ::v-deep .title {
+        font-size: 18px !important;
+        font-weight: 700;
+      }
+    }
     .control {
       display: flex !important;
       align-items: center !important;
@@ -2059,6 +2061,7 @@ export default {
   margin-left: 20px;
 }
 .singleSourcing {
+  margin-left: 20px;
   padding: 8px 12px;
   font-size: 15px;
   font-weight: 400;
@@ -2129,16 +2132,32 @@ export default {
     display: flex;
     flex-wrap: wrap;
     &-item {
-      width: 33%;
       font-size: 12px;
       display: flex;
-      &-title {
-        font-weight: bold;
-        width: 50%;
-      }
+      // &-title {
+      //   font-weight: bold;
+      // }
       &-value {
         font-weight: 400;
-        width: 50%;
+        flex: 1;
+      }
+      &:nth-of-type(3n) {
+        width: 33%;
+        .rsTop-left-item-title {
+          width: 220px;
+        }
+      }
+      &:nth-of-type(3n-1) {
+        width: 27%;
+        .rsTop-left-item-title {
+          width: 140px;
+        }
+      }
+      &:nth-of-type(3n-2) {
+        width: 40%;
+        .rsTop-left-item-title {
+          width: 200px;
+        }
       }
     }
   }
@@ -2444,7 +2463,7 @@ export default {
         & > .cell {
           padding-left: 3px;
           padding-right: 3px;
-					line-height: unset;
+          line-height: unset;
         }
       }
       &:nth-child(even) {
