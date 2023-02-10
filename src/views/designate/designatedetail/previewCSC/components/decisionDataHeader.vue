@@ -348,6 +348,7 @@ export default {
       border-top: 1px solid #d9d9d9;
       border-bottom: 1px solid #d9d9d9;
       border-left: 1px solid #d9d9d9;
+      font-size: 18px;
       &.is-active {
         color: #fff;
         background: #194669;

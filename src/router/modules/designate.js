@@ -230,7 +230,7 @@ const nominationpages_copy = [
       activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/drawing'),
+      import('@/views/designate/designatedetail/previewCSC/drawing'),
   },
   {
     path: 'mtz',

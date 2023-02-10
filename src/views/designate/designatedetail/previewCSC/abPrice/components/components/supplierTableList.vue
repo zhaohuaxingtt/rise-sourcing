@@ -20,6 +20,7 @@
                     prop="supplier"
                     label="Supplier"
                     align="center"
+                    minWidth="140"
                   ></el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -37,7 +38,7 @@
                     <el-table-column
                       prop="te"
                       label="E"
-                      width="50"
+                      minWidth="50"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -50,7 +51,7 @@
                     <el-table-column
                       prop="q"
                       label="Q"
-                      width="50"
+                      minWidth="50"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -63,7 +64,7 @@
                     <el-table-column
                       prop="l"
                       label="L"
-                      width="50"
+                      minWidth="50"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -108,7 +109,9 @@
                       <el-table-column
                         :prop="item.fsGsNum + 'lcAPrice'"
                         label="partAPrice"
-                        align="center"
+                        align="right"
+                        header-align="center"
+                        minWidth="85"
                       >
                         <template slot="header" slot-scope="scope">
                           <p>A price</p>
@@ -122,7 +125,9 @@
                       <el-table-column
                         :prop="item.fsGsNum + 'lcBPrice'"
                         label="partBPrice"
-                        align="center"
+                        align="right"
+                        header-align="center"
+                        minWidth="85"
                       >
                         <template slot="header" slot-scope="scope">
                           <p>B price</p>
@@ -148,7 +153,9 @@
                     <el-table-column
                       prop="mixAPrice"
                       label="A price"
-                      align="center"
+                      align="right"
+                      header-align="center"
+                      minWidth="85"
                     >
                     </el-table-column>
                   </el-table-column>
@@ -160,7 +167,9 @@
                     <el-table-column
                       prop="mixBPrice"
                       label="B price"
-                      align="center"
+                      align="right"
+                      header-align="center"
+                      minWidth="85"
                     ></el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -179,8 +188,14 @@
                     <el-table-column
                       :prop="item.prop"
                       :label="item.label"
+                      :minWidth="item.width"
                       align="center"
                     >
+                        <template slot="header" slot-scope="scope">
+                          <template v-for="(text,index) in item.label">
+                            <p :key="index">{{text}}</p>
+                          </template>
+                        </template>
                       <template slot-scope="scope">
                         <template
                           v-if="
@@ -208,14 +223,19 @@
       </template>
     </el-table>
     <template v-if="partAllData.length > 1">
-      <div class="left" :style="left" @click="prev"></div>
-      <div class="right" :style="right" @click="next"></div>
+      <div class="left" :style="left" @click="prev">
+        <img :src="allowIcon" alt="">
+      </div>
+      <div class="right" :style="right" @click="next">
+        <img :src="allowIcon" alt="">
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
+import allowIcon from "@/assets/images/icon/allow.png";
 import allow from "./allow.js";
 export default {
   mixins: [allow],
@@ -227,44 +247,50 @@ export default {
   },
   data() {
     return {
+      allowIcon,
       ref: "supplier-table",
       fixedTitle: [
         {
           prop: "ltcList",
-          label: "LTC",
+          label: ["LTC"],
           target: "",
           budget: "",
+          width:'100'
         },
         {
           prop: "ltcStartDateList",
-          label: "LTC Start Date",
+          label: ["LTC Start"," Date"],
           target: "",
           budget: "",
+          width:'130'
         },
         {
           prop: "totalInvest",
-          label: "Total Invest",
+          label: ["Total","Invest"],
           target: "",
           budget: "",
+          width:'130'
         },
         {
           prop: "totalDevelopCost",
-          label: "Total Develop Cost",
+          label: ["Total","Develop","Cost"],
           target: "",
           budget: "",
+          width:'130'
         },
         {
           prop: "totalTurnover",
-          label: "Total Turnover",
+          label: ["Total","Turnover"],
           target: "",
           budget: "",
+          width:'130'
         },
       ],
       tableData: [],
       targetMixAPrice: "",
       targetMixBPrice: "",
       loading: false,
-      showLength:4,
+      showLength: 4,
       partAllData: [],
       index: 0,
     };
@@ -274,14 +300,18 @@ export default {
       return this.partAllData[this.index] || [];
     },
   },
+  watch: {
+    partList() {
+      this.$nextTick(() => {
+        this.setColSpan();
+      });
+    },
+  },
   created() {
     this.analysisSummaryNomi();
   },
   mounted() {
     // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-    this.$nextTick(() => {
-      this.setColSpan();
-    });
   },
   methods: {
     isCLevel(val) {
@@ -321,6 +351,9 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => {
+            this.setColSpan();
+          });
         });
     },
     prev() {
@@ -342,8 +375,12 @@ export default {
       if (rowIndex == 0 && columnIndex == 0) {
         return "white-bg unit";
       }
-      if (rowIndex < 6 && columnIndex > 1) {
-        return "white-bg";
+      
+      if (rowIndex < 6) {
+        if(columnIndex == 1){
+          return "supllier-header";
+        }
+        return "white-bg supllier-header";
       }
     },
     // 内容单元格蓝色背景调整
@@ -423,24 +460,40 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  padding: 3px 0;
   ::v-deep th {
-    padding: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
     .cell {
-      padding: 0 10px;
+      padding: 0 1px;
+    }
+  }
+  ::v-deep td {
+    .cell {
+      padding: 0 1px;
     }
   }
 }
 ::v-deep .el-table {
+  font-size: 16px;
   .el-table__header {
     background: #fff;
+    .supllier-header{
+      padding-top: 3px;
+      padding-bottom: 3px;
+      font-size: 16px;
+    }
     .white-bg {
       background: #fff;
       .cell {
+        white-space: normal;
+        font-weight: 500;
         color: #000 !important;
       }
     }
     .unit {
       vertical-align: top;
+      font-weight: 700;
     }
   }
   .blue-border {
@@ -449,14 +502,12 @@ export default {
   .leftAllow {
     position: relative;
     padding: 0;
-    background: #00b0f0;
     float: left;
   }
 
   .rightAllow {
     position: relative;
     padding: 0;
-    background: #00b0f0;
     float: right;
   }
   .red {
@@ -464,23 +515,17 @@ export default {
   }
 }
 .left {
-  width: 14px;
-  height: 60px;
-  background: red;
-  border-radius: 10px;
-  transform: translate(-110%, 20%);
+  transform: translate(-12px, 18px);
 }
 .right {
-  width: 14px;
-  height: 60px;
-  background: red;
-  border-radius: 10px;
-  transform: translate(10%, 20%);
+  transform: translate(0px, 18px);
 }
-.table{
+.table {
   ::v-deep .el-table__header {
-    background-color: #364d6e;
-    tr:nth-child(even){
+    tr{
+      background-color: #364d6e;
+    }
+    tr:nth-child(even) {
       background-color: #364d6e;
     }
   }

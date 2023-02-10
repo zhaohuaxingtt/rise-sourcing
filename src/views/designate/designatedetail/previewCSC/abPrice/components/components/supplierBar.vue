@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 09:37:52
+ * @LastEditTime: 2023-02-10 18:16:49
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,7 +34,13 @@
         prop="label"
         align="center"
         width="120"
-      ></el-table-column>
+      >
+      <template slot-scope="scope">
+        <p v-for="(text,index) in scope.row.label" :key="index">
+            {{text}}
+        </p>
+      </template>
+      </el-table-column>
       <el-table-column
         prop="subLabel"
         align="center"
@@ -111,35 +117,35 @@ export default {
     return {
       tableData: [
         {
-          label: "A-B Price Comparison",
+          label: ["A-B Price","Comparison"],
         },
         {
-          label: "Rating",
+          label: ["Rating"],
           subLabel: "E",
         },
         {
-          label: "Rating",
+          label: ["Rating"],
           subLabel: "Q",
         },
         {
-          label: "LTC from Start Date",
+          label: ["LTC from Start","Date"],
         },
         {
-          label: "Total Invest",
+          label: ["Total Invest"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",
           VSI: "",
         },
         {
-          label: "Total Develop Cost",
+          label: ["Total Develop","Cost"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",
           VSI: "",
         },
         {
-          label: "Total Turnover",
+          label: ["Total Turnover"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",

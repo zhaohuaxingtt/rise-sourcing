@@ -8,7 +8,7 @@
     :title="'Quotation Detail of ' + row.partPrjCode"
   >
     <div class="body">
-      <supplierTableList :row="row" />
+      <supplierTableList class="content" :row="row" />
     </div>
   </iDialog>
 </template>
@@ -49,7 +49,7 @@ export default {
     overflow-x: hidden;
 
     .body {
-      height: 380px;
+      height: 650px;
     }
 
     .el-dialog__header {
@@ -60,5 +60,8 @@ export default {
       @include pdtb(6px, 0);
     }
   }
+}
+.content {
+  height: calc(100% - 40px);
 }
 </style>

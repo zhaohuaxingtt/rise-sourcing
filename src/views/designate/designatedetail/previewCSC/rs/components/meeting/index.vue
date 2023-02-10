@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 10:32:33
+ * @LastEditTime: 2023-02-10 18:28:24
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -2069,7 +2069,7 @@ export default {
   border: 1px dashed #1660f1;
 }
 .rsTable {
-  font-size: 8px;
+  font-size: 16px !important;
   &::before {
     height: 0;
   }
@@ -2083,14 +2083,10 @@ export default {
       padding-left: 3px;
       padding-right: 3px;
       line-height: unset;
-      font-size: 12px;
+      font-size: 14px;
       p {
         min-height: 16px;
       }
-
-      // p + p {
-      //   margin-top: 8px;
-      // }
     }
   }
 
@@ -2132,7 +2128,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     &-item {
-      font-size: 12px;
+      font-size: 14px;
       display: flex;
       // &-title {
       //   font-weight: bold;
@@ -2171,6 +2167,7 @@ export default {
     &-item {
       width: 55%;
       display: flex;
+      font-size: 14px;
       border-bottom: 1px solid rgba(197, 204, 214, 0.42);
       &:nth-of-type(odd) {
         width: 45%;

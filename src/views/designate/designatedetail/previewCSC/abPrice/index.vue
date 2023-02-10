@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-10 09:28:14
+ * @LastEditTime: 2023-02-10 15:28:27
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -10,30 +10,18 @@
   <div :class="isRoutePreview ? 'isRoutePreview' : ''">
     <slot name="tabTitle"></slot>
     <div class="page-nav">
-      <iTabsList class="preview-tabs" type="card" v-model="tab">
-        <el-tab-pane name="table">
-          <span slot="label"
-            ><icon symbol name="iconshenrupingji" class="margin-right10"></icon
-            >Table</span
-          >
-        </el-tab-pane>
-        <el-tab-pane name="bar">
-          <span slot="label"
-            ><icon symbol name="iconchubupingji" class="margin-right10"></icon
-            >Bar chart</span
-          >
-        </el-tab-pane>
-        <el-tab-pane name="line">
-          <span slot="label"
-            ><icon
-              symbol
-              name="iconAekozengzhiBMdanweixuanzhong"
-              class="margin-right10"
-            ></icon>
-            line chart</span
-          >
-        </el-tab-pane>
-      </iTabsList>
+      <div class="tab-list">
+        <div @click="changeTab(item.value)" v-for="item in tabList" :key="item.label" class="tab-label cursor" :class="{'is-active':tab == item.value}">
+          <img
+            class="icon margin-right5"
+            :src="tab == item.value ? item.activeImg : item.img"
+            alt=""
+          />
+          <span>
+            {{item.label}}
+          </span>
+        </div>
+      </div>
       <el-radio-group
         v-show="tab == 'table'"
         class="radio-group margin-left20"
@@ -52,9 +40,12 @@
         v-model="tabBar"
         @change="changeCarType"
       >
-      <template v-for="item in carTypeList">
-        <el-radio-button :label="item.carTypeProjectNum" :key="item.carTypeProjectNum"></el-radio-button>
-      </template>
+        <template v-for="item in carTypeList">
+          <el-radio-button
+            :label="item.carTypeProjectNum"
+            :key="item.carTypeProjectNum"
+          ></el-radio-button>
+        </template>
       </el-radio-group>
       <!-- 折线图 -->
       <el-radio-group
@@ -63,20 +54,30 @@
         v-model="tabLine"
         @change="changeRFQ"
       >
-      <template v-for="item in rfqList">
-        <el-radio-button :label="item.rfqId" :key="item.rfqId"></el-radio-button>
-      </template>
+        <template v-for="item in rfqList">
+          <el-radio-button
+            :label="item.rfqId"
+            :key="item.rfqId"
+          ></el-radio-button>
+        </template>
       </el-radio-group>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
     <!-- 重点标注: table必须表头固定,不能出现横向滚动条,不然翻页按钮定位会异常 -->
-    <supplierTableList class="content" v-if="tab == 'table' && tabTable == 'Supplier'" />
-    <partTableList class="content" v-if="tab == 'table' && tabTable == 'Part'" />
-    <bestBallTableList class="content" v-if="tab == 'table' && tabTable == 'Best ball'" />
-    <!-- <test v-if="tab == 'table' && tabTable == 'Best ball'" /> -->
+    <supplierTableList
+      class="content"
+      v-if="tab == 'table' && tabTable == 'Supplier'"
+    />
+    <partTableList
+      class="content"
+      v-if="tab == 'table' && tabTable == 'Part'"
+    />
+    <bestBallTableList
+      class="content"
+      v-if="tab == 'table' && tabTable == 'Best ball'"
+    />
     <!-- bar -->
     <supplierBar class="content" v-if="tab == 'bar'" :detail="carTypeDetail" />
-    <!-- <supplierBar2 class="content" v-if="tab == 'bar'" :detail="carTypeDetail" /> -->
     <supplierLine class="content" v-if="tab == 'line'" :detail="rfqDetail" />
     <!-- <iCard v-permission.auto="SOURCING_NOMINATION_ATTATCH_ABPRICE|决策资料-abprice">
       <fsandsupplier preview></fsandsupplier>
@@ -96,7 +97,17 @@ import supplierBar from "./components/components/supplierBar";
 import supplierBar2 from "./components/components/supplierBar2";
 // 折线图
 import supplierLine from "./components/components/supplierLine";
-import { analysisNomiCarProject, getListRfq } from "@/api/partsrfq/editordetail/abprice";
+import {
+  analysisNomiCarProject,
+  getListRfq,
+} from "@/api/partsrfq/editordetail/abprice";
+// 图片
+import table from "@/assets/images/icon/table.png";
+import tableActive from "@/assets/images/icon/table-active.png";
+import bar from "@/assets/images/icon/bar.png";
+import barActive from "@/assets/images/icon/bar-active.png";
+import line from "@/assets/images/icon/line.png";
+import lineActive from "@/assets/images/icon/line-active.png";
 
 export default {
   components: {
@@ -113,17 +124,40 @@ export default {
   },
   data() {
     return {
+      table,
+      tableActive,
+      bar,
+      barActive,
+      line,
+      lineActive,
+      tabList:[
+        {
+          label:'Table',
+          value:'table',
+          activeImg:tableActive,
+          img:table
+        },{
+          label:'Bar chart',
+          value:'bar',
+          activeImg:barActive,
+          img:bar
+        },{
+          label:'Line chart',
+          value:'line',
+          activeImg:lineActive,
+          img:line
+        },
+      ],
       tab: "table",
       tabTable: "Supplier",
       tabBar: "",
-      tabLine:'',
-      carTypeList:[],
-      carTypeObj:{},
-      carTypeDetail:{},
-      rfqList:[],
-      rfqObj:{},
-      rfqDetail:{},
-
+      tabLine: "",
+      carTypeList: [],
+      carTypeObj: {},
+      carTypeDetail: {},
+      rfqList: [],
+      rfqObj: {},
+      rfqDetail: {},
     };
   },
   computed: {
@@ -131,43 +165,46 @@ export default {
       return this.$route.query.isPreview == 1;
     },
   },
-  created(){
-    this.analysisNomiCarProject()
-    this.getListRfq()
+  created() {
+    this.analysisNomiCarProject();
+    this.getListRfq();
   },
   methods: {
-    analysisNomiCarProject(){
-      this.carTypeObj = {}
+    analysisNomiCarProject() {
+      this.carTypeObj = {};
       analysisNomiCarProject({
         nomiId: this.$route.query.desinateId,
-      }).then(res=>{
-        if(res?.code=='200'){
-          this.carTypeList = res.data
-          this.carTypeList.forEach(item=>{
-            this.carTypeObj[item.carTypeProjectNum] = item
-          })
-          this.tabBar = this.carTypeList[0]?.carTypeProjectNum||''
-          this.changeCarType(this.tabBar)
+      }).then((res) => {
+        if (res?.code == "200") {
+          this.carTypeList = res.data;
+          this.carTypeList.forEach((item) => {
+            this.carTypeObj[item.carTypeProjectNum] = item;
+          });
+          this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
+          this.changeCarType(this.tabBar);
         }
-      })
+      });
     },
-    changeCarType(val){
-      this.carTypeDetail = this.carTypeObj[val]
+    changeTab(tab){
+      this.tab = tab
     },
-    getListRfq(){
-      getListRfq(this.$route.query.desinateId).then(res=>{
-        if(res?.code=='200'){
-          this.rfqList = res.data
-          this.rfqList.forEach(item=>{
-            this.rfqObj[item.rfqId] = item
-          })
-          this.tabLine = this.rfqList[0]?.rfqId||''
-          this.changeRFQ(this.tabLine)
+    changeCarType(val) {
+      this.carTypeDetail = this.carTypeObj[val];
+    },
+    getListRfq() {
+      getListRfq(this.$route.query.desinateId).then((res) => {
+        if (res?.code == "200") {
+          this.rfqList = res.data;
+          this.rfqList.forEach((item) => {
+            this.rfqObj[item.rfqId] = item;
+          });
+          this.tabLine = this.rfqList[0]?.rfqId || "";
+          this.changeRFQ(this.tabLine);
         }
-      })
+      });
     },
     changeRFQ(val) {
-      this.rfqDetail = this.rfqObj[val]
+      this.rfqDetail = this.rfqObj[val];
       console.log(this.rfqDetail);
     },
   },
@@ -205,8 +242,29 @@ export default {
       }
     }
   }
+  .tab-list {
+    height: 100%;
+    background: #f2f2f2;
+    border-radius: 8px;
+    padding: 5px 3px;
+    font-size: 16px;
+  }
+  .tab-label{
+    display: inline-flex;
+    padding: 5px;
+    border-radius: 5px;
+    color:#7f7f7f;
+    &.is-active{
+      background: #fff;
+      color:#0092eb;
+    }
+  }
+  .icon {
+    width: 17px;
+    vertical-align: middle;
+  }
 }
-.content{
+.content {
   margin-top: 20px;
   height: calc(100% - 69px);
 }

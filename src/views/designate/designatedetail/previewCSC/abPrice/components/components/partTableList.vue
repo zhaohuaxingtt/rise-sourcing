@@ -21,22 +21,54 @@
                     v-if="item.prop == 'partPrjCode'"
                     :prop="item.prop"
                     :label="item.label"
-                    :minWidth="item.width"
+                    :width="item.width"
                     align="center"
                   >
                     <template slot-scope="scope">
                       <span class="link" @click="gotoDetail(scope.row)">{{
-                        scope.row[item.prop]
+                        scope.row.partPrjCode
+                      }}</span>
+                      <br>
+                      <span class="link" @click="gotoDetail(scope.row)">({{scope.row.factoryEn}})</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-else-if="item.prop == 'partName'"
+                    :prop="item.prop"
+                    :label="item.label"
+                    :width="item.width"
+                    align="center"
+                  >
+                    <template slot-scope="scope">
+                      <span>{{
+                        scope.row.partName
+                      }}</span>
+                      <br>
+                      <span>({{scope.row.partNameDe}})</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-else-if="item.prop == 'ebr'"
+                    :prop="item.prop"
+                    :label="item.label"
+                    :width="item.width"
+                    align="center"
+                  >
+                    <template slot-scope="scope">
+                      <span>{{
+                        percent(scope.row.ebr)
                       }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
                     v-else
                     :prop="item.prop"
-                    :label="item.label"
-                    :minWidth="item.width"
+                    :width="item.width"
                     align="center"
-                  ></el-table-column>
+                  >
+              <template slot="header" slot-scope="scope">
+                <p v-for="(text,index) in item.label" :key="index">{{text}}</p>
+              </template></el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -50,8 +82,9 @@
                   <el-table-column
                     label="A Price"
                     prop="cfPartAPrice"
-                    minWidth="80"
-                    align="center"
+                    align="right"
+                    header-align="center"
+                    minWidth="85"
                   >
                   </el-table-column>
                 </el-table-column>
@@ -65,8 +98,9 @@
                   <el-table-column
                     label="B Price"
                     prop="cfPartBPrice"
-                    minWidth="80"
-                    align="center"
+                    align="right"
+                    header-align="center"
+                    minWidth="85"
                   >
                   </el-table-column>
                 </el-table-column>
@@ -75,9 +109,9 @@
           </el-table-column>
         </el-table-column>
         <template v-for="(item, index) in supplierList">
+            <!-- :key="item.supplierId + index" -->
           <el-table-column
-            :label="item.supplier"
-            :key="item.supplierId + index"
+            :key="index"
             align="center"
           >
             <div slot="header" slot-scope="scope">
@@ -113,8 +147,9 @@
                   <el-table-column
                     :prop="item.supplierId + 'aPrice'"
                     label="A price(LC)"
-                    align="center"
-                    minWidth="80"
+                    align="right"
+                    header-align="center"
+                    minWidth="85"
                   >
                     <template slot="header" slot-scope="scope">
                       <p>A price</p>
@@ -124,8 +159,9 @@
                   <el-table-column
                     :prop="item.supplierId + 'bPrice'"
                     label="B price(LC)"
-                    align="center"
-                    minWidth="80"
+                    align="right"
+                    header-align="center"
+                    minWidth="85"
                   >
                     <template slot="header" slot-scope="scope">
                       <p>B price</p>
@@ -141,7 +177,7 @@
     </div>
     <div :style="{ 'padding-right': gutter }">
       <el-table
-        class="total-table"
+        class="header total-table"
         border
         :data="totalData"
         :show-header="false"
@@ -154,7 +190,7 @@
             <el-table-column
               :prop="item.prop"
               :label="item.label"
-              :minWidth="item.width"
+              :width="item.width"
               align="right"
             ></el-table-column>
           </el-table-column>
@@ -224,8 +260,12 @@
     </div>
     <partTableDetail :visible.sync="visible" :row="row" />
     <template v-if="supplierAllData.length > 1">
-      <div class="left" :style="left" @click="prev"></div>
-      <div class="right" :style="right" @click="next"></div>
+      <div class="left" :style="left" @click="prev">
+        <img :src="allowIcon" alt="">
+      </div>
+      <div class="right" :style="right" @click="next">
+        <img :src="allowIcon" alt="">
+      </div>
     </template>
   </div>
 </template>
@@ -233,48 +273,50 @@
 <script>
 import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
+import allowIcon from "@/assets/images/icon/allow.png";
 import allow from "./allow.js";
 export default {
   mixins: [allow],
   components: { partTableDetail },
   data() {
     return {
+      allowIcon,
       ref: "part-table",
       fixedTitle: [
         {
           prop: "partPrjCode",
-          label: "FS No. (Plant)",
-          width: 120,
+          label: ["FS No. (Plant)"],
+          width: 140,
         },
         {
           prop: "partNo",
-          label: "Part No.",
-          width: 120,
+          label: ["Part No."],
+          width: 150,
         },
         {
           prop: "partName",
-          label: "Part Name",
-          width: 120,
+          label: ["Part Name"],
+          width: 160,
         },
         {
           prop: "carProType",
-          label: "Carline",
+          label: ["Carline"],
           width: 80,
         },
         {
           prop: "ebr",
-          label: "EBR",
+          label: ["EBR"],
           width: 80,
         },
         {
           prop: "ebrCalculatedValue",
-          label: "Mixed Qty",
+          label: ["Mixed", "Qty"],
           width: 80,
         },
         {
           prop: "volume",
-          label: "Volume",
-          width: 80,
+          label: ["Volume"],
+          width: 90,
         },
       ],
       tableData: [],
@@ -329,9 +371,9 @@ export default {
   },
   mounted() {
     // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-    this.$nextTick(function () {
+    this.$nextTick(()=>{
       this.setColSpan();
-    });
+    })
   },
   methods: {
     getData() {
@@ -357,7 +399,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
-            const supplierList = Object.values(obj).map((item) => {
+            let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
               totalData[1][item.supplierId + "aPrice"] =
@@ -379,16 +421,30 @@ export default {
               res.data.fsPriceInfo?.targetSelTotalSel || "";
             this.index = 0;
             this.supplierAllData = _.chunk(supplierList, this.showLength);
+            let lastIndex = this.supplierAllData.length - 1;
+            if (this.supplierAllData[lastIndex].length < 5) {
+              let count = 5 - this.supplierAllData[lastIndex].length;
+              for (let i = 0; i < count; i++) {
+                this.supplierAllData[lastIndex].push({ supplierId: i });
+              }
+            }
             this.totalData = totalData;
             this.tableData = tableData;
           }
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(()=>{
+            // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
+            this.setColSpan();
+          })
         });
     },
-    spliceData() {},
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + "%";
+    },
     isCLevel(val) {
+      if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     setColSpan() {
@@ -526,7 +582,7 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["partAPrice", "partBPrice"].includes(column.label)) {
-        return row[column.property] && row[column.property] < 20
+        return row[column.property] && row[column.property] < 200
           ? "blue-border"
           : "";
       }
@@ -553,9 +609,17 @@ export default {
 }
 .header {
   ::v-deep th {
-    padding: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    .cell{
+      padding-left: 1px;
+      padding-right: 1px;
+    }
+  }
+  ::v-deep td {
     .cell {
-      padding: 0;
+      padding-left: 2px;
+      padding-right: 2px;
     }
   }
 }
@@ -576,6 +640,8 @@ export default {
     .white-bg {
       background: #fff;
       .cell {
+        white-space: normal;
+        font-weight: 500;
         color: #000 !important;
       }
     }
@@ -617,26 +683,10 @@ export default {
   }
 }
 .left {
-  width: 14px;
-  height: 60px;
-  background: #00b0f0;
-  border-radius: 10px;
-  transform: translate(0px, 20%);
-  opacity: 0.3;
-  &:hover {
-    opacity: 1;
-  }
+  transform: translate(-2px, 18px);
 }
 .right {
-  width: 14px;
-  height: 60px;
-  background: #00b0f0;
-  border-radius: 10px;
-  transform: translate(-16px, 20%);
-  opacity: 0.3;
-  &:hover {
-    opacity: 1;
-  }
+  transform: translate(-12px, 18px);
 }
 
 .table {

@@ -17,6 +17,9 @@
         permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
         ref="tableList"
         showTitleName
+        :indexConfig='{
+          width:60
+        }'
         :selection="!isPreview"
         :index="isPreview"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE | 表格"
@@ -27,14 +30,15 @@
         <!-- 采购项目编号 -->
         <template #fsNum="scope">
           <span>{{ scope.row.fsNum }}</span>
-          <br />
+          <br>
           <span>({{ scope.row.procureFactory }})</span>
         </template>
         <!-- 零件信息 -->
         <template #partNum="scope">
-          <span>{{ scope.row.partNum }}</span>
-          <icon symbol v-if="scope.row.mtz" name="iconMTZ" />
-          <br />
+          <div class="mtz-box">
+            <span>{{ scope.row.partNum }}</span>
+            <img class="margin-left5" :src="mtz" v-if="scope.row.mtz" alt="MTZ">
+          </div>
           <span>{{ scope.row.partNameZh }}</span>
         </template>
         <!-- 项目信息 -->
@@ -99,6 +103,7 @@ import { tableTitle } from "./data";
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import buttonTableSetting from "@/components/buttonTableSetting";
+import mtz from '@/assets/images/icon/mtz.png'
 import detailDialog from "./detailDialog";
 
 export default {
@@ -121,6 +126,7 @@ export default {
   },
   data() {
     return {
+      mtz,
       visible: false,
       loading: false,
       saveLoading: false,
@@ -271,6 +277,7 @@ export default {
   flex-flow: column;
   ::v-deep .el-table {
     border-radius: 0;
+    font-size: 18px;
     .el-table__header {
       background-color: #364d6e;
       th {
@@ -285,6 +292,10 @@ export default {
       border-color: #d9d9d9;
       .cell {
         line-height: 20px;
+      }
+      .mtz-box{
+        display: flex;
+        align-items: center;
       }
     }
   }

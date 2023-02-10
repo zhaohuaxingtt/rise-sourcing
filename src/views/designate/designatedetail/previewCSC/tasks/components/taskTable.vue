@@ -156,12 +156,6 @@ export default {
         key: "Hide/Unhide",
         tooltip: false,
       },
-      page: {
-        currPage: 1,
-        pageSize: 10,
-        totalCount: 0,
-        layout: "total, prev, pager, next, jumper",
-      },
     };
   },
   computed: {

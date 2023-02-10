@@ -69,7 +69,7 @@ export default {
     upload
   },
   mounted() {
-    // this.getFetchData()
+    this.getFetchData()
   },
   methods: {
     onUploadsucess(data) {
@@ -134,10 +134,8 @@ export default {
     // max-height: 500px;
     border: 0px !important;
     .w-e-text {
-      font-size: 12px !important;
       p {
         margin: 0px;
-        font-size: 12px !important;
       }
     }
   }

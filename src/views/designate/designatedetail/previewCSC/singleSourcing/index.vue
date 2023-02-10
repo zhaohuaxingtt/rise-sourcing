@@ -10,7 +10,7 @@
       SOURCING_NOMINATION_ATTATCH_SINGLESOURCING | (决策资料 - SingleSourcing)
     "
   >
-    <div class="margin-bottom10 infos">
+    <div class="margin-bottom20 infos">
       <span class="title"
         >生产采购单一供应商说明 Single Sourcing for Production Purchasing</span
       >
@@ -41,7 +41,7 @@
         <template #fsnrGsnrNum="scope">
           <span>{{ scope.row.fsnrGsnrNum }}</span>
           <br />
-          <span>({{ scope.row.procureFactory }})</span>
+          <span>({{ scope.row.procureFactoryEn }})</span>
         </template>
 
         <!-- 零件信息 -->
@@ -215,7 +215,7 @@ export default {
 
 .singleSourcing-table {
   height: 100%;
-  height: calc(100% - 84px);
+  height: calc(100% - 94px);
   ::v-deep .el-table .cell {
     white-space: pre-line;
   }

@@ -3,93 +3,180 @@
   <div :ref="ref">
     <!-- 内容表 -->
     <div class="table-box">
-    <el-table
-      :data="tableData"
-      class="header table"
-      ref="table"
-      height="100%"
-      border
-      :header-cell-class-name="cellClass"
-      :cell-class-name="colClass"
-    >
-      <!-- 左侧固定表头 -->
-      <el-table-column label="Unit：RMB">
-        <template v-for="item in fixedTitle">
-          <el-table-column
-            :key="item.prop"
-            v-if="item.prop == 'fsNum'"
-            :prop="item.prop"
-            :label="item.label"
-            :minWidth="item.width"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <span class="link" @click="gotoDetail(scope.row)">{{
-                scope.row[item.prop]
-              }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-else
-            :key="item.prop"
-            :prop="item.prop"
-            :label="item.label"
-            :minWidth="item.width"
-            align="center"
-          ></el-table-column>
-        </template>
-        <el-table-column label="F-target" align="center">
-          <el-table-column
-            label="A Price"
-            prop="targetAPrice"
-            minWidth="70"
-            align="center"
-          >
-          </el-table-column>
-          <el-table-column
-            label="B Price"
-            prop="targetBPrice"
-            minWidth="70"
-            align="center"
-          >
+      <el-table
+        :data="tableData"
+        class="header table"
+        ref="table"
+        height="100%"
+        border
+        :header-cell-class-name="cellClass"
+        :cell-class-name="colClass"
+      >
+        <!-- 左侧固定表头 -->
+        <el-table-column label="Unit：RMB">
+          <template v-for="item in fixedTitle">
+            <el-table-column
+              :key="item.prop"
+              v-if="item.prop == 'fsNum'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <span class="link" @click="gotoDetail(scope.row)">{{
+                  scope.row[item.prop]
+                }}</span>
+                <br />
+                <span class="link" @click="gotoDetail(scope.row)">{{
+                  scope.row.factoryEn
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
+              v-else-if="item.prop == 'volume'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="right"
+              header-align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              v-else
+              :key="item.prop"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+              ><template slot="header" slot-scope="scope">
+                <p v-for="(text, index) in item.label" :key="index">
+                  {{ text }}
+                </p>
+              </template></el-table-column
+            >
+          </template>
+          <el-table-column label="F-target" align="center">
+            <el-table-column
+              label="A Price"
+              prop="targetAPrice"
+              align="right"
+              header-align="center"
+              minWidth="85"
+            >
+            </el-table-column>
+            <el-table-column
+              label="B Price"
+              prop="targetBPrice"
+              align="right"
+              header-align="center"
+              minWidth="85"
+            >
+            </el-table-column>
           </el-table-column>
         </el-table-column>
-      </el-table-column>
-      <el-table-column align="center">
-        <div slot="header" slot-scope="scope">
-          {{ label }}
-          <div class="leftAllow" @click="leftAllow($event)"></div>
-          <div class="rightAllow" @click="rightAllow($event)"></div>
-        </div>
-          <el-table-column label="APrice" align="center" prop="lcAPrice"></el-table-column>
-          <el-table-column label="BPrice" align="center" prop="lcBPrice"></el-table-column>
-          <el-table-column label="Invest" align="center" prop="invest"></el-table-column>
-          <el-table-column label="Supplier" align="center" prop="supplierNameZh"></el-table-column>
+        <el-table-column align="center">
+          <div slot="header" slot-scope="scope">
+            {{ label }}
+            <div class="leftAllow" @click="leftAllow($event)"></div>
+            <div class="rightAllow" @click="rightAllow($event)"></div>
+          </div>
+          <el-table-column
+            label="APrice"
+            prop="lcAPrice"
+            align="right"
+            header-align="center"
+            minWidth="85"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>A price</p>
+              <p>(LC)</p>
+            </template></el-table-column
+          >
+          <el-table-column
+            label="BPrice"
+            align="right"
+            header-align="center"
+            minWidth="85"
+            prop="lcBPrice"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>B price</p>
+              <p>(LC)</p>
+            </template></el-table-column
+          >
+          <el-table-column
+            label="Invest"
+            prop="invest"
+            align="right"
+            header-align="center"
+          ></el-table-column>
+          <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameZh"
+          ></el-table-column>
           <el-table-column label="Rating" align="center">
-            <el-table-column label="E" align="center" prop="erate" min-width="50"></el-table-column>
-            <el-table-column label="Q" align="center" prop="qrate" min-width="50"></el-table-column>
-            <el-table-column label="L" align="center" prop="lrate" min-width="50"></el-table-column>
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="50"
+            ></el-table-column>
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="50"
+            ></el-table-column>
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="50"
+            ></el-table-column>
           </el-table-column>
-          <el-table-column label="LTC" align="center" prop="ltc"></el-table-column>
           <el-table-column
-            label="LTC Start Date"
-            align="center" prop="ltcStartDate" min-width="120"
+            label="LTC"
+            align="center"
+            prop="ltc"
           ></el-table-column>
+          <el-table-column align="center" prop="ltcStartDate" min-width="120">
+            <template slot="header" slot-scope="scope">
+              <p>LTC Start</p>
+              <p>Date</p>
+            </template></el-table-column
+          >
           <el-table-column
-            label="Develop Cost"
-            align="center" prop="developCost" min-width="120"
-          ></el-table-column>
+            align="right"
+            header-align="center"
+            prop="developCost"
+            min-width="120"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>Develop</p>
+              <p>Cost</p>
+            </template></el-table-column
+          >
           <el-table-column
-            label="Total Turnover"
-            align="center" prop="totalTurnover" min-width="120"
-          ></el-table-column>
+            align="right"
+            header-align="center"
+            prop="totalTurnover"
+            min-width="120"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>Total</p>
+              <p>Turnover</p>
+            </template></el-table-column
+          >
         </el-table-column>
-    </el-table>
+      </el-table>
     </div>
     <!-- 汇总表 -->
     <div :style="{ 'padding-right': gutter }">
       <el-table
-        class="total-table"
+        class="header total-table"
         border
         :data="totalData"
         :span-method="totalCellClass"
@@ -103,7 +190,7 @@
               v-if="item.prop == 'fsNum'"
               :prop="item.prop"
               :label="item.label"
-              :minWidth="item.width"
+              :width="item.width"
               align="center"
             >
               <template slot-scope="scope">
@@ -117,7 +204,7 @@
               :key="item.prop"
               :prop="item.prop"
               :label="item.label"
-              :minWidth="item.width"
+              :width="item.width"
               align="center"
             ></el-table-column>
           </template>
@@ -125,92 +212,149 @@
             <el-table-column
               label="A Price"
               prop="targetAPrice"
-              minWidth="70"
-              align="center"
+              minWidth="85"
+              align="right"
+              header-align="center"
             >
             </el-table-column>
             <el-table-column
               label="B Price"
               prop="targetBPrice"
-              minWidth="70"
-              align="center"
+              minWidth="85"
+              align="right"
+              header-align="center"
             >
             </el-table-column>
           </el-table-column>
         </el-table-column>
-        <el-table-column >
-          <el-table-column label="APrice" align="center" prop="lcAPrice"></el-table-column>
-          <el-table-column label="BPrice" align="center" prop="lcBPrice"></el-table-column>
-          <el-table-column label="Invest" align="center" prop="invest"></el-table-column>
-          <el-table-column label="Supplier" align="center" prop="supplierNameZh"></el-table-column>
+        <el-table-column>
+          <el-table-column
+            label="APrice"
+            align="right"
+            header-align="center"
+            prop="lcAPrice"
+          ></el-table-column>
+          <el-table-column
+            label="BPrice"
+            align="right"
+            header-align="center"
+            prop="lcBPrice"
+          ></el-table-column>
+          <el-table-column
+            label="Invest"
+            align="right"
+            header-align="center"
+            prop="invest"
+          ></el-table-column>
+          <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameZh"
+          ></el-table-column>
           <el-table-column label="Rating" align="center">
-            <el-table-column label="E" align="center" prop="erate" min-width="50"></el-table-column>
-            <el-table-column label="Q" align="center" prop="qrate" min-width="50"></el-table-column>
-            <el-table-column label="L" align="center" prop="lrate" min-width="50"></el-table-column>
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="50"
+            ></el-table-column>
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="50"
+            ></el-table-column>
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="50"
+            ></el-table-column>
           </el-table-column>
-          <el-table-column label="LTC" align="center" prop="ltc"></el-table-column>
+          <el-table-column
+            label="LTC"
+            align="center"
+            prop="ltc"
+          ></el-table-column>
           <el-table-column
             label="LTC Start Date"
-            align="center" prop="ltcStartDate" min-width="120"
+            align="center"
+            prop="ltcStartDate"
+            min-width="120"
           ></el-table-column>
           <el-table-column
             label="Develop Cost"
-            align="center" prop="developCost" min-width="120"
+            align="right"
+            header-align="center"
+            prop="developCost"
+            min-width="120"
           ></el-table-column>
           <el-table-column
             label="Total Turnover"
-            align="center" prop="totalTurnover" min-width="120"
+            align="right"
+            header-align="center"
+            prop="totalTurnover"
+            min-width="120"
           ></el-table-column>
         </el-table-column>
       </el-table>
     </div>
-    <div class="left" :style="left" @click="tabChange"></div>
-    <div class="right" :style="right" @click="tabChange"></div>
     <partTableDetail :visible.sync="visible" :row="row" />
+    <div class="left" :style="left" @click="tabChange">
+      <img :src="allowIcon" alt="" />
+    </div>
+    <div class="right" :style="right" @click="tabChange">
+      <img :src="allowIcon" alt="" />
+    </div>
   </div>
 </template>
 
 <script>
-import { getAnalysisRecommendationNomi, getAnalysisBestBallNomi } from "@/api/partsrfq/editordetail/abprice";
+import {
+  getAnalysisRecommendationNomi,
+  getAnalysisBestBallNomi,
+} from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
+import allowIcon from "@/assets/images/icon/allow.png";
 import allow from "./allow.js";
 export default {
-  mixins:[allow],
-    components: { partTableDetail },
+  mixins: [allow],
+  components: { partTableDetail },
   data() {
     return {
-      ref:'best-ball',
-      label:'Recommendation',
+      allowIcon,
+      ref: "best-ball",
+      label: "Recommendation",
       fixedTitle: [
         {
           prop: "fsNum",
-          label: "FS No. (Plant)",
-          width: 120,
+          label: ["FS No. (Plant)"],
+          width: 140,
         },
         {
           prop: "partNum",
-          label: "Part No.",
-          width: 120,
+          label: ["Part No."],
+          width: 150,
         },
         {
           prop: "carTypeProjectNum",
-          label: "Carline",
+          label: ["Carline"],
           width: 80,
         },
         {
           prop: "ebr",
-          label: "EBR",
-          width: 60,
+          label: ["EBR"],
+          width: 80,
         },
         {
-          prop: "mixQty",
-          label: "Mixed Qty",
+          prop: "ebrCalculatedValue",
+          label: ["Mixed", "Qty"],
           width: 80,
         },
         {
           prop: "volume",
-          label: "Volume",
-          width: 100,
+          label: ["Volume"],
+          width: 90,
         },
       ],
       tableData: [],
@@ -234,13 +378,16 @@ export default {
   },
   methods: {
     getData() {
-      this.tableData = []
-      const getData = this.label == 'Recommendation' ? getAnalysisRecommendationNomi : getAnalysisBestBallNomi
+      this.tableData = [];
+      const getData =
+        this.label == "Recommendation"
+          ? getAnalysisRecommendationNomi
+          : getAnalysisBestBallNomi;
       getData({
         nomiId: this.$route.query.desinateId,
       }).then((res) => {
         if (res?.code == "200") {
-          const tableData = res.data.analysisNomiPriceInfoList
+          const tableData = res.data.analysisNomiPriceInfoList;
           const totalData = JSON.parse(JSON.stringify(this.totalData));
           totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
           totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
@@ -338,8 +485,8 @@ export default {
       }
     },
     tabChange() {
-      this.label = this.label == 'Best ball'?'Recommendation':'Best ball'
-      this.getData()
+      this.label = this.label == "Best ball" ? "Recommendation" : "Best ball";
+      this.getData();
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -376,14 +523,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-box{
+.table-box {
   height: calc(100% - 120px);
 }
 .header {
   ::v-deep th {
-    padding: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
     .cell {
-      padding: 0 8px;
+      padding-left: 1px;
+      padding-right: 1px;
+    }
+  }
+  ::v-deep td {
+    .cell {
+      padding-left: 2px;
+      padding-right: 2px;
     }
   }
 }
@@ -400,8 +555,7 @@ export default {
     display: none;
   }
   .el-table__header {
-    background: transparent;
-    .primary-label{
+    .primary-label {
       line-height: 36px;
       height: 36px;
     }
@@ -449,32 +603,16 @@ export default {
   }
 }
 .left {
-  width: 14px;
-  height: 60px;
-  background: #00b0f0;
-  border-radius: 10px;
-  transform: translate(-8px, 0);
-  opacity: 0.3;
-  &:hover {
-    opacity: 1;
-  }
+  transform: translate(-2px, 0);
 }
 .right {
-  width: 14px;
-  height: 60px;
-  background: #00b0f0;
-  border-radius: 10px;
-  transform: translate(-8px, 0);
-  opacity: 0.3;
-  &:hover {
-    opacity: 1;
-  }
+  transform: translate(-10px, 0);
 }
 
-.table{
+.table {
   ::v-deep .el-table__header {
     background-color: #364d6e;
-    tr:nth-child(even){
+    tr:nth-child(even) {
       background-color: #364d6e;
     }
   }

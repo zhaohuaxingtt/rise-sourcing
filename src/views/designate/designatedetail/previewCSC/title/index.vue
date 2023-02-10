@@ -115,6 +115,10 @@ export default {
   display: flex;
   flex-flow: column;
   background: #fff;
+  ::v-deep * {
+    font-family: 'Arial', 'Helvetica', 'sans-serif';
+    letter-spacing:0
+  }
 }
 .imgBox {
   width: 100%;

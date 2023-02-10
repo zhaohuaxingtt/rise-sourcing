@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 19:30:28
+ * @LastEditTime: 2023-02-10 19:27:56
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
       <div class="collapse-transition margin-right5" v-show="!collapseValue">
         <template v-for="(item, i) in allData">
           <ul class="file-ul" :key="i">
-            <li class="group-name">{{ item.label }}</li>
+            <!-- <li class="group-name">{{ item.label }}</li> -->
             <li
               class="file-name cursor"
               :class="{ 'is-active': file.id == active && i == index }"
@@ -42,9 +42,6 @@
 </template>
 <script>
 import { icon } from "rise";
-import attachment from "./components/attachment";
-import rssheet from "./components/rssheet";
-import mtzAttachment from "./components/mtzAttachment";
 import { nominateAppSDetail } from "@/api/designate";
 import { getMtzAttachmentPageList } from "@/api/designate/designatedetail/attachment";
 import {
@@ -52,15 +49,6 @@ import {
 } from "@/api/designate/decisiondata/attach";
 
 export default {
-  computed: {
-    // 若为备案类型定点申请，则显示线下RS单上传卡片
-    showRsSheet() {
-      const nominationType = this.$store.getters.nominationType;
-      const queryNomiType = this.$route.query.designateType;
-      const show = nominationType === "RECORD" && queryNomiType === "RECORD";
-      return show;
-    },
-  },
   data() {
     return {
       collapseValue: false,
@@ -73,22 +61,19 @@ export default {
           label: "Attachment",
           fileList: [],
         },
-        {
-          label: "RS Sheet",
-          fileList: [],
-        },
-        {
-          label: "MTZ Attachment",
-          fileList: [],
-        },
+        // {
+        //   label: "RS Sheet",
+        //   fileList: [],
+        // },
+        // {
+        //   label: "MTZ Attachment",
+        //   fileList: [],
+        // },
       ],
       loading:false
     };
   },
   components: {
-    attachment,
-    rssheet,
-    mtzAttachment,
     icon,
   },
   created() {
@@ -99,16 +84,10 @@ export default {
       this.loading = true;
       Promise.all([
         this.getFetchDataListAttch(),
-        this.getFetchDataListSheet(),
-        this.nominateAppSDetail(),
+        // this.getFetchDataListSheet(),
+        // this.nominateAppSDetail(),
       ]).then(() => {
-        if(this.allData[0].fileList.length){
-          this.changeSrc(0, this.allData[0].fileList[0]);
-        }else if(this.allData[1].fileList.length){
-          this.changeSrc(0, this.allData[1].fileList[0]);
-        }else if(this.allData[2].fileList.length){
-          this.changeSrc(0, this.allData[2].fileList[0]);
-        }
+        this.changeSrc(0, this.allData[0].fileList[0]);
         this.loading = false;
       });
     },
@@ -150,7 +129,7 @@ export default {
         getdDecisiondataList(params)
           .then((res) => {
             if (res?.code == "200") {
-              this.allData[1].fileList = res.data;
+              this.allData[1].fileList = res.data.records;
             } else {
               iMessage.error(
                 this.$i18n.locale === "zh" ? res.desZh : res.desEn
@@ -169,7 +148,7 @@ export default {
           nomiAppId: this.nomiAppId,
           sortColumn: "sort",
           isAsc: true,
-          fileType: "102",
+          fileType: "101",
           pageNo: 1,
           pageSize: 999,
         };
@@ -201,7 +180,7 @@ export default {
 </script>
 <style lang='scss' scope>
 .designate-attachment {
-  height: 100%;
+  height: calc(100% - 20px);
   position: relative;
   display: flex;
   .left-list {

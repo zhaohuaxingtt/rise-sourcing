@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-09 23:21:41
+ * @LastEditTime: 2023-02-10 11:32:17
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -175,13 +175,27 @@ export default {
   overflow: auto;
   ::v-deep * {
     font-family: 'Arial', 'Helvetica', 'sans-serif';
+    letter-spacing:0
   }
+  
+	&::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+	&::-webkit-scrollbar-thumb {
+		min-height: 8px;
+		min-width: 8px;
+	}
+	&::-webkit-scrollbar-track {
+		width: 8px;
+	}
   .tab-nav{
     height: 54px;
   }
   .nomination-content {
     height: calc(100% - 54px);
     .page-content{
+      padding-top: 20px;
       height: 100%;
     }
   }
@@ -206,6 +220,7 @@ export default {
   }
   ::v-deep .el-table {
     border-radius: 0;
+    font-size: 18px;
     // background-color:transparent;
     .el-table__header {
       // background-color: #364d6e;
