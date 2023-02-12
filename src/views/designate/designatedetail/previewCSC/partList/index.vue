@@ -54,18 +54,11 @@
           }}</span>
         </template>
 
-        <!-- 手工输入EBR值 -->
+        <!-- 手工输入EBR值:综合每车用量 -->
         <template #ebrCalculatedValue="scope">
-          <span v-if="isPreview == '1' || nominationDisabled || rsDisabled">{{
-            scope.row.ebrCalculatedValue
+          <span>{{
+            numberProcessor(scope.row.ebrCalculatedValue,1)
           }}</span>
-          <iInput
-            v-else
-            v-model="scope.row.ebrConfirmValue"
-            @input="handleInputLimit($event, scope.row)"
-            @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)"
-            @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"
-          />
         </template>
         <template #lifeTime="scope">
           <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
@@ -152,6 +145,7 @@ export default {
     },
   },
   methods: {
+    numberProcessor,
     openDetail(row) {
       this.row = row;
       this.$nextTick(() => {

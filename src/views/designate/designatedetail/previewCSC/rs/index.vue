@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-08 14:02:56
+ * @LastEditTime: 2023-02-12 21:31:08
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
 
 <template>
-  <div>
+  <div class="isApproval">
     <!-- <div class="page-nav">
     <iTabsList class="preview-tabs" type="card" v-model="tab">
       <el-tab-pane name="Brief">
@@ -54,7 +54,7 @@
           </template>
         </meeting>
       </div>
-      <div
+      <div style="height: 100%"
         v-else
         v-permission.auto.array="[
           'SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs',

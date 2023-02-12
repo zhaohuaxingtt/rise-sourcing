@@ -2,126 +2,129 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 14:47:43
+ * @LastEditTime: 2023-02-12 12:10:48
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
   <div ref="bdl" class="bdl">
-    <!-- <div ref="rsPdfCard"> -->
-      <div class="page-nav">
-      <iTabsList class="preview-tabs" type="card" v-model="tab">
-        <template v-for="item in refIdList">
-          <el-tab-pane :name="item.id" :label="item.id" :key="item.id">
-          </el-tab-pane>
+    <div class="page-nav">
+      <el-radio-group
+        class="radio-group margin-bottom10"
+        v-model="tab"
+        @change="getTableList"
+      >
+        <template v-for="item in rfqList">
+          <el-radio-button :label="item.id" :key="item.id"> </el-radio-button>
         </template>
-      </iTabsList>
-      </div>
-      <!-- <template v-for="(item, index) in rfqList"></template> -->
+      </el-radio-group>
+    </div>
     <div :key="index" class="content">
-      <template v-if="detail.tableData && detail.tableTitle">
-        <span class="font18 font-weight">
-          {{
-            "RFQ NO." +
-            (detail.rfqNum || "-") +
-            ",RFQ Name:" +
-            (detail.rfqName || "-")
-          }}</span
+      <span class="font18 font-weight">
+        {{
+          "RFQ NO." +
+          (detail.id || "-") +
+          ",RFQ Name:" +
+          (detail.rfq_name || "-")
+        }}</span
+      >
+      <div class="table-box margin-top10">
+        <tableList
+          :tableTitle.sync="tableTitle"
+          :selection="false"
+          :tableLoading="loading"
+          index
+          :tableData="tableData"
+          class="doubleHeader table"
+          v-permission.auto="
+            SOURCING_NOMINATION_ATTATCH_BDL_TABLE | (决策资料 - bdl - 表格)
+          "
         >
-        <div class="table-box margin-top10">
-          <tableList
-            :tableRowClassName="'table-row' + index"
-            :tableTitle="detail.tableTitle"
-            :selection="false"
-            index
-            :tableData="detail.tableData"
-            class="doubleHeader table"
-            @openDialog="openRateDialog($event, detail.rfqNum)"
-            v-permission.auto="
-              SOURCING_NOMINATION_ATTATCH_BDL_TABLE | (决策资料 - bdl - 表格)
-            "
-          >
-            <template #supplierName="scope">
+          <template #supplierName="scope">
+            <div>
+              <span class="factoryDesc">{{ scope.row.supplierName }}</span>
+              <span v-if="!scope.row.isMbdl">MBDL</span>
+              <el-tooltip
+                effect="light"
+                :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
+                  scope.row.frmRate
+                }`"
+                v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1"
+              >
+                <span>
+                  <icon symbol name="iconzhongyaoxinxitishi" />
+                </span>
+              </el-tooltip>
+              <supplierBlackIcon
+                :isShowStatus="
+                  typeof scope.row.isComplete === 'boolean'
+                    ? !scope.row.isComplete
+                    : false
+                "
+                :BlackList="scope.row.blackStuffs || []"
+              />
               <div>
-                <span class="factoryDesc">{{ scope.row.supplierName }}</span>
-                <span v-if="!scope.row.isMbdl">MBDL</span>
-                <el-tooltip
-                  effect="light"
-                  :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
-                    scope.row.frmRate
-                  }`"
-                  v-if="
-                    $route.query.isPreview != 1 && scope.row.isFRMRate === 1
-                  "
-                >
-                  <span>
-                    <icon symbol name="iconzhongyaoxinxitishi" />
-                  </span>
-                </el-tooltip>
-                <supplierBlackIcon
-                  :isShowStatus="
-                    typeof scope.row.isComplete === 'boolean'
-                      ? !scope.row.isComplete
-                      : false
-                  "
-                  :BlackList="scope.row.blackStuffs || []"
-                />
-                <div>
-                  <span>{{ scope.row.sapCode }}</span>
-                  {{ scope.row.supplierNameEn }}
-                </div>
+                <span>{{ scope.row.sapCode }}</span>
+                {{ scope.row.supplierNameEn }}
               </div>
-            </template>
-            <template #isQuotation="scope">
-              <icon
-                v-if="scope.row.isQuotation"
-                symbol
-                name="iconxialakuang_qiehuanlingjian_yiwancheng"
-              />
-            </template>
-            <template #isPartQuotation="scope">
-              <icon
-                v-if="scope.row.isPartQuotation"
-                symbol
-                name="iconxialakuang_qiehuanlingjian_yiwancheng"
-              />
-            </template>
-            <template #isRefuse="scope">
-              <icon
-                v-if="scope.row.isRefuse"
-                symbol
-                name="iconxialakuang_qiehuanlingjian_yiwancheng"
-              />
-            </template>
-            <template #noQuotation="scope">
-              <icon
-                v-if="scope.row.noQuotation"
-                symbol
-                name="iconxialakuang_qiehuanlingjian_yiwancheng"
-              />
-            </template>
-          </tableList>
-        </div>
-        <iPagination
-          v-update
-          @size-change="(val) => sizeChange(val, index)"
-          @current-change="(val) => currentChange(val, index)"
-          background
-          :page-sizes="detail.page.pageSizes"
-          :page-size="detail.page.pageSize"
-          :layout="detail.page.layout"
-          :current-page="detail.page.currPage"
-          :total="detail.page.totalCount"
-        />
-      </template>
+            </div>
+          </template>
+          <template #isQuotation="scope">
+            <icon
+              v-if="scope.row.isQuotation"
+              symbol
+              name="iconxialakuang_qiehuanlingjian_yiwancheng"
+            />
+          </template>
+          <template #isPartQuotation="scope">
+            <icon
+              v-if="scope.row.isPartQuotation"
+              symbol
+              name="iconxialakuang_qiehuanlingjian_yiwancheng"
+            />
+          </template>
+          <template #isRefuse="scope">
+            <icon
+              v-if="scope.row.isRefuse"
+              symbol
+              name="iconxialakuang_qiehuanlingjian_yiwancheng"
+            />
+          </template>
+          <template #noQuotation="scope">
+            <icon
+              v-if="scope.row.noQuotation"
+              symbol
+              name="iconxialakuang_qiehuanlingjian_yiwancheng"
+            />
+          </template>
+        </tableList>
+      </div>
+      <iPagination
+        v-update
+        @size-change="(val) => sizeChange(val, index)"
+        @current-change="(val) => currentChange(val, index)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { iCard, iPage, iPagination, iButton, iMessage, icon, iTabsList } from "rise";
-// import tableList from '../../components/tableList'
+import {
+  iCard,
+  iPage,
+  iPagination,
+  iButton,
+  iMessage,
+  icon,
+  iTabsList,
+} from "rise";
 import tableList from "@/components/iTableSort";
 import { tableTitle } from "./data";
 import partsRatingDialog from "./partsRating";
@@ -130,7 +133,7 @@ import {
   findRfqSupplierQuotationPage,
 } from "@/api/designate/decisiondata/bdl";
 import { pageMixins } from "@/utils/pageMixins";
-import { cloneDeep, uniq } from "lodash";
+import { cloneDeep } from "lodash";
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon";
 import filters from "@/utils/filters";
 export default {
@@ -144,7 +147,7 @@ export default {
     iButton,
     icon,
     supplierBlackIcon,
-    iTabsList
+    iTabsList,
   },
   props: {
     isExportPdf: {
@@ -156,14 +159,13 @@ export default {
   },
   data() {
     return {
-      tab:'',
-      refIdList:[],
+      tab: "",
       rfqList: [],
       newRfqList: [],
-      tableTitle: [],
-      dialogVisible: false,
       rateTableData: [],
       cntentHeight: null,
+      tableData: [],
+      loading: false,
     };
   },
   computed: {
@@ -182,48 +184,57 @@ export default {
     hasTitle() {
       return (this.$slots.tabTitle && true) || false;
     },
-    rfqObj(){
-      let obj = {}
-      this.rfqList.forEach(item=>{
-        obj[item.rfqNum] = item
-      })
-      return obj
+    rfqObj() {
+      let obj = {};
+      this.rfqList.forEach((item) => {
+        obj[item.id] = item;
+      });
+      return obj;
     },
-    detail(){
-      return this.rfqObj[this.tab] || {}
-    }
+    detail() {
+      return this.rfqObj[this.tab] || {};
+    },
+
+    tableTitle() {
+      const title = cloneDeep(tableTitle);
+      let rates = [];
+      this.tableData.forEach((item) => {
+        (item.departmentRate || []).map((child) => {
+          if (!rates.includes(child.rateDepartNum)) {
+            rates.push(child.rateDepartNum);
+          }
+        });
+      });
+      let subList = ["E", "Q", "L"];
+      title.push({
+        props: "departmentRate",
+        name: "Rating",
+        key: "",
+        tooltip: true,
+        children: subList.map((item, i) => {
+          return {
+            props: rates[i] || item,
+            name: `${item}(${rates[i] || "-"})`,
+            key: "",
+            type: "rate",
+          };
+        }),
+      });
+
+      if (this.hasTitle)
+        title.unshift({ props: "index", name: "序号", key: "", width: 80 });
+      return title;
+    },
   },
   created() {
     this.init();
   },
-  methods: {sizeChange(val, index) {
-      this.rfqList[index].page = {
-        ...this.rfqList[index].page,
-        currPage: 1,
-        pageSize: val,
-      };
-      const element = {
-        id: this.rfqList[index].rfqNum,
-        rfq_name: this.rfqList[index].rfqName,
-      };
-      this.getTableList(element, index);
+  methods: {
+    sizeChange() {
+      (this.page.currPage = 1), this.getTableList();
     },
-    currentChange(val, index) {
-      this.rfqList[index].page = {
-        ...this.rfqList[index].page,
-        currPage: val,
-      };
-      const element = {
-        id: this.rfqList[index].rfqNum,
-        rfq_name: this.rfqList[index].rfqName,
-      };
-      this.getTableList(element, index);
-    },
-    openRateDialog(row, rfqId) {
-      this.rfqId = rfqId;
-      this.supplierId = row.supplierNo;
-      this.rateTableData = row.partRatingList;
-      this.changeDialogVisible(true);
+    currentChange() {
+      this.getTableList();
     },
     /**
      * @Description: 初始化页面
@@ -235,54 +246,20 @@ export default {
       this.getRfqAndTableList();
     },
     /**
-     * @Description: 动态获取表格title
-     * @Author: Luoshuang
-     * @param {*} tableData
-     * @return {*}
-     */
-    getTableTitle(tableData) {
-      const title = cloneDeep(tableTitle);
-      const rates = uniq(
-        tableData.reduce((accum, curr) => {
-          return [
-            ...accum,
-            ...(curr.departmentRate || []).map((item) => item.rateDepartNum),
-          ];
-        }, [])
-      );
-      title.push({
-        props: "departmentRate",
-        name: "Rating",
-        key: "",
-        tooltip: true,
-        children: rates.map((item) => {
-          return {
-            props: item,
-            name: item,
-            key: "",
-            type: "rate",
-          };
-        }),
-      });
-
-      if (this.hasTitle)
-        title.unshift({ props: "index", name: "序号", key: "", width: 80 });
-      return title;
-    },
-    /**
      * @Description: 获取每个表格数据
      * @Author: Luoshuang
      * @param {*} element
      * @param {*} index
      * @return {*}
      */
-    async getTableList(element, index) {
+    async getTableList() {
+      this.loading = true;
       const { isExportPdf = false } = this;
       const params = {
         nominateId: this.$route.query.desinateId,
-        rfqId: element.id,
-        current: this.rfqList[index].page.currPage || 1,
-        size: (isExportPdf ? 999999 : this.rfqList[index].page.pageSize) || 10,
+        rfqId: this.tab,
+        current: this.page.currPage || 1,
+        size: (isExportPdf ? 999999 : this.page.pageSize) || 10,
       };
       const res = await findRfqSupplierQuotationPage(params);
       if (res?.result) {
@@ -290,27 +267,12 @@ export default {
           if (this.hasTitle) child.index = 1 + i;
           return child;
         });
-        this.rfqList = this.rfqList.map((item, rfqIndex) => {
-          return rfqIndex === index
-            ? {
-                tableList: [],
-                rfqNum: element.id,
-                rfqName: element.rfq_name,
-                tableData: tableData || [],
-                tableTitle: this.getTableTitle(res.data),
-                page: {
-                  ...item.page,
-                  pageSize: Number(res?.pageSize),
-                  currPage: Number(res?.pageNum),
-                  totalCount: Number(res?.total),
-                },
-              }
-            : item;
-        });
-        console.log("rfqList=>", this.rfqList);
+        this.tableData = tableData;
+        this.page.totalCount = res.total;
       } else {
         iMessage.error(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
       }
+      this.loading = false;
     },
     /**
      * @Description: 获取rfq List和对应的表格数据
@@ -320,44 +282,13 @@ export default {
      */
     async getRfqAndTableList() {
       const res = await readQuotation(this.$route.query.desinateId);
-      this.rfqList = [];
       if (res?.result) {
-        this.refIdList = res.data
-        this.tab = this.refIdList[0].id
-        res.data.forEach((element, index) => {
-          this.rfqList.push({
-            page: this.page,
-          });
-          this.getTableList(element, index);
-        });
+        this.rfqList = res.data;
+        this.tab = this.rfqList[0].id;
+        this.getTableList(); // 默认显示第一个
       } else {
         iMessage.error(this.$i18n.locale === "zh" ? res?.desZh : res?.desEn);
       }
-    },
-    /**
-     * @Description: 零件评分弹窗控制
-     * @Author: Luoshuang
-     * @param {*} visible
-     * @return {*}
-     */
-    changeDialogVisible(visible) {
-      this.dialogVisible = visible;
-    },
-    /**
-     * @Description: 跳转单一供应商
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */
-    gotoSupplier() {
-      const router = this.$router.resolve({
-        path: "/designate/supplier",
-        query: {
-          ...this.$route.query,
-          route: "force",
-        },
-      });
-      window.open(router.href, "_blank");
     },
   },
 };
@@ -384,28 +315,6 @@ export default {
   max-width: 95%;
   vertical-align: middle;
 }
-.decision-bdl {
-  // padding: 0;
-}
-// .doubleHeader {
-//   border: none;
-//   &::before, &::after {
-//     background-color: transparent;
-//   }
-//   ::v-deep thead th:not(.is-leaf) {
-//     border-left: 1px solid #fff;
-//     border-bottom: 1px solid #fff;
-//   }
-//   ::v-deep thead tr:nth-of-type(2) {
-//     th {
-//       border-left: 1px solid #fff;
-//     }
-//   }
-//   ::v-deep tbody td {
-//     border-right: none;
-//   }
-// }
-
 .page-logo {
   display: flex;
   justify-content: space-between;
@@ -417,12 +326,33 @@ export default {
 .bdl {
   height: 100%;
   padding-top: 20px;
-  
-.page-nav {
-  display: flex;
-  align-items: center;
-}
-  .content{
+
+  .page-nav {
+    display: flex;
+    align-items: center;
+    ::v-deep .el-radio-group {
+      &.radio-group {
+        .el-radio-button__inner {
+          display: flex;
+          border-radius: 0;
+          height: 26px;
+          padding: 3px 10px;
+          align-items: center;
+          min-width: 60px;
+          justify-content: center;
+          &:hover {
+            color: #727272;
+          }
+        }
+        .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+          background: #364d6e;
+          color: #fff;
+          border-color: #e0e6ed;
+        }
+      }
+    }
+  }
+  .content {
     height: calc(100% - 39px);
     overflow: auto;
     .table-box {
@@ -432,7 +362,9 @@ export default {
 }
 .table {
   ::v-deep .el-table__header {
-    background-color: #364d6e;
+    tr {
+      background-color: #364d6e;
+    }
   }
 }
 </style>

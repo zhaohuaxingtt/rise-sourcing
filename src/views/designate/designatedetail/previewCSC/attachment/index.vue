@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 19:30:28
+ * @LastEditTime: 2023-02-11 18:52:03
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -36,7 +36,8 @@
       ></i>
     </div>
     <div class="right-preview">
-      <iframe class="iframe" :src="src" frameborder="0"></iframe>
+      <img class="preview" v-if="['PNG','JPG','JIF'].includes(detail.type)" :src="detail.filePath || detail.fileUrl"/>
+      <iframe class="preview" v-else :src="detail.filePath || detail.fileUrl" frameborder="0"></iframe>
     </div>
   </div>
 </template>
@@ -52,20 +53,10 @@ import {
 } from "@/api/designate/decisiondata/attach";
 
 export default {
-  computed: {
-    // 若为备案类型定点申请，则显示线下RS单上传卡片
-    showRsSheet() {
-      const nominationType = this.$store.getters.nominationType;
-      const queryNomiType = this.$route.query.designateType;
-      const show = nominationType === "RECORD" && queryNomiType === "RECORD";
-      return show;
-    },
-  },
   data() {
     return {
-      collapseValue: false,
+      collapseValue: true,
       nomiAppId: this.$route.query.desinateId || "",
-      src: "",
       active: "",
       index: "",
       allData: [
@@ -82,6 +73,7 @@ export default {
           fileList: [],
         },
       ],
+      detail:{},
       loading:false
     };
   },
@@ -192,9 +184,12 @@ export default {
       this.collapseValue = !this.collapseValue;
     },
     changeSrc(index, item) {
+      let fileObj = JSON.parse(JSON.stringify(item))
+      let arr = item.fileName.split('.')
+      fileObj.type = arr[arr.length-1].toUpperCase()
+      this.detail = fileObj
       this.index = index;
       this.active = item.id;
-      this.src = item.filePath || item.fileUrl || '';
     },
   },
 };
@@ -253,7 +248,7 @@ export default {
     flex: 1;
     font-size: 0;
     padding-left: 70px;
-    .iframe {
+    .preview {
       width: 100%;
       height: 100%;
     }

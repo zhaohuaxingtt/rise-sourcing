@@ -1,18 +1,25 @@
 <template>
-  <div class="bar" ref="chart"></div>
+  <div class="bar" ref="chart" :style="{height:`calc(100vh - ${height}px`}"></div>
 </template>
 
 <script>
+import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 export default {
   props: {
     barName: String,
-    data:Object
+    height:Number,
+    data: Object,
   },
   data() {
     return {
       key: "",
       charts: null,
     };
+  },
+  watch:{
+    height(){
+      this.resize()
+    }
   },
   mounted() {
     window.addEventListener("resize", this.resize);
@@ -23,6 +30,12 @@ export default {
     this.resize();
   },
   methods: {
+    getDiff() {
+      let result =
+        deleteThousands(this.data.bPrice || 0) -
+        deleteThousands(this.data.aPrice || 0);
+      return (+result).toFixed(2);
+    },
     drawBar() {
       this.charts = this.$echarts.init(this.$refs.chart);
       let options = {
@@ -48,6 +61,9 @@ export default {
           {
             type: "category",
             data: [this.barName],
+            axisLabel: {
+              fontSize: 20,
+            },
             axisTick: {
               show: false,
             },
@@ -74,13 +90,14 @@ export default {
             label: {
               show: true,
               position: "inside",
+              fontSize: 20,
             },
             // barWidth:'60',
             barMaxWidth: "140",
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
-            data: [this.data.aPrice],
+            data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
             itemStyle: {
               color: "#516894",
             },
@@ -91,12 +108,13 @@ export default {
             label: {
               show: true,
               position: "inside",
+              fontSize: 20,
             },
             barMaxWidth: "140",
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
-            data: [this.data.bPrice],
+            data: [this.getDiff()],
             itemStyle: {
               color: "#d8ddd7",
             },
@@ -109,8 +127,11 @@ export default {
               position: "top",
               distance: 15,
               fontWeight: "bold",
+              fontSize: 20,
               formatter: () => {
-                return (Number(this.data.aPrice) + Number(this.data.bPrice)).toFixed(2)||'';
+                return (
+                  (+deleteThousands(this.data.bPrice || 0)).toFixed(2) || ""
+                );
               },
             },
             stack: "Supplier",
@@ -138,6 +159,6 @@ export default {
 <style lang="scss" scoped>
 .bar {
   width: 100%;
-  height: calc(100vh - 500px);
+  height: calc(100vh - 600px);
 }
 </style>

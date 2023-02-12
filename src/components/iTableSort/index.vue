@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2023-02-09 16:19:09
+ * @LastEditTime: 2023-02-12 10:41:44
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: table组件
 -->
@@ -128,11 +128,11 @@
           </span>
         </template>
         <template v-if="items.children">
-          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
+          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childItem.props+'_'+childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
+              <span v-else-if="childItem.type === 'rate'" :class="{red:isCLevel(getRate(scope.row, childItem.props).rate)}">{{getRate(scope.row, childItem.props, childItem).rate}}</span>
               <icon v-else-if="childItem.type == 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
               <span>{{scope.row[childItem.props]}}</span>
             </template>
@@ -255,6 +255,15 @@ export default {
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
+  watch:{
+    tableTitle:{
+      handler(val){
+        this.header = cloneDeep(val)
+      },
+      deep:true,
+      immediate:true
+    }
+  },
   data() {
     return {
       settingVisible: false,
@@ -274,10 +283,16 @@ export default {
     }
   },
   methods:{
-    
-    getRate(row, props) {
-      const findItem = row.departmentRate?.find(item => item.rateDepartNum === props)
-      return findItem || {}
+    isCLevel(val) {
+      if(!val) return false
+      return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
+    getRate(row, props, childItem) {
+      console.log('row=>',row);
+      console.log('props=>',props);
+      console.log('childItem=>',JSON.stringify(childItem))
+      const findItem = row.departmentRate?.find(item => item.rateDepartNum === props) || {}
+      return findItem
     },
     /**
      * @description: 单选的实现
@@ -570,5 +585,8 @@ export default {
       align-items: center;
       margin-left: 5px;
     }
+  }
+  .red{
+    color: #f00;
   }
 </style>

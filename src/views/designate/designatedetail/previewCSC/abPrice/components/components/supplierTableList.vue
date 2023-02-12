@@ -4,8 +4,10 @@
     <el-table
       :data="tableData"
       height="100%"
+      max-height="100%"
       class="header table"
       ref="table"
+      :key="index"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
     >
@@ -17,7 +19,7 @@
               <el-table-column>
                 <el-table-column>
                   <el-table-column
-                    prop="supplier"
+                    prop="supplierNameEn"
                     label="Supplier"
                     align="center"
                     minWidth="140"
@@ -28,8 +30,8 @@
           </el-table-column>
         </el-table-column>
       </el-table-column>
-      <el-table-column label="part No.">
-        <el-table-column label="part Name">
+      <el-table-column label="Part No.">
+        <el-table-column label="Part Name">
           <el-table-column label="Carline">
             <el-table-column label="Volume">
               <el-table-column label="Budget">
@@ -103,7 +105,13 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <el-table-column :label="item.volume" align="center">
+                <template slot="header" slot-scope="scope">
+                  {{ getInt(item.volume) | toThousands(true) }}
+                </template>
                 <el-table-column :label="item.budget" align="center">
+                  <template slot="header" slot-scope="scope">
+                    {{ getInt(item.budget) | toThousands(true) }}
+                  </template>
                   <el-table-column :label="item.targetAPrice" align="center">
                     <el-table-column :label="item.fsGsNum" align="center">
                       <el-table-column
@@ -184,18 +192,24 @@
             <el-table-column>
               <el-table-column>
                 <el-table-column :label="item.budget" align="center">
+                  <template slot="header" slot-scope="scope">
+                    {{ getInt(item.budget) | toThousands(true) }}
+                  </template>
                   <el-table-column :label="item.target" align="center">
+                    <template slot="header" slot-scope="scope">
+                      {{ getInt(item.target) | toThousands(true) }}
+                    </template>
                     <el-table-column
                       :prop="item.prop"
                       :label="item.label"
                       :minWidth="item.width"
                       align="center"
                     >
-                        <template slot="header" slot-scope="scope">
-                          <template v-for="(text,index) in item.label">
-                            <p :key="index">{{text}}</p>
-                          </template>
+                      <template slot="header" slot-scope="scope">
+                        <template v-for="(text, index) in item.label">
+                          <p :key="index">{{ text }}</p>
                         </template>
+                      </template>
                       <template slot-scope="scope">
                         <template
                           v-if="
@@ -224,10 +238,10 @@
     </el-table>
     <template v-if="partAllData.length > 1">
       <div class="left" :style="left" @click="prev">
-        <img :src="allowIcon" alt="">
+        <img :src="allowIcon" alt="" />
       </div>
       <div class="right" :style="right" @click="next">
-        <img :src="allowIcon" alt="">
+        <img :src="allowIcon" alt="" />
       </div>
     </template>
   </div>
@@ -237,6 +251,7 @@
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import allowIcon from "@/assets/images/icon/allow.png";
 import allow from "./allow.js";
+import { numberProcessor, toThousands } from "@/utils";
 export default {
   mixins: [allow],
   props: {
@@ -255,35 +270,35 @@ export default {
           label: ["LTC"],
           target: "",
           budget: "",
-          width:'100'
+          width: "100",
         },
         {
           prop: "ltcStartDateList",
-          label: ["LTC Start"," Date"],
+          label: ["LTC Start", " Date"],
           target: "",
           budget: "",
-          width:'130'
+          width: "130",
         },
         {
           prop: "totalInvest",
-          label: ["Total","Invest"],
+          label: ["Total", "Invest"],
           target: "",
           budget: "",
-          width:'130'
+          width: "130",
         },
         {
           prop: "totalDevelopCost",
-          label: ["Total","Develop","Cost"],
+          label: ["Total", "Develop", "Cost"],
           target: "",
           budget: "",
-          width:'130'
+          width: "130",
         },
         {
           prop: "totalTurnover",
-          label: ["Total","Turnover"],
+          label: ["Total", "Turnover"],
           target: "",
           budget: "",
-          width:'130'
+          width: "130",
         },
       ],
       tableData: [],
@@ -292,28 +307,28 @@ export default {
       loading: false,
       showLength: 4,
       partAllData: [],
-      index: 0,
+      index: -1,
     };
   },
   computed: {
     partList() {
+      if (this.index == -1) return [];
       return this.partAllData[this.index] || [];
     },
   },
-  watch: {
-    partList() {
-      this.$nextTick(() => {
-        this.setColSpan();
-      });
-    },
+  filters: {
+    toThousands,
   },
   created() {
     this.analysisSummaryNomi();
   },
-  mounted() {
-    // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-  },
   methods: {
+    numberProcessor,
+    getInt(val) {
+      if (!val) return val;
+      let result = val.split(",").join("");
+      return (+result).toFixed(0);
+    },
     isCLevel(val) {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
@@ -325,9 +340,8 @@ export default {
       })
         .then((res) => {
           if (res?.code != 200) return;
-          this.partAllData = _.chunk(res.data.headList, this.showLength);
           this.index = 0;
-          this.tableData =
+          let tableData =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
               let ltcStartDateList = [];
@@ -342,12 +356,16 @@ export default {
               item.ltcStartDateList = ltcStartDateList;
               return item;
             }) || [];
+          let fixedTitle = JSON.parse(JSON.stringify(this.fixedTitle));
           this.targetMixAPrice = res.data.targetMixAPrice;
           this.targetMixBPrice = res.data.targetMixBPrice;
-          this.fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
-          this.fixedTitle[2].target = res.data.targetTotalInvest;
-          this.fixedTitle[3].target = res.data.targetSelTotalSel;
-          this.fixedTitle[4].target = res.data.sumTotalTurnover;
+          fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
+          fixedTitle[2].target = res.data.targetTotalInvest;
+          fixedTitle[3].target = res.data.targetSelTotalSel;
+          fixedTitle[4].target = res.data.sumTotalTurnover;
+          this.fixedTitle = fixedTitle;
+          this.partAllData = _.chunk(res.data.headList, this.showLength);
+          this.tableData = tableData;
         })
         .finally(() => {
           this.loading = false;
@@ -375,9 +393,9 @@ export default {
       if (rowIndex == 0 && columnIndex == 0) {
         return "white-bg unit";
       }
-      
+
       if (rowIndex < 6) {
-        if(columnIndex == 1){
+        if (columnIndex == 1) {
           return "supllier-header";
         }
         return "white-bg supllier-header";
@@ -460,17 +478,16 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  padding: 3px 0;
   ::v-deep th {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     .cell {
-      padding: 0 1px;
+      padding: 0 4px;
     }
   }
   ::v-deep td {
     .cell {
-      padding: 0 1px;
+      padding: 0 4px;
     }
   }
 }
@@ -478,7 +495,7 @@ export default {
   font-size: 16px;
   .el-table__header {
     background: #fff;
-    .supllier-header{
+    .supllier-header {
       padding-top: 3px;
       padding-bottom: 3px;
       font-size: 16px;
@@ -497,7 +514,7 @@ export default {
     }
   }
   .blue-border {
-    background: #bdd7ee;
+    background: #bdd7ee !important;
   }
   .leftAllow {
     position: relative;
@@ -522,7 +539,7 @@ export default {
 }
 .table {
   ::v-deep .el-table__header {
-    tr{
+    tr {
       background-color: #364d6e;
     }
     tr:nth-child(even) {

@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-10 11:32:17
+ * @LastEditTime: 2023-02-12 21:22:37
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -175,20 +175,19 @@ export default {
   overflow: auto;
   ::v-deep * {
     font-family: 'Arial', 'Helvetica', 'sans-serif';
-    letter-spacing:0
+    letter-spacing:0;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      min-height: 8px;
+      min-width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      width: 8px;
+    }
   }
-  
-	&::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-	}
-	&::-webkit-scrollbar-thumb {
-		min-height: 8px;
-		min-width: 8px;
-	}
-	&::-webkit-scrollbar-track {
-		width: 8px;
-	}
   .tab-nav{
     height: 54px;
   }
@@ -197,6 +196,7 @@ export default {
     .page-content{
       padding-top: 20px;
       height: 100%;
+      overflow: auto;
     }
   }
   ::v-deep .decision-header.preview-header {

@@ -2,7 +2,10 @@
 <template>
   <div :ref="ref">
     <!-- 内容表 -->
-    <div class="table-box">
+    <div
+      class="table-box"
+      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
+    >
       <el-table
         :data="tableData"
         class="header table"
@@ -35,6 +38,34 @@
             </el-table-column>
             <el-table-column
               :key="item.prop"
+              v-else-if="item.prop == 'ebr'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <span>{{ percent(scope.row.ebr) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
+              v-else-if="item.prop == 'mixQty'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+              ><template slot="header" slot-scope="scope">
+                <p v-for="(text, index) in item.label" :key="index">
+                  {{ text }}
+                </p>
+              </template>
+              <template slot-scope="scope">
+                <span>{{ numberProcessor(scope.row.mixQty, 1) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
               v-else-if="item.prop == 'volume'"
               :prop="item.prop"
               :label="item.label"
@@ -42,6 +73,9 @@
               align="right"
               header-align="center"
             >
+              <template slot-scope="scope">
+                {{ getInt(scope.row[item.prop]) | toThousands(true) }}
+              </template>
             </el-table-column>
             <el-table-column
               v-else
@@ -65,6 +99,11 @@
               header-align="center"
               minWidth="85"
             >
+              <template slot-scope="scope">
+                {{
+                  numberProcessor(scope.row.targetAPrice, 2) | toThousands(true)
+                }}
+              </template>
             </el-table-column>
             <el-table-column
               label="B Price"
@@ -73,6 +112,11 @@
               header-align="center"
               minWidth="85"
             >
+              <template slot-scope="scope">
+                {{
+                  numberProcessor(scope.row.targetBPrice, 2) | toThousands(true)
+                }}
+              </template>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -83,7 +127,7 @@
             <div class="rightAllow" @click="rightAllow($event)"></div>
           </div>
           <el-table-column
-            label="APrice"
+            label="A Price(LC)"
             prop="lcAPrice"
             align="right"
             header-align="center"
@@ -92,10 +136,13 @@
             <template slot="header" slot-scope="scope">
               <p>A price</p>
               <p>(LC)</p>
+            </template>
+            <template slot-scope="scope">
+              {{ numberProcessor(scope.row.lcAPrice, 2) | toThousands(true) }}
             </template></el-table-column
           >
           <el-table-column
-            label="BPrice"
+            label="B Price(LC)"
             align="right"
             header-align="center"
             minWidth="85"
@@ -104,18 +151,23 @@
             <template slot="header" slot-scope="scope">
               <p>B price</p>
               <p>(LC)</p>
+            </template>
+            <template slot-scope="scope">
+              {{ numberProcessor(scope.row.lcBPrice, 2) | toThousands(true) }}
             </template></el-table-column
           >
           <el-table-column
             label="Invest"
             prop="invest"
             align="right"
+            minWidth="100"
             header-align="center"
           ></el-table-column>
           <el-table-column
             label="Supplier"
             align="center"
             prop="supplierNameZh"
+            minWidth="100"
           ></el-table-column>
           <el-table-column label="Rating" align="center">
             <el-table-column
@@ -123,19 +175,40 @@
               align="center"
               prop="erate"
               min-width="50"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.erate)">{{
+                  scope.row.erate
+                }}</span>
+                <span v-else>{{ scope.row.erate }}</span>
+              </template></el-table-column
+            >
             <el-table-column
               label="Q"
               align="center"
               prop="qrate"
               min-width="50"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
+                  scope.row.qrate
+                }}</span>
+                <span v-else>{{ scope.row.qrate }}</span>
+              </template></el-table-column
+            >
             <el-table-column
               label="L"
               align="center"
               prop="lrate"
               min-width="50"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
+                  scope.row.lrate
+                }}</span>
+                <span v-else>{{ scope.row.lrate }}</span>
+              </template></el-table-column
+            >
           </el-table-column>
           <el-table-column
             label="LTC"
@@ -164,6 +237,7 @@
             header-align="center"
             prop="totalTurnover"
             min-width="120"
+            label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
               <p>Total</p>
@@ -174,7 +248,7 @@
       </el-table>
     </div>
     <!-- 汇总表 -->
-    <div :style="{ 'padding-right': gutter }">
+    <div ref="total-table" :style="{ 'padding-right': gutter }">
       <el-table
         class="header total-table"
         border
@@ -229,27 +303,31 @@
         </el-table-column>
         <el-table-column>
           <el-table-column
-            label="APrice"
+            label="A Price(LC)"
             align="right"
             header-align="center"
             prop="lcAPrice"
+            minWidth="85"
           ></el-table-column>
           <el-table-column
-            label="BPrice"
+            label="B Price(LC)"
             align="right"
             header-align="center"
             prop="lcBPrice"
+            minWidth="85"
           ></el-table-column>
           <el-table-column
             label="Invest"
             align="right"
             header-align="center"
             prop="invest"
+            minWidth="100"
           ></el-table-column>
           <el-table-column
             label="Supplier"
             align="center"
             prop="supplierNameZh"
+            minWidth="100"
           ></el-table-column>
           <el-table-column label="Rating" align="center">
             <el-table-column
@@ -315,6 +393,7 @@ import {
   getAnalysisBestBallNomi,
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
+import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import allowIcon from "@/assets/images/icon/allow.png";
 import allow from "./allow.js";
 export default {
@@ -347,7 +426,7 @@ export default {
           width: 80,
         },
         {
-          prop: "ebrCalculatedValue",
+          prop: "mixQty",
           label: ["Mixed", "Qty"],
           width: 80,
         },
@@ -365,18 +444,36 @@ export default {
           ebr: "Mixed Price",
         },
         {
-          ebr: "LTC from Start Date",
+          ebr: "Target",
         },
         {
-          ebr: "Total Invest",
+          ebr: "Budget",
         },
       ],
+      totalTableHeight: 120,
     };
+  },
+  filters: {
+    toThousands,
+  },
+  updated() {
+    this.$nextTick(() => {
+      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
+    });
   },
   created() {
     this.getData();
   },
   methods: {
+    numberProcessor,
+    getInt(val) {
+      if (!val) return val;
+      let result = val.split(",").join("");
+      return (+result).toFixed(0);
+    },
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + "%";
+    },
     getData() {
       this.tableData = [];
       const getData =
@@ -387,7 +484,8 @@ export default {
         nomiId: this.$route.query.desinateId,
       }).then((res) => {
         if (res?.code == "200") {
-          const tableData = res.data.analysisNomiPriceInfoList;
+          let tableData = res.data.analysisNomiPriceInfoList;
+          // tableData = tableData.slice(1,3)
           const totalData = JSON.parse(JSON.stringify(this.totalData));
           totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
           totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
@@ -404,7 +502,6 @@ export default {
         }
       });
     },
-    spliceData() {},
     isCLevel(val) {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
@@ -499,8 +596,13 @@ export default {
     },
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
-      if (["partAPrice", "partBPrice"].includes(column.label)) {
+      if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
         return row[column.property] && row[column.property] < 20
+          ? "blue-border"
+          : "";
+      }
+      if(['Total Turnover'].includes(column.label)) {
+        return deleteThousands(row[column.property] && row[column.property]) < 5000
           ? "blue-border"
           : "";
       }
@@ -528,17 +630,15 @@ export default {
 }
 .header {
   ::v-deep th {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     .cell {
-      padding-left: 1px;
-      padding-right: 1px;
+      padding: 0 4px;
     }
   }
   ::v-deep td {
     .cell {
-      padding-left: 2px;
-      padding-right: 2px;
+      padding: 0 4px;
     }
   }
 }
@@ -603,10 +703,10 @@ export default {
   }
 }
 .left {
-  transform: translate(-2px, 0);
+  transform: translate(-5px, 0);
 }
 .right {
-  transform: translate(-10px, 0);
+  transform: translate(-7px, 0);
 }
 
 .table {

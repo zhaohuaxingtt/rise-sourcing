@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-05 23:34:21
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-07 15:25:11
+ * @LastEditTime: 2023-02-12 18:05:46
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\allow.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -27,7 +27,6 @@ export default {
     updated() {
         this.$nextTick(() => {
             setTimeout(() => {
-                console.log("updated=>");
                 this.positionAllow();
             }, 48);
         });
@@ -60,7 +59,7 @@ export default {
                     (this.$refs[this.ref] &&
                         this.$refs[this.ref].getElementsByClassName("gutter")[0].style
                             .width) ||
-                    0;
+                    '0px';
                 const rightAllow =
                     this.$refs[this.ref] &&
                     this.$refs[this.ref].getElementsByClassName("rightAllow")[0];

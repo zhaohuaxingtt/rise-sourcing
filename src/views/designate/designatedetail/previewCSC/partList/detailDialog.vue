@@ -19,6 +19,9 @@
         :tableTitle="tableTitle"
         :tableLoading="loading"
       >
+      <template #cartypeLevelRate="scope">
+        {{percent(scope.row.cartypeLevelRate || 0)}}
+      </template>
       </tableList>
     </div>
   </iDialog>
@@ -77,6 +80,10 @@ export default {
           }
         })
         .finally(() => (this.loading = false));
+    },
+    
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
   },
 };

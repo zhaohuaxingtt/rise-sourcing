@@ -15,10 +15,11 @@ export const tableTitle = [
 ]
 
 export const detailTableTitle = [
-  { props: "engineType", name: "发送机类型", tooltip: true, key: "发送机类型", minWidth: "345" },
-  { props: "gearType", name: "变速箱型号", tooltip: true, key: "变速箱型号" , minWidth: "210"},
-  { props: "batteryCapacity", name: "电池容量", tooltip: true, key: "电池容量" , minWidth: "205"},
-  { props: "otherInfo", name: "其他配置", tooltip: true, key: "其他配置", minWidth: "250" },
-  { props: "cartypeLevel", name: "车型等级", tooltip: true, key: "车型等级", minWidth: "120" },
-  { props: "cartypeLevelRate", name: "配置比例", tooltip: true, key: "配置比例", minWidth: "120" },
+  { props: "engineType", name: "发送机类型", tooltip: true, key: "发送机类型", minWidth: "240" },
+  { props: "gearType", name: "变速箱型号", tooltip: true, key: "变速箱型号" , minWidth: "160"},
+  { props: "batteryCapacity", name: "电池容量", tooltip: true, key: "电池容量" , minWidth: "135"},
+  { props: "otherInfo", name: "其他配置", tooltip: true, key: "其他配置", minWidth: "135" },
+  { props: "cartypeLevel", name: "车型等级", tooltip: true, key: "车型等级", minWidth: "100" },
+  { props: "perCarDosage", name: "每车用量", tooltip: true, key: "每车用量", minWidth: "100" },
+  { props: "cartypeLevelRate", name: "配置比例", tooltip: true, key: "配置比例", minWidth: "100" },
 ]					
