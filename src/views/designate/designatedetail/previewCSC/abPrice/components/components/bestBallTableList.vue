@@ -458,7 +458,7 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
+      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight+1;
     });
   },
   created() {

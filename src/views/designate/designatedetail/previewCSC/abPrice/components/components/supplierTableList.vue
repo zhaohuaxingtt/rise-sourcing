@@ -277,7 +277,7 @@ export default {
           label: ["LTC Start", " Date"],
           target: "",
           budget: "",
-          width: "130",
+          width: "110",
         },
         {
           prop: "totalInvest",

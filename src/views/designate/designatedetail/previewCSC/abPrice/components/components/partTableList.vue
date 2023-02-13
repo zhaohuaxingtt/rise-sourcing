@@ -115,7 +115,7 @@
                     prop="cfPartAPrice"
                     align="right"
                     header-align="center"
-                    minWidth="85"
+                    minWidth="80"
                   >
                     <template slot-scope="scope">
                       {{ scope.row["cfPartAPrice"] | toThousands(true) }}
@@ -134,7 +134,7 @@
                     prop="cfPartBPrice"
                     align="right"
                     header-align="center"
-                    minWidth="85"
+                    minWidth="80"
                   >
                     <template slot-scope="scope">
                       {{ scope.row["cfPartBPrice"] | toThousands(true) }}
@@ -183,7 +183,7 @@
                     label="A price(LC)"
                     align="right"
                     header-align="center"
-                    minWidth="85"
+                    minWidth="80"
                   >
                     <template slot="header" slot-scope="scope">
                       <p>A price</p>
@@ -202,7 +202,7 @@
                     label="B price(LC)"
                     align="right"
                     header-align="center"
-                    minWidth="85"
+                    minWidth="80"
                   >
                     <template slot="header" slot-scope="scope">
                       <p>B price</p>
