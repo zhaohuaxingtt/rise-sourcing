@@ -2,9 +2,10 @@
   <div
     class="title"
     ref="reTitle"
+    @click="gotoPartList"
     v-permission.auto="SOURCING_NOMINATION_ATTATCH_TITLE | (决策资料 - title)"
   >
-    <div class="imgBox" @click="gotoPartList">
+    <div class="imgBox">
       <img src="@/assets/images/CSC_bg.png" alt="" />
     </div>
     <div class="content">

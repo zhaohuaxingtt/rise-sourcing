@@ -4,7 +4,7 @@
     <!-- 内容表 -->
     <div
       class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
+      :style="{ height: `calc(100% - ${totalTableHeight+30}px)` }"
     >
       <el-table
         :data="tableData"
@@ -308,21 +308,33 @@
             header-align="center"
             prop="lcAPrice"
             minWidth="85"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ scope.row["lcAPrice"] | toThousands(true) }}
+            </template>
+          </el-table-column>
           <el-table-column
             label="B Price(LC)"
             align="right"
             header-align="center"
             prop="lcBPrice"
             minWidth="85"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ scope.row["lcBPrice"] | toThousands(true) }}
+            </template></el-table-column
+          >
           <el-table-column
             label="Invest"
             align="right"
             header-align="center"
             prop="invest"
             minWidth="100"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ getInt(scope.row["invest"]) | toThousands(true) }}
+            </template></el-table-column
+          >
           <el-table-column
             label="Supplier"
             align="center"
@@ -366,23 +378,32 @@
             header-align="center"
             prop="developCost"
             min-width="120"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ getInt(scope.row["developCost"]) | toThousands(true) }}
+            </template></el-table-column
+          >
           <el-table-column
             label="Total Turnover"
             align="right"
             header-align="center"
             prop="totalTurnover"
             min-width="120"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
+            </template></el-table-column
+          >
         </el-table-column>
       </el-table>
     </div>
+    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
     <partTableDetail :visible.sync="visible" :row="row" />
     <div class="left" :style="left" @click="tabChange">
-      <img :src="allowIcon" alt="" />
+      <img class="icon" :src="allowIcon" alt="" />
     </div>
     <div class="right" :style="right" @click="tabChange">
-      <img :src="allowIcon" alt="" />
+      <img class="icon" :src="allowIcon" alt="" />
     </div>
   </div>
 </template>
@@ -394,7 +415,7 @@ import {
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import allowIcon from "@/assets/images/icon/allow.png";
+import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
 import allow from "./allow.js";
 export default {
   mixins: [allow],
@@ -458,7 +479,7 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight+1;
+      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight + 1;
     });
   },
   created() {
@@ -482,25 +503,31 @@ export default {
           : getAnalysisBestBallNomi;
       getData({
         nomiId: this.$route.query.desinateId,
-      }).then((res) => {
-        if (res?.code == "200") {
-          let tableData = res.data.analysisNomiPriceInfoList;
-          // tableData = tableData.slice(1,3)
-          const totalData = JSON.parse(JSON.stringify(this.totalData));
-          totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
-          totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
-          totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
-          totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
-          totalData[0]["invest"] = res.data.totalInvest;
-          totalData[0]["developCost"] = res.data.totalDevelopCost;
-          totalData[0]["totalTurnover"] = res.data.totalTurnover;
-          totalData[1]["invest"] = res.data.totalTargetInvest;
-          totalData[1]["developCost"] = res.data.targetSelTotalSel;
-          totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
-          this.totalData = totalData;
-          this.tableData = tableData;
-        }
-      });
+      })
+        .then((res) => {
+          if (res?.code == "200") {
+            let tableData = res.data.analysisNomiPriceInfoList;
+            // tableData = tableData.slice(1,3)
+            const totalData = JSON.parse(JSON.stringify(this.totalData));
+            totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
+            totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
+            totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
+            totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
+            totalData[0]["invest"] = res.data.totalInvest;
+            totalData[0]["developCost"] = res.data.totalDevelopCost;
+            totalData[0]["totalTurnover"] = res.data.totalTurnover;
+            totalData[1]["invest"] = res.data.totalTargetInvest;
+            totalData[1]["developCost"] = res.data.targetSelTotalSel;
+            totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
+            this.totalData = totalData;
+            this.tableData = tableData;
+          }
+        })
+        .finally(() => {
+          this.$nextTick(() => {
+            this.setColSpan();
+          });
+        });
     },
     isCLevel(val) {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
@@ -601,8 +628,9 @@ export default {
           ? "blue-border"
           : "";
       }
-      if(['Total Turnover'].includes(column.label)) {
-        return deleteThousands(row[column.property] && row[column.property]) < 5000
+      if (["Total Turnover"].includes(column.label)) {
+        return deleteThousands(row[column.property] && row[column.property]) <
+          5000
           ? "blue-border"
           : "";
       }
@@ -637,6 +665,8 @@ export default {
     }
   }
   ::v-deep td {
+    padding-top: 4px;
+    padding-bottom: 4px;
     .cell {
       padding: 0 4px;
     }
@@ -670,7 +700,7 @@ export default {
     }
   }
   .blue-border {
-    background: #bdd7ee;
+    background: #bdd7ee !important;
   }
   .leftAllow {
     position: relative;
@@ -689,6 +719,9 @@ export default {
 }
 
 .total-table {
+  ::v-deep .el-table__row{
+    height: unset !important;
+  }
   ::v-deep tr {
     .table-header {
       background: #364d6e;
@@ -704,9 +737,28 @@ export default {
 }
 .left {
   transform: translate(-5px, 0);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    transform: rotate(180deg);
+    width: 10px;
+  }
 }
 .right {
   transform: translate(-7px, 0);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    width: 10px;
+  }
 }
 
 .table {
@@ -715,6 +767,22 @@ export default {
     tr:nth-child(even) {
       background-color: #364d6e;
     }
+  }
+}
+
+.tips{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  .legend{
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background: #bdd7ee;
+  }
+  .font-green{
+    color:#70ad47
   }
 }
 </style>

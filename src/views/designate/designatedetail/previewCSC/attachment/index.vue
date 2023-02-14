@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-11 18:52:03
+ * @LastEditTime: 2023-02-13 18:10:55
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <div class="el-card left-list" :class="{ show: collapseValue }">
       <div class="collapse-transition margin-right5" v-show="!collapseValue">
         <template v-for="(item, i) in allData">
-          <ul class="file-ul" :key="i">
+          <ul class="file-ul" :key="i" v-if="item.fileList.length">
             <li class="group-name">{{ item.label }}</li>
             <li
               class="file-name cursor"
@@ -22,8 +22,8 @@
             >
               {{ file.fileName }}
             </li>
+            <el-divider :key="i"></el-divider>
           </ul>
-          <el-divider :key="i"></el-divider>
         </template>
       </div>
       <i @click="collapse" class="btn"

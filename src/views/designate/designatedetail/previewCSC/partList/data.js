@@ -8,7 +8,7 @@ export const tableTitle = [
   { props: 'partNum',  align: 'left', isHeaderSetting:true, HeaderSettingList:[{name:'零件信息'},{name:'Part Information'},],minWidth:250 },
   { props: 'project',  align: 'left', isHeaderSetting:true, HeaderSettingList:[{name:'项目信息'},{name:'Project Information'},],minWidth:250 },
   { props: 'ebrConfirmValue',isHeaderSetting:true, HeaderSettingList:[{name:'装车率'},{name:'EBR'},],minWidth:100 },
-  { props: 'ebrCalculatedValue',isHeaderSetting:true, HeaderSettingList:[{name:'综合每车用量'},{name:'Mixed Qty'},],showTips:true,tips:()=>'这是一个icon提示',minWidth: 160 },
+  { props: 'ebrCalculatedValue',isHeaderSetting:true, HeaderSettingList:[{name:'综合每车用量'},{name:'Mixed Qty'},],showTips:true,tips:()=>' Mixed Qty=∑ EBR*Qty',minWidth: 160 },
   { props: 'lifeTime',isHeaderSetting:true, HeaderSettingList:[{name:'询价量(生命周期)'},{name:'Volume (Lifetime)'},],minWidth: 190 },
   { props: 'paVolume',isHeaderSetting:true, HeaderSettingList:[{name:'最高年询价量'},{name:'Volume (peak p.a.)'},],minWidth: 170 },
   { props: 'unit',isHeaderSetting:true, HeaderSettingList:[{name:'单位'},{name:'Unit'},],minWidth:110 },

@@ -3,8 +3,7 @@
   <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
-      height="100%"
-      max-height="100%"
+      height="calc(100% - 30px)"
       class="header table"
       ref="table"
       :key="index"
@@ -114,6 +113,9 @@
                   </template>
                   <el-table-column :label="item.targetAPrice" align="center">
                     <el-table-column :label="item.fsGsNum" align="center">
+                      <template slot="header" slot-scope="scope">
+                        {{ item.factoryEn }}({{ item.fsGsNum }})
+                      </template>
                       <el-table-column
                         :prop="item.fsGsNum + 'lcAPrice'"
                         label="partAPrice"
@@ -236,12 +238,13 @@
         </el-table-column>
       </template>
     </el-table>
+    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
     <template v-if="partAllData.length > 1">
       <div class="left" :style="left" @click="prev">
-        <img :src="allowIcon" alt="" />
+        <img class="icon" :src="allowIcon" alt="" />
       </div>
       <div class="right" :style="right" @click="next">
-        <img :src="allowIcon" alt="" />
+        <img class="icon" :src="allowIcon" alt="" />
       </div>
     </template>
   </div>
@@ -249,7 +252,7 @@
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
-import allowIcon from "@/assets/images/icon/allow.png";
+import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
 import allow from "./allow.js";
 import { numberProcessor, toThousands } from "@/utils";
 export default {
@@ -336,7 +339,11 @@ export default {
       this.loading = true;
       analysisSummaryNomi({
         nomiId: this.$route.query.desinateId,
-        fsGsNumList: this.row?.partPrjCode ? [this.row.partPrjCode] : undefined,
+        // partTable携带partPrjCode, best ball携带的是fsNum
+        fsGsNumList:
+          this.row?.partPrjCode || this.row?.fsNum
+            ? [this.row.partPrjCode || this.row?.fsNum]
+            : undefined,
       })
         .then((res) => {
           if (res?.code != 200) return;
@@ -345,9 +352,11 @@ export default {
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
               let ltcStartDateList = [];
+              item.suggestFlag = []
               item.analysisSummaryParts.forEach((child) => {
                 item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
                 item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
+                if(child.suggestFlag) item.suggestFlag.push(child.fsGsNum + "lcAPrice", child.fsGsNum + "lcBPrice")
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (!ltcStartDateList.includes(child.ltcStartDate))
                   ltcStartDateList.push(child.ltcStartDate);
@@ -380,6 +389,9 @@ export default {
       } else {
         this.index = 0;
       }
+      this.$nextTick(() => {
+        this.setColSpan();
+      });
     },
     next() {
       if (this.index > 0) {
@@ -387,6 +399,9 @@ export default {
       } else {
         this.index = this.partAllData.length - 1;
       }
+      this.$nextTick(() => {
+        this.setColSpan();
+      });
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -404,7 +419,7 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["partAPrice", "partBPrice"].includes(column.label)) {
-        return row[column.property] && row[column.property] < 20
+        return row.suggestFlag.includes(column.property)
           ? "blue-border"
           : "";
       }
@@ -486,6 +501,8 @@ export default {
     }
   }
   ::v-deep td {
+    padding-top: 4px;
+    padding-bottom: 4px;
     .cell {
       padding: 0 4px;
     }
@@ -533,9 +550,28 @@ export default {
 }
 .left {
   transform: translate(-12px, 18px);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    transform: rotate(180deg);
+    width: 10px;
+  }
 }
 .right {
   transform: translate(0px, 18px);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    width: 10px;
+  }
 }
 .table {
   ::v-deep .el-table__header {
@@ -545,6 +581,21 @@ export default {
     tr:nth-child(even) {
       background-color: #364d6e;
     }
+  }
+}
+.tips{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  .legend{
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background: #bdd7ee;
+  }
+  .font-green{
+    color:#70ad47
   }
 }
 </style>

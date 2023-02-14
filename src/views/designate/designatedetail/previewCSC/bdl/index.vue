@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-12 12:10:48
+ * @LastEditTime: 2023-02-13 18:22:47
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -35,6 +35,7 @@
           :selection="false"
           :tableLoading="loading"
           index
+          :key="tab"
           :tableData="tableData"
           class="doubleHeader table"
           v-permission.auto="
@@ -43,8 +44,10 @@
         >
           <template #supplierName="scope">
             <div>
-              <span class="factoryDesc">{{ scope.row.supplierName }}</span>
-              <span v-if="!scope.row.isMbdl">MBDL</span>
+              <p class="factoryDesc">
+                <span>{{ scope.row.supplierName }}</span>
+                <img class="mbdl" :src="MBDL" v-if="scope.row.isMbdl" alt="">
+              </p>
               <el-tooltip
                 effect="light"
                 :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
@@ -71,32 +74,16 @@
             </div>
           </template>
           <template #isQuotation="scope">
-            <icon
-              v-if="scope.row.isQuotation"
-              symbol
-              name="iconxialakuang_qiehuanlingjian_yiwancheng"
-            />
+            <img :src="success" v-if="scope.row.isQuotation" alt="">
           </template>
           <template #isPartQuotation="scope">
-            <icon
-              v-if="scope.row.isPartQuotation"
-              symbol
-              name="iconxialakuang_qiehuanlingjian_yiwancheng"
-            />
+            <img :src="success" v-if="scope.row.isPartQuotation" alt="">
           </template>
           <template #isRefuse="scope">
-            <icon
-              v-if="scope.row.isRefuse"
-              symbol
-              name="iconxialakuang_qiehuanlingjian_yiwancheng"
-            />
+            <img :src="success" v-if="scope.row.isRefuse" alt="">
           </template>
           <template #noQuotation="scope">
-            <icon
-              v-if="scope.row.noQuotation"
-              symbol
-              name="iconxialakuang_qiehuanlingjian_yiwancheng"
-            />
+            <img :src="success" v-if="scope.row.noQuotation" alt="">
           </template>
         </tableList>
       </div>
@@ -136,6 +123,8 @@ import { pageMixins } from "@/utils/pageMixins";
 import { cloneDeep } from "lodash";
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon";
 import filters from "@/utils/filters";
+import success from '@/assets/images/csc-bdl-success.svg'
+import MBDL from '@/assets/images/icon/mbdl-icon.png'
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -159,6 +148,8 @@ export default {
   },
   data() {
     return {
+      success,
+      MBDL,
       tab: "",
       rfqList: [],
       newRfqList: [],
@@ -212,6 +203,14 @@ export default {
         key: "",
         tooltip: true,
         children: subList.map((item, i) => {
+          if(i==2){
+            return {
+            props: rates[i] || item,
+            name: `${item}(PL)`,
+            key: "",
+            type: "rate",
+          };
+          }
           return {
             props: rates[i] || item,
             name: `${item}(${rates[i] || "-"})`,
@@ -308,12 +307,16 @@ export default {
   }
 }
 .factoryDesc {
-  display: inline-block;
-  padding-right: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 95%;
-  vertical-align: middle;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  .text{
+    flex: 1;
+  }
+  .mbdl{
+    height: 100%;
+    vertical-align: bottom;
+  }
 }
 .page-logo {
   display: flex;

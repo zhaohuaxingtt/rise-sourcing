@@ -1,7 +1,7 @@
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <div ref="part-table" v-loading="loading">
-    <div class="table-box" :style="{'height':`calc(100% - ${totalTableHeight}px)`}">
+    <div class="table-box" :style="{'height':`calc(100% - ${totalTableHeight+30}px)`}">
       <el-table
         :data="tableData"
         class="header table"
@@ -43,9 +43,8 @@
                     align="center"
                   >
                     <template slot-scope="scope">
-                      <span>{{ scope.row.partName }}</span>
-                      <br />
-                      <span>({{ scope.row.partNameDe }})</span>
+                      <p class="partName" :title="scope.row.partName">{{ scope.row.partName }}</p>
+                      <p class="partName" :title="scope.row.partNameDe">({{ scope.row.partNameDe }})</p>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -149,7 +148,7 @@
           <!-- :key="item.supplierId + index" -->
           <el-table-column :key="index" align="center">
             <div slot="header" slot-scope="scope">
-              {{ item.supplier || "-" }}
+              {{ item.supplierEn || "-" }}
               <div
                 v-if="index == 0"
                 class="leftAllow"
@@ -242,12 +241,13 @@
             ></el-table-column>
           </el-table-column>
         </template>
-        <el-table-column prop="Supplier" label="Supplier">
+        <el-table-column>
           <el-table-column
             label="A Price"
             prop="cfPartAPrice"
+            align="right"
+            header-align="center"
             minWidth="80"
-            align="center"
           >
             <template slot-scope="scope">
               {{ scope.row["cfPartAPrice"] | toThousands(true) }}
@@ -256,8 +256,9 @@
           <el-table-column
             label="B Price"
             prop="cfPartBPrice"
+            align="right"
+            header-align="center"
             minWidth="80"
-            align="center"
           >
             <template slot-scope="scope">
               {{ scope.row["cfPartBPrice"] | toThousands(true) }}
@@ -266,14 +267,15 @@
         </el-table-column>
         <template v-for="(item, index) in supplierList">
           <el-table-column
-            :label="item.supplier"
+            :label="item.supplierEn"
             :key="item.supplierId + index"
             align="center"
           >
             <el-table-column
               :prop="item.supplierId + 'aPrice'"
               label="A price(LC)"
-              align="center"
+              align="right"
+              header-align="center"
               minWidth="80"
             >
               <template slot="header" slot-scope="scope">
@@ -281,7 +283,10 @@
                 <p>(LC)</p>
               </template>
               <template slot-scope="scope">
-                <template v-if="scope.$index == 1">
+                <template v-if="scope.$index == 0">
+                  {{scope.row[item.supplierId + "aPrice"] | toThousands(true)}}
+                </template>
+                <template v-else-if="scope.$index == 1">
                   <p
                     v-for="(text, index) in scope.row[
                       item.supplierId + 'aPrice'
@@ -292,14 +297,15 @@
                   </p>
                 </template>
                 <template v-else>{{
-                  scope.row[item.supplierId + "aPrice"] | toThousands(true)
+                  getInt(scope.row[item.supplierId + "aPrice"]) | toThousands(true)
                 }}</template>
               </template>
             </el-table-column>
             <el-table-column
               :prop="item.supplierId + 'bPrice'"
               label="B price(LC)"
-              align="center"
+              align="right"
+              header-align="center"
               minWidth="80"
             >
               <template slot="header" slot-scope="scope">
@@ -311,13 +317,14 @@
         </template>
       </el-table>
     </div>
+    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
     <partTableDetail :visible.sync="visible" :row="row" />
     <template v-if="supplierAllData.length > 1">
       <div class="left" :style="left" @click="prev">
-        <img :src="allowIcon" alt="" />
+        <img class="icon" :src="allowIcon" alt="" />
       </div>
       <div class="right" :style="right" @click="next">
-        <img :src="allowIcon" alt="" />
+        <img class="icon" :src="allowIcon" alt="" />
       </div>
     </template>
   </div>
@@ -327,7 +334,7 @@
 import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
-import allowIcon from "@/assets/images/icon/allow.png";
+import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
 import allow from "./allow.js";
 export default {
   mixins: [allow],
@@ -454,9 +461,11 @@ export default {
           if (res?.code == "200") {
             let tableData =
               res.data.partInfoList?.map((item) => {
+                item.suggestFlag = []
                 item.bdlInfoList.forEach((child) => {
                   item[child.supplierId + "aPrice"] = child.lcAPrice;
                   item[child.supplierId + "bPrice"] = child.lcBPrice;
+                  if(child.suggestFlag) item.suggestFlag.push(child.supplierId + "aPrice",child.supplierId + "bPrice")
                 });
                 return item;
               }) || [];
@@ -642,6 +651,9 @@ export default {
       } else {
         this.index = 0;
       }
+      this.$nextTick(() => {
+        this.setColSpan();
+      });
     },
     next() {
       if (this.index > 0) {
@@ -649,6 +661,9 @@ export default {
       } else {
         this.index = this.supplierAllData.length - 1;
       }
+      this.$nextTick(() => {
+        this.setColSpan();
+      });
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -665,7 +680,7 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A price(LC)", "B price(LC)"].includes(column.label)) {
-        return row[column.property] && row[column.property] < 200
+        return row.suggestFlag.includes(column.property)
           ? "blue-border"
           : "";
       }
@@ -698,6 +713,8 @@ export default {
     }
   }
   ::v-deep td {
+    padding-top: 4px;
+    padding-bottom: 4px;
     .cell {
       padding: 0 4px;
     }
@@ -729,8 +746,14 @@ export default {
       vertical-align: top;
     }
   }
+  .partName{
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
   .blue-border {
-    background: #bdd7ee;
+    background: #bdd7ee !important;
   }
   .leftAllow {
     position: relative;
@@ -749,6 +772,9 @@ export default {
 }
 
 .total-table {
+  ::v-deep .el-table__row{
+    height: unset !important;
+  }
   ::v-deep tr {
     .table-header {
       background: #364d6e;
@@ -763,10 +789,29 @@ export default {
   }
 }
 .left {
-  transform: translate(-2px, 18px);
+  transform: translate(-6px, 18px);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    transform: rotate(180deg);
+    width: 10px;
+  }
 }
 .right {
-  transform: translate(-10px, 18px);
+  transform: translate(-6px, 18px);
+  width: 10px;
+  height: 64px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    width: 10px;
+  }
 }
 
 .table {
@@ -775,6 +820,22 @@ export default {
     tr:nth-child(even) {
       background-color: #364d6e;
     }
+  }
+}
+
+.tips{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  .legend{
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background: #bdd7ee;
+  }
+  .font-green{
+    color:#70ad47
   }
 }
 </style>

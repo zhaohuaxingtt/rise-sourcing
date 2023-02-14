@@ -7,8 +7,9 @@ import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 export default {
   props: {
     barName: String,
-    height:Number,
+    height: Number,
     data: Object,
+    max: Number,
   },
   data() {
     return {
@@ -71,6 +72,7 @@ export default {
         ],
         yAxis: [
           {
+            max:this.max*1.1,
             type: "value",
             axisLine: {
               show: false,
@@ -95,7 +97,7 @@ export default {
             // barWidth:'60',
             barMaxWidth: "140",
             barMinWidth: "40",
-            barMinHeight: "10",
+            barMinHeight: "20",
             stack: "Supplier",
             data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
             itemStyle: {
@@ -112,7 +114,7 @@ export default {
             },
             barMaxWidth: "140",
             barMinWidth: "40",
-            barMinHeight: "10",
+            barMinHeight: "20",
             stack: "Supplier",
             data: [this.getDiff()],
             itemStyle: {

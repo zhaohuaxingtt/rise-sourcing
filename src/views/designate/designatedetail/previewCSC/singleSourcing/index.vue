@@ -81,7 +81,6 @@
       </tableList>
     </div>
     <iPagination
-      class="margin-bottom20"
       @size-change="handleSizeChange($event, getDetail)"
       @current-change="handleCurrentChange($event, getDetail)"
       background
@@ -214,8 +213,7 @@ export default {
 <style lang="scss" scoped>
 
 .singleSourcing-table {
-  height: 100%;
-  height: calc(100% - 94px);
+  height: calc(100% - 100px);
   ::v-deep .el-table .cell {
     white-space: pre-line;
   }

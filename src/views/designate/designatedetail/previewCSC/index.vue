@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-12 21:22:37
+ * @LastEditTime: 2023-02-13 18:42:12
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -222,6 +222,10 @@ export default {
     border-radius: 0;
     font-size: 18px;
     // background-color:transparent;
+    th.gutter:last-of-type{
+      background: #fff;
+      border: 0;
+    }
     .el-table__header {
       // background-color: #364d6e;
       th {

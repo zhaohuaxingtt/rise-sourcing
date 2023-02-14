@@ -96,7 +96,7 @@ import { tableTitle } from "./data";
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import buttonTableSetting from "@/components/buttonTableSetting";
-import mtz from '@/assets/images/icon/mtz.png'
+import mtz from '@/assets/images/icon/mtz-icon.png'
 import detailDialog from "./detailDialog";
 
 export default {
