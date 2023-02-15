@@ -1,7 +1,10 @@
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <div ref="part-table" v-loading="loading">
-    <div class="table-box" :style="{'height':`calc(100% - ${totalTableHeight+30}px)`}">
+    <div
+      class="table-box"
+      :style="{ height: `calc(100% - ${totalTableHeight + 30}px)` }"
+    >
       <el-table
         :data="tableData"
         class="header table"
@@ -43,8 +46,12 @@
                     align="center"
                   >
                     <template slot-scope="scope">
-                      <p class="partName" :title="scope.row.partName">{{ scope.row.partName }}</p>
-                      <p class="partName" :title="scope.row.partNameDe">({{ scope.row.partNameDe }})</p>
+                      <p class="partName" :title="scope.row.partName">
+                        {{ scope.row.partName }}
+                      </p>
+                      <p class="partName" :title="scope.row.partNameDe">
+                        ({{ scope.row.partNameDe }})
+                      </p>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -284,7 +291,9 @@
               </template>
               <template slot-scope="scope">
                 <template v-if="scope.$index == 0">
-                  {{scope.row[item.supplierId + "aPrice"] | toThousands(true)}}
+                  {{
+                    scope.row[item.supplierId + "aPrice"] | toThousands(true)
+                  }}
                 </template>
                 <template v-else-if="scope.$index == 1">
                   <p
@@ -297,7 +306,8 @@
                   </p>
                 </template>
                 <template v-else>{{
-                  getInt(scope.row[item.supplierId + "aPrice"]) | toThousands(true)
+                  getInt(scope.row[item.supplierId + "aPrice"])
+                    | toThousands(true)
                 }}</template>
               </template>
             </el-table-column>
@@ -317,7 +327,11 @@
         </template>
       </el-table>
     </div>
-    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
+    <p class="tips">
+      <span class="legend margin-right5"></span><span>: Recommendation</span
+      ><span class="font-green margin-left20 margin-right5">99.99</span
+      ><span>Best offer</span>
+    </p>
     <partTableDetail :visible.sync="visible" :row="row" />
     <template v-if="supplierAllData.length > 1">
       <div class="left" :style="left" @click="prev">
@@ -420,7 +434,7 @@ export default {
       showLength: 5,
       supplierAllData: [],
       loading: false,
-      totalTableHeight: 280
+      totalTableHeight: 280,
     };
   },
   computed: {
@@ -435,7 +449,7 @@ export default {
   updated() {
     this.setColSpan();
     this.$nextTick(() => {
-      this.totalTableHeight = this.$refs['total-table']?.scrollHeight
+      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
     });
   },
   filters: {
@@ -461,15 +475,25 @@ export default {
           if (res?.code == "200") {
             let tableData =
               res.data.partInfoList?.map((item) => {
-                item.suggestFlag = []
+                item.suggestFlag = [];
+                item.ttoStatus = [];
                 item.bdlInfoList.forEach((child) => {
                   item[child.supplierId + "aPrice"] = child.lcAPrice;
                   item[child.supplierId + "bPrice"] = child.lcBPrice;
-                  if(child.suggestFlag) item.suggestFlag.push(child.supplierId + "aPrice",child.supplierId + "bPrice")
+                  if (child.suggestFlag)
+                    item.suggestFlag.push(
+                      child.supplierId + "aPrice",
+                      child.supplierId + "bPrice"
+                    );
+                  if (child.ttoStatus)
+                    item.ttoStatus.push(
+                      child.supplierId + "aPrice",
+                      child.supplierId + "bPrice"
+                    );
                 });
                 return item;
               }) || [];
-              // tableData = tableData.slice(1,3)
+            // tableData = tableData.slice(1,3)
             const totalData = JSON.parse(JSON.stringify(this.totalData));
             let obj = {};
             res.data.bdlPriceTotalInfoList?.forEach((item) => {
@@ -518,7 +542,7 @@ export default {
                 supplierAllData[lastIndex].push({ supplierId: i });
               }
             }
-            this.supplierAllData = supplierAllData
+            this.supplierAllData = supplierAllData;
             this.index = 0;
             this.totalData = totalData;
             this.tableData = tableData;
@@ -680,9 +704,16 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A price(LC)", "B price(LC)"].includes(column.label)) {
-        return row.suggestFlag.includes(column.property)
-          ? "blue-border"
-          : "";
+        if (
+          row.suggestFlag.includes(column.property) &&
+          row.ttoStatus.includes(column.property)
+        ) {
+          return "blue-border font-green";
+        } else if (row.suggestFlag.includes(column.property)) {
+          return "blue-border";
+        } else if (row.ttoStatus.includes(column.property)) {
+          return "font-green";
+        }
       }
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
@@ -746,7 +777,7 @@ export default {
       vertical-align: top;
     }
   }
-  .partName{
+  .partName {
     width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -754,6 +785,9 @@ export default {
   }
   .blue-border {
     background: #bdd7ee !important;
+  }
+  .font-green {
+    color: #70ad47;
   }
   .leftAllow {
     position: relative;
@@ -772,7 +806,7 @@ export default {
 }
 
 .total-table {
-  ::v-deep .el-table__row{
+  ::v-deep .el-table__row {
     height: unset !important;
   }
   ::v-deep tr {
@@ -823,19 +857,19 @@ export default {
   }
 }
 
-.tips{
+.tips {
   margin-top: 10px;
   display: flex;
   align-items: center;
   font-size: 16px;
-  .legend{
+  .legend {
     display: inline-block;
     width: 25px;
     height: 20px;
     background: #bdd7ee;
   }
-  .font-green{
-    color:#70ad47
+  .font-green {
+    color: #70ad47;
   }
 }
 </style>

@@ -4,7 +4,7 @@
     <!-- 内容表 -->
     <div
       class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight+30}px)` }"
+      :style="{ height: `calc(100% - ${totalTableHeight + 30}px)` }"
     >
       <el-table
         :data="tableData"
@@ -31,9 +31,9 @@
                   scope.row[item.prop]
                 }}</span>
                 <br />
-                <span class="link" @click="gotoDetail(scope.row)">({{
-                  scope.row.factoryEn
-                }})</span>
+                <span class="link" @click="gotoDetail(scope.row)"
+                  >({{ scope.row.factoryEn }})</span
+                >
               </template>
             </el-table-column>
             <el-table-column
@@ -397,7 +397,11 @@
         </el-table-column>
       </el-table>
     </div>
-    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
+    <p class="tips">
+      <span class="legend margin-right5"></span><span>: Recommendation</span
+      ><span class="font-green margin-left20 margin-right5">99.99</span
+      ><span>Best offer</span>
+    </p>
     <partTableDetail :visible.sync="visible" :row="row" />
     <div class="left" :style="left" @click="tabChange">
       <img class="icon" :src="allowIcon" alt="" />
@@ -624,17 +628,15 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        return row[column.property] && row[column.property] < 20
-          ? "blue-border"
-          : "";
+        if (row.suggestFlag) {
+          return "blue-border";
+        }
       }
       if (["Total Turnover"].includes(column.label)) {
-        return deleteThousands(row[column.property] && row[column.property]) <
-          5000
-          ? "blue-border"
-          : "";
+        if (row.isMinTto) {
+          return "font-green";
+        }
       }
-      return "";
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
       if ([3, 4, 5].includes(columnIndex)) {
@@ -702,6 +704,9 @@ export default {
   .blue-border {
     background: #bdd7ee !important;
   }
+  .font-green {
+    color: #70ad47;
+  }
   .leftAllow {
     position: relative;
     padding: 0;
@@ -719,7 +724,7 @@ export default {
 }
 
 .total-table {
-  ::v-deep .el-table__row{
+  ::v-deep .el-table__row {
     height: unset !important;
   }
   ::v-deep tr {
@@ -770,19 +775,19 @@ export default {
   }
 }
 
-.tips{
+.tips {
   margin-top: 10px;
   display: flex;
   align-items: center;
   font-size: 16px;
-  .legend{
+  .legend {
     display: inline-block;
     width: 25px;
     height: 20px;
     background: #bdd7ee;
   }
-  .font-green{
-    color:#70ad47
+  .font-green {
+    color: #70ad47;
   }
 }
 </style>

@@ -353,10 +353,12 @@ export default {
               let ltcList = [];
               let ltcStartDateList = [];
               item.suggestFlag = []
+              item.isMinTto = []
               item.analysisSummaryParts.forEach((child) => {
                 item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
                 item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
                 if(child.suggestFlag) item.suggestFlag.push(child.fsGsNum + "lcAPrice", child.fsGsNum + "lcBPrice")
+                if(child.isMinTto) item.isMinTto.push(child.fsGsNum + "lcAPrice", child.fsGsNum + "lcBPrice")
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (!ltcStartDateList.includes(child.ltcStartDate))
                   ltcStartDateList.push(child.ltcStartDate);
@@ -419,9 +421,16 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["partAPrice", "partBPrice"].includes(column.label)) {
-        return row.suggestFlag.includes(column.property)
-          ? "blue-border"
-          : "";
+        if (
+          row.suggestFlag.includes(column.property) &&
+          row.isMinTto.includes(column.property)
+        ) {
+          return "blue-border font-green";
+        } else if (row.suggestFlag.includes(column.property)) {
+          return "blue-border";
+        } else if (row.isMinTto.includes(column.property)) {
+          return "font-green";
+        }
       }
     },
     // 表头合并
@@ -532,6 +541,9 @@ export default {
   }
   .blue-border {
     background: #bdd7ee !important;
+  }
+  .font-green {
+    color: #70ad47;
   }
   .leftAllow {
     position: relative;
