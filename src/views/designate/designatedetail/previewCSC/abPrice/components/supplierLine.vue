@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-13 17:34:50
+ * @LastEditTime: 2023-02-15 12:26:08
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -185,6 +185,10 @@ export default {
     resize() {
       this.charts && this.charts.resize();
     },
+    fontSize(res){
+      const fontSize = parseFloat(document.getElementsByTagName('html')[0].style.fontSize) || 16;
+      return res*(fontSize/16);
+    },
     drawLine() {
       let series = [];
       this.tableData.forEach((item, index) => {
@@ -194,7 +198,7 @@ export default {
           label: {
             show: true,
             position: "right",
-            fontSize: 20,
+            fontSize: this.fontSize(20),
           },
           data: [],
           itemStyle: {
@@ -206,7 +210,7 @@ export default {
         });
         series.push(seriesItem);
       });
-      this.charts = this.$echarts.init(this.$refs.chart);
+      this.charts = this.$echarts.init(this.$refs.chart,null,{ renderer : 'svg' });
       let options = {
         title: {
           show: false,
@@ -231,7 +235,7 @@ export default {
               return item
             }),
             axisLabel: {
-              fontSize: 20,
+              fontSize: this.fontSize(20),
             },
           },
         ],
@@ -245,7 +249,7 @@ export default {
               );
             },
             axisLabel: {
-              fontSize: 20,
+              fontSize: this.fontSize(20),
             },
           },
         ],

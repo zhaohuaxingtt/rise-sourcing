@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-12 21:50:35
+ * @LastEditTime: 2023-02-15 10:34:36
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -939,7 +939,7 @@
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
             <template #turnover="scope">
-              <span>{{ scope.row.turnover | toThousands }}</span>
+              <span>{{ scope.row.turnover | thousandsFilter(0) }}</span>
             </template>
 
             <template #share="scope">

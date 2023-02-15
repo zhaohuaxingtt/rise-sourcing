@@ -31,9 +31,9 @@
                   scope.row[item.prop]
                 }}</span>
                 <br />
-                <span class="link" @click="gotoDetail(scope.row)">{{
+                <span class="link" @click="gotoDetail(scope.row)">({{
                   scope.row.factoryEn
-                }}</span>
+                }})</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -166,7 +166,7 @@
           <el-table-column
             label="Supplier"
             align="center"
-            prop="supplierNameZh"
+            prop="supplierNameEn"
             minWidth="100"
           ></el-table-column>
           <el-table-column label="Rating" align="center">

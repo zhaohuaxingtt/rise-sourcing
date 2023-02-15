@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-08 14:33:52
+ * @LastEditTime: 2023-02-15 10:25:13
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -24,12 +24,12 @@ export const leftTitle = [
 export const rightTitle = [
   {props: 'currency', name: '货币', enName: 'Currency'},
   {props: 'unit', name: '单位', enName: 'Unit'},
-  {props: 'em', name: '送样EM周期', enName: 'EM-Termin'},
+  {props: 'emtermin', name: '送样EM周期', enName: 'EM-Termin'},
   {props: 'mtz', name: '原材料补差', enName: 'MTZ'},
-  {props: 'vff', name: 'VFF时间', enName: 'VFF TBT'},
+  {props: 'vffTbt', name: 'VFF时间', enName: 'VFF TBT'},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group'},
-  {props: 'PVS', name: 'PVS时间', enName: 'PVS TBT'},
-  {props: 'bighead', name: '计划投资', enName: ''},
+  {props: 'pvsTbt', name: 'PVS时间', enName: 'PVS TBT'},
+  {props: 'plannedInvest', name: '计划投资', enName: ''},
 ]
 
 export const RSTableTitle = [

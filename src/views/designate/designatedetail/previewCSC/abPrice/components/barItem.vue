@@ -37,8 +37,12 @@ export default {
         deleteThousands(this.data.aPrice || 0);
       return (+result).toFixed(2);
     },
+    fontSize(res){
+      const fontSize = parseFloat(document.getElementsByTagName('html')[0].style.fontSize) || 16;
+      return res*(fontSize/16);
+    },
     drawBar() {
-      this.charts = this.$echarts.init(this.$refs.chart);
+      this.charts = this.$echarts.init(this.$refs.chart,null,{ renderer : 'svg' });
       let options = {
         title: {
           show: false,
@@ -63,7 +67,7 @@ export default {
             type: "category",
             data: [this.barName],
             axisLabel: {
-              fontSize: 20,
+              fontSize: this.fontSize(20),
             },
             axisTick: {
               show: false,
@@ -92,7 +96,7 @@ export default {
             label: {
               show: true,
               position: "inside",
-              fontSize: 20,
+              fontSize: this.fontSize(20),
             },
             // barWidth:'60',
             barMaxWidth: "140",
@@ -110,7 +114,7 @@ export default {
             label: {
               show: true,
               position: "inside",
-              fontSize: 20,
+              fontSize: this.fontSize(20),
             },
             barMaxWidth: "140",
             barMinWidth: "40",
@@ -129,7 +133,7 @@ export default {
               position: "top",
               distance: 15,
               fontWeight: "bold",
-              fontSize: 20,
+              fontSize: this.fontSize(20),
               formatter: () => {
                 return (
                   (+deleteThousands(this.data.bPrice || 0)).toFixed(2) || ""
