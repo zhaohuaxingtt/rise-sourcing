@@ -251,24 +251,34 @@
         <el-table-column>
           <el-table-column
             label="A Price"
-            prop="cfPartAPrice"
+            prop="aPrice"
             align="right"
             header-align="center"
             minWidth="80"
           >
             <template slot-scope="scope">
-              {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+              <template v-if="scope.$index==0">
+              {{ scope.row["aPrice"] | toThousands(true) }}
+              </template>
+              <template v-else>
+                {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
+              </template>
             </template>
           </el-table-column>
           <el-table-column
             label="B Price"
-            prop="cfPartBPrice"
+            prop="bPrice"
             align="right"
             header-align="center"
             minWidth="80"
           >
             <template slot-scope="scope">
-              {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+              <template v-if="scope.$index==0">
+              {{ scope.row["bPrice"] | toThousands(true) }}
+              </template>
+              <template v-else>
+                {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
+              </template>
             </template>
           </el-table-column>
         </el-table-column>
@@ -446,12 +456,6 @@ export default {
   created() {
     this.getData();
   },
-  updated() {
-    this.setColSpan();
-    this.$nextTick(() => {
-      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-    });
-  },
   filters: {
     toThousands,
   },
@@ -550,10 +554,10 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          // this.$nextTick(() => {
-          //   // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
-          //   this.setColSpan();
-          // });
+          this.$nextTick(() => {
+            // 注意一定要保证DOM渲染完成后在进行合并操作，否则会找不到元素
+            this.setColSpan();
+          });
         });
     },
     percent(val) {
@@ -572,6 +576,12 @@ export default {
       this.merge(row, 0, 0, 4, "rowSpan");
       this.merge(row, 1, 7, 3, "rowSpan");
       this.merge(row, 4, 7, 2, "colSpan");
+      this.$nextTick(()=>{
+        setTimeout(()=>{
+          this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
+          this.positionAllow()
+        },0)
+      })
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -823,28 +833,30 @@ export default {
   }
 }
 .left {
-  transform: translate(-6px, 18px);
-  width: 10px;
-  height: 64px;
+  transform: translate(-12px, -5.5px);
+  width: 12px;
+  height: 120px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
     transform: rotate(180deg);
-    width: 10px;
+    width: 12px;
   }
 }
 .right {
-  transform: translate(-6px, 18px);
-  width: 10px;
-  height: 64px;
+  transform: translate(-3px, -5.5px);
+  width: 12px;
+  height: 120px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
-    width: 10px;
+    width: 12px;
   }
 }
 

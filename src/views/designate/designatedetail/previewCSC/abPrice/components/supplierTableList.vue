@@ -16,6 +16,8 @@
           <el-table-column>
             <el-table-column>
               <el-table-column>
+              <el-table-column>
+              <el-table-column>
                 <el-table-column>
                   <el-table-column
                     prop="supplierNameEn"
@@ -25,6 +27,8 @@
                   ></el-table-column>
                 </el-table-column>
               </el-table-column>
+              </el-table-column>
+              </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -32,6 +36,8 @@
       <el-table-column label="Part No.">
         <el-table-column label="Part Name">
           <el-table-column label="Carline">
+          <el-table-column label="EBR">
+          <el-table-column label="Mixed Qty">
             <el-table-column label="Volume">
               <el-table-column label="Budget">
                 <el-table-column label="F-Target">
@@ -80,6 +86,8 @@
               </el-table-column>
             </el-table-column>
           </el-table-column>
+          </el-table-column>
+          </el-table-column>
         </el-table-column>
       </el-table-column>
       <!-- 循环供应商 -->
@@ -103,6 +111,8 @@
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
+            <el-table-column :label="item.ebr" align="center">
+            <el-table-column :label="item.mixQty" align="center">
               <el-table-column :label="item.volume" align="center">
                 <template slot="header" slot-scope="scope">
                   {{ getInt(item.volume) | toThousands(true) }}
@@ -149,6 +159,8 @@
                 </el-table-column>
               </el-table-column>
             </el-table-column>
+            </el-table-column>
+            </el-table-column>
           </el-table-column>
         </el-table-column>
       </template>
@@ -157,6 +169,8 @@
         <el-table-column>
           <el-table-column>
             <el-table-column>
+              <el-table-column>
+              <el-table-column>
               <el-table-column>
                 <el-table-column :label="targetMixAPrice" align="center">
                   <el-table-column label="Mixed Price" align="center">
@@ -185,12 +199,16 @@
                 </el-table-column>
               </el-table-column>
             </el-table-column>
+            </el-table-column>
+            </el-table-column>
           </el-table-column>
         </el-table-column>
       </el-table-column>
       <template v-for="item in fixedTitle">
         <el-table-column :key="item.prop">
           <el-table-column>
+            <el-table-column>
+            <el-table-column>
             <el-table-column>
               <el-table-column>
                 <el-table-column :label="item.budget" align="center">
@@ -232,6 +250,8 @@
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
+              </el-table-column>
+              </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
@@ -411,7 +431,7 @@ export default {
         return "white-bg unit";
       }
 
-      if (rowIndex < 6) {
+      if (rowIndex < 8) {
         if (columnIndex == 1) {
           return "supllier-header";
         }
@@ -440,14 +460,17 @@ export default {
           "el-table__header"
         )[0].rows;
       //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 6, "rowSpan");
-      this.merge(row, 6, 2, 2, "colSpan");
-      if (this.partList.length > 0) this.merge(row, 6, 4, 2, "colSpan");
-      if (this.partList.length > 1) this.merge(row, 6, 6, 2, "colSpan");
-      if (this.partList.length > 2) this.merge(row, 6, 8, 2, "colSpan");
-      if (this.partList.length > 3) this.merge(row, 6, 10, 2, "colSpan");
+      this.merge(row, 0, 0, 8, "rowSpan");
+      this.merge(row, 8, 2, 2, "colSpan");
+      if (this.partList.length > 0) this.merge(row, 8, 4, 2, "colSpan");
+      if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
+      if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
+      if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
       this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
+      this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+      this.$nextTick(() => {
+        this.positionAllow()
+      });
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -561,28 +584,30 @@ export default {
   }
 }
 .left {
-  transform: translate(-12px, 18px);
-  width: 10px;
-  height: 64px;
+  transform: translate(-17px, -3px);
+  width: 12px;
+  height: 162px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
     transform: rotate(180deg);
-    width: 10px;
+    width: 12px;
   }
 }
 .right {
-  transform: translate(0px, 18px);
-  width: 10px;
-  height: 64px;
+  transform: translate(3px, -3px);
+  width: 12px;
+  height: 162px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
-    width: 10px;
+    width: 12px;
   }
 }
 .table {

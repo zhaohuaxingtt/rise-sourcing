@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 09:35:30
+ * @LastEditTime: 2023-02-16 23:57:54
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,10 +28,11 @@
       :key="tableData.length"
       :highlight-current-row="false"
       :cell-class-name="colClass"
+      :row-class-name="rowClass"
       :show-header="false"
       :span-method="arraySpanMethod"
     >
-      <el-table-column prop="label" align="center" width="120">
+      <el-table-column prop="label" align="center" width="90">
         <template slot-scope="scope">
           <p v-for="(text, index) in scope.row.label" :key="index">
             {{ text }}
@@ -41,7 +42,7 @@
       <el-table-column
         prop="subLabel"
         align="center"
-        width="60"
+        width="40"
       ></el-table-column>
       <el-table-column prop="remark" align="center" width="1"></el-table-column>
       <template v-for="item in supplierList">
@@ -110,7 +111,7 @@
                 :height="height"
                 :barName="item.label"
                 :data="item"
-                :colorA="item.colorA"
+                :opacityA="item.opacityA"
                 :max="max"
               />
             </template>
@@ -232,11 +233,11 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       fixedList: [
-        { prop: "Recommendation", label: "Recommendation", colorA: '#00abab' },
-        { prop: "LTC", label: "After LTC", colorA: '#00abab' },
-        { prop: "F-Target", label: "F-Target", colorA: '#77649b' },
-        { prop: "KGF", label: "KGF", colorA: '#77649b' },
-        { prop: "VSI", label: "VSI", colorA: '#77649b' },
+        { prop: "Recommendation", label: "Recommendation", opacityA: 0.7 },
+        { prop: "LTC", label: "After LTC", opacityA: 0.7 },
+        { prop: "F-Target", label: "F-Target", opacityA: 0.5 },
+        { prop: "KGF", label: "KGF", opacityA: 0.5 },
+        { prop: "VSI", label: "VSI", opacityA: 0.5 },
       ],
       loading: false,
       max: null,
@@ -337,6 +338,9 @@ export default {
         return "table-header";
       }
     },
+    rowClass({ row }) {
+      return ['E', 'Q'].includes(row.subLabel) ? "small" : ""
+    },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex == 0 && ![1, 2].includes(rowIndex)) {
         return [1, 2];
@@ -389,6 +393,12 @@ export default {
 .header {
   ::v-deep tr {
     padding: 0;
+    &.small{
+      height: unset !important;
+      td{
+        padding: 3px;
+      }
+    }
     .table-header {
       background: #364d6e;
       .cell {

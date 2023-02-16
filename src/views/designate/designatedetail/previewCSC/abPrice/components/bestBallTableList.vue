@@ -121,11 +121,11 @@
           </el-table-column>
         </el-table-column>
         <el-table-column align="center">
-          <div slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="scope">
             {{ label }}
             <div class="leftAllow" @click="leftAllow($event)"></div>
             <div class="rightAllow" @click="rightAllow($event)"></div>
-          </div>
+          </template>
           <el-table-column
             label="A Price(LC)"
             prop="lcAPrice"
@@ -489,6 +489,11 @@ export default {
   created() {
     this.getData();
   },
+  mounted(){
+    this.$nextTick(() => {
+        this.positionAllow();
+      });
+  },
   methods: {
     numberProcessor,
     getInt(val) {
@@ -500,7 +505,6 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     getData() {
-      this.tableData = [];
       const getData =
         this.label == "Recommendation"
           ? getAnalysisRecommendationNomi
@@ -511,7 +515,6 @@ export default {
         .then((res) => {
           if (res?.code == "200") {
             let tableData = res.data.analysisNomiPriceInfoList;
-            // tableData = tableData.slice(1,3)
             const totalData = JSON.parse(JSON.stringify(this.totalData));
             totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
             totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
@@ -525,11 +528,13 @@ export default {
             totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;
+          }else{
+            this.tableData = [];
           }
         })
         .finally(() => {
           this.$nextTick(() => {
-            this.setColSpan();
+            this.positionAllow();
           });
         });
     },
@@ -645,7 +650,6 @@ export default {
     },
     gotoDetail(row) {
       this.row = row;
-      console.log(row);
       this.$nextTick(() => {
         this.visible = true;
       });
@@ -690,6 +694,9 @@ export default {
     .primary-label {
       line-height: 36px;
       height: 36px;
+      .cell{
+        height: 100%;
+      }
     }
     .white-bg {
       background: #fff;
@@ -741,26 +748,28 @@ export default {
   }
 }
 .left {
-  transform: translate(-5px, 0);
-  width: 10px;
-  height: 64px;
+  transform: translate(-11px, -4.5px);
+  width: 12px;
+  height: 105px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
     transform: rotate(180deg);
     width: 10px;
   }
 }
 .right {
-  transform: translate(-7px, 0);
-  width: 10px;
-  height: 64px;
+  transform: translate(-3px, -4.5px);
+  width: 12px;
+  height: 105px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
   align-items: center;
+  z-index: 999;
   .icon {
     width: 10px;
   }

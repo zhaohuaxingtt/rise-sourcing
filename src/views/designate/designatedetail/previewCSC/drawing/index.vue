@@ -2,31 +2,33 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-13 23:03:01
+ * @LastEditTime: 2023-02-16 21:34:50
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="designate-attachment" v-loading="loading">
-    <div class="el-card left-list" :class="{ show: collapseValue }">
+    <div class="el-card left-list" :class="{ show: collapseValue }" @click="collapse">
       <div class="collapse-transition margin-right5" v-show="!collapseValue">
-        <template v-for="(item, i) in allData">
-          <ul class="file-ul" :key="i">
-            <!-- <li class="group-name">{{ item.label }}</li> -->
-            <li
-              class="file-name cursor"
-              :class="{ 'is-active': file.id == active && i == index }"
-              v-for="file in item.fileList"
-              :key="file.id"
-              @click="changeSrc(index, file)"
-            >
-              {{ file.fileName }}
-            </li>
-          </ul>
-          <el-divider :key="i"></el-divider>
-        </template>
+        <div @click.stop="">
+          <template v-for="(item, i) in allData">
+            <ul class="file-ul" :key="i">
+              <!-- <li class="group-name">{{ item.label }}</li> -->
+              <li
+                class="file-name cursor"
+                :class="{ 'is-active': file.id == active && i == index }"
+                v-for="file in item.fileList"
+                :key="file.id"
+                @click="changeSrc(index, file)"
+              >
+                {{ file.fileName }}
+              </li>
+            </ul>
+            <el-divider :key="i"></el-divider>
+          </template>
+        </div>
       </div>
-      <i @click="collapse" class="btn"
+      <i class="btn"
         ><icon
           symbol
           name="iconsanjiantou"

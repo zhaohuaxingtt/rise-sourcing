@@ -2,16 +2,14 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 09:50:13
+ * @LastEditTime: 2023-02-16 23:54:13
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div v-loading="loading">
     <div class="page-header margin-bottom20">
-      <span>Unit:RMB</span>
       <span class="font-size20">Supplier Offer Comparison ( {{ detail.rfqId }} )</span>
-      <span></span>
     </div>
     <el-table
       :data="[{}]"
@@ -26,7 +24,7 @@
         </template>
       </el-table-column>
       <template v-for="item in roundList">
-        <el-table-column :key="item" :prop="item" align="center" minWidth="160">
+        <el-table-column :key="'round'+item.round" :prop="'round'+item.round" align="center" minWidth="160">
         </el-table-column>
       </template>
     </el-table>
@@ -59,8 +57,8 @@
         </el-table-column>
         <template v-for="item in roundList">
           <el-table-column
-            :key="item"
-            :prop="item"
+            :key="'round'+item.round"
+            :prop="'round'+item.round"
             align="center"
             minWidth="160"
           >
@@ -206,8 +204,8 @@ export default {
             color: item.color,
           },
         };
-        this.roundList.forEach((key) => {
-          seriesItem.data.push(item.detailVOMap?.[key]?.mixAPrice || "");
+        this.roundList.forEach((child) => {
+          seriesItem.data.push(item.detailVOMap?.['round'+child.round]?.mixAPrice || "");
         });
         series.push(seriesItem);
       });
@@ -231,9 +229,16 @@ export default {
         xAxis: [
           {
             type: "category",
+            name:'Round',
+            nameGap: -80,
+            nameTextStyle:{
+              fontSize:this.fontSize(20),
+               verticalAlign:'bottom',
+               fontFamily:'Arial',
+               fontWeight: 'bold'
+            },
             data: this.roundList.map(item=>{
-              item = item.replace('round','Round')
-              return item
+              return `${item.round}(${item.roundTypeDesc})`
             }),
             axisLabel: {
               fontSize: this.fontSize(18),
@@ -243,6 +248,14 @@ export default {
         yAxis: [
           {
             type: "value",
+            name:'unit: RMB',
+            nameGap: 30,
+            nameTextStyle:{
+              fontSize:this.fontSize(20),
+               align:'right',
+               fontFamily:'Arial',
+               fontWeight: 'bold'
+            },
             min: function (val) {
               return (
                 val.min -
@@ -274,9 +287,7 @@ export default {
           .then((res) => {
             if (res?.code != 200) return;
             // 构建数据
-            this.roundList = res.data.roundTableHead.map(
-              (item) => "round" + item.round
-            );
+            this.roundList = res.data.roundTableHead
             this.tableData = [
               ...res.data.roundQuotationVOS.map((item, index) => {
                 let cIndex = index;
@@ -329,8 +340,7 @@ export default {
   height: 500px;
 }
 .page-header {
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
   font-size: 18px;
   font-weight: bold;
 }

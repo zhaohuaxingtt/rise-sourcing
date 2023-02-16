@@ -10,8 +10,8 @@ export default {
     height: Number,
     data: Object,
     max: Number,
-    colorA: String,
-    colorB: String,
+    opacityA: String,
+    opacityB: String,
   },
   data() {
     return {
@@ -101,13 +101,14 @@ export default {
               fontSize: this.fontSize(20),
             },
             // barWidth:'60',
-            barMaxWidth: "120",
+            barMaxWidth: "80",
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
             data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
             itemStyle: {
-              color: this.colorA || "#516894",
+              color: "#516894",
+              opacity: this.opacityA || 1
             },
           },
           {
@@ -118,13 +119,14 @@ export default {
               position: "inside",
               fontSize: this.fontSize(20),
             },
-            barMaxWidth: "120",
+            barMaxWidth: "80",
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
             data: [this.getDiff()],
             itemStyle: {
-              color: this.colorB || "#d8ddd7",
+              color: "#d8ddd7",
+              opacity: this.opacityB || 1
             },
           },
           {
