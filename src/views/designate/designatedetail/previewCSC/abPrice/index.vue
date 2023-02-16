@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-14 23:42:28
+ * @LastEditTime: 2023-02-16 09:24:17
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -161,13 +161,13 @@ export default {
           img: table,
         },
         {
-          label: "Bar chart",
+          label: "Bar",
           value: "bar",
           activeImg: barActive,
           img: bar,
         },
         {
-          label: "Line chart",
+          label: "Line",
           value: "line",
           activeImg: lineActive,
           img: line,

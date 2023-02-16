@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-15 12:26:08
+ * @LastEditTime: 2023-02-16 09:38:31
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,7 @@
   <div v-loading="loading">
     <div class="page-header margin-bottom20">
       <span>Unit:RMB</span>
-      <span>Supplier Offer Comparison ( {{ detail.rfqId }} )</span>
+      <span class="font-size20">Supplier Offer Comparison ( {{ detail.rfqId }} )</span>
       <span></span>
     </div>
     <el-table
@@ -119,7 +119,7 @@
         </template>
       </el-table>
     </div>
-    <div class="margin-top10">
+    <div class="margin-top10 font-size16">
       <span
         ><icon name="iconbaojiazhuangtailiebiao_yibaojia" symbol></icon>
         全报</span
@@ -183,6 +183,7 @@ export default {
   },
   methods: {
     resize() {
+      console.log(this.detail.rfqId);
       this.charts && this.charts.resize();
     },
     fontSize(res){
@@ -198,7 +199,7 @@ export default {
           label: {
             show: true,
             position: "right",
-            fontSize: this.fontSize(20),
+            fontSize: this.fontSize(18),
           },
           data: [],
           itemStyle: {
@@ -235,7 +236,7 @@ export default {
               return item
             }),
             axisLabel: {
-              fontSize: this.fontSize(20),
+              fontSize: this.fontSize(18),
             },
           },
         ],
@@ -249,7 +250,7 @@ export default {
               );
             },
             axisLabel: {
-              fontSize: this.fontSize(20),
+              fontSize: this.fontSize(18),
             },
           },
         ],
@@ -267,7 +268,6 @@ export default {
         "#f49593",
         "#b2dc9e",
       ];
-      console.log(this.detail.rfqId);
       if (this.detail.rfqId) {
         this.loading = true;
         getLine(this.detail.rfqId)
@@ -286,7 +286,6 @@ export default {
                 return item;
               }),
             ];
-            this.tableData = [...this.tableData, ...this.tableData];
             this.$nextTick(() => {
               setTimeout(() => {
                 this.drawLine();
@@ -374,18 +373,15 @@ export default {
     }
   }
 }
-.height160 {
-  height: 160px;
-}
-.height120 {
-  height: 120px;
-}
-.height40 {
-  height: 40px;
-}
 .cell {
   display: inline-block;
   border: 1px solid #666;
   vertical-align: top;
+}
+.font-size20{
+  font-size: 20px;
+}
+.font-size16 {
+  font-size: 16px;
 }
 </style>

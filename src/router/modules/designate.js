@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2023-02-08 15:44:40
+ * @LastEditTime: 2023-02-16 09:40:15
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -169,16 +169,16 @@ const nominationpages = [
 
 
 const nominationpages_copy = [
-  // {
-  //   path: 'title',
-  //   name: 'designateDecisionData',
-  //   meta: {
-  //     title: '定点管理-决策资料-title',
-  //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-  //   },
-  //   component: () =>
-  //     import('@/views/designate/designatedetail/previewCSC/title'),
-  // },
+  {
+    path: 'title',
+    name: 'designateDecisionData',
+    meta: {
+      title: '定点管理-决策资料-title',
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+    },
+    component: () =>
+      import('@/views/designate/designatedetail/previewCSC/title'),
+  },
   {
     path: 'partlist',
     name: 'designateDecisionDataPartList',
@@ -652,15 +652,15 @@ export default [
       return route
     })
   },
-  {
+  // {
 
-    path: '/previewCSC/title',
-    name: 'designatePreviewtitle',
-    meta: {
-      title: '定点管理-决策资料预览',
-      layoutPath: '/desinatepreview',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-    },
-    component: () => import('@/views/designate/designatedetail/previewCSC/title'),
-  }
+  //   path: '/previewCSC/title',
+  //   name: 'designatePreviewtitle',
+  //   meta: {
+  //     title: '定点管理-决策资料预览',
+  //     layoutPath: '/desinatepreview',
+  //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+  //   },
+  //   component: () => import('@/views/designate/designatedetail/previewCSC/title'),
+  // }
 ]

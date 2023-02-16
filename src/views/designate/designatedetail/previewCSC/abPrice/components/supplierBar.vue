@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-14 23:35:05
+ * @LastEditTime: 2023-02-16 09:35:30
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,7 @@
   <div v-loading="loading">
     <div class="page-header margin-bottom20">
       <span>Unit:RMB</span>
-      <span>Supplier Offer Comparison ( {{ detail.carTypeProjectNum }} )</span>
+      <span class="font-size20">Supplier Offer Comparison ( {{ detail.carTypeProjectNum }} )</span>
       <div class="flex">
         <div class="legend">
           <span class="APrice margin-right10"></span> <span>A Price</span>
@@ -110,6 +110,7 @@
                 :height="height"
                 :barName="item.label"
                 :data="item"
+                :colorA="item.colorA"
                 :max="max"
               />
             </template>
@@ -231,11 +232,11 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       fixedList: [
-        { prop: "Recommendation", label: "Recommendation" },
-        { prop: "LTC", label: "After LTC" },
-        { prop: "F-Target", label: "F-Target" },
-        { prop: "KGF", label: "KGF" },
-        { prop: "VSI", label: "VSI" },
+        { prop: "Recommendation", label: "Recommendation", colorA: '#00abab' },
+        { prop: "LTC", label: "After LTC", colorA: '#00abab' },
+        { prop: "F-Target", label: "F-Target", colorA: '#77649b' },
+        { prop: "KGF", label: "KGF", colorA: '#77649b' },
+        { prop: "VSI", label: "VSI", colorA: '#77649b' },
       ],
       loading: false,
       max: null,
@@ -403,15 +404,6 @@ export default {
     }
   }
 }
-.height160 {
-  height: 160px;
-}
-.height120 {
-  height: 120px;
-}
-.height40 {
-  height: 40px;
-}
 .cell {
   display: inline-block;
   border: 1px solid #666;
@@ -419,5 +411,8 @@ export default {
   .red {
     color: #f00;
   }
+}
+.font-size20{
+  font-size: 20px;
 }
 </style>

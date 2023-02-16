@@ -215,7 +215,7 @@
             align="center"
             prop="ltc"
           ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="120">
+          <el-table-column align="center" prop="ltcStartDate" min-width="110">
             <template slot="header" slot-scope="scope">
               <p>LTC Start</p>
               <p>Date</p>
@@ -370,7 +370,7 @@
             label="LTC Start Date"
             align="center"
             prop="ltcStartDate"
-            min-width="120"
+            min-width="110"
           ></el-table-column>
           <el-table-column
             label="Develop Cost"
@@ -448,12 +448,12 @@ export default {
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 80,
+          width: 100,
         },
         {
           prop: "mixQty",
           label: ["Mixed", "Qty"],
-          width: 80,
+          width: 70,
         },
         {
           prop: "volume",

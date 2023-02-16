@@ -2,9 +2,9 @@
   <div
     class="title"
     ref="reTitle"
-    @click="gotoPartList"
     v-permission.auto="SOURCING_NOMINATION_ATTATCH_TITLE | (决策资料 - title)"
   >
+    <!-- @click="gotoPartList" -->
     <div class="imgBox">
       <img src="@/assets/images/CSC_bg.png" alt="" />
     </div>
@@ -54,13 +54,13 @@ export default {
     this.findLayoutTitleInfo();
   },
   methods: {
-    gotoPartList() {
-      const { query } = this.$route;
-      this.$router.push({
-        path: "/previewCSC/partlist",
-        query,
-      });
-    },
+    // gotoPartList() {
+    //   const { query } = this.$route;
+    //   this.$router.push({
+    //     path: "/previewCSC/partlist",
+    //     query,
+    //   });
+    // },
     findLayoutTitleInfo: function () {
       findLayoutTitleInfo({
         nominateId: this.$route.query.desinateId,
@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   height: 100%;
-  padding: 0 40px;
+  // padding: 0 40px;
   overflow: auto;
   display: flex;
   flex-flow: column;
