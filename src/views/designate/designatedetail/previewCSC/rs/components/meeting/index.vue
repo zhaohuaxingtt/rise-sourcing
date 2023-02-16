@@ -2136,8 +2136,8 @@ export default {
     padding-top: 8px;
     padding-bottom: 8px;
     & > .cell {
-      padding-left: 3px;
-      padding-right: 3px;
+      padding-left: 1px;
+      padding-right: 1px;
       line-height: unset;
       font-size: 14px;
       p {
@@ -2154,8 +2154,8 @@ export default {
 
   ::v-deep .el-table__row td {
     .cell {
-      padding-left: 3px;
-      padding-right: 3px;
+      padding-left: 1px;
+      padding-right: 1px;
       line-height: unset;
     }
   }
