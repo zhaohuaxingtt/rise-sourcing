@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-15 15:28:19
+ * @LastEditTime: 2023-02-16 11:58:14
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -13,10 +13,10 @@ export const leftTitle = [
   {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Project Type'},
   {props: 'partNo', name: '零件号', enName: 'Part No'},
   {props: 'sop', name: '投产时间', enName: 'SOP'},
-  {props: 'buyer', name: '询价采购员', enName: 'Buyer'},
+  {props: 'buyer', name: '询价采购员', enName: 'sourcing'},
   {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date'},
   {props: 'carTypeName', name: '车型', enName: 'Carline'},
-  {props: 'linieName', name: '专业采购员', enName: 'FS'},
+  {props: 'linieName', name: '专业采购员', enName: 'Linie'},
   {props: 'rfqId', name: 'RFQ号', enName: 'RFQ-No.'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'},
   {props: 'epen', name: '工程师', enName: 'EP/EN'},
@@ -153,27 +153,27 @@ export const gsDetailTitleBlue = [
 
 
 export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS No.',enName: '(Plant)', minWidth:84},
-  {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', minWidth:74},
-  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',minWidth:74},
-  {props:'partNo',name:'零件号', enName: 'Part No.',minWidth:64},
-  {props:'partName',name:'零件名称', enName: 'Part Name',minWidth:76},
-  {props:'mixQty',name:'综合每车用量', enName: 'Mixed Qty',minWidth:74},
-  {props:'logNorm',name:'物流标准', enName: 'Log Norm', minWidth:74},
-  {props:'svwCode',name:'厂商', enName: 'Code', minWidth:48},
+  {props:'fsnrGsnrNum',name:'FS No.',enName: '(Plant)', minWidth:100},
+  {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', minWidth:80},
+  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',minWidth:65},
+  {props:'partNo',name:'零件号', enName: 'Part No.',width:110},
+  {props:'partName',name:'零件名称', enName: 'Part Name',width:110},
+  {props:'mixQty',name:'综合每车用量', enName: 'Mixed Qty',width:90},
+  {props:'logNorm',name:'物流标准', enName: 'Log Norm', width:70},
+  {props:'svwCode',name:'厂商', enName: 'Code', width:48},
   {props:'supplierName',name:'供应商', enName: 'Supplier', minWidth:125},
-  {props:'prodLocation',name:'产地', enName: 'Prod.Location', minWidth:88},
-  {props:'share',name:'份额', enName: 'Share', enName1:'(%)', minWidth:60},
-  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', minWidth:80},
-  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', minWidth:80},
+  {props:'prodLocation',name:'产地', enName: 'Prod.Location', minWidth:100},
+  {props:'share',name:'份额', enName: 'Share', enName1:'(%)', minWidth:65},
+  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', minWidth:85},
+  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', minWidth:85},
   {props:'status',name:'状态', enName: 'Status', minWidth:50},
-  {props:'aprice',name:'A价', enName: 'A Price', minWidth: 80},
-  {props:'bprice',name:'B价', enName: 'B Price', minWidth: 80},
-  {props:'ltc',name:'年降', enName: 'LTC', minWidth: 50},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', minWidth: 96},
-  {props:'investFee',name:'投资费', enName: 'Invest', minWidth: 70},
-  {props:'devFee',name:'开发费', enName: 'Develop Cost', minWidth: 90},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', minWidth: 100},
+  {props:'aprice',name:'A价', enName: 'A Price', minWidth: 70},
+  {props:'bprice',name:'B价', enName: 'B Price', minWidth: 70},
+  {props:'ltc',name:'年降', enName: 'LTC', minWidth: 48},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', minWidth: 105},
+  {props:'investFee',name:'投资费', enName: 'Invest', minWidth: 60},
+  {props:'devFee',name:'开发费', enName: 'Develop Cost', minWidth: 95},
+  {props:'turnover',name:'采购金额', enName: 'Turnover', minWidth: 88},
 
   // {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "",minWidth:84, fixed: true},
   // {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "",minWidth:74, fixed: true},

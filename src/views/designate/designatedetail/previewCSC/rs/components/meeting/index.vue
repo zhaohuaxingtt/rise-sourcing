@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-15 10:34:36
+ * @LastEditTime: 2023-02-16 11:42:18
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -572,7 +572,7 @@
                 <p>{{ item.name }}{{ item.enName }}:</p>
               </div>
               <div class="rsTop-left-item-value">
-                {{ basicData[item.props] }}
+                {{ basicData[item.props] }} {{item.props=='lifeTime'?'WK':''}}
               </div>
             </div>
           </div>
@@ -1216,7 +1216,7 @@ export default {
       residualRemark: [],
       showpdf: true,
       html: "",
-      titleHeight:173
+      titleHeight:189
     };
   },
   filters: {

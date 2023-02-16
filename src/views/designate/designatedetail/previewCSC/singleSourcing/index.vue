@@ -177,6 +177,7 @@ export default {
             } = data;
             const { total } = resultPage;
             this.tableListData = resultPage.data || [];
+            this.tableListData = [...this.tableListData,...this.tableListData,]
             this.page.totalCount = total;
             this.nominateId = nominateId;
             this.projectName = cartypeProjectZhList

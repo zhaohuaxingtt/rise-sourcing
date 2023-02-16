@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   height: 100%;
-  // padding: 0 40px;
+  padding-top: 0;
   overflow: auto;
   display: flex;
   flex-flow: column;
@@ -131,6 +131,7 @@ export default {
 }
 .content {
   height: calc(100% - 525px);
+  min-height: 300px;
   padding: 20px;
   border: 1px solid #ddd;
   flex: 1;
@@ -138,7 +139,7 @@ export default {
   justify-content: space-between;
   flex-flow: column;
   margin-top: 20px;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
   .infos {
     display: flex;
     font-size: 20px;

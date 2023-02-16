@@ -295,19 +295,8 @@ export default {
   }
   // 减去分页器高度
   .decision-data-partList-content {
-    height: calc(100% - 45px);
+    height: calc(100% - 50px);
     flex: 1;
-  }
-  // 45px
-  ::v-deep .i-pagination {
-    height: 35px;
-    margin-top: 10px;
-    .pagination {
-      margin-top: 0;
-      .el-pager li:not(.disabled).active {
-        background-color: #364d6e;
-      }
-    }
   }
   ::v-deep .el-dialog .el-dialog__headerbtn {
     background: #364d6e;

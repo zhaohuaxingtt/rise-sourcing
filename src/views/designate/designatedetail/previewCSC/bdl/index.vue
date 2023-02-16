@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-13 18:22:47
+ * @LastEditTime: 2023-02-16 11:07:52
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -35,6 +35,7 @@
           :selection="false"
           :tableLoading="loading"
           index
+          height="100%"
           :key="tab"
           :tableData="tableData"
           class="doubleHeader table"
@@ -356,8 +357,8 @@ export default {
     }
   }
   .content {
-    height: calc(100% - 39px);
-    overflow: auto;
+    overflow: auto;    
+    flex: 1;
     .table-box {
       height: calc(100% - 84px);
     }

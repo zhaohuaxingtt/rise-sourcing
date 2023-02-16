@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-13 18:42:12
+ * @LastEditTime: 2023-02-16 11:04:22
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,6 @@
   <iPage class="preview-csc" :class="isPreview === '1' ? 'no-padding' : ''">
     <div
       id="preview-csc"
-      class="nomination-wraper"
     >
       <decisionDataHeader class="tab-nav"/>
       <div class="nomination-content" v-loading="loading" id="pdfHide">
@@ -126,18 +125,6 @@ export default {
 .page {
   position: relative;
 }
-.nomination-wraper {
-  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-  border-radius: 0.375rem;
-  background: #fff;
-  .tip {
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
-    color: rgb(151, 166, 196);
-    line-height: calc(100vh - 360px);
-  }
-}
 
 ::v-deep .pdf-item {
   width: 100%;
@@ -168,10 +155,10 @@ export default {
   overflow-y: auto;
   position: relative;
   background: #fff;
+  padding:  0 80px 20px;
 }
 #preview-csc {
   height: 100%;
-  padding-bottom: 5px;
   overflow: auto;
   ::v-deep * {
     font-family: 'Arial', 'Helvetica', 'sans-serif';
@@ -197,6 +184,8 @@ export default {
       padding-top: 20px;
       height: 100%;
       overflow: auto;
+      display: flex;
+      flex-flow: column;
     }
   }
   ::v-deep .decision-header.preview-header {
@@ -267,7 +256,11 @@ export default {
     }
   }
   ::v-deep .i-pagination {
+    margin-bottom: 5px;
+    height: 35px;
+    margin-top: 10px;
     .pagination {
+      margin-top: 0;
       .el-pager li:not(.disabled).active {
         background-color: #364d6e;
       }
