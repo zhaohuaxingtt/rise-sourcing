@@ -73,6 +73,14 @@ export function getBaCarPullDown(parmars) {
         data: parmars
     })
 }
+//  获取车型列表下拉
+export function getBaCarPullDown2(parmars) {
+    return VUE_APP_APPLY({
+        url: '/getBaCarPullDown2',
+        method: 'GET',
+        data: parmars
+    })
+}
 
 // 获取生产工厂下拉列表
 export function getProductionFactoryPullDown() {
