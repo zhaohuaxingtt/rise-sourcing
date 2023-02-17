@@ -10,7 +10,6 @@ export default {
     height: Number,
     data: Object,
     max: Number,
-    colorA: String,
     colorB: String,
   },
   data() {
@@ -107,7 +106,7 @@ export default {
             stack: "Supplier",
             data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
             itemStyle: {
-              color: this.colorA || "#516894",
+              color: "#63b5e7",
             },
           },
           {
@@ -124,7 +123,7 @@ export default {
             stack: "Supplier",
             data: [this.getDiff()],
             itemStyle: {
-              color: this.colorB || "#d8ddd7",
+              color: "#f9ce03",
             },
           },
           {
@@ -141,7 +140,7 @@ export default {
             stack: "Supplier",
             data: [this.getDiff()],
             itemStyle: {
-              color: this.colorC || "#cccccc",
+              color: "#069444",
             },
           },
           {

@@ -633,8 +633,12 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        if (row.suggestFlag) {
+        if (row.suggestFlag && row.isFsMinTto) {
+          return "blue-border font-green";
+        }else if (row.suggestFlag) {
           return "blue-border";
+        }else if(row.isFsMinTto) {
+          return "font-green"
         }
       }
       if (["Total Turnover"].includes(column.label)) {

@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-17 14:19:17
+ * @LastEditTime: 2023-02-17 18:15:00
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,13 +10,28 @@
   <div v-loading="loading">
     <div class="page-header margin-bottom20">
       <span>Unit:RMB</span>
-      <span class="font-size20">Supplier Offer Comparison ( {{ detail.carTypeProjectNum }} )</span>
-      <div class="flex">
-        <div class="legend">
-          <span class="APrice margin-right10"></span> <span>A Price</span>
+      <span class="font-size20"
+        >Supplier Offer Comparison ( {{ detail.carTypeProjectNum }} )</span
+      >
+      <div class="legend-box">
+        <div>
+          <div class="legend-item">
+            <span class="legend APrice margin-right10"></span>
+            <span>A Price</span>
+          </div>
+          <div class="legend-item margin-top10">
+            <span class="legend BPrice margin-right10"></span
+            ><span>BNK Price</span>
+          </div>
         </div>
-        <div class="legend margin-left20">
-          <span class="BPrice margin-right10"></span><span>BNK Price</span>
+        <div class="margin-left20">
+          <div class="legend-item">
+            <span class="legend GAP margin-right10"></span>
+            <span>plausible GAP</span>
+          </div>
+          <div class="legend-item margin-top10">
+            <span class="legend Field margin-right10"></span><span>Green Field</span>
+          </div>
         </div>
       </div>
     </div>
@@ -46,13 +61,9 @@
         fixed
       ></el-table-column>
       <el-table-column prop="remark" align="center" width="1"></el-table-column>
-      <template v-for="(item,index) in supplierList">
-          <!-- :key="item.supplierNameEn" -->
-        <el-table-column
-          :key="index"
-          align="center"
-          minWidth="160px"
-        >
+      <template v-for="(item, index) in supplierList">
+        <!-- :key="item.supplierNameEn" -->
+        <el-table-column :key="index" align="center" minWidth="160px">
           <template slot-scope="scope">
             <template v-if="scope.$index == 0">
               <barItem
@@ -110,21 +121,22 @@
           <template slot-scope="scope">
             <template v-if="scope.$index == 0">
               <barItemVSI
-                v-if="item.prop=='VSI'"
+                v-if="item.prop == 'VSI'"
                 :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
                 :color="item.colorA"
-                :max="max"/>
+                :max="max"
+              />
               <barItemKGF
-                v-else-if="item.prop=='KGF'"
+                v-else-if="item.prop == 'KGF'"
                 :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
-                :colorA="item.colorA"
-                :max="max"/>
+                :max="max"
+              />
               <barItem
                 v-else
                 :key="item.prop"
@@ -167,7 +179,7 @@ export default {
   components: {
     barItem,
     barItemVSI,
-    barItemKGF
+    barItemKGF,
   },
   props: {
     detail: {
@@ -193,7 +205,7 @@ export default {
         let rows =
           this.$refs.table.$el?.getElementsByClassName("el-table__body")[0]
             .rows || [];
-        let height = 230; // 表格外其它内容高度
+        let height = 250; // 表格外其它内容高度
         for (let index = 1; index < rows.length; index++) {
           const element = rows[index];
           height += element.offsetHeight;
@@ -204,7 +216,7 @@ export default {
   },
   data() {
     return {
-      height: 230, // 表格外其它内容高度
+      height: 250, // 表格外其它内容高度
       tableData: [
         {
           label: ["A-B Price", "Comparison"],
@@ -258,11 +270,11 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       fixedList: [
-        { prop: "Recommendation", label: "Recommendation", colorA: '#0092eb' },
-        { prop: "LTC", label: "After LTC", colorA: '#0092eb' },
-        { prop: "F-Target", label: "F-Target", colorA: '#a0dcff' },
-        { prop: "KGF", label: "KGF", colorA: '#a0dcff' },
-        { prop: "VSI", label: "VSI", colorA: '#a0dcff' },
+        { prop: "Recommendation", label: "Recommendation", colorA: "#0092eb" },
+        { prop: "LTC", label: "After LTC", colorA: "#0092eb" },
+        { prop: "F-Target", label: "F-Target", colorA: "#a0dcff" },
+        { prop: "KGF", label: "KGF"},
+        { prop: "VSI", label: "VSI", colorA: "#a0dcff" },
       ],
       loading: false,
       max: null,
@@ -335,9 +347,11 @@ export default {
           );
           this.fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
           this.fixedList[3].bPrice = res.data.kmInfo?.tia || 0;
+          this.fixedList[3].cPrice = res.data.kmInfo?.openGap || 0;
           allPrice.push(
             deleteThousands(res.data.kmInfo?.pca || 0),
-            deleteThousands(res.data.kmInfo?.pcb || 0)
+            deleteThousands(res.data.kmInfo?.pcb || 0),
+            deleteThousands(res.data.kmInfo?.openGap || 0)
           );
           this.fixedList[4].aPrice = "";
           this.fixedList[4].bPrice = "";
@@ -364,7 +378,7 @@ export default {
       }
     },
     rowClass({ row }) {
-      return ['E', 'Q'].includes(row.subLabel) ? "small" : ""
+      return ["E", "Q"].includes(row.subLabel) ? "small" : "";
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex == 0 && ![1, 2].includes(rowIndex)) {
@@ -399,27 +413,39 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 18px;
+  align-items:center;
+  .legend-box {
+    display: flex;
+    flex-flow: row;
+    .legend-item{
+      display: flex;
+    }
+  }
   .legend {
     display: flex;
     align-items: center;
-    .APrice {
-      height: 20px;
-      width: 20px;
-      background: #516894;
-    }
-    .BPrice {
-      height: 20px;
-      width: 20px;
-      background: #d8ddd7;
-    }
+    height: 20px;
+    width: 20px;
+  }
+  .APrice {
+    background: #516894;
+  }
+  .BPrice {
+    background: #d8ddd7;
+  }
+  .GAP {
+    background: #f9ce03;
+  }
+  .Field {
+    background: #069444;
   }
 }
 .header {
   ::v-deep tr {
     padding: 0;
-    &.small{
+    &.small {
       height: unset !important;
-      td{
+      td {
         padding: 3px;
       }
     }
@@ -446,7 +472,7 @@ export default {
     color: #f00;
   }
 }
-.font-size20{
+.font-size20 {
   font-size: 20px;
   font-weight: bold;
 }
