@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 23:54:13
+ * @LastEditTime: 2023-02-17 14:36:21
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -70,14 +70,14 @@
               <!--------------------------------------------------------->
               <span
                 v-if="
-                  scope.row.detailVOMap[item] &&
-                  scope.row.detailVOMap[item].schedule == 3
+                  scope.row.detailVOMap['round'+item.round] &&
+                  scope.row.detailVOMap['round'+item.round].schedule == 3
                 "
                 class="blue-color"
               >
                 <span
                   class="cursor blue-color"
-                  v-if="scope.row.detailVOMap[item].isNoBidOpen"
+                  v-if="scope.row.detailVOMap['round'+item.round].isNoBidOpen"
                   >―</span
                 >
                 <icon
@@ -91,8 +91,8 @@
               <!--------------------------------------------------------->
               <span
                 v-else-if="
-                  scope.row.detailVOMap[item] &&
-                  scope.row.detailVOMap[item].schedule == 2
+                  scope.row.detailVOMap['round'+item.round] &&
+                  scope.row.detailVOMap['round'+item.round].schedule == 2
                 "
                 class="blue-color"
               >
@@ -104,11 +104,11 @@
               <template v-else>
                 <span
                   v-if="
-                    scope.row.detailVOMap[item] &&
-                    scope.row.detailVOMap[item].quotationId
+                    scope.row.detailVOMap['round'+item.round] &&
+                    scope.row.detailVOMap['round'+item.round].quotationId
                   "
                   class="blue-color"
-                  >{{ scope.row.detailVOMap[item].schedule }}</span
+                  >{{ scope.row.detailVOMap['round'+item.round].schedule }}</span
                 >
                 <span v-else>\</span>
               </template>
@@ -232,13 +232,12 @@ export default {
             name:'Round',
             nameGap: -80,
             nameTextStyle:{
-              fontSize:this.fontSize(20),
+              fontSize:this.fontSize(18),
                verticalAlign:'bottom',
                fontFamily:'Arial',
-               fontWeight: 'bold'
             },
             data: this.roundList.map(item=>{
-              return `${item.round}(${item.roundTypeDesc})`
+              return `${item.round}(${item.inquiryType})`
             }),
             axisLabel: {
               fontSize: this.fontSize(18),
@@ -248,13 +247,12 @@ export default {
         yAxis: [
           {
             type: "value",
-            name:'unit: RMB',
+            name:'Unit: RMB',
             nameGap: 30,
             nameTextStyle:{
-              fontSize:this.fontSize(20),
+              fontSize:this.fontSize(18),
                align:'right',
                fontFamily:'Arial',
-               fontWeight: 'bold'
             },
             min: function (val) {
               return (

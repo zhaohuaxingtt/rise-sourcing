@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-05-29 09:21:13
- * @LastEditTime: 2023-02-01 17:02:54
+ * @LastEditTime: 2023-02-17 12:27:25
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/designate/designatedetail/tasks/components/data.js
  */
 // 单一供应商表头
 export const tasksTitle = [
-  { props: 'taskTime',isHeaderSetting:true, HeaderSettingList:[{name:'时间'},{name:'Time'},] },
+  { props: 'taskTime',isHeaderSetting:true, HeaderSettingList:[{name:'时间'},{name:'Time'},], tooltip:true },
   { props: 'taskRemark',isHeaderSetting:true, HeaderSettingList:[{name:'任务'},{name:'Task'},], minWidth: 200 },
   { props: 'taskResult',isHeaderSetting:true, HeaderSettingList:[{name:'结果'},{name:'Result'},] },
   { props: 'isFinishFlag',isHeaderSetting:true, HeaderSettingList:[{name:'状态'},{name:'Status'},] },

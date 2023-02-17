@@ -13,6 +13,7 @@
         border
         height="100%"
         :header-cell-class-name="cellClass"
+        :header-row-class-name="rowClass"
         :cell-class-name="colClass"
       >
         <!-- 左侧固定表头 -->
@@ -386,17 +387,17 @@ export default {
         {
           prop: "carProType",
           label: ["Carline"],
-          width: 80,
+          width: 120,
         },
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 80,
+          width: 60,
         },
         {
           prop: "ebrCalculatedValue",
           label: ["Mixed", "Qty"],
-          width: 80,
+          width: 60,
         },
         {
           prop: "volume",
@@ -441,7 +442,7 @@ export default {
         },
       ],
       index: -1,
-      showLength: 5,
+      showLength: 4,
       supplierAllData: [],
       loading: false,
       totalTableHeight: 280,
@@ -508,6 +509,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
+            totalData[6].isMinTto = []
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
@@ -526,6 +528,9 @@ export default {
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
               totalData[4][item.supplierId + "aPrice"] = item.aPrice;
               totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
+              if(item.isMinTto){
+                totalData[6].isMinTto.push(item.supplierId + "aPrice")
+              }
               return item;
             });
             totalData[0]["aPrice"] =
@@ -699,6 +704,11 @@ export default {
         this.setColSpan();
       });
     },
+    rowClass({row, rowIndex }){
+      if(rowIndex<4){
+        return 'table-header-small'
+      }
+    },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0 && columnIndex == 0) {
@@ -729,6 +739,11 @@ export default {
     totalColClass({ row, column, rowIndex, columnIndex }) {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
+      }
+      if(rowIndex=='6'){
+        if(row.isMinTto.includes(column.property)){
+          return 'font-green'
+        }
       }
     },
     gotoDetail(row) {
@@ -775,6 +790,13 @@ export default {
   }
   .el-table__header {
     background: #fff;
+    .table-header-small{
+      font-size: 16px;
+      th{
+        padding-top: 0px;
+        padding-bottom: 0px;
+      }
+    }
     .white-bg {
       background: #fff;
       .cell {
@@ -816,6 +838,7 @@ export default {
 }
 
 .total-table {
+  font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }
@@ -831,11 +854,18 @@ export default {
       background-color: #364d6e;
     }
   }
+  ::v-deep td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    .cell {
+      padding: 0 4px;
+    }
+  }
 }
 .left {
-  transform: translate(-12px, -5.5px);
+  transform: translate(-12px, 0px);
   width: 12px;
-  height: 120px;
+  height: 84px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
@@ -844,12 +874,13 @@ export default {
   .icon {
     transform: rotate(180deg);
     width: 12px;
+    user-select: none;
   }
 }
 .right {
-  transform: translate(-3px, -5.5px);
+  transform: translate(-3px, 0px);
   width: 12px;
-  height: 120px;
+  height: 84px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
@@ -857,6 +888,7 @@ export default {
   z-index: 999;
   .icon {
     width: 12px;
+    user-select: none;
   }
 }
 

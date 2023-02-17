@@ -128,6 +128,23 @@ export default {
             },
           },
           {
+            name: "CPrice",
+            type: "bar",
+            label: {
+              show: true,
+              position: "inside",
+              fontSize: this.fontSize(18),
+            },
+            barMaxWidth: "80",
+            barMinWidth: "40",
+            barMinHeight: "10",
+            stack: "Supplier",
+            data: [this.getDiff()],
+            itemStyle: {
+              color: this.colorC || "#cccccc",
+            },
+          },
+          {
             name: "Total",
             type: "bar",
             label: {

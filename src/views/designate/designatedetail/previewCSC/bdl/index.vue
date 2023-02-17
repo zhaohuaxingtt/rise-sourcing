@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 11:07:52
+ * @LastEditTime: 2023-02-17 15:11:50
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -47,7 +47,7 @@
             <div>
               <p class="factoryDesc">
                 <span>{{ scope.row.supplierName }}</span>
-                <img class="mbdl" :src="MBDL" v-if="scope.row.isMbdl" alt="">
+                <img class="mbdl" :src="MBDL" v-if="scope.row.isMbdl" alt="" />
               </p>
               <el-tooltip
                 effect="light"
@@ -74,17 +74,25 @@
               </div>
             </div>
           </template>
+          <template #plantLocations="scope">
+            <el-tooltip effect="light" :content="scope.row.location">
+              <span>
+                {{ scope.row.plantLocations }}
+              </span>
+            </el-tooltip>
+            <!-- <span :title="scope.row.location">{{scope.row.plantLocations}}</span> -->
+          </template>
           <template #isQuotation="scope">
-            <img :src="success" v-if="scope.row.isQuotation" alt="">
+            <img :src="success" v-if="scope.row.isQuotation" alt="" />
           </template>
           <template #isPartQuotation="scope">
-            <img :src="success" v-if="scope.row.isPartQuotation" alt="">
+            <img :src="success" v-if="scope.row.isPartQuotation" alt="" />
           </template>
           <template #isRefuse="scope">
-            <img :src="success" v-if="scope.row.isRefuse" alt="">
+            <img :src="success" v-if="scope.row.isRefuse" alt="" />
           </template>
           <template #noQuotation="scope">
-            <img :src="success" v-if="scope.row.noQuotation" alt="">
+            <img :src="success" v-if="scope.row.noQuotation" alt="" />
           </template>
         </tableList>
       </div>
@@ -124,8 +132,8 @@ import { pageMixins } from "@/utils/pageMixins";
 import { cloneDeep } from "lodash";
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon";
 import filters from "@/utils/filters";
-import success from '@/assets/images/csc-bdl-success.svg'
-import MBDL from '@/assets/images/icon/mbdl-icon.png'
+import success from "@/assets/images/csc-bdl-success.svg";
+import MBDL from "@/assets/images/icon/mbdl-icon.png";
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -189,36 +197,40 @@ export default {
 
     tableTitle() {
       const title = cloneDeep(tableTitle);
-      let rates = [];
+      let rates = {
+        MQ:'',
+        EP:'',
+        PL:'pl'
+      };
       this.tableData.forEach((item) => {
         (item.departmentRate || []).map((child) => {
-          if (!rates.includes(child.rateDepartNum)) {
-            rates.push(child.rateDepartNum);
+          if(!rates[child.tagName]){
+            rates[child.tagName] = child.rateDepartNum
           }
         });
       });
-      let subList = ["E", "Q", "L"];
       title.push({
         props: "departmentRate",
         name: "Rating",
         key: "",
         tooltip: true,
-        children: subList.map((item, i) => {
-          if(i==2){
-            return {
-            props: rates[i] || item,
-            name: `${item}(PL)`,
+        children: [
+          {
+            props: rates['MQ'] || 'Q',
+            name: `Q(${rates['MQ'] || "-"})`,
             key: "",
             type: "rate",
-          };
+          },{
+            props: rates['EP'] || 'E',
+            name: `E(${rates['EP'] || "-"})`,
+            key: "",
+            type: "rate",
+          },{
+            props: rates['PL'] || 'L',
+            name: `L(PL)`,
+            key: "",
           }
-          return {
-            props: rates[i] || item,
-            name: `${item}(${rates[i] || "-"})`,
-            key: "",
-            type: "rate",
-          };
-        }),
+        ],
       });
 
       if (this.hasTitle)
@@ -311,10 +323,10 @@ export default {
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
-  .text{
+  .text {
     flex: 1;
   }
-  .mbdl{
+  .mbdl {
     height: 100%;
     vertical-align: bottom;
   }
@@ -357,7 +369,7 @@ export default {
     }
   }
   .content {
-    overflow: auto;    
+    overflow: auto;
     flex: 1;
     .table-box {
       height: calc(100% - 84px);

@@ -358,7 +358,7 @@ export default {
     background-color: #364d6e;
   }
 }
-.table-box{
+.table-box {
   height: calc(100% - 81px);
 }
 </style>

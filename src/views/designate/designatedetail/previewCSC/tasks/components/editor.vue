@@ -10,7 +10,7 @@
       :showMenus="false"
       :disabled="!multiEditControl"
       v-model="content"
-      :height="200"
+      :height="64"
       v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
       ref="editor"
 

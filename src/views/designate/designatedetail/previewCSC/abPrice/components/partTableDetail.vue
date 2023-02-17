@@ -5,7 +5,7 @@
     width="80%"
     :visible.sync="visible"
     v-on="$listeners"
-    :title="'Quotation Detail of ' + row.partPrjCode"
+    :title="'Quotation Detail of ' + (row.partPrjCode || row.fsNum)"
   >
     <div class="body">
       <supplierTableList class="content" :row="row" />

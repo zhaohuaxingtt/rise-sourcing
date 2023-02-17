@@ -461,13 +461,23 @@ export default {
         )[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
-      this.merge(row, 8, 2, 2, "colSpan");
+        this.merge(row, 8, 2, 2, "colSpan");
       if (this.partList.length > 0) this.merge(row, 8, 4, 2, "colSpan");
       if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
       if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
       if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+      
+      if(this.row?.partPrjCode || this.row?.fsNum){
+        this.merge(row, 0, this.partList.length + 1, 9, "colSpan");
+        this.merge(row, 1, this.partList.length + 1, 9, "colSpan");
+        this.merge(row, 2, this.partList.length + 1, 9, "colSpan");
+        this.merge(row, 3, this.partList.length + 1, 9, "colSpan");
+        this.merge(row, 4, this.partList.length + 1, 9, "colSpan");
+        this.merge(row, 5, this.partList.length + 1, 9, "colSpan");
+      }else{
+        this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
+        this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+      }
       this.$nextTick(() => {
         this.positionAllow()
       });
@@ -545,8 +555,8 @@ export default {
   .el-table__header {
     background: #fff;
     .supllier-header {
-      padding-top: 3px;
-      padding-bottom: 3px;
+      padding-top: 0px;
+      padding-bottom: 0px;
       font-size: 16px;
     }
     .white-bg {
@@ -559,7 +569,9 @@ export default {
     }
     .unit {
       vertical-align: top;
-      font-weight: 700;
+      .cell{
+        font-weight: 500;
+      }
     }
   }
   .blue-border {
@@ -584,9 +596,9 @@ export default {
   }
 }
 .left {
-  transform: translate(-17px, -3px);
+  transform: translate(-17px, 0px);
   width: 12px;
-  height: 162px;
+  height: 126px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
@@ -595,12 +607,13 @@ export default {
   .icon {
     transform: rotate(180deg);
     width: 12px;
+    user-select: none;
   }
 }
 .right {
-  transform: translate(3px, -3px);
+  transform: translate(3px, 0px);
   width: 12px;
-  height: 162px;
+  height: 126px;
   background: #0092eb;
   border-radius: 50px;
   display: inline-flex;
@@ -608,6 +621,7 @@ export default {
   z-index: 999;
   .icon {
     width: 12px;
+    user-select: none;
   }
 }
 .table {

@@ -10,8 +10,7 @@ export default {
     height: Number,
     data: Object,
     max: Number,
-    colorA: String,
-    colorB: String,
+    color: String
   },
   data() {
     return {
@@ -93,43 +92,11 @@ export default {
         ],
         series: [
           {
-            name: "APrice",
+            name: "VSI",
             type: "bar",
-            label: {
-              show: true,
-              position: "inside",
-              fontSize: this.fontSize(18),
-            },
-            // barWidth:'60',
             barMaxWidth: "80",
             barMinWidth: "40",
             barMinHeight: "10",
-            stack: "Supplier",
-            data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
-            itemStyle: {
-              color: this.colorA || "#516894",
-            },
-          },
-          {
-            name: "BPrice",
-            type: "bar",
-            label: {
-              show: true,
-              position: "inside",
-              fontSize: this.fontSize(18),
-            },
-            barMaxWidth: "80",
-            barMinWidth: "40",
-            barMinHeight: "10",
-            stack: "Supplier",
-            data: [this.getDiff()],
-            itemStyle: {
-              color: this.colorB || "#d8ddd7",
-            },
-          },
-          {
-            name: "Total",
-            type: "bar",
             label: {
               show: true,
               position: "top",
@@ -138,12 +105,15 @@ export default {
               fontSize: this.fontSize(18),
               formatter: () => {
                 return (
-                  (+deleteThousands(this.data.bPrice || 0)).toFixed(2) || ""
+                  (+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""
                 );
               },
             },
+            itemStyle: {
+              color: this.color || "#a0dcff",
+            },
             stack: "Supplier",
-            data: [0],
+            data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
           },
         ],
       };

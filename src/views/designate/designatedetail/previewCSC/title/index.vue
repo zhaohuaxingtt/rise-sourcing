@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   height: 100%;
-  padding-top: 0;
+  padding-top: 0 !important;
   overflow: auto;
   display: flex;
   flex-flow: column;

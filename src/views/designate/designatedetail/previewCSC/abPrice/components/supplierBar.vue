@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 23:57:54
+ * @LastEditTime: 2023-02-17 14:19:17
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,7 @@
       :show-header="false"
       :span-method="arraySpanMethod"
     >
-      <el-table-column prop="label" align="center" width="90">
+      <el-table-column prop="label" align="center" width="90" fixed>
         <template slot-scope="scope">
           <p v-for="(text, index) in scope.row.label" :key="index">
             {{ text }}
@@ -43,13 +43,15 @@
         prop="subLabel"
         align="center"
         width="40"
+        fixed
       ></el-table-column>
       <el-table-column prop="remark" align="center" width="1"></el-table-column>
-      <template v-for="item in supplierList">
+      <template v-for="(item,index) in supplierList">
+          <!-- :key="item.supplierNameEn" -->
         <el-table-column
-          :key="item.supplierNameEn"
+          :key="index"
           align="center"
-          minWidth="140px"
+          minWidth="160px"
         >
           <template slot-scope="scope">
             <template v-if="scope.$index == 0">
@@ -102,16 +104,34 @@
           :prop="item.prop"
           :key="item.prop"
           align="center"
-          minWidth="140px"
+          minWidth="160px"
+          fixed="right"
         >
           <template slot-scope="scope">
             <template v-if="scope.$index == 0">
-              <barItem
+              <barItemVSI
+                v-if="item.prop=='VSI'"
                 :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
-                :opacityA="item.opacityA"
+                :color="item.colorA"
+                :max="max"/>
+              <barItemKGF
+                v-else-if="item.prop=='KGF'"
+                :key="item.prop"
+                :height="height"
+                :barName="item.label"
+                :data="item"
+                :colorA="item.colorA"
+                :max="max"/>
+              <barItem
+                v-else
+                :key="item.prop"
+                :height="height"
+                :barName="item.label"
+                :data="item"
+                :colorA="item.colorA"
                 :max="max"
               />
             </template>
@@ -138,11 +158,16 @@
 
 <script>
 import barItem from "./barItem";
+import barItemVSI from "./barItemVSI";
+import barItemKGF from "./barItemKGF";
+
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { toThousands, deleteThousands } from "@/utils";
 export default {
   components: {
     barItem,
+    barItemVSI,
+    barItemKGF
   },
   props: {
     detail: {
@@ -168,7 +193,7 @@ export default {
         let rows =
           this.$refs.table.$el?.getElementsByClassName("el-table__body")[0]
             .rows || [];
-        let height = 225; // 表格外其它内容高度
+        let height = 230; // 表格外其它内容高度
         for (let index = 1; index < rows.length; index++) {
           const element = rows[index];
           height += element.offsetHeight;
@@ -179,7 +204,7 @@ export default {
   },
   data() {
     return {
-      height: 225,
+      height: 230, // 表格外其它内容高度
       tableData: [
         {
           label: ["A-B Price", "Comparison"],
@@ -233,11 +258,11 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       fixedList: [
-        { prop: "Recommendation", label: "Recommendation", opacityA: 0.7 },
-        { prop: "LTC", label: "After LTC", opacityA: 0.7 },
-        { prop: "F-Target", label: "F-Target", opacityA: 0.5 },
-        { prop: "KGF", label: "KGF", opacityA: 0.5 },
-        { prop: "VSI", label: "VSI", opacityA: 0.5 },
+        { prop: "Recommendation", label: "Recommendation", colorA: '#0092eb' },
+        { prop: "LTC", label: "After LTC", colorA: '#0092eb' },
+        { prop: "F-Target", label: "F-Target", colorA: '#a0dcff' },
+        { prop: "KGF", label: "KGF", colorA: '#a0dcff' },
+        { prop: "VSI", label: "VSI", colorA: '#a0dcff' },
       ],
       loading: false,
       max: null,
@@ -374,7 +399,6 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 18px;
-  font-weight: bold;
   .legend {
     display: flex;
     align-items: center;
@@ -424,5 +448,6 @@ export default {
 }
 .font-size20{
   font-size: 20px;
+  font-weight: bold;
 }
 </style>

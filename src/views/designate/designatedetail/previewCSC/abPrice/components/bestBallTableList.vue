@@ -443,17 +443,17 @@ export default {
         {
           prop: "carTypeProjectNum",
           label: ["Carline"],
-          width: 80,
+          width: 120,
         },
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 100,
+          width: 60,
         },
         {
           prop: "mixQty",
           label: ["Mixed", "Qty"],
-          width: 70,
+          width: 60,
         },
         {
           prop: "volume",
@@ -692,9 +692,10 @@ export default {
   }
   .el-table__header {
     .primary-label {
-      line-height: 36px;
       height: 36px;
+      line-height: 36px;
       .cell{
+        line-height: 36px !important;
         height: 100%;
       }
     }
@@ -706,6 +707,9 @@ export default {
     }
     .unit {
       vertical-align: top;
+      .cell{
+        font-weight: 500;
+      }
     }
   }
   .blue-border {
@@ -731,9 +735,11 @@ export default {
 }
 
 .total-table {
+  font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }
+  
   ::v-deep tr {
     .table-header {
       background: #364d6e;
@@ -744,6 +750,13 @@ export default {
     }
     &:hover > td.table-header {
       background-color: #364d6e;
+    }
+  }
+  ::v-deep td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    .cell {
+      padding: 0 4px;
     }
   }
 }
@@ -758,7 +771,8 @@ export default {
   z-index: 999;
   .icon {
     transform: rotate(180deg);
-    width: 10px;
+    width: 12px;
+    user-select: none;
   }
 }
 .right {
@@ -771,7 +785,8 @@ export default {
   align-items: center;
   z-index: 999;
   .icon {
-    width: 10px;
+    width: 12px;
+    user-select: none;
   }
 }
 

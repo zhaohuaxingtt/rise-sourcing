@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="designate-attachment" v-loading="loading">
-    <div class="el-card left-list" :class="{ show: collapseValue }" @click="collapse">
+    <div class="el-card left-list" :class="{ show: collapseValue }" @click="collapse" @mouseleave="collapse($event,true)">
       <div class="collapse-transition margin-right5" v-show="!collapseValue">
         <div @click.stop="">
           <template v-for="(item, i) in allData">
@@ -182,8 +182,12 @@ export default {
           });
       });
     },
-    collapse() {
-      this.collapseValue = !this.collapseValue;
+    collapse(ev,val='') {
+      if(val!==''){
+        this.collapseValue = val;
+      }else{
+        this.collapseValue = !this.collapseValue;
+      }
     },
     changeSrc(index, item) {
       let fileObj = JSON.parse(JSON.stringify(item))
