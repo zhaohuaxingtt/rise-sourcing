@@ -568,12 +568,6 @@ export default {
         color: #000 !important;
       }
     }
-    .unit {
-      vertical-align: top;
-      .cell{
-        font-weight: 500;
-      }
-    }
   }
   .leftAllow {
     position: relative;

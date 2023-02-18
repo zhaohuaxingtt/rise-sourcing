@@ -70,6 +70,7 @@ export default {
             data: [this.barName],
             axisLabel: {
               fontSize: this.fontSize(18),
+              color :'#000',
             },
             axisTick: {
               show: false,
@@ -91,6 +92,9 @@ export default {
             },
           },
         ],
+        textStyle:{
+          fontFamily: "'Arial', 'Helvetica', 'sans-serif'"
+        },
         series: [
           {
             name: "APrice",
@@ -167,7 +171,7 @@ export default {
 <style lang="scss" scoped>
 .bar {
   width: 100%;
-  height: calc(100vh - 500px);
-  min-height: 100px;
+  height: 400px;
+  min-height: 200px;
 }
 </style>

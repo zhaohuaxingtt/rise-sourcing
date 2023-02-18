@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+  <defs>
+    <filter id="矩形_2" x="0" y="0" width="54" height="54" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="组_18" data-name="组 18" transform="translate(377 -241) rotate(90)">
+    <g id="组_6" data-name="组 6" transform="translate(0 36)">
+      <g transform="matrix(0, -1, 1, 0, 241, 341)" filter="url(#矩形_2)">
+        <rect id="矩形_2-2" data-name="矩形 2" width="30" height="30" rx="4" transform="translate(42 9) rotate(90)" fill="#1cb0f0"/>
+      </g>
+    </g>
+    <path id="Icon_awesome-chevron-up" data-name="Icon awesome-chevron-up" d="M10.4,8.982l8.264,8.264a1.02,1.02,0,0,1,0,1.443l-.964.964a1.02,1.02,0,0,1-1.441,0l-6.58-6.549L3.1,19.654a1.02,1.02,0,0,1-1.441,0L.7,18.689a1.02,1.02,0,0,1,0-1.443L8.96,8.982A1.02,1.02,0,0,1,10.4,8.982Z" transform="translate(255.602 335.317)" fill="#fff"/>
+  </g>
+</svg>

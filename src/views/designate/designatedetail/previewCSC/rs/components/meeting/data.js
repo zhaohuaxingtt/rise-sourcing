@@ -2,24 +2,24 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 16:26:01
+ * @LastEditTime: 2023-02-18 23:37:27
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
 
 export const leftTitle = [
-  // {props: 'partName', name: '零件名称', enName: 'Part Name'},
-  {props: 'project', name: '项目', enName: 'Project'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Project Type'},
-  // {props: 'partNo', name: '零件号', enName: 'Part No'},
-  {props: 'sop', name: '投产时间', enName: 'SOP'},
-  {props: 'buyer', name: '询价采购员', enName: 'sourcing'},
-  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date'},
   {props: 'carTypeName', name: '车型', enName: 'Carline'},
-  // {props: 'linieName', name: '专业采购员', enName: 'Linie'},
-  // {props: 'rfqId', name: 'RFQ号', enName: 'RFQ-No.'},
-  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'},
+  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date'},
+  {props: 'project', name: '项目', enName: 'Project'},
+  {props: 'linieName', name: '专业采购员', enName: 'Linie'},
+  {props: 'sop', name: '投产时间', enName: 'SOP'},
   {props: 'epen', name: '工程师', enName: 'EP/EN'},
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'},
+  // {props: 'partName', name: '零件名称', enName: 'Part Name'},
+  // {props: 'partNo', name: '零件号', enName: 'Part No'},
+  // {props: 'buyer', name: '询价采购员', enName: 'sourcing'},
+  // {props: 'rfqId', name: 'RFQ号', enName: 'RFQ-No.'},
 ]
 export const rightTitle = [
   {props: 'currency', name: '货币', enName: 'Currency'},
@@ -157,7 +157,7 @@ export const nomalTableTitle = [
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', minWidth:80},
   {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',minWidth:65},
   {props:'partNo',name:'零件号', enName: 'Part No.',width:110},
-  {props:'partName',name:'零件名称', enName: 'Part Name',width:110},
+  {props:'partName',name:'零件名称', enName: 'Part Name',width:100},
   {props:'mixQty',name:'综合每车用量', enName: 'Mixed Qty',width:90},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', width:70},
   {props:'svwCode',name:'厂商', enName: 'Code', width:48},

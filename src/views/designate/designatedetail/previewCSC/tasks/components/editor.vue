@@ -2,7 +2,7 @@
 <template>
   <div>
     <span class="font18 font-weight">
-      {{ language("Background & Objective","Background & Objective") }}</span
+      {{ language("Background & Objective", "Background & Objective") }}</span
     >
     <iEditor
       class="editor-content margin-top20"
@@ -11,112 +11,112 @@
       :disabled="!multiEditControl"
       v-model="content"
       :height="64"
-      v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR | 备注编辑框"
       ref="editor"
-
-      />
+    />
   </div>
 </template>
 
 <script>
+import { iInput, iCard, iButton, iMessage, iEditor } from "rise";
+import upload from "@/components/Upload";
 import {
-  iInput,
-  iCard,
-  iButton,
-  iMessage,
-  iEditor
-} from 'rise'
-import upload from '@/components/Upload'
-import { 
   addBackgroundAndObjectiveInfo,
-  getBackgroundAndObjectiveInfo
-} from '@/api/designate/decisiondata/tasks'
+  getBackgroundAndObjectiveInfo,
+} from "@/api/designate/decisiondata/tasks";
 
 export default {
   props: {
-    isTask:{
-      type: String
-    }
+    isTask: {
+      type: String,
+    },
   },
   data() {
     return {
-      id: '',
-      content: '',
+      id: "",
+      content: "",
       Edditor: {},
       pictures: [],
       submiting: false,
       multiEditControl: false,
-      task:''
-    }
+      task: "",
+    };
   },
   created() {
-    this.isTask == true ? this.task = 'Background&Objective' :this.task='highligths'
+    this.isTask == true
+      ? (this.task = "Background&Objective")
+      : (this.task = "highligths");
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      nominationDisabled: state => state.nomination.nominationDisabled,
-      rsDisabled: state => state.nomination.rsDisabled,
+      nominationDisabled: (state) => state.nomination.nominationDisabled,
+      rsDisabled: (state) => state.nomination.rsDisabled,
     }),
     isDisabled() {
-      return false
-    }
+      return false;
+    },
   },
   components: {
     // iInput,
     iCard,
     iButton,
     iEditor,
-    upload
+    upload,
   },
   mounted() {
-    this.getFetchData()
+    this.getFetchData();
   },
   methods: {
     onUploadsucess(data) {
-      this.content += `<p><img src="${data && data.data && data.data.path || ''}" /></p>`
-      this.$refs.editor.html(this.content)
+      this.content += `<p><img src="${
+        (data && data.data && data.data.path) || ""
+      }" /></p>`;
+      this.$refs.editor.html(this.content);
     },
     getFetchData() {
       getBackgroundAndObjectiveInfo({
-        nominateId: this.$store.getters.nomiAppId || this.$route.query.desinateId || '',
-      }).then(res => {
-        if (res.code === '200') {
+        nominateId:
+          this.$store.getters.nomiAppId || this.$route.query.desinateId || "",
+      }).then((res) => {
+        if (res.code === "200") {
           if (res.data) {
-            this.content = res.data.content || ''
-            this.$refs.editor.html(this.content)
-            this.id = res.data.id
-            this.pictures = []
+            this.content = res.data.content || "";
+            this.$refs.editor.html(this.content);
+            this.id = res.data.id;
+            this.pictures = [];
           }
         } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      })
+      });
     },
     // 保存修改记录
     async submit() {
-      this.submiting = true
+      this.submiting = true;
       const data = {
-        nominateId: this.$store.getters.nomiAppId || '',
+        nominateId: this.$store.getters.nomiAppId || "",
         content: this.content,
         id: this.id,
-        pictures: this.pictures.join(',')
-      }
-      addBackgroundAndObjectiveInfo(data).then(res => {
-        if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.submiting = false
-      }).catch(e => {
-        this.submiting = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      })
+        pictures: this.pictures.join(","),
+      };
+      addBackgroundAndObjectiveInfo(data)
+        .then((res) => {
+          if (res.code === "200") {
+            iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
+            this.getFetchData();
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+          this.submiting = false;
+        })
+        .catch((e) => {
+          this.submiting = false;
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        });
     },
-  }
-}
+  },
+};
 </script>
 <style lang="scss" scoped>
 #textEditor {
@@ -126,7 +126,7 @@ export default {
   ::v-deep.w-e-toolbar {
     display: none;
   }
-  ::v-deep #editor{
+  ::v-deep #editor {
     height: 100%;
   }
   ::v-deep.w-e-text-container {
@@ -137,10 +137,16 @@ export default {
     .w-e-text {
       p {
         margin: 0px;
-        font-size: 16px !important;
+        font-size: 18px !important;
+        line-height: 20px !important;
+        letter-spacing: 0 !important;
+        font-family: "Arial", "Helvetica", "sans-serif" !important;
       }
-      span{
-        font-size: 16px !important;
+      span {
+        font-size: 18px !important;
+        line-height: 20px !important;
+        letter-spacing: 0 !important;
+        font-family: "Arial", "Helvetica", "sans-serif" !important;
       }
     }
   }

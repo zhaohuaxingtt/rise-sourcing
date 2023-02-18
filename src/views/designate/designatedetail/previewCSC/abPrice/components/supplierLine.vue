@@ -2,119 +2,117 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 16:26:44
+ * @LastEditTime: 2023-02-18 23:09:07
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div v-loading="loading">
     <div class="page-header margin-bottom20">
-      <span class="font-size20">Supplier Offer Comparison ( {{ detail.rfqId }} )</span>
+      <span class="font-size20"
+        >Supplier Offer Comparison ( {{ detail.rfqId }} )</span
+      >
     </div>
-    <el-table
-      :data="[{}]"
-      class="header"
-      ref="table-bar"
-      :show-header="false"
-      :span-method="arraySpanMethod"
-    >
-      <el-table-column prop="supplierNameEn" align="left" :width="labelWidth">
-        <template slot-scope="scope">
-          <div v-if="scope.$index == 0" class="chart" ref="chart"></div>
-        </template>
-      </el-table-column>
-      <template v-for="item in roundList">
-        <el-table-column :key="'round'+item.round" :prop="'round'+item.round" align="center" minWidth="160">
-        </el-table-column>
-      </template>
-    </el-table>
     <div class="table-box">
       <el-table
         border
         :data="tableData"
         class="header"
         ref="table"
-        :show-header="false"
+        height="100%"
+        :header-cell-class-name="cellClass"
       >
-        <el-table-column prop="supplierNameEn" align="left" :width="labelWidth">
-          <template slot-scope="scope">
-            <div class="flex">
-              <div class="legend margin-right5">
-                <span
-                  class="line"
-                  :style="{ background: scope.row.color }"
-                ></span
-                ><span
-                  class="point"
-                  :style="{ background: scope.row.color }"
-                ></span>
-              </div>
-              <span>
-                {{ scope.row.supplierNameEn }}
-              </span>
-            </div>
+        <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <div class="chart" ref="chart"></div>
           </template>
-        </el-table-column>
-        <template v-for="item in roundList">
           <el-table-column
-            :key="'round'+item.round"
-            :prop="'round'+item.round"
-            align="center"
-            minWidth="160"
+            prop="supplierNameEn"
+            align="left"
+            :width="labelWidth"
+            show-overflow-tooltip
           >
-            <!-- <template slot-scope="scope">{{scope.row.detailVOMap[item].schedule}}</template> -->
-
             <template slot-scope="scope">
-              <!--------------------------------------------------------->
-              <!------------------------内容是打勾------------------------>
-              <!--------------------------------------------------------->
-              <span
-                v-if="
-                  scope.row.detailVOMap['round'+item.round] &&
-                  scope.row.detailVOMap['round'+item.round].schedule == 3
-                "
-                class="blue-color"
-              >
-                <span
-                  class="cursor blue-color"
-                  v-if="scope.row.detailVOMap['round'+item.round].isNoBidOpen"
-                  >―</span
-                >
-                <icon
-                  v-else
-                  name="iconbaojiazhuangtailiebiao_yibaojia"
-                  symbol
-                ></icon>
-              </span>
-              <!--------------------------------------------------------->
-              <!------------------------内容是打叉------------------------>
-              <!--------------------------------------------------------->
-              <span
-                v-else-if="
-                  scope.row.detailVOMap['round'+item.round] &&
-                  scope.row.detailVOMap['round'+item.round].schedule == 2
-                "
-                class="blue-color"
-              >
-                X
-              </span>
-              <!--------------------------------------------------------->
-              <!------------------------内容是横岗百分比------------------->
-              <!--------------------------------------------------------->
-              <template v-else>
-                <span
-                  v-if="
-                    scope.row.detailVOMap['round'+item.round] &&
-                    scope.row.detailVOMap['round'+item.round].quotationId
-                  "
-                  class="blue-color"
-                  >{{ scope.row.detailVOMap['round'+item.round].schedule }}</span
-                >
-                <span v-else>\</span>
-              </template>
+              <div class="flex">
+                <div class="legend margin-right5">
+                  <span
+                    class="line"
+                    :style="{ background: scope.row.color }"
+                  ></span
+                  ><span
+                    class="point"
+                    :style="{ background: scope.row.color }"
+                  ></span>
+                </div>
+                <span>
+                  {{ scope.row.supplierNameEn }}
+                </span>
+              </div>
             </template>
           </el-table-column>
-        </template>
+          <template v-for="(item, index) in roundList">
+            <el-table-column
+              :key="index + 'round' + item.round"
+              :prop="'round' + item.round"
+              align="center"
+              minWidth="50"
+            >
+              <template slot-scope="scope">
+                <!--------------------------------------------------------->
+                <!------------------------内容是打勾------------------------>
+                <!--------------------------------------------------------->
+                <span
+                  v-if="
+                    scope.row.detailVOMap['round' + item.round] &&
+                    scope.row.detailVOMap['round' + item.round].schedule == 3
+                  "
+                  class="blue-color"
+                >
+                  <span
+                    class="cursor blue-color"
+                    v-if="
+                      scope.row.detailVOMap['round' + item.round].isNoBidOpen
+                    "
+                    >―</span
+                  >
+                  <icon
+                    v-else
+                    name="iconbaojiazhuangtailiebiao_yibaojia"
+                    symbol
+                  ></icon>
+                </span>
+                <!--------------------------------------------------------->
+                <!------------------------内容是打叉------------------------>
+                <!--------------------------------------------------------->
+                <span
+                  v-else-if="
+                    scope.row.detailVOMap['round' + item.round] &&
+                    scope.row.detailVOMap['round' + item.round].schedule == 2
+                  "
+                  class="blue-color"
+                >
+                  X
+                </span>
+                <!--------------------------------------------------------->
+                <!------------------------内容是横岗百分比------------------->
+                <!--------------------------------------------------------->
+                <template v-else>
+                  <span
+                    v-if="
+                      scope.row.detailVOMap['round' + item.round] &&
+                      scope.row.detailVOMap['round' + item.round].quotationId
+                    "
+                    class="blue-color"
+                    >{{
+                      scope.row.detailVOMap["round" + item.round].schedule
+                    }}</span
+                  >
+                  <span v-else>\</span>
+                </template>
+              </template>
+            </el-table-column>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -148,17 +146,6 @@ export default {
     return {
       roundList: [],
       tableData: [],
-      columnLabel: [
-        "bar",
-        "te",
-        "q",
-        "ltcStartDateList",
-        "totalInvest",
-        "totalDevelopCost",
-        "totalTurnover",
-      ], // 'bar不显示,只占位
-      supplierList: [],
-      fixedList: ["Recommendation", "F-Target", "KGF", "VSI"],
       labelWidth: 200,
       loading: false,
     };
@@ -168,12 +155,13 @@ export default {
   },
   methods: {
     resize() {
-      console.log(this.detail.rfqId);
       this.charts && this.charts.resize();
     },
-    fontSize(res){
-      const fontSize = parseFloat(document.getElementsByTagName('html')[0].style.fontSize) || 16;
-      return res*(fontSize/16);
+    fontSize(res) {
+      const fontSize =
+        parseFloat(document.getElementsByTagName("html")[0].style.fontSize) ||
+        16;
+      return res * (fontSize / 16);
     },
     drawLine() {
       let series = [];
@@ -192,11 +180,12 @@ export default {
           },
         };
         this.roundList.forEach((child) => {
-          seriesItem.data.push(item.detailVOMap?.['round'+child.round]?.mixAPrice || "");
+          seriesItem.data.push(
+            item.detailVOMap?.["round" + child.round]?.mixAPrice || ""
+          );
         });
         series.push(seriesItem);
       });
-      this.charts = this.$echarts.init(this.$refs.chart,null,{ renderer : 'svg' });
       let options = {
         title: {
           show: false,
@@ -216,30 +205,34 @@ export default {
         xAxis: [
           {
             type: "category",
-            name:'Round',
+            name: "Round",
             nameGap: -80,
-            nameTextStyle:{
-              fontSize:this.fontSize(18),
-               verticalAlign:'bottom',
-               fontFamily:'Arial',
+            splitNumber: this.roundList.length,
+            nameTextStyle: {
+              fontSize: this.fontSize(18),
+              verticalAlign: "bottom",
+              fontFamily: "Arial",
             },
-            data: this.roundList.map(item=>{
-              return `${item.round}(${item.inquiryType})`
+            data: this.roundList.map((item) => {
+              return `${item.round}(${
+                item.inquiryType == "询价轮" ? "Inquiry" : "Negotiation"
+              })`;
             }),
             axisLabel: {
               fontSize: this.fontSize(18),
+              color :'#000',
             },
           },
         ],
         yAxis: [
           {
             type: "value",
-            name:'Unit: RMB',
+            name: "Unit: RMB",
             nameGap: 30,
-            nameTextStyle:{
-              fontSize:this.fontSize(18),
-               align:'right',
-               fontFamily:'Arial',
+            nameTextStyle: {
+              fontSize: this.fontSize(18),
+              align: "right",
+              fontFamily: "Arial",
             },
             min: function (val) {
               return (
@@ -249,11 +242,18 @@ export default {
             },
             axisLabel: {
               fontSize: this.fontSize(18),
+              color :'#000',
             },
           },
         ],
+        textStyle:{
+          fontFamily: "'Arial', 'Helvetica', 'sans-serif'"
+        },
         series: series,
       };
+      this.charts = this.$echarts.init(this.$refs.chart, null, {
+        renderer: "svg",
+      });
       this.charts.setOption(options);
     },
     getLine() {
@@ -272,7 +272,7 @@ export default {
           .then((res) => {
             if (res?.code != 200) return;
             // 构建数据
-            this.roundList = res.data.roundTableHead
+            this.roundList = res.data.roundTableHead;
             this.tableData = [
               ...res.data.roundQuotationVOS.map((item, index) => {
                 let cIndex = index;
@@ -294,18 +294,9 @@ export default {
           });
       }
     },
-    colClass({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex < 2) {
-        return "table-header";
-      }
-    },
-    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex == 0) {
-        if (columnIndex == 0) {
-          return [1, this.roundList.length + 1];
-        } else {
-          return [0, 0];
-        }
+    cellClass({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex == 1) {
+        return "table-hidden";
       }
     },
   },
@@ -317,12 +308,12 @@ export default {
 
 <style lang="scss" scoped>
 .table-box {
-  max-height: calc(100% - 595px);
+  height: calc(100% - 45px);
   overflow: auto;
 }
 .chart {
   width: 100%;
-  height: 500px;
+  height: 400px;
 }
 .page-header {
   text-align: center;
@@ -352,16 +343,18 @@ export default {
 }
 .header {
   ::v-deep tr {
+  }
+  ::v-deep tr {
     padding: 0;
-    .table-header {
-      background: #364d6e;
+    th {
+      background: #fff;
       .cell {
         font-weight: 700;
         color: #fff;
       }
     }
-    &:hover > td.table-header {
-      background-color: #364d6e;
+    .table-hidden {
+      display: none;
     }
     .cell {
       padding: 0;
@@ -373,7 +366,7 @@ export default {
   border: 1px solid #666;
   vertical-align: top;
 }
-.font-size20{
+.font-size20 {
   font-size: 20px;
 }
 .font-size16 {

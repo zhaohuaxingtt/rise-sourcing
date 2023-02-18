@@ -158,16 +158,6 @@
           <el-table-column :key="index" align="center">
             <div slot="header" slot-scope="scope">
               {{ item.supplierEn || "-" }}
-              <div
-                v-if="index == 0"
-                class="leftAllow"
-                @click="leftAllow($event)"
-              ></div>
-              <div
-                v-if="index == supplierList.length - 1"
-                class="rightAllow"
-                @click="rightAllow($event)"
-              ></div>
             </div>
             <el-table-column :label="item.TE" align="center">
               <template slot-scope="scope" slot="header">
@@ -775,10 +765,15 @@ export default {
   .el-table__header {
     background: #fff;
     .table-header-small{
-      font-size: 16px;
       th{
+        font-size: 16px;
         padding-top: 0px;
         padding-bottom: 0px;
+      }
+      .unit{
+        .cell{
+          padding-top: 1px;
+        }
       }
     }
     .white-bg {
@@ -789,26 +784,12 @@ export default {
         color: #000 !important;
       }
     }
-    .unit {
-      vertical-align: top;
-    }
   }
   .partName {
     width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-  }
-  .leftAllow {
-    position: relative;
-    padding: 0;
-    float: left;
-  }
-
-  .rightAllow {
-    position: relative;
-    padding: 0;
-    float: right;
   }
   .red {
     color: #f00;

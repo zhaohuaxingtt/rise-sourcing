@@ -2,13 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 16:29:08
+ * @LastEditTime: 2023-02-18 23:34:13
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
 
 <template>
-  <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'"><div id="hide" class="rs-content">
+  <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
+    <div id="hide" class="rs-content">
       <div class="page-flex" ref="page-flex">
         <div class="page-header">
           <div class="title">
@@ -20,7 +21,11 @@
                 $route.query.desinateId ? $route.query.desinateId : nominateId
               }}
             </div>
-            <div class="singleSourcing cursor" @click="gotoSingle" v-if="isSingle">
+            <div
+              class="singleSourcing cursor"
+              @click="gotoSingle"
+              v-if="isSingle"
+            >
               Single Sourcing
             </div>
           </div>
@@ -36,7 +41,14 @@
                 <p>{{ item.name }}{{ item.enName }}:</p>
               </div>
               <div class="rsTop-left-item-value">
-                <p>{{ basicData[item.props] }} {{item.props=='lifeTime'?basicData[item.props]&&'WK':''}}</p>
+                <p>
+                  {{ basicData[item.props] }}
+                  {{
+                    item.props == "lifeTime"
+                      ? basicData[item.props] && "WK"
+                      : ""
+                  }}
+                </p>
               </div>
             </div>
           </div>
@@ -404,7 +416,11 @@
           </tableList>
         </div>
       </div>
-      <div class="rsCard-content" ref="body-table" :style="{height:`calc(100% - ${titleHeight}px`}">
+      <div
+        class="rsCard-content"
+        ref="body-table"
+        :style="{ height: `calc(100% - ${titleHeight}px` }"
+      >
         <div class="rsCard">
           <tableList
             v-update
@@ -415,6 +431,7 @@
             :tableData="tableData"
             class="rsTable table"
             :show-header="false"
+            :cell-class-name="cellClass"
             border
           >
             <template #fsnrGsnrNum="scope">
@@ -960,8 +977,8 @@ export default {
       residualRemark: [],
       showpdf: true,
       html: "",
-      titleHeight:243,
-      gutter: '0'
+      titleHeight: 243,
+      gutter: "0",
     };
   },
   filters: {
@@ -1122,8 +1139,8 @@ export default {
       },
     },
   },
-  updated(){
-    this.$set(this,'titleHeight',this.$refs['page-flex'].offsetHeight)
+  updated() {
+    this.$set(this, "titleHeight", this.$refs["page-flex"].offsetHeight);
   },
   created() {
     this.isAuth = this.$route.query.type === "auth";
@@ -1404,6 +1421,23 @@ export default {
       this.getPrototypeList();
       this.getIsSingle();
     },
+    // 表格背景色
+    cellClass({ row, column, rowIndex, columnIndex }) {
+      if (
+        [
+          "supplierName",
+          "cfTargetAPrice",
+          "cfTargetBPrice",
+          "aprice",
+          "bprice",
+          "investFee",
+          "devFee",
+          "turnover",
+        ].includes(column.property)
+      ) {
+        return "bg-yellow";
+      }
+    },
     /**
      * @Description: 获取表格初始数据
      * @Author: Luoshuang
@@ -1467,11 +1501,14 @@ export default {
           this.$nextTick(() => {
             this.getHeight();
             this.loading = false;
-            this.gutter = '0px'
-            if(this.$refs['body-table'])
-            if(this.$refs['body-table'].clientHeight<this.$refs['body-table'].scrollHeight){
-              this.gutter = '8px'
-            }
+            this.gutter = "0px";
+            if (this.$refs["body-table"])
+              if (
+                this.$refs["body-table"].clientHeight <
+                this.$refs["body-table"].scrollHeight
+              ) {
+                this.gutter = "8px";
+              }
           });
         });
     },
@@ -1826,14 +1863,14 @@ export default {
         border: 1px dashed #1660f1;
       }
     }
-    .header-table{
-      ::v-deep .el-table__body-wrapper{
+    .header-table {
+      ::v-deep .el-table__body-wrapper {
         display: none;
       }
     }
   }
   .rsCard-content {
-    height:calc(100% - 173px);
+    height: calc(100% - 173px);
     overflow: auto;
   }
   .rsCard {
@@ -1908,6 +1945,9 @@ export default {
   }
 
   ::v-deep .el-table__row td {
+    &.bg-yellow{
+      background: #fef7e7;
+    }
     .cell {
       padding-left: 1px;
       padding-right: 1px;
@@ -2027,7 +2067,7 @@ export default {
     }
   }
 }
-.out-compute{
+.out-compute {
   font-size: 16px;
 }
 .beizhu {

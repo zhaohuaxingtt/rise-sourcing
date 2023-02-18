@@ -69,6 +69,7 @@ export default {
             data: [this.barName],
             axisLabel: {
               fontSize: this.fontSize(18),
+              color :'#000',
             },
             axisTick: {
               show: false,
@@ -90,6 +91,9 @@ export default {
             },
           },
         ],
+        textStyle:{
+          fontFamily: "'Arial', 'Helvetica', 'sans-serif'"
+        },
         series: [
           {
             name: "APrice",
@@ -104,7 +108,7 @@ export default {
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
-            data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
+            data: [this.data.aPrice||'0.00'],
             itemStyle: {
               color: "#97a0bb",
             },
@@ -121,7 +125,7 @@ export default {
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
-            data: [this.getDiff()],
+            data: [this.data.bPrice||'0.00'],
             itemStyle: {
               color: "#f9ce03",
             },
@@ -138,7 +142,7 @@ export default {
             barMinWidth: "40",
             barMinHeight: "10",
             stack: "Supplier",
-            data: [this.getDiff()],
+            data: [this.data.cPrice||'0.00'],
             itemStyle: {
               color: "#069444",
             },
@@ -154,7 +158,7 @@ export default {
               fontSize: this.fontSize(18),
               formatter: () => {
                 return (
-                  (+deleteThousands(this.data.bPrice || 0)).toFixed(2) || ""
+                  ((+this.data.aPrice || 0)+(+this.data.bPrice || 0)+(+this.data.cPrice || 0)).toFixed(2)
                 );
               },
             },
@@ -183,7 +187,7 @@ export default {
 <style lang="scss" scoped>
 .bar {
   width: 100%;
-  height: calc(100vh - 500px);
-  min-height: 100px;
+  height: 400px;
+  min-height: 200px;
 }
 </style>

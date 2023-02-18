@@ -69,7 +69,7 @@
                 </template>
             </el-table>
     <div class="time-line" ref="time-line" :style="rfqStyle">
-        <span>RFQ</span>
+        <p><span>RFQ</span><br><span>KW20</span></p>
         <div class="text-line"></div>
     </div>
             </div>
@@ -104,7 +104,7 @@ export default {
       stepList: stepList,
       isLoading: false,
       detailData: [],
-      timeRange: [2023, 2024,2025,2026],
+      timeRange: [2023, 2024, 2025],
       monthLabel: [
         "Jan",
         "Feb",

@@ -2,26 +2,18 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:06:56
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 10:47:28
+ * @LastEditTime: 2023-02-18 18:49:11
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\data.js
  */
 
 export const tableTitle = [
-  { props: 'supplierName', align: 'left', isHeaderSetting: true, HeaderSettingList: [{ name: '供应商' }, { name: 'Supplier Information' },], minWidth: 220 },
-  { props: 'plantLocations', isHeaderSetting: true, HeaderSettingList: [{ name: '所在地' }, { name: 'Location' },], minWidth: 140 },
-  { props: 'isQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '已报价' }, { name: 'Completely' },{ name: 'Quoted' },], minWidth: 90 },
+  { props: 'supplierName', align: 'left', isHeaderSetting: true, HeaderSettingList: [{ name: '供应商' }, { name: 'Supplier Information' },], minWidth: 240 },
+  { props: 'plantLocations', isHeaderSetting: true, HeaderSettingList: [{ name: '所在地' }, { name: 'Location' },], minWidth: 220 },
+  { props: 'isQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '已报价' }, { name: 'Completely' },{ name: 'Quoted' },], minWidth: 100 },
   { props: 'isPartQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '部分报价' }, { name: 'Partial Quoted' },], minWidth: 100 },
-  { props: 'isRefuse', isHeaderSetting: true, HeaderSettingList: [{ name: '被拒绝' }, { name: 'Refused' },], minWidth: 90 },
+  { props: 'isRefuse', isHeaderSetting: true, HeaderSettingList: [{ name: '被拒绝' }, { name: 'Refused' },], minWidth: 100 },
   { props: 'noQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '未报价' }, { name: 'No Quotation' },], minWidth: 100 },
-  // {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
-  // {props:'sapCode',name:'供应商号', enName: 'Supplier No.', key: "GONGYINGSHANGHAO", tooltip: true},
-  // {props:'plantLocations',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
-  // {props:'isMbdl',name:'是否MBDL', enName: 'MBDL', key: "MBDL", tooltip: true},
-  // {props:'isQuotation',name:'已报价', enName: 'Completely Quoted', key: "YIBAOJIA", tooltip: true, width: 150},
-  // {props:'isPartQuotation',name:'部分报价', enName: 'Partial Quoted', key: "BUFENBAOJIA", tooltip: true},
-  // {props:'isRefuse',name:'被拒绝', enName: 'Refused', key: "BEIJUJUE", tooltip: true},
-  // {props:'noQuotation',name:'没有报价', enName: 'No Quotation', key: "MEIYOUBAOJIA", tooltip: true},
 ]
 
 export const mockData = [

@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 16:07:49
+ * @LastEditTime: 2023-02-19 00:42:16
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,6 +35,7 @@
         </div>
       </div>
     </div>
+      <!-- height="calc(100% - 75px)" -->
     <el-table
       border
       :data="tableData"
@@ -205,18 +206,19 @@ export default {
         let rows =
           this.$refs.table.$el?.getElementsByClassName("el-table__body")[0]
             .rows || [];
-        let height = 300; // 表格外其它内容高度
+        let height = 290; // 表格外其它内容高度
         for (let index = 1; index < rows.length; index++) {
           const element = rows[index];
           height += element.offsetHeight;
         }
         this.height = height;
+        console.log(this.height);
       });
     }, 100); // 这个100不精准,可能导致页面错误
   },
   data() {
     return {
-      height: 300, // 表格外其它内容高度
+      height: 290, // 表格外其它内容高度
       tableData: [
         {
           label: ["Mixed Price", "Comparison"],
@@ -234,7 +236,7 @@ export default {
           subLabel: "L",
         },
         {
-          label: ["LTC from Start", "Date"],
+          label: ["LTC"],
         },
         {
           label: ["Invest"],
@@ -244,7 +246,7 @@ export default {
           VSI: "",
         },
         {
-          label: ["Develop", "Cost"],
+          label: ["Dev. Cost"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",
@@ -351,23 +353,24 @@ export default {
             deleteThousands(res.data.targetMixBPrice || 0)
           );
           this.fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
-          this.fixedList[3].bPrice = res.data.kmInfo?.tia || 0;
-          this.fixedList[3].cPrice = res.data.kmInfo?.openGap || 0;
+          this.fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
+          this.fixedList[3].cPrice = res.data.kmInfo?.tia || 0;
           allPrice.push(
             deleteThousands(res.data.kmInfo?.pca || 0),
-            deleteThousands(res.data.kmInfo?.pcb || 0),
-            deleteThousands(res.data.kmInfo?.openGap || 0)
+            deleteThousands(res.data.kmInfo?.openGap || 0),
+            deleteThousands(res.data.kmInfo?.tia || 0),
+            (+this.data.kmInfo?.pca || 0)+(+this.data.kmInfo?.openGap || 0)+(+this.data.kmInfo?.tia || 0)
           );
           this.fixedList[4].aPrice = "";
           this.fixedList[4].bPrice = "";
-          this.tableData[4].Recommendation =
-            res.data.recommendationNomi?.totalInvest || "";
-          this.tableData[4]["F-Target"] = res.data.targetTotalInvest;
           this.tableData[5].Recommendation =
-            res.data.recommendationNomi?.totalDevelopCost || "";
-          this.tableData[5]["KGF"] = "";
+            res.data.recommendationNomi?.totalInvest || "";
           this.tableData[6].Recommendation =
+            res.data.recommendationNomi?.totalDevelopCost || "";
+          this.tableData[7].Recommendation =
             res.data.recommendationNomi?.totalTurnover || "";
+          this.tableData[5]["F-Target"] = res.data.targetTotalInvest;
+          this.tableData[6]["KGF"] = "";
           this.max = Math.max(...allPrice);
         })
         .finally(() => {

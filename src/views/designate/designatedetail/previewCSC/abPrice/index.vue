@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-18 16:24:49
+ * @LastEditTime: 2023-02-19 00:29:50
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -82,12 +82,12 @@
             (index + 1) * showLength > total ? total : (index + 1) * showLength
           }}列,总共{{ total }}列
         </span>
-        <i class="el-icon-arrow-left" @click="prev"></i>
+        <img :src="left" alt="lrft" class="allow" @click="prev">
         <span v-if="tabTable == 'Best ball'"> {{ index + 1 }} / 2 </span>
         <span v-else>
           {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
         </span>
-        <i class="el-icon-arrow-right" @click="next"></i>
+        <img :src="right" alt="right" class="allow" @click="next">
       </div>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
@@ -114,9 +114,17 @@
       v-if="tab == 'table' && tabTable == 'Best ball'"
     />
     <!-- bar -->
-    <supplierBar class="content" v-if="tab == 'bar'" :detail="carTypeDetail" />
+    <supplierBar
+      class="content-chart"
+      v-if="tab == 'bar'"
+      :detail="carTypeDetail"
+    />
     <!-- <supplierBar2 class="content" v-if="tab == 'bar'" :detail="carTypeDetail" /> -->
-    <supplierLine class="content" v-if="tab == 'line'" :detail="rfqDetail" />
+    <supplierLine
+      class="content-chart"
+      v-if="tab == 'line'"
+      :detail="rfqDetail"
+    />
     <editDialog
       v-if="visible"
       :visible.sync="visible"
@@ -124,12 +132,14 @@
     />
     <div class="footer">
       <el-popover
-        placement="right-start"
+        placement="top-start"
+        popper-class="bg-yellow font-family"
         width="200"
         trigger="click"
+        :visible-arrow="false"
         content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
       >
-        <i class="el-icon-s-comment iconSize" slot="reference"></i>
+        <img :src="tips" alt="tips" class="iconSize" slot="reference" />
       </el-popover>
       <p class="margin-top10 font-size16" v-if="tab == 'line'">
         <span class="margin-right10"
@@ -155,7 +165,7 @@
           ><i class="margin-right5">—</i> No quotation</span
         >
         <span class="margin-right10"
-          ><i class="margin-right5">N/M</i> N out of M Quotation is
+          ><span class="margin-right5">N/M</span> N out of M Quotation is
           submitted</span
         >
       </p>
@@ -187,6 +197,9 @@ import bar from "@/assets/images/icon/bar.png";
 import barActive from "@/assets/images/icon/bar-active.png";
 import line from "@/assets/images/icon/line.png";
 import lineActive from "@/assets/images/icon/line-active.png";
+import tips from "@/assets/images/cscIcon/tips.svg";
+import right from "@/assets/images/cscIcon/right.svg";
+import left from "@/assets/images/cscIcon/left.svg";
 
 import {
   analysisNomiCarProject,
@@ -215,6 +228,9 @@ export default {
       barActive,
       line,
       lineActive,
+      tips,
+      right,
+      left,
       tabList: [
         {
           label: "Table",
@@ -392,11 +408,33 @@ export default {
       vertical-align: middle;
     }
   }
+  .header-btn{
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    .allow{
+      height: 36px;
+      margin-top: 5px;
+    }
+  }
 }
 .content {
   margin-top: 20px;
   height: calc(100% - 100px);
   overflow: auto;
+}
+.content-chart {
+  height: calc(100% - 84px);
+  overflow: auto;
+}
+::v-deep .unit {
+  vertical-align: top;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  .cell {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+  }
 }
 ::v-deep .blue-border {
   background: #d1e0ea !important;
@@ -422,9 +460,10 @@ export default {
   }
 }
 .iconSize {
-  font-size: 26px;
+  height: 36px;
+  vertical-align: middle;
 }
-.font-size20{
+.font-size20 {
   font-size: 20px;
 }
 .font-size16 {
