@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-17 00:42:47
+ * @LastEditTime: 2023-02-18 16:29:08
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1947,24 +1947,36 @@ export default {
       &-value {
         flex: 1;
       }
-      &:nth-of-type(3n) {
-        width: 33%;
+      &:nth-of-type(2n) {
+        width: 50%;
         .rsTop-left-item-title {
           width: 220px;
         }
       }
-      &:nth-of-type(3n-1) {
-        width: 27%;
+      &:nth-of-type(2n-1) {
+        width: 50%;
         .rsTop-left-item-title {
-          width: 140px;
+          width: 220px;
         }
       }
-      &:nth-of-type(3n-2) {
-        width: 40%;
-        .rsTop-left-item-title {
-          width: 200px;
-        }
-      }
+      // &:nth-of-type(3n) {
+      //   width: 33%;
+      //   .rsTop-left-item-title {
+      //     width: 220px;
+      //   }
+      // }
+      // &:nth-of-type(3n-1) {
+      //   width: 27%;
+      //   .rsTop-left-item-title {
+      //     width: 140px;
+      //   }
+      // }
+      // &:nth-of-type(3n-2) {
+      //   width: 40%;
+      //   .rsTop-left-item-title {
+      //     width: 200px;
+      //   }
+      // }
     }
   }
   &-right {

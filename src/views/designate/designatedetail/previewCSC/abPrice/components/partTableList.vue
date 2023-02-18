@@ -3,9 +3,10 @@
   <div ref="part-table" v-loading="loading">
     <div
       class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight + 30}px)` }"
+      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
     >
       <el-table
+        v-show='totalTableHeight'
         :data="tableData"
         class="header table"
         ref="table"
@@ -338,20 +339,7 @@
         </template>
       </el-table>
     </div>
-    <p class="tips">
-      <span class="legend margin-right5"></span><span>: Recommendation</span
-      ><span class="font-green margin-left20 margin-right5">99.99</span
-      ><span>Best offer</span>
-    </p>
     <partTableDetail :visible.sync="visible" :row="row" />
-    <template v-if="supplierAllData.length > 1">
-      <div class="left" :style="left" @click="prev">
-        <img class="icon" :src="allowIcon" alt="" />
-      </div>
-      <div class="right" :style="right" @click="next">
-        <img class="icon" :src="allowIcon" alt="" />
-      </div>
-    </template>
   </div>
 </template>
 
@@ -359,14 +347,10 @@
 import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
-import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
-import allow from "./allow.js";
 export default {
-  mixins: [allow],
   components: { partTableDetail },
   data() {
     return {
-      allowIcon,
       ref: "part-table",
       fixedTitle: [
         {
@@ -429,23 +413,19 @@ export default {
         },
         {
           carProType: "Total Development",
-          volume: "Target",
-          aPrice: "",
-        },
-        {
-          carProType: "Total Development",
-          volume: "Budget",
           aPrice: "",
         },
         {
           carProType: "Total Turnover",
+          isMinTto:[]
         },
       ],
       index: -1,
       showLength: 4,
       supplierAllData: [],
+      allData:[],
       loading: false,
-      totalTableHeight: 280,
+      totalTableHeight: 310,
     };
   },
   computed: {
@@ -498,7 +478,6 @@ export default {
                 });
                 return item;
               }) || [];
-            // tableData = tableData.slice(1,3)
             const totalData = JSON.parse(JSON.stringify(this.totalData));
             let obj = {};
             res.data.bdlPriceTotalInfoList?.forEach((item) => {
@@ -509,7 +488,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
-            totalData[6].isMinTto = []
+            totalData[5].isMinTto = []
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
@@ -527,12 +506,13 @@ export default {
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
               totalData[4][item.supplierId + "aPrice"] = item.aPrice;
-              totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
+              totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
               if(item.isMinTto){
-                totalData[6].isMinTto.push(item.supplierId + "aPrice")
+                totalData[5].isMinTto.push(item.supplierId + "aPrice")
               }
               return item;
             });
+            this.allData = supplierList
             totalData[0]["aPrice"] =
               res.data.fsPriceInfo?.targetMixLcAPrice || "";
             totalData[0]["bPrice"] =
@@ -541,7 +521,7 @@ export default {
               res.data.fsPriceInfo?.targetTotalInvest || "";
             totalData[3]["aPrice"] =
               res.data.fsPriceInfo?.budgetTotalInvest || "";
-            totalData[6]["aPrice"] =
+            totalData[4]["aPrice"] =
               res.data.fsPriceInfo?.targetSelTotalSel || "";
             let supplierAllData = _.chunk(supplierList, this.showLength);
             let lastIndex = supplierAllData.length - 1;
@@ -554,7 +534,9 @@ export default {
             this.supplierAllData = supplierAllData;
             this.index = 0;
             this.totalData = totalData;
-            this.tableData = tableData;
+            this.$nextTick(()=>{
+              this.tableData = tableData;
+            })
           }
         })
         .finally(() => {
@@ -573,18 +555,19 @@ export default {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     setColSpan() {
-      const row =
-        this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
-          .rows;
-      //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 7, "colSpan");
-      this.merge(row, 0, 0, 4, "rowSpan");
-      this.merge(row, 1, 7, 3, "rowSpan");
-      this.merge(row, 4, 7, 2, "colSpan");
+        const row =
+          this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
+            .rows;
+        //   行数据,行,列,合并数,方向
+        this.merge(row, 0, 0, 7, "colSpan");
+        this.merge(row, 0, 0, 4, "rowSpan");
+        this.merge(row, 1, 7, 3, "rowSpan");
+        this.merge(row, 4, 7, 2, "colSpan");
+        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
       this.$nextTick(()=>{
         setTimeout(()=>{
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-          this.positionAllow()
+          console.log('this.totalTableHeight=>',this.totalTableHeight);
         },0)
       })
     },
@@ -642,21 +625,21 @@ export default {
       } else if (columnIndex < 3 && rowIndex < 7) {
         return [0, 0];
       }
-      if ([0, 1, 6].includes(rowIndex)) {
+      if ([0, 1, 4, 5].includes(rowIndex)) {
         if (columnIndex == 3) {
           return [1, 4];
         } else if ([4, 5, 6].includes(columnIndex)) {
           return [0, 0];
         }
       }
-      if ([2, 4].includes(rowIndex)) {
+      if ([2].includes(rowIndex)) {
         if (columnIndex == 3) {
           return [2, 3];
         } else if ([4, 5].includes(columnIndex)) {
           return [0, 0];
         }
       }
-      if ([3, 5].includes(rowIndex)) {
+      if ([3].includes(rowIndex)) {
         if (columnIndex == 3) {
           return [0, 0];
         } else if ([4, 5].includes(columnIndex)) {
@@ -671,11 +654,11 @@ export default {
       }
       for (let i = 0; i < this.supplierList.length; i++) {
         if ([2 * i + 9].includes(columnIndex)) {
-          if ([1, 6].includes(rowIndex)) {
+          if ([1, 4, 5].includes(rowIndex)) {
             return [1, 2];
-          } else if ([2, 4].includes(rowIndex)) {
+          } else if ([2].includes(rowIndex)) {
             return [2, 2];
-          } else if ([3, 5].includes(rowIndex)) {
+          } else if ([3].includes(rowIndex)) {
             return [0, 0];
           }
         }
@@ -740,7 +723,8 @@ export default {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
       }
-      if(rowIndex=='6'){
+      if(rowIndex=='5'){
+        console.log('row=>',row);
         if(row.isMinTto.includes(column.property)){
           return 'font-green'
         }
@@ -814,12 +798,6 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-  }
-  .blue-border {
-    background: #bdd7ee !important;
-  }
-  .font-green {
-    color: #70ad47;
   }
   .leftAllow {
     position: relative;
@@ -911,9 +889,6 @@ export default {
     width: 25px;
     height: 20px;
     background: #bdd7ee;
-  }
-  .font-green {
-    color: #70ad47;
   }
 }
 </style>

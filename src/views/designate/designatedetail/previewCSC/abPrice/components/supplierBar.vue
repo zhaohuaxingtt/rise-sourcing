@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-17 18:15:00
+ * @LastEditTime: 2023-02-18 16:07:49
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -84,7 +84,7 @@
               </p>
             </template>
             <template
-              v-else-if="['te', 'q'].includes(columnLabel[scope.$index])"
+              v-else-if="['te', 'q', 'l'].includes(columnLabel[scope.$index])"
             >
               <span
                 class="red"
@@ -205,7 +205,7 @@ export default {
         let rows =
           this.$refs.table.$el?.getElementsByClassName("el-table__body")[0]
             .rows || [];
-        let height = 250; // 表格外其它内容高度
+        let height = 300; // 表格外其它内容高度
         for (let index = 1; index < rows.length; index++) {
           const element = rows[index];
           height += element.offsetHeight;
@@ -216,10 +216,10 @@ export default {
   },
   data() {
     return {
-      height: 250, // 表格外其它内容高度
+      height: 300, // 表格外其它内容高度
       tableData: [
         {
-          label: ["A-B Price", "Comparison"],
+          label: ["Mixed Price", "Comparison"],
         },
         {
           label: ["Rating"],
@@ -230,17 +230,21 @@ export default {
           subLabel: "Q",
         },
         {
+          label: ["Rating"],
+          subLabel: "L",
+        },
+        {
           label: ["LTC from Start", "Date"],
         },
         {
-          label: ["Total Invest"],
+          label: ["Invest"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",
           VSI: "",
         },
         {
-          label: ["Total Develop", "Cost"],
+          label: ["Develop", "Cost"],
           Recommendation: "",
           "F-Target": "",
           KGF: "",
@@ -263,6 +267,7 @@ export default {
         "bar",
         "te",
         "q",
+        "l",
         "ltcStartDateList",
         "totalInvest",
         "totalDevelopCost",
@@ -270,11 +275,11 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       fixedList: [
-        { prop: "Recommendation", label: "Recommendation", colorA: "#0092eb" },
-        { prop: "LTC", label: "After LTC", colorA: "#0092eb" },
-        { prop: "F-Target", label: "F-Target", colorA: "#a0dcff" },
+        { prop: "Recommendation", label: "Recommendation", colorA: "#395e78" },
+        { prop: "LTC", label: "After LTC", colorA: "#395e78" },
+        { prop: "F-Target", label: "F-Target", colorA: "#97a0bb" },
         { prop: "KGF", label: "KGF"},
-        { prop: "VSI", label: "VSI", colorA: "#a0dcff" },
+        { prop: "VSI", label: "VSI", colorA: "#97a0bb" },
       ],
       loading: false,
       max: null,
@@ -370,39 +375,43 @@ export default {
         });
     },
     colClass({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex < 2) {
-        if (rowIndex == 0) {
+      if (rowIndex == 0) {
+        if (columnIndex < 2) {
+          return "table-header none-border";
+        }
+        return "none-border";
+      }else{
+        if (columnIndex < 2) {
           return "table-header";
         }
-        return "table-header";
       }
     },
     rowClass({ row }) {
-      return ["E", "Q"].includes(row.subLabel) ? "small" : "";
+      return ["E", "Q", "L"].includes(row.subLabel) ? "small" : "";
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex == 0 && ![1, 2].includes(rowIndex)) {
+      if (columnIndex == 0 && [1].includes(rowIndex)) {
+        return [3, 1];
+      }
+      if (columnIndex == 0 && ![1, 2, 3].includes(rowIndex)) {
         return [1, 2];
       }
-      if (columnIndex == 1 && ![1, 2].includes(rowIndex)) {
+      if (columnIndex == 1 && ![1, 2, 3].includes(rowIndex)) {
         return [0, 0];
       }
-      if (columnIndex == 0 && [1].includes(rowIndex)) {
-        return [2, 1];
-      }
-      if (columnIndex == 0 && [2].includes(rowIndex)) {
+      if (columnIndex == 0 && [2,3].includes(rowIndex)) {
         return [0, 0];
       }
-      if (columnIndex == 2 && [7].includes(rowIndex)) {
-        return [2, this.supplierList.length + 5];
-      }
-      if (
-        columnIndex > 2 &&
-        columnIndex < this.supplierList.length + 5 &&
-        [7].includes(rowIndex)
-      ) {
-        return [0, 0];
-      }
+      // if (columnIndex == 2 && [7].includes(rowIndex)) {
+      //   return [2, this.supplierList.length + 5];
+      // }
+      // if (
+      //   columnIndex > 2 &&
+      //   columnIndex < this.supplierList.length + 5 &&
+      //   [7].includes(rowIndex)
+      // ) {
+      //   return [0, 0];
+      // }
     },
   },
 };
@@ -428,7 +437,7 @@ export default {
     width: 20px;
   }
   .APrice {
-    background: #516894;
+    background: #c4dcde;
   }
   .BPrice {
     background: #d8ddd7;
@@ -448,6 +457,9 @@ export default {
       td {
         padding: 3px;
       }
+    }
+    .none-border{
+      border: 0 !important;
     }
     .table-header {
       background: #364d6e;

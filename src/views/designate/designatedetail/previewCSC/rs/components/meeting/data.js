@@ -2,22 +2,22 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-16 11:58:14
+ * @LastEditTime: 2023-02-18 16:26:01
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
 
 export const leftTitle = [
-  {props: 'partName', name: '零件名称', enName: 'Part Name'},
+  // {props: 'partName', name: '零件名称', enName: 'Part Name'},
   {props: 'project', name: '项目', enName: 'Project'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Project Type'},
-  {props: 'partNo', name: '零件号', enName: 'Part No'},
+  // {props: 'partNo', name: '零件号', enName: 'Part No'},
   {props: 'sop', name: '投产时间', enName: 'SOP'},
   {props: 'buyer', name: '询价采购员', enName: 'sourcing'},
   {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date'},
   {props: 'carTypeName', name: '车型', enName: 'Carline'},
-  {props: 'linieName', name: '专业采购员', enName: 'Linie'},
-  {props: 'rfqId', name: 'RFQ号', enName: 'RFQ-No.'},
+  // {props: 'linieName', name: '专业采购员', enName: 'Linie'},
+  // {props: 'rfqId', name: 'RFQ号', enName: 'RFQ-No.'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'},
   {props: 'epen', name: '工程师', enName: 'EP/EN'},
 ]

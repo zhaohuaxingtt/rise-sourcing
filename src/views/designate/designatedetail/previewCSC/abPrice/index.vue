@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-16 09:53:39
+ * @LastEditTime: 2023-02-18 16:24:49
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -73,14 +73,29 @@
           </template>
         </el-radio-group>
       </div>
-      <!-- <div class="header-btn">
-        <iButton @click="visible = true">编辑</iButton>
-      </div> -->
+      <div class="header-btn" v-if="tab == 'table' && index > -1">
+        <span v-if="tabTable == 'Best ball'">
+          当前展示第{{ index + 1 }}页,总共 2 页
+        </span>
+        <span v-else>
+          当前展示{{ index * showLength + 1 }}到{{
+            (index + 1) * showLength > total ? total : (index + 1) * showLength
+          }}列,总共{{ total }}列
+        </span>
+        <i class="el-icon-arrow-left" @click="prev"></i>
+        <span v-if="tabTable == 'Best ball'"> {{ index + 1 }} / 2 </span>
+        <span v-else>
+          {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
+        </span>
+        <i class="el-icon-arrow-right" @click="next"></i>
+      </div>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
     <!-- 重点标注: table必须表头固定,不能出现横向滚动条,不然翻页按钮定位会异常 -->
     <supplierTableList
       class="content"
+      ref="table"
+      @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'Supplier') ||
         tabTable == 'Detailed Worksheet'
@@ -88,10 +103,14 @@
     />
     <partTableList
       class="content"
+      ref="table"
+      @setPage="setPage"
       v-if="tab == 'table' && tabTable == 'Part'"
     />
     <bestBallTableList
       class="content"
+      ref="table"
+      @setPage="setPage"
       v-if="tab == 'table' && tabTable == 'Best ball'"
     />
     <!-- bar -->
@@ -103,6 +122,49 @@
       :visible.sync="visible"
       :carTypeList="this.carTypeList"
     />
+    <div class="footer">
+      <el-popover
+        placement="right-start"
+        width="200"
+        trigger="click"
+        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+      >
+        <i class="el-icon-s-comment iconSize" slot="reference"></i>
+      </el-popover>
+      <p class="margin-top10 font-size16" v-if="tab == 'line'">
+        <span class="margin-right10"
+          ><icon
+            name="iconbaojiazhuangtailiebiao_yibaojia"
+            class="margin-right5"
+            symbol
+          ></icon>
+          Completely Quoted</span
+        >
+        <span class="margin-right10"
+          ><icon
+            name="iconbaojiazhuangtailiebiao_yijujue"
+            class="margin-right5"
+            symbol
+          ></icon>
+          Rejected</span
+        >
+        <span class="margin-right10"
+          ><i class="margin-right5">\</i> Not inquired</span
+        >
+        <span class="margin-right10"
+          ><i class="margin-right5">—</i> No quotation</span
+        >
+        <span class="margin-right10"
+          ><i class="margin-right5">N/M</i> N out of M Quotation is
+          submitted</span
+        >
+      </p>
+      <p class="tips" v-else>
+        <span class="legend margin-right5"></span><span>: Recommendation</span
+        ><span class="font-green margin-left20 margin-right5">99.99</span
+        ><span>Best offer</span>
+      </p>
+    </div>
   </div>
 </template> 
 <script>
@@ -184,6 +246,9 @@ export default {
       rfqObj: {},
       rfqDetail: {},
       visible: false,
+      index: 0,
+      showLength: 0,
+      total: 0,
     };
   },
   computed: {
@@ -196,6 +261,26 @@ export default {
     this.getListRfq();
   },
   methods: {
+    setPage({ index, showLength, total }) {
+      this.index = index;
+      this.showLength = showLength;
+      this.total = total;
+    },
+
+    prev() {
+      if (typeof this.$refs.table.prev == "function") {
+        this.$refs.table.prev();
+      } else if (typeof this.$refs.table.tabChange == "function") {
+        this.$refs.table.tabChange();
+      }
+    },
+    next() {
+      if (typeof this.$refs.table.next == "function") {
+        this.$refs.table.next();
+      } else if (typeof this.$refs.table.tabChange == "function") {
+        this.$refs.table.tabChange();
+      }
+    },
     analysisNomiCarProject() {
       this.carTypeObj = {};
       analysisNomiCarProject({
@@ -310,7 +395,39 @@ export default {
 }
 .content {
   margin-top: 20px;
-  height: calc(100% - 64px);
+  height: calc(100% - 100px);
   overflow: auto;
+}
+::v-deep .blue-border {
+  background: #d1e0ea !important;
+}
+::v-deep .font-green {
+  color: #43b02a;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.tips {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  .legend {
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background: #bdd7ee;
+  }
+}
+.iconSize {
+  font-size: 26px;
+}
+.font-size20{
+  font-size: 20px;
+}
+.font-size16 {
+  font-size: 16px;
 }
 </style>

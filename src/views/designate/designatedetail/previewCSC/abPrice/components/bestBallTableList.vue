@@ -4,7 +4,7 @@
     <!-- 内容表 -->
     <div
       class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight + 30}px)` }"
+      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
     >
       <el-table
         :data="tableData"
@@ -397,18 +397,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <p class="tips">
-      <span class="legend margin-right5"></span><span>: Recommendation</span
-      ><span class="font-green margin-left20 margin-right5">99.99</span
-      ><span>Best offer</span>
-    </p>
     <partTableDetail :visible.sync="visible" :row="row" />
-    <div class="left" :style="left" @click="tabChange">
-      <img class="icon" :src="allowIcon" alt="" />
-    </div>
-    <div class="right" :style="right" @click="tabChange">
-      <img class="icon" :src="allowIcon" alt="" />
-    </div>
   </div>
 </template>
 
@@ -419,16 +408,12 @@ import {
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
-import allow from "./allow.js";
 export default {
-  mixins: [allow],
   components: { partTableDetail },
   data() {
     return {
-      allowIcon,
       ref: "best-ball",
-      label: "Recommendation",
+      label: "Best ball",
       fixedTitle: [
         {
           prop: "fsNum",
@@ -505,6 +490,7 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     getData() {
+      this.index = this.label == "Best ball" ? 0 : 1
       const getData =
         this.label == "Recommendation"
           ? getAnalysisRecommendationNomi
@@ -534,7 +520,8 @@ export default {
         })
         .finally(() => {
           this.$nextTick(() => {
-            this.positionAllow();
+            this.$emit('setPage',{index:this.label == "Best ball" ? 0 : 1, total:2})
+            // this.positionAllow();
           });
         });
     },
@@ -716,12 +703,6 @@ export default {
       }
     }
   }
-  .blue-border {
-    background: #bdd7ee !important;
-  }
-  .font-green {
-    color: #70ad47;
-  }
   .leftAllow {
     position: relative;
     padding: 0;
@@ -813,9 +794,6 @@ export default {
     width: 25px;
     height: 20px;
     background: #bdd7ee;
-  }
-  .font-green {
-    color: #70ad47;
   }
 }
 </style>

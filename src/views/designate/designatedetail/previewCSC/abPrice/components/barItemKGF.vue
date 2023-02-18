@@ -106,7 +106,7 @@ export default {
             stack: "Supplier",
             data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
             itemStyle: {
-              color: "#63b5e7",
+              color: "#97a0bb",
             },
           },
           {

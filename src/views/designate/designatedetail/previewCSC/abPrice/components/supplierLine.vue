@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-17 14:36:21
+ * @LastEditTime: 2023-02-18 16:26:44
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -116,19 +116,6 @@
           </el-table-column>
         </template>
       </el-table>
-    </div>
-    <div class="margin-top10 font-size16">
-      <span
-        ><icon name="iconbaojiazhuangtailiebiao_yibaojia" symbol></icon>
-        全报</span
-      >
-      <span>\ 未发送询价</span>
-      <span
-        ><icon name="iconbaojiazhuangtailiebiao_yijujue" symbol></icon>
-        已拒绝</span
-      >
-      <span><i>—</i> 已收RFQ尚未接受报价</span>
-      <span>n/m 共m个零件，已进行n个零件的报价</span>
     </div>
   </div>
 </template>

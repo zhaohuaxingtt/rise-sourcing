@@ -3,7 +3,7 @@
   <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
-      height="calc(100% - 30px)"
+      height="100%"
       class="header table"
       ref="table"
       :key="index"
@@ -258,15 +258,6 @@
         </el-table-column>
       </template>
     </el-table>
-    <p class="tips"><span class="legend margin-right5"></span><span>: Recommendation</span><span class="font-green margin-left20 margin-right5">99.99</span><span>Best offer</span></p>
-    <template v-if="partAllData.length > 1">
-      <div class="left" :style="left" @click="prev">
-        <img class="icon" :src="allowIcon" alt="" />
-      </div>
-      <div class="right" :style="right" @click="next">
-        <img class="icon" :src="allowIcon" alt="" />
-      </div>
-    </template>
   </div>
 </template>
 
@@ -330,6 +321,7 @@ export default {
       loading: false,
       showLength: 4,
       partAllData: [],
+      allData:[],
       index: -1,
     };
   },
@@ -396,12 +388,14 @@ export default {
           fixedTitle[4].target = res.data.sumTotalTurnover;
           this.fixedTitle = fixedTitle;
           this.partAllData = _.chunk(res.data.headList, this.showLength);
+          this.allData = res.data.headList
           this.tableData = tableData;
         })
         .finally(() => {
           this.loading = false;
           this.$nextTick(() => {
             this.setColSpan();
+            this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
           });
         });
     },
@@ -413,6 +407,7 @@ export default {
       }
       this.$nextTick(() => {
         this.setColSpan();
+        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
       });
     },
     next() {
@@ -423,6 +418,7 @@ export default {
       }
       this.$nextTick(() => {
         this.setColSpan();
+        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
       });
     },
     // 表头单元格背景调整
@@ -579,12 +575,6 @@ export default {
       }
     }
   }
-  .blue-border {
-    background: #bdd7ee !important;
-  }
-  .font-green {
-    color: #70ad47;
-  }
   .leftAllow {
     position: relative;
     padding: 0;
@@ -649,9 +639,6 @@ export default {
     width: 25px;
     height: 20px;
     background: #bdd7ee;
-  }
-  .font-green{
-    color:#70ad47
   }
 }
 </style>

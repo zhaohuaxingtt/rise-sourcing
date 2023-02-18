@@ -2,18 +2,18 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:06:56
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-13 15:01:22
+ * @LastEditTime: 2023-02-18 10:47:28
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\data.js
  */
 
 export const tableTitle = [
-  { props: 'supplierName', align: 'left', isHeaderSetting: true, HeaderSettingList: [{ name: '供应商' }, { name: 'Supplier Information' },], minWidth: 150 },
-  { props: 'plantLocations', isHeaderSetting: true, HeaderSettingList: [{ name: '所在地' }, { name: 'Location' },] },
-  { props: 'isQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '已报价' }, { name: 'Completely' },{ name: 'Quoted' },] },
-  { props: 'isPartQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '部分报价' }, { name: 'Partial Quoted' },] },
-  { props: 'isRefuse', isHeaderSetting: true, HeaderSettingList: [{ name: '被拒绝' }, { name: 'Refused' },] },
-  { props: 'noQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '未报价' }, { name: 'No Quotation' },] },
+  { props: 'supplierName', align: 'left', isHeaderSetting: true, HeaderSettingList: [{ name: '供应商' }, { name: 'Supplier Information' },], minWidth: 220 },
+  { props: 'plantLocations', isHeaderSetting: true, HeaderSettingList: [{ name: '所在地' }, { name: 'Location' },], minWidth: 140 },
+  { props: 'isQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '已报价' }, { name: 'Completely' },{ name: 'Quoted' },], minWidth: 90 },
+  { props: 'isPartQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '部分报价' }, { name: 'Partial Quoted' },], minWidth: 100 },
+  { props: 'isRefuse', isHeaderSetting: true, HeaderSettingList: [{ name: '被拒绝' }, { name: 'Refused' },], minWidth: 90 },
+  { props: 'noQuotation', isHeaderSetting: true, HeaderSettingList: [{ name: '未报价' }, { name: 'No Quotation' },], minWidth: 100 },
   // {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
   // {props:'sapCode',name:'供应商号', enName: 'Supplier No.', key: "GONGYINGSHANGHAO", tooltip: true},
   // {props:'plantLocations',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
