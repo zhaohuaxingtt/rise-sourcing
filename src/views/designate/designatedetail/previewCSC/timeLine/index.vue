@@ -61,7 +61,7 @@
     <div class="time-box">
       <el-table class="table" ref="table" :data="tableData">
         <el-table-column
-          prop="supplier"
+          prop="supplierNameEn"
           label="supplier"
           align="center"
           width="140"
@@ -135,11 +135,7 @@ export default {
         "Nov",
         "Dec",
       ],
-      tableData: [
-        {
-          supplier: "供应商1",
-        },
-      ],
+      tableData: [],
       rfqStyle: {
         height: "",
         width: "",
@@ -184,6 +180,7 @@ export default {
     getTimeline() {
       getTimeline(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
+          this.tableData = res.data.timeAxisSupplierInfoList
         }
       });
     },
