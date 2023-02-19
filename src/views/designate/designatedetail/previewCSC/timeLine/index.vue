@@ -180,7 +180,7 @@ export default {
     getTimeline() {
       getTimeline(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
-          this.tableData = res.data.timeAxisSupplierInfoList
+          this.tableData = res.data[0].timeAxisSupplierInfoList
         }
       });
     },
