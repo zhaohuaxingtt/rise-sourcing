@@ -10,8 +10,20 @@
       SOURCING_NOMINATION_ATTATCH_TIMELINE | (决策资料 - timeline)
     "
   >
+    <el-radio-group
+      class="radio-group margin-bottom20"
+      v-model="tabBar"
+      @change="changeCarType"
+    >
+      <template v-for="item in carTypeList">
+        <el-radio-button
+          :label="item.carTypeProjectNum"
+          :key="item.carTypeProjectNum"
+        ></el-radio-button>
+      </template>
+    </el-radio-group>
     <!-- <div v-for="(item, index) in detailData" :key="'timeLine_' + index"> -->
-      <!-- <iCard collapse :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe" class="timeLine-card">
+    <!-- <iCard collapse :title=" $i18n.locale === 'zh' ? item.materialGroupName : item.materialGroupDe" class="timeLine-card">
                 <template v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup">
                     <groupStep 
                         v-if="groupNode.isVisible"
@@ -45,34 +57,33 @@
                     </iCard>
                 </div>
             </iCard> -->
-            <!-- </div> -->
-            <div class="time-box">
-
-            <el-table class="table" ref="table" :data="tableData">
-                <el-table-column
-                prop="supplier"
-                label="supplier"
+    <!-- </div> -->
+    <div class="time-box">
+      <el-table class="table" ref="table" :data="tableData">
+        <el-table-column
+          prop="supplier"
+          label="supplier"
+          align="center"
+          width="140"
+        ></el-table-column>
+        <template v-for="year in timeRange">
+          <el-table-column :label="year" :key="year" align="center">
+            <template v-for="month in monthLabel">
+              <el-table-column
+                :label="month"
+                :key="month"
+                minWidth="20"
                 align="center"
-                width="140"
-                ></el-table-column>
-                <template v-for="year in timeRange">
-                <el-table-column :label="year" :key="year" align="center">
-                    <template v-for="month in monthLabel">
-                    <el-table-column
-                        :label="month"
-                        :key="month"
-                        minWidth="20"
-                        align="center"
-                    ></el-table-column>
-                    </template>
-                </el-table-column>
-                </template>
-            </el-table>
-    <div class="time-line" ref="time-line" :style="rfqStyle">
-        <p><span>RFQ</span><br><span>KW20</span></p>
+              ></el-table-column>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
+      <div class="time-line" ref="time-line" :style="rfqStyle">
+        <p><span>RFQ</span><br /><span>KW20</span></p>
         <div class="text-line"></div>
+      </div>
     </div>
-            </div>
   </div>
 </template>
 
@@ -86,7 +97,12 @@ import supplierItem from "./components/supplierItem";
 import {
   getTimeaxis,
   saveTimeaxis,
+  getTimeline,
+  getNomiCarProjectTimeAxis,
+  updateTimeline,
 } from "@/api/designate/decisiondata/timeLine";
+
+import { analysisNomiCarProject } from "@/api/partsrfq/editordetail/abprice";
 export default {
   name: "timeLine",
   components: {
@@ -124,18 +140,64 @@ export default {
           supplier: "供应商1",
         },
       ],
-      rfqStyle:{
-        height:'',
-        width:'',
-        left:''
-      }
+      rfqStyle: {
+        height: "",
+        width: "",
+        left: "",
+      },
+      tabBar: "",
+      carTypeList: [],
+      carTypeObj: {},
+      carTypeDetail: {},
+      carProjectId: "",
     };
   },
   created() {
+    this.analysisNomiCarProject();
     this.getDetail();
+    this.getTimeline();
   },
   mounted() {},
   methods: {
+    analysisNomiCarProject() {
+      this.carTypeObj = {};
+      analysisNomiCarProject({
+        nomiId: this.$route.query.desinateId,
+      }).then((res) => {
+        if (res?.code == "200") {
+          this.carTypeList = res.data;
+          this.carTypeList.forEach((item) => {
+            this.carTypeObj[item.carTypeProjectNum] = JSON.parse(
+              JSON.stringify(item)
+            );
+          });
+          this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
+          this.changeCarType(this.tabBar);
+        }
+      });
+    },
+
+    changeCarType(val) {
+      this.carTypeDetail = this.carTypeObj[val];
+    },
+    // 获取时间轴
+    getTimeline() {
+      getTimeline(this.$route.query.desinateId).then((res) => {
+        if (res?.code == "200") {
+        }
+      });
+    },
+    // 通过定点申请id和车型项目查询时间轴
+    getNomiCarProjectTimeAxis() {
+      getNomiCarProjectTimeAxis(
+        this.$route.query.desinateId,
+        this.carTypeDetail.carTypeProjectId
+      ).then((res) => {
+        if (res?.code == "200") {
+          console.log(res);
+        }
+      });
+    },
     // 编辑 取消
     edit() {
       const { isEdit } = this;
@@ -188,9 +250,9 @@ export default {
             this.detailData = this.resetDetail(data);
             this.$nextTick(() => {
               let tableEl = this.$refs.table;
-              let width = tableEl.$el.clientWidth
-              let height = tableEl.$el.clientHeight
-              this.setTimeline(width,height)
+              let width = tableEl.$el.clientWidth;
+              let height = tableEl.$el.clientHeight;
+              this.setTimeline(width, height);
             });
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -198,11 +260,11 @@ export default {
         })
         .catch((err) => {});
     },
-    setTimeline(width,height){
-        this.rfqStyle = {
-            height: `${height+40}px`,
-            width: `${5}px`,
-        }
+    setTimeline(width, height) {
+      this.rfqStyle = {
+        height: `${height + 40}px`,
+        width: `${5}px`,
+      };
     },
     // 显示隐藏指定的line
     showLine(index, line) {
@@ -246,6 +308,27 @@ export default {
 .decision-data-timeLine {
   padding: 40px;
   position: relative;
+  ::v-deep .el-radio-group {
+    &.radio-group {
+      .el-radio-button__inner {
+        display: flex;
+        border-radius: 0;
+        height: 26px;
+        padding: 3px 10px;
+        align-items: center;
+        min-width: 60px;
+        justify-content: center;
+        &:hover {
+          color: #727272;
+        }
+      }
+      .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+        background: #364d6e;
+        color: #fff;
+        border-color: #e0e6ed;
+      }
+    }
+  }
   .supplier-list {
     margin-top: 30px;
     .supplier-item {
@@ -305,8 +388,8 @@ export default {
     color: rgb(112, 112, 112);
   }
 }
-.time-box{
-    position: relative;
+.time-box {
+  position: relative;
 }
 .table {
   ::v-deep .el-table__header {
@@ -326,7 +409,7 @@ export default {
   align-items: center;
   top: 0;
   z-index: 9;
-  .text-line{
+  .text-line {
     margin-top: 5px;
     width: 2px;
     flex: 1;

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-19 18:48:04
+ * @LastEditTime: 2023-02-19 18:16:32
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -35,12 +35,11 @@
           v-model="tabTable"
           @change="change"
         >
-          <el-radio-button label="Supplier" v-if="config.supplier.isShow">Supplier</el-radio-button>
-          <el-radio-button label="part" v-if="config.part.isShow">Part</el-radio-button>
-          <el-radio-button label="best_ball" v-if="config['best_ball'].isShow">Best ball</el-radio-button>
-          <el-radio-button label="gs_part" v-if="config['gs_part'].isShow">GS Part</el-radio-button>
+          <el-radio-button label="supplier">Supplier</el-radio-button>
+          <el-radio-button label="part">Part</el-radio-button>
+          <el-radio-button label="best_ball">Best ball</el-radio-button>
+          <el-radio-button label="gs_part">GS Part</el-radio-button>
           <el-radio-button
-            v-if="config['Detailed_Worksheet'].isShow"
             label="Detailed_Worksheet"
             @click="exportExcel"
           >Detailed Worksheet</el-radio-button>
@@ -73,6 +72,16 @@
             ></el-radio-button>
           </template>
         </el-radio-group>
+        <!-- 表格是否展示 -->
+        <el-radio-group
+          v-show="tab == 'table'"
+          class="radio-group margin-left20"
+          v-model="config[tabTable].isShow"
+          @change="changeConfig"
+        >
+          <el-radio :label="true">展示</el-radio>
+          <el-radio :label="false">隐藏</el-radio>
+        </el-radio-group>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
         <span v-if="tabTable == 'best_ball'">
@@ -83,12 +92,12 @@
             (index + 1) * showLength > total ? total : (index + 1) * showLength
           }}列,总共{{ total }}列
         </span>
-        <img :src="left" alt="lrft" class="allow" @click="prev">
+        <img :src="left" alt="lrft" class="allow" @click="prev" />
         <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
         <span v-else>
           {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
         </span>
-        <img :src="right" alt="right" class="allow" @click="next">
+        <img :src="right" alt="right" class="allow" @click="next" />
       </div>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
@@ -199,7 +208,8 @@ import left from "@/assets/images/cscIcon/left.svg";
 import {
   analysisNomiCarProject,
   getListRfq,
-  getList
+  getList,
+  update,
 } from "@/api/partsrfq/editordetail/abprice";
 import { exportFsSupplierAsRowByNomiId } from "@/api/partsrfq/editordetail";
 export default {
@@ -247,7 +257,7 @@ export default {
         },
       ],
       tab: "table",
-      tabTable: "",
+      tabTable: "supplier",
       tabBar: "",
       tabLine: "",
       carTypeList: [],
@@ -258,7 +268,7 @@ export default {
       rfqDetail: {},
       visible: false,
       index: 0,
-      showLength: 1,
+      showLength: 0,
       total: 0,
       config:{
         supplier:{},
@@ -280,22 +290,31 @@ export default {
     this.getList()
   },
   methods: {
-    getList(){
+    changeConfig(val) {
+      // this.config[this.tabTable].isShow = val;
+      this.update()
+    },
+    getList() {
       getList({
         businessId:this.$route.query.desinateId,
         type: "nominate_ab_price",
       }).then(res=>{
         res.data.forEach(item=>{
           this.config[item.operateCode] = item
-          if(item.isShow && !this.tabTable){  // 显示第一个true
-            this.tabTable = item.operateCode
-          }
         })
-        if(!this.tabTable){ // 没有表格就显示bar
-          this.tab = 'bar'
-        }
-        console.log(this.config);
       })
+    },
+    update() {
+      let params = Object.values(this.config).map(item=>{
+        return item
+      });
+      update(params).then((res) => {
+        if(res?.code=='200'){
+          res.data.forEach(item=>{
+            this.config[item.operateCode] = item
+          })
+        }
+      });
     },
     setPage({ index, showLength, total }) {
       this.index = index;
@@ -428,11 +447,11 @@ export default {
       vertical-align: middle;
     }
   }
-  .header-btn{
+  .header-btn {
     font-size: 16px;
     display: flex;
     align-items: center;
-    .allow{
+    .allow {
       height: 36px;
       margin-top: 5px;
     }
@@ -440,8 +459,9 @@ export default {
 }
 .content {
   margin-top: 20px;
-  height: calc(100% - 100px);
   overflow: auto;
+  max-height: 100%;
+  flex: 1 1 auto;
 }
 .content-chart {
   height: calc(100% - 84px);

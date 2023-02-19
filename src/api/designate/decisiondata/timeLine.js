@@ -24,3 +24,28 @@ export function getTimeaxis(id) {
         data,
     })
   }
+
+  
+// 获取定点申请时间轴
+export function getTimeline(nomiAppId){
+  return requst({
+      url: `/nomi-car-project-time-axis/${nomiAppId}`,
+      method: 'GET',
+  })
+}
+// 通过定点申请id和车型项目查询时间轴
+export function getNomiCarProjectTimeAxis(nomiAppId,carProjectId){
+  return requst({
+      url: `/web/nomi-car-project-time-axis/getNomiCarProjectTimeAxis/${nomiAppId}/${carProjectId}
+      getTimeAxis`,
+      method: 'GET',
+  })
+}
+// 更新定点申请时间轴
+export function updateTimeline(data){
+  return requst({
+      url: `/nomi-car-project-time-axis/update`,
+      method: 'POST',
+      data
+  })
+}

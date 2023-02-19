@@ -3,7 +3,6 @@
   <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
-      height="100%"
       class="header table"
       ref="table"
       :key="index"
@@ -45,7 +44,7 @@
                     <el-table-column
                       prop="te"
                       label="E"
-                      minWidth="50"
+                      minWidth="40"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -58,7 +57,7 @@
                     <el-table-column
                       prop="q"
                       label="Q"
-                      minWidth="50"
+                      minWidth="40"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -71,7 +70,7 @@
                     <el-table-column
                       prop="l"
                       label="L"
-                      minWidth="50"
+                      minWidth="40"
                       align="center"
                     >
                       <template slot-scope="scope">
@@ -111,7 +110,7 @@
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
-            <el-table-column :label="percent(item.ebr)" align="center">
+            <el-table-column :label="item.ebr" align="center">
             <el-table-column :label="item.mixQty" align="center">
               <el-table-column :label="item.volume" align="center">
                 <template slot="header" slot-scope="scope">
@@ -131,7 +130,7 @@
                         label="partAPrice"
                         align="right"
                         header-align="center"
-                        minWidth="85"
+                        minWidth="80"
                       >
                         <template slot="header" slot-scope="scope">
                           <p>A price</p>
@@ -147,7 +146,7 @@
                         label="partBPrice"
                         align="right"
                         header-align="center"
-                        minWidth="85"
+                        minWidth="80"
                       >
                         <template slot="header" slot-scope="scope">
                           <p>B price</p>
@@ -179,7 +178,7 @@
                       label="A price"
                       align="right"
                       header-align="center"
-                      minWidth="85"
+                      minWidth="80"
                     >
                     </el-table-column>
                   </el-table-column>
@@ -193,7 +192,7 @@
                       label="B price"
                       align="right"
                       header-align="center"
-                      minWidth="85"
+                      minWidth="80"
                     ></el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -284,35 +283,35 @@ export default {
           label: ["LTC"],
           target: "",
           budget: "",
-          width: "100",
+          width: "80",
         },
         {
           prop: "ltcStartDateList",
           label: ["LTC Start", " Date"],
           target: "",
           budget: "",
-          width: "110",
+          width: "100",
         },
         {
           prop: "totalInvest",
           label: ["Total", "Invest"],
           target: "",
           budget: "",
-          width: "130",
+          width: "120",
         },
         {
           prop: "totalDevelopCost",
           label: ["Total", "Develop", "Cost"],
           target: "",
           budget: "",
-          width: "130",
+          width: "120",
         },
         {
           prop: "totalTurnover",
           label: ["Total", "Turnover"],
           target: "",
           budget: "",
-          width: "130",
+          width: "120",
         },
       ],
       tableData: [],
@@ -343,10 +342,6 @@ export default {
       if (!val) return val;
       let result = val.split(",").join("");
       return (+result).toFixed(0);
-    },
-    
-    percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     isCLevel(val) {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;

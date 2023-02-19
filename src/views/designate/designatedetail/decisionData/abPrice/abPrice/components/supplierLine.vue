@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-19 10:21:53
+ * @LastEditTime: 2023-02-19 15:12:13
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,108 +13,103 @@
         >Supplier Offer Comparison ( {{ detail.rfqId }} )</span
       >
     </div>
-    <div class="table-box">
-      <el-table
-        border
-        :data="tableData"
-        class="header"
-        ref="table"
-        height="100%"
-        :header-cell-class-name="cellClass"
-      >
-        <el-table-column>
-          <template slot="header" slot-scope="scope">
-            <div class="chart" ref="chart"></div>
+    <el-table
+      border
+      :data="tableData"
+      class="header"
+      ref="table"
+      :header-cell-class-name="cellClass"
+    >
+      <el-table-column>
+        <template slot="header" slot-scope="scope">
+          <div class="chart" ref="chart"></div>
+        </template>
+        <el-table-column
+          prop="supplierNameEn"
+          align="left"
+          :width="labelWidth"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <div class="flex">
+              <div class="legend margin-right5">
+                <span
+                  class="line"
+                  :style="{ background: scope.row.color }"
+                ></span
+                ><span
+                  class="point"
+                  :style="{ background: scope.row.color }"
+                ></span>
+              </div>
+              <span>
+                {{ scope.row.supplierNameEn }}
+              </span>
+            </div>
           </template>
+        </el-table-column>
+        <template v-for="(item, index) in roundList">
           <el-table-column
-            prop="supplierNameEn"
-            align="left"
-            :width="labelWidth"
-            show-overflow-tooltip
+            :key="index + 'round' + item.round"
+            :prop="'round' + item.round"
+            align="center"
+            minWidth="50"
           >
             <template slot-scope="scope">
-              <div class="flex">
-                <div class="legend margin-right5">
-                  <span
-                    class="line"
-                    :style="{ background: scope.row.color }"
-                  ></span
-                  ><span
-                    class="point"
-                    :style="{ background: scope.row.color }"
-                  ></span>
-                </div>
-                <span>
-                  {{ scope.row.supplierNameEn }}
-                </span>
-              </div>
-            </template>
-          </el-table-column>
-          <template v-for="(item, index) in roundList">
-            <el-table-column
-              :key="index + 'round' + item.round"
-              :prop="'round' + item.round"
-              align="center"
-              minWidth="50"
-            >
-              <template slot-scope="scope">
-                <!--------------------------------------------------------->
-                <!------------------------内容是打勾------------------------>
-                <!--------------------------------------------------------->
+              <!--------------------------------------------------------->
+              <!------------------------内容是打勾------------------------>
+              <!--------------------------------------------------------->
+              <span
+                v-if="
+                  scope.row.detailVOMap['round' + item.round] &&
+                  scope.row.detailVOMap['round' + item.round].schedule == 3
+                "
+                class="blue-color"
+              >
+                <span
+                  class="cursor blue-color"
+                  v-if="scope.row.detailVOMap['round' + item.round].isNoBidOpen"
+                  >―</span
+                >
+                <icon
+                  v-else
+                  name="iconbaojiazhuangtailiebiao_yibaojia"
+                  symbol
+                ></icon>
+              </span>
+              <!--------------------------------------------------------->
+              <!------------------------内容是打叉------------------------>
+              <!--------------------------------------------------------->
+              <span
+                v-else-if="
+                  scope.row.detailVOMap['round' + item.round] &&
+                  scope.row.detailVOMap['round' + item.round].schedule == 2
+                "
+                class="blue-color"
+              >
+                X
+              </span>
+              <!--------------------------------------------------------->
+              <!------------------------内容是横岗百分比------------------->
+              <!--------------------------------------------------------->
+              <template v-else>
                 <span
                   v-if="
                     scope.row.detailVOMap['round' + item.round] &&
-                    scope.row.detailVOMap['round' + item.round].schedule == 3
+                    scope.row.detailVOMap['round' + item.round].quotationId
                   "
                   class="blue-color"
+                  >{{
+                    scope.row.detailVOMap["round" + item.round].schedule
+                  }}</span
                 >
-                  <span
-                    class="cursor blue-color"
-                    v-if="
-                      scope.row.detailVOMap['round' + item.round].isNoBidOpen
-                    "
-                    >―</span
-                  >
-                  <icon
-                    v-else
-                    name="iconbaojiazhuangtailiebiao_yibaojia"
-                    symbol
-                  ></icon>
-                </span>
-                <!--------------------------------------------------------->
-                <!------------------------内容是打叉------------------------>
-                <!--------------------------------------------------------->
-                <span
-                  v-else-if="
-                    scope.row.detailVOMap['round' + item.round] &&
-                    scope.row.detailVOMap['round' + item.round].schedule == 2
-                  "
-                  class="blue-color"
-                >
-                  X
-                </span>
-                <!--------------------------------------------------------->
-                <!------------------------内容是横岗百分比------------------->
-                <!--------------------------------------------------------->
-                <template v-else>
-                  <span
-                    v-if="
-                      scope.row.detailVOMap['round' + item.round] &&
-                      scope.row.detailVOMap['round' + item.round].quotationId
-                    "
-                    class="blue-color"
-                    >{{
-                      scope.row.detailVOMap["round" + item.round].schedule
-                    }}</span
-                  >
-                  <span v-else>\</span>
-                </template>
+                <span v-else>\</span>
               </template>
-            </el-table-column>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -220,7 +215,7 @@ export default {
             }),
             axisLabel: {
               fontSize: this.fontSize(18),
-              color :'#000',
+              color: "#000",
             },
           },
         ],
@@ -242,12 +237,12 @@ export default {
             },
             axisLabel: {
               fontSize: this.fontSize(18),
-              color :'#000',
+              color: "#000",
             },
           },
         ],
-        textStyle:{
-          fontFamily: "'Arial', 'Helvetica', 'sans-serif'"
+        textStyle: {
+          fontFamily: "'Arial', 'Helvetica', 'sans-serif'",
         },
         series: series,
       };
@@ -307,10 +302,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-box {
-  height: calc(100% - 45px);
-  overflow: auto;
-}
 .chart {
   width: 100%;
   height: 400px;

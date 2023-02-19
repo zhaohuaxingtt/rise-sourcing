@@ -13,7 +13,9 @@ export const tableTitle = [
   { props: 'project', name: 'Project' },
   { props: 'sopDate', name: 'SOP' },
   { props: 'ebrCalculatedValue', name: 'EBR%' },
-  { props: 'ebrConfirmValue', name: 'EBR% (input)' },
+  { props: 'mixQty', name: 'Mixed Qty' },
+  { props: 'unit', name: 'Unit' },
+  // { props: 'ebrConfirmValue', name: 'EBR% (input)' },
   { props: 'lifeTime', name: 'Volume (lifetime)',width: 150 },
   { props: 'paVolume', name: 'Volume (p.a.)' },
 ]
