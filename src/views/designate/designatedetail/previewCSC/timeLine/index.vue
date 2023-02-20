@@ -98,18 +98,18 @@
               </div>
 
               <el-tooltip
-                :content="'EM:' + item.qthreeWeek"
+                :content="'EM:' + item.emWeek"
                 placement="top"
                 effect="light"
               >
                 <div
                   class="time-range-em"
                   :style="{
-                    width: ((item.qthreeWeek * 7) / dateRange) * 100 + '%',
+                    width: ((item.emWeek * 7) / dateRange) * 100 + '%',
                   }"
                 >
                   <!-- EM:  -->
-                  {{ item.qthreeWeek }}W
+                  {{ item.emWeek }}W
                 </div>
               </el-tooltip>
               <div

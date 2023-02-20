@@ -36,6 +36,6 @@ export const tableTitle = [
 export const tableTitleSupplier = [
     {props:'supplierName',name:'Supplier'},
     {props:'oneStWeek',name:'1st'},
-    {props:'qthreeWeek',name:'EM'},
+    {props:'emWeek',name:'EM'},
     {props:'otsWeek',name:'OTS'},
 ]

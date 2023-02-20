@@ -118,10 +118,10 @@
             ></iInput
             ><span class="margin-left5">W</span>
           </template>
-          <template #qthreeWeek="scope">
+          <template #emWeek="scope">
             <iInput
               class="input margin-right10"
-              v-model="scope.row.qthreeWeek"
+              v-model="scope.row.emWeek"
               :disabled="!isEdit(index)"
             ></iInput
             ><span class="margin-left10">W</span>
