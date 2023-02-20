@@ -297,7 +297,7 @@ export default {
             monthList: [],
           },
         ];
-        for (let i = indexStart; i <= indexEnd; i++) {
+        for (let i = indexStart; i <= 11; i++) {
           this.timeRange[0].monthList.push(this.monthLabel[i]);
         }
         for (let i = 0; i <= indexEnd; i++) {
@@ -315,7 +315,7 @@ export default {
         console.log(lastYear);
         console.log(this.timeRange);
         this.timeRange[0].monthList = [];
-        for (let i = indexStart; i <= indexEnd; i++) {
+        for (let i = indexStart; i <= 11; i++) {
           this.timeRange[0].monthList.push(this.monthLabel[i]);
         }
         this.timeRange[this.timeRange.length - 1].monthList = [];
@@ -418,6 +418,7 @@ export default {
     font-size: 18px;
     font-weight: 700;
     top: 110px;
+    padding-left: 10px;
   }
 }
 .table {

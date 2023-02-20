@@ -162,7 +162,10 @@
               <el-table-column>
               <el-table-column>
               <el-table-column>
-                <el-table-column :label="targetMixAPrice" align="center">
+                <el-table-column :label="targetMixAPrice" header-align="right">
+                  <template slot="header" slot-scope="scope">
+                    {{ targetMixAPrice | toThousands(true) }}
+                  </template>
                   <el-table-column label="Mixed Price" align="center">
                     <el-table-column
                       prop="mixAPrice"
@@ -176,7 +179,10 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column>
-                <el-table-column :label="targetMixBPrice" align="center">
+                <el-table-column :label="targetMixBPrice" header-align="right">
+                  <template slot="header" slot-scope="scope">
+                    {{ targetMixBPrice | toThousands(true) }}
+                  </template>
                   <el-table-column label="Mixed Price" align="center">
                     <el-table-column
                       prop="mixBPrice"

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-19 18:16:32
+ * @LastEditTime: 2023-02-20 16:21:42
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -85,12 +85,12 @@
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
         <span v-if="tabTable == 'best_ball'">
-          当前展示第{{ index + 1 }}页,总共 2 页
+          当前展示第{{ index + 1 }}页，总共 2 页
         </span>
         <span v-else>
           当前展示{{ index * showLength + 1 }}到{{
             (index + 1) * showLength > total ? total : (index + 1) * showLength
-          }}列,总共{{ total }}列
+          }}列，总共{{ total }}列
         </span>
         <img :src="left" alt="lrft" class="allow" @click="prev" />
         <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
