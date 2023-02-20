@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2023-01-30 17:47:23
+ * @LastEditTime: 2023-02-20 17:23:14
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -179,11 +179,11 @@ export default {
     // 设置工艺组请求
     confirmMaterialGroup() {
       if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处必须选择一条工艺组数据'))
+        const data = this.multipleSelection[0]
       if (!this.isAttach) {
-        if (!this.info.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
+        if (!data.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
       }
       if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
-      const data = this.multipleSelection[0]
       this.confirmLoading = true
       batchUpdateStuff({
           operator: this.userInfo.id,
