@@ -22,7 +22,7 @@
         ></el-radio-button>
       </template>
     </el-radio-group>
-    <div class="time-box">
+    <div class="time-box" v-loading="isLoading">
       <span class="label">Supplier</span>
       <div class="line-div">
         <div class="wrap-div"></div>
@@ -42,7 +42,10 @@
                   <span>{{ item.name }}</span
                   ><br /><span>{{ item.time }}</span>
                 </p>
-                <div class="text-line" :style="{background:item.color||'#333'}"></div>
+                <div
+                  class="text-line"
+                  :style="{ background: item.color || '#333' }"
+                ></div>
               </div>
             </div>
           </template>
@@ -50,14 +53,24 @@
       </div>
       <div class="year-table">
         <template v-for="year in timeRange">
-          <div class="year" :key="year.name" :style="{
-                    width: getWidth(year.monthList)+'%',
-                  }">
+          <div
+            class="year"
+            :key="year.name"
+            :style="{
+              width: getWidth(year.monthList) + '%',
+            }"
+          >
             <div class="year-value">{{ year.name }}</div>
             <div class="month">
               <template v-for="month in year.monthList">
                 <div class="month-value" :key="year + month">
-                  <div class="month-title">{{ month }}</div>
+                  <div
+                    class="month-title"
+                    :class="{ longer: dateRange > 1200 }"
+                    :title="month"
+                  >
+                    {{ month }}
+                  </div>
                   <div class="month-content"></div>
                 </div>
               </template>
@@ -65,9 +78,12 @@
           </div>
         </template>
       </div>
+      <div class="top-line"></div>
       <div class="supplier-table">
-        <template v-for="item in detail.timeAxisSupplierInfoList">
-          <div class="supplier" :key="item.supplierId">
+        <template
+          v-for="(item, index) in detail.timeAxisSupplierInfoList"
+        >
+          <div class="supplier" :key="item.supplierId + index">
             <div class="supplier-name">{{ item.supplierNameEn }}</div>
             <div class="supplier-time">
               <div
@@ -97,6 +113,7 @@
                 </div>
               </el-tooltip>
               <div
+              v-if="item.otsWeek"
                 class="otsWeek"
                 :style="{
                   left: getPosition(item.otsWeek) + '%',
@@ -109,6 +126,7 @@
           </div>
         </template>
       </div>
+      <div class="bottom-line"></div>
     </div>
   </div>
 </template>
@@ -116,12 +134,7 @@
 <script>
 import { iCard, iButton, icon, iMessage } from "rise";
 import ots from "@/assets/images/icon/ots.png";
-import {
-  getTimeaxis,
-  saveTimeaxis,
-  getNomiCarProjectTimeAxis,
-} from "@/api/designate/decisiondata/timeLine";
-
+import { getNomiCarProjectTimeAxis } from "@/api/designate/decisiondata/timeLine";
 import { analysisNomiCarProject } from "@/api/partsrfq/editordetail/abprice";
 export default {
   name: "timeLine",
@@ -133,10 +146,9 @@ export default {
   data() {
     return {
       ots,
-      isEdit: false,
       isLoading: false,
       detailData: [],
-      timeRange: [2023, 2024, 2025],
+      timeRange: [],
       lineListNew: {
         rfqTime: {
           name: "RFQ",
@@ -149,7 +161,7 @@ export default {
         bfConfirmTime: {
           name: "BF",
           time: "KW20",
-          color:'#f00'
+          color: "#f00",
         },
         vffTbtTime: {
           name: "VFF",
@@ -200,12 +212,12 @@ export default {
   },
   mounted() {},
   methods: {
-    getWidth(list){
-      let arr = []
-      this.timeRange.forEach(item=>{
-        arr = [...arr,...item.monthList]
-      })
-      return list.length / arr.length * 100
+    getWidth(list) {
+      let arr = [];
+      this.timeRange.forEach((item) => {
+        arr = [...arr, ...item.monthList];
+      });
+      return (list.length / arr.length) * 100;
     },
     getMargin() {
       return this.lineListNew.bfConfirmTime.w;
@@ -240,6 +252,9 @@ export default {
       this.dateRange = parseInt(
         (MonthLast - MonthFirst) / (24 * 60 * 60 * 1000)
       );
+      console.log(this.MonthFirst);
+      console.log(this.MonthLast);
+      console.log(this.dateRange);
       Object.keys(this.lineListNew).forEach((key) => {
         if (this.detail[key]) this.lineListNew[key].show = true;
         this.lineListNew[key].w =
@@ -341,15 +356,20 @@ export default {
     },
     // 通过定点申请id和车型项目查询时间轴
     getNomiCarProjectTimeAxis() {
+      this.isLoading = true;
       getNomiCarProjectTimeAxis(
         this.$route.query.desinateId,
         this.carTypeDetail.carTypeProjectId
-      ).then((res) => {
-        if (res?.code == "200") {
-          this.detail = res.data[0];
-          this.getFirstDate();
-        }
-      });
+      )
+        .then((res) => {
+          if (res?.code == "200") {
+            this.detail = res.data[0];
+            this.getFirstDate();
+          }
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
   computed: {
@@ -367,7 +387,6 @@ export default {
 
 <style lang="scss" scoped>
 .decision-data-timeLine {
-  padding: 40px;
   position: relative;
   ::v-deep .el-radio-group {
     &.radio-group {
@@ -422,6 +441,7 @@ export default {
   height: 100%;
   .line-title {
     position: absolute;
+    text-align: center;
   }
   .text-line {
     margin-top: 50px;
@@ -438,7 +458,7 @@ export default {
   font-size: 18px;
   font-weight: 700;
   text-align: center;
-  width: calc(100% - 180px);
+  width: calc(100% - 188px);
   height: calc(100% - 60px);
   position: absolute;
   border-left: 1px solid #222;
@@ -463,17 +483,19 @@ export default {
       width: 100%;
       .month-value {
         border-right: 1px solid #222;
-        min-width: 35px;
         display: flex;
         flex-flow: column;
         flex: 1;
         line-height: 35px;
         overflow: hidden;
-        .month-title{
-        overflow: hidden;
+        .month-title {
+          overflow: hidden;
+        }
+        .longer {
+          writing-mode: tb-rl;
+          line-height: initial;
         }
         .month-content {
-          border-top: 1px solid #222;
           height: 100%;
           flex: 1;
         }
@@ -481,10 +503,35 @@ export default {
     }
   }
 }
+.top-line {
+  &::after {
+    content: "";
+    width: calc(100% - 8px);
+    height: 0px;
+    display: block;
+    position: relative;
+    top: 73px;
+    border-top: 1px solid;
+  }
+}
+.bottom-line {
+  &::before {
+    content: "";
+    width: calc(100% - 8px);
+    height: 0px;
+    display: block;
+    border-top: 1px solid;
+    position: relative;
+    top: -1px;
+  }
+}
 .supplier-table {
   width: 100%;
+  max-height: calc(100vh - 300px);
+  min-height: 300px;
   margin-top: 72px;
   line-height: 37px;
+  overflow-y: scroll;
   .supplier {
     display: flex;
     flex-flow: row;
@@ -499,6 +546,8 @@ export default {
       padding: 5px 8px;
       border-right: 1px solid #222;
       border-top: 1px solid #222;
+      display: inline-flex;
+      align-items: center;
     }
     .supplier-time {
       border-right: 1px solid #222;
@@ -509,24 +558,27 @@ export default {
       padding: 8px 0;
       position: relative;
       .time-range-1st {
-        height: 30px;
-        line-height: 30px;
+        height: 50px;
+        line-height: 50px;
         background: #0092eb;
         white-space: nowrap;
         padding-left: 5px;
+        opacity: 0.7;
       }
       .time-range-em {
-        height: 30px;
-        line-height: 30px;
+        height: 50px;
+        line-height: 50px;
         background: #2a4659;
         white-space: nowrap;
         padding-left: 5px;
+        opacity: 0.7;
       }
       .otsWeek {
         position: absolute;
         height: 30px;
         display: flex;
         align-items: center;
+        top: 15px;
         .img {
           transform: translate(-50%, 0);
         }

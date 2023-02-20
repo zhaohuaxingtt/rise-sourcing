@@ -557,12 +557,12 @@ export default {
       this.$nextTick(()=>{
         setTimeout(()=>{
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-          console.log('this.totalTableHeight=>',this.totalTableHeight);
         },0)
       })
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
+      if(!row) return
       const col = row[rowIndex].cells;
       if (!(row || col)) return;
       if (rowIndex < 0 || colIndex < 0 || span < 0) return;
@@ -714,7 +714,6 @@ export default {
         return "table-header";
       }
       if(rowIndex=='5'){
-        console.log('row=>',row);
         if(row.isMinTto.includes(column.property)){
           return 'font-green'
         }

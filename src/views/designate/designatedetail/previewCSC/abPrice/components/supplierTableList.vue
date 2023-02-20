@@ -98,16 +98,6 @@
         >
           <div slot="header" slot-scope="scope">
             {{ item.partNum || "-" }}
-            <div
-              v-if="index == 0"
-              class="leftAllow"
-              @click="leftAllow($event)"
-            ></div>
-            <div
-              v-if="index == partList.length - 1"
-              class="rightAllow"
-              @click="rightAllow($event)"
-            ></div>
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
@@ -263,11 +253,8 @@
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
-import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
-import allow from "./allow.js";
 import { numberProcessor, toThousands } from "@/utils";
 export default {
-  mixins: [allow],
   props: {
     row: {
       type: Array,
@@ -276,7 +263,6 @@ export default {
   },
   data() {
     return {
-      allowIcon,
       ref: "supplier-table",
       fixedTitle: [
         {
@@ -483,9 +469,6 @@ export default {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
       }
-      this.$nextTick(() => {
-        this.positionAllow()
-      });
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -573,48 +556,8 @@ export default {
       }
     }
   }
-  .leftAllow {
-    position: relative;
-    padding: 0;
-    float: left;
-  }
-
-  .rightAllow {
-    position: relative;
-    padding: 0;
-    float: right;
-  }
   .red {
     color: #f00;
-  }
-}
-.left {
-  transform: translate(-17px, 0px);
-  width: 12px;
-  height: 126px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    transform: rotate(180deg);
-    width: 12px;
-    user-select: none;
-  }
-}
-.right {
-  transform: translate(3px, 0px);
-  width: 12px;
-  height: 126px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    width: 12px;
-    user-select: none;
   }
 }
 .table {

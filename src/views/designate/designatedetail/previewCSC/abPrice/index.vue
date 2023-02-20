@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-19 20:18:05
+ * @LastEditTime: 2023-02-20 14:49:54
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -35,7 +35,7 @@
           v-model="tabTable"
           @change="change"
         >
-          <el-radio-button label="Supplier" v-if="config.supplier.isShow">Supplier</el-radio-button>
+          <el-radio-button label="supplier" v-if="config.supplier.isShow">Supplier</el-radio-button>
           <el-radio-button label="part" v-if="config.part.isShow">Part</el-radio-button>
           <el-radio-button label="best_ball" v-if="config['best_ball'].isShow">Best ball</el-radio-button>
           <el-radio-button label="gs_part" v-if="config['gs_part'].isShow">GS Part</el-radio-button>

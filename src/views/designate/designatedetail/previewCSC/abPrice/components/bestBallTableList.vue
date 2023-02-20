@@ -78,6 +78,18 @@
               </template>
             </el-table-column>
             <el-table-column
+              :key="item.prop"
+              v-else-if="item.tooltip"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <tooltip :text="scope.row[item.prop]" />
+              </template>
+            </el-table-column>
+            <el-table-column
               v-else
               :key="item.prop"
               :prop="item.prop"
@@ -123,8 +135,6 @@
         <el-table-column align="center">
           <template slot="header" slot-scope="scope">
             {{ label }}
-            <div class="leftAllow" @click="leftAllow($event)"></div>
-            <div class="rightAllow" @click="rightAllow($event)"></div>
           </template>
           <el-table-column
             label="A Price(LC)"
@@ -168,7 +178,16 @@
             align="center"
             prop="supplierNameEn"
             minWidth="100"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <tooltip
+                :text="scope.row['supplierNameEn']"
+                :content="
+                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
+                "
+              />
+            </template>
+          </el-table-column>
           <el-table-column label="Rating" align="center">
             <el-table-column
               label="E"
@@ -402,6 +421,7 @@
 </template>
 
 <script>
+import tooltip from "../../components/tooltip.vue";
 import {
   getAnalysisRecommendationNomi,
   getAnalysisBestBallNomi,
@@ -409,7 +429,7 @@ import {
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 export default {
-  components: { partTableDetail },
+  components: { partTableDetail, tooltip },
   data() {
     return {
       ref: "best-ball",
@@ -428,6 +448,7 @@ export default {
         {
           prop: "carTypeProjectNum",
           label: ["Carline"],
+          tooltip: true,
           width: 120,
         },
         {
@@ -474,11 +495,6 @@ export default {
   created() {
     this.getData();
   },
-  mounted(){
-    this.$nextTick(() => {
-        this.positionAllow();
-      });
-  },
   methods: {
     numberProcessor,
     getInt(val) {
@@ -490,7 +506,7 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     getData() {
-      this.index = this.label == "Best ball" ? 0 : 1
+      this.index = this.label == "Best ball" ? 0 : 1;
       const getData =
         this.label == "Recommendation"
           ? getAnalysisRecommendationNomi
@@ -514,14 +530,16 @@ export default {
             totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;
-          }else{
+          } else {
             this.tableData = [];
           }
         })
         .finally(() => {
           this.$nextTick(() => {
-            this.$emit('setPage',{index:this.label == "Best ball" ? 0 : 1, total:2})
-            // this.positionAllow();
+            this.$emit("setPage", {
+              index: this.label == "Best ball" ? 0 : 1,
+              total: 2,
+            });
           });
         });
     },
@@ -620,12 +638,20 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        if (row.suggestFlag && row.isFsMinTto) {
-          return "blue-border font-green";
-        }else if (row.suggestFlag) {
-          return "blue-border";
-        }else if(row.isFsMinTto) {
-          return "font-green"
+        if (this.label == "Best ball") {
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            return "blue-border font-green";
+          } else {
+            return "font-green";
+          }
+        } else {
+          if (row.isFsMinTto) {
+            // recommendation 全蓝, 但是绿色需要判断
+            return "blue-border font-green";
+          } else {
+            return "blue-border";
+          }
         }
       }
       if (["Total Turnover"].includes(column.label)) {
@@ -685,7 +711,7 @@ export default {
     .primary-label {
       height: 36px;
       line-height: 36px;
-      .cell{
+      .cell {
         line-height: 36px !important;
         height: 100%;
       }
@@ -697,17 +723,6 @@ export default {
       }
     }
   }
-  .leftAllow {
-    position: relative;
-    padding: 0;
-    float: left;
-  }
-
-  .rightAllow {
-    position: relative;
-    padding: 0;
-    float: right;
-  }
   .red {
     color: #f00;
   }
@@ -718,7 +733,7 @@ export default {
   ::v-deep .el-table__row {
     height: unset !important;
   }
-  
+
   ::v-deep tr {
     .table-header {
       background: #364d6e;

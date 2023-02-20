@@ -242,7 +242,6 @@ export default {
           height += element.offsetHeight;
         }
         this.height = height;
-        console.log(this.height);
       });
     }, 100); // 这个100不精准,可能导致页面错误
   },
