@@ -142,7 +142,7 @@
         width="850"
         trigger="click"
         :visible-arrow="false"
-        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+        :content="strategy"
       >
         <img :src="tips" alt="tips" class="iconSize" slot="reference" />
       </el-popover>
@@ -224,6 +224,9 @@ export default {
     iTabsList,
     icon,
     iButton,
+  },
+  props:{
+    strategy: String
   },
   data() {
     return {

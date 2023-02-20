@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-19 17:15:14
+ * @LastEditTime: 2023-02-20 11:42:08
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -18,7 +18,7 @@
         <iButton @click="visible = true">VSI</iButton>
         <iButton @click="strategyVisible = true">strategy</iButton>
       </div>
-      <abPrice ref="abPrice" />
+      <abPrice ref="abPrice" :strategy="strategy" />
     </iCard>
 
     <editDialog
@@ -32,6 +32,7 @@
       v-if="strategyVisible"
       :visible.sync="strategyVisible"
       :strategy="this.strategy"
+      @updateData="updateNomiRemark"
     />
   </div>
 </template> 
@@ -40,7 +41,11 @@ import { iButton, iCard } from "rise";
 import editDialog from "./components/editDialog";
 import strategyDialog from "./components/strategyDialog";
 import abPrice from "./abPrice"; // UI一样,但是布局需要调整
-import { analysisNomiCarProject } from "@/api/partsrfq/editordetail/abprice";
+import {
+  analysisNomiCarProject,
+  getNomiRemark,
+  updateNomiRemark,
+} from "@/api/partsrfq/editordetail/abprice";
 export default {
   components: { editDialog, strategyDialog, iButton, iCard, abPrice },
   computed: {
@@ -57,14 +62,37 @@ export default {
     };
   },
   created() {
+    this.getNomiRemark();
     this.analysisNomiCarProject();
   },
   methods: {
-    getData(val){
+    getData(val) {
       console.log(this.$refs.abPrice);
-      if(this.$refs.abPrice.tab=='bar'){
-        this.$set(this.$refs.abPrice.carTypeObj[this.$refs.abPrice.tabBar],'time',new Date().getTime())
+      if (this.$refs.abPrice.tab == "bar") {
+        this.$set(
+          this.$refs.abPrice.carTypeObj[this.$refs.abPrice.tabBar],
+          "time",
+          new Date().getTime()
+        );
       }
+    },
+    getNomiRemark() {
+      getNomiRemark(this.$route.query.desinateId).then((res) => {
+        if (res?.code == "200") {
+          this.strategy = res.data.strategy;
+        }
+      });
+    },
+    updateNomiRemark(val) {
+      this.strategyVisible = false
+      updateNomiRemark({
+        nominateId: this.$route.query.desinateId,
+        strategy: val,
+      }).then((res) => {
+        if (res?.code == "200") {
+          this.strategy = val;
+        }
+      });
     },
     analysisNomiCarProject() {
       this.carTypeObj = {};
@@ -79,7 +107,6 @@ export default {
             );
           });
           this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
-          this.changeCarType(this.tabBar);
         }
       });
     },
@@ -94,7 +121,7 @@ export default {
     }
   }
 }
-.btn-list{
+.btn-list {
   text-align: right;
 }
 .abPrice {

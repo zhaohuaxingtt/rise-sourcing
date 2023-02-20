@@ -21,3 +21,21 @@ export const supplierStepList = [
     {title:'EM',tips:'KW35',},
     {title:'Part SOP',tips:'KW42'},
 ]
+
+export const tableTitle = [
+    {props:'partReleaseTime',name:'Part Release'},
+    {props:'rfqTime',name:'RFQ'},
+    {props:'cscTime',name:'CSC'},
+    {props:'bfConfirmTime',name:'BF Confirm'},
+    {props:'vffTbtTime',name:'VFF TBT'},
+    {props:'pvsTbtTime',name:'PVS TBT'},
+    {props:'osTbtTime',name:'OS TBT'},
+    {props:'sopTbtTime',name:'SOP TBT'},
+]
+
+export const tableTitleSupplier = [
+    {props:'supplierName',name:'Supplier'},
+    {props:'oneStWeek',name:'1st'},
+    {props:'qthreeWeek',name:'EM'},
+    {props:'otsWeek',name:'OTS'},
+]

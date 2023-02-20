@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2023-02-19 18:34:28
+ * @LastEditTime: 2023-02-20 11:00:34
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -85,24 +85,6 @@ export function getAnalysisBestBallNomi(data){
       data
   })
 }
-// 获取vsi
-export function findVsi(data){
-  return nego({
-      url: `/nego-assistant/nego-analysis-summary/findVsi`,
-      method: 'post',
-      data
-  })
-}
-
-// 更新
-export function updateVsi(data){
-  return nego({
-      url: `/nego-assistant/nego-analysis-summary/updateVsi`,
-      method: 'post',
-      data
-  })
-}
-
 // findNomiProject
 export function findNomiProject(data){
   return nego({
@@ -116,6 +98,23 @@ export function updateNomiProject(data){
   return nego({
       url: `/nego-assistant/nego-analysis-summary/updateNomiProject`,
       method: 'post',
+      data
+  })
+}
+
+// 查询定点备注信息
+export function getNomiRemark(nominateId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getNomiRemark/${nominateId}`,
+      method: 'get',
+  })
+}
+
+// 更新定点备注信息
+export function updateNomiRemark(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/updateNomiRemark`,
+      method: 'POST',
       data
   })
 }

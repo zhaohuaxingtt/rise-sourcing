@@ -8,7 +8,7 @@ export default {
   props: {
     barName: String,
     height: Number,
-    data: Object,
+    vsi: [Number, String],
     max: Number,
     color: String
   },
@@ -32,12 +32,6 @@ export default {
     this.resize();
   },
   methods: {
-    getDiff() {
-      let result =
-        deleteThousands(this.data.bPrice || 0) -
-        deleteThousands(this.data.aPrice || 0);
-      return (+result).toFixed(2);
-    },
     fontSize(res){
       const fontSize = parseFloat(document.getElementsByTagName('html')[0].style.fontSize) || 16;
       return res*(fontSize/16);
@@ -109,7 +103,7 @@ export default {
               fontSize: this.fontSize(18),
               formatter: () => {
                 return (
-                  (+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""
+                  (+deleteThousands(this.vsi || 0)).toFixed(2) || ""
                 );
               },
             },
@@ -117,7 +111,7 @@ export default {
               color: this.color || "#a0dcff",
             },
             stack: "Supplier",
-            data: [(+deleteThousands(this.data.aPrice || 0)).toFixed(2) || ""],
+            data: [(+deleteThousands(this.vsi || 0)).toFixed(2) || ""],
           },
         ],
       };

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-19 18:48:04
+ * @LastEditTime: 2023-02-19 20:18:05
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -133,7 +133,7 @@
         width="850"
         trigger="click"
         :visible-arrow="false"
-        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+        :content="strategy"
       >
         <img :src="tips" alt="tips" class="iconSize" slot="reference" />
       </el-popover>
@@ -199,7 +199,9 @@ import left from "@/assets/images/cscIcon/left.svg";
 import {
   analysisNomiCarProject,
   getListRfq,
-  getList
+  getList,
+  findNomiProject,
+  getNomiRemark
 } from "@/api/partsrfq/editordetail/abprice";
 import { exportFsSupplierAsRowByNomiId } from "@/api/partsrfq/editordetail";
 export default {
@@ -266,7 +268,8 @@ export default {
         best_ball:{},
         gs_part:{},
         Detailed_Worksheet:{},
-      }
+      },
+      strategy:'',
     };
   },
   computed: {
@@ -275,6 +278,7 @@ export default {
     },
   },
   created() {
+    this.getNomiRemark()
     this.analysisNomiCarProject();
     this.getListRfq();
     this.getList()
@@ -285,12 +289,14 @@ export default {
         businessId:this.$route.query.desinateId,
         type: "nominate_ab_price",
       }).then(res=>{
-        res.data.forEach(item=>{
-          this.config[item.operateCode] = item
-          if(item.isShow && !this.tabTable){  // 显示第一个true
-            this.tabTable = item.operateCode
-          }
-        })
+        if(res?.code=='200'){
+          res.data.forEach(item=>{
+            this.config[item.operateCode] = item
+            if(item.isShow && !this.tabTable){  // 显示第一个true
+              this.tabTable = item.operateCode
+            }
+          })
+        }
         if(!this.tabTable){ // 没有表格就显示bar
           this.tab = 'bar'
         }
@@ -317,6 +323,13 @@ export default {
         this.$refs.table.tabChange();
       }
     },
+    getNomiRemark(){
+      getNomiRemark(this.$route.query.desinateId).then(res=>{
+        if(res?.code=='200'){
+          this.strategy = res.data.strategy
+        }
+      })
+    },
     analysisNomiCarProject() {
       this.carTypeObj = {};
       analysisNomiCarProject({
@@ -331,7 +344,23 @@ export default {
           });
           this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
           this.changeCarType(this.tabBar);
+          this.findVsi()
         }
+      });
+    },
+    findVsi() {
+      let params = this.carTypeList.map(item=>{
+        return {
+          nominateId: this.$route.query.desinateId,
+          carProjectCode: item.carTypeProjectNum,
+          carProjectId: item.carTypeProjectId,
+        };
+      })
+      findNomiProject(params).then((res) => {
+        this.tableData = res.data;
+        res.data.forEach(item=>{
+          this.carTypeObj[item.carProjectCode].vsi = item.vsi
+        })
       });
     },
     changeTab(tab) {

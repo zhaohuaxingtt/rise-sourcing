@@ -36,8 +36,7 @@ export function getTimeline(nomiAppId){
 // 通过定点申请id和车型项目查询时间轴
 export function getNomiCarProjectTimeAxis(nomiAppId,carProjectId){
   return requst({
-      url: `/web/nomi-car-project-time-axis/getNomiCarProjectTimeAxis/${nomiAppId}/${carProjectId}
-      getTimeAxis`,
+      url: `/nomi-car-project-time-axis/getNomiCarProjectTimeAxis/${nomiAppId}/${carProjectId}`,
       method: 'GET',
   })
 }

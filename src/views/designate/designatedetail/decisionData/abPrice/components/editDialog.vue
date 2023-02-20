@@ -81,6 +81,9 @@ export default {
         this.tableData = res.data;
       });
     },
+    cancel(){
+      this.$emit('update:visible',false)
+    },
     save() {
       this.tableLoading = true;
         updateNomiProject(this.tableData)
