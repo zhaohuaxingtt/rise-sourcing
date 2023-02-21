@@ -43,7 +43,7 @@
       <template #shareTargetPrice="scope">
         <thousandsFilterInput
           class="thousandsFilterInput"
-          :numProcessor="0"
+          :numProcessor="2"
           :inputValue="scope.row['shareTargetPrice']"
           @handleInput="handleInput($event,scope.row,'shareTargetPrice')"
         />
@@ -52,7 +52,7 @@
       <template #targetPrice="scope">
         <thousandsFilterInput
           class="thousandsFilterInput"
-          :numProcessor="0"
+          :numProcessor="2"
           :inputValue="scope.row['targetPrice']"
           @handleInput="handleInput($event,scope.row,'targetPrice')"
         />
@@ -184,10 +184,10 @@ export default {
     // 输入整数，计算预计A价
     handleInput(value, row, name) {
       if(name=='shareTargetPrice'){
-        this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
+        this.$set(row, name, numberProcessor(value, 2)); // 目标价·分摊，输入整数
         this.$set(row, "estimateShareAPrice",numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)); // 计算预计A价=  目标价·分摊/分摊量
       }else{
-        this.$set(row, name, Number(value).toFixed(0)); // 目标价·分摊，输入整数
+        this.$set(row, name, numberProcessor(value, 2)); // 目标价·分摊，输入整数
       }
     },
     handleSelectionChange(val){
