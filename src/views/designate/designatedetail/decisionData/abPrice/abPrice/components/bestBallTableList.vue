@@ -614,12 +614,20 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        if (row.suggestFlag && row.isFsMinTto) {
-          return "blue-border font-green";
-        }else if (row.suggestFlag) {
-          return "blue-border";
-        }else if(row.isFsMinTto) {
-          return "font-green"
+        if (this.label == "Best ball") {
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            return "blue-border font-green";
+          } else {
+            return "font-green";
+          }
+        } else {
+          if (row.isFsMinTto) {
+            // recommendation 全蓝, 但是绿色需要判断
+            return "blue-border font-green";
+          } else {
+            return "blue-border";
+          }
         }
       }
       if (["Total Turnover"].includes(column.label)) {
