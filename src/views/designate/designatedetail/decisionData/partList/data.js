@@ -13,7 +13,7 @@ export const tableTitle = [
   { props: 'project', name: 'Project' },
   { props: 'sopDate', name: 'SOP' },
   { props: 'ebrCalculatedValue', name: 'EBR%' },
-  { props: 'mixQty', name: 'Mixed Qty' },
+  { props: 'ebrConfirmValue', name: 'Mixed Qty' },
   { props: 'unit', name: 'Unit' },
   // { props: 'ebrConfirmValue', name: 'EBR% (input)' },
   { props: 'lifeTime', name: 'Volume (lifetime)',width: 150 },

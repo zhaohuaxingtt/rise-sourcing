@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-21 10:16:14
+ * @LastEditTime: 2023-02-21 12:24:59
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -41,7 +41,6 @@
           <el-radio-button label="gs_part">GS Part</el-radio-button>
           <el-radio-button
             label="Detailed_Worksheet"
-            @click="exportExcel"
           >Detailed Worksheet</el-radio-button>
         </el-radio-group>
         <!-- 柱状图 -->

@@ -33,10 +33,13 @@
                <span>{{ percent(scope.row.ebrCalculatedValue || 0) }}</span>
             </template>
             <!-- 手工输入EBR值 -->
-            <template #ebrConfirmValue="scope">
+            <!-- <template #ebrConfirmValue="scope">
                <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
                <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
-            </template>
+            </template> -->
+						<template #ebrConfirmValue="scope">
+							<span>{{ scope.row.ebrConfirmValue | toThousands(true) }}</span>
+						</template>
 						<template #lifeTime="scope">
 							<span>{{ scope.row.lifeTime | toThousands(true) }}</span>
 						</template>
@@ -170,11 +173,11 @@ export default {
             this.tableListData = records.map(item => {
                const result = { ...item }
                
-               if (item.ebrConfirmValue) {
-                  result.ebrConfirmValue = (this.isPreview == "1" || this.nominationDisabled || this.rsDisabled) ? item.ebrConfirmValue : this.percent(item.ebrConfirmValue)
-               } else {
-                  result.ebrConfirmValue = ""
-               }
+               // if (item.ebrConfirmValue) {
+               //    result.ebrConfirmValue = (this.isPreview == "1" || this.nominationDisabled || this.rsDisabled) ? item.ebrConfirmValue : this.percent(item.ebrConfirmValue)
+               // } else {
+               //    result.ebrConfirmValue = ""
+               // }
 
                return result
             })
