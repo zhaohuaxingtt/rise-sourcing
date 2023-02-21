@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-21 12:24:59
+ * @LastEditTime: 2023-02-21 16:51:50
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -73,6 +73,7 @@
         </el-radio-group>
         <!-- 表格是否展示 -->
         <el-radio-group
+         v-if="!nominationDisabled && !rsDisabled"
           v-show="tab == 'table'"
           class="radio-group margin-left20"
           v-model="config[tabTable].isShow"
@@ -99,8 +100,6 @@
         <img :src="right" alt="right" class="allow" @click="next" />
       </div>
     </div>
-    <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
-    <!-- 重点标注: table必须表头固定,不能出现横向滚动条,不然翻页按钮定位会异常 -->
     <supplierTableList
       class="content"
       ref="table"
@@ -114,13 +113,22 @@
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="tab == 'table' && tabTable == 'part'"
+      v-if="(tab == 'table' && tabTable == 'part') ||
+        tabTable == 'Detailed_Worksheet'"
+    />
+    <GSpartTableList
+      class="content"
+      ref="table"
+      @setPage="setPage"
+      v-if="(tab == 'table' && tabTable == 'gs_part') ||
+        tabTable == 'Detailed_Worksheet'"
     />
     <bestBallTableList
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="tab == 'table' && tabTable == 'best_ball'"
+      v-if="(tab == 'table' && tabTable == 'best_ball') ||
+        tabTable == 'Detailed_Worksheet'"
     />
     <!-- bar -->
     <supplierBar
@@ -128,7 +136,6 @@
       v-if="tab == 'bar'"
       :detail="carTypeDetail"
     />
-    <!-- <supplierBar2 class="content" v-if="tab == 'bar'" :detail="carTypeDetail" /> -->
     <supplierLine
       class="content-chart"
       v-if="tab == 'line'"
@@ -183,14 +190,13 @@
 </template> 
 <script>
 import { iCard, iTabsList, icon, iButton } from "rise";
-
 // 表格
 import supplierTableList from "./components/supplierTableList";
 import partTableList from "./components/partTableList";
+import GSpartTableList from "./components/GSpartTableList";
 import bestBallTableList from "./components/bestBallTableList";
 // 柱状图
 import supplierBar from "./components/supplierBar";
-import supplierBar2 from "./components/supplierBar2";
 // 折线图
 import supplierLine from "./components/supplierLine";
 // 图片
@@ -215,9 +221,9 @@ export default {
   components: {
     supplierTableList,
     partTableList,
+    GSpartTableList,
     bestBallTableList,
     supplierBar,
-    supplierBar2,
     supplierLine,
     iCard,
     iTabsList,
@@ -270,7 +276,7 @@ export default {
       rfqDetail: {},
       visible: false,
       index: 0,
-      showLength: 0,
+      showLength: 1,
       total: 0,
       config:{
         supplier:{},
@@ -278,13 +284,18 @@ export default {
         best_ball:{},
         gs_part:{},
         Detailed_Worksheet:{},
-      }
+      },
+      loading:false
     };
   },
   computed: {
     isRoutePreview() {
       return this.$route.query.isPreview == 1;
     },
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
   },
   created() {
     this.analysisNomiCarProject();
@@ -380,10 +391,13 @@ export default {
     change(val) {
       if (val == "Detailed_Worksheet") {
         this.exportExcel();
-        this.tabTable = "supplier";
+        this.tabTable = this.oldTabTable
+      }else{
+        this.oldTabTable = this.tabTable
       }
     },
     exportExcel() {
+      this.loading = true
       exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, [
         "EBR",
         "Volume",
@@ -392,7 +406,9 @@ export default {
         "Dev.\nCost",
         "Supplier \nSOP Date",
         "Total\n Turnover",
-      ]);
+      ]).finally(()=>{
+        this.loading = false
+      });
     },
   },
 };
@@ -454,8 +470,8 @@ export default {
     display: flex;
     align-items: center;
     .allow {
-      height: 36px;
-      margin-top: 5px;
+      height: 22px;
+      margin: 0 7px;
     }
   }
 }

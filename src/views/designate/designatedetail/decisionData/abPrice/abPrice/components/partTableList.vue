@@ -76,7 +76,7 @@
                   </template>
                   <template slot-scope="scope">
                     <span>{{
-                      numberProcessor(scope.row.ebrCalculatedValue, 1)
+                      numberProcessor(scope.row.ebrCalculatedValue, 2)
                     }}</span>
                   </template>
                 </el-table-column>

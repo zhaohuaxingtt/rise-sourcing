@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 23:37:27
+ * @LastEditTime: 2023-02-21 15:17:59
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -164,11 +164,11 @@ export const nomalTableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier', minWidth:125},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', minWidth:100},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', minWidth:65},
-  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', minWidth:85},
-  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', minWidth:85},
+  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', minWidth:85, align: 'right'},
+  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', minWidth:85, align: 'right'},
   {props:'status',name:'状态', enName: 'Status', minWidth:50},
-  {props:'aprice',name:'A价', enName: 'A Price', minWidth: 70},
-  {props:'bprice',name:'B价', enName: 'B Price', minWidth: 70},
+  {props:'aprice',name:'A价', enName: 'A Price', minWidth: 70, align: 'right'},
+  {props:'bprice',name:'B价', enName: 'B Price', minWidth: 70, align: 'right'},
   {props:'ltc',name:'年降', enName: 'LTC', minWidth: 48},
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', minWidth: 105},
   {props:'investFee',name:'投资费', enName: 'Invest', minWidth: 60},

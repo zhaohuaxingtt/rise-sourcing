@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-20 16:33:55
+ * @LastEditTime: 2023-02-21 17:41:36
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -155,7 +155,7 @@ export default {
     };
   },
   mounted() {
-    window.removeEventListener("resize", this.resize);
+    // window.addEventListener("resize", this.resize);
   },
   methods: {
     resize() {
@@ -259,6 +259,7 @@ export default {
       this.charts = this.$echarts.init(this.$refs.chart, null, {
         renderer: "svg",
       });
+      console.log(JSON.stringify(options));
       this.charts.setOption(options);
     },
     getLine() {

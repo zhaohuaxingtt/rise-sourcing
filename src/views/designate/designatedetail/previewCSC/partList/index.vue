@@ -17,9 +17,9 @@
         permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
         ref="tableList"
         showTitleName
-        :indexConfig='{
-          width:60
-        }'
+        :indexConfig="{
+          width: 60,
+        }"
         :selection="!isPreview"
         :index="isPreview"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE | 表格"
@@ -30,14 +30,19 @@
         <!-- 采购项目编号 -->
         <template #fsNum="scope">
           <span>{{ scope.row.fsNum }}</span>
-          <br>
+          <br />
           <span>({{ scope.row.procureFactory }})</span>
         </template>
         <!-- 零件信息 -->
         <template #partNum="scope">
           <div class="mtz-box">
             <span>{{ scope.row.partNum }}</span>
-            <img class="margin-left5" :src="mtz" v-if="scope.row.mtz" alt="MTZ">
+            <img
+              class="margin-left5 mtz"
+              :src="mtz"
+              v-if="scope.row.mtz"
+              alt="MTZ"
+            />
           </div>
           <span>{{ scope.row.partNameZh }}</span>
         </template>
@@ -53,12 +58,9 @@
             percent(scope.row.ebrConfirmValue || 0)
           }}</span>
         </template>
-
         <!-- 手工输入EBR值:综合每车用量 -->
         <template #ebrCalculatedValue="scope">
-          <span>{{
-            numberProcessor(scope.row.ebrCalculatedValue,1)
-          }}</span>
+          <span>{{ numberProcessor(scope.row.ebrCalculatedValue, 2) }}</span>
         </template>
         <template #lifeTime="scope">
           <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
@@ -96,7 +98,8 @@ import { tableTitle } from "./data";
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import buttonTableSetting from "@/components/buttonTableSetting";
-import mtz from '@/assets/images/icon/mtz-icon.png'
+// import mtz from "@/assets/images/icon/mtz-icon.png";
+import mtz from "@/assets/images/cscIcon/mtz.svg";
 import detailDialog from "./detailDialog";
 
 export default {
@@ -287,9 +290,12 @@ export default {
       .cell {
         line-height: 20px;
       }
-      .mtz-box{
+      .mtz-box {
         display: flex;
         align-items: center;
+        .mtz {
+          height: 18px;
+        }
       }
     }
   }

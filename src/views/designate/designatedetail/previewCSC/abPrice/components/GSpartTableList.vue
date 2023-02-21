@@ -117,7 +117,7 @@
           <el-table-column label="Rating" align="center">
             <el-table-column>
               <el-table-column>
-                <el-table-column label="F-target" align="center">
+                <el-table-column label="Current" align="center">
                   <el-table-column
                     label="A Price"
                     prop="cfPartAPrice"
@@ -136,7 +136,7 @@
           <el-table-column label="E" align="center">
             <el-table-column label="Q" align="center">
               <el-table-column label="L" align="center">
-                <el-table-column label="F-target" align="center">
+                <el-table-column label="Current" align="center">
                   <el-table-column
                     label="B Price"
                     prop="cfPartBPrice"
@@ -406,6 +406,10 @@ export default {
           aPrice: "",
         },
         {
+          carProType: "Saving",
+          aPrice: "",
+        },
+        {
           carProType: "Total Turnover",
           isMinTto:[]
         },
@@ -478,7 +482,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
-            totalData[5].isMinTto = []
+            totalData[6].isMinTto = []
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
@@ -496,9 +500,10 @@ export default {
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
               totalData[4][item.supplierId + "aPrice"] = item.aPrice;
-              totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
+              totalData[5][item.supplierId + "aPrice"] = '';
+              totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
               if(item.isMinTto){
-                totalData[5].isMinTto.push(item.supplierId + "aPrice")
+                totalData[6].isMinTto.push(item.supplierId + "aPrice")
               }
               return item;
             });
@@ -513,6 +518,7 @@ export default {
               res.data.fsPriceInfo?.budgetTotalInvest || "";
             totalData[4]["aPrice"] =
               res.data.fsPriceInfo?.targetSelTotalSel || "";
+            totalData[5]["aPrice"] = "";
             let supplierAllData = _.chunk(supplierList, this.showLength);
             let lastIndex = supplierAllData.length - 1;
             if (supplierAllData[lastIndex].length < this.showLength) {
@@ -615,7 +621,7 @@ export default {
       } else if (columnIndex < 3 && rowIndex < 7) {
         return [0, 0];
       }
-      if ([0, 1, 4, 5].includes(rowIndex)) {
+      if ([0, 1, 4, 5, 6].includes(rowIndex)) {
         if (columnIndex == 3) {
           return [1, 4];
         } else if ([4, 5, 6].includes(columnIndex)) {
@@ -630,9 +636,7 @@ export default {
         }
       }
       if ([3].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
+        if ([3, 4, 5].includes(columnIndex)) {
           return [0, 0];
         }
       }
@@ -644,7 +648,7 @@ export default {
       }
       for (let i = 0; i < this.supplierList.length; i++) {
         if ([2 * i + 9].includes(columnIndex)) {
-          if ([1, 4, 5].includes(rowIndex)) {
+          if ([1, 4, 5, 6].includes(rowIndex)) {
             return [1, 2];
           } else if ([2].includes(rowIndex)) {
             return [2, 2];
@@ -713,7 +717,7 @@ export default {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
       }
-      if(rowIndex=='5'){
+      if(rowIndex=='6'){
         if(row.isMinTto.includes(column.property)){
           return 'font-green'
         }

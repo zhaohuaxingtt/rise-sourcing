@@ -94,7 +94,6 @@ export default {
             type: "bar",
             barMaxWidth: "80",
             barMinWidth: "40",
-            barMinHeight: "10",
             label: {
               show: true,
               position: "top",

@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2022-03-29 14:51:29
+ * @LastEditTime: 2023-02-21 15:19:57
 -->
 <template>
   <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :border="border" :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName" :row-class-name="tableRowClassName" v-bind="$attrs">
@@ -14,7 +14,7 @@
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
           <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
@@ -25,7 +25,7 @@
           <!-- </span>   -->
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
           <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage2(row.row)"> {{ row.row[activeItems2] }}</span>
@@ -37,7 +37,7 @@
         </template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"' :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"' :fixed="items.fixed">
         <tempalte slot-scope="scope">
           <span @click="updateSlot(scope.row,0)" v-if='scope.row.recordId && parseInt(scope.row.recordId)'>
             <icon symbol class="cursor" name='iconliebiaoyizhiding' ></icon>
@@ -48,13 +48,13 @@
         </tempalte>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="scope">
           <iInput type="number" v-if="items.type === 'input' && !disabled" v-model="scope.row[items.props]"  @input="val=>changeValue(val, scope.row, items)"></iInput>
           <span>{{ scope.row[items.props] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot="header">
           <span>{{items.key ? language(items.key, items.name) : items.name}}</span>
           <span v-if="items.required" style="color:red;">*</span>
@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
       <!-------------------------换行--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else-if="items.subItem" :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else-if="items.subItem" :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
         <template slot="header">
           <div>
             <p>{{items.name}}</p>
@@ -124,7 +124,7 @@
           <span v-else>{{scope.row[items.props] || scope.row[items.props] === 0 ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
         <template v-if="items.children">
-          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
+          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" :align="childItem.align || 'center'" :header-align="childItem.headerAlign || 'center'" :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
@@ -136,7 +136,7 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
+      <el-table-column :key="index" :align="items.align || 'center'" :header-align="items.headerAlign || 'center'" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
         <template slot="header">
           <div v-if="items.enName">
             <p v-if="items.name">{{items.name}}</p>
@@ -177,7 +177,7 @@
           <span v-else>{{scope.row[items.props] || scope.row[items.props] === 0 ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
         <template v-if="items.children">
-          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
+          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" :align="childItem.align || 'center'" :header-align="childItem.headerAlign || 'center'" :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>

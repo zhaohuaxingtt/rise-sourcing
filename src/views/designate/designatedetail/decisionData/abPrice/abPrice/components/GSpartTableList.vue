@@ -1,225 +1,219 @@
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <div ref="part-table" v-loading="loading">
-    <div
-      class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
+    <el-table
+      v-show="totalTableHeight"
+      :data="tableData"
+      class="header table"
+      ref="table"
+      :key="index"
+      border
+      :header-cell-class-name="cellClass"
+      :header-row-class-name="rowClass"
+      :cell-class-name="colClass"
     >
-      <el-table
-        v-show='totalTableHeight'
-        :data="tableData"
-        class="header table"
-        ref="table"
-        :key="index"
-        border
-        height="100%"
-        :header-cell-class-name="cellClass"
-        :header-row-class-name="rowClass"
-        :cell-class-name="colClass"
-      >
-        <!-- 左侧固定表头 -->
-        <template v-for="item in fixedTitle">
-          <el-table-column :key="item.prop" label="Unit：RMB">
+      <!-- 左侧固定表头 -->
+      <template v-for="item in fixedTitle">
+        <el-table-column :key="item.prop" label="Unit：RMB">
+          <el-table-column>
             <el-table-column>
               <el-table-column>
-                <el-table-column>
-                  <el-table-column
-                    v-if="item.prop == 'partPrjCode'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <span class="link" @click="gotoDetail(scope.row)">{{
-                        scope.row.partPrjCode
-                      }}</span>
-                      <br />
-                      <span class="link" @click="gotoDetail(scope.row)"
-                        >({{ scope.row.factoryEn }})</span
-                      >
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'partName'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <p class="partName" :title="scope.row.partName">
-                        {{ scope.row.partName }}
-                      </p>
-                      <p class="partName" :title="scope.row.partNameDe">
-                        ({{ scope.row.partNameDe }})
-                      </p>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'ebr'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{ percent(scope.row.ebr) }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'ebrCalculatedValue'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p v-for="(text, index) in item.label" :key="index">
-                        {{ text }}
-                      </p>
-                    </template>
-                    <template slot-scope="scope">
-                      <span>{{
-                        numberProcessor(scope.row.ebrCalculatedValue, 2)
-                      }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'volume'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      {{ getInt(scope.row[item.prop]) | toThousands(true) }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else
-                    :prop="item.prop"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p v-for="(text, index) in item.label" :key="index">
-                        {{ text }}
-                      </p>
-                    </template>
-                  </el-table-column>
+                <el-table-column
+                  v-if="item.prop == 'partPrjCode'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <span class="link" @click="gotoDetail(scope.row)">{{
+                      scope.row.partPrjCode
+                    }}</span>
+                    <br />
+                    <span class="link" @click="gotoDetail(scope.row)"
+                      >({{ scope.row.factoryEn }})</span
+                    >
+                  </template>
                 </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </template>
-        <el-table-column label="Supplier" align="center">
-          <el-table-column label="Rating" align="center">
-            <el-table-column>
-              <el-table-column>
-                <el-table-column label="F-target" align="center">
-                  <el-table-column
-                    label="A Price"
-                    prop="cfPartAPrice"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot-scope="scope">
-                      {{ scope.row["cfPartAPrice"] | toThousands(true) }}
-                    </template>
-                  </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'partName'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <p class="partName" :title="scope.row.partName">
+                      {{ scope.row.partName }}
+                    </p>
+                    <p class="partName" :title="scope.row.partNameDe">
+                      ({{ scope.row.partNameDe }})
+                    </p>
+                  </template>
                 </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="E" align="center">
-            <el-table-column label="Q" align="center">
-              <el-table-column label="L" align="center">
-                <el-table-column label="F-target" align="center">
-                  <el-table-column
-                    label="B Price"
-                    prop="cfPartBPrice"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot-scope="scope">
-                      {{ scope.row["cfPartBPrice"] | toThousands(true) }}
-                    </template>
-                  </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'ebr'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <span>{{ percent(scope.row.ebr) }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'ebrCalculatedValue'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p v-for="(text, index) in item.label" :key="index">
+                      {{ text }}
+                    </p>
+                  </template>
+                  <template slot-scope="scope">
+                    <span>{{
+                      numberProcessor(scope.row.ebrCalculatedValue, 2)
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'volume'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    {{ getInt(scope.row[item.prop]) | toThousands(true) }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else
+                  :prop="item.prop"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p v-for="(text, index) in item.label" :key="index">
+                      {{ text }}
+                    </p>
+                  </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
-        <template v-for="(item, index) in supplierList">
-          <!-- :key="item.supplierId + index" -->
-          <el-table-column :key="index" align="center">
-            <div slot="header" slot-scope="scope">
-              {{ item.supplierEn || "-" }}
-            </div>
-            <el-table-column :label="item.TE" align="center">
-              <template slot-scope="scope" slot="header">
-                <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
-                <span v-else>{{ item.TE }}</span>
-              </template>
-              <el-table-column :label="item.Q" align="center">
-                <template slot-scope="scope" slot="header">
-                  <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
-                  <span v-else>{{ item.Q }}</span>
-                </template>
-                <el-table-column :label="item.L" align="center">
-                  <template slot-scope="scope" slot="header">
-                    <span class="red" v-if="isCLevel(item.L)">{{
-                      item.L
-                    }}</span>
-                    <span v-else>{{ item.L }}</span>
+      </template>
+      <el-table-column label="Supplier" align="center">
+        <el-table-column label="Rating" align="center">
+          <el-table-column>
+            <el-table-column>
+              <el-table-column label="Current" align="center">
+                <el-table-column
+                  label="A Price"
+                  prop="cfPartAPrice"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot-scope="scope">
+                    {{ scope.row["cfPartAPrice"] | toThousands(true) }}
                   </template>
-                  <el-table-column
-                    :prop="item.supplierId + 'aPrice'"
-                    label="A price(LC)"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p>A price</p>
-                      <p>(LC)</p>
-                    </template>
-
-                    <template slot-scope="scope">
-                      {{
-                        scope.row[item.supplierId + "aPrice"]
-                          | toThousands(true)
-                      }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.supplierId + 'bPrice'"
-                    label="B price(LC)"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p>B price</p>
-                      <p>(LC)</p>
-                    </template>
-                    <template slot-scope="scope">
-                      {{
-                        scope.row[item.supplierId + "bPrice"]
-                          | toThousands(true)
-                      }}
-                    </template>
-                  </el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
-        </template>
-      </el-table>
-    </div>
+        </el-table-column>
+        <el-table-column label="E" align="center">
+          <el-table-column label="Q" align="center">
+            <el-table-column label="L" align="center">
+              <el-table-column label="Current" align="center">
+                <el-table-column
+                  label="B Price"
+                  prop="cfPartBPrice"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot-scope="scope">
+                    {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+        </el-table-column>
+      </el-table-column>
+      <template v-for="(item, index) in supplierList">
+        <!-- :key="item.supplierId + index" -->
+        <el-table-column :key="index" align="center">
+          <div slot="header" slot-scope="scope">
+            {{ item.supplierEn || "-" }}
+          </div>
+          <el-table-column :label="item.TE" align="center">
+            <template slot-scope="scope" slot="header">
+              <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
+              <span v-else>{{ item.TE }}</span>
+            </template>
+            <el-table-column :label="item.Q" align="center">
+              <template slot-scope="scope" slot="header">
+                <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
+                <span v-else>{{ item.Q }}</span>
+              </template>
+              <el-table-column :label="item.L" align="center">
+                <template slot-scope="scope" slot="header">
+                  <span class="red" v-if="isCLevel(item.L)">{{
+                    item.L
+                  }}</span>
+                  <span v-else>{{ item.L }}</span>
+                </template>
+                <el-table-column
+                  :prop="item.supplierId + 'aPrice'"
+                  label="A price(LC)"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>A price</p>
+                    <p>(LC)</p>
+                  </template>
+
+                  <template slot-scope="scope">
+                    {{
+                      scope.row[item.supplierId + "aPrice"]
+                        | toThousands(true)
+                    }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :prop="item.supplierId + 'bPrice'"
+                  label="B price(LC)"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>B price</p>
+                    <p>(LC)</p>
+                  </template>
+                  <template slot-scope="scope">
+                    {{
+                      scope.row[item.supplierId + "bPrice"]
+                        | toThousands(true)
+                    }}
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+        </el-table-column>
+      </template>
+    </el-table>
     <div ref="total-table" :style="{ 'padding-right': gutter }">
       <el-table
         class="header total-table"
@@ -249,8 +243,8 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              <template v-if="scope.$index==0">
-              {{ scope.row["aPrice"] | toThousands(true) }}
+              <template v-if="scope.$index == 0">
+                {{ scope.row["aPrice"] | toThousands(true) }}
               </template>
               <template v-else>
                 {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
@@ -265,8 +259,8 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              <template v-if="scope.$index==0">
-              {{ scope.row["bPrice"] | toThousands(true) }}
+              <template v-if="scope.$index == 0">
+                {{ scope.row["bPrice"] | toThousands(true) }}
               </template>
               <template v-else>
                 {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
@@ -346,12 +340,12 @@ export default {
         {
           prop: "partPrjCode",
           label: ["FS No. (Plant)"],
-          width: 140,
+          width: 120,
         },
         {
           prop: "partNo",
           label: ["Part No."],
-          width: 150,
+          width: 140,
         },
         {
           prop: "partName",
@@ -406,14 +400,18 @@ export default {
           aPrice: "",
         },
         {
+          carProType: "Saving",
+          aPrice: "",
+        },
+        {
           carProType: "Total Turnover",
-          isMinTto:[]
+          isMinTto: [],
         },
       ],
       index: -1,
       showLength: 4,
       supplierAllData: [],
-      allData:[],
+      allData: [],
       loading: false,
       totalTableHeight: 310,
     };
@@ -478,7 +476,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
-            totalData[5].isMinTto = []
+            totalData[6].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
@@ -496,13 +494,14 @@ export default {
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
               totalData[4][item.supplierId + "aPrice"] = item.aPrice;
-              totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
-              if(item.isMinTto){
-                totalData[5].isMinTto.push(item.supplierId + "aPrice")
+              totalData[5][item.supplierId + "aPrice"] = '';
+              totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
+              if (item.isMinTto) {
+                totalData[6].isMinTto.push(item.supplierId + "aPrice");
               }
               return item;
             });
-            this.allData = supplierList
+            this.allData = supplierList;
             totalData[0]["aPrice"] =
               res.data.fsPriceInfo?.targetMixLcAPrice || "";
             totalData[0]["bPrice"] =
@@ -513,6 +512,7 @@ export default {
               res.data.fsPriceInfo?.budgetTotalInvest || "";
             totalData[4]["aPrice"] =
               res.data.fsPriceInfo?.targetSelTotalSel || "";
+            totalData[5]["aPrice"] = "";
             let supplierAllData = _.chunk(supplierList, this.showLength);
             let lastIndex = supplierAllData.length - 1;
             if (supplierAllData[lastIndex].length < this.showLength) {
@@ -524,9 +524,9 @@ export default {
             this.supplierAllData = supplierAllData;
             this.index = 0;
             this.totalData = totalData;
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
               this.tableData = tableData;
-            })
+            });
           }
         })
         .finally(() => {
@@ -545,24 +545,28 @@ export default {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     setColSpan() {
-        const row =
-          this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
-            .rows;
-        //   行数据,行,列,合并数,方向
-        this.merge(row, 0, 0, 7, "colSpan");
-        this.merge(row, 0, 0, 4, "rowSpan");
-        this.merge(row, 1, 7, 3, "rowSpan");
-        this.merge(row, 4, 7, 2, "colSpan");
-        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
-      this.$nextTick(()=>{
-        setTimeout(()=>{
+      const row =
+        this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
+          .rows;
+      //   行数据,行,列,合并数,方向
+      this.merge(row, 0, 0, 7, "colSpan");
+      this.merge(row, 0, 0, 4, "rowSpan");
+      this.merge(row, 1, 7, 3, "rowSpan");
+      this.merge(row, 4, 7, 2, "colSpan");
+      this.$emit("setPage", {
+        index: this.index,
+        showLength: this.showLength,
+        total: this.allData.length,
+      });
+      this.$nextTick(() => {
+        setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-        },0)
-      })
+          console.log("this.totalTableHeight=>", this.totalTableHeight);
+        }, 0);
+      });
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
-      if(!row) return
       const col = row[rowIndex].cells;
       if (!(row || col)) return;
       if (rowIndex < 0 || colIndex < 0 || span < 0) return;
@@ -615,7 +619,7 @@ export default {
       } else if (columnIndex < 3 && rowIndex < 7) {
         return [0, 0];
       }
-      if ([0, 1, 4, 5].includes(rowIndex)) {
+      if ([0, 1, 4, 5, 6].includes(rowIndex)) {
         if (columnIndex == 3) {
           return [1, 4];
         } else if ([4, 5, 6].includes(columnIndex)) {
@@ -630,9 +634,7 @@ export default {
         }
       }
       if ([3].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
+        if ([3, 4, 5].includes(columnIndex)) {
           return [0, 0];
         }
       }
@@ -644,7 +646,7 @@ export default {
       }
       for (let i = 0; i < this.supplierList.length; i++) {
         if ([2 * i + 9].includes(columnIndex)) {
-          if ([1, 4, 5].includes(rowIndex)) {
+          if ([1, 4, 5, 6].includes(rowIndex)) {
             return [1, 2];
           } else if ([2].includes(rowIndex)) {
             return [2, 2];
@@ -677,9 +679,9 @@ export default {
         this.setColSpan();
       });
     },
-    rowClass({row, rowIndex }){
-      if(rowIndex<4){
-        return 'table-header-small'
+    rowClass({ row, rowIndex }) {
+      if (rowIndex < 4) {
+        return "table-header-small";
       }
     },
     // 表头单元格背景调整
@@ -713,9 +715,10 @@ export default {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
       }
-      if(rowIndex=='5'){
-        if(row.isMinTto.includes(column.property)){
-          return 'font-green'
+      if (rowIndex == "6") {
+        console.log("row=>", row);
+        if (row.isMinTto.includes(column.property)) {
+          return "font-green";
         }
       }
     },
@@ -731,7 +734,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-box {
-  height: calc(100% - 280px);
+  height: 600px;
 }
 .header {
   ::v-deep th {
@@ -763,14 +766,14 @@ export default {
   }
   .el-table__header {
     background: #fff;
-    .table-header-small{
-      th{
+    .table-header-small {
+      th {
         font-size: 16px;
         padding-top: 0px;
         padding-bottom: 0px;
       }
-      .unit{
-        .cell{
+      .unit {
+        .cell {
           padding-top: 1px;
         }
       }

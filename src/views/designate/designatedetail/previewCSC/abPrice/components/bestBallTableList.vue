@@ -61,7 +61,7 @@
                 </p>
               </template>
               <template slot-scope="scope">
-                <span>{{ numberProcessor(scope.row.mixQty, 1) }}</span>
+                <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
               </template>
             </el-table-column>
             <el-table-column

@@ -325,7 +325,7 @@ export default {
       font-size: 18px;
       &.is-active {
         color: #fff;
-        background: #194669;
+        background: #364d6e;
       }
       &:nth-child(1) {
         border-radius: 0;

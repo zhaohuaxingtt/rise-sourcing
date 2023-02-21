@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-19 00:27:27
+ * @LastEditTime: 2023-02-21 15:57:42
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -132,8 +132,8 @@ import { pageMixins } from "@/utils/pageMixins";
 import { cloneDeep } from "lodash";
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon";
 import filters from "@/utils/filters";
-import success from "@/assets/images/csc-bdl-success.svg";
-import MBDL from "@/assets/images/icon/mbdl-icon.png";
+import success from "@/assets/images/cscIcon/csc-bdl-success.svg";
+import MBDL from "@/assets/images/cscIcon/mbdl.svg";
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -327,7 +327,7 @@ export default {
     flex: 1;
   }
   .mbdl {
-    height: 100%;
+    height: 18px;
     vertical-align: bottom;
   }
 }

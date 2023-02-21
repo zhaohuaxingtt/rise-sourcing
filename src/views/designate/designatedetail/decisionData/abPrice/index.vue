@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-20 11:42:08
+ * @LastEditTime: 2023-02-21 16:51:08
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -14,7 +14,7 @@
         SOURCING_NOMINATION_ATTATCH_ABPRICE | (决策资料 - abprice)
       "
     >
-      <div class="btn-list">
+      <div class="btn-list" v-if="!nominationDisabled && !rsDisabled">
         <iButton @click="visible = true">VSI</iButton>
         <iButton @click="strategyVisible = true">strategy</iButton>
       </div>
@@ -60,6 +60,12 @@ export default {
       carTypeList: [],
       strategy: "",
     };
+  },
+  computed:{
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
   },
   created() {
     this.getNomiRemark();

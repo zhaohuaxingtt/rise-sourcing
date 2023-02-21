@@ -1,19 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
-  <defs>
-    <filter id="矩形_2" x="0" y="0" width="54" height="54" filterUnits="userSpaceOnUse">
-      <feOffset dy="3" input="SourceAlpha"/>
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feFlood flood-opacity="0.161"/>
-      <feComposite operator="in" in2="blur"/>
-      <feComposite in="SourceGraphic"/>
-    </filter>
-  </defs>
-  <g id="组_19" data-name="组 19" transform="translate(377 -241) rotate(90)">
-    <g id="组_6" data-name="组 6" transform="translate(0 36)">
-      <g transform="matrix(0, -1, 1, 0, 241, 341)" filter="url(#矩形_2)">
-        <rect id="矩形_2-2" data-name="矩形 2" width="30" height="30" rx="4" transform="translate(42 9) rotate(90)" fill="#1cb0f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="组_5" data-name="组 5" transform="translate(-250 -299)">
+    <rect id="矩形_2" data-name="矩形 2" width="30" height="30" rx="4" transform="translate(250 299)" fill="#364d6e"/>
+    <g id="Iconly_Light-Outline_Arrow---Left-2" data-name="Iconly/Light-Outline/Arrow---Left-2" transform="translate(252.25 301.75)">
+      <g id="Arrow---Left-2" transform="translate(16.5 4) rotate(90)">
+        <path id="Stroke-1" d="M.47.47A.75.75,0,0,1,1.446.4L1.53.47,8,6.939,14.47.47A.75.75,0,0,1,15.446.4L15.53.47a.75.75,0,0,1,.073.977l-.073.084-7,7a.75.75,0,0,1-.977.073L7.47,8.53l-7-7A.75.75,0,0,1,.47.47Z" fill="#fff"/>
       </g>
     </g>
-    <path id="Icon_awesome-chevron-up" data-name="Icon awesome-chevron-up" d="M10.4,19.653l8.264-8.264a1.02,1.02,0,0,0,0-1.443L17.7,8.982a1.02,1.02,0,0,0-1.441,0L9.682,15.53,3.1,8.98a1.02,1.02,0,0,0-1.441,0L.7,9.946a1.02,1.02,0,0,0,0,1.443L8.96,19.653A1.02,1.02,0,0,0,10.4,19.653Z" transform="translate(255.602 336.317)" fill="#fff"/>
   </g>
 </svg>

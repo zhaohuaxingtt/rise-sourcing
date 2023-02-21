@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-21 10:16:25
+ * @LastEditTime: 2023-02-21 16:40:24
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -106,13 +106,22 @@
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="tab == 'table' && tabTable == 'part'"
+      v-if="(tab == 'table' && tabTable == 'part') ||
+        tabTable == 'Detailed_Worksheet'"
+    />
+    <GSpartTableList
+      class="content"
+      ref="table"
+      @setPage="setPage"
+      v-if="(tab == 'table' && tabTable == 'gs_part') ||
+        tabTable == 'Detailed_Worksheet'"
     />
     <bestBallTableList
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="tab == 'table' && tabTable == 'best_ball'"
+      v-if="(tab == 'table' && tabTable == 'best_ball') ||
+        tabTable == 'Detailed_Worksheet'"
     />
     <!-- bar -->
     <supplierBar
@@ -179,6 +188,7 @@ import { iCard, iTabsList, icon, iButton } from "rise";
 // 表格
 import supplierTableList from "./components/supplierTableList";
 import partTableList from "./components/partTableList";
+import GSpartTableList from "./components/GSpartTableList";
 import bestBallTableList from "./components/bestBallTableList";
 // 柱状图
 import supplierBar from "./components/supplierBar";
@@ -208,6 +218,7 @@ export default {
   components: {
     supplierTableList,
     partTableList,
+    GSpartTableList,
     bestBallTableList,
     supplierBar,
     supplierBar2,
@@ -383,12 +394,13 @@ export default {
     },
     changeRFQ(val) {
       this.rfqDetail = this.rfqObj[val];
-      console.log(this.rfqDetail);
     },
     change(val) {
       if (val == "Detailed_Worksheet") {
         this.exportExcel();
-        this.tabTable = "supplier";
+        this.tabTable = this.oldTabTable
+      }else{
+        this.oldTabTable = this.tabTable
       }
     },
     exportExcel() {
@@ -462,8 +474,8 @@ export default {
     display: flex;
     align-items: center;
     .allow{
-      height: 36px;
-      margin-top: 5px;
+      height: 22px;
+      margin: 0 7px;
     }
   }
 }

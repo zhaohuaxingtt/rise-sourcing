@@ -221,13 +221,6 @@ export default {
     padding: 0;
     background-color: transparent;
   }
-  // ::v-deep .card {
-  //   background-color: transparent;
-  //   .cardBody {
-  //     padding: 0;
-  //     background-color: transparent;
-  //   }
-  // }
   ::v-deep.el-tabs--card {
     .el-tabs__header {
       margin-bottom: 15px;
@@ -239,13 +232,11 @@ export default {
   ::v-deep .el-table {
     border-radius: 0;
     font-size: 18px;
-    // background-color:transparent;
     th.gutter:last-of-type{
       background: #fff;
       border: 0;
     }
     .el-table__header {
-      // background-color: #364d6e;
       th {
         border-color: #d9d9d9;
         .cell {
