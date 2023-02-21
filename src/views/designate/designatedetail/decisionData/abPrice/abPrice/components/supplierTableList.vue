@@ -120,7 +120,7 @@
                   <template slot="header" slot-scope="scope">
                     {{ getInt(item.budget) | toThousands(true) }}
                   </template>
-                  <el-table-column :label="item.targetAPrice" align="center">
+                  <el-table-column :label="item.targetAPrice" header-align="right">
                     <el-table-column :label="item.fsGsNum" align="center">
                       <template slot="header" slot-scope="scope">
                         {{ item.fsGsNum }}({{item.factoryEn}})
@@ -139,7 +139,7 @@
                       </el-table-column>
                     </el-table-column>
                   </el-table-column>
-                  <el-table-column :label="item.targetBPrice" align="center">
+                  <el-table-column :label="item.targetBPrice" header-align="right">
                     <el-table-column :label="item.fsGsNum" align="center">
                       <el-table-column
                         :prop="item.fsGsNum + 'lcBPrice'"
