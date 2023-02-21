@@ -102,11 +102,11 @@ export default {
               show: true,
               position: "inside",
               fontSize: this.fontSize(18),
+              backgroundColor: "#97a0bb"
             },
             // barWidth:'60',
             barMaxWidth: "80",
             barMinWidth: "40",
-            barMinHeight: "10",
             stack: "Supplier",
             data: [this.data.aPrice||'0.00'],
             itemStyle: {
@@ -118,8 +118,9 @@ export default {
             type: "bar",
             label: {
               show: true,
-              position: "inside",
+              position: "insideLeft",
               fontSize: this.fontSize(18),
+              backgroundColor: "#f9ce03"
             },
             barMaxWidth: "80",
             barMinWidth: "40",
@@ -135,12 +136,12 @@ export default {
             type: "bar",
             label: {
               show: true,
-              position: "inside",
+              position: "insideRight",
               fontSize: this.fontSize(18),
+              backgroundColor: "#069444"
             },
             barMaxWidth: "80",
             barMinWidth: "40",
-            barMinHeight: "10",
             stack: "Supplier",
             data: [this.data.cPrice||'0.00'],
             itemStyle: {
