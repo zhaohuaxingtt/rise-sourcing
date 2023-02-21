@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 10:32:28
+ * @LastEditTime: 2023-02-21 09:57:06
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -234,6 +234,7 @@ export default {
     flex: 1;
     font-size: 0;
     padding-left: 70px;
+    height: 100%;
     .preview {
       width: 100%;
       height: 100%;

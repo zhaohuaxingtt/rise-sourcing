@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-20 14:52:21
+ * @LastEditTime: 2023-02-21 10:57:55
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,6 @@
 <script>
 import { iPage, iMessage } from "rise";
 import decisionDataHeader from "./components/decisionDataHeader";
-import { applyStep } from "./components/data";
 import { nominateAppSDetail, getNomiPosition } from "@/api/designate";
 import { getNominateDisabled } from "rise/web/common";
 
@@ -49,13 +48,39 @@ export default {
     this.$store.dispatch("setPreviewState", isPreview);
     this.nominateAppSDetail();
     if (this.$route.query.sd == 1) {
-      // this.getNomiPosition();
+      this.getNomiPosition();
     }
   },
   methods: {
     isClick(ev){
       console.log(ev);
       window.parent.postMessage({type:'click',data:'iframe页面点击'},'*')
+    },
+    
+    getNomiPosition() {
+      this.showDecisionLoading = true
+
+      getNomiPosition({
+        nomiId: this.$route.query.desinateId || this.$store.getters.nomiAppId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.showDecision = res.data
+          // 缓存当前步骤
+          this.getStepStatus();
+        }
+      })
+      .finally(() => {
+        this.showDecisionLoading = false
+      })
+    },
+    // 获取步骤状态
+    async getStepStatus(){
+      const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
+      // 临时跳转，将不调接口更新当前步骤
+      if (this.$route.query.route !== 'temp') {
+        await this.$store.dispatch('setNominationStep',{nominateId})
+      }
     },
     nominateAppSDetail() {
       this.loading = true;

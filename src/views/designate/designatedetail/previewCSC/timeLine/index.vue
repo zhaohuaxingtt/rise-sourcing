@@ -80,14 +80,13 @@
       </div>
       <div class="top-line"></div>
       <div class="supplier-table">
-        <template
-          v-for="(item, index) in detail.timeAxisSupplierInfoList"
-        >
+        <template v-for="(item, index) in detail.timeAxisSupplierInfoList">
           <div class="supplier" :key="item.supplierId + index">
             <div class="supplier-name">{{ item.supplierNameEn }}</div>
             <div class="supplier-time">
               <div
                 class="time-range-1st"
+                v-if="item.oneStWeek"
                 :style="{
                   width: ((item.oneStWeek * 7) / dateRange) * 100 + '%',
                   marginLeft: getMargin() + '%',
@@ -99,6 +98,7 @@
 
               <el-tooltip
                 :content="'EM:' + item.emWeek"
+                v-if="item.emWeek"
                 placement="top"
                 effect="light"
               >
@@ -112,7 +112,40 @@
                   {{ item.emWeek }}W
                 </div>
               </el-tooltip>
-              <div
+              <!-- Q3:  -->
+              <el-tooltip
+                :content="'Q3:' + item.qthreeWeek"
+                v-if="item.qthreeWeek"
+                placement="top"
+                effect="light"
+              >
+                <div
+                  class="time-range-q3"
+                  :style="{
+                    width: ((item.qthreeWeek * 7) / dateRange) * 100 + '%',
+                  }"
+                >
+                  {{ item.qthreeWeek }}W
+                </div>
+              </el-tooltip>
+              <!-- Q1:  -->
+              <el-tooltip
+                :content="'Q1:' + item.qoneWeek"
+                v-if="item.qoneWeek"
+                placement="top"
+                effect="light"
+              >
+                <div
+                  class="time-range-q1"
+                  :style="{
+                    width: ((item.qoneWeek * 7) / dateRange) * 100 + '%',
+                  }"
+                >
+                  {{ item.qoneWeek }}W
+                </div>
+              </el-tooltip>
+
+              <!-- <div
               v-if="item.otsWeek"
                 class="otsWeek"
                 :style="{
@@ -121,7 +154,7 @@
               >
                 <img class="img" :src="ots" />
                 <div class="text">OTS</div>
-              </div>
+              </div> -->
             </div>
           </div>
         </template>
@@ -231,15 +264,23 @@ export default {
       );
     },
     getFirstDate() {
-      let timeList = [
-        new Date(this.detail.sopTbtTime).getTime(),
-        new Date(this.detail.rfqTime).getTime(),
-        new Date(this.detail.pvsTbtTime).getTime(),
-        new Date(this.detail.partReleaseTime).getTime(),
-        new Date(this.detail.osTbtTime).getTime(),
-        new Date(this.detail.bfConfirmTime).getTime(),
-        new Date(this.detail.cscTime).getTime(),
-      ];
+      let timeList = [];
+      if (this.detail.sopTbtTime)
+        timeList.push(new Date(this.detail.sopTbtTime).getTime());
+      if (this.detail.rfqTime)
+        timeList.push(new Date(this.detail.rfqTime).getTime());
+      if (this.detail.pvsTbtTime)
+        timeList.push(new Date(this.detail.pvsTbtTime).getTime());
+      if (this.detail.partReleaseTime)
+        timeList.push(new Date(this.detail.partReleaseTime).getTime());
+      if (this.detail.osTbtTime)
+        timeList.push(new Date(this.detail.osTbtTime).getTime());
+      if (this.detail.bfConfirmTime)
+        timeList.push(new Date(this.detail.bfConfirmTime).getTime());
+      if (this.detail.cscTime)
+        timeList.push(new Date(this.detail.cscTime).getTime());
+      if (this.detail.vffTbtTime)
+        timeList.push(new Date(this.detail.vffTbtTime).getTime());
       let maxDate = Math.max(...timeList);
       let minDate = Math.min(...timeList);
       // 最小月第一天
@@ -462,10 +503,10 @@ export default {
   width: calc(100% - 188px);
   height: calc(100% - 60px);
   position: absolute;
-  border-left: 1px solid #222;
+  border-left: 1px solid #d9d9d9;
   pointer-events: none;
   .year {
-    border-top: 1px solid #222;
+    border-top: 1px solid #d9d9d9;
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -473,17 +514,17 @@ export default {
     z-index: 1;
     .year-value {
       width: 100%;
-      border-right: 1px solid #222;
+      border-right: 1px solid #d9d9d9;
       color: #fff;
       background: #364d6e;
     }
     .month {
-      border-top: 1px solid #222;
+      border-top: 1px solid #d9d9d9;
       display: flex;
       flex: 1;
       width: 100%;
       .month-value {
-        border-right: 1px solid #222;
+        border-right: 1px solid #d9d9d9;
         display: flex;
         flex-flow: column;
         flex: 1;
@@ -512,7 +553,7 @@ export default {
     display: block;
     position: relative;
     top: 73px;
-    border-top: 1px solid;
+    border-top: 1px solid #d9d9d9;
   }
 }
 .bottom-line {
@@ -521,9 +562,9 @@ export default {
     width: calc(100% - 8px);
     height: 0px;
     display: block;
-    border-top: 1px solid;
     position: relative;
     top: -1px;
+    border-top: 1px solid #d9d9d9;
   }
 }
 .supplier-table {
@@ -538,21 +579,21 @@ export default {
     flex-flow: row;
     font-size: 16px;
     font-weight: 700;
-    border-left: 1px solid #222;
+    border-left: 1px solid #d9d9d9;
     &:last-of-type {
-      border-bottom: 1px solid #222;
+      border-bottom: 1px solid #d9d9d9;
     }
     .supplier-name {
       width: 180px;
       padding: 5px 8px;
-      border-right: 1px solid #222;
-      border-top: 1px solid #222;
+      border-right: 1px solid #d9d9d9;
+      border-top: 1px solid #d9d9d9;
       display: inline-flex;
       align-items: center;
     }
     .supplier-time {
-      border-right: 1px solid #222;
-      border-top: 1px solid #222;
+      border-right: 1px solid #d9d9d9;
+      border-top: 1px solid #d9d9d9;
       width: 100%;
       display: flex;
       flex: 1;
@@ -561,18 +602,34 @@ export default {
       .time-range-1st {
         height: 50px;
         line-height: 50px;
-        background: #0092eb;
+        background: #00b0ff;
         white-space: nowrap;
         padding-left: 5px;
-        opacity: 0.7;
+        z-index: 1;
       }
       .time-range-em {
         height: 50px;
         line-height: 50px;
-        background: #2a4659;
+        background: #007099;
         white-space: nowrap;
         padding-left: 5px;
-        opacity: 0.7;
+        z-index: 1;
+      }
+      .time-range-q3 {
+        height: 50px;
+        line-height: 50px;
+        background: #4cff85;
+        white-space: nowrap;
+        padding-left: 5px;
+        z-index: 1;
+      }
+      .time-range-q1 {
+        height: 50px;
+        line-height: 50px;
+        background: #008785;
+        white-space: nowrap;
+        padding-left: 5px;
+        z-index: 1;
       }
       .otsWeek {
         position: absolute;
@@ -580,6 +637,7 @@ export default {
         display: flex;
         align-items: center;
         top: 15px;
+        z-index: 1;
         .img {
           transform: translate(-50%, 0);
         }

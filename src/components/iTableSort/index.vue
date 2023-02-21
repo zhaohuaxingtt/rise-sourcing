@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2023-02-12 10:41:44
+ * @LastEditTime: 2023-02-21 10:36:37
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: table组件
 -->
@@ -276,7 +276,6 @@ export default {
     }
   },
   created() {
-    console.log(this.tableData, this.tableTitle)
     this.initTableSettingColumns()
     if (this.permissionKey) {
       this.querySetting()
@@ -288,9 +287,6 @@ export default {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     getRate(row, props, childItem) {
-      console.log('row=>',row);
-      console.log('props=>',props);
-      console.log('childItem=>',JSON.stringify(childItem))
       const findItem = row.departmentRate?.find(item => item.rateDepartNum === props) || {}
       return findItem
     },

@@ -34,7 +34,7 @@
           </template>
           <el-tab-pane
             v-else
-            :key="'decisionType' + index"
+            :key="item.key + index"
             :label="item.name"
             :name="item.path"
           ></el-tab-pane>
@@ -51,14 +51,14 @@
           <template v-if="item.key == 'MTZ'">
             <el-tab-pane
               v-if="mtzShow"
-              :key="'decisionType' + index"
+              :key="item.key + index"
               :label="item.name"
               :name="item.path"
             ></el-tab-pane>
           </template>
           <el-tab-pane
             v-else
-            :key="'decisionType' + index"
+            :key="item.key + index"
             :label="item.name"
             :name="item.path"
           ></el-tab-pane>
@@ -195,30 +195,23 @@ export default {
   methods: {
     init() {
       try {
+        console.log('isTemp=>',this.isTemp);
         // 临时跳转不更新步骤
         if (this.isTemp) return;
         const nominationStep = this.nominationStep;
+        console.log('nominationStep=>',nominationStep);
         let tableListData =
           nominationStep.nodeList || JSON.parse(JSON.stringify(decisionType));
         tableListData = tableListData.filter((o) => !o.flag);
         this.decisionType = [];
         tableListData.forEach((o) => {
           const tabName = o.tabName;
-          const tabTarget = decisionType.find((item) => item.name === tabName);
+          const tabTarget = decisionType.find((item) => item.key === tabName);
           if (tabTarget && hasPermission(tabTarget.permissionKey)) {
-            this.decisionType.push({
-              key: tabTarget.key,
-              name: tabTarget.name,
-              path: tabTarget.path,
-              permissionKey: tabTarget.permissionKey,
-            });
-            // o.key = tabTarget.key
-            // o.name = tabTarget.name
-            // o.path = tabTarget.path
-            // o.permissionKey = tabTarget.permissionKey
+            this.decisionType.push(tabTarget);
           }
-          // return o
         });
+        console.log('decisionType=>',this.decisionType);
       } catch (error) {
         console.log(error);
       }
@@ -255,25 +248,6 @@ export default {
           ...query,
           isPreview: "0",
         },
-      });
-    },
-    // 更新进度
-    updateSteps() {
-      // 临时跳转不更新步骤
-      if (this.isTemp) return;
-
-      const nominationStep = this.$store.getters.nominationStep;
-      const nodeList = nominationStep.nodeList || [];
-      const { path } = this.$route;
-      const tabName =
-        (decisionType.find((o) => o.path === path) || {}).key || "";
-      const node = nodeList.find((o) => o.tabName === tabName) || {};
-      updatePresenPageSeat({
-        nominateId: this.$store.getters.nomiAppId,
-        phaseType: 5,
-        nodeList,
-        currentNode: node,
-        node,
       });
     },
     exportPdf() {

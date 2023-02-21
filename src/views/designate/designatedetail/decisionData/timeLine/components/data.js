@@ -37,5 +37,7 @@ export const tableTitleSupplier = [
     {props:'supplierName',name:'Supplier'},
     {props:'oneStWeek',name:'1st'},
     {props:'emWeek',name:'EM'},
-    {props:'otsWeek',name:'OTS'},
+    // {props:'otsWeek',name:'OTS'},
+    {props:'qthreeWeek',name:'Q3'},
+    {props:'qoneWeek',name:'Q1'},
 ]

@@ -126,7 +126,7 @@
             ></iInput
             ><span class="margin-left10">W</span>
           </template>
-          <template #otsWeek="scope">
+          <!-- <template #otsWeek="scope">
             <iDatePicker
               class="input"
               v-model="scope.row.otsWeek"
@@ -134,6 +134,22 @@
               type="date"
               format="yyyy-MM-dd"
             ></iDatePicker>
+          </template> -->
+          <template #qoneWeek="scope">
+            <iInput
+              class="input margin-right10"
+              v-model="scope.row.qoneWeek"
+              :disabled="!isEdit(index)"
+            ></iInput
+            ><span class="margin-left10">W</span>
+          </template>
+          <template #qthreeWeek="scope">
+            <iInput
+              class="input margin-right10"
+              v-model="scope.row.qthreeWeek"
+              :disabled="!isEdit(index)"
+            ></iInput
+            ><span class="margin-left10">W</span>
           </template>
         </tableList>
       </iCard>
