@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-16 18:14:59
+ * @LastEditTime: 2023-02-22 14:13:37
  * @Description: 审批记录弹窗
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
@@ -26,11 +26,11 @@
     >
       <!-- 目标价·分摊 -->
       <template #shareTargetPrice="scope">
-        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 目标价·一次性 -->
       <template #targetPrice="scope">
-        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.targetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 预计A价分摊 -->
       <template #estimateShareAPrice="scope">

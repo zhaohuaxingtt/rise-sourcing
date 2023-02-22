@@ -59,11 +59,11 @@
       </template>
         <!-- 期望目标价·分摊 -->
         <template #expectedShareTargetPrice="scope">
-          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 期望目标价·一次性 -->
         <template #expectedTargetPrice="scope">
-          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 预计A价分摊 -->
         <template #estimateShareAPrice="scope">
@@ -85,19 +85,19 @@
         </template>
         <!-- 期望目标价·分摊 -->
         <template #expectedShareTargetPrice="scope">
-          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.expectedShareTargetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 期望目标价·一次性 -->
         <template #expectedTargetPrice="scope">
-          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.expectedTargetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 目标价·分摊 -->
         <template #shareTargetPrice="scope">
-          <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.shareTargetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 目标价·一次性 -->
         <template #targetPrice="scope">
-          <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+          <span>{{ scope.row.targetPrice | thousandsFilter(2)}}</span>
         </template>
         <!-- 预计A价分摊 -->
         <template #estimateShareAPrice="scope">

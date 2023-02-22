@@ -127,7 +127,7 @@ export default {
   mixins:[filters],
   props: {
     tableData: { type: Array },
-    tableTitle: { type: Array },
+    tableTitle: { type: Array, default:()=>[] },
     tableLoading: { type: Boolean, default: false },
     selection: { type: Boolean, default: true },
     height: { type: Number || String },

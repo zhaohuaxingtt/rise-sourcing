@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-09 11:22:07
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-16 19:25:30
+ * @LastEditTime: 2023-02-22 14:18:26
  * @FilePath: \front-web\src\views\SELTargetPrice\components\approvalDialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -46,11 +46,11 @@
     >
       <!-- 目标价·分摊 -->
       <template #shareTargetPrice="scope">
-        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0) }}</span>
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(2) }}</span>
       </template>
       <!-- 目标价·一次性 -->
       <template #targetPrice="scope">
-        <span>{{ scope.row.targetPrice | thousandsFilter(0) }}</span>
+        <span>{{ scope.row.targetPrice | thousandsFilter(2) }}</span>
       </template>
       <!-- 预计A价分摊 -->
       <template #estimateShareAPrice="scope">
