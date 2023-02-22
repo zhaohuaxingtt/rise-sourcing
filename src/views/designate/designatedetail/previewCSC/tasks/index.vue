@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2023-02-17 10:52:17
+ * @LastEditTime: 2023-02-22 17:31:15
  * @description: 决策资料 - tasks
 -->
 <template>
@@ -28,11 +28,11 @@ export default {
   height: 100%;
   padding-top: 10px;
   .editor{
-    height: 115px;
+    height: 125px;
     overflow: auto;
   }
   .task-table{
-    height: calc(100% - 135px);
+    height: calc(100% - 145px);
   }
 }
 </style>

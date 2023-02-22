@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-01-04 23:48:08
+ * @LastEditTime: 2023-02-22 17:44:30
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -1901,7 +1901,7 @@ export default {
       max-width: 224px;
       height: 125px;
       border-radius: 15px;
-      background-color: rgba(205, 212, 226, 0.12);
+      background-color: rgba(22, 96, 241, 0.03);
       margin-right: 19px;
       display: flex;
       flex-direction: column;

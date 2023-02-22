@@ -218,9 +218,9 @@ export default {
               fontFamily: "Arial",
             },
             data: this.roundList.map((item) => {
-              return `${item.round}(${
+              return `${item.round}. ${
                 item.inquiryType == "询价轮" ? "Inquiry" : "Nego."
-              })`;
+              }`;
             }),
             axisLabel: {
               fontSize: this.fontSize(18),

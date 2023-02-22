@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="margin-bottom10">
-      <span class="font18 font-weight">
+      <span class="font20 font-weight">
         {{ language("Tasks", "Tasks") }}
       </span>
     </div>

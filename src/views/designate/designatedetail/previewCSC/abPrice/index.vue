@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-21 16:40:24
+ * @LastEditTime: 2023-02-22 18:16:35
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -73,6 +73,9 @@
             ></el-radio-button>
           </template>
         </el-radio-group>
+        <div class="margin-left20">
+          <iButton class="margin-left20" @click="visible = true">strategy</iButton>
+        </div>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
         <span v-if="tabTable == 'best_ball'">
@@ -136,7 +139,7 @@
       :detail="rfqDetail"
     />
     <div class="footer">
-      <el-popover
+      <!-- <el-popover
         placement="top-start"
         popper-class="bg-yellow font-family"
         width="850"
@@ -145,7 +148,7 @@
         :content="strategy"
       >
         <img :src="tips" alt="tips" class="iconSize" slot="reference" />
-      </el-popover>
+      </el-popover> -->
       <p class="margin-top10 font-size16" v-if="tab == 'line'">
         <span class="margin-right10"
           ><icon
@@ -180,6 +183,13 @@
         ><span>Best offer</span>
       </p>
     </div>
+    
+    <strategyDialog
+      v-if="visible"
+      :visible.sync="visible"
+      :strategy="strategy"
+      @updateData="updateNomiRemark"
+    />
   </div>
 </template> 
 <script>
@@ -205,6 +215,7 @@ import lineActive from "@/assets/images/icon/line-active.png";
 import tips from "@/assets/images/cscIcon/tips.svg";
 import right from "@/assets/images/cscIcon/right.svg";
 import left from "@/assets/images/cscIcon/left.svg";
+import strategyDialog from "./components/strategyDialog";
 
 import {
   analysisNomiCarProject,
@@ -227,6 +238,7 @@ export default {
     iTabsList,
     icon,
     iButton,
+    strategyDialog
   },
   data() {
     return {

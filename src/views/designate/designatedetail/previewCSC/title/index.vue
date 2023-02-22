@@ -143,7 +143,6 @@ export default {
   .infos {
     display: flex;
     font-size: 20px;
-    font-weight: bold;
     margin-bottom: 10px;
     margin-left: 50px;
     .label {

@@ -190,11 +190,11 @@ export default {
         cscTime: {
           name: "CSC",
           time: "KW20",
+          color: "#f00",
         },
         bfConfirmTime: {
           name: "BF",
           time: "KW20",
-          color: "#f00",
         },
         vffTbtTime: {
           name: "VFF",
@@ -253,7 +253,10 @@ export default {
       return (list.length / arr.length) * 100;
     },
     getMargin() {
-      return this.lineListNew.bfConfirmTime.w;
+      if (this.lineListNew.bfConfirmTime.w >= this.lineListNew.cscTime.w) {
+        return this.lineListNew.bfConfirmTime.w;
+      }
+      return this.lineListNew.cscTime.w;
     },
     getPosition(date) {
       return (

@@ -2,11 +2,9 @@
 <template>
   <iCard class="editor">
     <div class="clearFloat">
-      <span class="font18 font-weight" v-if='higth'>
-        {{ language("Background & Objective","Background & Objective") }}</span
-      >
-      <span class="font18 font-weight" v-else>
-        {{ language("Highlights","Highlights") }}</span
+      <span class="font20 font-weight" v-if="higth"> Background</span>
+      <span class="font20 font-weight" v-else>
+        {{ language("Highlights", "Highlights") }}</span
       >
       <div class="floatright">
         <span v-if="multiEditControl">
@@ -14,26 +12,53 @@
             class="upload-trigger margin-right10"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
-            :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
-            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD|上传图片"
+            :buttonText="language('strategicdoc_ShangChuanTuPian', '上传图片')"
+            v-permission.auto="
+              SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD | 上传图片
+            "
             @on-success="onUploadsucess"
           />
-          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE|保存备注">
-            {{ language("LK_BAOCUN",'保存') }}
+          <iButton
+            @click="submit"
+            :loading="submiting"
+            v-permission.auto="
+              SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE | 保存备注
+            "
+          >
+            {{ language("LK_BAOCUN", "保存") }}
           </iButton>
-          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT|结束编辑备注">
-            {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
+          <iButton
+            @click="multiEditControl = false"
+            v-permission.auto="
+              SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT | 结束编辑备注
+            "
+          >
+            {{ language("strategicdoc_JieSuBianJi", "结束编辑") }}
           </iButton>
         </span>
         <span v-else>
-          <template v-if='higth'>
-            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
-              {{ language("LK_BIANJI",'编辑') }}
+          <template v-if="higth">
+            <iButton
+              v-if="
+                !$store.getters.isPreview && !nominationDisabled && !rsDisabled
+              "
+              @click="multiEditControl = true"
+              v-permission.auto="
+                SOURCING_NOMINATION_ATTATCH_TASKS_EDIT | 编辑备注
+              "
+            >
+              {{ language("LK_BIANJI", "编辑") }}
             </iButton>
           </template>
           <div v-else>
-            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
-              {{ language("LK_BIANJI",'编辑') }}
+            <iButton
+              v-if="!isDisabled"
+              @click="multiEditControl = true"
+              v-permission.auto="
+                SOURCING_NOMINATION_ATTATCH_TASKS_EDIT | 编辑备注
+              "
+            >
+              {{ language("LK_BIANJI", "编辑") }}
             </iButton>
           </div>
         </span>
@@ -45,118 +70,120 @@
         :showMenus="false"
         :disabled="!multiEditControl"
         v-model="content"
-        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
+        v-permission.auto="
+          SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR | 备注编辑框
+        "
         ref="editor"
-
-       />
+      />
     </div>
   </iCard>
 </template>
 
 <script>
+import { iInput, iCard, iButton, iMessage, iEditor } from "rise";
+import upload from "@/components/Upload";
 import {
-  iInput,
-  iCard,
-  iButton,
-  iMessage,
-  iEditor
-} from 'rise'
-import upload from '@/components/Upload'
-import { 
   addBackgroundAndObjectiveInfo,
-  getBackgroundAndObjectiveInfo
-} from '@/api/designate/decisiondata/tasks'
+  getBackgroundAndObjectiveInfo,
+} from "@/api/designate/decisiondata/tasks";
 
 export default {
   props: {
-    isTask:{
-      type: String
-    }
+    isTask: {
+      type: String,
+    },
   },
   data() {
     return {
-      id: '',
-      content: '',
+      id: "",
+      content: "",
       Edditor: {},
       pictures: [],
       submiting: false,
       multiEditControl: false,
-      higth:true,
-      task:''
-    }
+      higth: true,
+      task: "",
+    };
   },
   created() {
-    this.isTask == true ? this.task = 'Background&Objective' :this.task='highligths'
+    this.isTask == true
+      ? (this.task = "Background&Objective")
+      : (this.task = "highligths");
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      nominationDisabled: state => state.nomination.nominationDisabled,
-      rsDisabled: state => state.nomination.rsDisabled,
+      nominationDisabled: (state) => state.nomination.nominationDisabled,
+      rsDisabled: (state) => state.nomination.rsDisabled,
     }),
     isDisabled() {
-      return false
-    }
+      return false;
+    },
   },
   components: {
     // iInput,
     iCard,
     iButton,
     iEditor,
-    upload
+    upload,
   },
   mounted() {
-    this.getFetchData()
+    this.getFetchData();
   },
   methods: {
     onUploadsucess(data) {
-      this.content += `<p><img src="${data && data.data && data.data.path || ''}" /></p>`
-      this.$refs.editor.html(this.content)
+      this.content += `<p><img src="${
+        (data && data.data && data.data.path) || ""
+      }" /></p>`;
+      this.$refs.editor.html(this.content);
     },
     getFetchData() {
       getBackgroundAndObjectiveInfo({
-        nominateId: this.$store.getters.nomiAppId || this.$route.query.desinateId || '',
-      }).then(res => {
-        if (res.code === '200') {
+        nominateId:
+          this.$store.getters.nomiAppId || this.$route.query.desinateId || "",
+      }).then((res) => {
+        if (res.code === "200") {
           if (res.data) {
-            this.content = res.data.content || ''
-            this.$refs.editor.html(this.content)
-            this.id = res.data.id
-            this.pictures = []
+            this.content = res.data.content || "";
+            this.$refs.editor.html(this.content);
+            this.id = res.data.id;
+            this.pictures = [];
           }
         } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      })
+      });
     },
     // 保存修改记录
     async submit() {
-      this.submiting = true
+      this.submiting = true;
       const data = {
-        nominateId: this.$store.getters.nomiAppId || '',
+        nominateId: this.$store.getters.nomiAppId || "",
         content: this.content,
         id: this.id,
-        pictures: this.pictures.join(',')
-      }
-      addBackgroundAndObjectiveInfo(data).then(res => {
-        if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.submiting = false
-      }).catch(e => {
-        this.submiting = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      })
+        pictures: this.pictures.join(","),
+      };
+      addBackgroundAndObjectiveInfo(data)
+        .then((res) => {
+          if (res.code === "200") {
+            iMessage.success(this.language("LK_CAOZUOCHENGGONG", "操作成功"));
+            this.getFetchData();
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+          this.submiting = false;
+        })
+        .catch((e) => {
+          this.submiting = false;
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        });
     },
-  }
-}
+  },
+};
 </script>
 <style lang="scss" scoped>
 .clearfix {
-  clear: both
+  clear: both;
 }
 #textEditor {
   border: 1px solid #ebebeb;

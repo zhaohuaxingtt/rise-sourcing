@@ -4,7 +4,7 @@
  * @Description: 
  */
 export const tableTitle = [
-  { props: 'fsNum',isHeaderSetting:true, HeaderSettingList:[{name:'采购项目编号'},{name:'FS No.'},], minWidth:180 },
+  { props: 'fsNum',isHeaderSetting:true, HeaderSettingList:[{name:'采购项目编号（工厂）'},{name:'FS No.(Plant)'},], minWidth:180 },
   { props: 'partNum',  align: 'left', isHeaderSetting:true, HeaderSettingList:[{name:'零件信息'},{name:'Part Information'},],minWidth:250 },
   { props: 'project',  align: 'left', isHeaderSetting:true, HeaderSettingList:[{name:'项目信息'},{name:'Project Information'},],minWidth:250 },
   { props: 'ebrConfirmValue',isHeaderSetting:true, HeaderSettingList:[{name:'装车率'},{name:'EBR'},],minWidth:100 },

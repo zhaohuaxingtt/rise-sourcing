@@ -1,9 +1,7 @@
 
 <template>
   <div>
-    <span class="font18 font-weight">
-      {{ language("Background & Objective", "Background & Objective") }}</span
-    >
+    <span class="font20 font-weight"> Background</span>
     <iEditor
       class="editor-content margin-top20"
       id="textEditor"
@@ -122,7 +120,7 @@ export default {
 #textEditor {
   border: 1px solid #ebebeb;
   border-radius: 5px;
-  height: calc(100% - 41px);
+  height: calc(100% - 45px);
   ::v-deep.w-e-toolbar {
     display: none;
   }

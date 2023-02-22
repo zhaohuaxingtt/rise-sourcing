@@ -36,7 +36,7 @@
         <!-- 零件信息 -->
         <template #partNum="scope">
           <div class="mtz-box">
-            <span>{{ scope.row.partNum }}</span>
+            <span class="text">{{ scope.row.partNum }}</span>
             <img
               class="margin-left5 mtz"
               :src="mtz"
@@ -58,7 +58,7 @@
             percent(scope.row.ebrConfirmValue || 0)
           }}</span>
         </template>
-        <!-- 手工输入EBR值:综合每车用量 -->
+        <!-- Mixed Qty:综合每车用量 -->
         <template #ebrCalculatedValue="scope">
           <span>{{ numberProcessor(scope.row.ebrCalculatedValue, 2) }}</span>
         </template>
@@ -291,10 +291,16 @@ export default {
         line-height: 20px;
       }
       .mtz-box {
-        display: flex;
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
         align-items: center;
+        .text {
+          flex: 1;
+        }
         .mtz {
           height: 18px;
+          vertical-align: bottom;
         }
       }
     }
