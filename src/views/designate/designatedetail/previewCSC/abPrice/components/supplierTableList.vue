@@ -102,7 +102,7 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
             <el-table-column :label="percent(item.ebr)" align="center">
-            <el-table-column :label="item.mixQty" align="center">
+            <el-table-column :label="numberProcessor(item.mixQty,2)" align="center">
               <el-table-column :label="item.volume" align="center">
                 <template slot="header" slot-scope="scope">
                   {{ getInt(item.volume) | toThousands(true) }}

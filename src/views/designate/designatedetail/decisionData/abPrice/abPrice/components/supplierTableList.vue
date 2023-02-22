@@ -110,8 +110,8 @@
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
-            <el-table-column :label="item.ebr" align="center">
-            <el-table-column :label="item.mixQty" align="center">
+            <el-table-column :label="percent(item.ebr)" align="center">
+            <el-table-column :label="numberProcessor(item.mixQty,2)" align="center">
               <el-table-column :label="item.volume" align="center">
                 <template slot="header" slot-scope="scope">
                   {{ getInt(item.volume) | toThousands(true) }}
@@ -348,6 +348,9 @@ export default {
       if (!val) return val;
       let result = val.split(",").join("");
       return (+result).toFixed(0);
+    },
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     isCLevel(val) {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
