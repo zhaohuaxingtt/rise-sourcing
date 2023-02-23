@@ -544,6 +544,7 @@ export default {
         });
     },
     isCLevel(val) {
+      if(!val) return val
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     // 计算表头合并
@@ -666,7 +667,7 @@ export default {
       }
     },
     gotoDetail(row) {
-      this.row = row;
+      this.row = JSON.parse(JSON.stringify(row));
       this.$nextTick(() => {
         this.visible = true;
       });

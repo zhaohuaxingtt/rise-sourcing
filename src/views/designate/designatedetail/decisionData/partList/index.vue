@@ -177,18 +177,6 @@ export default {
 
             this.tableListData = records.map((item) => {
               const result = { ...item };
-
-              //   if (item.ebrConfirmValue) {
-              //     result.ebrConfirmValue =
-              //       this.isPreview == "1" ||
-              //       this.nominationDisabled ||
-              //       this.rsDisabled
-              //         ? item.ebrConfirmValue
-              //         : this.percent(item.ebrConfirmValue);
-              //   } else {
-              //     result.ebrConfirmValue = "";
-              //   }
-
               return result;
             });
 
@@ -197,48 +185,6 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    // 输入框 手工输入EBR值 数字的限制
-    //  handleInputLimit(val, row) {
-    //    this.$set(row, "ebrConfirmValue", numberProcessor(val, 2));
-    //  },
-    //  handleFocus(val, row) {
-    //    this.$set(row, "ebrConfirmValue", val.replace(/^(.*)%$/, "$1"));
-    //  },
-    //  handleBlur(val, row) {
-    //    if (val) {
-    //      this.$set(row, "ebrConfirmValue", val + "%");
-    //    } else {
-    //      this.$set(row, "ebrConfirmValue", "");
-    //    }
-    //  },
-    // 保存
-    // async save() {
-    //   this.saveLoading = true;
-    //   const data = {
-    //     partPrjList: [
-    //       ...this.tableListData.map((item) => ({
-    //         ...item,
-    //       })),
-    //     ],
-    //   };
-    //   await partUpdate(data)
-    //     .then((res) => {
-    //       this.saveLoading = false;
-    //       if (res.code == 200) {
-    //         iMessage.success(
-    //           this.$i18n.locale === "zh" ? res.desZh : res.desEn
-    //         );
-    //       } else {
-    //         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-    //       }
-    //       this.getListData();
-    //     })
-    //     .catch((err) => {
-    //       this.saveLoading = false;
-    //     });
-    // },
-
-    // 跳转至零件清单添加
     goToRfq() {
       const { query } = this.$route;
       console.log(query);

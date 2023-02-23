@@ -27,8 +27,8 @@
       <div class="line-div">
         <div class="wrap-div"></div>
         <div style="width: 100%; height: 100%">
-          <template v-for="(item, index) in lineListNew">
-            <div
+          <template v-for="(item, index) in Object.values(lineListNew)">
+            <div ref="time-line"
               class="line-samll"
               :key="index"
               v-if="item.show"
@@ -38,9 +38,10 @@
                 class="time-line"
                 :class="item.garyShow ? 'gray' : 'line-line'"
               >
-                <p class="line-title">
+                <p class="line-title" :style="offsetList[index]">
                   <span>{{ item.name }}</span
-                  ><br /><span>{{ item.time }}</span>
+                  ><br />
+                  <span>KW{{ item.time }}</span>
                 </p>
                 <div
                   class="text-line"
@@ -182,6 +183,7 @@ export default {
       isLoading: false,
       detailData: [],
       timeRange: [],
+      offsetList:[],
       lineListNew: {
         rfqTime: {
           name: "RFQ",
@@ -213,7 +215,7 @@ export default {
           time: "KW20",
         },
         partReleaseTime: {
-          name: "Part Release",
+          name: "Newpro",
           time: "KW20",
         },
       },
@@ -266,6 +268,48 @@ export default {
         100
       );
     },
+    computedLabelPosition(){
+      console.log(this.$refs['time-line'])
+      let arr = []
+      let list = this.$refs['time-line']
+      for (let i = 0; i < list.length; i++) {
+        const el = list[i];
+        arr.push({
+          index:i,
+          offsetLeft: el.offsetLeft,
+          textWidth: el.children[0].children[0].clientWidth || 0
+        })
+      }
+      arr = arr.sort((a,b)=> a.offsetLeft - b.offsetLeft)
+      if(arr.length>1)
+      for (let i = 0; i < arr.length; i++) {
+        let item = arr[i];
+        if(i==0){ //比较前两个,定位两个的初始位置
+          let next = arr[i+1]
+          let minOffset = parseInt((item.textWidth + next.textWidth) / 2)+10 // 最小间距
+          let offset = (item.offsetLeft + item.textWidth / 2) - (next.offsetLeft + next.textWidth / 2)  // 实际间距
+          if(offset<minOffset){
+            item.offset = -((minOffset - offset + item.textWidth) / 2 )  // 往左偏移
+            next.offset = ((minOffset - offset - next.textWidth) / 2 )  // 往右偏移
+          }
+        }else if(i >1){
+          let prev = arr[i-1]
+          let minOffset = parseInt(prev.textWidth / 2) + 10 // 最小间距
+          let offset = item.offsetLeft - ((prev.offsetLeft + (prev.offset?prev.offset + prev.textWidth : (prev.textWidth/2))))  // 实际间距: 当前文本与前一个文本的距离
+          if(offset<0){
+            item.offset = prev.offset + prev.textWidth // 往右偏移
+          }else if(offset<minOffset){
+            item.offset = minOffset - offset - item.textWidth / 2 // 往右偏移
+          }
+        }
+      }
+      let offsetList = JSON.parse(JSON.stringify(arr)).sort((a,b)=> a.index - b.index)
+      this.offsetList = offsetList.map(item=>{
+        return {
+          left: item.offset+'px'
+        }
+      })
+    },
     getFirstDate() {
       let timeList = [];
       if (this.detail.sopTbtTime)
@@ -308,6 +352,8 @@ export default {
                 (24 * 60 * 60 * 1000)
             ) / this.dateRange
           ).toFixed(4) * 100;
+        let week = window.moment(new Date(this.detail[key])).week()
+        this.lineListNew[key].time = week < 10 ? '0'+week : week
       });
       console.log(this.lineListNew);
       this.getMonthList(MonthFirst, MonthLast);
@@ -373,7 +419,9 @@ export default {
       // for (let i = index; i <= 11; i++) {
       //   list.push(this.monthLabel[i]);
       // }
-      console.log(this.timeRange);
+        this.$nextTick(()=>{
+          this.computedLabelPosition()
+        })
       // return list
     },
     analysisNomiCarProject() {
@@ -573,7 +621,6 @@ export default {
 .supplier-table {
   width: 100%;
   max-height: calc(100vh - 300px);
-  min-height: 300px;
   margin-top: 72px;
   line-height: 37px;
   overflow-y: scroll;
@@ -583,6 +630,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
     border-left: 1px solid #d9d9d9;
+    height: 70px;
     &:last-of-type {
       border-bottom: 1px solid #d9d9d9;
     }
@@ -602,37 +650,38 @@ export default {
       flex: 1;
       padding: 8px 0;
       position: relative;
+      overflow: hidden;
       .time-range-1st {
-        height: 50px;
-        line-height: 50px;
-        background: #00b0ff;
+        background: #f2f2f2;
         white-space: nowrap;
         padding-left: 5px;
         z-index: 1;
+        display: inline-flex;
+        align-items: center;
       }
       .time-range-em {
-        height: 50px;
-        line-height: 50px;
-        background: #007099;
+        background: #66ccff;
         white-space: nowrap;
         padding-left: 5px;
         z-index: 1;
+        display: inline-flex;
+        align-items: center;
       }
       .time-range-q3 {
-        height: 50px;
-        line-height: 50px;
-        background: #4cff85;
+        background: #ccffcc;
         white-space: nowrap;
         padding-left: 5px;
         z-index: 1;
+        display: inline-flex;
+        align-items: center;
       }
       .time-range-q1 {
-        height: 50px;
-        line-height: 50px;
-        background: #008785;
+        background: #339933;
         white-space: nowrap;
         padding-left: 5px;
         z-index: 1;
+        display: inline-flex;
+        align-items: center;
       }
       .otsWeek {
         position: absolute;

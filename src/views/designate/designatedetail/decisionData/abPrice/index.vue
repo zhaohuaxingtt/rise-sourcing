@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-22 18:17:21
+ * @LastEditTime: 2023-02-23 19:52:24
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -72,14 +72,9 @@ export default {
     this.analysisNomiCarProject();
   },
   methods: {
-    getData(val) {
-      console.log(this.$refs.abPrice);
+    getData() {
       if (this.$refs.abPrice.tab == "bar") {
-        this.$set(
-          this.$refs.abPrice.carTypeObj[this.$refs.abPrice.tabBar],
-          "time",
-          new Date().getTime()
-        );
+        this.$refs.abPrice.findVsi()
       }
     },
     getNomiRemark() {

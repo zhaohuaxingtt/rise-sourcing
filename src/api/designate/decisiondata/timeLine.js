@@ -48,3 +48,10 @@ export function updateTimeline(data){
       data
   })
 }
+// 更新供应商
+export function syncNomiCarProjectTime(nomiAppId){
+  return requst({
+      url: `/nomi-car-project-time-axis/syncNomiCarProjectTime/${nomiAppId}`,
+      method: 'GET',
+  })
+}

@@ -720,7 +720,7 @@ export default {
       }
     },
     gotoDetail(row) {
-      this.row = row;
+      this.row = JSON.parse(JSON.stringify(row));
       this.$nextTick(() => {
         this.visible = true;
       });

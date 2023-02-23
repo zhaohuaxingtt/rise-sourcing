@@ -38,6 +38,9 @@
               <iButton @click="edit(item,index)">{{
                 language("LK_BIANJI", "编辑")
               }}</iButton>
+              <iButton @click="refresh(item,index)">{{
+                language("刷新", "刷新")
+              }}</iButton>
             </span>
           </div>
         </template>
@@ -169,8 +172,8 @@ import {
   getTimeaxis,
   saveTimeaxis,
   getTimeline,
-  getNomiCarProjectTimeAxis,
   updateTimeline,
+  syncNomiCarProjectTime
 } from "@/api/designate/decisiondata/timeLine";
 export default {
   name: "timeLine",
@@ -210,18 +213,6 @@ export default {
       getTimeline(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
           this.carList = res.data;
-          console.log(res.data);
-        }
-      });
-    },
-    // 通过定点申请id和车型项目查询时间轴
-    getNomiCarProjectTimeAxis() {
-      getNomiCarProjectTimeAxis(
-        this.$route.query.desinateId,
-        this.carTypeDetail.carTypeProjectId
-      ).then((res) => {
-        if (res?.code == "200") {
-          console.log(res);
         }
       });
     },
@@ -232,7 +223,15 @@ export default {
         }
       });
     },
-    // 编辑 取消
+    // 刷新供应商数据
+    refresh(){
+      syncNomiCarProjectTime(this.$route.query.desinateId).then(res=>{
+        if(res?.code=='200'){
+          this.getTimeline()
+        }
+      })
+    },
+    // 编辑
     edit(item,index) {
       this.oldData = JSON.parse(JSON.stringify(item))
       this.$set(this, 'editData', item)

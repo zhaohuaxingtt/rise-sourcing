@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-19 18:51:22
+ * @LastEditTime: 2023-02-23 19:34:29
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -157,6 +157,7 @@
                 :barName="item.label"
                 :data="item"
                 :color="item.colorA"
+                :vsi="detail.vsi"
                 :max="max"
               />
               <barItemKGF
@@ -241,7 +242,6 @@ export default {
           height += element.offsetHeight;
         }
         this.height = height;
-        console.log(this.height);
       });
     }, 100); // 这个100不精准,可能导致页面错误
   },
@@ -323,6 +323,7 @@ export default {
       return (+result).toFixed(0);
     },
     isCLevel(val) {
+      if(!val) return val
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     analysisSummaryNomi() {

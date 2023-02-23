@@ -341,6 +341,7 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     isCLevel(val) {
+      if(!val) return val
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     analysisSummaryNomi() {

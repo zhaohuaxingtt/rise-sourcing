@@ -561,7 +561,6 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-          console.log("this.totalTableHeight=>", this.totalTableHeight);
         }, 0);
       });
     },
@@ -716,7 +715,6 @@ export default {
         return "table-header";
       }
       if (rowIndex == "6") {
-        console.log("row=>", row);
         if (row.isMinTto.includes(column.property)) {
           return "font-green";
         }

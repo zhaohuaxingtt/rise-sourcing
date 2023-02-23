@@ -110,6 +110,8 @@ export default {
 
 <style lang="scss" scoped>
 .title {
+  padding-left: 20px;
+  padding-right: 20px;
   height: 100%;
   padding-top: 0 !important;
   overflow: auto;
@@ -125,7 +127,6 @@ export default {
   width: 100%;
   height: 470px;
   img {
-    height: 100%;
     width: 100%;
   }
 }
@@ -142,7 +143,7 @@ export default {
   margin-bottom: 25px;
   .infos {
     display: flex;
-    font-size: 20px;
+    font-size: 28px;
     margin-bottom: 10px;
     margin-left: 50px;
     .label {

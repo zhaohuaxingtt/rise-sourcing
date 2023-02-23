@@ -555,7 +555,6 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-          console.log("this.totalTableHeight=>", this.totalTableHeight);
         }, 0);
       });
     },
@@ -712,14 +711,13 @@ export default {
         return "table-header";
       }
       if (rowIndex == "5") {
-        console.log("row=>", row);
         if (row.isMinTto.includes(column.property)) {
           return "font-green";
         }
       }
     },
     gotoDetail(row) {
-      this.row = row;
+      this.row = JSON.parse(JSON.stringify(row));
       this.$nextTick(() => {
         this.visible = true;
       });

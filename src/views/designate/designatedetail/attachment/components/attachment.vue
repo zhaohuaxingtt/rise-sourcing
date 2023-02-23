@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-12-03 10:32:03
- * @LastEditors:  
+ * @LastEditTime: 2023-02-23 19:55:21
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 决策资料 - 附件
 -->
 <template>
@@ -15,7 +15,7 @@
         <template v-if="!$store.getters.isPreview">
           -
           <span class="tip">{{
-            $t("为获得更好的展示效果，建议上传pdf格式文件")
+            $t("为获得更好的展示效果，建议上传pdf格式文件,不支持PPT格式")
           }}</span>
         </template>
       </template>
@@ -51,11 +51,12 @@
             @click="$router.push({path: '/designate/decisiondata/attachment/upload'})">
             {{ language("strategicdoc.ShangChuanWenJian") }}
           </iButton> -->
+            <!-- :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'" -->
           <upload
             class="upload-trigger margin-left10"
             v-if="!$store.getters.isPreview"
             :hideTip="true"
-            :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
+            :accept="'.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian', '上传文件')"
             @on-success="
               onUploadsucess(

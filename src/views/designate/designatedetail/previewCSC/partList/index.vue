@@ -14,7 +14,6 @@
       <!-- table区域 -->
       <tablelist
         height="100%"
-        permissionKey="DESIGNATE_DESIGNATEDETAIL_DECISIONDATA_PARTLIST"
         ref="tableList"
         showTitleName
         :indexConfig="{
@@ -22,7 +21,6 @@
         }"
         :selection="!isPreview"
         :index="isPreview"
-        v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE | 表格"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"

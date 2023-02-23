@@ -259,7 +259,6 @@ export default {
       this.charts = this.$echarts.init(this.$refs.chart, null, {
         renderer: "svg",
       });
-      console.log(JSON.stringify(options));
       this.charts.setOption(options);
     },
     getLine() {

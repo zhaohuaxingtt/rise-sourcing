@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-21 15:57:42
+ * @LastEditTime: 2023-02-23 19:20:19
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -341,8 +341,6 @@ export default {
 
 .bdl {
   height: 100%;
-  padding-top: 20px;
-
   .page-nav {
     display: flex;
     align-items: center;

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-21 16:51:50
+ * @LastEditTime: 2023-02-23 19:52:00
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -135,6 +135,7 @@
       class="content-chart"
       v-if="tab == 'bar'"
       :detail="carTypeDetail"
+      :key="key"
     />
     <supplierLine
       class="content-chart"
@@ -215,6 +216,7 @@ import {
   getListRfq,
   getList,
   update,
+  findNomiProject,
 } from "@/api/partsrfq/editordetail/abprice";
 import { exportFsSupplierAsRowByNomiId } from "@/api/partsrfq/editordetail";
 export default {
@@ -285,7 +287,8 @@ export default {
         gs_part:{},
         Detailed_Worksheet:{},
       },
-      loading:false
+      loading:false,
+      key:'',
     };
   },
   computed: {
@@ -362,15 +365,32 @@ export default {
             );
           });
           this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
-          this.changeCarType(this.tabBar);
+          this.findVsi()
         }
+      });
+    },
+    findVsi() {
+      let params = this.carTypeList.map(item=>{
+        return {
+          nominateId: this.$route.query.desinateId,
+          carProjectCode: item.carTypeProjectNum,
+          carProjectId: item.carTypeProjectId,
+        };
+      })
+      findNomiProject(params).then((res) => {
+        this.tableData = res.data;
+        res.data.forEach(item=>{
+          this.$set(this.carTypeObj[item.carProjectCode],'vsi',item.vsi)
+        })
+        this.changeCarType(this.tabBar);
       });
     },
     changeTab(tab) {
       this.tab = tab;
     },
     changeCarType(val) {
-      this.carTypeDetail = this.carTypeObj[val];
+      this.key = this.carTypeObj[val].vsi
+      this.$set(this, 'carTypeDetail', this.carTypeObj[val])
     },
     getListRfq() {
       getListRfq(this.$route.query.desinateId).then((res) => {
@@ -386,7 +406,6 @@ export default {
     },
     changeRFQ(val) {
       this.rfqDetail = this.rfqObj[val];
-      console.log(this.rfqDetail);
     },
     change(val) {
       if (val == "Detailed_Worksheet") {

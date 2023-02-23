@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-18 23:34:13
+ * @LastEditTime: 2023-02-23 19:23:44
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -2108,7 +2108,7 @@ export default {
     height: 125px;
     max-width: 224px;
     border-radius: 15px;
-    background-color: rgba(205, 212, 226, 0.12);
+    background-color: rgba(22, 96, 241, 0.03);
     margin-right: 19px;
     display: flex;
     flex-direction: column;

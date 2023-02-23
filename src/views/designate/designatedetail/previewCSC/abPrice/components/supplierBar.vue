@@ -323,6 +323,7 @@ export default {
       return (+result).toFixed(0);
     },
     isCLevel(val) {
+      if(!val) return val
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     analysisSummaryNomi() {
