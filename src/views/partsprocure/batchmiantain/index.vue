@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2022-12-30 15:52:13
+ * @LastEditTime: 2023-02-17 18:44:11
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
@@ -133,6 +133,35 @@
           </iSelect>
         </el-form-item>
         <el-form-item
+          v-if="
+            [partProjTypes.GSCOMMONSOURCING, partProjTypes.GSLINGJIAN].includes(
+              batch.type
+            )
+          "
+          v-permission.auto="
+            PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU | 车型项目
+          "
+          :label="language('LK_CHEXING', '车型')"
+        >
+          <iSelect
+            key="carTypeModel"
+            ref="carTypeModelSelect"
+            :filterable="true"
+            v-model="batch.carTypeModel"
+            multiple
+            collapse-tags
+          >
+            <el-option
+              :value="item.id"
+              :label="item.name"
+              v-for="item in fromGroup.CAR_TYPE"
+              :key="item.id"
+            >
+            </el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item
+          v-else
           v-permission.auto="
             PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU | 车型项目
           "
@@ -209,7 +238,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item
-          v-show="batch.type==partProjTypes.DBLINGJIAN"
+          v-show="batch.type == partProjTypes.DBLINGJIAN"
           :label="language('LK_HUOBI', '货币')"
         >
           <iSelect
@@ -343,6 +372,7 @@
 import { iPage, iButton, iSearch, iSelect, iMessage } from "rise";
 import outputPlan from "./components/outputPlan";
 import { batchUpdateStuff, updateProcureButch } from "@/api/partsprocure/home";
+import { getCartypeDict } from "@/api/partsrfq/home";
 import onlyPartsChange from "./components/onlyPartsChange";
 import {
   getStuffByCategory,
@@ -374,6 +404,7 @@ export default {
       batch: {
         carTypeProjectId: null, //车型项目编号–同上关联
         carTypeProjectZh: null, //车型项目
+        carTypeModel:null,  // 车型
         categoryCode: null, //材料组
         categoryName: null, //材料名称
         cfController: null, //CF控制员
@@ -405,6 +436,7 @@ export default {
   },
   created() {
     this.getProcureGroup();
+    this.getCartypeDict();
     this.purchasingDept();
     this.purchaseProjectIds = this.$route.query.ids;
     partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey
@@ -432,6 +464,17 @@ export default {
           });
         }
       });
+    },
+    
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+        .then((res) => {
+          this.fromGroup["CAR_TYPE"] = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // 查询fliter数据
     getGroupList(key) {

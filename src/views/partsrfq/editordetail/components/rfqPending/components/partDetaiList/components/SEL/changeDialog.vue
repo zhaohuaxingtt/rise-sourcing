@@ -33,11 +33,11 @@
       </template>
       <!-- 目标价·分摊 -->
       <template #shareTargetPrice="scope">
-        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 目标价·一次性 -->
       <template #targetPrice="scope">
-        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.targetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 预计A价分摊 -->
       <template #estimateShareAPrice="scope">
