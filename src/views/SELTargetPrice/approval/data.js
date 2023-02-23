@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2022-12-07 15:38:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2022-12-29 15:50:37
+ * @LastEditTime: 2023-02-22 14:22:38
  * @FilePath: \front-web\src\views\SELTargetPrice\approval\data.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -38,4 +38,18 @@ export const searchFormData = [
   { prop: 'statusList', label: '状态', type: 'select', labelKey: 'ZHUANGTAI', selectOption: 'sel_target_price_status', multiple: true },
   { prop: 'businessType', label: '申请类型', type: 'select', labelKey: 'SHENQINGLEIXING', selectOption: 'sel_target_business_type' },
   { prop: 'applyDate', label: '申请日期起止', type: 'dateRange', labelKey: 'SHENQINGRIQIQIZHI' },
+]
+// 审批记录
+export const approvalTableTitle = [
+  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "LK_FSNR", tooltip: true, minWidth: 135,  },
+  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 100,  },
+  { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 125,  },
+  { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 100,  },
+  { props: 'shareTargetPrice', name: '目标价-分摊', key: "目标价-分摊", tooltip: true, minWidth: 110,  },
+  { props: 'estimateShareAPrice', name: '预计A价分摊', key: "预计A价分摊", tooltip: true, minWidth: 110,  },
+  { props: 'targetPrice', name: '目标价·一次性', key: "目标价·一次性", tooltip: true, minWidth: 120,  },
+  { props: 'approvalUserName', name: '审批人', key: "SHENPIREN", tooltip: true },
+  { props: 'approvalStatus', name: '状态', key: "ZHUANGTAI", tooltip: true },
+  { props: 'remarks', name: '备注', key: "BEIZHU", tooltip: true },
+  { props: 'approvalDate', name: '审批时间', key: "审批时间", tooltip: true, minWidth: 180 },
 ]

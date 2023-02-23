@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-12-16 18:03:13
+ * @LastEditTime: 2023-02-22 17:00:31
  * @LastEditors: 余继鹏 917955345@qq.com
 -->
 <template>
@@ -25,11 +25,11 @@
       </template>
       <!-- 目标价·分摊 -->
       <template #shareTargetPrice="scope">
-        <span>{{ scope.row.shareTargetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.shareTargetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 目标价·一次性 -->
       <template #targetPrice="scope">
-        <span>{{ scope.row.targetPrice | thousandsFilter(0)}}</span>
+        <span>{{ scope.row.targetPrice | thousandsFilter(2)}}</span>
       </template>
       <!-- 预计A价分摊 -->
       <template #estimateShareAPrice="scope">
