@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-23 14:41:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-21 13:55:37
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
  */
@@ -22,13 +22,15 @@ export const nomiApplicationStatus = [
   {id:'M_CHECK_PASS',name:'M审批通过',key:'LK_MSHENPITONGGUO'},
   {id:'M_CHECK_FAIL',name:'M退回',key:'LK_NOMIMTUIHUI'},
   {id:'ONFLOW',name:'流转中',key:'LK_SHENPILIUZHUAN'},
-  {id:'FINISHFLOW',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
+  // {id:'FINISHFLOW',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
+  {id:'FLOWED',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
   {id:'NOMINATE',name:'定点',key:'LK_NOMIDINGDIANTITLE'},
 ]
 // 申请状态与定点类型之间的联动
 export const nomiApplicationObject = {
   MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREEZE', 'M_CHECK_INPROCESS', 'M_CHECK_PASS', 'M_CHECK_FAIL', 'NOMINATE'],
-  TRANFORM: ['NEW', 'NOTPASS', 'SUBMIT', 'FREEZE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
+  // TRANFORM: ['NEW', 'NOTPASS', 'SUBMIT', 'FREEZE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
+  TRANFORM: ['NEW', 'NOTPASS', 'SUBMIT', 'FREEZE', 'ONFLOW', 'FLOWED', 'NOMINATE'],
   RECORD: ['NEW', 'SUBMIT', 'FREEZE', 'NOMINATE']
 }
 
