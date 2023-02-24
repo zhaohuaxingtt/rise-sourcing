@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-24 10:41:46
+ * @LastEditTime: 2023-02-24 14:17:26
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -33,6 +33,7 @@
       :visible.sync="strategyVisible"
       :strategy="strategy"
       @updateData="updateNomiRemark"
+      @close="close"
     />
   </div>
 </template> 
@@ -74,13 +75,16 @@ export default {
   methods: {
     getData() {
       this.$refs.abPrice.findVsi()
-  ``},
+    },
     getNomiRemark() {
       getNomiRemark(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
           this.strategy = res.data.strategy;
         }
       });
+    },
+    close(){
+      this.strategyVisible = false
     },
     updateNomiRemark(val) {
       this.strategyVisible = false

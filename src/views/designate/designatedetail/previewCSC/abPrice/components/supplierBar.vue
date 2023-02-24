@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-22 17:21:47
+ * @LastEditTime: 2023-02-24 14:21:14
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -90,7 +90,11 @@
                 </p>
               </template>
               <template v-else>
-                <el-tooltip popper-class="font-family" effect="light" placement="top">
+                <el-tooltip
+                  popper-class="font-family"
+                  effect="light"
+                  placement="top"
+                >
                   <div slot="content">
                     <p
                       v-for="(child, i) in item[columnLabel[scope.$index]]"
@@ -323,7 +327,7 @@ export default {
       return (+result).toFixed(0);
     },
     isCLevel(val) {
-      if(!val) return val
+      if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     analysisSummaryNomi() {
@@ -335,7 +339,7 @@ export default {
         .then((res) => {
           if (res?.code != 200) return;
           this.max = null;
-          let allPrice = [];
+          let allPrice = [this.detail.vsi || 0];
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
@@ -350,9 +354,9 @@ export default {
                     `${child.ltc} from ${child.ltcStartDate}`
                   )
                 )
-                ltcStartDateList.push(
-                  `${child.ltc} from ${child.ltcStartDate}`
-                );
+                  ltcStartDateList.push(
+                    `${child.ltc} from ${child.ltcStartDate}`
+                  );
               });
               item.ltcList = ltcList;
               item.ltcStartDateList = ltcStartDateList;
@@ -385,11 +389,15 @@ export default {
           this.fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
           this.fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
           this.fixedList[3].cPrice = res.data.kmInfo?.greenFieldMeasure || 0;
-          allPrice.push(
-            deleteThousands(res.data.kmInfo?.pca || 0),
-            deleteThousands(res.data.kmInfo?.openGap || 0),
-            deleteThousands(res.data.kmInfo?.greenFieldMeasure || 0)
-          );
+          if (res.data.kmInfo)
+            allPrice.push(
+              deleteThousands(res.data.kmInfo?.pca || 0),
+              deleteThousands(res.data.kmInfo?.openGap || 0),
+              deleteThousands(res.data.kmInfo?.greenFieldMeasure || 0),
+              (+res.data.kmInfo?.pca || 0) +
+                (+res.data.kmInfo?.openGap || 0) +
+                (+res.data.kmInfo?.greenFieldMeasure || 0)
+            );
           this.fixedList[4].aPrice = "";
           this.fixedList[4].bPrice = "";
           this.tableData[5].Recommendation =
