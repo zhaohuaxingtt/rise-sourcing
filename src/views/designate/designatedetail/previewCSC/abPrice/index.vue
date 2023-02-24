@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-23 19:50:08
+ * @LastEditTime: 2023-02-24 16:20:51
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -74,7 +74,7 @@
           </template>
         </el-radio-group>
         <div class="margin-left20">
-          <iButton class="margin-left20" @click="visible = true">strategy</iButton>
+          <iButton class="margin-left20" v-show="false" @click="visible = true">strategy</iButton>
         </div>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
