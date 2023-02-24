@@ -23,7 +23,7 @@ export const supplierStepList = [
 ]
 
 export const tableTitle = [
-    {props:'partReleaseTime',name:'Part Release'},
+    {props:'partReleaseTime',name:'New Pro'},
     {props:'rfqTime',name:'RFQ'},
     {props:'cscTime',name:'CSC'},
     {props:'bfConfirmTime',name:'BF Confirm'},
