@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-23 19:52:24
+ * @LastEditTime: 2023-02-24 10:41:46
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -73,10 +73,8 @@ export default {
   },
   methods: {
     getData() {
-      if (this.$refs.abPrice.tab == "bar") {
-        this.$refs.abPrice.findVsi()
-      }
-    },
+      this.$refs.abPrice.findVsi()
+  ``},
     getNomiRemark() {
       getNomiRemark(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
