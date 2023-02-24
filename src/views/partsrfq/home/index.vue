@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-04-02 16:05:57
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-24 16:13:27
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -809,7 +809,14 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       const openUrl = this.$router.resolve({
-        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}&businessKey=${row.partProjectType}&rfqName=${row.rfqName}`,
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail`,
+        query: {
+          id: row.id,
+          round: row.currentRounds,
+          carTypeNames: row.carTypeNames,
+          businessKey:row.partProjectType,
+          rfqName:row.rfqName,
+        },
       });
       window.open(openUrl.href, "_blank");
     },
