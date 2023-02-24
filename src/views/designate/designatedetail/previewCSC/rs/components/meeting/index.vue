@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-23 19:23:44
+ * @LastEditTime: 2023-02-24 21:31:06
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -41,7 +41,14 @@
                 <p>{{ item.name }}{{ item.enName }}:</p>
               </div>
               <div class="rsTop-left-item-value">
-                <p>
+                <p
+                  class="value"
+                  :title="
+                    basicData[item.props] + (item.props == 'lifeTime'
+                      ? basicData[item.props] && 'WK'
+                      : '')
+                  "
+                >
                   {{ basicData[item.props] }}
                   {{
                     item.props == "lifeTime"
@@ -1864,6 +1871,7 @@ export default {
       }
     }
     .header-table {
+      pointer-events: none;
       ::v-deep .el-table__body-wrapper {
         display: none;
       }
@@ -1945,7 +1953,7 @@ export default {
   }
 
   ::v-deep .el-table__row td {
-    &.bg-yellow{
+    &.bg-yellow {
       background: #fef7e7;
     }
     .cell {
@@ -1986,6 +1994,13 @@ export default {
       }
       &-value {
         flex: 1;
+        overflow: hidden;
+        .value {
+          width: 100%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
       &:nth-of-type(2n) {
         width: 50%;

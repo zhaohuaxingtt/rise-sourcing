@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-21 15:17:59
+ * @LastEditTime: 2023-02-24 21:20:05
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -158,7 +158,8 @@ export const nomalTableTitle = [
   {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',minWidth:65},
   {props:'partNo',name:'零件号', enName: 'Part No.',width:110},
   {props:'partName',name:'零件名称', enName: 'Part Name',width:100},
-  {props:'mixQty',name:'综合每车用量', enName: 'Mixed Qty',width:90},
+  // {props:'mixQty',name:'综合每车用量', enName: 'Mixed Qty',width:90},
+  {props: 'unit', name: '单位', enName: 'Unit', width:48},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', width:70},
   {props:'svwCode',name:'厂商', enName: 'Code', width:48},
   {props:'supplierName',name:'供应商', enName: 'Supplier', minWidth:125},
