@@ -1,7 +1,7 @@
 <template>
   <iCard class="margin-top20">
     <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">
+        <span class="font20 font-weight">
           {{ language("Tasks",'Tasks') }}</span
         >
         <div class="floatright" v-if="editControl">

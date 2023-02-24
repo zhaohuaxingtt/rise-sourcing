@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2022-01-07 14:45:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-24 17:18:06
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
  */
@@ -26,7 +26,6 @@ export function gsPartsAsRow(mimoId){
 export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
   return nego({
       url: `/nego-assistant/nego-analysis-summary/analysisSummaryArrayNomi`,
-      //url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
       method: 'post',
       data:{
           hideList:hideList,
@@ -34,5 +33,105 @@ export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
           nomiId:nomiId,
           round:round
       }
+  })
+}
+
+//supplier-横向
+export function analysisSummaryNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/supplier/analysisSummaryNomi`,
+      method: 'post',
+      data
+  })
+}
+//Bar获取车型项目
+export function analysisNomiCarProject(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/supplier/analysisNomiCarProject`,
+      method: 'post',
+      data
+  })
+}
+
+// Line 获取rfq
+export function getListRfq(nominateId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/list-rfq/${nominateId}`,
+      method: 'GET',
+  })
+}
+
+// Line 根据rfqId获取折线图数据
+export function getLine(nominateId, rfqId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/quotation-line-chart/${nominateId}/${rfqId}`,
+      method: 'GET',
+  })
+}
+
+//Recommendation
+export function getAnalysisRecommendationNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getAnalysisRecommendationNomi`,
+      method: 'post',
+      data
+  })
+}
+// BestBall
+export function getAnalysisBestBallNomi(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getAnalysisBestBallNomi`,
+      method: 'post',
+      data
+  })
+}
+// findNomiProject
+export function findNomiProject(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/findNomiProject`,
+      method: 'post',
+      data
+  })
+}
+// updateNomiProject
+export function updateNomiProject(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/updateNomiProject`,
+      method: 'post',
+      data
+  })
+}
+
+// 查询定点备注信息
+export function getNomiRemark(nominateId){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/getNomiRemark/${nominateId}`,
+      method: 'get',
+  })
+}
+
+// 更新定点备注信息
+export function updateNomiRemark(data){
+  return nego({
+      url: `/nego-assistant/nego-analysis-summary/updateNomiRemark`,
+      method: 'POST',
+      data
+  })
+}
+
+// 获取ab价表格配置
+export function getList(data){
+  return nego({
+      url: `/business-operate/list`,
+      method: 'post',
+      data
+  })
+}
+// 更新ab价表格配置
+export function update(data){
+  return nego({
+      url: `/business-operate/update`,
+      method: 'post',
+      data
   })
 }

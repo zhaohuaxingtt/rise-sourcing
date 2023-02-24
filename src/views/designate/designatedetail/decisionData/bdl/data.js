@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:06:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 15:46:55
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2023-02-19 18:09:40
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\data.js
  */
@@ -11,6 +11,7 @@ export const tableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
   {props:'sapCode',name:'供应商号', enName: 'Supplier No.', key: "GONGYINGSHANGHAO", tooltip: true},
   {props:'plantLocations',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
+  {props:'location',name:'详细地址', enName: 'Address', key: "详细地址", tooltip: true},
   {props:'isMbdl',name:'是否MBDL', enName: 'MBDL', key: "MBDL", tooltip: true},
   {props:'isQuotation',name:'已报价', enName: 'Completely Quoted', key: "YIBAOJIA", tooltip: true, width: 150},
   {props:'isPartQuotation',name:'部分报价', enName: 'Partial Quoted', key: "BUFENBAOJIA", tooltip: true},
