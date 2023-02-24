@@ -28,7 +28,8 @@
         <div class="wrap-div"></div>
         <div style="width: 100%; height: 100%">
           <template v-for="(item, index) in Object.values(lineListNew)">
-            <div ref="time-line"
+            <div
+              ref="time-line"
               class="line-samll"
               :key="index"
               v-if="item.show"
@@ -183,7 +184,7 @@ export default {
       isLoading: false,
       detailData: [],
       timeRange: [],
-      offsetList:[],
+      offsetList: [],
       lineListNew: {
         rfqTime: {
           name: "RFQ",
@@ -268,47 +269,70 @@ export default {
         100
       );
     },
-    computedLabelPosition(){
-      console.log(this.$refs['time-line'])
-      let arr = []
-      let list = this.$refs['time-line']
+    computedLabelPosition() {
+      let arr = [];
+      let list = this.$refs["time-line"];
       for (let i = 0; i < list.length; i++) {
         const el = list[i];
         arr.push({
-          index:i,
+          index: i,
           offsetLeft: el.offsetLeft,
-          textWidth: el.children[0].children[0].clientWidth || 0
-        })
+          textWidth: el.children[0].children[0].clientWidth || 0,
+        });
       }
-      arr = arr.sort((a,b)=> a.offsetLeft - b.offsetLeft)
-      if(arr.length>1)
-      for (let i = 0; i < arr.length; i++) {
-        let item = arr[i];
-        if(i==0){ //比较前两个,定位两个的初始位置
-          let next = arr[i+1]
-          let minOffset = parseInt((item.textWidth + next.textWidth) / 2)+10 // 最小间距
-          let offset = (item.offsetLeft + item.textWidth / 2) - (next.offsetLeft + next.textWidth / 2)  // 实际间距
-          if(offset<minOffset){
-            item.offset = -((minOffset - offset + item.textWidth) / 2 )  // 往左偏移
-            next.offset = ((minOffset - offset - next.textWidth) / 2 )  // 往右偏移
-          }
-        }else if(i >1){
-          let prev = arr[i-1]
-          let minOffset = parseInt(prev.textWidth / 2) + 10 // 最小间距
-          let offset = item.offsetLeft - ((prev.offsetLeft + (prev.offset?prev.offset + prev.textWidth : (prev.textWidth/2))))  // 实际间距: 当前文本与前一个文本的距离
-          if(offset<0){
-            item.offset = prev.offset + prev.textWidth // 往右偏移
-          }else if(offset<minOffset){
-            item.offset = minOffset - offset - item.textWidth / 2 // 往右偏移
+      arr = arr.sort((a, b) => a.offsetLeft - b.offsetLeft);
+      if (arr.length > 1)
+        for (let i = 0; i < arr.length; i++) {
+          let item = arr[i];
+          if (i == 0) {
+            //比较前两个,定位两个的初始位置
+            let next = arr[i + 1];
+            let minOffset =
+              parseInt((item.textWidth + next.textWidth) / 2) + 10; // 线条最小间距
+            let offset = next.offsetLeft - item.offsetLeft; // 线条实际间距
+            if (offset < minOffset) {
+              item.offset = -(minOffset - offset) / 2 - item.textWidth / 2; // 文字往左偏移
+              next.offset = -(minOffset - offset) / 2 + next.textWidth / 2; // 文字往右偏移
+            }
+          } else if (i > 1) {
+            let prev = arr[i - 1];
+            let minOffset =
+              parseInt((item.textWidth + prev.textWidth) / 2) + 10; // 线条最小间距
+            if (prev.offset) {
+              // 已经偏移过
+              let offset =
+                item.offsetLeft -
+                (prev.offsetLeft + prev.offset + prev.textWidth); // 模拟线条实际间距
+              if (offset < minOffset) {
+                // 实际间距小于最小间距, 补齐间距到最小间距
+                item.offset = minOffset - offset - item.textWidth;
+              }
+            } else {
+              let offset = item.offsetLeft - prev.offsetLeft; // 线条实际间距
+              if (offset < minOffset) {
+                // 实际间距小于最小间距, 补齐间距到最小间距
+                item.offset = minOffset - offset - item.textWidth / 2;
+              }
+            }
+
+            // let prev = arr[i-1]
+            // let minOffset = parseInt(prev.textWidth / 2) + 10 // 最小间距
+            // let offset = item.offsetLeft - ((prev.offsetLeft + (prev.offset?prev.offset + prev.textWidth : (prev.textWidth/2))))  // 实际间距: 当前文本与前一个文本的距离
+            // if(offset<0){
+            //   item.offset = prev.offset + prev.textWidth // 往右偏移
+            // }else if(offset<minOffset){
+            //   item.offset = minOffset - offset - item.textWidth / 2 // 往右偏移
+            // }
           }
         }
-      }
-      let offsetList = JSON.parse(JSON.stringify(arr)).sort((a,b)=> a.index - b.index)
-      this.offsetList = offsetList.map(item=>{
+      let offsetList = JSON.parse(JSON.stringify(arr)).sort(
+        (a, b) => a.index - b.index
+      );
+      this.offsetList = offsetList.map((item) => {
         return {
-          left: item.offset+'px'
-        }
-      })
+          left: item.offset + "px",
+        };
+      });
     },
     getFirstDate() {
       let timeList = [];
@@ -340,9 +364,6 @@ export default {
       this.dateRange = parseInt(
         (MonthLast - MonthFirst) / (24 * 60 * 60 * 1000)
       );
-      console.log(this.MonthFirst);
-      console.log(this.MonthLast);
-      console.log(this.dateRange);
       Object.keys(this.lineListNew).forEach((key) => {
         if (this.detail[key]) this.lineListNew[key].show = true;
         this.lineListNew[key].w =
@@ -352,14 +373,12 @@ export default {
                 (24 * 60 * 60 * 1000)
             ) / this.dateRange
           ).toFixed(4) * 100;
-        let week = window.moment(new Date(this.detail[key])).week()
-        this.lineListNew[key].time = week < 10 ? '0'+week : week
+        let week = window.moment(new Date(this.detail[key])).week();
+        this.lineListNew[key].time = week < 10 ? "0" + week : week;
       });
-      console.log(this.lineListNew);
       this.getMonthList(MonthFirst, MonthLast);
     },
     getMonthList(MonthFirst, MonthLast) {
-      console.log(MonthFirst);
       let firstYear = new Date(+MonthFirst).getFullYear();
       let lastYear = new Date(+MonthLast).getFullYear();
       let indexStart = new Date(+MonthFirst).getMonth();
@@ -401,9 +420,6 @@ export default {
             monthList: this.monthLabel,
           });
         }
-        console.log(firstYear);
-        console.log(lastYear);
-        console.log(this.timeRange);
         this.timeRange[0].monthList = [];
         for (let i = indexStart; i <= 11; i++) {
           this.timeRange[0].monthList.push(this.monthLabel[i]);
@@ -415,14 +431,9 @@ export default {
           );
         }
       }
-      // let index = new Date(MonthFirst).getMonth()
-      // for (let i = index; i <= 11; i++) {
-      //   list.push(this.monthLabel[i]);
-      // }
-        this.$nextTick(()=>{
-          this.computedLabelPosition()
-        })
-      // return list
+      this.$nextTick(() => {
+        this.computedLabelPosition();
+      });
     },
     analysisNomiCarProject() {
       this.carTypeObj = {};
