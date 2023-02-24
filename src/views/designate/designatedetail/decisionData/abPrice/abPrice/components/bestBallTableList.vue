@@ -73,6 +73,18 @@
             </template>
           </el-table-column>
           <el-table-column
+            :key="item.prop"
+            v-else-if="item.tooltip"
+            :prop="item.prop"
+            :label="item.label"
+            :width="item.width"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <tooltip :text="scope.row[item.prop]" />
+            </template>
+          </el-table-column>
+          <el-table-column
             v-else
             :key="item.prop"
             :prop="item.prop"
@@ -163,14 +175,17 @@
           align="center"
           prop="supplierNameEn"
           minWidth="100"
+        >
+          <template slot-scope="scope">
+            <tooltip
+              :text="scope.row['supplierNameEn']"
+              :content="
+                scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
+              "
+            /> </template
         ></el-table-column>
         <el-table-column label="Rating" align="center">
-          <el-table-column
-            label="E"
-            align="center"
-            prop="erate"
-            minWidth="40"
-          >
+          <el-table-column label="E" align="center" prop="erate" minWidth="40">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.erate)">{{
                 scope.row.erate
@@ -178,12 +193,7 @@
               <span v-else>{{ scope.row.erate }}</span>
             </template></el-table-column
           >
-          <el-table-column
-            label="Q"
-            align="center"
-            prop="qrate"
-            minWidth="40"
-          >
+          <el-table-column label="Q" align="center" prop="qrate" minWidth="40">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.qrate)">{{
                 scope.row.qrate
@@ -191,12 +201,7 @@
               <span v-else>{{ scope.row.qrate }}</span>
             </template></el-table-column
           >
-          <el-table-column
-            label="L"
-            align="center"
-            prop="lrate"
-            minWidth="40"
-          >
+          <el-table-column label="L" align="center" prop="lrate" minWidth="40">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.lrate)">{{
                 scope.row.lrate
@@ -402,8 +407,9 @@ import {
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
+import tooltip from "../../../components/tooltip.vue";
 export default {
-  components: { partTableDetail },
+  components: { partTableDetail, tooltip },
   data() {
     return {
       ref: "best-ball",
@@ -422,6 +428,7 @@ export default {
         {
           prop: "carTypeProjectNum",
           label: ["Carline"],
+          tooltip: true,
           width: 120,
         },
         {
@@ -468,10 +475,10 @@ export default {
   created() {
     this.getData();
   },
-  mounted(){
+  mounted() {
     this.$nextTick(() => {
-        this.positionAllow();
-      });
+      this.positionAllow();
+    });
   },
   methods: {
     numberProcessor,
@@ -484,7 +491,7 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     getData() {
-      this.index = this.label == "Best ball" ? 0 : 1
+      this.index = this.label == "Best ball" ? 0 : 1;
       const getData =
         this.label == "Recommendation"
           ? getAnalysisRecommendationNomi
@@ -508,19 +515,22 @@ export default {
             totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;
-          }else{
+          } else {
             this.tableData = [];
           }
         })
         .finally(() => {
           this.$nextTick(() => {
-            this.$emit('setPage',{index:this.label == "Best ball" ? 0 : 1, total:2})
+            this.$emit("setPage", {
+              index: this.label == "Best ball" ? 0 : 1,
+              total: 2,
+            });
             // this.positionAllow();
           });
         });
     },
     isCLevel(val) {
-      if(!val) return val
+      if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     // 计算表头合并
@@ -685,7 +695,7 @@ export default {
     .primary-label {
       height: 36px;
       line-height: 36px;
-      .cell{
+      .cell {
         line-height: 36px !important;
         height: 100%;
       }
@@ -718,7 +728,7 @@ export default {
   ::v-deep .el-table__row {
     height: unset !important;
   }
-  
+
   ::v-deep tr {
     .table-header {
       background: #364d6e;

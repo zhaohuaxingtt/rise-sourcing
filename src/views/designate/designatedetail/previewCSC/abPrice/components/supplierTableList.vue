@@ -101,6 +101,9 @@
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
+              <template slot="header" slot-scope="scope">
+                <tooltip :text="item.carline"></tooltip>
+              </template>
             <el-table-column :label="percent(item.ebr)" align="center">
             <el-table-column :label="numberProcessor(item.mixQty,2)" align="center">
               <el-table-column :label="item.volume" align="center">
@@ -260,7 +263,11 @@
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands } from "@/utils";
+import tooltip from "../../components/tooltip.vue";
 export default {
+  components:{
+    tooltip
+  },
   props: {
     row: {
       type: Array,

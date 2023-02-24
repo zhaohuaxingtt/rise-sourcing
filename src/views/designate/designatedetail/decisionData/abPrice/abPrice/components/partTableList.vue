@@ -43,12 +43,35 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <p class="partName" :title="scope.row.partName">
-                      {{ scope.row.partName }}
-                    </p>
-                    <p class="partName" :title="scope.row.partNameDe">
-                      ({{ scope.row.partNameDe }})
-                    </p>
+                    <tooltip>
+                      <template slot="content">
+                        <p class="partName" :title="scope.row.partName">
+                          {{ scope.row.partName }}
+                        </p>
+                        <p class="partName" :title="scope.row.partNameDe">
+                          ({{ scope.row.partNameDe }})
+                        </p>
+                      </template>
+                      <template slot="text">
+                        <p class="partName" :title="scope.row.partName">
+                          {{ scope.row.partName }}
+                        </p>
+                        <p class="partName" :title="scope.row.partNameDe">
+                          ({{ scope.row.partNameDe }})
+                        </p>
+                      </template>
+                    </tooltip>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'carProType'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <tooltip :text="scope.row.carProType"></tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -166,9 +189,7 @@
               </template>
               <el-table-column :label="item.L" align="center">
                 <template slot-scope="scope" slot="header">
-                  <span class="red" v-if="isCLevel(item.L)">{{
-                    item.L
-                  }}</span>
+                  <span class="red" v-if="isCLevel(item.L)">{{ item.L }}</span>
                   <span v-else>{{ item.L }}</span>
                 </template>
                 <el-table-column
@@ -185,8 +206,7 @@
 
                   <template slot-scope="scope">
                     {{
-                      scope.row[item.supplierId + "aPrice"]
-                        | toThousands(true)
+                      scope.row[item.supplierId + "aPrice"] | toThousands(true)
                     }}
                   </template>
                 </el-table-column>
@@ -203,8 +223,7 @@
                   </template>
                   <template slot-scope="scope">
                     {{
-                      scope.row[item.supplierId + "bPrice"]
-                        | toThousands(true)
+                      scope.row[item.supplierId + "bPrice"] | toThousands(true)
                     }}
                   </template>
                 </el-table-column>
@@ -331,8 +350,9 @@
 import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
+import tooltip from "../../../components/tooltip.vue";
 export default {
-  components: { partTableDetail },
+  components: { partTableDetail, tooltip },
   data() {
     return {
       ref: "part-table",
