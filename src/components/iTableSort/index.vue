@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-25 11:02:06
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-02-21 10:36:37
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: table组件
 -->
 <template>
@@ -81,6 +81,7 @@
       <el-table-column
         v-else
         :align="items.align || 'center'"
+        :header-align="items.headerAlign || 'center'"
         :key="`${items.props}_${index}`"
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
@@ -97,7 +98,7 @@
             <template>
               <span v-if="items.isHeaderSetting" class="isHeaderSetting">
                 <template v-for="(setting,index) in items.HeaderSettingList">
-                  <span :key="index+'_setting'">{{language(setting.key, setting.name)}}</span>
+                  <span :key="index+'_setting'">{{setting.key ? language(setting.key, setting.name) : setting.name}}</span>
                   <br  :key="index+'_setting_br'" v-if="index+1 < items.HeaderSettingList.length"/>
                 </template>
               </span>
@@ -108,6 +109,7 @@
               placement="top"
               trigger="hover"
               popper-class="tableTitleTip"
+              class="label-icon"
               :visible-arrow="false"
               :disabled="!(items.showTips || items.tipsLang)">
               <p v-html="items.showTips ? items.tips() : ''"></p>
@@ -124,6 +126,17 @@
               {{scope.row[items.props]}}
             </slot>
           </span>
+        </template>
+        <template v-if="items.children">
+          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childItem.props+'_'+childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
+            <template slot-scope="scope">
+              <!----------------------------备注列-------------------------------->
+              <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
+              <span v-else-if="childItem.type === 'rate'" :class="{red:isCLevel(getRate(scope.row, childItem.props).rate)}">{{getRate(scope.row, childItem.props, childItem).rate}}</span>
+              <icon v-else-if="childItem.type == 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
+              <span>{{scope.row[childItem.props]}}</span>
+            </template>
+          </el-table-column>
         </template>
       </el-table-column>
     </template>
@@ -242,6 +255,15 @@ export default {
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
+  watch:{
+    tableTitle:{
+      handler(val){
+        this.header = cloneDeep(val)
+      },
+      deep:true,
+      immediate:true
+    }
+  },
   data() {
     return {
       settingVisible: false,
@@ -254,13 +276,20 @@ export default {
     }
   },
   created() {
-    console.log(this.tableData, this.tableTitle)
     this.initTableSettingColumns()
     if (this.permissionKey) {
       this.querySetting()
     }
   },
   methods:{
+    isCLevel(val) {
+      if(!val) return false
+      return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
+    getRate(row, props, childItem) {
+      const findItem = row.departmentRate?.find(item => item.rateDepartNum === props) || {}
+      return findItem
+    },
     /**
      * @description: 单选的实现
      * @param {*} val
@@ -446,6 +475,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .iFileTableList {
+  height: 100%;
   // ::v-deep.el-table__body-wrapper {
   //   height: auto!important;
   // }
@@ -546,5 +576,13 @@ export default {
       display: inline-block;
       margin-left: 2px;
     }
+    .label-icon{
+      display: flex;
+      align-items: center;
+      margin-left: 5px;
+    }
+  }
+  .red{
+    color: #f00;
   }
 </style>

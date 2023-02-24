@@ -1,0 +1,290 @@
+<!--
+ * @Author: 余继鹏 917955345@qq.com
+ * @Date: 2023-02-08 15:45:59
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2023-02-24 10:35:36
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<template>
+  <div class="designate-attachment" v-loading="loading">
+    <div
+      class="left-content"
+      :class="{ show: collapseValue, bg_big: !collapseValue }"
+      @click="collapse"
+    >
+      <div class="el-card left-list">
+        <div class="collapse-transition margin-right5" v-show="!collapseValue">
+          <div @click.stop="">
+            <template v-for="(item, i) in allData">
+              <ul class="file-ul" :key="i" v-if="item.fileList.length">
+                <li class="group-name">{{ item.label }}</li>
+                <li
+                  class="file-name cursor"
+                  :class="{ 'is-active': file.id == active && i == index }"
+                  v-for="file in item.fileList"
+                  :key="file.id"
+                  @click="changeSrc(index, file)"
+                >
+                  {{ file.fileName }}
+                </li>
+                <el-divider :key="i"></el-divider>
+              </ul>
+            </template>
+          </div>
+        </div>
+        <i class="btn"
+          ><icon
+            symbol
+            name="iconsanjiantou"
+            class="collapse"
+            :class="{ rotate: !collapseValue }"
+          ></icon
+        ></i>
+      </div>
+    </div>
+    <div class="right-preview">
+      <img
+        class="preview"
+        v-if="['PNG', 'JPG', 'JIF'].includes(detail.type)"
+        :src="detail.filePath || detail.fileUrl"
+      />
+      <iframe
+        class="preview"
+        v-else
+        :src="detail.filePath || detail.fileUrl"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </div>
+</template>
+<script>
+import { icon } from "rise";
+import attachment from "./components/attachment";
+import rssheet from "./components/rssheet";
+import mtzAttachment from "./components/mtzAttachment";
+import { nominateAppSDetail } from "@/api/designate";
+import { getMtzAttachmentPageList } from "@/api/designate/designatedetail/attachment";
+import { getdDecisiondataList } from "@/api/designate/decisiondata/attach";
+
+export default {
+  data() {
+    return {
+      collapseValue: true,
+      nomiAppId: this.$route.query.desinateId || "",
+      active: "",
+      index: "",
+      allData: [
+        {
+          label: "Attachment",
+          fileList: [],
+        },
+        {
+          label: "RS Sheet",
+          fileList: [],
+        },
+        {
+          label: "MTZ Attachment",
+          fileList: [],
+        },
+      ],
+      detail: {},
+      loading: false,
+    };
+  },
+  components: {
+    attachment,
+    rssheet,
+    mtzAttachment,
+    icon,
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.loading = true;
+      Promise.all([
+        this.getFetchDataListAttch(),
+        this.getFetchDataListSheet(),
+        this.nominateAppSDetail(),
+      ]).then(() => {
+        if (this.allData[0].fileList.length) {
+          this.changeSrc(0, this.allData[0].fileList[0]);
+        } else if (this.allData[1].fileList.length) {
+          this.changeSrc(0, this.allData[1].fileList[0]);
+        } else if (this.allData[2].fileList.length) {
+          this.changeSrc(0, this.allData[2].fileList[0]);
+        }
+        this.loading = false;
+      });
+    },
+    // MTZ
+    nominateAppSDetail() {
+      return new Promise((r) => {
+        if (this.$route.query.desinateId) {
+          nominateAppSDetail({
+            nominateAppId: this.$route.query.desinateId,
+          }).then((res) => {
+            this.mtzAppId = res.data.mtzApplyId || "";
+            if (this.mtzAppId !== "") {
+              let data = {
+                mtzAppId: this.mtzAppId,
+                pageNo: 1,
+                pageSize: 999,
+              };
+              getMtzAttachmentPageList(data).then((res) => {
+                this.allData[2].fileList = res.data;
+              });
+            }
+            r(true);
+          });
+        }
+        r(true);
+      });
+    },
+    // sheet
+    getFetchDataListSheet() {
+      return new Promise((r) => {
+        const params = {
+          nomiAppId: this.nomiAppId,
+          sortColumn: "sort",
+          isAsc: true,
+          fileType: "103",
+          pageNo: 1,
+          pageSize: 999,
+        };
+        getdDecisiondataList(params)
+          .then((res) => {
+            if (res?.code == "200") {
+              this.allData[1].fileList = res.data;
+            } else {
+              iMessage.error(
+                this.$i18n.locale === "zh" ? res.desZh : res.desEn
+              );
+            }
+          })
+          .finally(() => {
+            r(true);
+          });
+      });
+    },
+    // attch
+    async getFetchDataListAttch() {
+      return new Promise((r) => {
+        const params = {
+          nomiAppId: this.nomiAppId,
+          sortColumn: "sort",
+          isAsc: true,
+          fileType: "102",
+          pageNo: 1,
+          pageSize: 999,
+        };
+        getdDecisiondataList(params)
+          .then((res) => {
+            if (res?.code == "200") {
+              this.allData[0].fileList = res.data;
+            } else {
+              iMessage.error(
+                this.$i18n.locale === "zh" ? res.desZh : res.desEn
+              );
+            }
+          })
+          .finally(() => {
+            r(true);
+          });
+      });
+    },
+    collapse(ev, val = "") {
+      if (val !== "") {
+        this.collapseValue = val;
+      } else {
+        this.collapseValue = !this.collapseValue;
+      }
+    },
+    changeSrc(index, item) {
+      let fileObj = JSON.parse(JSON.stringify(item));
+      let arr = item.fileName.split(".");
+      fileObj.type = arr[arr.length - 1].toUpperCase();
+      this.detail = fileObj;
+      this.index = index;
+      this.active = item.id;
+    },
+  },
+};
+</script>
+<style lang='scss' scope>
+.designate-attachment {
+  height: 100%;
+  position: relative;
+  display: flex;
+  .show {
+    background: transparent;
+    width: auto;
+  }
+  .bg_big {
+    background: transparent;
+    width: 100%;
+  }
+  .left-content{
+    height: 100%;
+    position: absolute;
+  }
+  .left-list {
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    padding: 20px 10px;
+    .collapse-transition {
+      width: 500px;
+      height: 100%;
+
+      .file-ul {
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+        .group-name {
+          font-size: 16px;
+          font-weight: 700;
+          color: #222;
+          margin: 20px 0;
+        }
+        .file-name {
+          padding-left: 10px;
+          font-size: 16px;
+          margin-bottom: 10px;
+          overflow-wrap: break-word;
+        }
+        .is-active {
+          color: #1763f7;
+        }
+      }
+    }
+    .btn {
+      width: 30px;
+    }
+
+    .collapse {
+      font-size: 30px;
+      color: #d3d3db;
+    }
+    .rotate {
+      transform: rotate(180deg);
+    }
+  }
+  .right-preview {
+    flex: 1;
+    font-size: 0;
+    padding-left: 70px;
+    height: 100%;
+    .preview {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+    }
+  }
+}
+</style>
