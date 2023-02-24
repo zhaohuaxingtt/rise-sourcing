@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-21 17:41:36
+ * @LastEditTime: 2023-02-24 17:17:19
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -273,7 +273,7 @@ export default {
       ];
       if (this.detail.rfqId) {
         this.loading = true;
-        getLine(this.detail.rfqId)
+        getLine(this.$route.query.desinateId, this.detail.rfqId)
           .then((res) => {
             if (res?.code != 200) return;
             // 构建数据

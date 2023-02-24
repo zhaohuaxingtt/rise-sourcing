@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2023-02-20 11:00:34
+ * @LastEditTime: 2023-02-24 17:18:06
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -62,9 +62,9 @@ export function getListRfq(nominateId){
 }
 
 // Line 根据rfqId获取折线图数据
-export function getLine(rfqId){
+export function getLine(nominateId, rfqId){
   return nego({
-      url: `/nego-assistant/nego-analysis-summary/quotation-line-chart/${rfqId}`,
+      url: `/nego-assistant/nego-analysis-summary/quotation-line-chart/${nominateId}/${rfqId}`,
       method: 'GET',
   })
 }
