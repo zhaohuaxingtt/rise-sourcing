@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-25 23:37:18
+ * @LastEditTime: 2023-02-26 00:46:20
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -153,7 +153,7 @@
       :detail="rfqDetail"
     />
     <div class="footer">
-      <el-popover
+      <!-- <el-popover
         placement="top-start"
         popper-class="bg-yellow font-family"
         width="850"
@@ -163,7 +163,11 @@
         :content="strategy"
       >
         <img :src="tips" alt="tips" class="iconSize" slot="reference" />
-      </el-popover>
+      </el-popover> -->
+      <p>
+        <span style="color: red">*</span>means Invest or Develop Cost is
+        amortized into piece price.
+      </p>
       <p class="margin-top10 font-size16" v-if="tab == 'line'">
         <span class="margin-right10"
           ><icon
