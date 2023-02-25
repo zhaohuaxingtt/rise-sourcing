@@ -130,8 +130,6 @@
       <el-table-column align="center">
         <template slot="header" slot-scope="scope">
           {{ label }}
-          <div class="leftAllow" @click="leftAllow($event)"></div>
-          <div class="rightAllow" @click="rightAllow($event)"></div>
         </template>
         <el-table-column
           label="A Price(LC)"
@@ -141,11 +139,17 @@
           minWidth="80"
         >
           <template slot="header" slot-scope="scope">
-            <p>A price</p>
-            <p>(LC)</p>
+            <p>A Price</p>
           </template>
           <template slot-scope="scope">
-            {{ numberProcessor(scope.row.lcAPrice, 2) | toThousands(true) }}
+            <span
+                v-if="
+                  scope.row.quotationType == 'SKD' ||
+                  scope.row.quotationType == 'SKDLC'
+                "
+                style="color: red"
+                >*</span
+              >{{ numberProcessor(scope.row.lcAPrice, 2) | toThousands(true) }}
           </template></el-table-column
         >
         <el-table-column
@@ -156,11 +160,17 @@
           prop="lcBPrice"
         >
           <template slot="header" slot-scope="scope">
-            <p>B price</p>
-            <p>(LC)</p>
+            <p>B Price</p>
           </template>
           <template slot-scope="scope">
-            {{ numberProcessor(scope.row.lcBPrice, 2) | toThousands(true) }}
+            <span
+                v-if="
+                  scope.row.quotationType == 'SKD' ||
+                  scope.row.quotationType == 'SKDLC'
+                "
+                style="color: red"
+                >*</span
+              >{{ numberProcessor(scope.row.lcBPrice, 2) | toThousands(true) }}
           </template></el-table-column
         >
         <el-table-column
@@ -169,7 +179,15 @@
           align="right"
           minWidth="100"
           header-align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span
+              v-if="scope.row.investFeeIsShared && scope.row.invest"
+              style="color: red"
+              >*</span
+            >{{ scope.row.invest }}
+          </template></el-table-column
+        >
         <el-table-column
           label="Supplier"
           align="center"
@@ -185,7 +203,7 @@
             /> </template
         ></el-table-column>
         <el-table-column label="Rating" align="center">
-          <el-table-column label="E" align="center" prop="erate" minWidth="40">
+          <el-table-column label="E" align="center" prop="erate" minWidth="60">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.erate)">{{
                 scope.row.erate
@@ -193,7 +211,7 @@
               <span v-else>{{ scope.row.erate }}</span>
             </template></el-table-column
           >
-          <el-table-column label="Q" align="center" prop="qrate" minWidth="40">
+          <el-table-column label="Q" align="center" prop="qrate" minWidth="60">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.qrate)">{{
                 scope.row.qrate
@@ -201,7 +219,7 @@
               <span v-else>{{ scope.row.qrate }}</span>
             </template></el-table-column
           >
-          <el-table-column label="L" align="center" prop="lrate" minWidth="40">
+          <el-table-column label="L" align="center" prop="lrate" minWidth="60">
             <template slot-scope="scope">
               <span class="red" v-if="isCLevel(scope.row.lrate)">{{
                 scope.row.lrate
@@ -219,19 +237,31 @@
           <template slot="header" slot-scope="scope">
             <p>LTC Start</p>
             <p>Date</p>
+          </template>
+          <template slot-scope="scope">
+            <template v-if="+scope.row.ltc">{{
+              scope.row.ltcStartDate
+            }}</template>
           </template></el-table-column
         >
         <el-table-column
           align="right"
           header-align="center"
           prop="developCost"
-          min-width="110"
+          min-width="100"
         >
           <template slot="header" slot-scope="scope">
             <p>Develop</p>
             <p>Cost</p>
-          </template></el-table-column
-        >
+          </template>
+          <template slot-scope="scope">
+            <span
+              v-if="scope.row.devFeeIsShared && scope.row.developCost"
+              style="color: red"
+              >*</span
+            >{{ scope.row.developCost }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="right"
           header-align="center"
@@ -345,13 +375,13 @@
               label="E"
               align="center"
               prop="erate"
-              min-width="40"
+              min-width="60"
             ></el-table-column>
             <el-table-column
               label="Q"
               align="center"
               prop="qrate"
-              min-width="40"
+              min-width="60"
             ></el-table-column>
             <el-table-column
               label="L"
@@ -376,7 +406,7 @@
             align="right"
             header-align="center"
             prop="developCost"
-            min-width="110"
+            min-width="100"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["developCost"]) | toThousands(true) }}
@@ -642,7 +672,10 @@ export default {
         }
       }
       if (["Total Turnover"].includes(column.label)) {
-        if (row.isMinTto) {
+        if (this.label == "Best ball") {
+          return "font-green";
+        } else if (row.isFsMinTto) {
+          // if (row.isMinTto) {
           return "font-green";
         }
       }

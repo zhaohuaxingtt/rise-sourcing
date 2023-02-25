@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-24 19:16:31
+ * @LastEditTime: 2023-02-26 00:41:35
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -215,12 +215,15 @@
                     minWidth="80"
                   >
                     <template slot="header" slot-scope="scope">
-                      <p>A price</p>
-                      <p>(LC)</p>
+                      <p>A Price</p>
                     </template>
 
                     <template slot-scope="scope">
-                      {{
+                      <span
+                        v-if="scope.row[item.supplierId + 'quotationType']=='SKD'||scope.row[item.supplierId + 'quotationType']=='SKDLC'"
+                        style="color: red"
+                        >*</span
+                      >{{
                         scope.row[item.supplierId + "aPrice"]
                           | toThousands(true)
                       }}
@@ -234,11 +237,14 @@
                     minWidth="80"
                   >
                     <template slot="header" slot-scope="scope">
-                      <p>B price</p>
-                      <p>(LC)</p>
+                      <p>B Price</p>
                     </template>
                     <template slot-scope="scope">
-                      {{
+                      <span
+                        v-if="scope.row[item.supplierId + 'quotationType']=='SKD'||scope.row[item.supplierId + 'quotationType']=='SKDLC'"
+                        style="color: red"
+                        >*</span
+                      >{{
                         scope.row[item.supplierId + "bPrice"]
                           | toThousands(true)
                       }}
@@ -320,7 +326,6 @@
             >
               <template slot="header" slot-scope="scope">
                 <p>A price</p>
-                <p>(LC)</p>
               </template>
               <template slot-scope="scope">
                 <template v-if="scope.$index == 0">
@@ -338,6 +343,20 @@
                     {{ text }}
                   </p>
                 </template>
+                <template v-else-if="scope.$index == 2">
+                  <span v-if="scope.row.investFeeIsShared.includes(item.supplierId + 'aPrice')&&scope.row[item.supplierId + 'aPrice']" style="color: red">*</span
+              >{{
+                  getInt(scope.row[item.supplierId + "aPrice"])
+                    | toThousands(true)
+                }}
+                </template>
+                <template v-else-if="scope.$index == 4">
+                  <span v-if="scope.row.devFeeIsShared.includes(item.supplierId + 'aPrice')&&scope.row[item.supplierId + 'aPrice']" style="color: red">*</span
+              >{{
+                  getInt(scope.row[item.supplierId + "aPrice"])
+                    | toThousands(true)
+                }}
+                </template>
                 <template v-else>{{
                   getInt(scope.row[item.supplierId + "aPrice"])
                     | toThousands(true)
@@ -353,7 +372,6 @@
             >
               <template slot="header" slot-scope="scope">
                 <p>B price</p>
-                <p>(LC)</p>
               </template>
             </el-table-column>
           </el-table-column>
@@ -487,6 +505,7 @@ export default {
                 item.bdlInfoList.forEach((child) => {
                   item[child.supplierId + "aPrice"] = child.lcAPrice;
                   item[child.supplierId + "bPrice"] = child.lcBPrice;
+                  item[child.supplierId + "quotationType"] = child.quotationType;
                   if (child.suggestFlag)
                     item.suggestFlag.push(
                       child.supplierId + "aPrice",
@@ -506,10 +525,12 @@ export default {
               obj[item.supplierId] = item;
             });
             res.data.bdlRateInfoList?.forEach((item) => {
-              obj[item.supplierId][item.rateType] = item.rate;
+              obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
+            totalData[2].investFeeIsShared = [];
+            totalData[4].devFeeIsShared = [];
             totalData[5].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
@@ -519,7 +540,7 @@ export default {
                 if (
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  )
+                  ) && (+child.ltc)
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -527,7 +548,13 @@ export default {
                 }
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
-              totalData[4][item.supplierId + "aPrice"] = item.aPrice;
+              if (item.investFeeIsShared) {
+                totalData[2].investFeeIsShared.push(item.supplierId + "aPrice");
+              }
+              totalData[4][item.supplierId + "aPrice"] = item.developCostTotal;
+              if (item.devFeeIsShared) {
+                totalData[4].devFeeIsShared.push(item.supplierId + "aPrice");
+              }
               totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
               if (item.isMinTto) {
                 totalData[5].isMinTto.push(item.supplierId + "aPrice");

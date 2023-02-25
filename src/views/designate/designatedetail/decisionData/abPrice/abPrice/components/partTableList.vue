@@ -200,12 +200,15 @@
                   minWidth="80"
                 >
                   <template slot="header" slot-scope="scope">
-                    <p>A price</p>
-                    <p>(LC)</p>
+                    <p>A Price</p>
                   </template>
 
                   <template slot-scope="scope">
-                    {{
+                    <span
+                        v-if="scope.row[item.supplierId + 'quotationType']=='SKD'||scope.row[item.supplierId + 'quotationType']=='SKDLC'"
+                        style="color: red"
+                        >*</span
+                      >{{
                       scope.row[item.supplierId + "aPrice"] | toThousands(true)
                     }}
                   </template>
@@ -218,11 +221,14 @@
                   minWidth="80"
                 >
                   <template slot="header" slot-scope="scope">
-                    <p>B price</p>
-                    <p>(LC)</p>
+                    <p>B Price</p>
                   </template>
                   <template slot-scope="scope">
-                    {{
+                    <span
+                        v-if="scope.row[item.supplierId + 'quotationType']=='SKD'||scope.row[item.supplierId + 'quotationType']=='SKDLC'"
+                        style="color: red"
+                        >*</span
+                      >{{
                       scope.row[item.supplierId + "bPrice"] | toThousands(true)
                     }}
                   </template>
@@ -319,6 +325,20 @@
                   >
                     {{ text }}
                   </p>
+                </template>
+                <template v-else-if="scope.$index == 2">
+                  <span v-if="scope.row.investFeeIsShared.includes(item.supplierId + 'aPrice')&&scope.row[item.supplierId + 'aPrice']" style="color: red">*</span
+              >{{
+                  getInt(scope.row[item.supplierId + "aPrice"])
+                    | toThousands(true)
+                }}
+                </template>
+                <template v-else-if="scope.$index == 4">
+                  <span v-if="scope.row.devFeeIsShared.includes(item.supplierId + 'aPrice')&&scope.row[item.supplierId + 'aPrice']" style="color: red">*</span
+              >{{
+                  getInt(scope.row[item.supplierId + "aPrice"])
+                    | toThousands(true)
+                }}
                 </template>
                 <template v-else>{{
                   getInt(scope.row[item.supplierId + "aPrice"])
@@ -488,10 +508,12 @@ export default {
               obj[item.supplierId] = item;
             });
             res.data.bdlRateInfoList?.forEach((item) => {
-              obj[item.supplierId][item.rateType] = item.rate;
+              obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
+            totalData[2].investFeeIsShared = [];
+            totalData[4].devFeeIsShared = [];
             totalData[5].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
@@ -501,7 +523,7 @@ export default {
                 if (
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  )
+                  ) && (+child.ltc)
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -509,7 +531,13 @@ export default {
                 }
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
-              totalData[4][item.supplierId + "aPrice"] = item.aPrice;
+              if (item.investFeeIsShared) {
+                totalData[2].investFeeIsShared.push(item.supplierId + "aPrice");
+              }
+              totalData[4][item.supplierId + "aPrice"] = item.developCostTotal;
+              if (item.devFeeIsShared) {
+                totalData[4].devFeeIsShared.push(item.supplierId + "aPrice");
+              }
               totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
               if (item.isMinTto) {
                 totalData[5].isMinTto.push(item.supplierId + "aPrice");

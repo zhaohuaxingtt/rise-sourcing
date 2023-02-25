@@ -15,18 +15,18 @@
           <el-table-column>
             <el-table-column>
               <el-table-column>
-              <el-table-column>
-              <el-table-column>
                 <el-table-column>
-                  <el-table-column
-                    prop="supplierNameEn"
-                    label="Supplier"
-                    align="center"
-                    minWidth="140"
-                  ></el-table-column>
+                  <el-table-column>
+                    <el-table-column>
+                      <el-table-column
+                        prop="supplierNameEn"
+                        label="Supplier"
+                        align="center"
+                        minWidth="140"
+                      ></el-table-column>
+                    </el-table-column>
+                  </el-table-column>
                 </el-table-column>
-              </el-table-column>
-              </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
@@ -35,57 +35,57 @@
       <el-table-column label="Part No.">
         <el-table-column label="Part Name">
           <el-table-column label="Carline">
-          <el-table-column label="EBR">
-          <el-table-column label="Mixed Qty">
-            <el-table-column label="Volume">
-              <el-table-column label="Budget">
-                <el-table-column label="F-Target">
-                  <el-table-column label="Rating" align="center">
-                    <el-table-column
-                      prop="te"
-                      label="E"
-                      minWidth="40"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.te)">{{
-                          scope.row.te
-                        }}</span>
-                        <span v-else>{{ scope.row.te }}</span>
-                      </template>
+            <el-table-column label="EBR">
+              <el-table-column label="Mixed Qty">
+                <el-table-column label="Volume">
+                  <el-table-column label="Budget">
+                    <el-table-column label="F-Target">
+                      <el-table-column label="Rating" align="center">
+                        <el-table-column
+                          prop="te"
+                          label="E"
+                          minWidth="40"
+                          align="center"
+                        >
+                          <template slot-scope="scope">
+                            <span class="red" v-if="isCLevel(scope.row.te)">{{
+                              scope.row.te
+                            }}</span>
+                            <span v-else>{{ scope.row.te }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column
+                          prop="q"
+                          label="Q"
+                          minWidth="40"
+                          align="center"
+                        >
+                          <template slot-scope="scope">
+                            <span class="red" v-if="isCLevel(scope.row.q)">{{
+                              scope.row.q
+                            }}</span>
+                            <span v-else>{{ scope.row.q }}</span>
+                          </template></el-table-column
+                        >
+                        <el-table-column
+                          prop="l"
+                          label="L"
+                          minWidth="40"
+                          align="center"
+                        >
+                          <template slot-scope="scope">
+                            <span class="red" v-if="isCLevel(scope.row.l)">{{
+                              scope.row.l
+                            }}</span>
+                            <span v-else>{{ scope.row.l }}</span>
+                          </template></el-table-column
+                        >
+                      </el-table-column>
                     </el-table-column>
-                    <el-table-column
-                      prop="q"
-                      label="Q"
-                      minWidth="40"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.q)">{{
-                          scope.row.q
-                        }}</span>
-                        <span v-else>{{ scope.row.q }}</span>
-                      </template></el-table-column
-                    >
-                    <el-table-column
-                      prop="l"
-                      label="L"
-                      minWidth="40"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.l)">{{
-                          scope.row.l
-                        }}</span>
-                        <span v-else>{{ scope.row.l }}</span>
-                      </template></el-table-column
-                    >
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
-          </el-table-column>
-          </el-table-column>
           </el-table-column>
         </el-table-column>
       </el-table-column>
@@ -97,71 +97,86 @@
         >
           <div slot="header" slot-scope="scope">
             {{ item.partNum || "-" }}
-            <div
-              v-if="index == 0"
-              class="leftAllow"
-              @click="leftAllow($event)"
-            ></div>
-            <div
-              v-if="index == partList.length - 1"
-              class="rightAllow"
-              @click="rightAllow($event)"
-            ></div>
           </div>
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
                 <tooltip :text="item.carline"></tooltip>
               </template>
-            <el-table-column :label="percent(item.ebr)" align="center">
-            <el-table-column :label="numberProcessor(item.mixQty,2)" align="center">
-              <el-table-column :label="item.volume" align="center">
-                <template slot="header" slot-scope="scope">
-                  {{ getInt(item.volume) | toThousands(true) }}
-                </template>
-                <el-table-column :label="item.budget" align="center">
-                  <template slot="header" slot-scope="scope">
-                    {{ getInt(item.budget) | toThousands(true) }}
-                  </template>
-                  <el-table-column :label="item.targetAPrice" header-align="right">
-                    <el-table-column :label="item.fsGsNum" align="center">
+              <el-table-column :label="percent(item.ebr)" align="center">
+                <el-table-column
+                  :label="numberProcessor(item.mixQty, 2)"
+                  align="center"
+                >
+                  <el-table-column :label="item.volume" align="center">
+                    <template slot="header" slot-scope="scope">
+                      {{ getInt(item.volume) | toThousands(true) }}
+                    </template>
+                    <el-table-column :label="item.budget" align="center">
                       <template slot="header" slot-scope="scope">
-                        {{ item.fsGsNum }}({{item.factoryEn}})
+                        {{ getInt(item.budget) | toThousands(true) }}
                       </template>
                       <el-table-column
-                        :prop="item.fsGsNum + 'lcAPrice'"
-                        label="partAPrice"
-                        align="right"
-                        header-align="center"
-                        minWidth="80"
+                        :label="item.targetAPrice"
+                        header-align="right"
                       >
-                        <template slot="header" slot-scope="scope">
-                          <p>A price</p>
-                          <p>(LC)</p>
-                        </template>
+                        <el-table-column :label="item.fsGsNum" align="center">
+                          <template slot="header" slot-scope="scope">
+                            {{ item.fsGsNum }}({{ item.factoryEn }})
+                          </template>
+                          <el-table-column
+                            :prop="item.fsGsNum + 'lcAPrice'"
+                            label="partAPrice"
+                            align="right"
+                            header-align="center"
+                            minWidth="80"
+                          >
+                            <template slot="header" slot-scope="scope">
+                              <p>A Price</p>
+                            </template>
+                            <template slot-scope="scope">
+                              <p>
+                                <span
+                                  v-if="scope.row[item.fsGsNum + 'quotationType']=='SKD'||scope.row[item.fsGsNum + 'quotationType']=='SKDLC'"
+                                  style="color: red"
+                                  >*</span
+                                >{{ scope.row[item.fsGsNum + "lcBPrice"] }}
+                              </p>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
-                    </el-table-column>
-                  </el-table-column>
-                  <el-table-column :label="item.targetBPrice" header-align="right">
-                    <el-table-column :label="item.fsGsNum" align="center">
                       <el-table-column
-                        :prop="item.fsGsNum + 'lcBPrice'"
-                        label="partBPrice"
-                        align="right"
-                        header-align="center"
-                        minWidth="80"
+                        :label="item.targetBPrice"
+                        header-align="right"
                       >
-                        <template slot="header" slot-scope="scope">
-                          <p>B price</p>
-                          <p>(LC)</p>
-                        </template>
+                        <el-table-column :label="item.fsGsNum" align="center">
+                          <el-table-column
+                            :prop="item.fsGsNum + 'lcBPrice'"
+                            label="partBPrice"
+                            align="right"
+                            header-align="center"
+                            minWidth="80"
+                          >
+                            <template slot="header" slot-scope="scope">
+                              <p>B Price</p>
+                            </template>
+                            <template slot-scope="scope">
+                              <p>
+                                <span
+                                  v-if="scope.row[item.fsGsNum + 'quotationType']=='SKD'||scope.row[item.fsGsNum + 'quotationType']=='SKDLC'"
+                                  style="color: red"
+                                  >*</span
+                                >{{ scope.row[item.fsGsNum + "lcBPrice"] }}
+                              </p>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
-            </el-table-column>
-            </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -172,42 +187,48 @@
           <el-table-column>
             <el-table-column>
               <el-table-column>
-              <el-table-column>
-              <el-table-column>
-                <el-table-column :label="targetMixAPrice" header-align="right">
-                  <template slot="header" slot-scope="scope">
-                    {{ targetMixAPrice | toThousands(true) }}
-                  </template>
-                  <el-table-column label="Mixed Price" align="center">
+                <el-table-column>
+                  <el-table-column>
                     <el-table-column
-                      prop="mixAPrice"
-                      label="A price"
-                      align="right"
-                      header-align="center"
-                      minWidth="80"
+                      :label="targetMixAPrice"
+                      header-align="right"
                     >
+                      <template slot="header" slot-scope="scope">
+                        {{ targetMixAPrice | toThousands(true) }}
+                      </template>
+                      <el-table-column label="Mixed Price" align="center">
+                        <el-table-column
+                          prop="mixAPrice"
+                          label="A price"
+                          align="right"
+                          header-align="center"
+                          minWidth="80"
+                        >
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                  </el-table-column>
+                  <el-table-column>
+                    <el-table-column
+                      :label="targetMixBPrice"
+                      header-align="right"
+                    >
+                      <template slot="header" slot-scope="scope">
+                        {{ targetMixBPrice | toThousands(true) }}
+                      </template>
+                      <el-table-column label="Mixed Price" align="center">
+                        <el-table-column
+                          prop="mixBPrice"
+                          label="B price"
+                          align="right"
+                          header-align="center"
+                          minWidth="80"
+                        ></el-table-column>
+                      </el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
-              <el-table-column>
-                <el-table-column :label="targetMixBPrice" header-align="right">
-                  <template slot="header" slot-scope="scope">
-                    {{ targetMixBPrice | toThousands(true) }}
-                  </template>
-                  <el-table-column label="Mixed Price" align="center">
-                    <el-table-column
-                      prop="mixBPrice"
-                      label="B price"
-                      align="right"
-                      header-align="center"
-                      minWidth="80"
-                    ></el-table-column>
-                  </el-table-column>
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-            </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -216,50 +237,72 @@
         <el-table-column :key="item.prop">
           <el-table-column>
             <el-table-column>
-            <el-table-column>
-            <el-table-column>
               <el-table-column>
-                <el-table-column :label="item.budget" align="center">
-                  <template slot="header" slot-scope="scope">
-                    {{ getInt(item.budget) | toThousands(true) }}
-                  </template>
-                  <el-table-column :label="item.target" align="center">
-                    <template slot="header" slot-scope="scope">
-                      {{ getInt(item.target) | toThousands(true) }}
-                    </template>
-                    <el-table-column
-                      :prop="item.prop"
-                      :label="item.label"
-                      :minWidth="item.width"
-                      align="center"
-                    >
+                <el-table-column>
+                  <el-table-column>
+                    <el-table-column :label="item.budget" align="center">
                       <template slot="header" slot-scope="scope">
-                        <template v-for="(text, index) in item.label">
-                          <p :key="index">{{ text }}</p>
-                        </template>
+                        {{ getInt(item.budget) | toThousands(true) }}
                       </template>
-                      <template slot-scope="scope">
-                        <template
-                          v-if="
-                            ['ltcList', 'ltcStartDateList'].includes(item.prop)
-                          "
+                      <el-table-column :label="item.target" align="center">
+                        <template slot="header" slot-scope="scope">
+                          {{ getInt(item.target) | toThousands(true) }}
+                        </template>
+                        <el-table-column
+                          :prop="item.prop"
+                          :label="item.label"
+                          :minWidth="item.width"
+                          align="center"
                         >
-                          <p
-                            v-for="(child, index) in scope.row[item.prop]"
-                            :key="index"
-                          >
-                            {{ child }}
-                          </p>
-                        </template>
-                        <template v-else>
-                          {{ scope.row[item.prop] }}
-                        </template>
-                      </template>
+                          <template slot="header" slot-scope="scope">
+                            <template v-for="(text, index) in item.label">
+                              <p :key="index">{{ text }}</p>
+                            </template>
+                          </template>
+                          <template slot-scope="scope">
+                            <template
+                              v-if="
+                                ['ltcList', 'ltcStartDateList'].includes(
+                                  item.prop
+                                )
+                              "
+                            >
+                              <p
+                                v-for="(child, index) in scope.row[item.prop]"
+                                :key="index"
+                              >
+                                {{ child }}
+                              </p>
+                            </template>
+                            <template
+                              v-else-if="['totalInvest'].includes(item.prop)"
+                            >
+                              <span
+                                v-if="scope.row.investFeeIsShared&&scope.row.totalInvest"
+                                style="color: red"
+                                >*</span
+                              >{{ scope.row.totalInvest }}
+                            </template>
+                            <template
+                              v-else-if="
+                                ['totalDevelopCost'].includes(item.prop)
+                              "
+                            >
+                              <span
+                                v-if="scope.row.devFeeIsShared&&scope.row.totalDevelopCost"
+                                style="color: red"
+                                >*</span
+                              >{{ scope.row.totalDevelopCost }}
+                            </template>
+                            <template v-else>
+                              {{ scope.row[item.prop] }}
+                            </template>
+                          </template>
+                        </el-table-column>
+                      </el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
-              </el-table-column>
-              </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
@@ -276,8 +319,8 @@ import allow from "./allow.js";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../../components/tooltip.vue";
 export default {
-  components:{
-    tooltip
+  components: {
+    tooltip,
   },
   mixins: [allow],
   props: {
@@ -333,7 +376,7 @@ export default {
       loading: false,
       showLength: 4,
       partAllData: [],
-      allData:[],
+      allData: [],
       index: -1,
     };
   },
@@ -360,7 +403,7 @@ export default {
       return math.multiply(math.bignumber(val), 100).toString() + "%";
     },
     isCLevel(val) {
-      if(!val) return val
+      if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     analysisSummaryNomi() {
@@ -380,15 +423,24 @@ export default {
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
               let ltcStartDateList = [];
-              item.suggestFlag = []
-              item.isMinTtoList = []
+              item.suggestFlag = [];
+              item.isMinTtoList = [];
               item.analysisSummaryParts.forEach((child) => {
                 item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
                 item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
-                if(child.suggestFlag) item.suggestFlag.push(child.fsGsNum + "lcAPrice", child.fsGsNum + "lcBPrice")
-                if(child.isMinTto) item.isMinTtoList.push(child.fsGsNum + "lcAPrice", child.fsGsNum + "lcBPrice")
+                item[child.fsGsNum + 'quotationType'] = child.quotationType;
+                if (child.suggestFlag)
+                  item.suggestFlag.push(
+                    child.fsGsNum + "lcAPrice",
+                    child.fsGsNum + "lcBPrice"
+                  );
+                if (child.isMinTto)
+                  item.isMinTtoList.push(
+                    child.fsGsNum + "lcAPrice",
+                    child.fsGsNum + "lcBPrice"
+                  );
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
-                if (!ltcStartDateList.includes(child.ltcStartDate))
+                if (!ltcStartDateList.includes(child.ltcStartDate) && (+child.ltc))
                   ltcStartDateList.push(child.ltcStartDate);
               });
               item.ltcList = ltcList;
@@ -404,14 +456,18 @@ export default {
           fixedTitle[4].target = res.data.sumTotalTurnover;
           this.fixedTitle = fixedTitle;
           this.partAllData = _.chunk(res.data.headList, this.showLength);
-          this.allData = res.data.headList
+          this.allData = res.data.headList;
           this.tableData = tableData;
         })
         .finally(() => {
           this.loading = false;
           this.$nextTick(() => {
             this.setColSpan();
-            this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
+            this.$emit("setPage", {
+              index: this.index,
+              showLength: this.showLength,
+              total: this.allData.length,
+            });
           });
         });
     },
@@ -423,7 +479,11 @@ export default {
       }
       this.$nextTick(() => {
         this.setColSpan();
-        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
+        this.$emit("setPage", {
+          index: this.index,
+          showLength: this.showLength,
+          total: this.allData.length,
+        });
       });
     },
     next() {
@@ -434,7 +494,11 @@ export default {
       }
       this.$nextTick(() => {
         this.setColSpan();
-        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
+        this.$emit("setPage", {
+          index: this.index,
+          showLength: this.showLength,
+          total: this.allData.length,
+        });
       });
     },
     // 表头单元格背景调整
@@ -464,7 +528,7 @@ export default {
           return "font-green";
         }
       }
-      if (column.property=="totalTurnover") {
+      if (column.property == "totalTurnover") {
         if (row.isMinTto) {
           return "font-green";
         }
@@ -478,25 +542,25 @@ export default {
         )[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
-        this.merge(row, 8, 2, 2, "colSpan");
+      this.merge(row, 8, 2, 2, "colSpan");
       if (this.partList.length > 0) this.merge(row, 8, 4, 2, "colSpan");
       if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
       if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
       if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
-      
-      if(this.row?.partPrjCode || this.row?.fsNum){
-        this.merge(row, 0, this.partList.length + 1, 9, "colSpan");
-        this.merge(row, 1, this.partList.length + 1, 9, "colSpan");
-        this.merge(row, 2, this.partList.length + 1, 9, "colSpan");
-        this.merge(row, 3, this.partList.length + 1, 9, "colSpan");
-        this.merge(row, 4, this.partList.length + 1, 9, "colSpan");
-        this.merge(row, 5, this.partList.length + 1, 9, "colSpan");
-      }else{
+
+      if (this.row?.partPrjCode || this.row?.fsNum) {
+        this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
+      } else {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
       }
       this.$nextTick(() => {
-        this.positionAllow()
+        this.positionAllow();
       });
     },
     // 计算表头合并
@@ -639,12 +703,12 @@ export default {
     }
   }
 }
-.tips{
+.tips {
   margin-top: 10px;
   display: flex;
   align-items: center;
   font-size: 16px;
-  .legend{
+  .legend {
     display: inline-block;
     width: 25px;
     height: 20px;

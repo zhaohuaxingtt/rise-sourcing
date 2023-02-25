@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-24 16:20:51
+ * @LastEditTime: 2023-02-25 23:32:00
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -35,15 +35,24 @@
           v-model="tabTable"
           @change="change"
         >
-          <el-radio-button label="supplier" v-if="config.supplier.isShow">Supplier</el-radio-button>
-          <el-radio-button label="part" v-if="config.part.isShow">Part</el-radio-button>
-          <el-radio-button label="best_ball" v-if="config['best_ball'].isShow">Best ball</el-radio-button>
-          <el-radio-button label="gs_part" v-if="config['gs_part'].isShow">GS Part</el-radio-button>
+          <el-radio-button label="supplier" v-if="config.supplier.isShow"
+            >Supplier</el-radio-button
+          >
+          <el-radio-button label="part" v-if="config.part.isShow"
+            >Part</el-radio-button
+          >
+          <el-radio-button label="best_ball" v-if="config['best_ball'].isShow"
+            >Best ball</el-radio-button
+          >
+          <el-radio-button label="gs_part" v-if="config['gs_part'].isShow"
+            >GS Part</el-radio-button
+          >
           <el-radio-button
             v-if="config['Detailed_Worksheet'].isShow"
             label="Detailed_Worksheet"
             @click="exportExcel"
-          >Detailed Worksheet</el-radio-button>
+            >Detailed Worksheet</el-radio-button
+          >
         </el-radio-group>
         <!-- 柱状图 -->
         <el-radio-group
@@ -74,24 +83,36 @@
           </template>
         </el-radio-group>
         <div class="margin-left20">
-          <iButton class="margin-left20" v-show="false" @click="visible = true">strategy</iButton>
+          <iButton class="margin-left20" v-show="false" @click="visible = true"
+            >strategy</iButton
+          >
         </div>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
-        <span v-if="tabTable == 'best_ball'">
-          当前展示第{{ index + 1 }}页，总共 2 页
-        </span>
-        <span v-else>
-          当前展示{{ index * showLength + 1 }}到{{
-            (index + 1) * showLength > total ? total : (index + 1) * showLength
-          }}列，总共{{ total }}列
-        </span>
-        <img :src="left" alt="lrft" class="allow" @click="prev">
-        <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
-        <span v-else>
-          {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
-        </span>
-        <img :src="right" alt="right" class="allow" @click="next">
+        <template v-if="tabTable == 'best_ball'">
+          <span> 当前展示第{{ index + 1 }}页，总共 2 页 </span>
+          <img :src="left" alt="lrft" class="allow" @click="prev" />
+          <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
+          <span v-else>
+            {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
+          </span>
+          <img :src="right" alt="right" class="allow" @click="next" />
+        </template>
+        <template v-else-if="Math.ceil(total / showLength) > 1">
+          <span>
+            当前展示{{ index * showLength + 1 }}到{{
+              (index + 1) * showLength > total
+                ? total
+                : (index + 1) * showLength
+            }}列，总共{{ total }}列
+          </span>
+          <img :src="left" alt="lrft" class="allow" @click="prev" />
+          <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
+          <span v-else>
+            {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
+          </span>
+          <img :src="right" alt="right" class="allow" @click="next" />
+        </template>
       </div>
     </div>
     <!-- table:切换必须使用v-if,不然翻页按钮位置会计算错误 -->
@@ -109,22 +130,28 @@
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="(tab == 'table' && tabTable == 'part') ||
-        tabTable == 'Detailed_Worksheet'"
+      v-if="
+        (tab == 'table' && tabTable == 'part') ||
+        tabTable == 'Detailed_Worksheet'
+      "
     />
     <GSpartTableList
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="(tab == 'table' && tabTable == 'gs_part') ||
-        tabTable == 'Detailed_Worksheet'"
+      v-if="
+        (tab == 'table' && tabTable == 'gs_part') ||
+        tabTable == 'Detailed_Worksheet'
+      "
     />
     <bestBallTableList
       class="content"
       ref="table"
       @setPage="setPage"
-      v-if="(tab == 'table' && tabTable == 'best_ball') ||
-        tabTable == 'Detailed_Worksheet'"
+      v-if="
+        (tab == 'table' && tabTable == 'best_ball') ||
+        tabTable == 'Detailed_Worksheet'
+      "
     />
     <!-- bar -->
     <supplierBar
@@ -149,6 +176,10 @@
       >
         <img :src="tips" alt="tips" class="iconSize" slot="reference" />
       </el-popover> -->
+      <p>
+        <span style="color: red">*</span>means Invest or Develop Cost is
+        amortized into piece price.
+      </p>
       <p class="margin-top10 font-size16" v-if="tab == 'line'">
         <span class="margin-right10"
           ><icon
@@ -183,7 +214,7 @@
         ><span>Best offer</span>
       </p>
     </div>
-    
+
     <strategyDialog
       v-if="visible"
       :visible.sync="visible"
@@ -222,7 +253,7 @@ import {
   getListRfq,
   getList,
   findNomiProject,
-  getNomiRemark
+  getNomiRemark,
 } from "@/api/partsrfq/editordetail/abprice";
 import { exportFsSupplierAsRowByNomiId } from "@/api/partsrfq/editordetail";
 export default {
@@ -238,7 +269,7 @@ export default {
     iTabsList,
     icon,
     iButton,
-    strategyDialog
+    strategyDialog,
   },
   data() {
     return {
@@ -285,14 +316,14 @@ export default {
       index: 0,
       showLength: 1,
       total: 0,
-      config:{
-        supplier:{},
-        part:{},
-        best_ball:{},
-        gs_part:{},
-        Detailed_Worksheet:{},
+      config: {
+        supplier: {},
+        part: {},
+        best_ball: {},
+        gs_part: {},
+        Detailed_Worksheet: {},
       },
-      strategy:'',
+      strategy: "",
     };
   },
   computed: {
@@ -301,29 +332,31 @@ export default {
     },
   },
   created() {
-    this.getNomiRemark()
+    this.getNomiRemark();
     this.analysisNomiCarProject();
     this.getListRfq();
-    this.getList()
+    this.getList();
   },
   methods: {
-    getList(){
+    getList() {
       getList({
-        businessId:this.$route.query.desinateId,
+        businessId: this.$route.query.desinateId,
         type: "nominate_ab_price",
-      }).then(res=>{
-        if(res?.code=='200'){
-          res.data.forEach(item=>{
-            this.config[item.operateCode] = item
-            if(item.isShow && !this.tabTable){  // 显示第一个true
-              this.tabTable = item.operateCode
+      }).then((res) => {
+        if (res?.code == "200") {
+          res.data.forEach((item) => {
+            this.config[item.operateCode] = item;
+            if (item.isShow && !this.tabTable) {
+              // 显示第一个true
+              this.tabTable = item.operateCode;
             }
-          })
+          });
         }
-        if(!this.tabTable){ // 没有表格就显示bar
-          this.tab = 'bar'
+        if (!this.tabTable) {
+          // 没有表格就显示bar
+          this.tab = "bar";
         }
-      })
+      });
     },
     setPage({ index, showLength, total }) {
       this.index = index;
@@ -345,12 +378,12 @@ export default {
         this.$refs.table.tabChange();
       }
     },
-    getNomiRemark(){
-      getNomiRemark(this.$route.query.desinateId).then(res=>{
-        if(res?.code=='200'){
-          this.strategy = res.data.strategy
+    getNomiRemark() {
+      getNomiRemark(this.$route.query.desinateId).then((res) => {
+        if (res?.code == "200") {
+          this.strategy = res.data.strategy;
         }
-      })
+      });
     },
     analysisNomiCarProject() {
       this.carTypeObj = {};
@@ -366,23 +399,23 @@ export default {
           });
           this.tabBar = this.carTypeList[0]?.carTypeProjectNum || "";
           this.changeCarType(this.tabBar);
-          this.findVsi()
+          this.findVsi();
         }
       });
     },
     findVsi() {
-      let params = this.carTypeList.map(item=>{
+      let params = this.carTypeList.map((item) => {
         return {
           nominateId: this.$route.query.desinateId,
           carProjectCode: item.carTypeProjectNum,
           carProjectId: item.carTypeProjectId,
         };
-      })
+      });
       findNomiProject(params).then((res) => {
         this.tableData = res.data;
-        res.data.forEach(item=>{
-          this.carTypeObj[item.carProjectCode].vsi = item.vsi
-        })
+        res.data.forEach((item) => {
+          this.carTypeObj[item.carProjectCode].vsi = item.vsi;
+        });
       });
     },
     changeTab(tab) {
@@ -409,9 +442,9 @@ export default {
     change(val) {
       if (val == "Detailed_Worksheet") {
         this.exportExcel();
-        this.tabTable = this.oldTabTable
-      }else{
-        this.oldTabTable = this.tabTable
+        this.tabTable = this.oldTabTable;
+      } else {
+        this.oldTabTable = this.tabTable;
       }
     },
     exportExcel() {
@@ -480,11 +513,11 @@ export default {
       vertical-align: middle;
     }
   }
-  .header-btn{
+  .header-btn {
     font-size: 16px;
     display: flex;
     align-items: center;
-    .allow{
+    .allow {
       height: 22px;
       margin: 0 7px;
     }

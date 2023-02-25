@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-24 16:18:37
+ * @LastEditTime: 2023-02-25 23:37:18
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -84,20 +84,30 @@
         </el-radio-group>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
-        <span v-if="tabTable == 'best_ball'">
-          当前展示第{{ index + 1 }}页，总共 2 页
-        </span>
-        <span v-else>
-          当前展示{{ index * showLength + 1 }}到{{
-            (index + 1) * showLength > total ? total : (index + 1) * showLength
-          }}列，总共{{ total }}列
-        </span>
-        <img :src="left" alt="lrft" class="allow" @click="prev" />
-        <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
-        <span v-else>
-          {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
-        </span>
-        <img :src="right" alt="right" class="allow" @click="next" />
+        <template v-if="tabTable == 'best_ball'">
+          <span> 当前展示第{{ index + 1 }}页，总共 2 页 </span>
+          <img :src="left" alt="lrft" class="allow" @click="prev" />
+          <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
+          <span v-else>
+            {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
+          </span>
+          <img :src="right" alt="right" class="allow" @click="next" />
+        </template>
+        <template v-else-if="Math.ceil(total / showLength) > 1">
+          <span>
+            当前展示{{ index * showLength + 1 }}到{{
+              (index + 1) * showLength > total
+                ? total
+                : (index + 1) * showLength
+            }}列，总共{{ total }}列
+          </span>
+          <img :src="left" alt="lrft" class="allow" @click="prev" />
+          <span v-if="tabTable == 'best_ball'"> {{ index + 1 }} / 2 </span>
+          <span v-else>
+            {{ index + 1 }}/{{ Math.ceil(total / showLength) }}
+          </span>
+          <img :src="right" alt="right" class="allow" @click="next" />
+        </template>
       </div>
     </div>
     <supplierTableList
