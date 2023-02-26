@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-26 11:25:04
+ * @LastEditTime: 2023-02-26 13:26:07
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -396,17 +396,17 @@ export default {
         {
           prop: "partPrjCode",
           label: ["FS No. (Plant)"],
-          width: 140,
+          width: 130,
         },
         {
           prop: "partNo",
           label: ["Part No."],
-          width: 150,
+          width: 140,
         },
         {
           prop: "partName",
           label: ["Part Name"],
-          width: 160,
+          width: 150,
         },
         {
           prop: "carProType",
@@ -416,7 +416,7 @@ export default {
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 60,
+          width: 85,
         },
         {
           prop: "ebrCalculatedValue",
@@ -426,7 +426,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 90,
+          width: 85,
         },
       ],
       tableData: [],
@@ -597,7 +597,7 @@ export default {
         });
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;

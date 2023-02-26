@@ -453,18 +453,18 @@ export default {
         {
           prop: "partNum",
           label: ["Part No."],
-          width: 140,
+          width: 130,
         },
         {
           prop: "carTypeProjectNum",
           label: ["Carline"],
           tooltip: true,
-          width: 120,
+          width: 110,
         },
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 60,
+          width: 85,
         },
         {
           prop: "mixQty",
@@ -474,7 +474,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 90,
+          width: 85,
         },
       ],
       tableData: [],
@@ -518,7 +518,7 @@ export default {
       return (+result).toFixed(0);
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
     getData() {
       this.index = this.label == "Best ball" ? 0 : 1;

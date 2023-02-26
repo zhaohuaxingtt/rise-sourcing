@@ -385,12 +385,12 @@ export default {
         {
           prop: "partNo",
           label: ["Part No."],
-          width: 140,
+          width: 130,
         },
         {
           prop: "partName",
           label: ["Part Name"],
-          width: 160,
+          width: 150,
         },
         {
           prop: "carProType",
@@ -400,7 +400,7 @@ export default {
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 60,
+          width: 85,
         },
         {
           prop: "ebrCalculatedValue",
@@ -410,7 +410,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 90,
+          width: 85,
         },
       ],
       tableData: [],
@@ -580,7 +580,7 @@ export default {
         });
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;
