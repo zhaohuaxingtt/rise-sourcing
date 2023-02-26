@@ -80,13 +80,11 @@ export default {
                 }
 
                 break;
-              case "projects":
+              case "carline":
                 this.$set(
                   this.data,
                   item.key,
-                  Array.isArray(res.data[item.key])
-                    ? res.data[item.key].join()
-                    : "-"
+                    res.data.carline || res.data.projects.join('、')
                 );
 
                 break;
