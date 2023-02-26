@@ -177,7 +177,7 @@ export default {
             this.tableListData = records.map((item) => {
               const result = { ...item };
               if(result.carTypeNames&&result.carTypeNames.length)
-              result.carTypeNamesStr = result.carTypeNames.join('、')
+              result.carTypeNamesStr = result.carTypeNames?.join('、')
               // if (item.ebrConfirmValue) {
               //   result.ebrConfirmValue =
               //     this.isPreview == "1" ||
