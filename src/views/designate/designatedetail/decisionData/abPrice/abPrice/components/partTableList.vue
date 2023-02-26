@@ -516,8 +516,8 @@ export default {
             totalData[4].devFeeIsShared = [];
             totalData[5].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
-              totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
-              totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
+              totalData[0][item.supplierId + "aPrice"] = item.lcMixAPrice;
+              totalData[0][item.supplierId + "bPrice"] = item.lcMixBPrice;
               totalData[1][item.supplierId + "aPrice"] = [];
               item.priceReduceDTOList.forEach((child) => {
                 if (
