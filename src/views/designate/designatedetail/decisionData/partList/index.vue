@@ -62,6 +62,11 @@
           <template #ebrCalculatedValue="scope">
             <span>{{ numberProcessor(scope.row.ebrCalculatedValue, 2) }}</span>
           </template>
+        <template #project="scope">
+          <p v-if="scope.row.carTypeNamesStr" :title="scope.row.carTypeNamesStr" class="tooltip">{{scope.row.carTypeNamesStr}}
+          </p>
+          <p v-else>{{ scope.row.project }}</p>
+        </template>
           <template #lifeTime="scope">
             <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
           </template>
@@ -177,6 +182,7 @@ export default {
 
             this.tableListData = records.map((item) => {
               const result = { ...item };
+              result.carTypeNamesStr = result.carTypeNames?.join('、')
               return result;
             });
 
@@ -198,7 +204,7 @@ export default {
       window.open(router.href, "_blank");
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
   },
 };

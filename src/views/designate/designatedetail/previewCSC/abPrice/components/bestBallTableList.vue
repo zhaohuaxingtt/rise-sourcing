@@ -79,6 +79,22 @@
             </el-table-column>
             <el-table-column
               :key="item.prop"
+              v-else-if="item.prop == 'carTypeProjectNum'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <tooltip
+                  :text="
+                    scope.row[item.prop] || scope.row.carTypeNames.join('、')
+                  "
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
               v-else-if="item.tooltip"
               :prop="item.prop"
               :label="item.label"
@@ -144,11 +160,17 @@
             minWidth="85"
           >
             <template slot="header" slot-scope="scope">
-              <p>A price</p>
-              <p>(LC)</p>
+              <p>A Price</p>
             </template>
             <template slot-scope="scope">
-              {{ numberProcessor(scope.row.lcAPrice, 2) | toThousands(true) }}
+              <span
+                v-if="
+                  scope.row.quotationType == 'SKD' ||
+                  scope.row.quotationType == 'SKDLC'
+                "
+                style="color: red"
+                >*</span
+              >{{ numberProcessor(scope.row.lcAPrice, 2) | toThousands(true) }}
             </template></el-table-column
           >
           <el-table-column
@@ -159,11 +181,17 @@
             prop="lcBPrice"
           >
             <template slot="header" slot-scope="scope">
-              <p>B price</p>
-              <p>(LC)</p>
+              <p>B Price</p>
             </template>
             <template slot-scope="scope">
-              {{ numberProcessor(scope.row.lcBPrice, 2) | toThousands(true) }}
+              <span
+                v-if="
+                  scope.row.quotationType == 'SKD' ||
+                  scope.row.quotationType == 'SKDLC'
+                "
+                style="color: red"
+                >*</span
+              >{{ numberProcessor(scope.row.lcBPrice, 2) | toThousands(true) }}
             </template></el-table-column
           >
           <el-table-column
@@ -172,7 +200,35 @@
             align="right"
             minWidth="100"
             header-align="center"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                v-if="scope.row.investFeeIsShared && scope.row.invest"
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      scope.row.toolingShareTotal
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      scope.row.toolingNotShareTotal
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ scope.row.invest }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{ scope.row.invest }}
+              </template>
+            </template></el-table-column
+          >
           <el-table-column
             label="Supplier"
             align="center"
@@ -193,7 +249,7 @@
               label="E"
               align="center"
               prop="erate"
-              min-width="50"
+              min-width="60"
             >
               <template slot-scope="scope">
                 <span class="red" v-if="isCLevel(scope.row.erate)">{{
@@ -206,7 +262,7 @@
               label="Q"
               align="center"
               prop="qrate"
-              min-width="50"
+              min-width="60"
             >
               <template slot-scope="scope">
                 <span class="red" v-if="isCLevel(scope.row.qrate)">{{
@@ -219,7 +275,7 @@
               label="L"
               align="center"
               prop="lrate"
-              min-width="50"
+              min-width="60"
             >
               <template slot-scope="scope">
                 <span class="red" v-if="isCLevel(scope.row.lrate)">{{
@@ -238,24 +294,56 @@
             <template slot="header" slot-scope="scope">
               <p>LTC Start</p>
               <p>Date</p>
+            </template>
+            <template slot-scope="scope">
+              <template v-if="+scope.row.ltc">{{
+                scope.row.ltcStartDate
+              }}</template>
             </template></el-table-column
           >
           <el-table-column
             align="right"
             header-align="center"
             prop="developCost"
-            min-width="120"
+            min-width="100"
           >
             <template slot="header" slot-scope="scope">
               <p>Develop</p>
               <p>Cost</p>
-            </template></el-table-column
-          >
+            </template>
+            <template slot-scope="scope">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                v-if="scope.row.devFeeIsShared && scope.row.developCost"
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      scope.row.developShareCostTotal
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      scope.row.developNotShareCostTotal
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ scope.row.developCost }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{ scope.row.developCost }}
+              </template>
+            </template>
+          </el-table-column>
           <el-table-column
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="120"
+            min-width="110"
             label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
@@ -365,19 +453,19 @@
               label="E"
               align="center"
               prop="erate"
-              min-width="50"
+              min-width="60"
             ></el-table-column>
             <el-table-column
               label="Q"
               align="center"
               prop="qrate"
-              min-width="50"
+              min-width="60"
             ></el-table-column>
             <el-table-column
               label="L"
               align="center"
               prop="lrate"
-              min-width="50"
+              min-width="60"
             ></el-table-column>
           </el-table-column>
           <el-table-column
@@ -396,7 +484,7 @@
             align="right"
             header-align="center"
             prop="developCost"
-            min-width="120"
+            min-width="100"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["developCost"]) | toThousands(true) }}
@@ -407,7 +495,7 @@
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="120"
+            min-width="110"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
@@ -438,12 +526,12 @@ export default {
         {
           prop: "fsNum",
           label: ["FS No. (Plant)"],
-          width: 140,
+          width: 130,
         },
         {
           prop: "partNum",
           label: ["Part No."],
-          width: 150,
+          width: 140,
         },
         {
           prop: "carTypeProjectNum",
@@ -454,7 +542,7 @@ export default {
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 60,
+          width: 85,
         },
         {
           prop: "mixQty",
@@ -464,7 +552,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 90,
+          width: 85,
         },
       ],
       tableData: [],
@@ -503,7 +591,7 @@ export default {
       return (+result).toFixed(0);
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val * 100).toFixed(2) + "%";
     },
     getData() {
       this.index = this.label == "Best ball" ? 0 : 1;
@@ -544,7 +632,7 @@ export default {
         });
     },
     isCLevel(val) {
-      if(!val) return val
+      if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     // 计算表头合并
@@ -656,7 +744,10 @@ export default {
         }
       }
       if (["Total Turnover"].includes(column.label)) {
-        if (row.isMinTto) {
+        if (this.label == "Best ball") {
+          return "font-green";
+        } else if (row.isFsMinTto) {
+          // if (row.isMinTto) {
           return "font-green";
         }
       }

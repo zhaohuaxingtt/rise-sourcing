@@ -562,7 +562,7 @@ export default {
         });
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;

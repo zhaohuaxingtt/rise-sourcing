@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-24 14:21:14
+ * @LastEditTime: 2023-02-26 17:00:13
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -128,11 +128,69 @@
               <span v-else>{{ item[columnLabel[scope.$index]] }}</span>
             </template>
             <template
+              v-else-if="['totalInvest'].includes(columnLabel[scope.$index])"
+            >
+            <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                v-if="item.investFeeIsShared && item[columnLabel[scope.$index]]"
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      getInt(item.toolingShareTotal) | toThousands(true)
+
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      getInt(item.toolingNotShareTotal) | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+              </template>
+            </template>
+            <template
               v-else-if="
-                ['totalInvest', 'totalDevelopCost', 'totalTurnover'].includes(
-                  columnLabel[scope.$index]
-                )
+                ['totalDevelopCost'].includes(columnLabel[scope.$index])
               "
+            >
+            <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                v-if="item.devFeeIsShared && item[columnLabel[scope.$index]]"
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      getInt(item.developShareCostTotal) | toThousands(true)
+
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      getInt(item.developNotShareCostTotal) | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+              </template>
+            </template>
+            <template
+              v-else-if="['totalTurnover'].includes(columnLabel[scope.$index])"
             >
               <span>{{
                 getInt(item[columnLabel[scope.$index]]) | toThousands(true)
@@ -342,23 +400,20 @@ export default {
           let allPrice = [this.detail.vsi || 0];
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
-              let ltcList = [];
               let ltcStartDateList = [];
               item.aPrice = item.mixAPrice;
               item.bPrice = item.mixBPrice;
               allPrice.push(item.mixAPrice, item.mixBPrice);
               item.analysisSummaryParts.forEach((child) => {
-                if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  )
+                  ) && (+child.ltc)
                 )
                   ltcStartDateList.push(
                     `${child.ltc} from ${child.ltcStartDate}`
                   );
               });
-              item.ltcList = ltcList;
               item.ltcStartDateList = ltcStartDateList;
               return item;
             }) || [];

@@ -71,7 +71,7 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <tooltip :text="scope.row.carProType"></tooltip>
+                    <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -200,12 +200,18 @@
                   minWidth="80"
                 >
                   <template slot="header" slot-scope="scope">
-                    <p>A price</p>
-                    <p>(LC)</p>
+                    <p>A Price</p>
                   </template>
 
                   <template slot-scope="scope">
-                    {{
+                    <span
+                      v-if="
+                        scope.row[item.supplierId + 'quotationType'] == 'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] == 'SKDLC'
+                      "
+                      style="color: red"
+                      >*</span
+                    >{{
                       scope.row[item.supplierId + "aPrice"] | toThousands(true)
                     }}
                   </template>
@@ -218,11 +224,17 @@
                   minWidth="80"
                 >
                   <template slot="header" slot-scope="scope">
-                    <p>B price</p>
-                    <p>(LC)</p>
+                    <p>B Price</p>
                   </template>
                   <template slot-scope="scope">
-                    {{
+                    <span
+                      v-if="
+                        scope.row[item.supplierId + 'quotationType'] == 'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] == 'SKDLC'
+                      "
+                      style="color: red"
+                      >*</span
+                    >{{
                       scope.row[item.supplierId + "bPrice"] | toThousands(true)
                     }}
                   </template>
@@ -320,6 +332,84 @@
                     {{ text }}
                   </p>
                 </template>
+                <template v-else-if="scope.$index == 2">
+                  <el-popover
+                    placement="top-start"
+                    width="200"
+                    trigger="hover"
+                    v-if="
+                      scope.row.investFeeIsShared.includes(
+                        item.supplierId + 'aPrice'
+                      )
+                    "
+                  >
+                    <div>
+                      <div>
+                        {{ language("FENTANJINE", "分摊金额") }}：{{
+                          getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
+                        }}
+                      </div>
+                      <div>
+                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                          getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
+                        }}
+                      </div>
+                    </div>
+                    <div slot="reference">
+                      <span style="color: red">*</span
+                      >{{
+                        getInt(scope.row[item.supplierId + "aPrice"])
+                          | toThousands(true)
+                      }}
+                    </div>
+                  </el-popover>
+                  <template v-else>
+                    {{
+                      getInt(scope.row[item.supplierId + "aPrice"])
+                        | toThousands(true)
+                    }}
+                  </template>
+                </template>
+                <template v-else-if="scope.$index == 4">
+                  <el-popover
+                    placement="top-start"
+                    width="200"
+                    trigger="hover"
+                    v-if="
+                      scope.row.devFeeIsShared.includes(
+                        item.supplierId + 'aPrice'
+                      )
+                    "
+                  >
+                    <div>
+                      <div>
+                        {{ language("FENTANJINE", "分摊金额") }}：{{
+                          getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
+                        }}
+                      </div>
+                      <div>
+                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                          getInt(scope.row[
+                            item.supplierId + "developNotShareCostTotal"
+                          ]) | toThousands(true)
+                        }}
+                      </div>
+                    </div>
+                    <div slot="reference">
+                      <span style="color: red">*</span
+                      >{{
+                        getInt(scope.row[item.supplierId + "aPrice"])
+                          | toThousands(true)
+                      }}
+                    </div>
+                  </el-popover>
+                  <template v-else>
+                    {{
+                      getInt(scope.row[item.supplierId + "aPrice"])
+                        | toThousands(true)
+                    }}
+                  </template>
+                </template>
                 <template v-else>{{
                   getInt(scope.row[item.supplierId + "aPrice"])
                     | toThousands(true)
@@ -365,12 +455,12 @@ export default {
         {
           prop: "partNo",
           label: ["Part No."],
-          width: 140,
+          width: 130,
         },
         {
           prop: "partName",
           label: ["Part Name"],
-          width: 160,
+          width: 150,
         },
         {
           prop: "carProType",
@@ -380,7 +470,7 @@ export default {
         {
           prop: "ebr",
           label: ["EBR"],
-          width: 60,
+          width: 85,
         },
         {
           prop: "ebrCalculatedValue",
@@ -390,7 +480,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 90,
+          width: 85,
         },
       ],
       tableData: [],
@@ -488,20 +578,23 @@ export default {
               obj[item.supplierId] = item;
             });
             res.data.bdlRateInfoList?.forEach((item) => {
-              obj[item.supplierId][item.rateType] = item.rate;
+              obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
+            totalData[2].investFeeIsShared = [];
+            totalData[4].devFeeIsShared = [];
             totalData[5].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
-              totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
-              totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
+              totalData[0][item.supplierId + "aPrice"] = item.lcMixAPrice;
+              totalData[0][item.supplierId + "bPrice"] = item.lcMixBPrice;
               totalData[1][item.supplierId + "aPrice"] = [];
               item.priceReduceDTOList.forEach((child) => {
                 if (
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  )
+                  ) &&
+                  +child.ltc
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -509,7 +602,21 @@ export default {
                 }
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
-              totalData[4][item.supplierId + "aPrice"] = item.aPrice;
+              if (item.investFeeIsShared) {
+                totalData[2].investFeeIsShared.push(item.supplierId + "aPrice");
+                totalData[2][item.supplierId + "toolingShareTotal"] =
+                  item.toolingShareTotal;
+                totalData[2][item.supplierId + "toolingNotShareTotal"] =
+                  item.toolingNotShareTotal;
+              }
+              totalData[4][item.supplierId + "aPrice"] = item.developCostTotal;
+              if (item.devFeeIsShared) {
+                totalData[4].devFeeIsShared.push(item.supplierId + "aPrice");
+                totalData[4][item.supplierId + "developShareCostTotal"] =
+                  item.developShareCostTotal;
+                totalData[4][item.supplierId + "developNotShareCostTotal"] =
+                  item.developNotShareCostTotal;
+              }
               totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
               if (item.isMinTto) {
                 totalData[5].isMinTto.push(item.supplierId + "aPrice");
@@ -552,7 +659,7 @@ export default {
         });
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val * 100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;

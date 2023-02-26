@@ -46,9 +46,10 @@
         </template>
         <!-- 项目信息 -->
         <template #project="scope">
-          <span>{{ scope.row.project }}</span>
-          <br />
-          <span>SOP:{{ scope.row.sopDate ? scope.row.sopDate : "-" }}</span>
+          <p v-if="scope.row.carTypeNamesStr" :title="scope.row.carTypeNamesStr" class="tooltip">{{scope.row.carTypeNamesStr}}
+          </p>
+          <p v-else>{{ scope.row.project }}</p>
+          <p>SOP:{{ scope.row.sopDate ? scope.row.sopDate : "-" }}</p>
         </template>
         <!-- 装车率 -->
         <template #ebrConfirmValue="scope">
@@ -175,18 +176,18 @@ export default {
             const { records = [], total } = data;
             this.tableListData = records.map((item) => {
               const result = { ...item };
-
-              if (item.ebrConfirmValue) {
-                result.ebrConfirmValue =
-                  this.isPreview == "1" ||
-                  this.nominationDisabled ||
-                  this.rsDisabled
-                    ? item.ebrConfirmValue
-                    : this.percent(item.ebrConfirmValue);
-              } else {
-                result.ebrConfirmValue = "";
-              }
-
+              if(result.carTypeNames&&result.carTypeNames.length)
+              result.carTypeNamesStr = result.carTypeNames?.join('、')
+              // if (item.ebrConfirmValue) {
+              //   result.ebrConfirmValue =
+              //     this.isPreview == "1" ||
+              //     this.nominationDisabled ||
+              //     this.rsDisabled
+              //       ? item.ebrConfirmValue
+              //       : this.percent(item.ebrConfirmValue);
+              // } else {
+              //   result.ebrConfirmValue = "";
+              // }
               return result;
             });
             this.page.totalCount = total;
@@ -259,7 +260,7 @@ export default {
       window.open(router.href, "_blank");
     },
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
   },
 };
@@ -301,6 +302,13 @@ export default {
           vertical-align: bottom;
         }
       }
+    }
+    
+    .tooltip {
+      width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
   // 减去分页器高度
