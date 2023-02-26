@@ -81,9 +81,8 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    
     percent(val) {
-      return math.multiply(math.bignumber(val), 100).toString() + "%";
+      return (val*100).toFixed(2) + "%";
     },
   },
 };
