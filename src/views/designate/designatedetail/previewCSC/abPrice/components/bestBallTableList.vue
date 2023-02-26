@@ -79,6 +79,22 @@
             </el-table-column>
             <el-table-column
               :key="item.prop"
+              v-else-if="item.prop == 'carTypeProjectNum'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <tooltip
+                  :text="
+                    scope.row[item.prop] || scope.row.carTypeNames.join('、')
+                  "
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
               v-else-if="item.tooltip"
               :prop="item.prop"
               :label="item.label"
@@ -186,11 +202,31 @@
             header-align="center"
           >
             <template slot-scope="scope">
-              <span
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
                 v-if="scope.row.investFeeIsShared && scope.row.invest"
-                style="color: red"
-                >*</span
-              >{{ scope.row.invest }}
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      scope.row.toolingShareTotal
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      scope.row.toolingNotShareTotal
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ scope.row.invest }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{ scope.row.invest }}
+              </template>
             </template></el-table-column
           >
           <el-table-column
@@ -276,11 +312,31 @@
               <p>Cost</p>
             </template>
             <template slot-scope="scope">
-              <span
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
                 v-if="scope.row.devFeeIsShared && scope.row.developCost"
-                style="color: red"
-                >*</span
-              >{{ scope.row.developCost }}
+              >
+                <div>
+                  <div>
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                      scope.row.developShareCostTotal
+                    }}
+                  </div>
+                  <div>
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                      scope.row.developNotShareCostTotal
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ scope.row.developCost }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{ scope.row.developCost }}
+              </template>
             </template>
           </el-table-column>
           <el-table-column
@@ -535,7 +591,7 @@ export default {
       return (+result).toFixed(0);
     },
     percent(val) {
-      return (val*100).toFixed(2) + "%";
+      return (val * 100).toFixed(2) + "%";
     },
     getData() {
       this.index = this.label == "Best ball" ? 0 : 1;

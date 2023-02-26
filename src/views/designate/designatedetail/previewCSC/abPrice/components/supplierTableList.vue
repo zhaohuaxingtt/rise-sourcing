@@ -102,7 +102,7 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip :text="item.carline"></tooltip>
+                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
               </template>
               <el-table-column :label="percent(item.ebr)" align="center">
                 <el-table-column
@@ -138,7 +138,12 @@
                             <template slot-scope="scope">
                               <p>
                                 <span
-                                  v-if="scope.row[item.fsGsNum + 'quotationType']=='SKD'||scope.row[item.fsGsNum + 'quotationType']=='SKDLC'"
+                                  v-if="
+                                    scope.row[item.fsGsNum + 'quotationType'] ==
+                                      'SKD' ||
+                                    scope.row[item.fsGsNum + 'quotationType'] ==
+                                      'SKDLC'
+                                  "
                                   style="color: red"
                                   >*</span
                                 >{{ scope.row[item.fsGsNum + "lcAPrice"] }}
@@ -165,7 +170,12 @@
                             <template slot-scope="scope">
                               <p>
                                 <span
-                                  v-if="scope.row[item.fsGsNum + 'quotationType']=='SKD'||scope.row[item.fsGsNum + 'quotationType']=='SKDLC'"
+                                  v-if="
+                                    scope.row[item.fsGsNum + 'quotationType'] ==
+                                      'SKD' ||
+                                    scope.row[item.fsGsNum + 'quotationType'] ==
+                                      'SKDLC'
+                                  "
                                   style="color: red"
                                   >*</span
                                 >{{ scope.row[item.fsGsNum + "lcBPrice"] }}
@@ -278,28 +288,64 @@
                             <template
                               v-else-if="['totalInvest'].includes(item.prop)"
                             >
-                              <span
-                                v-if="
-                                  scope.row.investFeeIsShared &&
-                                  scope.row.totalInvest
-                                "
-                                style="color: red"
-                                >*</span
-                              >{{ scope.row.totalInvest }}
+                              <el-popover
+                                placement="top-start"
+                                width="200"
+                                trigger="hover"
+                                v-if="scope.row.investFeeIsShared"
+                              >
+                                <div>
+                                  <div>
+                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                      scope.row.toolingShareTotal
+                                    }}
+                                  </div>
+                                  <div>
+                                    {{
+                                      language("WEIFENTANJINE", "未分摊金额")
+                                    }}：{{ scope.row.toolingNotShareTotal }}
+                                  </div>
+                                </div>
+                                <div slot="reference">
+                                  <span style="color: red">*</span
+                                  >{{ scope.row[item.prop] }}
+                                </div>
+                              </el-popover>
+                              <template v-else>
+                                {{ scope.row[item.prop] }}
+                              </template>
                             </template>
                             <template
                               v-else-if="
                                 ['totalDevelopCost'].includes(item.prop)
                               "
                             >
-                              <span
-                                v-if="
-                                  scope.row.devFeeIsShared &&
-                                  scope.row.totalDevelopCost
-                                "
-                                style="color: red"
-                                >*</span
-                              >{{ scope.row.totalDevelopCost }}
+                              <el-popover
+                                placement="top-start"
+                                width="200"
+                                trigger="hover"
+                                v-if="scope.row.devFeeIsShared"
+                              >
+                                <div>
+                                  <div>
+                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                      scope.row.developShareCostTotal
+                                    }}
+                                  </div>
+                                  <div>
+                                    {{
+                                      language("WEIFENTANJINE", "未分摊金额")
+                                    }}：{{ scope.row.developNotShareCostTotal }}
+                                  </div>
+                                </div>
+                                <div slot="reference">
+                                  <span style="color: red">*</span
+                                  >{{ scope.row[item.prop] }}
+                                </div>
+                              </el-popover>
+                              <template v-else>
+                                {{ scope.row[item.prop] }}
+                              </template>
                             </template>
                             <template v-else>
                               {{ scope.row[item.prop] }}
@@ -404,7 +450,7 @@ export default {
     },
 
     percent(val) {
-      return (val*100).toFixed(2) + "%";
+      return (val * 100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;
@@ -432,7 +478,7 @@ export default {
               item.analysisSummaryParts.forEach((child) => {
                 item[child.fsGsNum + "lcAPrice"] = child.lcAPrice;
                 item[child.fsGsNum + "lcBPrice"] = child.lcBPrice;
-                item[child.fsGsNum + 'quotationType'] = child.quotationType;
+                item[child.fsGsNum + "quotationType"] = child.quotationType;
                 if (child.suggestFlag)
                   item.suggestFlag.push(
                     child.fsGsNum + "lcAPrice",
