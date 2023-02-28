@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2023-02-23 19:55:21
+ * @LastEditTime: 2023-02-28 11:29:28
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 决策资料 - 附件
 -->
@@ -51,7 +51,6 @@
             @click="$router.push({path: '/designate/decisiondata/attachment/upload'})">
             {{ language("strategicdoc.ShangChuanWenJian") }}
           </iButton> -->
-            <!-- :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'" -->
           <upload
             class="upload-trigger margin-left10"
             v-if="!$store.getters.isPreview"
@@ -114,7 +113,7 @@ import {
 } from "./data";
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { iCard, iButton, iPagination } from "rise";
-import upload from "@/components/Upload";
+import upload from "../../components/upload.vue";
 import { attachMixins } from "@/utils/attachMixins";
 import { pageMixins } from "@/utils/pageMixins";
 
