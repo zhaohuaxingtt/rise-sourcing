@@ -71,7 +71,12 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
+                    <tooltip
+                      :text="
+                        scope.row.carProType ||
+                        scope.row.carTypeNames.join('、')
+                      "
+                    ></tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -346,12 +351,16 @@
                     <div>
                       <div>
                         {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "toolingShareTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                       <div>
                         {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "toolingNotShareTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                     </div>
@@ -384,14 +393,18 @@
                     <div>
                       <div>
                         {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "developShareCostTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                       <div>
                         {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[
-                            item.supplierId + "developNotShareCostTotal"
-                          ]) | toThousands(true)
+                          getInt(
+                            scope.row[
+                              item.supplierId + "developNotShareCostTotal"
+                            ]
+                          ) | toThousands(true)
                         }}
                       </div>
                     </div>
@@ -594,7 +607,7 @@ export default {
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
                   ) &&
-                  +child.ltc
+                  child.ltc != 0
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
