@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-01 18:17:00
+ * @LastEditTime: 2023-03-01 17:14:01
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -10,8 +10,7 @@
 <template>
   <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
     <div id="hide" class="rs-content">
-      <div class="page-flex">
-        <div ref="page-flex">
+      <div class="page-flex" ref="page-flex">
         <div class="page-header">
           <div class="title">
             <p>CSC定点推荐 - {{ cardTitle }} {{ cardTitleEn }}</p>
@@ -144,17 +143,14 @@
             </div>
           </div>
         </div>
-        </div>
-        <div class="header-table-box" :style="{ 'padding-right': gutter, height: headerTableHeight+'px' }">
+        <!-- <div :style="{ 'padding-right': gutter }">
           <tableList
-            ref="header-table"
             v-update
             :selection="false"
             indexKey
             :tableLoading="tableLoading"
             :tableTitle="tableTitle"
-            :tableData="tableData"
-            :height="headerTableHeight"
+            :tableData="[...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData]"
             class="rsTable table header-table"
             border
           >
@@ -171,18 +167,15 @@
               </div>
             </template>
 
-            <!-- 供应商 -->
             <template #supplierName="scope">
               <span>{{ scope.row.supplierName }}</span>
               <br />
               <span>{{ scope.row.supplierNameEn }}</span>
             </template>
-            <!-- 年降 -->
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
 
-            <!-- 年降开始时间 -->
             <template #beginYearReduce="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
             </template>
@@ -425,25 +418,25 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-        </div>
+        </div> -->
       </div>
       <div
         class="rsCard-content"
         ref="body-table"
         :style="{ height: `calc(100% - ${titleHeight}px` }"
       >
-        <div class="rsCard">
+        <div class="rsCard" :style="{ height: `calc(100%)` }">
           <tableList
+            ref="table"
             v-update
             :selection="false"
             indexKey
             :tableLoading="tableLoading"
             :tableTitle="tableTitle"
-            :tableData="tableData"
-            class="rsTable table"
-            :show-header="false"
+            height="calc(100%)"
+            :tableData="[...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData,...tableData]"            class="rsTable table fixed-header-class"
+            :show-header="true"
             :cell-class-name="cellClass"
-            @onScroll="onScroll"
             border
           >
             <template #fsnrGsnrNum="scope">
@@ -990,9 +983,7 @@ export default {
       showpdf: true,
       html: "",
       titleHeight: 243,
-      headerTableHeight: 57,
       gutter: "0",
-      scrollLeft:null
     };
   },
   filters: {
@@ -1152,21 +1143,16 @@ export default {
         this.getPrototypeListHeight();
       },
     },
-    scrollLeft(val){
-      this.$refs['header-table'].$refs.multipleTable.bodyWrapper.scrollLeft = val
-    }
   },
   updated() {
-    this.$set(this, "titleHeight", this.$refs["page-flex"].offsetHeight + this.headerTableHeight);
+    this.$set(this, "titleHeight", this.$refs["page-flex"].offsetHeight);
   },
   created() {
     this.isAuth = this.$route.query.type === "auth";
     // this.getPrototypeList()
   },
+  mounted() {},
   methods: {
-    onScroll(data){
-      this.scrollLeft = data.scrollLeft
-    },
     remarkProcess,
     dateFilter,
     getHeight() {
@@ -1882,12 +1868,11 @@ export default {
         border: 1px dashed #1660f1;
       }
     }
-    .header-table-box{
-      overflow: hidden;
-    }
     .header-table {
       pointer-events: none;
-      overflow: hidden;
+      ::v-deep .el-table__body-wrapper {
+        display: none;
+      }
     }
   }
   .rsCard-content {
@@ -2194,5 +2179,12 @@ export default {
   padding: 10px;
   align-items: center;
   border-top: 1px solid #666;
+}
+.fixed-header-class {
+  ::v-deep .el-table__header-wrapper{
+    position: fixed;
+    top: 30px;
+    z-index: 10000;
+  }
 }
 </style>

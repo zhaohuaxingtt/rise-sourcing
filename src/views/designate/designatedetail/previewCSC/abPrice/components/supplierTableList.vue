@@ -121,6 +121,10 @@
                         :label="item.targetAPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <span v-if="+item.selAPrice" style="color: red">※</span>
+                            {{ item.targetAPrice }}
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
                             {{ item.fsGsNum }}({{ item.factoryEn }})
