@@ -6,7 +6,7 @@
       :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
     >
       <el-table
-        v-show='totalTableHeight'
+        v-show="totalTableHeight"
         :data="tableData"
         class="header table"
         ref="table"
@@ -272,8 +272,8 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              <template v-if="scope.$index==0">
-              {{ scope.row["aPrice"] | toThousands(true) }}
+              <template v-if="scope.$index == 0">
+                {{ scope.row["aPrice"] | toThousands(true) }}
               </template>
               <template v-else>
                 {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
@@ -288,8 +288,8 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              <template v-if="scope.$index==0">
-              {{ scope.row["bPrice"] | toThousands(true) }}
+              <template v-if="scope.$index == 0">
+                {{ scope.row["bPrice"] | toThousands(true) }}
               </template>
               <template v-else>
                 {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
@@ -435,13 +435,13 @@ export default {
         },
         {
           carProType: "Total Turnover",
-          isMinTto:[]
+          isMinTto: [],
         },
       ],
       index: -1,
       showLength: 4,
       supplierAllData: [],
-      allData:[],
+      allData: [],
       loading: false,
       totalTableHeight: 310,
     };
@@ -506,7 +506,7 @@ export default {
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
             });
-            totalData[6].isMinTto = []
+            totalData[6].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
               totalData[0][item.supplierId + "aPrice"] = item.lcAPriceTotal;
               totalData[0][item.supplierId + "bPrice"] = item.lcBPriceTotal;
@@ -514,7 +514,7 @@ export default {
               item.priceReduceDTOList.forEach((child) => {
                 if (
                   !totalData[1][item.supplierId + "aPrice"].includes(
-                    `${child.ltc} from ${child.ltcStartDate}`
+                    `${child.ltc} from ${child.ltcStartDate}` && child.ltc != 0
                   )
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
@@ -524,14 +524,14 @@ export default {
               });
               totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
               totalData[4][item.supplierId + "aPrice"] = item.aPrice;
-              totalData[5][item.supplierId + "aPrice"] = '';
+              totalData[5][item.supplierId + "aPrice"] = "";
               totalData[6][item.supplierId + "aPrice"] = item.ttoTotal;
-              if(item.isMinTto){
-                totalData[6].isMinTto.push(item.supplierId + "aPrice")
+              if (item.isMinTto) {
+                totalData[6].isMinTto.push(item.supplierId + "aPrice");
               }
               return item;
             });
-            this.allData = supplierList
+            this.allData = supplierList;
             totalData[0]["aPrice"] =
               res.data.fsPriceInfo?.targetMixLcAPrice || "";
             totalData[0]["bPrice"] =
@@ -554,9 +554,9 @@ export default {
             this.supplierAllData = supplierAllData;
             this.index = 0;
             this.totalData = totalData;
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
               this.tableData = tableData;
-            })
+            });
           }
         })
         .finally(() => {
@@ -568,31 +568,35 @@ export default {
         });
     },
     percent(val) {
-      return (val*100).toFixed(2) + "%";
+      return (val * 100).toFixed(2) + "%";
     },
     isCLevel(val) {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     setColSpan() {
-        const row =
-          this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
-            .rows;
-        //   行数据,行,列,合并数,方向
-        this.merge(row, 0, 0, 7, "colSpan");
-        this.merge(row, 0, 0, 4, "rowSpan");
-        this.merge(row, 1, 7, 3, "rowSpan");
-        this.merge(row, 4, 7, 2, "colSpan");
-        this.$emit('setPage',{index:this.index, showLength:this.showLength, total:this.allData.length})
-      this.$nextTick(()=>{
-        setTimeout(()=>{
+      const row =
+        this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
+          .rows;
+      //   行数据,行,列,合并数,方向
+      this.merge(row, 0, 0, 7, "colSpan");
+      this.merge(row, 0, 0, 4, "rowSpan");
+      this.merge(row, 1, 7, 3, "rowSpan");
+      this.merge(row, 4, 7, 2, "colSpan");
+      this.$emit("setPage", {
+        index: this.index,
+        showLength: this.showLength,
+        total: this.allData.length,
+      });
+      this.$nextTick(() => {
+        setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
-        },0)
-      })
+        }, 0);
+      });
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
-      if(!row) return
+      if (!row) return;
       const col = row[rowIndex].cells;
       if (!(row || col)) return;
       if (rowIndex < 0 || colIndex < 0 || span < 0) return;
@@ -705,9 +709,9 @@ export default {
         this.setColSpan();
       });
     },
-    rowClass({row, rowIndex }){
-      if(rowIndex<4){
-        return 'table-header-small'
+    rowClass({ row, rowIndex }) {
+      if (rowIndex < 4) {
+        return "table-header-small";
       }
     },
     // 表头单元格背景调整
@@ -741,9 +745,9 @@ export default {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
       }
-      if(rowIndex=='6'){
-        if(row.isMinTto.includes(column.property)){
-          return 'font-green'
+      if (rowIndex == "6") {
+        if (row.isMinTto.includes(column.property)) {
+          return "font-green";
         }
       }
     },
@@ -791,14 +795,14 @@ export default {
   }
   .el-table__header {
     background: #fff;
-    .table-header-small{
-      th{
+    .table-header-small {
+      th {
         font-size: 16px;
         padding-top: 0px;
         padding-bottom: 0px;
       }
-      .unit{
-        .cell{
+      .unit {
+        .cell {
           padding-top: 1px;
         }
       }
