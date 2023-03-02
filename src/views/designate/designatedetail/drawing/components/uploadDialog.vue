@@ -43,7 +43,7 @@ import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
-import upload from '@/components/Upload'
+import upload from "../../components/upload.vue";
 // import { downloadFile } from '@/api/file'
 
 // import {
