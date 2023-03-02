@@ -145,7 +145,7 @@
                                   "
                                   style="color: red"
                                   >*</span
-                                >{{ scope.row[item.fsGsNum + "lcBPrice"] }}
+                                >{{ scope.row[item.fsGsNum + "lcAPrice"] }}
                               </p>
                             </template>
                           </el-table-column>
