@@ -230,7 +230,7 @@
                 :data="item"
                 :max="max"
               />
-              <template v-else-if="item.prop == 'Recommendation'">
+              <!-- <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
@@ -258,7 +258,7 @@
                   />
                 </div>
               </el-popover>
-              </template>
+              </template> -->
               <barItem
                 v-else
                 :key="item.prop"
