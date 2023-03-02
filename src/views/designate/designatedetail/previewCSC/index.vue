@@ -52,8 +52,7 @@ export default {
     }
   },
   methods: {
-    isClick(ev){
-      console.log(ev);
+    isClick(){
       window.parent.postMessage({type:'click',data:'iframe页面点击'},'*')
     },
     
