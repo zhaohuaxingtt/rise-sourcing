@@ -49,7 +49,7 @@
               class="upload-trigger btn"
               v-if="!$store.getters.isPreview"
               :hideTip="true"
-              :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
+              :accept="'.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.pdf,.tif'"
               :buttonText="
                 language('strategicdoc_ShangChuanXianXiaRS', '上传线下RS文件')
               "
@@ -109,7 +109,7 @@ import {
 } from "./data";
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { iCard, iButton, iPagination } from "rise";
-import upload from "@/components/Upload";
+import upload from "../../components/upload.vue";
 import { attachMixins } from "@/utils/attachMixins";
 import { pageMixins } from "@/utils/pageMixins";
 

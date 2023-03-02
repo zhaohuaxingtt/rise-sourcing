@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-26 17:00:13
+ * @LastEditTime: 2023-02-28 13:17:28
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -397,18 +397,20 @@ export default {
         .then((res) => {
           if (res?.code != 200) return;
           this.max = null;
+          // VSI
           let allPrice = [this.detail.vsi || 0];
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];
               item.aPrice = item.mixAPrice;
               item.bPrice = item.mixBPrice;
-              allPrice.push(item.mixAPrice, item.mixBPrice);
+              // 供应商
+              allPrice.push(deleteThousands(item.mixAPrice||0), deleteThousands(item.mixBPrice||0));
               item.analysisSummaryParts.forEach((child) => {
                 if (
                   !ltcStartDateList.includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  ) && (+child.ltc)
+                  ) && child.ltc!=0
                 )
                   ltcStartDateList.push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -421,6 +423,7 @@ export default {
             res.data.recommendationNomi?.lcMixAPrice || 0;
           this.fixedList[0].bPrice =
             res.data.recommendationNomi?.lcMixBPrice || 0;
+            // recommendation
           allPrice.push(
             deleteThousands(res.data.recommendationNomi?.lcMixAPrice || 0),
             deleteThousands(res.data.recommendationNomi?.lcMixBPrice || 0)
@@ -431,12 +434,15 @@ export default {
           this.fixedList[1].bPrice = deleteThousands(
             res.data.ltcPriceInfo.ltcMixBPrice || 0
           );
+          // After LTC
           allPrice.push(
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0),
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0)
           );
           this.fixedList[2].aPrice = res.data.targetMixAPrice;
           this.fixedList[2].bPrice = res.data.targetMixBPrice;
+          
+          // After F-Target
           allPrice.push(
             deleteThousands(res.data.targetMixAPrice || 0),
             deleteThousands(res.data.targetMixBPrice || 0)
@@ -444,6 +450,7 @@ export default {
           this.fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
           this.fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
           this.fixedList[3].cPrice = res.data.kmInfo?.greenFieldMeasure || 0;
+          // After KGF
           if (res.data.kmInfo)
             allPrice.push(
               deleteThousands(res.data.kmInfo?.pca || 0),

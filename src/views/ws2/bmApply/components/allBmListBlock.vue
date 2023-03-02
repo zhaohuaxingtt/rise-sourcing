@@ -4,8 +4,12 @@
       <iCard>
         <div class="table-head">
           <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
-        <iTableList
+        
+        <tableList
+          ref="tableList"
+          permissionKey="allBmListBlock"
           :tableData="allTableList"
           :tableTitle="allTableHead"
           :tableLoading="allTableLoading"
@@ -13,13 +17,7 @@
         >
           <!-- BM单流⽔号 -->
           <template #bmSerial="scope">
-            <!-- <span class="flexRow"> -->
               <span class="openLinkText cursor " @click="openBMDetail(scope.row)"> {{ scope.row.bmSerial }}</span>
-              <!-- <span v-if="scope.row.bmSerial" class="icon-gray  cursor "  @click="openBMDetail(scope.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-              </span>
-            </span>   -->
           </template>
 
           <!-- RS单号 -->
@@ -31,8 +29,7 @@
               <div  @click="openViewPdf(scope.row)" class="table-link" v-if="scope.row.rsNum!=='0'">{{scope.row.rsNum}}</div>
             </template>
           </template>
-        </iTableList>
-
+        </tableList>
         <div class="unitExplain">
           <UnitExplain />
         </div>
@@ -72,16 +69,21 @@ import { allTableHead, bmApplyForm } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import UnitExplain from "./unitExplain";
 import { excelExport } from '@/utils/filedowLoad';
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from "@/components/buttonTableSetting";
 import _ from 'lodash';
 import Moment from 'moment';
 
 export default {
   components: {
     SearchBlock, iTableList, iCard, iButton, iPagination,
-    UnitExplain,icon
+    UnitExplain,icon,
+    buttonTableSetting,
+    tableList
   },
 
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
 
   data(){
     return {

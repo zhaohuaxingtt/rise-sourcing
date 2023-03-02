@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-26 00:13:30
+ * @LastEditTime: 2023-02-28 13:14:26
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -365,12 +365,16 @@ export default {
               let ltcStartDateList = [];
               item.aPrice = item.mixAPrice;
               item.bPrice = item.mixBPrice;
-              allPrice.push(item.mixAPrice, item.mixBPrice);
+              allPrice.push(
+                deleteThousands(item.mixAPrice || 0),
+                deleteThousands(item.mixBPrice || 0)
+              );
               item.analysisSummaryParts.forEach((child) => {
                 if (
                   !ltcStartDateList.includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  ) && (+child.ltc)
+                  ) &&
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -425,7 +429,9 @@ export default {
             res.data.recommendationNomi?.totalTurnover || "";
           this.tableData[5]["F-Target"] = res.data.targetTotalInvest;
           this.tableData[6]["KGF"] = "";
+          console.log("allPrice=>", allPrice);
           this.max = Math.max(...allPrice);
+          console.log("this.max=>", this.max);
         })
         .finally(() => {
           this.loading = false;
