@@ -6,8 +6,11 @@
         <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
         <iButton @click="toVoid" :loading="bmCancelLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_INVALID">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
         <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
-      <iTableList
+      <tableList
+        ref="tableList"
+        permissionKey="incrementBlock"
         :tableData="aekoTableList"
         :tableTitle="aekoTableHead"
         :tableLoading="allTableLoading"
@@ -28,7 +31,7 @@
           </template>
           <!-- <div @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'? '' :'table-txtStyle' " v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div> -->
         </template>
-      </iTableList>
+      </tableList>
 
       <div class="unitExplain">
         <UnitExplain />
@@ -69,9 +72,13 @@ import { findBmAekoAddList, bmCancel, bmConfirm } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import UnitExplain from "./unitExplain";
 import Moment from 'moment';
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from "@/components/buttonTableSetting";
 export default {
   components: {
-    iTableList, iCard, iButton, iPagination, UnitExplain,SearchBlock
+    iTableList, iCard, iButton, iPagination, UnitExplain,SearchBlock,tableList,
+buttonTableSetting
   },
 
   props: {
@@ -87,7 +94,7 @@ export default {
     }
   },
 
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
 
   data(){
     return {
