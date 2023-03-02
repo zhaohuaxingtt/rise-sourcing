@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-26 17:25:51
+ * @LastEditTime: 2023-03-02 18:28:14
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -84,7 +84,12 @@
                     align="center"
                   >
                     <template slot-scope="scope">
-                      <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
+                      <tooltip
+                        :text="
+                          scope.row.carProType ||
+                          scope.row.carTypeNames.join('、')
+                        "
+                      ></tooltip>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -157,7 +162,37 @@
                     minWidth="80"
                   >
                     <template slot-scope="scope">
-                      {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                      <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        v-if="+scope.row.selAPrice"
+                      >
+                        <div>
+                          <div>
+                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                              (scope.row.cfPartAPrice - scope.row.selAPrice).toFixed(2)
+                                | toThousands(true)
+                            }}
+                          </div>
+                          <div>
+                            {{ language("SEL目标价", "SEL目标价") }}：{{
+                              (scope.row.selAPrice || "0.00")
+                                | toThousands(true)
+                            }}
+                          </div>
+                        </div>
+                        <div slot="reference">
+                          <p>
+                            <span style="color: red">*</span>
+                            <span>{{
+                              scope.row["cfPartAPrice"] | toThousands(true)
+                            }}</span>
+                          </p>
+                        </div>
+                      </el-popover>
+                      <template v-else>
+                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                      </template>
                     </template>
                   </el-table-column>
                 </el-table-column>
@@ -176,7 +211,37 @@
                     minWidth="80"
                   >
                     <template slot-scope="scope">
-                      {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                      <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        v-if="+scope.row.selAPrice"
+                      >
+                        <div>
+                          <div>
+                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                              (scope.row.cfPartBPrice - scope.row.selAPrice).toFixed(2)
+                                | toThousands(true)
+                            }}
+                          </div>
+                          <div>
+                            {{ language("SEL目标价", "SEL目标价") }}：{{
+                              (scope.row.selAPrice || "0.00")
+                                | toThousands(true)
+                            }}
+                          </div>
+                        </div>
+                        <div slot="reference">
+                          <p>
+                            <span style="color: red">*</span>
+                            <span>{{
+                              scope.row["cfPartBPrice"] | toThousands(true)
+                            }}</span>
+                          </p>
+                        </div>
+                      </el-popover>
+                      <template v-else>
+                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                      </template>
                     </template>
                   </el-table-column>
                 </el-table-column>
@@ -367,12 +432,16 @@
                     <div>
                       <div>
                         {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "toolingShareTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                       <div>
                         {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "toolingNotShareTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                     </div>
@@ -405,14 +474,18 @@
                     <div>
                       <div>
                         {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
+                          getInt(
+                            scope.row[item.supplierId + "developShareCostTotal"]
+                          ) | toThousands(true)
                         }}
                       </div>
                       <div>
                         {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[
-                            item.supplierId + "developNotShareCostTotal"
-                          ]) | toThousands(true)
+                          getInt(
+                            scope.row[
+                              item.supplierId + "developNotShareCostTotal"
+                            ]
+                          ) | toThousands(true)
                         }}
                       </div>
                     </div>

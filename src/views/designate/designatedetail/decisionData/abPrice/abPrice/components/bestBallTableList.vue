@@ -123,9 +123,40 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              {{
-                numberProcessor(scope.row.targetAPrice, 2) | toThousands(true)
-              }}
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
+                {{
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                }}
+              </template>
             </template>
           </el-table-column>
           <el-table-column
@@ -136,9 +167,40 @@
             minWidth="80"
           >
             <template slot-scope="scope">
-              {{
-                numberProcessor(scope.row.targetBPrice, 2) | toThousands(true)
-              }}
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
+                {{
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                }}
+              </template>
             </template>
           </el-table-column>
         </el-table-column>
@@ -561,13 +623,9 @@ export default {
   created() {
     this.getData();
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.positionAllow();
-    });
-  },
   methods: {
     numberProcessor,
+    deleteThousands,
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -611,7 +669,6 @@ export default {
               index: this.label == "Best ball" ? 0 : 1,
               total: 2,
             });
-            // this.positionAllow();
           });
         });
     },

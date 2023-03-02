@@ -122,8 +122,37 @@
                         header-align="right"
                       >
                         <template slot="header" slot-scope="scope">
-                          <span v-if="+item.selAPrice" style="color: red">※</span>
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetAPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
                             {{ item.targetAPrice }}
+                          </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
@@ -160,6 +189,39 @@
                         :label="item.targetBPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetBPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
+                            {{ item.targetBPrice }}
+                          </template>
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <el-table-column
                             :prop="item.fsGsNum + 'lcBPrice'"
@@ -371,7 +433,7 @@
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
-import { numberProcessor, toThousands } from "@/utils";
+import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
 export default {
   components: {
@@ -447,6 +509,7 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
