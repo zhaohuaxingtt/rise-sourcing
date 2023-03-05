@@ -1,3 +1,4 @@
+// CRW-11573 以前版本,用于有问题对比还原
 <template>
   <div>
     <iCard
@@ -11,9 +12,7 @@
       <template slot="header-control" v-if="isUser">
         <i class="el-icon-success icon-success" v-show="headerCollapseVal"></i>
         <div v-show="headerCollapseVal">
-          <iButton @click="handleCheck('header')">{{
-            language("BIDDING_CHAKAN", "查看")
-          }}</iButton>
+          <iButton @click="handleCheck('header')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
         </div>
 
         <div v-show="!headerCollapseVal" style="display: flex">
@@ -26,12 +25,16 @@
               isBiddingDelay
             "
             @click="onBiddingDelay"
-            >{{ language("BIDDING_JINGJIAYANQI", "竞价延期") }}</iButton
+            >{{ language('BIDDING_JINGJIAYANQI', '竞价延期') }}</iButton
           >
           <!-- 竞价大厅 -->
-          <iButton v-if="disHall" @click="handleHrefHall">{{
-            language("BIDDING_JIANGJIADATING", "竞价大厅")
-          }}</iButton>
+          <iButton
+            v-if="
+              disHall
+            "
+            @click="handleHrefHall"
+            >{{ language('BIDDING_JIANGJIADATING', '竞价大厅') }}</iButton
+          >
           <!-- 开标 -->
           <iButton
             v-if="
@@ -40,7 +43,7 @@
               isOpenDelay
             "
             @click="onOpenDelay"
-            >{{ language("BIDDING_KAIBIAOYANQI", "开标延期") }}</iButton
+            >{{ language('BIDDING_KAIBIAOYANQI', '开标延期') }}</iButton
           >
           <template
             v-if="
@@ -50,9 +53,7 @@
             "
           >
             <iButton v-show="isDelay" @click="handleSetting()">{{
-              ruleForm.roundType == "02"
-                ? language("BIDDING_KAIBIAOSHEZHI", "开标设置")
-                : language("BIDDING_JINJIASHEZHI", "竞价设置")
+              ruleForm.roundType == "02" ? language('BIDDING_KAIBIAOSHEZHI', '开标设置') : language('BIDDING_JINJIASHEZHI', '竞价设置')
             }}</iButton>
           </template>
 
@@ -61,12 +62,12 @@
             <iButton
               v-if="ruleForm.biddingStatus === '01' && isOpenDelay"
               @click="handleSave('header')"
-              >{{ language("BIDDING_BAOCUN", "保存") }}</iButton
+              >{{ language('BIDDING_BAOCUN', '保存') }}</iButton
             >
             <iButton
               v-if="ruleForm.biddingStatus === '01' && isOpenDelay"
               @click="handleFinish('header', 'save')"
-              >{{ language("BIDDING_WANCHENG", "完成") }}</iButton
+              >{{ language('BIDDING_WANCHENG', '完成') }}</iButton
             >
           </div>
           <!-- 竞价 -->
@@ -79,7 +80,7 @@
                 isBiddingDelay
               "
               @click="handleSave('header')"
-              >{{ language("BIDDING_BAOCUN", "保存") }}</iButton
+              >{{ language('BIDDING_BAOCUN', '保存') }}</iButton
             >
             <iButton
               v-if="
@@ -89,19 +90,19 @@
                 isBiddingDelay
               "
               @click="handleFinish('header', 'save')"
-              >{{ language("BIDDING_WANCHENG", "完成") }}</iButton
+              >{{ language('BIDDING_WANCHENG', '完成') }}</iButton
             >
           </div>
           <!-- 竞价 -->
           <iButton
             v-if="ruleForm.roundType !== '02' && !isBiddingDelay"
             @click="onBiddingSend"
-            >{{ language("BIDDING_FASONG", "发送") }}</iButton
+            >{{ language('BIDDING_FASONG', '发送') }}</iButton
           >
           <iButton
             v-if="ruleForm.roundType !== '02' && !isBiddingDelay"
             @click="onBiddingCancel"
-            >{{ language("BIDDING_QUXIAO", "取消") }}</iButton
+            >{{ language('BIDDING_QUXIAO', '取消') }}</iButton
           >
 
           <!-- 开标 -->
@@ -109,12 +110,12 @@
           <iButton
             v-if="ruleForm.roundType === '02' && !isOpenDelay"
             @click="onOpenSend"
-            >{{ language("BIDDING_FASONG", "发送") }}</iButton
+            >{{ language('BIDDING_FASONG', '发送') }}</iButton
           >
           <iButton
             v-if="ruleForm.roundType === '02' && !isOpenDelay"
             @click="onOpenCancel"
-            >{{ language("BIDDING_QUXIAO", "取消") }}</iButton
+            >{{ language('BIDDING_QUXIAO', '取消') }}</iButton
           >
         </div>
       </template>
@@ -138,34 +139,27 @@
       collapse
       ref="contentCollapse"
     >
-      <template v-if="isUser">
+      <template  v-if="isUser">
         <template
-          slot="header-control"
-          v-if="ruleForm.biddingStatus !== '01' ? false : true"
-        >
-          <i
-            class="el-icon-success icon-success"
-            v-show="contentCollapseVal"
-          ></i>
-          <div v-show="contentCollapseVal">
-            <iButton @click="handleCheck('content')">{{
-              language("BIDDING_CHAKAN", "查看")
-            }}</iButton>
-          </div>
-          <div v-show="!contentCollapseVal">
-            <iButton
-              v-if="ruleForm.roundType === '05'"
-              @click="showSupplierDialog = true"
-              >{{ language("BIDDING_YYGYS", "邀请供应商") }}</iButton
-            >
-            <iButton @click="handleSave('content')">{{
-              language("BIDDING_BAOCUN", "保存")
-            }}</iButton>
-            <iButton @click="handleFinish('content', 'save')">{{
-              language("BIDDING_WANCHENG", "完成")
-            }}</iButton>
-          </div>
-        </template>
+        slot="header-control"
+        v-if="ruleForm.biddingStatus !== '01' ? false : true"
+      >
+        <i class="el-icon-success icon-success" v-show="contentCollapseVal"></i>
+        <div v-show="contentCollapseVal">
+          <iButton @click="handleCheck('content')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
+        </div>
+        <div v-show="!contentCollapseVal">
+          <iButton
+            v-if="ruleForm.roundType === '05'"
+            @click="showSupplierDialog = true"
+            >{{ language('BIDDING_YYGYS', '邀请供应商') }}</iButton
+          >
+          <iButton @click="handleSave('content')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
+          <iButton @click="handleFinish('content', 'save')">{{
+            language('BIDDING_WANCHENG', '完成')
+          }}</iButton>
+        </div>
+      </template>
       </template>
       <commonTable
         ref="tableDataForm"
@@ -191,107 +185,60 @@
             </el-option>
           </iSelect> -->
           <el-switch
-            v-model="scope.row['isAttend']"
-            active-text="Y"
-            inactive-text="N"
-            :active-value="true"
-            :inactive-value="false"
-            :disabled="!isUser || ruleForm.biddingStatus !== '01'"
-          >
-          </el-switch>
+              v-model="scope.row['isAttend']"
+              active-text="Y"
+              inactive-text="N"
+              :active-value='true'
+              :inactive-value='false'
+              :disabled="!isUser || ruleForm.biddingStatus !== '01'"
+            >
+            </el-switch>
         </template>
         <!-- 供应商名称 -->
         <template slot="supplierName" slot-scope="scope">
           <div class="supplier-item">
             <a
-              style="color: blue; cursor: pointer; flex: 1"
-              @click="handleHref(scope.row)"
-              >{{ scope.row.supplierName }}
+            style="color: blue;cursor: pointer; flex:1"
+            @click="handleHref(scope.row)"
+            >{{ scope.row.supplierName }}
             </a>
             <div class="supplier-ico">
-              <template
-                v-if="
-                  supplierRiskLevel[scope.row.supplierId] &&
-                  supplierRiskLevel[scope.row.supplierId][0]
-                    ? supplierRiskLevel[scope.row.supplierId][0].resultCode ===
-                      'red'
-                    : false
-                "
-              >
+              <template v-if="supplierRiskLevel[scope.row.supplierId][0] ? supplierRiskLevel[scope.row.supplierId][0].resultCode === 'red' : false">
                 <div class="form-item-resultOpenForm-div">
-                  <img
-                    :src="require(`@/assets/images/supplier_help.png`)"
-                    class="form-item-resultOpenForm-Img"
-                  />
+                  <img :src="require(`@/assets/images/supplier_help.png`)" class="form-item-resultOpenForm-Img" />
                 </div>
-                <!-- <div >
+                  <!-- <div >
                     <span
                       >{{supplierRiskLevel[scope.row.supplierId][0].tips}}</span
                     ><br />
                   </div> -->
               </template>
 
-              <template
-                v-if="
-                  !(
-                    isCompleteData[scope.row.supplierId] &&
-                    isCompleteData[scope.row.supplierId][scope.row.supplierId]
-                  )
-                "
-              >
+              <template v-if="!isCompleteData[scope.row.supplierId][scope.row.supplierId]">
                 <div class="form-item-resultOpenForm-div">
-                  <img
-                    :src="require(`@/assets/images/supplier_pending.png`)"
-                    class="form-item-resultOpenForm-Img"
-                  />
+                  <img :src="require(`@/assets/images/supplier_pending.png`)"  class="form-item-resultOpenForm-Img"/>
                 </div>
-                <!-- <div>
+                  <!-- <div>
                     <span>{{blackStuffList[scope.row.supplierId] ? '任务已完成' : '没有完成任务'}}</span>
                   </div> -->
               </template>
 
-              <template
-                v-if="
-                  blackStuffList[scope.row.supplierId]
-                    ? blackStuffList[scope.row.supplierId].length
-                    : false
-                "
-              >
+              <template v-if="blackStuffList[scope.row.supplierId] ? blackStuffList[scope.row.supplierId].length : false">
                 <div class="form-item-resultOpenForm-dis">
-                  <iLabelML
-                    :imgSrc="require(`@/assets/images/supplier_disabled.png`)"
-                    showTip
-                    class="form-item-resultOpenForm-icon"
-                  >
-                    <div class="hover-text">
-                      <div>
-                        {{ language("BIDDING_HEIMINGDAN", "黑名单") }}：
-                      </div>
-                      <div>
-                        <span
-                          >{{
-                            blackStuffList[scope.row.supplierId][0].startTime
-                          }}
-                          -
-                          {{
-                            blackStuffList[scope.row.supplierId][0].endTime
-                          }}</span
-                        >
-                        <br />
-                        <span
-                          >{{
-                            blackStuffList[scope.row.supplierId][0].measures ==
-                            1
-                              ? language(
-                                  "BIDDING_BKXJBKDD",
-                                  "不可询价，不可定点"
-                                )
-                              : language("BIDDING_KXJBKDD", "可询价，不可定点")
-                          }}
-                        </span>
-                      </div>
+                  <iLabelML :imgSrc="require(`@/assets/images/supplier_disabled.png`)" showTip class="form-item-resultOpenForm-icon">
+                  <div class="hover-text">
+                    <div>{{language('BIDDING_HEIMINGDAN', '黑名单')}}：</div>
+                    <div>
+                      <span>{{blackStuffList[scope.row.supplierId][0].startTime}} - {{blackStuffList[scope.row.supplierId][0].endTime}}</span>
+                      <br/>
+                      <span>{{blackStuffList[scope.row.supplierId][0].measures == 1 
+                        ? language('BIDDING_BKXJBKDD', '不可询价，不可定点')
+                        : language('BIDDING_KXJBKDD', '可询价，不可定点')
+                        }}
+                      </span>
                     </div>
-                  </iLabelML>
+                  </div>
+                </iLabelML>
                 </div>
               </template>
             </div>
@@ -303,7 +250,7 @@
           <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ scope.row["contactName"] }}
           </div>
-          <iFormItem v-else :label="language('BIDDING_LIANGXIREN', '联系人')">
+          <iFormItem v-else :label="language('BIDDING_LIANGXIREN', '联系人')" >
             <iSelect
               :value="scope.row['contactName']"
               value-key="nameZh"
@@ -333,9 +280,10 @@
         <!-- CBD选择 -->
         <template slot="cbdLevel" slot-scope="scope">
           <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
-            {{ cbdLevelLib[scope.row["cbdLevel"]] || scope.row["cbdLevel"] }}
+            {{ cbdLevelLib[scope.row["cbdLevel"]] || scope.row["cbdLevel"]}}
           </div>
           <div v-else>
+
             <iSelect
               v-if="ruleForm.roundType == '02' || ruleForm.roundType == '03'"
               v-model="scope.row['cbdLevel']"
@@ -344,15 +292,7 @@
                 v-for="item in cbdLevelList[scope.row.supplierCode]"
                 :key="item"
                 :label="item"
-                :value="
-                  item === 'L1'
-                    ? '01'
-                    : item === 'L2'
-                    ? '02'
-                    : item === 'L3'
-                    ? '03'
-                    : ''
-                "
+                :value="item === 'L1' ? '01' : item === 'L2' ? '02' : item === 'L3' ? '03' : ''"
               >
               </el-option>
             </iSelect>
@@ -365,8 +305,8 @@
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
-        :prev-text="language('BIDDING_SHANGYIYE', '上一页')"
-        :next-text="language('BIDDING_XIAYIYE', '下一页')"
+        :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+        :next-text="language('BIDDING_XIAYIYE','下一页')"
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.total"
@@ -395,30 +335,22 @@
     >
       <template v-if="isUser">
         <template
-          slot="header-control"
-          v-if="ruleForm.biddingStatus !== '01' ? false : true"
-        >
-          <i class="el-icon-success icon-success" v-show="reatCollapseVal"></i>
-          <div v-show="reatCollapseVal">
-            <iButton @click="handleCheck('reat')">{{
-              language("BIDDING_CHAKAN", "查看")
-            }}</iButton>
-          </div>
-          <div v-show="!reatCollapseVal">
-            <iButton @click="handleAdd">{{
-              language("BIDDING_XINZHENG", "新增")
-            }}</iButton>
-            <iButton @click="handleDelete">{{
-              language("BIDDING_SHANCHU", "删除")
-            }}</iButton>
-            <iButton @click="handleSave('reat')">{{
-              language("BIDDING_BAOCUN", "保存")
-            }}</iButton>
-            <iButton @click="handleFinish('reat', 'save')">{{
-              language("BIDDING_WANCHENG", "完成")
-            }}</iButton>
-          </div>
-        </template>
+        slot="header-control"
+        v-if="ruleForm.biddingStatus !== '01' ? false : true"
+      >
+        <i class="el-icon-success icon-success" v-show="reatCollapseVal"></i>
+        <div v-show="reatCollapseVal">
+          <iButton @click="handleCheck('reat')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
+        </div>
+        <div v-show="!reatCollapseVal">
+          <iButton @click="handleAdd">{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
+          <iButton @click="handleDelete">{{ language('BIDDING_SHANCHU', '删除')}}</iButton>
+          <iButton @click="handleSave('reat')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
+          <iButton @click="handleFinish('reat', 'save')">{{
+            language('BIDDING_WANCHENG', '完成')
+          }}</iButton>
+        </div>
+      </template>
       </template>
       <template>
         <parities
@@ -426,6 +358,7 @@
           :paritiesList="paritiesList"
           v-model="ruleForm"
           @selectDel="selectDel"
+          @handle-currencys="handleCurrencys"
           :isUser="isUser"
         />
       </template>
@@ -443,40 +376,31 @@
     >
       <template v-if="isUser">
         <template
-          slot="header-control"
-          v-if="ruleForm.biddingStatus !== '01' ? false : true"
-        >
-          <i
-            class="el-icon-success icon-success"
-            v-show="attachCollapseVal"
-          ></i>
-          <div v-show="attachCollapseVal">
-            <iButton @click="handleCheck('attach')">{{
-              language("BIDDING-CHAKAN", "查看")
-            }}</iButton>
-          </div>
-          <div v-show="!attachCollapseVal" class="form-attchment">
-            <el-upload
-              class="form-attchment-button"
-              action="1"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :show-file-list="false"
-              :http-request="httpUpload"
-            >
-              <iButton>{{ language("BIDDING_XINZHENG", "新增") }}</iButton>
-            </el-upload>
-            <iButton @click="delAttachments">{{
-              language("BIDDING_SHANCHU", "删除")
-            }}</iButton>
-            <iButton @click="handleSave('attach')">{{
-              language("BIDDING_BAOCUN", "保存")
-            }}</iButton>
-            <iButton @click="handleFinish('attach', 'save')">{{
-              language("BIDDING-WANCHENG", "完成")
-            }}</iButton>
-          </div>
-        </template>
+        slot="header-control"
+        v-if="ruleForm.biddingStatus !== '01' ? false : true"
+      >
+        <i class="el-icon-success icon-success" v-show="attachCollapseVal"></i>
+        <div v-show="attachCollapseVal">
+          <iButton @click="handleCheck('attach')">{{ language('BIDDING-CHAKAN', '查看') }}</iButton>
+        </div>
+        <div v-show="!attachCollapseVal" class="form-attchment">
+          <el-upload
+            class="form-attchment-button"
+            action="1"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :show-file-list="false"
+            :http-request="httpUpload"
+          >
+            <iButton>{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
+          </el-upload>
+          <iButton @click="delAttachments">{{language('BIDDING_SHANCHU', '删除') }}</iButton>
+          <iButton @click="handleSave('attach')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
+          <iButton @click="handleFinish('attach', 'save')">{{
+            language('BIDDING-WANCHENG', '完成')
+          }}</iButton>
+        </div>
+      </template>
       </template>
       <template>
         <attachment
@@ -492,15 +416,7 @@
 </template>
 
 <script>
-import {
-  iCard,
-  iButton,
-  iInput,
-  iSelect,
-  iPagination,
-  iPage,
-  iMessage,
-} from "rise";
+import { iCard, iButton, iInput, iSelect, iPagination, iPage, iMessage } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import supplierListDialog from "./components/supplierListDialog";
 import manualForm from "./components/manualForm";
@@ -516,7 +432,7 @@ import {
   isAttendList,
   cbdLevelLib,
   manualTableTitle,
-  saveAreaMap,
+  saveAreaMap
 } from "./components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
@@ -536,10 +452,10 @@ import {
   getBlackStuffList,
   getSupplierFinancialRiskLevel,
   getIsComplete,
-  oldSaveInquiryBidding,
+  oldSaveInquiryBidding
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
-import store from "@/store";
+import store from '@/store'
 
 // import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
@@ -586,7 +502,7 @@ export default {
       supplierRiskLevel: {},
       blackStuffList: {},
       isCompleteData: {},
-      userListData: {},
+      userListData:{},
       tableTitle,
       isAttendList,
       manualTableTitle,
@@ -616,25 +532,19 @@ export default {
       checked: true,
       pointerEvents: "visible",
       size: "",
-      dataType: "",
-      rfqCode: "",
-      time: "",
-      firstSupplierFlag: false,
-      exchangeRateList: {},
-      isUser: false,
-      isLinieId: false,
+      dataType:'',
+      rfqCode:'',
+      time:'',
+      firstSupplierFlag:false,
+      exchangeRateList:{},
+      isUser:false,
+      isLinieId:false
     };
   },
   computed: {
-    disHall() {
-      const { biddingStatus } = this.ruleForm;
-      return (
-        biddingStatus === "02" ||
-        biddingStatus === "04" ||
-        biddingStatus === "06" ||
-        biddingStatus === "07" ||
-        biddingStatus === "08"
-      );
+    disHall(){
+      const {biddingStatus} = this.ruleForm
+      return biddingStatus ==='02' || biddingStatus === '04' || biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08'
     },
     formComponent() {
       const { roundType } = this.ruleForm;
@@ -649,87 +559,95 @@ export default {
         : "roundForm";
     },
     suppliersPage() {
+      // let result = [];
+      // let count = 0;
+      //  while (count * this.page.pageSize < suppliers?.length) {
+      //   result.push(suppliers.slice(count * this.page.pageSize, this.page.pageSize * (count + 1)))
+      //   count++;
+      // }
+
       const { suppliers } = this.ruleForm;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
-    userId() {
-      return store.state.permission.userInfo.id;
+    userId(){
+      return store.state.permission.userInfo.id
     },
     isManual() {
-      return this.ruleForm.roundType == "05";
-    },
+      return this.ruleForm.roundType == "05"
+    }
   },
   async created() {
+    console.log('process.env.VUE_APP_HREFSUPPLIER',process.env)
     this.id = this.$route.params.id;
-    const flag = this.$route.path.includes("/bidding/project/inquiry");
-    if (!flag) {
-      this.rfqCode = this.$route.query.id;
+    const flag = this.$route.path.includes('/bidding/project/inquiry')
+    if(!flag){
+      this.rfqCode = this.$route.query.id
     }
   },
   mounted() {
     this.handleSearchReset();
     this.queryCurrency();
     this.time = setInterval(() => {
-      if (localStorage.getItem("close")) {
-        clearInterval(this.time);
-        localStorage.removeItem("close");
-        window.location.reload();
+      if(localStorage.getItem('close')) {
+        clearInterval(this.time)
+        localStorage.removeItem('close')
+        window.location.reload()
       }
     }, 1000);
   },
   methods: {
-    handleHrefHall() {
-      const { biddingStatus } = this.ruleForm;
-      if (biddingStatus === "02" || biddingStatus === "04") {
+    handleHrefHall(){
+      const {biddingStatus} = this.ruleForm
+      if(biddingStatus ==='02' || biddingStatus === '04'){
         this.$router.push({
-          path: `/bidding/project/hall/${this.ruleForm.id}`,
-        });
-      } else if (
-        biddingStatus === "06" ||
-        biddingStatus === "07" ||
-        biddingStatus === "08"
-      ) {
+          path:`/bidding/project/hall/${this.ruleForm.id}`
+        })
+      }else if (biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08') {
         this.$router.push({
-          path: `/bidding/project/result/${this.ruleForm.id}`,
-        });
+          path:`/bidding/project/result/${this.ruleForm.id}`
+        })
       }
     },
-    handleHref(row) {
-      const a = process.env.VUE_APP_PORTAL_URL;
-      window.open(
-        `${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierId}`,
-        "_blank"
-      );
+    handleHref(row){
+      console.log('gegadgegee',row)
+      const a = process.env.VUE_APP_PORTAL_URL
+      window.open(`${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierId}`, "_blank");
     },
     beforeAvatarUpload(file) {
+      console.log(file);
       this.size = file.size;
+      // if (this.size < 0.1 * 1024) {
+      //   //如果小于0.1KB转化成B
+      //   this.size = this.size.toFixed(2) + "B";
+      // } else if (this.size < 0.1 * 1024 * 1024) {
+      //   //如果小于0.1MB转化成KB
+      //   this.size = (this.size / 1024).toFixed(2) + "KB";
+      // } else if (this.size < 0.1 * 1024 * 1024 * 1024) {
+      //   //如果小于0.1GB转化成MB
+      //   this.size = (this.size / (1024 * 1024)).toFixed(2) + "MB";
+      // } else {
+      //   //其他转化成GB
+      //   this.size = (this.size / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+      // }
       if (this.size < 0.1 * 1024 * 1024 * 1024) {
         this.size = (this.size / (1024 * 1024)).toFixed(2);
       }
       const isSize = file.size / 1024 / 1024 < 15;
       if (!isSize) {
-        this.$message.error(
-          this.language("BIDDING_WJDXZDXZ15M", "文件大小最大限制15M")
-        );
+        this.$message.error(this.language('BIDDING_WJDXZDXZ15M', '文件大小最大限制15M'));
       }
       return isSize;
     },
     delAttachments() {
       if (this.selectedTableData.length === 0) {
-        return this.$message.error(
-          this.language("BIDDING_QXZXJFJ", "请选择询价附件")
-        );
+        return this.$message.error(this.language('BIDDING_QXZXJFJ','请选择询价附件'));
       }
-      this.$confirm(
-        this.language("BIDDING_SFSCXZXJFJ", "是否删除选中询价附件？"),
-        this.language("BIDDING_TISHI", "提示"),
-        {
-          confirmButtonText: this.language("BIDDING_SHI", "是"),
-          cancelButtonText: this.language("BIDDING_FOU", "否"),
-          type: "warning",
-        }
-      )
+      this.$confirm(this.language('BIDDING_SFSCXZXJFJ',"是否删除选中询价附件？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
+        type: "warning",
+      })
         .then(() => {
           const attachmentIds = this.selectedTableData.map((item) => {
             return item.attachmentId;
@@ -749,6 +667,7 @@ export default {
     onOpenDelay() {
       this.isOpenDelay = false;
       this.isDelay = false;
+      console.log(this.isOpenDelay);
     },
     onBiddingDelay() {
       this.isBiddingDelay = false;
@@ -761,20 +680,15 @@ export default {
       const fromdata = { openTenderTime, pricingDeadline, projectCode };
       let dataTime = this.orgRuleForm.pricingDeadline;
       if (dataTime >= pricingDeadline) {
-        return this.$message.error(
-          this.language("BIDDING_BNXYDYDQSJ", "不能小于等于当前时间")
-        );
+        return this.$message.error(this.language('BIDDING_BNXYDYDQSJ', '不能小于等于当前时间'));
       }
       delayOpenTender(fromdata)
         .then((res) => {
-          this.$message.success(
-            this.language("BIDDING_CAOZUOCHENGGONG", "操作成功")
-          );
+          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+          console.log(res);
         })
         .catch(() => {
-          this.$message.error(
-            this.language("BIDDING_CAOZUOSHIBAI", "操作失败")
-          );
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
     // 竞价发送
@@ -790,29 +704,24 @@ export default {
       };
       let pricingTime = this.orgRuleForm.pricingDeadline;
       if (pricingTime >= pricingDeadline) {
-        return this.$message.error(
-          this.language("BIDDING_BNXYDYZQDSJ", "不能小于等于之前的时间")
-        );
+        return this.$message.error(this.language('BIDDING_BNXYDYZQDSJ','不能小于等于之前的时间'));
       }
       delayBidding(fromdata)
         .then((res) => {
           if (res) {
-            this.$message.success(
-              this.language("BIDDING_CAOZUOCHENGGONG", "操作成功")
-            );
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
             location.reload();
           }
         })
         .catch(() => {
-          this.$message.error(
-            this.language("BIDDING_CAOZUOSHIBAI", "操作失败")
-          );
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
     // 开标取消
     onOpenCancel() {
       this.isDelay = true;
       this.isOpenDelay = true;
+      console.log(this.isOpenDelay);
       this.ruleForm = {
         ...this.ruleForm,
         pricingDeadline: this.orgRuleForm.pricingDeadline,
@@ -830,17 +739,20 @@ export default {
     // 新增汇率信息
     handleAdd() {
       if (!Array.isArray(this.ruleForm.exchangeRates)) {
-        this.$set(this.ruleForm, "exchangeRates", []);
+        this.$set(this.ruleForm, "exchangeRates", [])
       }
+
       this.ruleForm.exchangeRates.push({
         id: new Date().getTime(),
         biddingId: this.ruleForm.id,
         currency: "",
         exchangeRate: "",
       });
+
+      console.log(this.ruleForm);
     },
     selectDel(evt) {
-      let { val, item } = evt;
+      let { val,item } = evt;
       if (val) {
         this.exchangeRateIds.push(item.id);
       } else {
@@ -848,32 +760,27 @@ export default {
         this.exchangeRateIds.delete(item.id);
       }
       this.exchangeRateIds = [...new Set(this.exchangeRateIds)];
-      this.exchangeRateList = item;
+      this.exchangeRateList = item
+    },
+    handleCurrencys(e) {
+      console.log(this.currencys);
     },
     // 删除汇率信息
     handleDelete() {
       if (this.exchangeRateIds.length === 0) {
-        return this.$message.error(
-          this.language("BIDDING_QINGXUANZEHUILV", "请选择汇率")
-        );
+        return this.$message.error(this.language('BIDDING_QINGXUANZEHUILV','请选择汇率'));
       }
       let flag = this.ruleForm.currencyUnit
-        ? this.ruleForm.currencyUnit.includes(this.exchangeRateList?.currency)
-        : false;
+                  ?  this.ruleForm.currencyUnit.includes(this.exchangeRateList?.currency)
+                  : false
       if (flag) {
-        return this.$message.error(
-          this.language("BIDDING_BJDWWFSC", "比价单位无法删除")
-        );
+        return this.$message.error(this.language('BIDDING_BJDWWFSC','比价单位无法删除'))
       }
-      this.$confirm(
-        this.language("BIDDING_SFSCHLXX", "是否删除汇率信息？"),
-        this.language("BIDDING_TISHI", "提示"),
-        {
-          confirmButtonText: this.language("BIDDING_SHI", "是"),
-          cancelButtonText: this.language("BIDDING_FOU", "否"),
-          type: "warning",
-        }
-      )
+      this.$confirm(this.language('BIDDING_SFSCHLXX',"是否删除汇率信息？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
+        type: "warning",
+      })
         .then(() => {
           let param = {
             exchangeRateIds: this.exchangeRateIds,
@@ -882,9 +789,7 @@ export default {
           deleteExchangeRate(param)
             .then((res) => {
               this.checkdefault = false;
-              this.$message.success(
-                this.language("BIDDING_SHANCHUCHENGGONG", "删除成功")
-              );
+              this.$message.success(this.language('BIDDING_SHANCHUCHENGGONG','删除成功'));
               this.exchangeRateIds = this.exchangeRateIds.map((item) => {
                 return item;
               });
@@ -900,9 +805,7 @@ export default {
               };
             })
             .catch(() => {
-              this.$message.error(
-                this.language("BIDDING_SHANCHUSHIBAI", "删除失败")
-              );
+              this.$message.error(this.language('BIDDING_SHANCHUSHIBAI','删除失败'));
             });
         })
         .catch(() => {});
@@ -938,49 +841,47 @@ export default {
     handleSetting() {
       this.place = "header";
       this.clickType = "keep";
-      const params = {
-        id: this.ruleForm.id,
-        roundType: this.ruleForm.roundType,
-      };
+      const params = {id: this.ruleForm.id, roundType: this.ruleForm.roundType}
       if (this.ruleForm.biddingStatus !== "01") {
-        const flag = this.$route.path.includes("/bidding/project/inquiry");
-        if (flag) {
+        const flag = this.$route.path.includes('/bidding/project/inquiry')
+        if(flag){
           const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
-          window.open(router.href, "_blank");
+          window.open(router.href,'_blank')
         } else {
-          this.$emit("jump", params);
+          this.$emit('jump',params) 
         }
         return;
       }
-
+      
       this.submitForm(() => {
-        const flag = this.$route.path.includes("/bidding/project/inquiry");
-        if (flag) {
+        const flag = this.$route.path.includes('/bidding/project/inquiry')
+        if(flag){
           const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
-          window.open(router.href, "_blank");
+          window.open(router.href,'_blank')
         } else {
-          this.$emit("jump", params);
+          this.$emit('jump',params) 
         }
         return;
       });
     },
     // 关闭供应商
-    supplierClose() {
-      this.showSupplierDialog = false;
+    supplierClose(){
+      this.showSupplierDialog = false
     },
     handleSupplierChecked(rows) {
       const len = this.ruleForm.suppliers.length;
       const suppliersList = this.ruleForm.suppliers;
+      // console.log('点击保存供应商',suppliersList, rows);
       const suppliers = rows?.map((row, index) => {
         this.$set(this.userListCache, row.id, row.purchaserNameZh);
         return {
@@ -991,31 +892,30 @@ export default {
           // contactName: row.purchaserNameZh,   //联系人
           // email: row.purchaserEmail,          //邮箱
           // telephone: row.phoneM,
-          supplierCode: row.sapCode || row.svwCode || row.svwTempCode || "",
+          supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
-          supplierName: row.nameZh, //供应商全称
-          supplierFullName: row.nameZh, //供应商全称
-          supplierShortName: row.shortNameZh, //供应商简称
+          supplierName: row.nameZh,               //供应商全称
+          supplierFullName: row.nameZh,               //供应商全称
+          supplierShortName: row.shortNameZh,     //供应商简称
           mbdl: "",
           isAttend: true,
+          // ...(this.ruleForm.roundType == "05"
+          //   ? {
+          //       cbdLevel: this.cbdLevelList[0]?.cbdLevel,
+          //       supplierCode: row.supplierId,
+          //     }
+          //   : {
+          //       cbdLevel: "",
+          //       // supplierCode: "",
+          //     }),
         };
       });
       this.ruleForm.suppliers.push(...suppliers);
       this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-        return {
-          ...supplier,
-        };
-      });
-      Promise.all(
-        res.suppliers?.map(async (supplier) => {
-          return this.querySuppliers(
-            supplier.supplierCode,
-            supplier.supplierId,
-            supplier.cbdArea
-          );
-        })
-      ).then(()=>{
-        this.handlefirstSupplier()
+        this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
+          return {
+            ...supplier,
+          };
       })
       this.page.total = this.ruleForm.suppliers.length;
     },
@@ -1025,6 +925,12 @@ export default {
       row.email = item.email;
       row.telephone = item.phoneM;
     },
+    // handleCbdChange(row, item) {
+    //   console.log(row,item)
+    //   row.cbdLevel = item.cbdLevel;
+    //   // row.supplierCode = item.supplierCode;
+    //   row.supplierCode = item.supplierId;
+    // },
     submitForm(callback) {
       if (this.place === "header") {
         this.$refs["formComponent"].$refs["ruleForm"].validate((valid) => {
@@ -1051,6 +957,7 @@ export default {
           }
         });
       } else {
+        console.log(826,this.$refs["tableDataForm"])
         this.$refs["tableDataForm"].$children[0].validate((valid) => {
           if (valid) {
             this.saveForm(callback);
@@ -1144,12 +1051,7 @@ export default {
 
       if (roundType === "02") {
         if (deadline > openTime) {
-          return this.$message.error(
-            this.language(
-              "BIDDING_KBSJBXYWYBJJZRQ",
-              "开标时间必须要晚于报价截止日期"
-            )
-          );
+          return this.$message.error(this.language('BIDDING_KBSJBXYWYBJJZRQ','开标时间必须要晚于报价截止日期'));
         }
       }
       if (
@@ -1157,21 +1059,15 @@ export default {
         (roundType === "05" && manualBiddingType === "01")
       ) {
         if (beginTime >= end) {
-          return this.$message.error(
-            this.language("BIDDING_JSSJBXYWYKSRQ", "结束时间必须要晚于开始日期")
-          );
+          return this.$message.error(this.language('BIDDING_JSSJBXYWYKSRQ','结束时间必须要晚于开始日期'));
         } else if (endTime > deadline) {
-          return this.$message.error(
-            this.language(
-              "BIDDING_BJJZRQBWYJSSJH3GGZR",
-              "报价截止日期不晚于结束时间"
-            )
-          );
+          console.log(endTime, pricingDeadline);
+          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间'));
         }
       }
       const formData = this.ruleForm;
 
-      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding;
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
       return fetch({
         ...this.orgRuleForm,
         ...formData,
@@ -1179,29 +1075,23 @@ export default {
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
         quotationAreaFlag: roundType !== "05",
-        associatedQuotation:
-          formData.associatedQuotation && formData.associatedQuotation.length
-            ? formData.associatedQuotation.toString().split(",")
-            : null,
-        saveArea: 1, // 报价
-      }).then((res) => {
-        if (this.isManual ? res : res.code == 200) {
-          const _r = this.isManual ? res : res.data;
-          this.$message.success(
-            this.language("BIDDING_BAOCUNCHENGGONG", "保存成功")
-          );
-          // this.handleSearchReset();
-          this.initList = {
-            ..._r,
-            openTenderStatus: _r.openTenderStatus || "01", // 默认未开标
-          };
-          callback && callback();
-        } else {
-          this.$message.error(
-            this.language("BIDDING_BAOCUNSHIBAI", "保存失败")
-          );
-        }
-      });
+        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null,
+        saveArea: 1 // 报价
+      })
+        .then((res) => {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            // this.handleSearchReset();
+            this.initList = {
+              ..._r,
+              openTenderStatus: _r.openTenderStatus || "01", // 默认未开标
+            };
+            callback && callback();
+          } else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
+        });
     },
     saveFormContent(callback) {
       // this.$confirm("是否保存该轮次供应商信息？", "提示", {
@@ -1212,8 +1102,9 @@ export default {
       //   .then(() => {})
       //保存
       const formData = this.ruleForm;
+      console.log('formDatasafsafsa',formData)
 
-      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding;
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
       return fetch({
         ...this.orgRuleForm,
         suppliers: formData.suppliers.map((item) => {
@@ -1222,38 +1113,37 @@ export default {
         }),
         supplierIsCompleted: this.clickType == "save" ? 1 : 0,
         quotationAreaFlag: false,
-        saveArea: 2, // 供应商
-      }).then((res) => {
-        if (this.isManual ? res : res.code == 200) {
-          const _r = this.isManual ? res : res.data;
-          this.$message.success(
-            this.language("BIDDING_BAOCUNCHENGGONG", "保存成功")
-          );
-          this.initSuppliers = _r.suppliers?.map((supplier) => {
-            if (supplier.isAttend === null || supplier.isAttend === "")
-              return {
-                ...supplier,
-                isAttend: true,
-                // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
-                //   ? true
-                //   : supplier.isAttend,
-              };
-            else
-              return {
-                ...supplier,
-              };
-          });
-          this.orgRuleForm = {
-            ...this.orgRuleForm,
-            suppliers: _r.suppliers,
-          };
-          callback && callback();
-        } else {
-          this.$message.error(
-            this.language("BIDDING_BAOCUNSHIBAI", "保存失败")
-          );
-        }
-      });
+        saveArea: 2 // 供应商
+      })
+        .then((res) => {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            this.initSuppliers = _r.suppliers?.map((supplier) => {
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
+              
+              if (supplier.isAttend === null || supplier.isAttend === "")
+                return {
+                  ...supplier,
+                  isAttend: true,
+                  // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
+                  //   ? true
+                  //   : supplier.isAttend,
+                };
+              else
+                return {
+                  ...supplier,
+                };
+            });
+            this.orgRuleForm = {
+              ...this.orgRuleForm,
+              suppliers: _r.suppliers,
+            };
+            callback && callback();
+          } else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
+        })
     },
     // 保存汇率信息
     handleSaveRate(callback) {
@@ -1261,9 +1151,7 @@ export default {
         return item.currency;
       });
       if ([...new Set(currencys)].length < currencys.length) {
-        return this.$message.error(
-          this.language("BIDDING_HLBNCF", "汇率不能重复")
-        );
+        return this.$message.error(this.language('BIDDING_HLBNCF','汇率不能重复'));
       }
       // this.$confirm("是否保存该轮次汇率信息？", "提示", {
       //   confirmButtonText: "是",
@@ -1273,33 +1161,31 @@ export default {
       //   .then(() => {})
       const formData = this.ruleForm;
 
-      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding;
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
       return fetch({
         // ...formData,
         ...this.orgRuleForm,
         exchangeRates: formData.exchangeRates,
         exchangeIsCompleted: this.clickType == "save" ? 1 : 0,
         quotationAreaFlag: false,
-        saveArea: 3, // 汇率
-      }).then((res) => {
-        if (this.isManual ? res : res.code == 200) {
-          const _r = this.isManual ? res : res.data;
-          this.$message.success(
-            this.language("BIDDING_BAOCUNCHENGGONG", "保存成功")
-          );
-          this.initRate = [..._r.exchangeRates];
-          this.orgRuleForm = {
-            ...this.orgRuleForm,
-            exchangeRates: _r.exchangeRates,
-          };
+        saveArea: 3 // 汇率
+      })
+        .then((res) => {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            this.initRate = [..._r.exchangeRates];
+            this.orgRuleForm = {
+              ...this.orgRuleForm,
+              exchangeRates: _r.exchangeRates,
+            };
 
-          callback && callback();
-        } else {
-          this.$message.error(
-            this.language("BIDDING_BAOCUNSHIBAI", "保存失败")
-          );
-        }
-      });
+            callback && callback();
+          }
+          else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
+        });
     },
     // 保存附件
     handleSaveAttach(callback) {
@@ -1315,34 +1201,29 @@ export default {
         ...this.orgRuleForm,
         attachments: formData.attachments,
         attachmentIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: false,
-      }).then((res) => {
-        if (res) {
-          this.$message.success(
-            this.language("BIDDING_BAOCUNCHENGGONG", "保存成功")
-          );
-          this.initAttachments = [...res.attachments];
-          this.orgRuleForm = {
-            ...this.orgRuleForm,
-            attachments: res.attachments,
-          };
-          this.handleSearchReset();
-          callback && callback();
-        } else {
-          this.$message.error(
-            this.language("BIDDING_BAOCUNSHIBAI", "保存失败")
-          );
-        }
-      });
+        quotationAreaFlag: false
+      })
+        .then((res) => {
+          if (res) {
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            this.initAttachments = [...res.attachments];
+            this.orgRuleForm = {
+              ...this.orgRuleForm,
+              attachments: res.attachments,
+            };
+            this.handleSearchReset();
+            callback && callback();
+          } else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
+        })
     },
     // 附件
     async httpUpload(content) {
       let formData = new FormData();
       formData.append("file", content.file);
       const res = await uploadFile(formData).catch((err) => {
-        this.$message.error(
-          this.language("BIDDING_SHANGCHUANSHIBAI", "上传失败")
-        );
+        this.$message.error(this.language('BIDDING_SHANGCHUANSHIBAI', '上传失败'));
       });
       // this.attachmentId = res.id;
       this.ruleForm.attachments.push({
@@ -1352,14 +1233,12 @@ export default {
         biddingId: this.ruleForm.id,
         updateDate: "",
       });
-      this.$message.success(
-        this.language("BIDDINGH_SHANGCHUANCHENGGONG", "上传成功")
-      );
+      this.$message.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
     },
     saveForms(callback) {
       const formData = this.ruleForm;
 
-      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding;
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
       fetch({
         ...this.orgRuleForm,
         ...{
@@ -1369,11 +1248,7 @@ export default {
             exchangeRates: this.orgRuleForm.exchangeRates,
             inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
             quotationAreaFlag: formData.roundType !== "05",
-            associatedQuotation:
-              formData.associatedQuotation &&
-              formData.associatedQuotation.length
-                ? formData.associatedQuotation.toString().split(",")
-                : null,
+            associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
           },
           content: {
             suppliers: formData.suppliers.map((item) => {
@@ -1391,303 +1266,335 @@ export default {
             attachmentIsCompleted: this.clickType == "save" ? 1 : 0,
           },
         }[this.place],
-        saveArea: saveAreaMap[this.place],
+        saveArea: saveAreaMap[this.place]
       }).then((res) => {
-        if (this.isManual ? res : res.code == 200) {
-          this.$message.success(
-            this.language("BIDDING_BAOCUNCHENGGONG", "保存成功")
-          );
+        if (this.isManual ? res : (res.code == 200)) {
+          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           // this.handleSearchReset();
           callback && callback();
         } else {
-          this.$message.error(
-            this.language("BIDDING_BAOCUNSHIBAI", "保存失败")
-          );
+          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
         }
       });
     },
     async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      const flag = this.$route.path.includes("/bidding/project/inquiry");
-      if (!flag) {
-        const rfqCode = { rfqCode: this.rfqCode };
-        await findRfqInquiry(rfqCode)
-          .then((r) => {
-            if (r.code != 200) {
-              return iMessage.error(
-                this.$i18n.locale === "zh" ? r.desZh : r.desEn
-              );
-            }
+      const flag = this.$route.path.includes('/bidding/project/inquiry')
+      if(!flag)
+      {
+        const rfqCode = {rfqCode:this.rfqCode}
+       await findRfqInquiry(rfqCode)
+        .then(r => {
+          if (r.code != 200) {
+            return iMessage.error(this.$i18n.locale === "zh" ? r.desZh : r.desEn)
+          }
 
-            const res = r.data || {};
-            // 是否当前用户是否是采购员
-            const userId = String(this.userId);
-            this.isUser = userId === res.linieId;
+          const res = r.data || {}
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
 
-            // 判断采购员是否是当前登录者的下属员工
-            this.isLinieId = !!res?.userIds?.some(
-              (item) => userId !== res.linieId || res.linieId.includes(item)
-            );
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
 
-            if (res.inquiryIsCompleted == true) {
-              this.$refs.headerCollapse.collapseValue = false;
-              this.$set(this, `headerCollapseVal`, true);
-            }
-            if (res.supplierIsCompleted == true) {
-              this.$refs.contentCollapse.collapseValue = false;
-              this.$set(this, `contentCollapseVal`, true);
-            }
-            if (res.exchangeIsCompleted == true) {
-              this.$refs.reatCollapse.collapseValue = false;
-              this.$set(this, `reatCollapseVal`, true);
-            }
-            // 附件
-            if (res.attachmentIsCompleted == true) {
-              this.$refs.attachCollapse.collapseValue = false;
-              this.$set(this, `attachCollapseVal`, true);
-            }
-            this.page.currPage = 1;
-            this.page.total = res.suppliers.length;
-            this.orgRuleForm = { ...res };
-            let suppliers = res.suppliers?.map((supplier) => {
+          console.log(res);
+          if (res.inquiryIsCompleted == true) {
+            this.$refs.headerCollapse.collapseValue = false;
+            this.$set(this, `headerCollapseVal`, true);
+          }
+          if (res.supplierIsCompleted == true) {
+            this.$refs.contentCollapse.collapseValue = false;
+            this.$set(this, `contentCollapseVal`, true);
+          }
+          if (res.exchangeIsCompleted == true) {
+            this.$refs.reatCollapse.collapseValue = false;
+            this.$set(this, `reatCollapseVal`, true);
+          }
+          // 附件
+          if (res.attachmentIsCompleted == true) {
+            console.log("object");
+            this.$refs.attachCollapse.collapseValue = false;
+            console.log("object2");
+            this.$set(this, `attachCollapseVal`, true);
+          }
+          this.page.currPage = 1;
+          this.page.total = res.suppliers.length;
+          // this.page.pageSize = 1;
+          // this.page.pageSizes = [1,2,3,4];
+          this.orgRuleForm = { ...res };
+          this.ruleForm = {
+            ...res,
+            openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+            exchangeRates: res.exchangeRates?.map((item) => ({
+              ...item,
+            })),
+            suppliers: res.suppliers?.map((supplier) => {
+              console.log('obsfsaject',supplier)
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
                   isAttend: true,
-                };
-              else {
-                return {
-                  ...supplier,
-                };
-              }
-            });
-            this.ruleForm = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
-              exchangeRates: res.exchangeRates?.map((item) => ({
-                ...item,
-              })),
-              suppliers: JSON.parse(JSON.stringify(suppliers)),
-            };
-            Promise.all(
-              res.suppliers?.map(async (supplier) => {
-                return this.querySuppliers(
-                  supplier.supplierCode,
-                  supplier.supplierId,
-                  supplier.cbdArea
-                );
-              })
-            ).then(() => {
-              this.handlefirstSupplier();
-            });
-            this.initList = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
-            };
-            this.initRate = [...(res.exchangeRates || [])];
-            this.initAttachments = [...(res.attachments || [])];
-            this.initSuppliers = JSON.parse(JSON.stringify(suppliers));
-            this.tableLoading = false;
-            this.$emit("change-title", this.ruleForm);
-          })
-          .catch((err) => {
-            this.tableLoading = false;
-          });
-      } else {
-        await findInquiry(e)
-          .then((res) => {
-            // 是否当前用户是否是采购员
-            const userId = String(this.userId);
-            this.isUser = userId === res.linieId;
-
-            // 判断采购员是否是当前登录者的下属员工
-            this.isLinieId = !!res?.userIds?.some(
-              (item) => userId !== res.linieId || res.linieId.includes(item)
-            );
-
-            if (res.inquiryIsCompleted == true) {
-              this.$refs.headerCollapse.collapseValue = false;
-              this.$set(this, `headerCollapseVal`, true);
-            }
-            if (res.supplierIsCompleted == true) {
-              this.$refs.contentCollapse.collapseValue = false;
-              this.$set(this, `contentCollapseVal`, true);
-            }
-            if (res.exchangeIsCompleted == true) {
-              this.$refs.reatCollapse.collapseValue = false;
-              this.$set(this, `reatCollapseVal`, true);
-            }
-            // 附件
-            if (res.attachmentIsCompleted == true) {
-              this.$refs.attachCollapse.collapseValue = false;
-              this.$set(this, `attachCollapseVal`, true);
-            }
-            this.page.currPage = 1;
-            this.page.total = res.suppliers.length;
-            // this.page.pageSize = 1;
-            // this.page.pageSizes = [1,2,3,4];
-            this.orgRuleForm = { ...res };
-            let suppliers = res.suppliers?.map((supplier) => {
-              if (supplier.isAttend === null || supplier.isAttend === "")
-                return {
-                  ...supplier,
-                  isAttend: true,
+                  // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
+                  //   ? true
+                  //   : supplier.isAttend,
+                  // cbdLevelList:this.cbdLevelList
+                  //   supplier.cbdLevel == "03"
+                  //     ? this.cbdLevelList.slice(2, 3)
+                  //     : supplier.cbdLevel == "02"
+                  //     ? this.cbdLevelList.slice(1, 3)
+                  //     : this.cbdLevelList,
                 };
               else
                 return {
                   ...supplier,
+                  // cbdLevelList:this.cbdLevelList
+                  //   supplier.cbdLevel == "03"
+                  //     ? this.cbdLevelList.slice(2, 3)
+                  //     : supplier.cbdLevel == "02"
+                  //     ? this.cbdLevelList.slice(1, 3)
+                  //     : this.cbdLevelList,
                 };
-            });
-            this.ruleForm = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
-              exchangeRates: res.exchangeRates?.map((item) => ({
-                ...item,
-              })),
-              suppliers: JSON.parse(JSON.stringify(suppliers)),
-            };
-            Promise.all(
-              res.suppliers?.map(async (supplier) => {
-                return this.querySuppliers(
-                  supplier.supplierCode,
-                  supplier.supplierId,
-                  supplier.cbdArea
-                );
-              })
-            ).then(() => {
-              this.handlefirstSupplier();
-            });
-            this.initList = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
-            };
-            this.initRate = [...(res.exchangeRates || [])];
-            this.initAttachments = [...(res.attachments || [])];
-            this.initSuppliers = JSON.parse(JSON.stringify(suppliers));
-            this.tableLoading = false;
-
-            this.$emit("change-title", this.ruleForm);
-          })
-          .catch((err) => {
-            this.tableLoading = false;
+            }),
+          };
+          this.initList = {
+            ...res,
+            openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+          };
+          this.initRate = [...res.exchangeRates];
+          this.initAttachments = [...res.attachments];
+          this.initSuppliers = res.suppliers?.map((supplier) => {
+            console.log('obsfsaject',supplier)
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
+            // if (!supplier.isAttend)
+            if (supplier.isAttend === null || supplier.isAttend === "")
+              return {
+                ...supplier,
+                isAttend: true,
+                // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
+                //   ? true
+                //   : supplier.isAttend,
+              };
+            else
+              return {
+                ...supplier,
+              };
           });
+          this.tableLoading = false;
+
+          this.$emit("change-title", this.ruleForm);
+        })
+        .catch((err) => {
+          this.tableLoading = false;
+        });
+      
+      } else {
+       await findInquiry(e)
+        .then((res) => {
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
+
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
+
+          console.log(res);
+          if (res.inquiryIsCompleted == true) {
+            this.$refs.headerCollapse.collapseValue = false;
+            this.$set(this, `headerCollapseVal`, true);
+          }
+          if (res.supplierIsCompleted == true) {
+            this.$refs.contentCollapse.collapseValue = false;
+            this.$set(this, `contentCollapseVal`, true);
+          }
+          if (res.exchangeIsCompleted == true) {
+            this.$refs.reatCollapse.collapseValue = false;
+            this.$set(this, `reatCollapseVal`, true);
+          }
+          // 附件
+          if (res.attachmentIsCompleted == true) {
+            console.log("object");
+            this.$refs.attachCollapse.collapseValue = false;
+            console.log("object2");
+            this.$set(this, `attachCollapseVal`, true);
+          }
+          this.page.currPage = 1;
+          this.page.total = res.suppliers.length;
+          // this.page.pageSize = 1;
+          // this.page.pageSizes = [1,2,3,4];
+          this.orgRuleForm = { ...res };
+          this.ruleForm = {
+            ...res,
+            openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+            exchangeRates: res.exchangeRates?.map((item) => ({
+              ...item,
+            })),
+            suppliers: res.suppliers?.map((supplier) => {
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
+              if (supplier.isAttend === null || supplier.isAttend === "")
+                return {
+                  ...supplier,
+                  isAttend: true,
+                  // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
+                  //   ? true
+                  //   : supplier.isAttend,
+                  // cbdLevelList:this.cbdLevelList
+                    // supplier.cbdLevel == "03"
+                    //   ? this.cbdLevelList.slice(2, 3)
+                    //   : supplier.cbdLevel == "02"
+                    //   ? this.cbdLevelList.slice(1, 3)
+                    //   : this.cbdLevelList,
+                };
+              else
+                return {
+                  ...supplier,
+                  // cbdLevelList:this.cbdLevelList
+                    // supplier.cbdLevel == "03"
+                    //   ? this.cbdLevelList.slice(2, 3)
+                    //   : supplier.cbdLevel == "02"
+                    //   ? this.cbdLevelList.slice(1, 3)
+                    //   : this.cbdLevelList,
+                };
+            }),
+          };
+          this.initList = {
+            ...res,
+            openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+          };
+          this.initRate = [...res.exchangeRates];
+          this.initAttachments = [...res.attachments];
+          this.initSuppliers = res.suppliers?.map((supplier) => {
+            console.log('obsfsaject',supplier)
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
+            // if (!supplier.isAttend)
+            if (supplier.isAttend === null || supplier.isAttend === "")
+              return {
+                ...supplier,
+                isAttend: true,
+                // "number" !== typeof supplier.isAttend && supplier.mbdl === "M"
+                //   ? true
+                //   : supplier.isAttend,
+              };
+            else
+              return {
+                ...supplier,
+              };
+          });
+          this.tableLoading = false;
+
+          this.$emit("change-title", this.ruleForm);
+        })
+        .catch((err) => {
+          this.tableLoading = false;
+        });
       }
     },
     handleSizeChange(val) {
+      console.log("handleSizeChange", this.page);
       this.page.pageSize = val;
     },
-    async querySuppliers(supplierCode, supplierId, cbdArea) {
+    async querySuppliers(supplierCode,supplierId,cbdArea) {
       // 联系人
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
-        const params = { supplierId, isOnlyValid: true };
+        const params = {supplierId, isOnlyValid: true}
         const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
-        const list = data.data.filter((item) => item.isDefault);
+        const list = data.data.filter(item => item.isDefault)
         this.$set(this.userListData, supplierId, list || []);
-        // 手工且是草稿添加联系人默认值
-        const { biddingStatus } = this.ruleForm;
-        if (biddingStatus === "01") {
+         // 手工且是草稿添加联系人默认值
+        const { biddingStatus} = this.ruleForm
+        if ( biddingStatus === '01') {
           this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
             return {
               ...supplier,
-              mbdl: supplier.mbdl == "2" || supplier.mbdl == "M" ? "M" : "",
-              contactName:
-                supplier.contactName ||
-                this.userListData[supplier.supplierId]?.[0]?.nameZh,
-              email:
-                supplier.email ||
-                this.userListData[supplier.supplierId]?.[0]?.email,
-              telephone:
-                supplier.telephone ||
-                this.userListData[supplier.supplierId]?.[0]?.phoneM,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              contactName:supplier.contactName || this.userListData[supplier.supplierId]?.[0]?.nameZh,
+              email:supplier.email || this.userListData[supplier.supplierId]?.[0]?.email,
+              telephone:supplier.telephone || this.userListData[supplier.supplierId]?.[0]?.phoneM
             };
-          });
-          // this.handlefirstSupplier()
+          })
+          this.handlefirstSupplier()
         }
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
         this.$set(this.cbdLevelList, supplierCode, []);
         // const res = await cbdLevel(supplierCode);
-        const res = ["L1", "L2", "L3"];
+        const res = ['L1', 'L2', 'L3'];
         this.$set(this.cbdLevelList, supplierCode, res || []);
-        this.$nextTick(() => {
-          this.cbdLevelList[supplierCode] =
-            cbdArea == "03"
-              ? this.cbdLevelList[supplierCode].slice(2, 3)
-              : cbdArea == "02"
-              ? this.cbdLevelList[supplierCode].slice(1, 3)
-              : this.cbdLevelList[supplierCode];
-        });
-        this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-          return {
-            ...supplier,
-            mbdl: supplier.mbdl == "2" || supplier.mbdl == "M" ? "M" : "",
-          };
-        });
+          this.$nextTick(() => {
+            this.cbdLevelList[supplierCode] = cbdArea == "03"
+                      ? this.cbdLevelList[supplierCode].slice(2, 3)
+                      : cbdArea == "02"
+                      ? this.cbdLevelList[supplierCode].slice(1, 3)
+                      : this.cbdLevelList[supplierCode]
+          })
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              
+            };
+          })
+        
       }
-
+      
       // 供应商黑名单
-      const { rfqCode, products, roundType } = this.ruleForm;
-      let fsnrGsnrList = products?.map((item) => item.fsnrGsnr) || [];
-      const blackData =
-        roundType !== "05"
-          ? { rfqId: Number(rfqCode), spplierIds: [Number(supplierId)] }
-          : { fsnr: fsnrGsnrList, spplierIds: [Number(supplierId)] }; // 手工竞价
+      const { rfqCode, products, roundType } = this.ruleForm
+      let fsnrGsnrList = products?.map(item => item.fsnrGsnr) || []     
+      const blackData = roundType !== '05' 
+                        ? {rfqId: Number(rfqCode),spplierIds:[Number(supplierId)]}
+                        : {fsnr: fsnrGsnrList, spplierIds:[Number(supplierId)]}       // 手工竞价
 
-      if (roundType !== "05" && !this.blackStuffList[supplierId]) {
+      if (roundType !== '05' && !this.blackStuffList[supplierId]){
         this.$set(this.blackStuffList, supplierId, []);
-        let resBlack = await getBlackStuffList(blackData);
-        this.$set(this.blackStuffList, supplierId, resBlack.data || []);
-      } else if (
-        roundType === "05" &&
-        fsnrGsnrList.length &&
-        !this.blackStuffList[supplierId]
-      ) {
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+
+      } else if (roundType === '05' && fsnrGsnrList.length && !this.blackStuffList[supplierId]) {
         this.$set(this.blackStuffList, supplierId, []);
-        let resBlack = await getBlackStuffList(blackData);
-        this.$set(this.blackStuffList, supplierId, resBlack.data || []);
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+        
       }
 
       // 获取年度更新信息任务状态
-      if (!this.isCompleteData[supplierId]) {
+      if (!this.isCompleteData[supplierId]){
         this.$set(this.isCompleteData, supplierId, []);
-        let resIsComplete = await getIsComplete([Number(supplierId)]);
-        this.$set(this.isCompleteData, supplierId, resIsComplete || false);
+        getIsComplete([Number(supplierId)]).then(res => {
+          this.$set(this.isCompleteData, supplierId, res || false);
+        })
       }
+      
 
       // 获取供应商财务风险级别
-      if (!this.supplierRiskLevel[supplierId]) {
+      if (!this.supplierRiskLevel[supplierId]){
         this.$set(this.supplierRiskLevel, supplierId, []);
-        let supplierFinancial = await getSupplierFinancialRiskLevel([
-          Number(supplierId),
-        ]);
-        this.$set(this.supplierRiskLevel, supplierId, supplierFinancial || []);
+        getSupplierFinancialRiskLevel([Number(supplierId)]).then(res => {
+          this.$set(this.supplierRiskLevel, supplierId, res || []);
+        })
       }
+
     },
-    handlefirstSupplier() {
-      const { biddingStatus } = this.ruleForm;
-      if (biddingStatus === "01") {
-        if (!this.ruleForm.firstSaveSupplierFlag) {
-          const flag = this.ruleForm.suppliers.every(
-            (item) => item.contactName && item.email
-          );
-          const formData = this.ruleForm;
-          const fetch = this.isManual
-            ? oldSaveInquiryBidding
-            : saveInquiryBidding;
-          if (flag) {
-            fetch({
-              ...this.orgRuleForm,
-              suppliers: formData.suppliers,
-              saveArea: 2,
-            }).then((res) => {
-              console.log("object成功了");
-            });
-          }
+    handlefirstSupplier(){
+      if(!this.ruleForm.firstSaveSupplierFlag) {
+        const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
+        const formData = this.ruleForm;
+        const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+        if (flag) {
+          fetch({
+          ...this.orgRuleForm,
+          suppliers: formData.suppliers,
+          saveArea: 2
+          }).then(res => {
+            console.log('object成功了')
+          })
         }
+        
       }
     },
     // 表格选中值集
@@ -1754,13 +1661,14 @@ export default {
     // 第三方接口货币信息
     queryCurrency() {
       getCurrencyUnit().then((res) => {
+        console.log(res);
         this.paritiesList = [...this.paritiesList, ...res.data];
       });
     },
   },
-  destroyed() {
-    clearInterval(this.time);
-  },
+  destroyed(){
+    clearInterval(this.time)
+  }
 };
 </script>
 
@@ -1773,7 +1681,7 @@ export default {
     margin-left: 0.5rem;
     margin-right: 1rem;
     /* flex:0 0 30%; */
-
+    
     .title-header {
       padding-right: 3px;
     }
@@ -1793,7 +1701,7 @@ export default {
   .form-item-resultOpenForm-Img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain
   }
 }
 ::v-deep .title-header .image-box {
@@ -1887,11 +1795,12 @@ export default {
     padding: 0 0.5625rem;
   }
 }
-::v-deep .el-switch.is-disabled {
-  opacity: 1;
+::v-deep .el-switch.is-disabled{
+   opacity:1;
 }
-::v-deep .el-switch {
-  //开关样式
+::v-deep .el-switch{
+ 
+//开关样式
   .el-switch__label--left {
     position: relative;
     left: 42px;
