@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2022-02-16 17:07:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-05 17:24:21
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\file\index.js
  */
@@ -12,6 +12,7 @@ import httpAxios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_COMMON)
 const fileRequst = axios(process.env.VUE_APP_BASE_UPLOAD_API + '/fileud')
 const file = httpAxios(process.env.VUE_APP_BASE_UPLOAD_API + '/fileud')
+const wopi = httpAxios(process.env.VUE_APP_BASE_UPLOAD_API)
 const sourcing = httpAxios(process.env.VUE_APP_SOURCING)
 // const fileRequstDown = axios(process.env.VUE_APP_FILEAPI + '/fileud')
 export function downloadFile(parmars) {
@@ -140,5 +141,13 @@ export function getFileByFileId(params) {
     params: {
       fileId: params,
     },
+  })
+}
+
+// 获取文件嵌入地址
+export function getFileUrl(fileId,fileName) {
+  return wopi({
+    url: `/wopi/getWopiUrl/${fileId}/${fileName}`,
+    method: 'GET',
   })
 }

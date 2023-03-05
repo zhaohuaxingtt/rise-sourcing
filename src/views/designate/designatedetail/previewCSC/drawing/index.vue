@@ -62,6 +62,7 @@ import { icon } from "rise";
 import { nominateAppSDetail } from "@/api/designate";
 import { getMtzAttachmentPageList } from "@/api/designate/designatedetail/attachment";
 import { getdDecisiondataList } from "@/api/designate/decisiondata/attach";
+import { getFileUrl } from "@/api/file/index";
 
 export default {
   data() {
@@ -89,6 +90,10 @@ export default {
     this.init();
   },
   methods: {
+    async getFileUrl(fileId,fileName){
+      let res = await getFileUrl(fileId,fileName)
+      return res.data
+    },
     init() {
       this.loading = true;
       Promise.all([
@@ -183,12 +188,22 @@ export default {
         this.collapseValue = !this.collapseValue;
       }
     },
-    changeSrc(index, item) {
+    async changeSrc(index, item) {
       if (!item) return;
       let fileObj = JSON.parse(JSON.stringify(item));
       let arr = item.fileName.split(".");
       fileObj.type = arr[arr.length - 1].toUpperCase();
-      this.detail = fileObj;
+      let queryArr = fileObj.filePath.split('?')
+      let query = queryArr[queryArr.length-1]
+      let queryStr = query.split("&")
+      let fileId = queryStr.find(str=>str.indexOf('fileId')>-1).split('=')[1]
+      if(['PNG', 'JPG', 'JIF'].includes(fileObj.type)){
+        this.detail = fileObj;
+      }else{
+        let res = await this.getFileUrl(fileId,fileObj.fileName)
+        fileObj.filePath = res||fileObj.filePath
+        this.detail = fileObj;
+      }
       this.index = index;
       this.active = item.id;
     },
