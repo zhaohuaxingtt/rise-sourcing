@@ -10,8 +10,11 @@
     </div>
     <div class="content">
       <div class="infos" v-for="item in items" :key="item.label">
-        <div class="label">{{ item.label }}:</div>
-        <div class="value">{{ data[item.key] }}</div>
+        <div class="label" v-if="item.label != 'EP'">{{ item.label }}:</div>
+        <div class="value" v-if="item.label == 'TNR'">
+          {{ data[item.key] }}({{ data.ep }})
+        </div>
+        <div class="value" v-else-if="item.label != 'EP'">{{ data[item.key] }}</div>
       </div>
     </div>
   </div>
@@ -84,8 +87,12 @@ export default {
                 this.$set(
                   this.data,
                   item.key,
-                    res.data.carline || res.data.projects.join('、')
+                  res.data.carline || res.data.projects.join("、")
                 );
+
+                break;
+              case "ep":
+                this.$set(this.data, item.key, res.data.ep);
 
                 break;
               case "singleSourcing":
@@ -117,8 +124,8 @@ export default {
   flex-flow: column;
   background: #fff;
   ::v-deep * {
-    font-family: 'Arial', 'Helvetica', 'sans-serif';
-    letter-spacing:0
+    font-family: "Arial", "Helvetica", "sans-serif";
+    letter-spacing: 0;
   }
 }
 .imgBox {
