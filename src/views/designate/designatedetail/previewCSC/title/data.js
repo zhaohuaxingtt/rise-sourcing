@@ -14,5 +14,5 @@ export const titleData = [
   { label: 'Carline', key: 'carline' },
   { label: 'SOP', key: 'soptime' },
   { label: 'Linie Buyer', key: 'buyer' },
-  { label: 'EP', key: 'ep' },
+  { label: 'Part Type', key: 'partType' },
 ]
