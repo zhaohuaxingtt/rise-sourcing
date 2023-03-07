@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-01 15:53:00
+ * @LastEditTime: 2023-03-07 10:03:36
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -230,22 +230,14 @@
                 :data="item"
                 :max="max"
               />
-              <!-- <template v-else-if="item.prop == 'Recommendation'">
+              <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
+                popper-class="supplier-pop"
               >
-                <div>
-                  <el-table :data="[]">
-                    <el-table-column
-                      label="Supplier"
-                      prop="supplier"
-                    ></el-table-column>
-                    <el-table-column
-                      label="aPrice"
-                      prop="aPrice"
-                    ></el-table-column>
-                  </el-table>
+                <div class="supplier-box">
+                  <p v-for="i in 30" :key="i"><span>{{supplierSap}}</span>-<span>{{supplier}}</span></p>
                 </div>
                 <div slot="reference">
                   <barItem
@@ -258,7 +250,7 @@
                   />
                 </div>
               </el-popover>
-              </template> -->
+              </template>
               <barItem
                 v-else
                 :key="item.prop"
@@ -611,5 +603,26 @@ export default {
 .font-size20 {
   font-size: 20px;
   font-weight: bold;
+}
+</style>
+<style lang="scss">
+.supplier-pop{
+  margin-left: -20px !important;
+  .supplier-box{
+    height: 300px;
+    overflow: auto;
+    
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      min-height: 8px;
+      min-width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      width: 8px;
+    }
+  }
 }
 </style>
