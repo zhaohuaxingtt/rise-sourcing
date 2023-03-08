@@ -157,7 +157,7 @@
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            {{ item.fsGsNum }}({{ item.factoryEn }})
+                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -363,14 +363,12 @@
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.toolingShareTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.toolingNotShareTotal }}
+                                    Unassessed amount：{{ scope.row.toolingNotShareTotal }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -395,14 +393,12 @@
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.developShareCostTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.developNotShareCostTotal }}
+                                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -429,20 +425,20 @@
         </el-table-column>
       </template>
     </el-table>
+    <partTableDetail :visible.sync="visible" :row="itemFS" />
   </div>
 </template>
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
-import allowIcon from "@/assets/images/cscIcon/allow-right.svg";
-import allow from "./allow.js";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../../components/tooltip.vue";
+import partTableDetail from "./partTableDetail";
 export default {
   components: {
     tooltip,
+    partTableDetail
   },
-  mixins: [allow],
   props: {
     row: {
       type: Array,
@@ -451,7 +447,6 @@ export default {
   },
   data() {
     return {
-      allowIcon,
       ref: "supplier-table",
       fixedTitle: [
         {
@@ -498,6 +493,8 @@ export default {
       partAllData: [],
       allData: [],
       index: -1,
+      visible: false,
+      itemFS:{}
     };
   },
   computed: {
@@ -515,6 +512,13 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
+    gotoDetail(row) {
+      this.itemFS = JSON.parse(JSON.stringify(row));
+      this.itemFS.fsNum = this.itemFS.fsGsNum
+      this.$nextTick(() => {
+        this.visible = true;
+      });
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -683,9 +687,6 @@ export default {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
       }
-      this.$nextTick(() => {
-        this.positionAllow();
-      });
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -772,17 +773,9 @@ export default {
         color: #000 !important;
       }
     }
-  }
-  .leftAllow {
-    position: relative;
-    padding: 0;
-    float: left;
-  }
-
-  .rightAllow {
-    position: relative;
-    padding: 0;
-    float: right;
+    .decoration{
+      text-decoration: underline
+    }
   }
   .red {
     color: #f00;

@@ -138,13 +138,13 @@
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       getInt(item.toolingShareTotal) | toThousands(true)
 
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       getInt(item.toolingNotShareTotal) | toThousands(true)
                     }}
                   </div>
@@ -170,13 +170,13 @@
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       getInt(item.developShareCostTotal) | toThousands(true)
 
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       getInt(item.developNotShareCostTotal) | toThousands(true)
                     }}
                   </div>

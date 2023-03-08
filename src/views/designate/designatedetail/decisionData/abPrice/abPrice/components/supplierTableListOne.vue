@@ -1,6 +1,6 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div :ref="ref" v-loading="loading" :key="index">
+  <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
       height="100%"
@@ -155,7 +155,7 @@
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span>{{ item.fsGsNum }}({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -423,24 +423,27 @@
         </el-table-column>
       </template>
     </el-table>
-    <partTableDetail :visible.sync="visible" v-if="visible" :row="itemFS" />
   </div>
 </template>
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import tooltip from "../../components/tooltip.vue";
-import partTableDetail from "./partTableDetail";
+import tooltip from "../../../components/tooltip.vue";
 export default {
-  name:'supplierTableList',
+  name:'supplierTableListOne',
   components: {
     tooltip,
-    partTableDetail
+  },
+  props: {
+    row: {
+      type: Array,
+      default: () => {},
+    },
   },
   data() {
     return {
-      ref: "supplier-table",
+      ref: "supplierTableListOne",
       fixedTitle: [
         {
           prop: "ltcList",
@@ -482,18 +485,13 @@ export default {
       targetMixAPrice: "",
       targetMixBPrice: "",
       loading: false,
-      showLength: 4,
       partAllData: [],
       allData: [],
-      index: -1,
-      itemFS:{},
-      visible:false
     };
   },
   computed: {
     partList() {
-      if (this.index == -1) return [];
-      return this.partAllData[this.index] || [];
+      return this.partAllData[0] || [];
     },
   },
   filters: {
@@ -505,13 +503,6 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
-    gotoDetail(row) {
-      this.itemFS = JSON.parse(JSON.stringify(row));
-      this.itemFS.fsNum = this.itemFS.fsGsNum
-      this.$nextTick(() => {
-        this.visible = !this.visible;
-      });
-    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -527,9 +518,13 @@ export default {
     },
     analysisSummaryNomi() {
       this.loading = true;
-      this.index = 0;
       analysisSummaryNomi({
         nomiId: this.$route.query.desinateId,
+        // partTable携带partPrjCode, best ball携带的是fsNum
+        fsGsNumList:
+          this.row?.partPrjCode || this.row?.fsNum
+            ? [this.row.partPrjCode || this.row?.fsNum]
+            : undefined,
       })
         .then((res) => {
           if (res?.code != 200) return;
@@ -572,7 +567,7 @@ export default {
           fixedTitle[3].target = res.data.targetSelTotalSel;
           fixedTitle[4].target = res.data.sumTotalTurnover;
           this.fixedTitle = fixedTitle;
-          this.partAllData = _.chunk(res.data.headList, this.showLength);
+          this.partAllData = [res.data.headList];
           this.allData = res.data.headList;
           this.tableData = tableData;
         })
@@ -580,43 +575,8 @@ export default {
           this.loading = false;
           this.$nextTick(() => {
             this.setColSpan();
-            this.$emit("setPage", {
-              index: this.index,
-              showLength: this.showLength,
-              total: this.allData.length,
-            });
           });
         });
-    },
-    prev() {
-      if (this.index < this.partAllData.length - 1) {
-        this.index++;
-      } else {
-        this.index = 0;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
-    },
-    next() {
-      if (this.index > 0) {
-        this.index--;
-      } else {
-        this.index = this.partAllData.length - 1;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -654,7 +614,7 @@ export default {
     // 表头合并
     setColSpan() {
       const row =
-        this.$refs["supplier-table"].getElementsByClassName(
+        this.$refs[this.ref].getElementsByClassName(
           "el-table__header"
         )[0].rows;
       //   行数据,行,列,合并数,方向
@@ -664,8 +624,18 @@ export default {
       if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
       if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
       if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+
+      if (this.row?.partPrjCode || this.row?.fsNum) {
+        this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
+      } else {
+        this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
+        this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+      }
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -751,9 +721,6 @@ export default {
         font-weight: 500;
         color: #000 !important;
       }
-    }
-    .decoration{
-      text-decoration: underline
     }
   }
   .red {

@@ -405,12 +405,12 @@
                   >
                     <div>
                       <div>
-                        {{ language("FENTANJINE", "分摊金额") }}：{{
+                        Apportioned amount：{{
                           getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
                         }}
                       </div>
                       <div>
-                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                        Unassessed amount：{{
                           getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
                         }}
                       </div>
@@ -443,12 +443,12 @@
                   >
                     <div>
                       <div>
-                        {{ language("FENTANJINE", "分摊金额") }}：{{
+                        Apportioned amount：{{
                           getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
                         }}
                       </div>
                       <div>
-                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                        Unassessed amount：{{
                           getInt(scope.row[
                             item.supplierId + "developNotShareCostTotal"
                           ]) | toThousands(true)
@@ -980,7 +980,7 @@ export default {
 }
 
 .total-table {
-  font-size: 16px !important;
+  // font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }

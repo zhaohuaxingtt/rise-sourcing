@@ -272,12 +272,12 @@
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.toolingShareTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.toolingNotShareTotal
                     }}
                   </div>
@@ -382,12 +382,12 @@
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.developShareCostTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.developNotShareCostTotal
                     }}
                   </div>
@@ -884,7 +884,7 @@ export default {
 }
 
 .total-table {
-  font-size: 16px !important;
+  // font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }

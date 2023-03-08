@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-26 00:46:20
+ * @LastEditTime: 2023-03-08 11:43:32
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -199,7 +199,7 @@
       <p class="tips" v-else-if="tab == 'table'">
         <span class="legend margin-right5"></span><span>: Recommendation</span
         ><span class="font-green margin-left20 margin-right5">99.99</span
-        ><span>Best offer</span>
+        ><span>Best offer (TTO)</span>
       </p>
     </div>
   </div>
