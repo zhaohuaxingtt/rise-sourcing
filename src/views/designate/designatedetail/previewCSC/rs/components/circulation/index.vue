@@ -478,7 +478,7 @@
               <div>
                 <div>
                   {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                    (scope.row.partTargetPrice || "0.00") | toThousands(true)
+                    (scope.row.partTargetAPrice || "0.00") | toThousands(true)
                   }}
                 </div>
                 <div>

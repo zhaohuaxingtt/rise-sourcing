@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-01-04 23:46:56
+ * @LastEditTime: 2023-03-09 14:08:56
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -750,7 +750,7 @@
               <div>
                 <div>
                   {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                    (scope.row.partTargetPrice || "0.00") | toThousands(true)
+                    (scope.row.partTargetAPrice || "0.00") | toThousands(true)
                   }}
                 </div>
                 <div>
