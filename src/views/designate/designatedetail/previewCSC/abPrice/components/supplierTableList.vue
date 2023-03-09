@@ -196,7 +196,7 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                {{ language("零件目标价B价", "零件目标价B价") }}：{{
                                   (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
                                     | toThousands(true)
                                 }}
