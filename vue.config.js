@@ -425,6 +425,24 @@ module.exports = {
 					['^' + process.env.VUE_APP_PARTS]: ''
 				}
 			},
+			// -----------------ws3 供应商---------------------------
+			[process.env.VUE_APP_SUPPLIER]: {
+			  //   供应商
+			  // target: `http://${BASE_IP}:8066/supplier/overall`,
+			  target: `${BASE_IP}/supplier/overall/web`,
+			  // target:'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/supplierservice/',
+			  changeOrigin: true,
+			  pathRewrite: {
+				['^' + process.env.VUE_APP_SUPPLIER]: ''
+			  }
+			},
+			[process.env.VUE_APP_BIDDING]: {
+			  target: `${BASE_IP}/bidding/`,
+			  changeOrigin: true,
+			  pathRewrite: {
+				['^' + process.env.VUE_APP_BIDDING]: ''
+			  }
+			},
 		},
 	},
 }
