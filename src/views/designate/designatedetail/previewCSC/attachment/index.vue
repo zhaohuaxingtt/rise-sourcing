@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-05 17:41:04
+ * @LastEditTime: 2023-03-13 09:25:03
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,9 +60,6 @@
 </template>
 <script>
 import { icon } from "rise";
-import attachment from "./components/attachment";
-import rssheet from "./components/rssheet";
-import mtzAttachment from "./components/mtzAttachment";
 import { nominateAppSDetail } from "@/api/designate";
 import { getMtzAttachmentPageList } from "@/api/designate/designatedetail/attachment";
 import { getdDecisiondataList } from "@/api/designate/decisiondata/attach";
@@ -94,9 +91,6 @@ export default {
     };
   },
   components: {
-    attachment,
-    rssheet,
-    mtzAttachment,
     icon,
   },
   created() {
@@ -215,13 +209,20 @@ export default {
       let query = queryArr[queryArr.length-1]
       let queryStr = query.split("&")
       let fileId = queryStr.find(str=>str.indexOf('fileId')>-1).split('=')[1]
-      if(['PNG', 'JPG', 'JIF'].includes(fileObj.type)){
-        this.detail = fileObj;
-      }else{
+      if(fileObj.type.indexOf('XLS')>-1){
         let res = await this.getFileUrl(fileId,fileObj.fileName)
         fileObj.filePath = res||fileObj.filePath
         this.detail = fileObj;
+      }else{
+        this.detail = fileObj;
       }
+      // if(['PNG', 'JPG', 'JIF'].includes(fileObj.type)){
+      //   this.detail = fileObj;
+      // }else{
+      //   let res = await this.getFileUrl(fileId,fileObj.fileName)
+      //   fileObj.filePath = res||fileObj.filePath
+      //   this.detail = fileObj;
+      // }
         this.index = index;
         this.active = item.id;
     },
