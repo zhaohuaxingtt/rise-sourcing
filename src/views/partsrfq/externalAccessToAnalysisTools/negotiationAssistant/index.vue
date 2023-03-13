@@ -7,7 +7,8 @@
 -->
 <template>
   <iPage class=''>
-    <gather />
+        <!-- //source2是外部 -->
+    <gather :source="'2'" />
   </iPage>
 </template>
 

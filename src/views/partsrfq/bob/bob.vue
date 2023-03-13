@@ -223,6 +223,12 @@ export default {
     iMultiLineInput
   },
   inject: ['getDisabled'],
+  props: {
+    source: {
+      type: String,
+      default: '',
+    },
+  },
   data () {
     return {
       form: {},
@@ -247,6 +253,7 @@ export default {
       updatedDefault: false, //是否已更新默认项
     };
   },
+
   created () {
     this.initSearchData();
   },
@@ -452,6 +459,7 @@ export default {
                   chemeId: res.data,
                   newBuild: true,
                   groupId: this.groupId,
+                  source:this.source
                 },
               });
               window.open(newBob.href, '_blank');
@@ -471,6 +479,7 @@ export default {
           query: {
             newBuild: true,
             groupId: this.groupId,
+            source:this.source
           },
         });
         window.open(newBob.href, '_blank');
@@ -605,6 +614,8 @@ export default {
             chemeId: val.id,
             rfqId: val.rfqNo || '',
             groupId: this.groupId,
+            source:this.source
+
           },
         });
         window.open(analysisName.href, '_blank');
