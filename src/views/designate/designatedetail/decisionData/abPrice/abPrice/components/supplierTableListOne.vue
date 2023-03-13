@@ -355,7 +355,6 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.investFeeIsShared"
                               >
@@ -385,7 +384,6 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.devFeeIsShared"
                               >

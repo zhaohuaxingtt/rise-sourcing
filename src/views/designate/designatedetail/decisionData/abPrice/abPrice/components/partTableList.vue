@@ -400,7 +400,6 @@
                 <template v-else-if="scope.$index == 2">
                   <el-popover
                     placement="top-start"
-                    width="200"
                     trigger="hover"
                     v-if="
                       scope.row.investFeeIsShared.includes(
@@ -438,7 +437,6 @@
                 <template v-else-if="scope.$index == 4">
                   <el-popover
                     placement="top-start"
-                    width="200"
                     trigger="hover"
                     v-if="
                       scope.row.devFeeIsShared.includes(
