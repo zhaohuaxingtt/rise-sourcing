@@ -358,7 +358,7 @@
               <p>Date</p>
             </template>
             <template slot-scope="scope">
-              <template v-if="+scope.row.ltc">{{
+              <template v-if="scope.row.ltc!=0">{{
                 scope.row.ltcStartDate
               }}</template>
             </template></el-table-column

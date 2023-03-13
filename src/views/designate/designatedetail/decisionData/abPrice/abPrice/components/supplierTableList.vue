@@ -180,7 +180,7 @@
                                   "
                                   style="color: red"
                                   >*</span
-                                >{{ scope.row[item.fsGsNum + "lcBPrice"] }}
+                                >{{ scope.row[item.fsGsNum + "lcAPrice"] }}
                               </p>
                             </template>
                           </el-table-column>
@@ -567,7 +567,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  +child.ltc
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });

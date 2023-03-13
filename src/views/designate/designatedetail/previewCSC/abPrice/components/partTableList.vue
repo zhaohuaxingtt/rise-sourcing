@@ -689,7 +689,7 @@ export default {
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
                   ) &&
-                  +child.ltc
+                  child.ltc!=0
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`

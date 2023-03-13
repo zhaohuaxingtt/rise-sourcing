@@ -71,7 +71,12 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
+                    <tooltip
+                      :text="
+                        scope.row.carProType ||
+                        scope.row.carTypeNames.join('、')
+                      "
+                    ></tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -654,7 +659,7 @@ export default {
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
                   ) &&
-                  +child.ltc
+                  child.ltc != 0
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`

@@ -255,7 +255,7 @@
           label="Invest"
           prop="invest"
           align="right"
-          minWidth="100"
+          minWidth="90"
           header-align="center"
         >
           <template slot-scope="scope">
@@ -331,13 +331,13 @@
           align="center"
           prop="ltc"
         ></el-table-column>
-        <el-table-column align="center" prop="ltcStartDate" min-width="100">
+        <el-table-column align="center" prop="ltcStartDate" min-width="90">
           <template slot="header" slot-scope="scope">
             <p>LTC Start</p>
             <p>Date</p>
           </template>
           <template slot-scope="scope">
-            <template v-if="+scope.row.ltc">{{
+            <template v-if="scope.row.ltc!=0">{{
               scope.row.ltcStartDate
             }}</template>
           </template></el-table-column
@@ -346,7 +346,7 @@
           align="right"
           header-align="center"
           prop="developCost"
-          min-width="100"
+          min-width="90"
         >
           <template slot="header" slot-scope="scope">
             <p>Develop</p>
@@ -384,7 +384,7 @@
           align="right"
           header-align="center"
           prop="totalTurnover"
-          min-width="110"
+          min-width="90"
           label="Total Turnover"
         >
           <template slot="header" slot-scope="scope">
@@ -476,7 +476,7 @@
             align="right"
             header-align="center"
             prop="invest"
-            minWidth="100"
+            minWidth="90"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["invest"]) | toThousands(true) }}
@@ -505,7 +505,7 @@
               label="L"
               align="center"
               prop="lrate"
-              min-width="40"
+              min-width="60"
             ></el-table-column>
           </el-table-column>
           <el-table-column
@@ -517,14 +517,14 @@
             label="LTC Start Date"
             align="center"
             prop="ltcStartDate"
-            min-width="100"
+            min-width="90"
           ></el-table-column>
           <el-table-column
             label="Develop Cost"
             align="right"
             header-align="center"
             prop="developCost"
-            min-width="100"
+            min-width="90"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["developCost"]) | toThousands(true) }}
@@ -535,7 +535,7 @@
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="110"
+            min-width="90"
           >
             <template slot-scope="scope">
               {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}

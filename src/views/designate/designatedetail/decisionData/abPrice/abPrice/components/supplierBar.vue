@@ -386,12 +386,16 @@ export default {
               let ltcStartDateList = [];
               item.aPrice = item.mixAPrice;
               item.bPrice = item.mixBPrice;
-              allPrice.push(item.mixAPrice, item.mixBPrice);
+              allPrice.push(
+                deleteThousands(item.mixAPrice || 0),
+                deleteThousands(item.mixBPrice || 0)
+              );
               item.analysisSummaryParts.forEach((child) => {
                 if (
                   !ltcStartDateList.includes(
                     `${child.ltc} from ${child.ltcStartDate}`
-                  ) && (+child.ltc)
+                  ) &&
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -446,7 +450,9 @@ export default {
             res.data.recommendationNomi?.totalTurnover || "";
           this.tableData[5]["F-Target"] = res.data.targetTotalInvest;
           this.tableData[6]["KGF"] = "";
+          console.log("allPrice=>", allPrice);
           this.max = Math.max(...allPrice);
+          console.log("this.max=>", this.max);
         })
         .finally(() => {
           this.loading = false;
