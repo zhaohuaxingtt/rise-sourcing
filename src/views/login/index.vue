@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2023-03-14 14:34:22
+ * @LastEditTime: 2023-03-14 15:08:48
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
@@ -101,7 +101,7 @@ export default {
     // 禁用 prod 环境小黑窗(superLogin)
     if (
       this.$route.path.indexOf("superLogin") > -1 &&
-      !["production"].includes(process.env.NODE_ENV)
+      !["production",'uat'].includes(process.env.NODE_ENV)
     ) {
       //nothing to do
     } else {
