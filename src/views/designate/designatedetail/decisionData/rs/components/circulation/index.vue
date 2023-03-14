@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-01-04 23:48:08
+ * @LastEditTime: 2023-03-09 14:38:27
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -478,7 +478,7 @@
               <div>
                 <div>
                   {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                    (scope.row.partTargetPrice || "0.00") | toThousands(true)
+                    (scope.row.partTargetAPrice || "0.00") | toThousands(true)
                   }}
                 </div>
                 <div>
