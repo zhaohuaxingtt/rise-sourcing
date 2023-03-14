@@ -1145,6 +1145,7 @@ export default {
           data.push({
             vsiPartNum: e.vsiPartNum,
             nomiPartNum: e.nomiPartNum,
+            cartypeProId: this.searchParams.search1
           });
         });
 
