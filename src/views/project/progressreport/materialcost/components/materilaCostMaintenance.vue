@@ -675,7 +675,12 @@ export default {
           console.log(res);
           if (res.result) {
             this.tableTitle.forEach((e) => {
-              val[e.props] = res.data[e.props];
+              if(e.props=='cartypeProId'){
+                // 没有返回的时候,使用行内现有的
+                val[e.props] = res.data[e.props] || val[e.props];
+              }else{
+                val[e.props] = res.data[e.props];
+              }
             });
           }
         });
