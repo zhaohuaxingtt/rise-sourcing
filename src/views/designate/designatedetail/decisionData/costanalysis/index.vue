@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2022-01-24 22:50:00
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-16 11:07:31
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
 -->
@@ -96,7 +96,33 @@ export default{
   data(){
     return {
       typesOfData:'',
-      tools: [],
+      tools: [
+        {
+          value: 'PCA',
+          label: 'PCA'
+        },{
+          value: 'MEK',
+          label: 'MEK'
+        },{
+          value: 'PI',
+          label: 'Price Index'
+        },{
+          value: 'BOB',
+          label: 'BOB'
+        },{
+          value: 'VP',
+          label: 'Volume Pricing'
+        },{
+          value: 'TIA',
+          label: 'TIA'
+        },{
+          value: 'BL',
+          label: 'Bid Link'
+        },{
+          value: 'QT',
+          label: 'Quotation Tendency'
+        },
+      ],
       tableTitle,
       tableData:[],
       typeSelect:'BOB',
@@ -127,7 +153,8 @@ export default{
     this.isPreview = this.$route.query.isPreview == 1
 
     if (this.isPreview) {
-      await this.getHaveDataTools()
+      // 接口太慢,改为前端写死
+      // await this.getHaveDataTools()
 
       if (!this.tools.some(item => item.value === this.$route.query.typeSelect)) {
         this.typeSelect = this.tools[0]?.value
@@ -142,7 +169,8 @@ export default{
       this.typeSelect = "BOB"
       this.$store.dispatch('setCostType',this.typeSelect)
 
-      this.getTools()
+      // 接口太慢,改为前端写死
+      // this.getTools()
 
       this.costanalysisList()
     }
