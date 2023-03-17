@@ -675,10 +675,10 @@ export default {
           console.log(res);
           if (res.result) {
             this.tableTitle.forEach((e) => {
-              if(e.props=='cartypeProId'){
+              if (e.props == "cartypeProId") {
                 // 没有返回的时候,使用行内现有的
                 val[e.props] = res.data[e.props] || val[e.props];
-              }else{
+              } else {
                 val[e.props] = res.data[e.props];
               }
             });
@@ -1147,17 +1147,50 @@ export default {
       } else {
         const data = [];
         this.selectList.forEach((e) => {
+          e.key =
+            "vsiPartNum" +
+            e.vsiPartNum +
+            "nomiPartNum" +
+            e.nomiPartNum +
+            "cartypeProId" +
+            this.searchParams.search1;
           data.push({
             vsiPartNum: e.vsiPartNum,
             nomiPartNum: e.nomiPartNum,
-            cartypeProId: this.searchParams.search1
+            cartypeProId: this.searchParams.search1,
           });
         });
 
         refreshNomiPartNum(data).then((res) => {
           console.log(res);
           if (res.result) {
-            this.getTableList();
+            let obj = {}
+            res.data.forEach(item=>{
+              let key =
+              "vsiPartNum" +
+              item.parameterVsiPartNum +
+              "nomiPartNum" +
+              item.parameterNomiPartNum +
+              "cartypeProId" +
+              this.searchParams.search1;
+              obj[key] = item
+            })
+            let selectList = this.selectList.map(child=>{
+              if(obj[child.key]){
+                this.dataPoint.forEach((e) => {
+                  child[e.props] = obj[child.key][e.props];
+                });
+              }
+              return child
+            })
+            console.log(selectList);
+            //编辑
+            modifyProjectProgressReport(
+              //新增
+              selectList
+            ).then(() => {
+              this.getTableList();
+            });
           }
         });
       }
