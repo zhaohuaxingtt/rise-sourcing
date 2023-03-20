@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-10-27 16:16:16
- * @LastEditors:  
+ * @LastEditTime: 2023-03-20 14:21:37
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
 -->
@@ -79,7 +79,7 @@
 						id:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,
 						partNum:item.partNum,
-						purchasingRequirementId:item.purchasingRequirementId
+						partProjectSource: item.partProjectSource
 					}
 				})
 				window.open(openParts.href,'_blank')
