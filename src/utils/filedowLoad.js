@@ -1,13 +1,19 @@
 /*
  * @Author: your name
  * @Date: 2021-03-17 23:40:36
- * @LastEditTime: 2021-10-28 03:06:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-17 09:31:23
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\utils\filedowLoad.js
+ * @FilePath: \front-web\src\utils\filedowLoad.js
  */
 
-export function excelExport(data, title, fileName = new Date().getTime()) {
+export function excelExport(data, title, name) {
+	var fileName;
+	if(name){
+		fileName= name
+	}else{
+		fileName= new Date().getTime()
+	}
 	try {
 		// eslint-disable-next-line no-undef
 		if (!data && !title)
