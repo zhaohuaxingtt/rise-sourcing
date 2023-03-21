@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-01-04 23:46:56
+ * @LastEditTime: 2023-03-20 13:57:42
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1290,24 +1290,27 @@ export default {
       return nomalTableTitle;
     },
     pageWidth() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return 1441;
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return 1351;
-      } else if (
-        this.projectType === partProjTypes.GSLINGJIAN ||
-        this.projectType === partProjTypes.GSCOMMONSOURCING
-      ) {
-        //GS零件
-        return 1892;
-      } else if (
-        this.projectType === partProjTypes.DBLINGJIAN ||
-        this.projectType === partProjTypes.DBYICHIXINGCAIGOU
-      ) {
-        //DB零件,DB一次性采购
-        return 1768;
-      }
-      return 1544;
+      let width = 2
+      this.tableTitle.forEach(item=> width+=(item.width||item.minWidth||80))
+      return width
+      // if (this.projectType === partProjTypes.PEIJIAN) {
+      //   return 1441;
+      // } else if (this.projectType === partProjTypes.FUJIAN) {
+      //   return 1351;
+      // } else if (
+      //   this.projectType === partProjTypes.GSLINGJIAN ||
+      //   this.projectType === partProjTypes.GSCOMMONSOURCING
+      // ) {
+      //   //GS零件
+      //   return 1892;
+      // } else if (
+      //   this.projectType === partProjTypes.DBLINGJIAN ||
+      //   this.projectType === partProjTypes.DBYICHIXINGCAIGOU
+      // ) {
+      //   //DB零件,DB一次性采购
+      //   return 1768;
+      // }
+      // return 1544;
     },
     pageHeight() {
       return (this.pageWidth / 841.89) * 595.28; // 横版A4一页对应的高度
