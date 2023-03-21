@@ -75,7 +75,11 @@
             </div>
           </template>
           <template #plantLocations="scope">
-            <el-tooltip popper-class="font-family" effect="light" :content="scope.row.location">
+            <el-tooltip
+              popper-class="font-family"
+              effect="light"
+              :content="scope.row.location"
+            >
               <span>
                 {{ scope.row.plantLocations }}
               </span>
@@ -98,8 +102,8 @@
       </div>
       <iPagination
         v-update
-        @size-change="(val) => sizeChange(val, index)"
-        @current-change="(val) => currentChange(val, index)"
+        @size-change="handleSizeChange($event, getTableList)"
+        @current-change="handleCurrentChange($event, getTableList)"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -198,14 +202,14 @@ export default {
     tableTitle() {
       const title = cloneDeep(tableTitle);
       let rates = {
-        MQ:'',
-        EP:'',
-        PL:'pl'
+        MQ: "",
+        EP: "",
+        PL: "pl",
       };
       this.tableData.forEach((item) => {
         (item.departmentRate || []).map((child) => {
-          if(!rates[child.tagName]){
-            rates[child.tagName] = child.rateDepartNum
+          if (!rates[child.tagName]) {
+            rates[child.tagName] = child.rateDepartNum;
           }
         });
       });
@@ -216,20 +220,22 @@ export default {
         tooltip: true,
         children: [
           {
-            props: rates['MQ'] || 'Q',
-            name: `Q(${rates['MQ'] || "-"})`,
+            props: rates["MQ"] || "Q",
+            name: `Q(${rates["MQ"] || "-"})`,
             key: "",
             type: "rate",
-          },{
-            props: rates['EP'] || 'E',
-            name: `E(${rates['EP'] || "-"})`,
+          },
+          {
+            props: rates["EP"] || "E",
+            name: `E(${rates["EP"] || "-"})`,
             key: "",
             type: "rate",
-          },{
-            props: rates['PL'] || 'L',
+          },
+          {
+            props: rates["PL"] || "L",
             name: `L(PL)`,
             key: "",
-          }
+          },
         ],
       });
 
@@ -242,12 +248,6 @@ export default {
     this.init();
   },
   methods: {
-    sizeChange() {
-      (this.page.currPage = 1), this.getTableList();
-    },
-    currentChange() {
-      this.getTableList();
-    },
     /**
      * @Description: 初始化页面
      * @Author: Luoshuang
