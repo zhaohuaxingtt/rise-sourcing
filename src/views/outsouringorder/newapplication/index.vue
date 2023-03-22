@@ -403,7 +403,7 @@ export default {
     // 获取推荐采购员
     getLineInfo() {
       liniePullDownByDept({
-        deptId: this.$store.state.permission.userInfo?.deptDTO.id,
+        deptId: [this.$store.state.permission.userInfo?.deptDTO.id],
       })
         .then((res) => {
           if (res.data instanceof Array && res.data.length > 0) {
