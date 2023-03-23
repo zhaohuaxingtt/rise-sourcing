@@ -603,7 +603,7 @@ export default {
 		&.el-table--border {
 			border-color: #ccc;
 		}
-		font-size: 8px;
+		font-size: 12px;
 		&::before,
 		&::after {
 			background-color: #ccc;
