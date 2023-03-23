@@ -152,7 +152,7 @@ export default {
       })
       const res = await patchMouldBudgetWithdrawal(ids);
       this.resultMessage(res);
-      // this.getTableList();
+      this.$emit('updateTable')
     },
     close() {
       this.$emit('update:visible', false)
