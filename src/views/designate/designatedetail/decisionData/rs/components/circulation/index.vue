@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-23 11:39:04
+ * @LastEditTime: 2023-03-23 15:03:37
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -1324,9 +1324,6 @@ export default {
             this.tableData = Array.isArray(this.basicData.lines)
               ? this.basicData.lines
               : [];
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
             this.projectType = res.data?.partProjectType || "";
             if (
               this.projectType != partProjTypes.DBLINGJIAN &&
@@ -1381,9 +1378,6 @@ export default {
             this.tableData = Array.isArray(this.basicData.lines)
               ? this.basicData.lines
               : [];
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
-              this.tableData = [...this.tableData,...this.tableData,...this.tableData]
             this.projectType = this.basicData.partProjectType || "";
 
             if (
