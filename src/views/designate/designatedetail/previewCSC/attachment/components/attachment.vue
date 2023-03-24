@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-12-03 10:32:03
- * @LastEditors:  
+ * @LastEditTime: 2023-03-13 09:23:15
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 决策资料 - 附件
 -->
 <template>
@@ -11,65 +11,6 @@
       <span class="font18 font-weight">
         {{ language("Attachment", "Attachment") }}
       </span>
-      <template v-if="!nominationDisabled">
-        <template v-if="!$store.getters.isPreview">
-          -
-          <span class="tip">{{
-            $t("为获得更好的展示效果，建议上传pdf格式文件")
-          }}</span>
-        </template>
-      </template>
-      <div class="floatright">
-        <!-- 下载 -->
-        <iButton
-          v-if="!isRoutePreview && !isApproval"
-          @click="downloadFile"
-          class="downloadBtn"
-          v-permission.auto="
-            SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DOWNLOAD |
-              (Attachment - 下载)
-          "
-        >
-          {{ language("strategicdoc_XiaZai", "下载") }}
-        </iButton>
-        <!-- 删除 -->
-        <span v-if="!nominationDisabled">
-          <iButton
-            class="margin-right10"
-            @click="deleteFile($event, getFetchDataList)"
-            v-if="!$store.getters.isPreview && !rsDisabled"
-            v-permission.auto="
-              SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DELETE |
-                (Attachment - 删除)
-            "
-          >
-            {{ language("LK_SHANCHU", "删除") }}
-          </iButton>
-          <!-- 上传文件 -->
-          <!-- <iButton 
-            v-if="!$store.getters.isPreview"
-            @click="$router.push({path: '/designate/decisiondata/attachment/upload'})">
-            {{ language("strategicdoc.ShangChuanWenJian") }}
-          </iButton> -->
-          <upload
-            class="upload-trigger margin-left10"
-            v-if="!$store.getters.isPreview"
-            :hideTip="true"
-            :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
-            :buttonText="language('strategicdoc_ShangChuanWenJian', '上传文件')"
-            @on-success="
-              onUploadsucess(
-                Object.assign(...arguments, { fileType: '102' }),
-                getFetchDataList
-              )
-            "
-            v-permission.auto="
-              SOURCING_NOMINATION_ATTATCH_ATTACHMENT_UPLOAD |
-                (Attachment - 上传文件)
-            "
-          />
-        </span>
-      </div>
     </div>
     <tablelist
       index

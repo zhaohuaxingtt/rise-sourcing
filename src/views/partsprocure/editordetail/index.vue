@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-12-30 15:24:22
+ * @LastEditTime: 2023-03-21 19:36:23
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
+ * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
   <iPage
@@ -72,17 +72,19 @@
             @click="openCurentSupplierDialog"
             >{{ language("WEIHUXIANGGYS", "维护现供供应商") }}</iButton
           >
-          <iButton
-            @click="start"
-            v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP | 启动项目"
-            v-if="
-              detailData.status ==
-                getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END') ||
-              detailData.status ==
-                getEnumValue('PURCHASE_PROJECT_STATE_ENUM.CANCEL')
-            "
-            >{{ language("LK_QIDONGXIANGMU", "启动项目") }}</iButton
-          >
+          <span>
+            <iButton
+              @click="start"
+              v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP | 启动项目"
+              v-if="
+                detailData.status ==
+                  getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END') ||
+                detailData.status ==
+                  getEnumValue('PURCHASE_PROJECT_STATE_ENUM.CANCEL')
+              "
+              >{{ language("LK_QIDONGXIANGMU", "启动项目") }}</iButton
+            >
+          </span>
           <creatFsGsNr
             :projectItems="[detailData]"
             @refresh="getDatailFn"
@@ -1677,7 +1679,7 @@ export default {
     getCartypeDict() {
       getCartypeDict()
         .then((res) => {
-          this.fromGroup["CAR_TYPE"] = res.data || [];
+          this.fromGroup["CAR_TYPE"] = res?.data || [];
         })
         .catch((err) => {
           console.log(err);

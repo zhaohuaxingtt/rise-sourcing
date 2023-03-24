@@ -77,6 +77,14 @@ export function getMeterialStuff(params) {
 		params: params
 	})
 }
+// 采购项目-根据材料组code获取工艺组信息
+export function meterialStuffByCid(params) {
+	return requstPartsProcure({
+		url: '/meterialStuffByCid',
+		method: 'GET',
+		params: params
+	})
+}
 // 采购项目-获取材料组信息 - 附件类型
 export function getAttachMeterialStuff(params) {
 	return sourcing({

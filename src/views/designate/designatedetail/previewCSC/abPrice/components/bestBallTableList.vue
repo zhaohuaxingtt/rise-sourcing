@@ -125,12 +125,43 @@
               prop="targetAPrice"
               align="right"
               header-align="center"
-              minWidth="85"
+              minWidth="90"
             >
               <template slot-scope="scope">
+                <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
                 {{
-                  numberProcessor(scope.row.targetAPrice, 2) | toThousands(true)
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
                 }}
+              </template>
               </template>
             </el-table-column>
             <el-table-column
@@ -138,13 +169,44 @@
               prop="targetBPrice"
               align="right"
               header-align="center"
-              minWidth="85"
-            >
-              <template slot-scope="scope">
+              minWidth="90"
+            > 
+            <template slot-scope="scope">
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
                 {{
-                  numberProcessor(scope.row.targetBPrice, 2) | toThousands(true)
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
                 }}
               </template>
+            </template>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -204,18 +266,17 @@
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.investFeeIsShared && scope.row.invest"
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.toolingShareTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.toolingNotShareTotal
                     }}
                   </div>
@@ -314,18 +375,17 @@
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.devFeeIsShared && scope.row.developCost"
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.developShareCostTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.developNotShareCostTotal
                     }}
                   </div>
@@ -393,7 +453,7 @@
             <el-table-column
               label="A Price"
               prop="targetAPrice"
-              minWidth="85"
+              minWidth="90"
               align="right"
               header-align="center"
             >
@@ -401,7 +461,7 @@
             <el-table-column
               label="B Price"
               prop="targetBPrice"
-              minWidth="85"
+              minWidth="90"
               align="right"
               header-align="center"
             >
@@ -585,6 +645,7 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -821,7 +882,7 @@ export default {
 }
 
 .total-table {
-  font-size: 16px !important;
+  // font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }

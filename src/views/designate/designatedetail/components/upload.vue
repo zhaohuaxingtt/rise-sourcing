@@ -70,7 +70,7 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    accept: {type: String, default: '.xlsx,.pdf,.docx'},
+    accept: {type: String, default: '.pdf,.docx'},
     /**
      * @description: 额外参数
      * @param {*}

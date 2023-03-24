@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2023-02-21 15:19:57
+ * @LastEditTime: 2023-03-01 17:23:30
 -->
 <template>
   <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :border="border" :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName" :row-class-name="tableRowClassName" v-bind="$attrs">
@@ -245,7 +245,16 @@ export default{
       } else return false
     }
   },
+  mounted(){
+    this.$refs.multipleTable.bodyWrapper.addEventListener('scroll',this.onScroll)
+  },
+  beforeDestroy(){
+    this.$refs.multipleTable.bodyWrapper.removeEventListener('scroll',this.onScroll)
+  },
   methods:{
+    onScroll(){
+      this.$emit('onScroll',{scrollLeft:this.$refs.multipleTable.bodyWrapper.scrollLeft})
+    },
     getRate(row, props) {
       const findItem = row.departmentRate?.find(item => item.rateDepartNum === props)
       return findItem || {}

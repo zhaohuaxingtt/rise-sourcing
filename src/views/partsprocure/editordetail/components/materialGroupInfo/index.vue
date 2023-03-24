@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2023-02-20 17:23:14
+ * @LastEditTime: 2023-03-22 18:46:01
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -68,7 +68,7 @@ import infos from './components/infos'
 import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff, getMaterialGroupByCategoryCode} from '@/api/partsprocure/editordetail'
+import {getMaterialGroup,getMeterialStuff, meterialStuffByCid, getAttachMeterialStuff, getMaterialGroupByCategoryCode} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 import { cloneDeep } from "lodash"
@@ -213,20 +213,33 @@ export default {
     // 获取零件可选的工艺组数据
     getMeterialStuff() {
       this.tableLoading = true
-
-      getMeterialStuff({
-        partNum: this.params.partNum,
+      if(this.info.id){
+        meterialStuffByCid({
+        categoryId: this.info.id,
+      }).then(res=>{
+            if (res.code == 200) {
+              this.tableListData = res.data
+            } else {
+              iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            }
+            this.tableLoading = false
       })
-        .then((res) => {
-          if (res.code == 200) {
-            this.tableListData = res.data
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          }
-          // this.page.totalCount = res.total
-          this.tableLoading = false
+          .catch(() => this.tableLoading = false)
+      }else{
+        getMeterialStuff({
+          partNum: this.params.partNum,
         })
-        .catch(() => this.tableLoading = false)
+          .then((res) => {
+            if (res.code == 200) {
+              this.tableListData = res.data
+            } else {
+              iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            }
+            // this.page.totalCount = res.total
+            this.tableLoading = false
+          })
+          .catch(() => this.tableLoading = false)
+      }
     },
     // 获取零件项目类型为附件时候的零件可选的工艺组数据
     async getAttachMeterialStuff() {

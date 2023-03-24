@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-12-03 10:31:34
- * @LastEditors:  
+ * @LastEditTime: 2023-03-13 09:35:38
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 决策资料 - 附件
 -->
 <template>
@@ -49,7 +49,7 @@
               class="upload-trigger btn"
               v-if="!$store.getters.isPreview"
               :hideTip="true"
-              :accept="'.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.pdf,.tif'"
+              :accept="'.doc,.docx,.jpg,.jpeg,.png,.pdf,.tif'"
               :buttonText="
                 language('strategicdoc_ShangChuanXianXiaRS', '上传线下RS文件')
               "

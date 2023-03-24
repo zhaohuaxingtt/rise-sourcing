@@ -3,9 +3,9 @@
   <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
+      height="100%"
       class="header table"
       ref="table"
-      :key="index"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
     >
@@ -44,7 +44,7 @@
                         <el-table-column
                           prop="te"
                           label="E"
-                          minWidth="40"
+                          minWidth="50"
                           align="center"
                         >
                           <template slot-scope="scope">
@@ -57,7 +57,7 @@
                         <el-table-column
                           prop="q"
                           label="Q"
-                          minWidth="40"
+                          minWidth="50"
                           align="center"
                         >
                           <template slot-scope="scope">
@@ -70,7 +70,7 @@
                         <el-table-column
                           prop="l"
                           label="L"
-                          minWidth="40"
+                          minWidth="50"
                           align="center"
                         >
                           <template slot-scope="scope">
@@ -101,9 +101,7 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip
-                  :text="item.carline || item.carTypeNames.join('、')"
-                ></tooltip>
+                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
               </template>
               <el-table-column :label="percent(item.ebr)" align="center">
                 <el-table-column
@@ -157,14 +155,14 @@
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span>{{ item.fsGsNum }}({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
                             label="partAPrice"
                             align="right"
                             header-align="center"
-                            minWidth="80"
+                            minWidth="85"
                           >
                             <template slot="header" slot-scope="scope">
                               <p>A Price</p>
@@ -229,7 +227,7 @@
                             label="partBPrice"
                             align="right"
                             header-align="center"
-                            minWidth="80"
+                            minWidth="85"
                           >
                             <template slot="header" slot-scope="scope">
                               <p>B Price</p>
@@ -280,7 +278,7 @@
                           label="A price"
                           align="right"
                           header-align="center"
-                          minWidth="80"
+                          minWidth="85"
                         >
                         </el-table-column>
                       </el-table-column>
@@ -300,7 +298,7 @@
                           label="B price"
                           align="right"
                           header-align="center"
-                          minWidth="80"
+                          minWidth="85"
                         ></el-table-column>
                       </el-table-column>
                     </el-table-column>
@@ -423,19 +421,17 @@
         </el-table-column>
       </template>
     </el-table>
-    <partTableDetail :visible.sync="visible" :row="itemFS" />
   </div>
 </template>
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import tooltip from "../../../components/tooltip.vue";
-import partTableDetail from "./partTableDetail";
+import tooltip from "../../components/tooltip.vue";
 export default {
+  name:'supplierTableListOne',
   components: {
     tooltip,
-    partTableDetail
   },
   props: {
     row: {
@@ -445,60 +441,55 @@ export default {
   },
   data() {
     return {
-      ref: "supplier-table",
+      ref: "supplierTableListOne",
       fixedTitle: [
         {
           prop: "ltcList",
           label: ["LTC"],
           target: "",
           budget: "",
-          width: "80",
+          width: "100",
         },
         {
           prop: "ltcStartDateList",
           label: ["LTC Start", " Date"],
           target: "",
           budget: "",
-          width: "100",
+          width: "110",
         },
         {
           prop: "totalInvest",
           label: ["Total", "Invest"],
           target: "",
           budget: "",
-          width: "120",
+          width: "130",
         },
         {
           prop: "totalDevelopCost",
           label: ["Total", "Develop", "Cost"],
           target: "",
           budget: "",
-          width: "120",
+          width: "130",
         },
         {
           prop: "totalTurnover",
           label: ["Total", "Turnover"],
           target: "",
           budget: "",
-          width: "120",
+          width: "130",
         },
       ],
       tableData: [],
       targetMixAPrice: "",
       targetMixBPrice: "",
       loading: false,
-      showLength: 4,
       partAllData: [],
       allData: [],
-      index: -1,
-      visible: false,
-      itemFS:{}
     };
   },
   computed: {
     partList() {
-      if (this.index == -1) return [];
-      return this.partAllData[this.index] || [];
+      return this.partAllData[0] || [];
     },
   },
   filters: {
@@ -510,18 +501,12 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
-    gotoDetail(row) {
-      this.itemFS = JSON.parse(JSON.stringify(row));
-      this.itemFS.fsNum = this.itemFS.fsGsNum
-      this.$nextTick(() => {
-        this.visible = true;
-      });
-    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
       return (+result).toFixed(0);
     },
+
     percent(val) {
       return (val * 100).toFixed(2) + "%";
     },
@@ -541,7 +526,6 @@ export default {
       })
         .then((res) => {
           if (res?.code != 200) return;
-          this.index = 0;
           let tableData =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
@@ -565,7 +549,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  child.ltc != 0
+                  +child.ltc
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });
@@ -581,7 +565,7 @@ export default {
           fixedTitle[3].target = res.data.targetSelTotalSel;
           fixedTitle[4].target = res.data.sumTotalTurnover;
           this.fixedTitle = fixedTitle;
-          this.partAllData = _.chunk(res.data.headList, this.showLength);
+          this.partAllData = [res.data.headList];
           this.allData = res.data.headList;
           this.tableData = tableData;
         })
@@ -589,43 +573,8 @@ export default {
           this.loading = false;
           this.$nextTick(() => {
             this.setColSpan();
-            this.$emit("setPage", {
-              index: this.index,
-              showLength: this.showLength,
-              total: this.allData.length,
-            });
           });
         });
-    },
-    prev() {
-      if (this.index < this.partAllData.length - 1) {
-        this.index++;
-      } else {
-        this.index = 0;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
-    },
-    next() {
-      if (this.index > 0) {
-        this.index--;
-      } else {
-        this.index = this.partAllData.length - 1;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -663,7 +612,7 @@ export default {
     // 表头合并
     setColSpan() {
       const row =
-        this.$refs["supplier-table"]?.getElementsByClassName(
+        this.$refs[this.ref].getElementsByClassName(
           "el-table__header"
         )[0].rows;
       //   行数据,行,列,合并数,方向
@@ -771,41 +720,9 @@ export default {
         color: #000 !important;
       }
     }
-    .decoration{
-      text-decoration: underline
-    }
   }
   .red {
     color: #f00;
-  }
-}
-.left {
-  transform: translate(-17px, 0px);
-  width: 12px;
-  height: 126px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    transform: rotate(180deg);
-    width: 12px;
-    user-select: none;
-  }
-}
-.right {
-  transform: translate(3px, 0px);
-  width: 12px;
-  height: 126px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    width: 12px;
-    user-select: none;
   }
 }
 .table {

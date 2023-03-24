@@ -11,7 +11,7 @@
     "
   >
     <el-radio-group
-      class="radio-group margin-bottom20"
+      class="radio-group margin-bottom10"
       v-model="tabBar"
       @change="changeCarType"
     >
@@ -22,6 +22,22 @@
         ></el-radio-button>
       </template>
     </el-radio-group>
+    <div class="legend-box margin-bottom10">
+      <div class="legend-item margin-right20">
+        <span class="legend time-range-1st margin-right10"></span>
+        <span>1st</span>
+      </div>
+      <div class="legend-item margin-right20">
+        <span class="legend time-range-em margin-right10"></span><span>EM</span>
+      </div>
+      <div class="legend-item margin-right20">
+        <span class="legend time-range-q3 margin-right10"></span>
+        <span>Q3</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend time-range-q1 margin-right10"></span><span>Q1</span>
+      </div>
+    </div>
     <div class="time-box" v-loading="isLoading">
       <span class="label">Supplier</span>
       <div class="line-div">
@@ -86,20 +102,26 @@
           <div class="supplier" :key="item.supplierId + index">
             <div class="supplier-name">{{ item.supplierNameEn }}</div>
             <div class="supplier-time">
-              <div
-                class="time-range-1st"
-                v-if="item.oneStWeek"
-                :style="{
-                  width: ((item.oneStWeek * 7) / dateRange) * 100 + '%',
-                  marginLeft: getMargin() + '%',
-                }"
-              >
-                <!-- 1st Tryout: -->
-                {{ item.oneStWeek }}W
-              </div>
-
+              <!-- 1st Tryout: -->
               <el-tooltip
-                :content="'EM:' + item.emWeek"
+                :content="'1st:' + item.oneStWeek + 'W'"
+                v-if="item.emWeek"
+                placement="top"
+                effect="light"
+              >
+                <div
+                  class="time-range-1st"
+                  v-if="item.oneStWeek"
+                  :style="{
+                    width: ((item.oneStWeek * 7) / dateRange) * 100 + '%',
+                    marginLeft: getMargin() + '%',
+                  }"
+                >
+                  {{ item.oneStWeek }}W
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                :content="'EM:' + item.emWeek + 'W'"
                 v-if="item.emWeek"
                 placement="top"
                 effect="light"
@@ -116,7 +138,7 @@
               </el-tooltip>
               <!-- Q3:  -->
               <el-tooltip
-                :content="'Q3:' + item.qthreeWeek"
+                :content="'Q3:' + item.qthreeWeek + 'W'"
                 v-if="item.qthreeWeek"
                 placement="top"
                 effect="light"
@@ -132,7 +154,7 @@
               </el-tooltip>
               <!-- Q1:  -->
               <el-tooltip
-                :content="'Q1:' + item.qoneWeek"
+                :content="'Q1:' + item.qoneWeek + 'W'"
                 v-if="item.qoneWeek"
                 placement="top"
                 effect="light"
@@ -358,6 +380,11 @@ export default {
       let MonthFirst = window.moment(minDate).startOf("month").format("x");
       // 最大月最后天
       let MonthLast = window.moment(maxDate).endOf("month").format("x");
+      // 最大时间往后延长一个月
+      MonthLast = window
+        .moment(+MonthLast + 24 * 60 * 60 * 1000)
+        .endOf("month")
+        .format("x");
       this.MonthFirst = MonthFirst;
       this.MonthLast = MonthLast;
       // 时间范围
@@ -466,6 +493,10 @@ export default {
       )
         .then((res) => {
           if (res?.code == "200") {
+            if (!res.data.length) {
+              this.isLoading = false;
+              return;
+            }
             this.detail = res.data[0];
             this.getFirstDate();
           }
@@ -555,6 +586,34 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.legend-box {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  .legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    .legend {
+      display: flex;
+      align-items: center;
+      height: 20px;
+      width: 20px;
+    }
+    .time-range-1st {
+      background: #f2f2f2;
+    }
+    .time-range-em {
+      background: #66ccff;
+    }
+    .time-range-q3 {
+      background: #ccffcc;
+    }
+    .time-range-q1 {
+      background: #339933;
+    }
+  }
+}
 .year-table {
   display: flex;
   flex-flow: row;

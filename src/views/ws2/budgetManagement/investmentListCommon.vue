@@ -285,7 +285,7 @@ export default {
         carTypeProject: this.params.id,
         sourceStatus: this.params.sourceStatus
       });
-      await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ''}), getCarTypeBudget(this.params.id)]).then((res) => {
+      await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ['']}), getCarTypeBudget(this.params.id)]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
