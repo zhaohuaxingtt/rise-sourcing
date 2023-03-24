@@ -1,12 +1,11 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div :ref="ref" v-loading="loading">
+  <div :ref="ref" v-loading="loading" :key="index">
     <el-table
       :data="tableData"
       height="100%"
       class="header table"
       ref="table"
-      :key="index"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
     >
@@ -121,9 +120,42 @@
                         :label="item.targetAPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetAPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
+                            {{ item.targetAPrice }}
+                          </template>
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            {{ item.fsGsNum }}({{ item.factoryEn }})
+                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -156,6 +188,39 @@
                         :label="item.targetBPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价B价", "零件目标价B价") }}：{{
+                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetBPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
+                            {{ item.targetBPrice }}
+                          </template>
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <el-table-column
                             :prop="item.fsGsNum + 'lcBPrice'"
@@ -290,20 +355,17 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.investFeeIsShared"
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.toolingShareTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.toolingNotShareTotal }}
+                                    Unassessed amount：{{ scope.row.toolingNotShareTotal }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -322,20 +384,17 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.devFeeIsShared"
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.developShareCostTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.developNotShareCostTotal }}
+                                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -362,22 +421,20 @@
         </el-table-column>
       </template>
     </el-table>
+    <partTableDetail :visible.sync="visible" v-if="visible" :row="itemFS" />
   </div>
 </template>
 
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
-import { numberProcessor, toThousands } from "@/utils";
+import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
+import partTableDetail from "./partTableDetail";
 export default {
+  name:'supplierTableList',
   components: {
     tooltip,
-  },
-  props: {
-    row: {
-      type: Array,
-      default: () => {},
-    },
+    partTableDetail
   },
   data() {
     return {
@@ -427,6 +484,8 @@ export default {
       partAllData: [],
       allData: [],
       index: -1,
+      itemFS:{},
+      visible:false
     };
   },
   computed: {
@@ -443,6 +502,14 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
+    gotoDetail(row) {
+      this.itemFS = JSON.parse(JSON.stringify(row));
+      this.itemFS.fsNum = this.itemFS.fsGsNum
+      this.$nextTick(() => {
+        this.visible = !this.visible;
+      });
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -458,17 +525,12 @@ export default {
     },
     analysisSummaryNomi() {
       this.loading = true;
+      this.index = 0;
       analysisSummaryNomi({
         nomiId: this.$route.query.desinateId,
-        // partTable携带partPrjCode, best ball携带的是fsNum
-        fsGsNumList:
-          this.row?.partPrjCode || this.row?.fsNum
-            ? [this.row.partPrjCode || this.row?.fsNum]
-            : undefined,
       })
         .then((res) => {
           if (res?.code != 200) return;
-          this.index = 0;
           let tableData =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
@@ -600,18 +662,8 @@ export default {
       if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
       if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
       if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
-
-      if (this.row?.partPrjCode || this.row?.fsNum) {
-        this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
-      } else {
-        this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-        this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
-      }
+      this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
+      this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -697,6 +749,9 @@ export default {
         font-weight: 500;
         color: #000 !important;
       }
+    }
+    .decoration{
+      text-decoration: underline
     }
   }
   .red {

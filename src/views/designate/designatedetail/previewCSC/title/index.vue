@@ -9,13 +9,15 @@
       <img src="@/assets/images/CSC_bg.png" alt="" />
     </div>
     <div class="content">
-      <div class="infos" v-for="item in items" :key="item.label">
-        <div class="label" v-if="item.key != 'partType'">{{ item.label }}:</div>
-        <div class="value" v-if="item.key == 'tnr'">
-          {{ data[item.key] }}({{ data.partType }})
+      <template v-for="item in items">
+        <div class="infos" :key="item.label" v-if="item.key != 'partType'">
+          <div class="label">{{ item.label }}:</div>
+          <div class="value" v-if="item.key == 'tnr'">
+            {{ data[item.key] }}({{ data.partType }})
+          </div>
+          <div class="value" v-else>{{ data[item.key] }}</div>
         </div>
-        <div class="value" v-else-if="item.key != 'partType'">{{ data[item.key] }}</div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -133,7 +135,7 @@ export default {
 }
 .content {
   height: calc(100% - 525px);
-  min-height: 300px;
+  min-height: 350px;
   padding: 20px;
   border: 1px solid #ddd;
   flex: 1;
@@ -142,6 +144,7 @@ export default {
   flex-flow: column;
   margin-top: 20px;
   margin-bottom: 25px;
+  overflow: auto;
   .infos {
     display: flex;
     font-size: 28px;

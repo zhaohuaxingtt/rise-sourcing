@@ -2,8 +2,8 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-28 13:14:26
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
+ * @LastEditTime: 2023-03-20 18:30:26
+ * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -130,31 +130,67 @@
             <template
               v-else-if="['totalInvest'].includes(columnLabel[scope.$index])"
             >
-              <span
+            <el-popover
+                placement="top-start"
+                trigger="hover"
                 v-if="item.investFeeIsShared && item[columnLabel[scope.$index]]"
-                style="color: red"
-                >*</span
-              ><span>{{
-                getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-              }}</span>
+              >
+                <div>
+                  <div>
+                    Apportioned amount：{{
+                      getInt(item.toolingShareTotal) | toThousands(true)
+
+                    }}
+                  </div>
+                  <div>
+                    Unassessed amount：{{
+                      getInt(item.toolingNotShareTotal) | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+              </template>
             </template>
             <template
               v-else-if="
                 ['totalDevelopCost'].includes(columnLabel[scope.$index])
               "
             >
-              <span
+            <el-popover
+                placement="top-start"
+                trigger="hover"
                 v-if="item.devFeeIsShared && item[columnLabel[scope.$index]]"
-                style="color: red"
-                >*</span
-              ><span>{{
-                getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-              }}</span>
+              >
+                <div>
+                  <div>
+                    Apportioned amount：{{
+                      getInt(item.developShareCostTotal) | toThousands(true)
+
+                    }}
+                  </div>
+                  <div>
+                    Unassessed amount：{{
+                      getInt(item.developNotShareCostTotal) | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                </div>
+              </el-popover>
+              <template v-else>
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+              </template>
             </template>
             <template
               v-else-if="['totalTurnover'].includes(columnLabel[scope.$index])"
             >
-              <span>{{
+              <span :class="{'font-green':item.isMinTto}">{{
                 getInt(item[columnLabel[scope.$index]]) | toThousands(true)
               }}</span>
             </template>
@@ -192,6 +228,27 @@
                 :data="item"
                 :max="max"
               />
+              <!-- <template v-else-if="item.prop == 'Recommendation'">
+              <el-popover
+                placement="right"
+                trigger="hover"
+                popper-class="supplier-pop"
+              >
+                <div class="supplier-box">
+                  <p v-for="i in 30" :key="i"><span>{{supplierSap||'sap'}}</span>-<span>{{supplier||'supplier'}}</span></p>
+                </div>
+                <div slot="reference">
+                  <barItem
+                    :key="item.prop"
+                    :height="height"
+                    :barName="item.label"
+                    :data="item"
+                    :colorA="item.colorA"
+                    :max="max"
+                  />
+                </div>
+              </el-popover>
+              </template> -->
               <barItem
                 v-else
                 :key="item.prop"

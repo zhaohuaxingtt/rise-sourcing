@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2023-02-28 11:29:28
+ * @LastEditTime: 2023-03-13 09:36:33
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 决策资料 - 附件
 -->
@@ -55,7 +55,7 @@
             class="upload-trigger margin-left10"
             v-if="!$store.getters.isPreview"
             :hideTip="true"
-            :accept="'.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.pdf,.tif'"
+            :accept="'.doc,.docx,.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian', '上传文件')"
             @on-success="
               onUploadsucess(

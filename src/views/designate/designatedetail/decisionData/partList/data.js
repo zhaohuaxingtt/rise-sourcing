@@ -21,11 +21,11 @@ export const tableTitle = [
 ]
 
 export const detailTableTitle = [
-  { props: "engineType", name: "发送机类型", tooltip: true, key: "发送机类型", minWidth: "240" },
-  { props: "gearType", name: "变速箱型号", tooltip: true, key: "变速箱型号" , minWidth: "160"},
-  { props: "batteryCapacity", name: "电池容量", tooltip: true, key: "电池容量" , minWidth: "135"},
-  { props: "otherInfo", name: "其他配置", tooltip: true, key: "其他配置", minWidth: "135" },
-  { props: "cartypeLevel", name: "车型等级", tooltip: true, key: "车型等级", minWidth: "100" },
-  { props: "perCarDosage", name: "每车用量", tooltip: true, key: "每车用量", minWidth: "100" },
-  { props: "cartypeLevelRate", name: "配置比例", tooltip: true, key: "配置比例", minWidth: "100" },
-]					
+  { props: "engineType",isHeaderSetting:true, HeaderSettingList:[{name:'发送机类型'},{name:'Engine type'},], minWidth: "240" },
+  { props: "gearType", isHeaderSetting:true, HeaderSettingList:[{name:'变速箱型号'},{name:'Gearbox model'},], minWidth: "150"},
+  { props: "batteryCapacity", isHeaderSetting:true, HeaderSettingList:[{name:'电池容量'},{name:'Battery capacity'},], minWidth: "135"},
+  { props: "otherInfo", isHeaderSetting:true, HeaderSettingList:[{name:'其他配置'},{name:'Other configuration'},], minWidth: "135" },
+  { props: "cartypeLevel", isHeaderSetting:true, HeaderSettingList:[{name:'车型等级'},{name:'Model class'},], minWidth: "90" },
+  { props: "perCarDosage", isHeaderSetting:true, HeaderSettingList:[{name:'每车用量'},{name:'Quantity'},], minWidth: "90" },
+  { props: "cartypeLevelRate", isHeaderSetting:true, HeaderSettingList:[{name:'配置比例'},{name:'Configuration ratio%'},], minWidth: "145" },
+]

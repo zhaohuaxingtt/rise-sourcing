@@ -70,6 +70,7 @@ export default {
   methods: {
     // 获取列表
     getData() {
+      if(!this.row.purchasingRequirementId) return
       this.loading = true;
       latestVersionInfo(this.row.purchasingRequirementId)
         .then((res) => {
