@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-09 14:38:27
+ * @LastEditTime: 2023-03-23 15:03:37
  * @Description: 流转RS单
- * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
@@ -999,6 +999,9 @@ export default {
         });
     },
     pageWidth() {
+      let width = 2
+      this.tableTitleSub.forEach(item=> width+=(item.width||item.minWidth||80))
+      return width
       // 多加2px 避免出现滚动条
       if (this.projectType === partProjTypes.PEIJIAN) {
         return 2052;
@@ -1032,6 +1035,14 @@ export default {
     // hasTitle(){
     //   return this.$slots.tabTitle && 116 || 0
     // }
+  },
+  watch: {
+    pageWidth: {
+      immediate: true,
+      handler() {
+        this.getHeight();
+      },
+    },
   },
   created() {
     this.key = +new Date();
@@ -1477,7 +1488,7 @@ export default {
         });
       }
       this.pdfPage = elList.length;
-      this.showpdf = false;
+      // this.showpdf = false;
       this.$nextTick(() => {
         setTimeout(async () => {
           if (!elList.length) {
@@ -1540,14 +1551,14 @@ export default {
     }) {
       console.time(`index${index}`);
       let this_ = this;
-      let el = this.$refs.contentPdf;
+      // let el = this.$refs.contentPdf;
       dom.getElementsByClassName("pageNum")[0].innerHTML = `page ${
         index + 1
       } of ${this_.pdfPage}`;
-      el.style.width = this_.WH[index].width + "px";
-      el.style.height = this_.WH[index].height + "px";
-      el.innerHTML = dom.outerHTML;
-      await html2canvas(el, {
+      dom.style.width = this_.WH[index].width + "px";
+      // el.style.height = this_.WH[index].height + "px";
+      // el.innerHTML = dom.outerHTML;
+      await html2canvas(dom, {
         dpi: 96, //分辨率
         scale: this.pdfPage > 12 ? 1 : 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
@@ -1780,7 +1791,8 @@ export default {
 }
 
 .rsPdfWrapper,
-.demo {
+.demo,
+.contentPdf {
   width: 100%;
   height: 0;
   overflow: hidden;
@@ -1807,7 +1819,7 @@ export default {
     }
   }
   .rsTable {
-    font-size: 8px;
+    font-size: 12px;
     &::before {
       height: 0;
     }
@@ -1928,6 +1940,9 @@ export default {
   align-items: center;
   border-top: 1px solid #666;
 }
+
+.rsPdfWrapper,
+.demo,
 .contentPdf {
   ::v-deep p {
     margin: 0;
@@ -1953,19 +1968,21 @@ export default {
     }
   }
 
-  ::v-deep .rsTable {
-    font-size: 8px;
+  ::v-deep .el-table {
+    font-size: 12px !important;
     .el-table__header th {
       padding-top: 8px;
       padding-bottom: 8px;
       & > .cell {
         padding-left: 3px;
         padding-right: 3px;
-        line-height: unset;
+          line-height: unset;
+          font-size: 12px !important;
         p {
-          margin: 0;
+          // margin: 0;
           min-height: 16px;
-          line-height: 14px;
+          font-size: 12px !important;
+          // line-height: 14px;
         }
       }
     }
@@ -1974,15 +1991,16 @@ export default {
       border-bottom: 1px solid #ebeef5;
       td {
         border-top: 1px solid #ccc;
-        line-height: 23px;
+        // line-height: 23px;
         .cell {
           padding-right: 1px;
           padding-left: 1px;
           line-height: unset;
-          p {
-            line-height: 23px;
-            margin: 0;
-          }
+          font-size: 12px !important;
+          // p {
+          //   // line-height: 23px;
+          //   margin: 0;
+          // }
         }
         &:first-child {
           .cell {
