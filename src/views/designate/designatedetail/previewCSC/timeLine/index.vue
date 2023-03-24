@@ -100,7 +100,16 @@
       <div class="supplier-table">
         <template v-for="(item, index) in detail.timeAxisSupplierInfoList">
           <div class="supplier" :key="item.supplierId + index">
-            <div class="supplier-name">{{ item.supplierNameEn }}</div>
+            <tooltip class="supplier-name" :text="item.supplierNameEn">
+              <template slot="content">
+                <p class="partName">
+                  {{ item.supplierName }}
+                </p>
+                <p class="partName">
+                  {{ item.supplierNameEn }}
+                </p>
+              </template>
+            </tooltip>
             <div class="supplier-time">
               <!-- 1st Tryout: -->
               <el-tooltip
@@ -193,12 +202,14 @@ import { iCard, iButton, icon, iMessage } from "rise";
 import ots from "@/assets/images/icon/ots.png";
 import { getNomiCarProjectTimeAxis } from "@/api/designate/decisiondata/timeLine";
 import { analysisNomiCarProject } from "@/api/partsrfq/editordetail/abprice";
+import tooltip from "../components/tooltip.vue";
 export default {
   name: "timeLine",
   components: {
     iCard,
     iButton,
     icon,
+    tooltip
   },
   data() {
     return {

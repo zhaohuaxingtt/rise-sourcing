@@ -2,8 +2,8 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-28 12:52:45
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\components\supplierBar.vue
+ * @LastEditTime: 2023-03-23 18:28:47
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\supplierLine.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -33,21 +33,31 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              <div class="flex">
-                <div class="legend margin-right5">
-                  <span
-                    class="line"
-                    :style="{ background: scope.row.color }"
-                  ></span
-                  ><span
-                    class="point"
-                    :style="{ background: scope.row.color }"
-                  ></span>
-                </div>
-                <span>
-                  {{ scope.row.supplierNameEn }}
-                </span>
-              </div>
+              <tooltip
+                :text="scope.row.supplierNameEn"
+              >
+                <template slot="content">
+                  <p>{{scope.row.supplierName||'-'}}</p>
+                  <p>{{scope.row.supplierNameEn}}</p>
+                </template>
+                <template slot="text">
+                  <div class="flex">
+                    <div class="legend margin-right5">
+                      <span
+                        class="line"
+                        :style="{ background: scope.row.color }"
+                      ></span
+                      ><span
+                        class="point"
+                        :style="{ background: scope.row.color }"
+                      ></span>
+                    </div>
+                    <span>
+                      {{ scope.row.supplierNameEn }}
+                    </span>
+                  </div>
+                </template>
+              </tooltip>
             </template>
           </el-table-column>
           <template v-for="(item, index) in roundList">
@@ -127,10 +137,12 @@ import { icon } from "rise";
 import barItem from "./barItem";
 import { getLine } from "@/api/partsrfq/editordetail/abprice";
 import { toThousands, deleteThousands } from "@/utils";
+import tooltip from "../../components/tooltip.vue";
 export default {
   components: {
     barItem,
     icon,
+    tooltip
   },
   props: {
     detail: {
