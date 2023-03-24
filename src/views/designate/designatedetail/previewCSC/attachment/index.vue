@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-24 10:35:36
+ * @LastEditTime: 2023-03-13 09:25:03
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,12 +60,10 @@
 </template>
 <script>
 import { icon } from "rise";
-import attachment from "./components/attachment";
-import rssheet from "./components/rssheet";
-import mtzAttachment from "./components/mtzAttachment";
 import { nominateAppSDetail } from "@/api/designate";
 import { getMtzAttachmentPageList } from "@/api/designate/designatedetail/attachment";
 import { getdDecisiondataList } from "@/api/designate/decisiondata/attach";
+import { getFileUrl } from "@/api/file/index";
 
 export default {
   data() {
@@ -93,15 +91,16 @@ export default {
     };
   },
   components: {
-    attachment,
-    rssheet,
-    mtzAttachment,
     icon,
   },
   created() {
     this.init();
   },
   methods: {
+    async getFileUrl(fileId,fileName){
+      let res = await getFileUrl(fileId,fileName)
+      return res.data
+    },
     init() {
       this.loading = true;
       Promise.all([
@@ -202,13 +201,30 @@ export default {
         this.collapseValue = !this.collapseValue;
       }
     },
-    changeSrc(index, item) {
+    async changeSrc(index, item) {
       let fileObj = JSON.parse(JSON.stringify(item));
       let arr = item.fileName.split(".");
       fileObj.type = arr[arr.length - 1].toUpperCase();
-      this.detail = fileObj;
-      this.index = index;
-      this.active = item.id;
+      let queryArr = fileObj.filePath.split('?')
+      let query = queryArr[queryArr.length-1]
+      let queryStr = query.split("&")
+      let fileId = queryStr.find(str=>str.indexOf('fileId')>-1).split('=')[1]
+      if(fileObj.type.indexOf('XLS')>-1){
+        let res = await this.getFileUrl(fileId,fileObj.fileName)
+        fileObj.filePath = res||fileObj.filePath
+        this.detail = fileObj;
+      }else{
+        this.detail = fileObj;
+      }
+      // if(['PNG', 'JPG', 'JIF'].includes(fileObj.type)){
+      //   this.detail = fileObj;
+      // }else{
+      //   let res = await this.getFileUrl(fileId,fileObj.fileName)
+      //   fileObj.filePath = res||fileObj.filePath
+      //   this.detail = fileObj;
+      // }
+        this.index = index;
+        this.active = item.id;
     },
   },
 };
