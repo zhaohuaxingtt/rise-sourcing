@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-10 14:22:48
+ * @LastEditTime: 2023-03-27 17:21:27
  * @Description: 上会/备案RS单
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\index.vue
 -->
 
 <template>
@@ -145,7 +145,8 @@
           </div>
         </div>
         </div>
-        <div class="header-table-box" :style="{ 'padding-right': gutter, height: headerTableHeight+'px' }">
+        <div class="header-table-box" v-if="!showHeader" :style="{ 'padding-right': gutter, height: headerTableHeight+'px'}">
+        <!-- <div class="header-table-box" :style="{ 'padding-right': gutter, height: headerTableHeight+'px' }"> -->
           <tableList
             ref="header-table"
             v-update
@@ -439,11 +440,11 @@
             indexKey
             :tableLoading="tableLoading"
             :tableTitle="tableTitle"
-            :tableData="tableData"
+            :tableData="[...tableData,...tableData]"
             class="rsTable table"
-            :show-header="false"
             :cell-class-name="cellClass"
             @onScroll="onScroll"
+            :show-header="showHeader"
             border
           >
             <template #fsnrGsnrNum="scope">
@@ -951,6 +952,7 @@ export default {
   data() {
     return {
       loading: false,
+      showHeader:true,
       // 零件项目类型
       partProjTypes,
       remarks: {},
@@ -989,7 +991,6 @@ export default {
       residualRemark: [],
       showpdf: true,
       html: "",
-      titleHeight: 243,
       headerTableHeight: 57,
       gutter: "0",
       scrollLeft:null
@@ -1155,9 +1156,6 @@ export default {
     scrollLeft(val){
       this.$refs['header-table'].$refs.multipleTable.bodyWrapper.scrollLeft = val
     }
-  },
-  updated() {
-    this.$set(this, "titleHeight", this.$refs["page-flex"].offsetHeight + this.headerTableHeight);
   },
   created() {
     this.isAuth = this.$route.query.type === "auth";
@@ -1465,7 +1463,6 @@ export default {
      */
     getTopList() {
       this.tableLoading = true;
-
       this.searchRsPageExchangeRate();
       getList(this.nominateId)
         .then((res) => {
@@ -1476,7 +1473,7 @@ export default {
               temdata.partName = `${temdata.partName}/${temdata.partNameDe}`;
             }
             this.basicData = temdata;
-            let data = Array.isArray(res.data.lines) ? res.data.lines : [];
+            let data = Array.isArray(res.data?.lines) ? res.data.lines : [];
             data.forEach((val, index) => {
               let suppliersNowCn = [];
               let suppliersNowEn = [];
@@ -1517,6 +1514,7 @@ export default {
         })
         .finally(() => {
           this.tableLoading = false;
+          this.showHeader = false // 表格隐藏表头,顶部显示固定表头
           this.$nextTick(() => {
             this.getHeight();
             this.loading = false;
@@ -1526,8 +1524,10 @@ export default {
                 this.$refs["body-table"].clientHeight <
                 this.$refs["body-table"].scrollHeight
               ) {
-                this.gutter = "8px";
+                this.gutter = "0.5rem";
               }
+            if (this.$refs['header-table'])
+            this.headerTableHeight = this.$refs['header-table'].$el?.getElementsByClassName('el-table__header-wrapper')[0].offsetHeight || 57
           });
         });
     },
@@ -1816,6 +1816,8 @@ export default {
   display: none;
 }
 .rs-content {
+  display: flex;
+  flex-flow: column;
   height: 100%;
 }
 .meeting {
@@ -1887,11 +1889,13 @@ export default {
     }
     .header-table {
       pointer-events: none;
-      overflow: hidden;
+      .el-table__body-wrapper{
+        visibility: hidden;
+      }
     }
   }
   .rsCard-content {
-    height: calc(100% - 173px);
+    flex: 1;
     overflow: auto;
   }
   .rsCard {
