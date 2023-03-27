@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-01 17:48:57
+ * @LastEditTime: 2023-03-27 17:51:24
  * @Description: 
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\data.js
  */
 
 export const leftTitle = [
@@ -163,7 +163,7 @@ export const nomalTableTitle = [
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', width:70},
   {props:'svwCode',name:'厂商', enName: 'Code', width:48},
   {props:'supplierName',name:'供应商', enName: 'Supplier', minWidth:125},
-  {props:'prodLocation',name:'产地', enName: 'Prod.Location', minWidth:200},
+  {props:'prodLocation',name:'产地', enName: 'Prod.Location', minWidth:100},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', minWidth:65},
   {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', minWidth:85, align: 'right'},
   {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', minWidth:85, align: 'right'},
