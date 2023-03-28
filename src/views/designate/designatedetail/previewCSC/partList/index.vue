@@ -59,7 +59,7 @@
         </template>
         <!-- Mixed Qty:综合每车用量 -->
         <template #ebrCalculatedValue="scope">
-          <span>{{ numberProcessor(scope.row.ebrCalculatedValue, 2) }}</span>
+          <span>{{ scope.row.ebrCalculatedValue ? Number(scope.row.ebrCalculatedValue).toFixed(2) : '' }}</span>
         </template>
         <template #lifeTime="scope">
           <span>{{ scope.row.lifeTime | toThousands(true) }}</span>
