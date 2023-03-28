@@ -1,17 +1,16 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div :ref="ref">
+  <div style="height: 100%" :ref="ref">
     <!-- 内容表 -->
-    <div
-      class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
-    >
+    <div class="table-box">
       <el-table
         :data="tableData"
         class="header table"
         ref="table"
-        height="100%"
+        height='100%'
         border
+        show-summary
+        :summary-method="summaryMethod"
         :header-cell-class-name="cellClass"
         :cell-class-name="colClass"
       >
@@ -34,34 +33,6 @@
                 <span class="link" @click="gotoDetail(scope.row)"
                   >({{ scope.row.factoryEn }})</span
                 >
-              </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
-              v-else-if="item.prop == 'ebr'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            >
-              <template slot-scope="scope">
-                <span>{{ percent(scope.row.ebr) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
-              v-else-if="item.prop == 'mixQty'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-              ><template slot="header" slot-scope="scope">
-                <p v-for="(text, index) in item.label" :key="index">
-                  {{ text }}
-                </p>
-              </template>
-              <template slot-scope="scope">
-                <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -120,6 +91,17 @@
             >
           </template>
           <el-table-column label="F-target" align="center">
+            <el-table-column
+              label="Supplier"
+              prop="supplier"
+              align="right"
+              header-align="center"
+              minWidth="85"
+            >
+              <template slot-scope="scope">
+                {{ scope.row.supplier }}
+              </template>
+            </el-table-column>
             <el-table-column
               label="A Price"
               prop="targetAPrice"
@@ -296,7 +278,7 @@
               <p>Date</p>
             </template>
             <template slot-scope="scope">
-              <template v-if="scope.row.ltc!=0">{{
+              <template v-if="scope.row.ltc != 0">{{
                 scope.row.ltcStartDate
               }}</template>
             </template></el-table-column
@@ -354,156 +336,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- 汇总表 -->
-    <div ref="total-table" :style="{ 'padding-right': gutter }">
-      <el-table
-        class="header total-table"
-        border
-        :data="totalData"
-        :span-method="totalCellClass"
-        :cell-class-name="totalColClass"
-        :show-header="false"
-      >
-        <el-table-column label="Unit：RMB">
-          <template v-for="item in fixedTitle">
-            <el-table-column
-              :key="item.prop"
-              v-if="item.prop == 'fsNum'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            >
-              <template slot-scope="scope">
-                <span class="link" @click="gotoDetail(scope.row)">{{
-                  scope.row[item.prop]
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-else
-              :key="item.prop"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            ></el-table-column>
-          </template>
-          <el-table-column label="F-target" align="center">
-            <el-table-column
-              label="A Price"
-              prop="targetAPrice"
-              minWidth="85"
-              align="right"
-              header-align="center"
-            >
-            </el-table-column>
-            <el-table-column
-              label="B Price"
-              prop="targetBPrice"
-              minWidth="85"
-              align="right"
-              header-align="center"
-            >
-            </el-table-column>
-          </el-table-column>
-        </el-table-column>
-        <el-table-column>
-          <el-table-column
-            label="A Price(LC)"
-            align="right"
-            header-align="center"
-            prop="lcAPrice"
-            minWidth="85"
-          >
-            <template slot-scope="scope">
-              {{ scope.row["lcAPrice"] | toThousands(true) }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="B Price(LC)"
-            align="right"
-            header-align="center"
-            prop="lcBPrice"
-            minWidth="85"
-          >
-            <template slot-scope="scope">
-              {{ scope.row["lcBPrice"] | toThousands(true) }}
-            </template></el-table-column
-          >
-          <el-table-column
-            label="Invest"
-            align="right"
-            header-align="center"
-            prop="invest"
-            minWidth="100"
-          >
-            <template slot-scope="scope">
-              {{ getInt(scope.row["invest"]) | toThousands(true) }}
-            </template></el-table-column
-          >
-          <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameZh"
-            minWidth="100"
-          ></el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            ></el-table-column>
-          </el-table-column>
-          <el-table-column
-            label="LTC"
-            align="center"
-            prop="ltc"
-          ></el-table-column>
-          <el-table-column
-            label="LTC Start Date"
-            align="center"
-            prop="ltcStartDate"
-            min-width="110"
-          ></el-table-column>
-          <el-table-column
-            label="Develop Cost"
-            align="right"
-            header-align="center"
-            prop="developCost"
-            min-width="100"
-          >
-            <template slot-scope="scope">
-              {{ getInt(scope.row["developCost"]) | toThousands(true) }}
-            </template></el-table-column
-          >
-          <el-table-column
-            label="Total Turnover"
-            align="right"
-            header-align="center"
-            prop="totalTurnover"
-            min-width="110"
-          >
-            <template slot-scope="scope">
-              {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
-            </template></el-table-column
-          >
-        </el-table-column>
-      </el-table>
-    </div>
     <partTableDetail :visible.sync="visible" :row="row" />
   </div>
 </template>
@@ -515,9 +347,10 @@ import {
   getAnalysisBestBallNomi,
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
+import bestBallTableListTotal from "./bestBallTableListTotal";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, tooltip, bestBallTableListTotal },
   data() {
     return {
       ref: "best-ball",
@@ -540,16 +373,6 @@ export default {
           width: 120,
         },
         {
-          prop: "ebr",
-          label: ["EBR"],
-          width: 85,
-        },
-        {
-          prop: "mixQty",
-          label: ["Mixed", "Qty"],
-          width: 60,
-        },
-        {
           prop: "volume",
           label: ["Volume"],
           width: 85,
@@ -560,13 +383,10 @@ export default {
       row: {},
       totalData: [
         {
-          ebr: "Mixed Price",
+          partNum: "Mixed Total",
         },
         {
-          ebr: "Target",
-        },
-        {
-          ebr: "Budget",
+          partNum: "Budget",
         },
       ],
       totalTableHeight: 120,
@@ -613,9 +433,7 @@ export default {
             totalData[0]["invest"] = res.data.totalInvest;
             totalData[0]["developCost"] = res.data.totalDevelopCost;
             totalData[0]["totalTurnover"] = res.data.totalTurnover;
-            totalData[1]["invest"] = res.data.totalTargetInvest;
-            totalData[1]["developCost"] = res.data.targetSelTotalSel;
-            totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
+            totalData[1]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;
           } else {
@@ -624,16 +442,26 @@ export default {
         })
         .finally(() => {
           this.$nextTick(() => {
+            this.setColSpan();
             this.$emit("setPage", {
               index: this.label == "Best ball" ? 0 : 1,
               total: 2,
             });
+            this.$refs.table.doLayout() // table重新布局
           });
         });
     },
     isCLevel(val) {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
+
+    setColSpan() {
+      const row =
+        this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
+      console.log(row);
+      //   行数据,行,列,合并数,方向
+      this.merge(row, 0, 0, 18, "colSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -643,23 +471,23 @@ export default {
       let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
       let colSpan = row[rowIndex].cells[colIndex].colSpan;
       if (type == "colSpan") {
-        for (let r = 0; r < rowSpan; r++) {
-          let rIndex = r + rowIndex;
-          let colSpan_ = row[rIndex].cells[colIndex].colSpan;
-          for (let i = 1; i < span; i++) {
-            let cIndex = i + colIndex;
-            colSpan_ += row[rIndex].cells[cIndex].colSpan;
-            if (colSpan_ == span) {
-              row[rIndex].cells[cIndex].style.display = "none";
-              break;
-            }
-            if (colSpan_ > span) {
-              row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
-              break;
-            }
+        // for (let r = 0; r < rowSpan; r++) {
+        let rIndex = rowIndex;
+        let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+        for (let i = 1; i < span; i++) {
+          let cIndex = i + colIndex;
+          colSpan_ += row[rIndex].cells[cIndex].colSpan;
+          if (colSpan_ == span) {
             row[rIndex].cells[cIndex].style.display = "none";
+            break;
           }
+          if (colSpan_ > span) {
+            row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+            break;
+          }
+          row[rIndex].cells[cIndex].style.display = "none";
         }
+        // }
       }
       if (type == "rowSpan") {
         for (let c = 0; c < colSpan; c++) {
@@ -685,28 +513,14 @@ export default {
     // 计算统计表表头合并
     totalCellClass({ row, column, rowIndex, columnIndex }) {
       if (columnIndex == 0 && rowIndex == 0) {
-        return [3, 3];
-      } else if (columnIndex < 3 && rowIndex < 3) {
+        return [3, 1];
+      } else if (columnIndex == 0 && rowIndex < 3) {
         return [0, 0];
       }
-      if ([0, 1, 2].includes(rowIndex)) {
-        if (columnIndex == 3) {
+      if ([0, 1].includes(rowIndex)) {
+        if (columnIndex == 1) {
           return [1, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([2, 4].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [2, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([3, 5].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
+        } else if ([2, 3].includes(columnIndex)) {
           return [0, 0];
         }
       }
@@ -753,7 +567,7 @@ export default {
       }
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
-      if ([3, 4, 5].includes(columnIndex)) {
+      if ([1, 2, 3].includes(columnIndex)) {
         return "table-header";
       }
     },
@@ -763,13 +577,24 @@ export default {
         this.visible = true;
       });
     },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = <bestBallTableListTotal totalData={this.totalData} />;
+          return;
+        }
+      });
+      return sums;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .table-box {
-  height: calc(100% - 120px);
+  height: 100%;
 }
 .header {
   ::v-deep th {
@@ -812,6 +637,14 @@ export default {
       background: #fff;
       .cell {
         color: #000 !important;
+      }
+    }
+  }
+  .el-table__footer {
+    td {
+      padding: 0;
+      .cell {
+        padding: 0;
       }
     }
   }

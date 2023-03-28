@@ -563,11 +563,6 @@ export default {
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 9, "rowSpan");
       this.merge(row, 9, 2, 2, "colSpan");
-      if (this.partList.length > 0) this.merge(row, 9, 4, 2, "colSpan");
-      if (this.partList.length > 1) this.merge(row, 9, 6, 2, "colSpan");
-      if (this.partList.length > 2) this.merge(row, 9, 8, 2, "colSpan");
-      if (this.partList.length > 3) this.merge(row, 9, 10, 2, "colSpan");
-
       if (this.row?.partPrjCode || this.row?.fsNum) {
         this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
         this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
