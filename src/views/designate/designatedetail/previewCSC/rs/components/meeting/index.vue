@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-27 17:21:27
+ * @LastEditTime: 2023-03-29 09:45:27
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\index.vue
 -->
@@ -440,7 +440,7 @@
             indexKey
             :tableLoading="tableLoading"
             :tableTitle="tableTitle"
-            :tableData="[...tableData,...tableData]"
+            :tableData="tableData"
             class="rsTable table"
             :cell-class-name="cellClass"
             @onScroll="onScroll"
