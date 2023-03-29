@@ -3,13 +3,13 @@
     ref="input"
     v-bind="$attrs"
     v-on="$listeners"
-    :type="isFocus ? 'number' : 'text'"
     :value="isFocus ? innerValue : formatValue"
-    :oninput="`value=value.indexOf('.') > -1 ? value.slice(value.indexOf('.') - ${maxIntLen}, value.indexOf('.')) + value.slice(value.indexOf('.'), value.indexOf('.') + 1 + ${maxDecimalLen}):value.slice(0,${maxIntLen})`"
+    :oninput="`value=value.indexOf('.') > -1 ? value.slice(0,value.indexOf('.')).slice(0, ${maxIntLen})+value.slice(value.indexOf('.'), value.indexOf('.') + 1 + ${maxDecimalLen}):value.slice(0,${maxIntLen})`"
     @focus="handleFocus"
     @blur="handleBlur"
-    @input="handleInput"
   >
+    <!-- :type="isFocus ? 'number' : 'text'" -->
+    <!-- @input="handleInput" -->
     <slot name="suffix" slot="suffix"></slot>
   </iInput>
 </template>
