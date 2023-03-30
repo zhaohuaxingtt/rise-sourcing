@@ -21,15 +21,17 @@ export default {
   watch:{
     height(){
       this.resize()
+    },
+    data:{
+      handler(){
+        this.drawBar();
+      },
+      deep:true
     }
   },
   mounted() {
     window.addEventListener("resize", this.resize);
     this.drawBar();
-    this.resize();
-  },
-  updated() {
-    this.resize();
   },
   methods: {
     getDiff() {
@@ -173,7 +175,7 @@ export default {
     resize() {
       this.$nextTick(() => {
         setTimeout(() => {
-          this.charts.resize();
+          this.charts&&this.charts.resize();
         }, 32);
       });
     },
