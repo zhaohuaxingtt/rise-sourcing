@@ -5,7 +5,30 @@
         <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :mtzAppId="mtzAppId" :mtzData="mtzData" />
       </el-tab-pane>
     </iTabsList>
-    <nomi v-else :mtzData="mtzData" />
+    <div v-else>
+      <div class="topBar">
+      <!-- v-permission="`${item.permissionKey}`" -->
+      <div
+        v-for="(item, i) in tabList"
+        :key="item"
+     
+        :class="i == activeName ? 'active' : 'dis'"
+        :style="
+          i == 0
+            ? 'border-radius: 6px 0 0 6px'
+            : '' + i == tabList.length - 1 && tabList.length > 1
+            ? 'border-radius: 0px 6px 06px 0px'
+            : ''
+        "
+        @click="changeTab(i)"
+      >
+        {{ $t(item.key) }}
+      </div>
+    </div>
+    <nomi v-if="activeName==0" :mtzData="mtzData" />
+    <BDL type="approval"  v-if="activeName==1"></BDL>
+    <Attachment type="approval" v-if="activeName==2"> </Attachment>
+    </div>
   </div>
 </template>
 
@@ -15,11 +38,29 @@ import nomi from "./index"
 import mtz from "./components/signPreviewBefore"
 import { nominateAppSDetail } from "@/api/designate"
 import { getApproveRsMtzDetail } from "@/api/designate/decisiondata/rs"
-
+import BDL from '../bdl'
+import Attachment from '../../attachment'
 export default {
-  components: { iTabsList, nomi, mtz },
+  components: { iTabsList, nomi, mtz,Attachment,BDL},
   data() {
     return {
+      tabList: [
+      {
+          name: 'RS',
+          key: 'RS',
+        },
+        {
+          name: 'BDL',
+          key: 'BDL',
+        },
+        {
+          name: 'Attachment',
+          key: 'Attachment',
+        },
+     
+      ],
+      index: 0,
+      activeName: 0,
       tab: "nomi",
       tabs: [
         {
@@ -45,6 +86,9 @@ export default {
     this.getApproveRsMtzDetail()
   },
   methods: {
+    changeTab(i) {
+      this.activeName = i
+    },
     nominateAppSDetail() {
       return nominateAppSDetail({
         nominateAppId: this.$route.query.desinateId
@@ -90,5 +134,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rsPreview {}
+    ::v-deep .pdf-item{
+      width: 100%;
+      height: 0;
+      overflow: hidden;
+    }
+
+.topBar {
+  display: flex;
+  padding: 10px 0 20px;
+
+  > div {
+    padding: 8px 20px;
+    box-shadow: 0 0 1.25rem rgb(0 0 0 / 8%);
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+  }
+  .active {
+    border-right: 1px solid #f5f6f7;
+    color: #1660f1;
+    background: #fff;
+  }
+  .dis {
+    color: #727272;
+    background-color: #f5f6f7;
+  }
+  .borderleft {
+    border-radius: 6px 0 0 6px;
+  }
+  .borderright {
+    border-radius: 0px 6px 06px 0px;
+  }
+}
 </style>

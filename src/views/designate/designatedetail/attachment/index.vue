@@ -8,12 +8,12 @@
 <template>
   <div class="designate-attachment" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT|决策资料-attachment">
       <!-- 附件列表 -->
-      <attachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT_FIRSTTABLE|attachment" />
+      <attachment :type="type" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT_FIRSTTABLE|attachment" />
       <!-- RS Sheet -->
-      <rssheet v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
+      <rssheet :type="type" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
       <!-- v-if="showRsSheet"  -->
       <!-- mtzAttachment -->
-      <mtzAttachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_MTZ|mtzAttachment" />
+      <mtzAttachment :type="type" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_MTZ|mtzAttachment" />
 
   </div>
 </template>
@@ -32,6 +32,9 @@ export default {
       const show = nominationType === 'RECORD' && queryNomiType === 'RECORD'
       return show
     }
+  },
+  props:{
+    type: { type: String, default: '' },
   },
   data() {
     return {

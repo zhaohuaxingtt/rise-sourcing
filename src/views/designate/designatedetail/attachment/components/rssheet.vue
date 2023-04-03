@@ -11,7 +11,7 @@
       <span class="font18 font-weight">
         {{ language("RS Sheet", "RS Sheet") }}</span
       >
-      <div class="floatright">
+      <div class="floatright" v-if="type!='approval'">
         <!-- 下载 -->
         <iButton
           v-if="!isRoutePreview && !isApproval"
@@ -121,6 +121,9 @@ export default {
     iPagination,
     tablelist,
     upload,
+  },
+  props:{
+    type: { type: String, default: '' },
   },
   data() {
     return {
