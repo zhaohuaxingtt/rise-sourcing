@@ -443,6 +443,14 @@ module.exports = {
 				['^' + process.env.VUE_APP_BIDDING]: ''
 			  }
 			},
+			[process.env.VUE_APP_PARTSPROCURE]: {
+			  target: `${BASE_IP}/parts/web`,
+			  changeOrigin: true,
+			  pathRewrite: {
+				['^' + process.env.VUE_APP_PARTSPROCURE]: ''
+			  }
+			},
+			
 		},
 	},
 }
