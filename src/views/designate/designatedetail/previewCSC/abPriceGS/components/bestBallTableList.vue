@@ -7,7 +7,7 @@
         :data="tableData"
         class="header table"
         ref="table"
-        height='100%'
+        height="100%"
         border
         show-summary
         :summary-method="summaryMethod"
@@ -447,7 +447,7 @@ export default {
               index: this.label == "Best ball" ? 0 : 1,
               total: 2,
             });
-            this.$refs.table.doLayout() // table重新布局
+            this.$refs.table.doLayout(); // table重新布局
           });
         });
     },
@@ -455,11 +455,8 @@ export default {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
-
     setColSpan() {
-      const row =
-        this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
-      console.log(row);
+      const row = this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 18, "colSpan");
     },
@@ -640,7 +637,18 @@ export default {
       }
     }
   }
-  .el-table__footer {
+  .el-table__footer-wrapper {
+    .el-table__footer {
+      .has-gutter {
+        & > tr {
+          & > td {
+            &:first-of-type {
+              border-right: 0;
+            }
+          }
+        }
+      }
+    }
     td {
       padding: 0;
       .cell {
