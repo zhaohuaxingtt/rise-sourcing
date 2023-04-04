@@ -448,7 +448,7 @@
           max-height="700"
           :tableLoading="tableLoading"
           :selection="false"
-          :tableTitle="tableTitle"
+          :tableTitle="tableTitleSub"
           :tableData="tableData"
           class="rsTable f-border-table"
           :tableRowClassName="tableRowClassName"

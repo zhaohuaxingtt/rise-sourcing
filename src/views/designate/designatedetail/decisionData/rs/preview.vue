@@ -6,25 +6,11 @@
       </el-tab-pane>
     </iTabsList>
     <div v-else>
-      <div class="topBar">
-      <!-- v-permission="`${item.permissionKey}`" -->
-      <div
-        v-for="(item, i) in tabList"
-        :key="item"
-     
-        :class="i == activeName ? 'active' : 'dis'"
-        :style="
-          i == 0
-            ? 'border-radius: 6px 0 0 6px'
-            : '' + i == tabList.length - 1 && tabList.length > 1
-            ? 'border-radius: 0px 6px 06px 0px'
-            : ''
-        "
-        @click="changeTab(i)"
-      >
-        {{ $t(item.key) }}
-      </div>
-    </div>
+      <iTabsList  type="card" v-model="activeName">
+      <el-tab-pane v-if="tab.id==0||tab.id==1||(tab.id==2&&$store.state.permission.userInfo.deptDTO.deptNum.slice(0,2)=='CS')" lazy v-for="(tab, $tabIndex) in tabList" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.id">
+        <!-- <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :mtzAppId="mtzAppId" :mtzData="mtzData" /> -->
+      </el-tab-pane>
+    </iTabsList>
     <nomi v-if="activeName==0" :mtzData="mtzData" />
     <BDL type="approval"  v-if="activeName==1"></BDL>
     <Attachment type="approval" v-if="activeName==2"> </Attachment>
@@ -33,6 +19,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import { iTabsList, iMessage } from "rise"
 import nomi from "./index"
 import mtz from "./components/signPreviewBefore"
@@ -48,14 +35,19 @@ export default {
       {
           name: 'RS',
           key: 'RS',
+          id:0,
         },
         {
           name: 'BDL',
           key: 'BDL',
+          id:1,
+
         },
         {
           name: 'Attachment',
           key: 'Attachment',
+          id:2,
+
         },
      
       ],
