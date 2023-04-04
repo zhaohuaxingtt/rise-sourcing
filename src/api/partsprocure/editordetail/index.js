@@ -8,7 +8,7 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTS
 const requstBasinfo = axios(process.env.VUE_APP_BASE_INFO)
 
-const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
+const requstPartsProcure = axios(process.env.VUE_APP_PART)
 const requstParts = axios(process.env.VUE_APP_PART)
 const sourcing = axios(process.env.VUE_APP_SOURCING)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING)

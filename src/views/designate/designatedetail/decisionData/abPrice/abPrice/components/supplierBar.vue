@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-20 18:30:26
+ * @LastEditTime: 2023-03-30 18:07:50
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -42,7 +42,7 @@
       :data="tableData"
       class="header"
       ref="table"
-      :key="tableData.length"
+      :key="detail.carTypeProjectNum"
       :highlight-current-row="false"
       :cell-class-name="colClass"
       :row-class-name="rowClass"
@@ -70,7 +70,7 @@
             <template v-if="scope.$index == 0">
               <barItem
                 :height="height"
-                :key="item.supplierNameEn"
+                :key="detail.carTypeProjectNum + item.supplierNameEn"
                 :barName="item.supplierNameEn"
                 :data="item"
                 :max="max"
@@ -130,7 +130,7 @@
             <template
               v-else-if="['totalInvest'].includes(columnLabel[scope.$index])"
             >
-            <el-popover
+              <el-popover
                 placement="top-start"
                 trigger="hover"
                 v-if="item.investFeeIsShared && item[columnLabel[scope.$index]]"
@@ -139,7 +139,6 @@
                   <div>
                     Apportioned amount：{{
                       getInt(item.toolingShareTotal) | toThousands(true)
-
                     }}
                   </div>
                   <div>
@@ -149,11 +148,16 @@
                   </div>
                 </div>
                 <div slot="reference">
-                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                  <span style="color: red">*</span
+                  >{{
+                    getInt(item[columnLabel[scope.$index]]) | toThousands(true)
+                  }}
                 </div>
               </el-popover>
               <template v-else>
-                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+                {{
+                  getInt(item[columnLabel[scope.$index]]) | toThousands(true)
+                }}
               </template>
             </template>
             <template
@@ -161,7 +165,7 @@
                 ['totalDevelopCost'].includes(columnLabel[scope.$index])
               "
             >
-            <el-popover
+              <el-popover
                 placement="top-start"
                 trigger="hover"
                 v-if="item.devFeeIsShared && item[columnLabel[scope.$index]]"
@@ -170,7 +174,6 @@
                   <div>
                     Apportioned amount：{{
                       getInt(item.developShareCostTotal) | toThousands(true)
-
                     }}
                   </div>
                   <div>
@@ -180,17 +183,22 @@
                   </div>
                 </div>
                 <div slot="reference">
-                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
+                  <span style="color: red">*</span
+                  >{{
+                    getInt(item[columnLabel[scope.$index]]) | toThousands(true)
+                  }}
                 </div>
               </el-popover>
               <template v-else>
-                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
+                {{
+                  getInt(item[columnLabel[scope.$index]]) | toThousands(true)
+                }}
               </template>
             </template>
             <template
               v-else-if="['totalTurnover'].includes(columnLabel[scope.$index])"
             >
-              <span :class="{'font-green':item.isMinTto}">{{
+              <span :class="{ 'font-green': item.isMinTto }">{{
                 getInt(item[columnLabel[scope.$index]]) | toThousands(true)
               }}</span>
             </template>
@@ -212,7 +220,7 @@
             <template v-if="scope.$index == 0">
               <barItemVSI
                 v-if="item.prop == 'VSI'"
-                :key="item.prop"
+                :key="detail.carTypeProjectNum"
                 :height="height"
                 :barName="item.label"
                 :data="item"
@@ -222,7 +230,7 @@
               />
               <barItemKGF
                 v-else-if="item.prop == 'KGF'"
-                :key="item.prop"
+                :key="detail.carTypeProjectNum"
                 :height="height"
                 :barName="item.label"
                 :data="item"
@@ -251,7 +259,7 @@
               </template> -->
               <barItem
                 v-else
-                :key="item.prop"
+                :key="detail.carTypeProjectNum + item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
@@ -417,6 +425,8 @@ export default {
           if (res?.code != 200) return;
           this.max = null;
           let allPrice = [this.detail.vsi || 0];
+          let fixedList = JSON.parse(JSON.stringify(this.fixedList));
+          let tableData = JSON.parse(JSON.stringify(this.tableData));
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];
@@ -440,33 +450,31 @@ export default {
               item.ltcStartDateList = ltcStartDateList;
               return item;
             }) || [];
-          this.fixedList[0].aPrice =
-            res.data.recommendationNomi?.lcMixAPrice || 0;
-          this.fixedList[0].bPrice =
-            res.data.recommendationNomi?.lcMixBPrice || 0;
+          fixedList[0].aPrice = res.data.recommendationNomi?.lcMixAPrice || 0;
+          fixedList[0].bPrice = res.data.recommendationNomi?.lcMixBPrice || 0;
           allPrice.push(
             deleteThousands(res.data.recommendationNomi?.lcMixAPrice || 0),
             deleteThousands(res.data.recommendationNomi?.lcMixBPrice || 0)
           );
-          this.fixedList[1].aPrice = deleteThousands(
+          fixedList[1].aPrice = deleteThousands(
             res.data.ltcPriceInfo.ltcMixAPrice || 0
           );
-          this.fixedList[1].bPrice = deleteThousands(
+          fixedList[1].bPrice = deleteThousands(
             res.data.ltcPriceInfo.ltcMixBPrice || 0
           );
           allPrice.push(
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0),
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0)
           );
-          this.fixedList[2].aPrice = res.data.targetMixAPrice;
-          this.fixedList[2].bPrice = res.data.targetMixBPrice;
+          fixedList[2].aPrice = res.data.targetMixAPrice;
+          fixedList[2].bPrice = res.data.targetMixBPrice;
           allPrice.push(
             deleteThousands(res.data.targetMixAPrice || 0),
             deleteThousands(res.data.targetMixBPrice || 0)
           );
-          this.fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
-          this.fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
-          this.fixedList[3].cPrice = res.data.kmInfo?.greenFieldMeasure || 0;
+          fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
+          fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
+          fixedList[3].cPrice = res.data.kmInfo?.greenFieldMeasure || 0;
           if (res.data.kmInfo)
             allPrice.push(
               deleteThousands(res.data.kmInfo?.pca || 0),
@@ -476,19 +484,19 @@ export default {
                 (+res.data.kmInfo?.openGap || 0) +
                 (+res.data.kmInfo?.greenFieldMeasure || 0)
             );
-          this.fixedList[4].aPrice = "";
-          this.fixedList[4].bPrice = "";
-          this.tableData[5].Recommendation =
+          fixedList[4].aPrice = "";
+          fixedList[4].bPrice = "";
+          tableData[5].Recommendation =
             res.data.recommendationNomi?.totalInvest || "";
-          this.tableData[6].Recommendation =
+          tableData[6].Recommendation =
             res.data.recommendationNomi?.totalDevelopCost || "";
-          this.tableData[7].Recommendation =
+          tableData[7].Recommendation =
             res.data.recommendationNomi?.totalTurnover || "";
-          this.tableData[5]["F-Target"] = res.data.targetTotalInvest;
-          this.tableData[6]["KGF"] = "";
-          console.log("allPrice=>", allPrice);
+          tableData[5]["F-Target"] = res.data.targetTotalInvest;
+          tableData[6]["KGF"] = "";
           this.max = Math.max(...allPrice);
-          console.log("this.max=>", this.max);
+          this.fixedList = JSON.parse(JSON.stringify(fixedList));
+          this.tableData = JSON.parse(JSON.stringify(tableData));
         })
         .finally(() => {
           this.loading = false;
