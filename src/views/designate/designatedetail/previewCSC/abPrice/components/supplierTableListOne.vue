@@ -23,7 +23,18 @@
                         label="Supplier"
                         align="center"
                         minWidth="140"
-                      ></el-table-column>
+                      >
+                        <template slot-scope="scope">
+                          <tooltip
+                            :text="scope.row.supplierNameEn"
+                          >
+                            <template slot="content">
+                              <p>{{scope.row.supplierName||'-'}}</p>
+                              <p>{{scope.row.supplierNameEn}}</p>
+                            </template>
+                          </tooltip>
+                        </template>
+                      </el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -131,26 +142,26 @@
                                 {{ language("零件目标价A价", "零件目标价A价") }}：{{
                                   (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
                                     | toThousands(true)
-                                }}
+                                }} RMB
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
                                   (item.selAPrice || "0.00")
                                     | toThousands(true)
-                                }}
+                                }} RMB
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{'chengse':item['cfPartAPriceStatus'] == 2}">{{
                                   item.targetAPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetAPrice }}
+                            <span :class="{'chengse':item['cfPartAPriceStatus'] == 2}">{{ item.targetAPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -196,29 +207,29 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                {{ language("零件目标价B价", "零件目标价B价") }}：{{
                                   (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
                                     | toThousands(true)
-                                }}
+                                }} RMB
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
                                   (item.selAPrice || "0.00")
                                     | toThousands(true)
-                                }}
+                                }} RMB
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{'chengse':item['cfPartAPriceStatus'] == 2}">{{
                                   item.targetBPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetBPrice }}
+                            <span :class="{'chengse':item['cfPartAPriceStatus'] == 2}">{{ item.targetBPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">

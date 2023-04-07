@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-20 18:30:03
+ * @LastEditTime: 2023-03-24 14:16:04
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -228,14 +228,21 @@
                 :data="item"
                 :max="max"
               />
-              <!-- <template v-else-if="item.prop == 'Recommendation'">
+              <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
                 popper-class="supplier-pop"
               >
+                <h2>recommendation</h2>
                 <div class="supplier-box">
-                  <p v-for="i in 30" :key="i"><span>{{supplierSap}}</span>-<span>{{supplier}}</span></p>
+                  <div v-for="i in 30" :key="i" class="supplier-item">
+                    <p class="supplier-name">Supplier{{i}} Name</p>
+                    <p class="data-info">
+                      <span>TTO:{{'180000000'/i}}</span>
+                      <span class="margin-left20">50%</span>
+                    </p>
+                  </div>
                 </div>
                 <div slot="reference">
                   <barItem
@@ -248,7 +255,7 @@
                   />
                 </div>
               </el-popover>
-              </template> -->
+              </template>
               <barItem
                 v-else
                 :key="item.prop"
@@ -627,6 +634,17 @@ export default {
     }
     &::-webkit-scrollbar-track {
       width: 8px;
+    }
+    .supplier-item{
+      margin: 10px 5px;
+      .supplier-name{
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .data-info{
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
 }

@@ -131,26 +131,26 @@
                 <el-popover
                 placement="top-start"
                 trigger="hover"
-                v-if="+scope.row.selAPrice"
+                v-if="!+scope.row.selAPrice"
               >
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
                       (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
-                    }}
+                    }} RMB
                   </div>
                   <div>
                     {{ language("SEL目标价", "SEL目标价") }}：{{
                       (scope.row.selAPrice || "0.00")
                         | toThousands(true)
-                    }}
+                    }} RMB
                   </div>
                 </div>
                 <div slot="reference">
                   <p>
                     <span style="color: red">*</span>
-                    <span>
+                    <span :class="{'chengse':scope.row['cfPartAPriceStatus'] == 2}">
                 {{
                   deleteThousands(scope.row.targetAPrice) | toThousands(true)
                 }}</span>
@@ -158,9 +158,9 @@
                 </div>
               </el-popover>
               <template v-else>
-                {{
+                <span :class="{'chengse':scope.row['cfPartAPriceStatus'] == 2}">{{
                   deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                }}
+                }}</span>
               </template>
               </template>
             </el-table-column>
@@ -179,22 +179,22 @@
               >
                 <div>
                   <div>
-                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                    {{ language("零件目标价B价", "零件目标价B价") }}：{{
                       (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
-                    }}
+                    }} RMB
                   </div>
                   <div>
                     {{ language("SEL目标价", "SEL目标价") }}：{{
                       (scope.row.selAPrice || "0.00")
                         | toThousands(true)
-                    }}
+                    }} RMB
                   </div>
                 </div>
                 <div slot="reference">
                   <p>
                     <span style="color: red">*</span>
-                    <span>
+                    <span :class="{'chengse':scope.row['cfPartAPriceStatus'] == 2}">
                 {{
                   deleteThousands(scope.row.targetBPrice)| toThousands(true)
                 }}</span>
@@ -202,9 +202,9 @@
                 </div>
               </el-popover>
               <template v-else>
-                {{
+                <span :class="{'chengse':scope.row['cfPartAPriceStatus'] == 2}">{{
                   deleteThousands(scope.row.targetBPrice)| toThousands(true)
-                }}
+                }}</span>
               </template>
             </template>
             </el-table-column>
@@ -302,7 +302,12 @@
                 :content="
                   scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
                 "
-              />
+              >
+                <template slot="content">
+                  <p>{{scope.row.supplierNameZh}}</p>
+                  <p>{{scope.row.supplierNameEn}}</p>
+                </template>
+              </tooltip>
             </template>
           </el-table-column>
           <el-table-column label="Rating" align="center">
@@ -878,6 +883,9 @@ export default {
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 
