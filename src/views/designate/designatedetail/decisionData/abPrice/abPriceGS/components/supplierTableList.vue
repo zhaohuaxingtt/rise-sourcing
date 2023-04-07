@@ -21,7 +21,18 @@
                     label="Supplier"
                     align="center"
                     minWidth="140"
-                  ></el-table-column>
+                  >
+                    <template slot-scope="scope">
+                      <tooltip
+                        :text="scope.row.supplierNameEn"
+                      >
+                        <template slot="content">
+                          <p>{{scope.row.supplierName||'-'}}</p>
+                          <p>{{scope.row.supplierNameEn}}</p>
+                        </template>
+                      </tooltip>
+                    </template>
+                  </el-table-column>
                 </el-table-column>
               </el-table-column>
             </el-table-column>

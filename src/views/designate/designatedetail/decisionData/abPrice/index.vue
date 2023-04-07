@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-07 11:07:07
+ * @LastEditTime: 2023-04-07 15:27:02
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -84,6 +84,7 @@ export default {
         supplier:'Supplier',
         part:'Part',
         best_ball:'Best ball',
+        gs_part:'Detail',
       },
       config_list:[],
       strategy: "",
