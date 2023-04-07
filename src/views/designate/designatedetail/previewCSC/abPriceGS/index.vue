@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-03-23 14:32:32
+ * @LastEditTime: 2023-04-06 18:39:16
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\index.vue
@@ -45,7 +45,7 @@
             >Best ball</el-radio-button
           >
           <el-radio-button label="gs_part" v-if="config['gs_part'].isShow"
-            >GS Part</el-radio-button
+            >Detail</el-radio-button
           >
           <el-radio-button
             v-if="config['Detailed_Worksheet'].isShow"
@@ -233,7 +233,6 @@ import GSpartTableList from "./components/GSpartTableList";
 import bestBallTableList from "./components/bestBallTableList";
 // 柱状图
 import supplierBar from "./components/supplierBar";
-import supplierBar2 from "./components/supplierBar2";
 // 折线图
 import supplierLine from "./components/supplierLine";
 // 图片
@@ -263,7 +262,6 @@ export default {
     GSpartTableList,
     bestBallTableList,
     supplierBar,
-    supplierBar2,
     supplierLine,
     iCard,
     iTabsList,

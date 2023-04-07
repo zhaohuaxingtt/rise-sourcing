@@ -12,20 +12,30 @@
 import abPrice from "../abPricePP";
 import abPriceGS from "../abPriceGS";
 export default {
+  props:{
+    isGS:{
+      type:Boolean,
+      default: false
+    }
+  },
   components: {
     abPrice,
     abPriceGS,
   },
   data() {
     return {
-      component: "abPrice",
+      component: "",
     };
   },
-  created() {
-    if (this.$route.query.type == "GS") {
-      this.component = "abPriceGS";
+  watch:{
+    isGS(val){
+      if(val){
+        this.component = "abPriceGS";
+      }else{
+        this.component = "abPrice";
+      }
     }
-  },
+  }
 };
 </script>
 

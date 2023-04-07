@@ -110,10 +110,41 @@
               minWidth="85"
             >
               <template slot-scope="scope">
+                <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
                 {{
-                  numberProcessor(scope.row.targetAPrice, 2) | toThousands(true)
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
                 }}
               </template>
+            </template>
             </el-table-column>
             <el-table-column
               label="B Price"
@@ -123,10 +154,41 @@
               minWidth="85"
             >
               <template slot-scope="scope">
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                v-if="+scope.row.selAPrice"
+              >
+                <div>
+                  <div>
+                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
+                        | toThousands(true)
+                    }}
+                  </div>
+                  <div>
+                    {{ language("SEL目标价", "SEL目标价") }}：{{
+                      (scope.row.selAPrice || "0.00")
+                        | toThousands(true)
+                    }}
+                  </div>
+                </div>
+                <div slot="reference">
+                  <p>
+                    <span style="color: red">*</span>
+                    <span>
                 {{
-                  numberProcessor(scope.row.targetBPrice, 2) | toThousands(true)
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                }}</span>
+                  </p>
+                </div>
+              </el-popover>
+              <template v-else>
+                {{
+                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
                 }}
               </template>
+            </template>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -134,6 +196,62 @@
           <template slot="header" slot-scope="scope">
             {{ label }}
           </template>
+          <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameEn"
+            minWidth="100"
+          >
+            <template slot-scope="scope">
+              <tooltip
+                :text="scope.row['supplierNameEn']"
+                :content="
+                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
+                "
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="Rating" align="center">
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.erate)">{{
+                  scope.row.erate
+                }}</span>
+                <span v-else>{{ scope.row.erate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
+                  scope.row.qrate
+                }}</span>
+                <span v-else>{{ scope.row.qrate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
+                  scope.row.lrate
+                }}</span>
+                <span v-else>{{ scope.row.lrate }}</span>
+              </template></el-table-column
+            >
+          </el-table-column>
           <el-table-column
             label="A Price(LC)"
             prop="lcAPrice"
@@ -177,27 +295,42 @@
             </template></el-table-column
           >
           <el-table-column
+            label="LTC"
+            align="center"
+            prop="ltc"
+          ></el-table-column>
+          <el-table-column align="center" prop="ltcStartDate" min-width="90">
+            <template slot="header" slot-scope="scope">
+              <p>LTC Start</p>
+              <p>Date</p>
+            </template>
+            <template slot-scope="scope">
+              <template v-if="scope.row.ltc != 0">{{
+                scope.row.ltcStartDate
+              }}</template>
+            </template></el-table-column
+          >
+          <el-table-column
             label="Invest"
             prop="invest"
             align="right"
-            minWidth="100"
+            minWidth="85"
             header-align="center"
           >
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.investFeeIsShared && scope.row.invest"
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.toolingShareTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.toolingNotShareTotal
                     }}
                   </div>
@@ -212,102 +345,29 @@
             </template></el-table-column
           >
           <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameEn"
-            minWidth="100"
-          >
-            <template slot-scope="scope">
-              <tooltip
-                :text="scope.row['supplierNameEn']"
-                :content="
-                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-                "
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.erate)">{{
-                  scope.row.erate
-                }}</span>
-                <span v-else>{{ scope.row.erate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
-                  scope.row.qrate
-                }}</span>
-                <span v-else>{{ scope.row.qrate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
-                  scope.row.lrate
-                }}</span>
-                <span v-else>{{ scope.row.lrate }}</span>
-              </template></el-table-column
-            >
-          </el-table-column>
-          <el-table-column
-            label="LTC"
-            align="center"
-            prop="ltc"
-          ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="110">
-            <template slot="header" slot-scope="scope">
-              <p>LTC Start</p>
-              <p>Date</p>
-            </template>
-            <template slot-scope="scope">
-              <template v-if="scope.row.ltc != 0">{{
-                scope.row.ltcStartDate
-              }}</template>
-            </template></el-table-column
-          >
-          <el-table-column
             align="right"
             header-align="center"
             prop="developCost"
             min-width="100"
           >
             <template slot="header" slot-scope="scope">
-              <p>Develop</p>
+              <p>Release</p>
               <p>Cost</p>
             </template>
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.devFeeIsShared && scope.row.developCost"
               >
                 <div>
                   <div>
-                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                    Apportioned amount：{{
                       scope.row.developShareCostTotal
                     }}
                   </div>
                   <div>
-                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
+                    Unassessed amount：{{
                       scope.row.developNotShareCostTotal
                     }}
                   </div>
@@ -325,7 +385,7 @@
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="110"
+            min-width="90"
             label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
@@ -333,6 +393,30 @@
               <p>Turnover</p>
             </template></el-table-column
           >
+        </el-table-column>
+        <el-table-column>
+          <el-table-column
+            align="right"
+            header-align="center"
+            prop="saving"
+            min-width="130"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>Saving</p>
+              <p>@100% Share</p>
+            </template></el-table-column
+          >
+          <el-table-column
+            align="right"
+            header-align="center"
+            prop="sopDate"
+            min-width="80"
+            label="SOP"
+          >
+            <template slot-scope="scope">
+              {{ format(scope.row.sopDate) }}
+            </template>
+          </el-table-column>
         </el-table-column>
       </el-table>
     </div>
@@ -364,7 +448,7 @@ export default {
         {
           prop: "partNum",
           label: ["Part No."],
-          width: 140,
+          width: 120,
         },
         {
           prop: "carTypeProjectNum",
@@ -375,7 +459,7 @@ export default {
         {
           prop: "volume",
           label: ["Volume"],
-          width: 85,
+          width: 80,
         },
       ],
       tableData: [],
@@ -383,7 +467,7 @@ export default {
       row: {},
       totalData: [
         {
-          partNum: "Mixed Total",
+          partNum: "Total",
         },
         {
           partNum: "Budget",
@@ -405,6 +489,11 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
+    format(date){
+      if(!date) return ''
+      return window.moment(date).format('YYYY-MM')
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -458,7 +547,7 @@ export default {
     setColSpan() {
       const row = this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
       //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 18, "colSpan");
+      this.merge(row, 0, 0, 20, "colSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -528,7 +617,7 @@ export default {
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex == 0 && columnIndex == 0) {
+      if (rowIndex == 0 && [0,2].includes(columnIndex)) {
         return "white-bg unit";
       } else if (rowIndex == 0) {
         return "primary-label";
@@ -642,17 +731,15 @@ export default {
       .has-gutter {
         & > tr {
           & > td {
+            padding: 0;
+            .cell {
+              padding: 0;
+            }
             &:first-of-type {
               border-right: 0;
             }
           }
         }
-      }
-    }
-    td {
-      padding: 0;
-      .cell {
-        padding: 0;
       }
     }
   }

@@ -13,7 +13,7 @@
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading" id="pdfHide">
-      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision" :isGS="isGS"></router-view>
       <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
@@ -48,6 +48,7 @@ export default {
       isPreview:'0',
       showDecisionLoading: false,
       showDecision: false, // 是否显示决策资料
+      isGS: false,
     }
   },
   created(){
@@ -110,6 +111,7 @@ export default {
             const query = this.$router.history.current.query
             const path = this.$router.history.current.path
             const newQuery = JSON.parse(JSON.stringify(query))
+            this.isGS = ['1000003'].includes(res.data.partProjType)
             newQuery.designateType = res.data.nominateProcessType
             this.$router.replace({path, query: newQuery})
           } else {

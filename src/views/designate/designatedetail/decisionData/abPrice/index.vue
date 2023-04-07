@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-24 16:17:37
+ * @LastEditTime: 2023-04-07 11:07:07
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -18,7 +18,9 @@
         <iButton @click="visible = true">输入VSI</iButton>
         <iButton v-show="false" @click="strategyVisible = true">strategy</iButton>
       </div>
-      <abPrice ref="abPrice" :strategy="strategy" />
+      <!-- <abPrice ref="abPrice" :strategy="strategy" />
+      <abPriceGS ref="abPrice" :strategy="strategy" /> -->
+      <component ref="abPrice" :is="component" :key="component" :strategy="strategy" />
     </iCard>
 
     <editDialog
@@ -42,13 +44,20 @@ import { iButton, iCard } from "rise";
 import editDialog from "./components/editDialog";
 import strategyDialog from "./components/strategyDialog";
 import abPrice from "./abPrice"; // UI一样,但是布局需要调整
+import abPriceGS from "./abPriceGS"; // UI一样,但是布局需要调整
 import {
   analysisNomiCarProject,
   getNomiRemark,
   updateNomiRemark,
 } from "@/api/partsrfq/editordetail/abprice";
 export default {
-  components: { editDialog, strategyDialog, iButton, iCard, abPrice },
+  components: { editDialog, strategyDialog, iButton, iCard, abPrice, abPriceGS },
+  props:{
+    isGS:{
+      type:Boolean,
+      default: false
+    }
+  },
   computed: {
     isRoutePreview() {
       return this.$route.query.isPreview == 1;
@@ -60,6 +69,7 @@ export default {
       strategyVisible: false,
       carTypeList: [],
       strategy: "",
+      component:''
     };
   },
   computed:{
@@ -67,6 +77,15 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+  },
+  watch:{
+    isGS(val){
+      if(val){
+        this.component = "abPriceGS";
+      }else{
+        this.component = "abPrice";
+      }
+    }
   },
   created() {
     this.getNomiRemark();

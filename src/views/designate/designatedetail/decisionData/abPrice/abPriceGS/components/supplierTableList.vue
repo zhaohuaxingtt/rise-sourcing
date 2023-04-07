@@ -3,7 +3,6 @@
   <div :ref="ref" v-loading="loading" :key="index">
     <el-table
       :data="tableData"
-      height="100%"
       class="header table"
       ref="table"
       :key="index"
@@ -362,7 +361,7 @@
 <script>
 import { analysisSummaryNomiGS } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import tooltip from "../../components/tooltip.vue";
+import tooltip from "../../../components/tooltip.vue";
 import partTableDetail from "./partTableDetail";
 export default {
   name: "supplierTableList",

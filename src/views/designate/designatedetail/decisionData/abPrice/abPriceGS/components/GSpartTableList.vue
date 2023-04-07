@@ -1,13 +1,12 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div style="height: 100%" :ref="ref">
+  <div :ref="ref">
     <!-- 内容表 -->
     <div class="table-box">
       <el-table
         :data="tableData"
         class="header table"
         ref="table"
-        height="100%"
         border
         :header-cell-class-name="cellClass"
         :cell-class-name="colClass"
@@ -416,7 +415,7 @@
 </template>
 
 <script>
-import tooltip from "../../components/tooltip.vue";
+import tooltip from "../../../components/tooltip.vue";
 import {
   getAnalysisRecommendationNomi,
   getAnalysisBestBallNomi,

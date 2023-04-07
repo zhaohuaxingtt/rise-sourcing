@@ -102,7 +102,9 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
+                <tooltip
+                  :text="item.carline || item.carTypeNames.join('、')"
+                ></tooltip>
               </template>
               <el-table-column :label="percent(item.ebr)" align="center">
                 <el-table-column
@@ -290,20 +292,19 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.investFeeIsShared"
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.toolingShareTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.toolingNotShareTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.toolingNotShareTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -322,20 +323,19 @@
                             >
                               <el-popover
                                 placement="top-start"
-                                width="200"
                                 trigger="hover"
                                 v-if="scope.row.devFeeIsShared"
                               >
                                 <div>
                                   <div>
-                                    {{ language("FENTANJINE", "分摊金额") }}：{{
+                                    Apportioned amount：{{
                                       scope.row.developShareCostTotal
                                     }}
                                   </div>
                                   <div>
-                                    {{
-                                      language("WEIFENTANJINE", "未分摊金额")
-                                    }}：{{ scope.row.developNotShareCostTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.developNotShareCostTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -492,7 +492,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  child.ltc!=0
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });

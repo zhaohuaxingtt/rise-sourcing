@@ -13,8 +13,8 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
-// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -233,6 +233,7 @@ module.exports = {
 
 			[process.env.VUE_APP_SOURCING]: {
 				target: `${BASE_IP}/sourcing/web`,
+				target: `http://10.160.136.184:8080/sourcing/web`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_SOURCING]: '',

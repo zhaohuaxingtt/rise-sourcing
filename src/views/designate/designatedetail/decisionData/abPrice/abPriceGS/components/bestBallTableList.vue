@@ -7,8 +7,9 @@
         :data="tableData"
         class="header table"
         ref="table"
-        height="100%"
         border
+        show-summary
+        :summary-method="summaryMethod"
         :header-cell-class-name="cellClass"
         :cell-class-name="colClass"
       >
@@ -190,7 +191,10 @@
             </el-table-column>
           </el-table-column>
         </el-table-column>
-        <el-table-column align="center" label="Detail">
+        <el-table-column align="center">
+          <template slot="header" slot-scope="scope">
+            {{ label }}
+          </template>
           <el-table-column
             label="Supplier"
             align="center"
@@ -393,7 +397,7 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="totalSavingTotal"
+            prop="saving"
             min-width="130"
           >
             <template slot="header" slot-scope="scope">
@@ -404,10 +408,14 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="totalTurnover"
+            prop="sopDate"
             min-width="80"
             label="SOP"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ format(scope.row.sopDate) }}
+            </template>
+          </el-table-column>
         </el-table-column>
       </el-table>
     </div>
@@ -416,7 +424,7 @@
 </template>
 
 <script>
-import tooltip from "../../components/tooltip.vue";
+import tooltip from "../../../components/tooltip.vue";
 import {
   getAnalysisRecommendationNomi,
   getAnalysisBestBallNomi,
@@ -428,8 +436,8 @@ export default {
   components: { partTableDetail, tooltip, bestBallTableListTotal },
   data() {
     return {
-      ref: "detail",
-      label: "Detail",
+      ref: "best-ball",
+      label: "Best ball",
       fixedTitle: [
         {
           prop: "fsNum",
@@ -456,6 +464,14 @@ export default {
       tableData: [],
       visible: false,
       row: {},
+      totalData: [
+        {
+          partNum: "Total",
+        },
+        {
+          partNum: "Budget",
+        },
+      ],
       totalTableHeight: 120,
     };
   },
@@ -473,6 +489,10 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
+    format(date){
+      if(!date) return ''
+      return window.moment(date).format('YYYY-MM')
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -492,26 +512,107 @@ export default {
       })
         .then((res) => {
           if (res?.code == "200") {
-            let tableData = res.data.analysisNomiPriceInfoList.map((child,i)=>{
-              let item = JSON.parse(JSON.stringify(child))
-              let next = res.data.analysisNomiPriceInfoList[1+i]
-              if(!next||(next.fsNum != item.fsNum)){
-                item.underline = true
-              }else{
-                item.underline = false
-              }
-              return item
-            });
+            let tableData = res.data.analysisNomiPriceInfoList;
+            const totalData = JSON.parse(JSON.stringify(this.totalData));
+            totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
+            totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
+            totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
+            totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
+            totalData[0]["invest"] = res.data.totalInvest;
+            totalData[0]["developCost"] = res.data.totalDevelopCost;
+            totalData[0]["totalTurnover"] = res.data.totalTurnover;
+            totalData[1]["invest"] = res.data.totalBudgetTotalInvest;
+            this.totalData = totalData;
             this.tableData = tableData;
-            console.log('tableData=>',tableData);
           } else {
             this.tableData = [];
           }
+        })
+        .finally(() => {
+          this.$nextTick(() => {
+            this.setColSpan();
+            this.$emit("setPage", {
+              index: this.label == "Best ball" ? 0 : 1,
+              total: 2,
+            });
+            this.$refs.table.doLayout(); // table重新布局
+          });
         });
     },
     isCLevel(val) {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
+    setColSpan() {
+      const row = this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
+      //   行数据,行,列,合并数,方向
+      this.merge(row, 0, 0, 20, "colSpan");
+    },
+    // 计算表头合并
+    merge(row, rowIndex, colIndex, span, type = "colSpan") {
+      const col = row[rowIndex].cells;
+      if (!(row || col)) return;
+      if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
+      let colSpan = row[rowIndex].cells[colIndex].colSpan;
+      if (type == "colSpan") {
+        // for (let r = 0; r < rowSpan; r++) {
+        let rIndex = rowIndex;
+        let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+        for (let i = 1; i < span; i++) {
+          let cIndex = i + colIndex;
+          colSpan_ += row[rIndex].cells[cIndex].colSpan;
+          if (colSpan_ == span) {
+            row[rIndex].cells[cIndex].style.display = "none";
+            break;
+          }
+          if (colSpan_ > span) {
+            row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+            break;
+          }
+          row[rIndex].cells[cIndex].style.display = "none";
+        }
+        // }
+      }
+      if (type == "rowSpan") {
+        for (let c = 0; c < colSpan; c++) {
+          let cIndex = c + colIndex;
+          let rowSpan_ = row[rowIndex].cells[cIndex].rowSpan || 1;
+          for (let i = 1; i < span; i++) {
+            let rIndex = i + rowIndex;
+            rowSpan_ += row[rIndex].cells[cIndex].rowSpan;
+            if (rowSpan_ == span) {
+              row[rIndex].cells[cIndex].style.display = "none";
+              break;
+            }
+            if (rowSpan_ > span) {
+              row[rIndex].cells[cIndex].rowSpan = rowSpan_ - span;
+              break;
+            }
+            row[rIndex].cells[cIndex].style.display = "none";
+          }
+        }
+      }
+      row[rowIndex].cells[colIndex][type] = span;
+    },
+    // 计算统计表表头合并
+    totalCellClass({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex == 0 && rowIndex == 0) {
+        return [3, 1];
+      } else if (columnIndex == 0 && rowIndex < 3) {
+        return [0, 0];
+      }
+      if ([0, 1].includes(rowIndex)) {
+        if (columnIndex == 1) {
+          return [1, 3];
+        } else if ([2, 3].includes(columnIndex)) {
+          return [0, 0];
+        }
+      }
+    },
+    tabChange() {
+      this.label = this.label == "Best ball" ? "Recommendation" : "Best ball";
+      this.getData();
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
@@ -524,40 +625,53 @@ export default {
     },
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
-      let className = ''
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
         if (this.label == "Best ball") {
           // best_ball 全绿,只判断蓝色背景
           if (row.suggestFlag) {
-            className = "blue-border font-green";
+            return "blue-border font-green";
           } else {
-            className = "font-green";
+            return "font-green";
           }
         } else {
           if (row.isFsMinTto) {
             // recommendation 全蓝, 但是绿色需要判断
-            className = "blue-border font-green";
+            return "blue-border font-green";
           } else {
-            className = "blue-border";
+            return "blue-border";
           }
         }
       }
       if (["Total Turnover"].includes(column.label)) {
         if (this.label == "Best ball") {
-          className = "font-green";
+          return "font-green";
         } else if (row.isFsMinTto) {
           // if (row.isMinTto) {
-          className = "font-green";
+          return "font-green";
         }
       }
-      if(row.underline) className += ' fs-group'
-      return className
+    },
+    totalColClass({ row, column, rowIndex, columnIndex }) {
+      if ([1, 2, 3].includes(columnIndex)) {
+        return "table-header";
+      }
     },
     gotoDetail(row) {
       this.row = JSON.parse(JSON.stringify(row));
       this.$nextTick(() => {
         this.visible = true;
       });
+    },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = <bestBallTableListTotal totalData={this.totalData} />;
+          return;
+        }
+      });
+      return sums;
     },
   },
 };
@@ -631,10 +745,6 @@ export default {
   .red {
     color: #f00;
   }
-  .fs-group{
-    border-bottom-width: 5px !important;
-    border-bottom-color: #364d6e !important;
-  }
 }
 
 .total-table {
@@ -661,6 +771,35 @@ export default {
     .cell {
       padding: 0 4px;
     }
+  }
+}
+.left {
+  transform: translate(-11px, -4.5px);
+  width: 12px;
+  height: 105px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  z-index: 999;
+  .icon {
+    transform: rotate(180deg);
+    width: 12px;
+    user-select: none;
+  }
+}
+.right {
+  transform: translate(-3px, -4.5px);
+  width: 12px;
+  height: 105px;
+  background: #0092eb;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  z-index: 999;
+  .icon {
+    width: 12px;
+    user-select: none;
   }
 }
 

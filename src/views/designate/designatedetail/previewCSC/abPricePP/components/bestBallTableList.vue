@@ -204,7 +204,6 @@
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.investFeeIsShared && scope.row.invest"
               >
@@ -314,7 +313,6 @@
             <template slot-scope="scope">
               <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="scope.row.devFeeIsShared && scope.row.developCost"
               >

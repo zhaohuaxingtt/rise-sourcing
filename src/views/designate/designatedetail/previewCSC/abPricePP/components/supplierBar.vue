@@ -132,7 +132,6 @@
             >
             <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="item.investFeeIsShared && item[columnLabel[scope.$index]]"
               >
@@ -164,7 +163,6 @@
             >
             <el-popover
                 placement="top-start"
-                width="200"
                 trigger="hover"
                 v-if="item.devFeeIsShared && item[columnLabel[scope.$index]]"
               >

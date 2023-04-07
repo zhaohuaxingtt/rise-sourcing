@@ -2,18 +2,18 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-28 18:12:08
+ * @LastEditTime: 2023-04-06 18:26:08
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <iPage class="preview-csc" :class="isPreview === '1' ? 'no-padding' : ''" @click.native="isClick">
+  <iPage class="preview-csc no-padding" @click.native="isClick">
     <div
       id="preview-csc"
     >
       <decisionDataHeader class="tab-nav"/>
       <div class="nomination-content" v-loading="loading" id="pdfHide">
-        <router-view class="page-content"></router-view>
+        <router-view class="page-content" :isGS="isGS"></router-view>
       </div>
     </div>
   </iPage>
@@ -38,7 +38,8 @@ export default {
   data() {
     return {
       loading: false,
-      isPreview: "0",
+      isGS: false,
+      isPreview: "1",
     };
   },
   created() {
@@ -65,21 +66,11 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.showDecision = res.data
-          // 缓存当前步骤
-          this.getStepStatus();
         }
       })
       .finally(() => {
         this.showDecisionLoading = false
       })
-    },
-    // 获取步骤状态
-    async getStepStatus(){
-      const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
-      // 临时跳转，将不调接口更新当前步骤
-      if (this.$route.query.route !== 'temp') {
-        await this.$store.dispatch('setNominationStep',{nominateId})
-      }
     },
     nominateAppSDetail() {
       this.loading = true;
@@ -116,6 +107,7 @@ export default {
               const query = this.$router.history.current.query;
               const path = this.$router.history.current.path;
               const newQuery = JSON.parse(JSON.stringify(query));
+              this.isGS = ['1000003'].includes(res.data.partProjType)
               newQuery.designateType = res.data.nominateProcessType;
               this.$router.replace({ path, query: newQuery });
             } else {
@@ -130,25 +122,11 @@ export default {
       }
     },
   },
-  watch: {
-    $route(to, from) {
-      const { query = {} } = to;
-      const { isPreview = "0", nominateId } = query;
-      this.isPreview = isPreview;
-      // 缓存/更新预览状态
-      this.$store.dispatch("setPreviewState", isPreview);
-      // 缓存当前步骤
-      this.getStepStatus();
-    },
-  },
 };
 </script>
 <style lang="scss" scoped>
 .no-padding {
   padding: 0;
-  .isPreview {
-    min-height: 100%;
-  }
 }
 .page {
   position: relative;
