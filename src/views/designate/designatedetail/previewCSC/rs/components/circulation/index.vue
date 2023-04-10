@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-09 14:38:08
+ * @LastEditTime: 2023-04-10 15:03:51
  * @Description: 流转RS单
- * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\circulation\index.vue
 -->
 
 <template>
@@ -167,7 +167,9 @@
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
+                    <span>{{
+                      (scope.row.investFee || 0) | toThousands(true)
+                    }}</span>
                   </p>
                 </div>
               </el-popover>
@@ -194,7 +196,9 @@
                   <span v-if="scope.row.investFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
+                  <span>{{
+                    (scope.row.investFee || 0) | toThousands(true)
+                  }}</span>
                 </div>
               </el-popover>
             </span>
@@ -387,8 +391,19 @@
         </div>
       </iFormGroup>
     </iCard> -->
-    <div id="hide">
-      <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
+    <div id="hide" class="rs-content">
+      <div class="page-flex">
+        <div class="page-flex">
+          <div class="page-header">
+            <div class="control">
+              <div class="nomiId">
+                <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <iCard class="pgCard" :class="!isPreview && 'margin-top20'">
         <template #header>
           <div class="title">
             <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
@@ -426,7 +441,8 @@
               {{ language("DAOCHURSDAN", "导出RS单") }}
             </iButton>
           </div>
-        </template>
+        </template> -->
+      <div class="rsCard-content">
         <div class="infos">
           <div
             class="infoWrapper"
@@ -489,8 +505,7 @@
               </div>
               <div slot="reference">
                 <p>
-                  <span v-if="+scope.row.selAPrice" style="color: red"
-                    >*</span>
+                  <span v-if="+scope.row.selAPrice" style="color: red">*</span>
                   <template v-if="scope.row.cfApplyType === 'SKDLC'">
                     <p>{{ scope.row.cfTargetSkdAPrice | toThousands(true) }}</p>
                     <p>{{ scope.row.cfTargetAPrice | toThousands(true) }}</p>
@@ -592,7 +607,9 @@
                     <span v-if="scope.row.investFeeIsShared" style="color: red"
                       >*</span
                     >
-                    <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
+                    <span>{{
+                      (scope.row.investFee || 0) | toThousands(true)
+                    }}</span>
                   </p>
                 </div>
               </el-popover>
@@ -619,7 +636,9 @@
                   <span v-if="scope.row.investFeeIsShared" style="color: red"
                     >*</span
                   >
-                  <span>{{ (scope.row.investFee || 0) | toThousands(true) }}</span>
+                  <span>{{
+                    (scope.row.investFee || 0) | toThousands(true)
+                  }}</span>
                 </div>
               </el-popover>
             </span>
@@ -655,7 +674,8 @@
             </div>
           </div>
         </div>
-      </iCard>
+      </div>
+      <!-- </iCard> -->
       <div v-if="!isRoutePreview && !isApproval">
         <iCard
           :title="language('BEIZHU', '备注')"
@@ -707,14 +727,12 @@
           </div>
         </iCard>
       </div>
-      <iCard
-        class="checkDate Application"
-        :class="!isPreview && 'margin-top20'"
-        :title="`Application Date：${dateFilter(
-          processApplyDate,
-          'YYYY-MM-DD'
-        )}`"
-      >
+      <div class="checkDate Application margin-top20">
+        <p class="application-date">
+          {{
+            `Application Date：${dateFilter(processApplyDate, "YYYY-MM-DD")}`
+          }}
+        </p>
         <div class="checkList">
           <div
             class="checkList-item"
@@ -744,7 +762,7 @@
             </div>
           </div>
         </div>
-      </iCard>
+      </div>
       <iCard
         :title="language('JINGLINGJIANAOCARD', '上传仅零件号变更单')"
         class="margin-top20"
@@ -1040,112 +1058,110 @@ export default {
     remarkProcess,
     dateFilter,
     getHeight() {
-        this.hasTitle = this.$refs.tabTitle?.offsetHeight;
-        let headerHeight =
-          this.$refs.demo.getElementsByClassName("cardHeader")[0].offsetHeight; // Title 区域高度
-        let pageLogo = this.$refs.logo.offsetHeight; // logo 区域高度
-        let tableHeader = this.$refs.demo.getElementsByClassName(
-          "el-table__header-wrapper"
-        )[0].offsetHeight;
-        let computeHeight =
-          this.$refs.demo.getElementsByClassName("position-infos")[0]
-            .offsetHeight; // 页面所有固定元素的高度： infos
-        let el =
-          this.$refs.demo.getElementsByClassName("Application")[0].offsetHeight; // 审批备注
-        let outEl =
-          this.$refs.demo.getElementsByClassName("out-compute")[0].offsetHeight; // 备注
-        let requireStart =
-          this.$refs.demo.getElementsByClassName("require-start")[0]
-            .offsetHeight; // *号提示信息
-        // 第一页
-        this.tableHeight =
-          this.pageHeight -
-          headerHeight -
-          computeHeight -
-          pageLogo -
-          el -
-          this.hasTitle; // 表格区域高度, 用div支撑空间
-        // 独立备注页
-        this.otherPageHeight =
-          this.pageHeight -
-          headerHeight -
-          computeHeight -
-          pageLogo -
-          this.hasTitle;
-        let rowList = this.$refs.demo
-          .getElementsByClassName("mainTable")[0]
-          .getElementsByClassName("el-table__body-wrapper")[0]
-          .getElementsByClassName("table-row");
-        let arr = [];
-        let heightSum = 0;
-        let tableList = [];
-        rowList.forEach((item, i) => {
-          heightSum += item.offsetHeight;
-          // if(tableList.length==0){
-          if (heightSum < this.tableHeight - tableHeader - requireStart) {
-            arr.push(this.tableData[i]);
+      this.hasTitle = this.$refs.tabTitle?.offsetHeight;
+      let headerHeight =
+        this.$refs.demo.getElementsByClassName("cardHeader")[0].offsetHeight; // Title 区域高度
+      let pageLogo = this.$refs.logo.offsetHeight; // logo 区域高度
+      let tableHeader = this.$refs.demo.getElementsByClassName(
+        "el-table__header-wrapper"
+      )[0].offsetHeight;
+      let computeHeight =
+        this.$refs.demo.getElementsByClassName("position-infos")[0]
+          .offsetHeight; // 页面所有固定元素的高度： infos
+      let el =
+        this.$refs.demo.getElementsByClassName("Application")[0].offsetHeight; // 审批备注
+      let outEl =
+        this.$refs.demo.getElementsByClassName("out-compute")[0].offsetHeight; // 备注
+      let requireStart =
+        this.$refs.demo.getElementsByClassName("require-start")[0].offsetHeight; // *号提示信息
+      // 第一页
+      this.tableHeight =
+        this.pageHeight -
+        headerHeight -
+        computeHeight -
+        pageLogo -
+        el -
+        this.hasTitle; // 表格区域高度, 用div支撑空间
+      // 独立备注页
+      this.otherPageHeight =
+        this.pageHeight -
+        headerHeight -
+        computeHeight -
+        pageLogo -
+        this.hasTitle;
+      let rowList = this.$refs.demo
+        .getElementsByClassName("mainTable")[0]
+        .getElementsByClassName("el-table__body-wrapper")[0]
+        .getElementsByClassName("table-row");
+      let arr = [];
+      let heightSum = 0;
+      let tableList = [];
+      rowList.forEach((item, i) => {
+        heightSum += item.offsetHeight;
+        // if(tableList.length==0){
+        if (heightSum < this.tableHeight - tableHeader - requireStart) {
+          arr.push(this.tableData[i]);
+        } else {
+          tableList.push(JSON.parse(JSON.stringify(arr)));
+          heightSum = item.offsetHeight;
+          arr = [this.tableData[i]];
+        }
+      });
+      let residualHeight =
+        this.tableHeight - tableHeader - requireStart - heightSum; // 最后一页表格剩余高度
+      tableList.push(JSON.parse(JSON.stringify(arr)));
+      this.tableList = tableList;
+      let hasOtherPage = residualHeight - el - 24 < outEl; // 最后一页不能放下所有备注和签字栏
+      if (hasOtherPage) {
+        let itemHeight = 0;
+        let list = [];
+        let itemList = [];
+        let residualRemark = [];
+        let remarkList = this.$refs.demo.getElementsByClassName("remarkItem"); //备注信息
+        // 备注信息分页计算
+        remarkList.forEach((item, i) => {
+          if (item.offsetHeight < residualHeight - 24) {
+            // 放在表格页剩余空间内
+            residualHeight -= item.offsetHeight;
+            residualRemark.push(this.getRemarkAll[i]);
           } else {
-            tableList.push(JSON.parse(JSON.stringify(arr)));
-            heightSum = item.offsetHeight;
-            arr = [this.tableData[i]];
+            // 另起一页
+            itemHeight += item.offsetHeight;
+            if (itemHeight <= this.otherPageHeight - el - 24) {
+              // 上下padding各12
+              list.push(this.getRemarkAll[i]);
+            } else {
+              if (list.length) itemList.push(JSON.parse(JSON.stringify(list)));
+              itemHeight = item.offsetHeight;
+              list = [this.getRemarkAll[i]];
+            }
           }
         });
-        let residualHeight =
-          this.tableHeight - tableHeader - requireStart - heightSum; // 最后一页表格剩余高度
-        tableList.push(JSON.parse(JSON.stringify(arr)));
-        this.tableList = tableList;
-        let hasOtherPage = residualHeight - el - 24 < outEl; // 最后一页不能放下所有备注和签字栏
-        if (hasOtherPage) {
-          let itemHeight = 0;
-          let list = [];
-          let itemList = [];
-          let residualRemark = [];
-          let remarkList = this.$refs.demo.getElementsByClassName("remarkItem"); //备注信息
-          // 备注信息分页计算
-          remarkList.forEach((item, i) => {
-            if (item.offsetHeight < residualHeight - 24) {
-              // 放在表格页剩余空间内
-              residualHeight -= item.offsetHeight;
-              residualRemark.push(this.getRemarkAll[i]);
-            } else {
-              // 另起一页
-              itemHeight += item.offsetHeight;
-              if (itemHeight <= this.otherPageHeight - el - 24) {
-                // 上下padding各12
-                list.push(this.getRemarkAll[i]);
-              } else {
-                if (list.length)
-                  itemList.push(JSON.parse(JSON.stringify(list)));
-                itemHeight = item.offsetHeight;
-                list = [this.getRemarkAll[i]];
-              }
-            }
-          });
-          if (list.length) itemList.push(JSON.parse(JSON.stringify(list)));
-          this.remarkList = itemList;
-          this.residualRemark = residualRemark;
-          // 签字栏是否分页
-          // if (itemHeight) {
-          // 	if (this.otherPageHeight - itemHeight - 24 < el) {
-          // 		this.hasLastPage = true
-          // 	} else {
-          // 		this.hasLastPage = false
-          // 	}
-          // } else {
-          // 	if (residualHeight - 24 < el) {
-          // 		this.hasLastPage = true
-          // 	} else {
-          // 		this.hasLastPage = false
-          // 	}
-          // }
-        } else {
-          this.remarkList = [];
-          this.hasLastPage = false;
-          this.residualRemark = this.getRemarkAll;
-        }
-        this.$nextTick(()=>{
-          this.loading = false;
-        })
+        if (list.length) itemList.push(JSON.parse(JSON.stringify(list)));
+        this.remarkList = itemList;
+        this.residualRemark = residualRemark;
+        // 签字栏是否分页
+        // if (itemHeight) {
+        // 	if (this.otherPageHeight - itemHeight - 24 < el) {
+        // 		this.hasLastPage = true
+        // 	} else {
+        // 		this.hasLastPage = false
+        // 	}
+        // } else {
+        // 	if (residualHeight - 24 < el) {
+        // 		this.hasLastPage = true
+        // 	} else {
+        // 		this.hasLastPage = false
+        // 	}
+        // }
+      } else {
+        this.remarkList = [];
+        this.hasLastPage = false;
+        this.residualRemark = this.getRemarkAll;
+      }
+      this.$nextTick(() => {
+        this.loading = false;
+      });
     },
     downloadFile() {
       if (this.fileTableSelect.length == 0)
@@ -1779,6 +1795,56 @@ export default {
   }
 }
 
+.page-flex {
+  .page-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    ::v-deep .title {
+      font-size: 18px !important;
+      font-weight: 700;
+    }
+
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+
+    .singleSourcing {
+      margin-left: 20px;
+      padding: 8px 12px;
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(22, 96, 241, 1);
+      border: 1px dashed #1660f1;
+    }
+  }
+  .header-table-box {
+    overflow: hidden;
+  }
+  .header-table {
+    pointer-events: none;
+    .el-table__body-wrapper {
+      visibility: hidden;
+    }
+  }
+}
+
+.rsCard-content {
+  flex: 1;
+  overflow: auto;
+}
+.application-date {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 14px; /*no*/
+}
 .rsPdfWrapper,
 .demo {
   width: 100%;
