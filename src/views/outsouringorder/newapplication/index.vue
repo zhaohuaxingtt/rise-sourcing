@@ -87,9 +87,9 @@
                     <el-option
                       v-for="(item, index) in lineOptiondata"
                       :key="index"
-                      :value="item.linieID"
+                      :value="item.code"
                       :label="
-                        $i18n.locale == 'zh' ? item.linieName : item.linieNameEn
+                        $i18n.locale == 'zh' ? item.name : item.name
                       "
                     ></el-option>
                   </iSelect>
@@ -245,6 +245,7 @@ import tablelist from "./components/tablelist";
 import logButton from "../components/logButton";
 import { purchaseFactory } from "@/api/partsprocure/editordetail";
 import { dictkey, sendLinie, liniePullDownByDept } from "@/api/outsouringorder";
+import { getRfqUserInfoList } from "@/api/partsrfq/home";
 import {
   inventoryLocation,
   saveOrUpdate,
@@ -386,8 +387,8 @@ export default {
       ) {
         return "";
       }
-      let item = this.lineOptiondata.find((j) => j.linieID == key);
-      return this.$i18n.locale == "zh" ? item.linieName : item.linieNameEn;
+      let item = this.lineOptiondata.find((j) => j.code == key);
+      return this.$i18n.locale == "zh" ? item.name : item.name; // 只返回了中文
     },
     // 获取采购申请单状态
     getStatus(status, nominationStatus) {
@@ -402,8 +403,9 @@ export default {
     },
     // 获取推荐采购员
     getLineInfo() {
-      liniePullDownByDept({
-        deptId: [this.$store.state.permission.userInfo?.deptDTO.id],
+      // liniePullDownByDept
+      getRfqUserInfoList({
+        // deptId: [this.$store.state.permission.userInfo?.deptDTO.id],
       })
         .then((res) => {
           if (res.data instanceof Array && res.data.length > 0) {
