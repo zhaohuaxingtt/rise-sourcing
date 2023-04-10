@@ -500,6 +500,9 @@ export default {
         if (columnIndex == 1) {
           return "supllier-header";
         }
+        if (columnIndex == 2 && [4, 5].includes(rowIndex)) {
+          return "current-header";
+        }
         return "white-bg supllier-header";
       }
     },

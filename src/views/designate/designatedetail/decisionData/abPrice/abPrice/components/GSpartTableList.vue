@@ -392,7 +392,7 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="totalSavingTotal"
+            prop="saving"
             min-width="130"
           >
             <template slot="header" slot-scope="scope">
@@ -403,10 +403,13 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="totalTurnover"
+            prop="sopDate"
             min-width="80"
             label="SOP"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              {{ format(scope.row.sopDate) }}
+            </template></el-table-column>
         </el-table-column>
       </el-table>
     </div>
@@ -470,6 +473,10 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
+    format(date){
+      if(!date) return ''
+      return window.moment(date).format('YYYY-MM')
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -517,27 +524,17 @@ export default {
     colClass({ row, column, rowIndex, columnIndex }) {
       let className = ''
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        if (this.label == "Best ball") {
-          // best_ball 全绿,只判断蓝色背景
-          if (row.suggestFlag) {
-            className = "blue-border font-green";
-          } else {
-            className = "font-green";
-          }
+        if (row.suggestFlag) {
+          className = "blue-border font-green";
         } else {
-          if (row.isFsMinTto) {
-            // recommendation 全蓝, 但是绿色需要判断
-            className = "blue-border font-green";
-          } else {
-            className = "blue-border";
-          }
+          className = "font-green";
         }
       }
       if (["Total Turnover"].includes(column.label)) {
         if (this.label == "Best ball") {
           className = "font-green";
-        } else if (row.isFsMinTto) {
-          // if (row.isMinTto) {
+        } else
+          if (row.isMinTto) {
           className = "font-green";
         }
       }
@@ -623,8 +620,7 @@ export default {
     color: #f00;
   }
   .fs-group{
-    border-bottom-width: 5px !important;
-    border-bottom-color: #364d6e !important;
+    border-bottom: 5px solid #365d63 !important;
   }
 }
 

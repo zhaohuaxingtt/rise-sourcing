@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-06 18:39:16
+ * @LastEditTime: 2023-04-10 18:39:10
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\index.vue
 -->
 <template>
   <div :class="isRoutePreview ? 'isRoutePreview' : ''">
@@ -544,6 +544,18 @@ export default {
 }
 ::v-deep .font-green {
   color: #43b02a;
+}
+::v-deep .current-column {
+  background: #fdf0d0 !important;
+}
+
+::v-deep .current-header{
+  background: #fdf0d0 !important;
+  .cell {
+    white-space: normal;
+    font-weight: 500;
+    color: #000 !important;
+  }
 }
 .footer {
   display: flex;

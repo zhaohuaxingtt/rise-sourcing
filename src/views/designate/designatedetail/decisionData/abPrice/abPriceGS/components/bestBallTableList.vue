@@ -89,7 +89,7 @@
               </template></el-table-column
             >
           </template>
-          <el-table-column label="F-target" align="center">
+          <el-table-column label="Current" align="center">
             <el-table-column
               label="Supplier"
               prop="supplier"
@@ -641,6 +641,9 @@ export default {
             return "blue-border";
           }
         }
+      }
+      if([4,5,6].includes(columnIndex)){
+        return "current-column"
       }
       if (["Total Turnover"].includes(column.label)) {
         if (this.label == "Best ball") {
