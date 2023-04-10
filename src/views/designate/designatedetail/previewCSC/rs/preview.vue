@@ -173,6 +173,7 @@ export default {
   overflow-y: auto;
   position: relative;
   background: #fff;
+  padding: 12px 14px;
 }
 #preview-content {
   height: 100%;
