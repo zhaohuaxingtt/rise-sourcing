@@ -417,8 +417,7 @@
 <script>
 import tooltip from "../../../components/tooltip.vue";
 import {
-  getAnalysisRecommendationNomi,
-  getAnalysisBestBallNomi,
+  getNomiEffectiveQuotation
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import bestBallTableListTotal from "./bestBallTableListTotal";
@@ -482,13 +481,7 @@ export default {
     },
     getData() {
       this.index = this.label == "Best ball" ? 0 : 1;
-      const getData =
-        this.label == "Recommendation"
-          ? getAnalysisRecommendationNomi
-          : getAnalysisBestBallNomi;
-      getData({
-        nomiId: this.$route.query.desinateId,
-      })
+      getNomiEffectiveQuotation(this.$route.query.desinateId)
         .then((res) => {
           if (res?.code == "200") {
             let tableData = res.data.analysisNomiPriceInfoList.map((child,i)=>{

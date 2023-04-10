@@ -1,6 +1,6 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div :ref="ref" v-loading="loading" :key="index">
+  <div style="height: 100%" :ref="ref" v-loading="loading" :key="index">
     <el-table
       :data="tableData"
       height="100%"
@@ -22,7 +22,16 @@
                     label="Supplier"
                     align="center"
                     minWidth="140"
-                  ></el-table-column>
+                  >
+                    <template slot-scope="scope">
+                      <tooltip :text="scope.row.supplierNameEn">
+                        <template slot="content">
+                          <p>{{ scope.row.supplierName || "-" }}</p>
+                          <p>{{ scope.row.supplierNameEn }}</p>
+                        </template>
+                      </tooltip>
+                    </template></el-table-column
+                  >
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -161,13 +170,15 @@
                           <p>A Price</p>
                         </template>
                         <template slot-scope="scope">
-                          <p v-if="
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKD' ||
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKDLC'
-                              ">
-                            <span style="color: red" >*</span>
+                          <p
+                            v-if="
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKD' ||
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKDLC'
+                            "
+                          >
+                            <span style="color: red">*</span>
                             {{ scope.row[item.fsGsNum + "skdAPrice"] }}
                           </p>
                           <p v-else>
@@ -225,13 +236,15 @@
                           <p>B Price</p>
                         </template>
                         <template slot-scope="scope">
-                          <p v-if="
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKD' ||
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKDLC'
-                              ">
-                            <span style="color: red" >*</span>
+                          <p
+                            v-if="
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKD' ||
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKDLC'
+                            "
+                          >
+                            <span style="color: red">*</span>
                             {{ scope.row[item.fsGsNum + "skdBPrice"] }}
                           </p>
                           <p v-else>
@@ -396,8 +409,8 @@ export default {
           width: "130",
         },
         {
-          prop: "totalDevelopCost",
-          label: ["Total", "Develop", "Cost"],
+          prop: "totalReleaseCost",
+          label: ["Total", "Release", "Cost"],
           target: "",
           budget: "",
           width: "130",
@@ -600,9 +613,9 @@ export default {
         )[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 6, "rowSpan");
-      this.partList.forEach((item,i)=>{
-        this.merge(row, 6, i*2+2, 2, "colSpan");
-      })
+      this.partList.forEach((item, i) => {
+        this.merge(row, 6, i * 2 + 2, 2, "colSpan");
+      });
       this.merge(row, 0, this.partList.length + 2, 6, "colSpan");
       this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
     },

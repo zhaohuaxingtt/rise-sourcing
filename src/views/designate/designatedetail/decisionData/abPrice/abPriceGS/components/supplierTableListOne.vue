@@ -332,8 +332,8 @@ export default {
           width: "130",
         },
         {
-          prop: "totalDevelopCost",
-          label: ["Total", "Develop", "Cost"],
+          prop: "totalReleaseCost",
+          label: ["Total", "Release", "Cost"],
           target: "",
           budget: "",
           width: "130",

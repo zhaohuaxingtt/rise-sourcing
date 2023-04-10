@@ -622,6 +622,7 @@ export default {
                 item.bdlInfoList.forEach((child) => {
                   item[child.supplierId + "aPrice"] = child.lcAPrice;
                   item[child.supplierId + "bPrice"] = child.lcBPrice;
+                  item[child.supplierId + "quotationType"] = child.quotationType;
                   if (child.suggestFlag)
                     item.suggestFlag.push(
                       child.supplierId + "aPrice",
