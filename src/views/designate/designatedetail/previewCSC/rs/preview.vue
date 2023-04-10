@@ -6,14 +6,14 @@
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :mtzAppId="mtzAppId" :mtzData="mtzData" />
         </el-tab-pane>
       </iTabsList>
-      <div v-else>
+      <div v-else style="width:100%;height:100%">
         <iTabsList type="card" v-model="activeName" class="preview-tabs">
             <template v-for="(tab, $tabIndex) in tabList">
               <el-tab-pane v-if="tab.id==0||tab.id==1||(tab.id==2&&isCS)" lazy :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.id">
               </el-tab-pane>
             </template>
         </iTabsList>
-        <div style="width:100%">
+        <div style="width:100%;height:calc(100% - 60px)">
           <nomi v-if="activeName==0" :mtzData="mtzData" />
           <BDL type="approval" v-if="activeName==1"></BDL>
           <Attachment type="approval" v-if="activeName==2"> </Attachment>
@@ -31,7 +31,7 @@ import mtz from "./components/signPreviewBefore"
 import { nominateAppSDetail } from "@/api/designate"
 import { getApproveRsMtzDetail } from "@/api/designate/decisiondata/rs"
 import BDL from '../bdl'
-import Attachment from '../../attachment'
+import Attachment from '../attachment'
 export default {
   components: { iTabsList, nomi, mtz,Attachment,BDL},
   data() {
