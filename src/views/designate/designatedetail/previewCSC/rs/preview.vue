@@ -13,10 +13,10 @@
               </el-tab-pane>
             </template>
         </iTabsList>
-        <div style="width:100%;height:calc(100% - 60px)">
-          <nomi v-if="activeName==0" :mtzData="mtzData" />
-          <BDL type="approval" v-if="activeName==1"></BDL>
-          <Attachment type="approval" v-if="activeName==2"> </Attachment>
+        <div class="nomination-content">
+          <nomi class="page-content" v-if="activeName==0" :mtzData="mtzData" />
+          <BDL class="page-content" type="approval" v-if="activeName==1"></BDL>
+          <Attachment class="page-content" type="approval" v-if="activeName==2"> </Attachment>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@ export default {
 <style lang="scss" scoped>
 .preview {
   width: 100%;
-  height: 100%;
+  height: 700px;
   overflow-y: auto;
   position: relative;
   background: #fff;
