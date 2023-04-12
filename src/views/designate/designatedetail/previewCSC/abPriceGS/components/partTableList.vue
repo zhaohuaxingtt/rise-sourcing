@@ -153,12 +153,12 @@
                 <el-table-column label="Current" align="center">
                   <el-table-column
                     label="Supplier"
-                    prop="supplier"
+                    prop="currentSupplier"
                     align="center"
                     minWidth="80"
                   >
                     <template slot-scope="scope">
-                      {{ scope.row["supplier"] }}
+                      {{ scope.row["currentSupplier"] }}
                     </template>
                   </el-table-column>
                 </el-table-column>
@@ -171,7 +171,7 @@
                 <el-table-column>
                   <el-table-column
                     label="A Price"
-                    prop="cfPartAPrice"
+                    prop="currentAPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -186,7 +186,7 @@
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
                               (
-                                scope.row.cfPartAPrice - scope.row.selAPrice
+                                scope.row.currentAPrice - scope.row.selAPrice
                               ).toFixed(2) | toThousands(true)
                             }}
                           </div>
@@ -201,13 +201,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartAPrice"] | toThousands(true)
+                              scope.row["currentAPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                        {{ scope.row["currentAPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>
@@ -221,7 +221,7 @@
                 <el-table-column label="F-target" align="center">
                   <el-table-column
                     label="B Price"
-                    prop="cfPartBPrice"
+                    prop="currentBPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -236,7 +236,7 @@
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
                               (
-                                scope.row.cfPartBPrice - scope.row.selAPrice
+                                scope.row.currentBPrice - scope.row.selAPrice
                               ).toFixed(2) | toThousands(true)
                             }}
                           </div>
@@ -251,13 +251,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartBPrice"] | toThousands(true)
+                              scope.row["currentBPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                        {{ scope.row["currentBPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>

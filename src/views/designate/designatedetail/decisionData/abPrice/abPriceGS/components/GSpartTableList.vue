@@ -90,18 +90,18 @@
           <el-table-column label="Current" align="center">
             <el-table-column
               label="Supplier"
-              prop="supplier"
+              prop="currentSupplier"
               align="right"
               header-align="center"
               minWidth="85"
             >
               <template slot-scope="scope">
-                {{ scope.row.supplier }}
+                {{ scope.row.currentSupplier }}
               </template>
             </el-table-column>
             <el-table-column
               label="A Price"
-              prop="targetAPrice"
+              prop="currentAPrice"
               align="right"
               header-align="center"
               minWidth="85"
@@ -115,7 +115,7 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
+                      (deleteThousands(scope.row.currentAPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
                     }}
                   </div>
@@ -131,21 +131,21 @@
                     <span style="color: red">*</span>
                     <span>
                 {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                  deleteThousands(scope.row.currentAPrice) | toThousands(true)
                 }}</span>
                   </p>
                 </div>
               </el-popover>
               <template v-else>
                 {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                  deleteThousands(scope.row.currentAPrice) | toThousands(true)
                 }}
               </template>
             </template>
             </el-table-column>
             <el-table-column
               label="B Price"
-              prop="targetBPrice"
+              prop="currentBPrice"
               align="right"
               header-align="center"
               minWidth="85"
@@ -159,7 +159,7 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
+                      (deleteThousands(scope.row.currentBPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
                     }}
                   </div>
@@ -175,14 +175,14 @@
                     <span style="color: red">*</span>
                     <span>
                 {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                  deleteThousands(scope.row.currentBPrice)| toThousands(true)
                 }}</span>
                   </p>
                 </div>
               </el-popover>
               <template v-else>
                 {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                  deleteThousands(scope.row.currentBPrice)| toThousands(true)
                 }}
               </template>
             </template>

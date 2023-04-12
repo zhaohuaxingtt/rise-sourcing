@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-10 18:41:06
+ * @LastEditTime: 2023-04-12 11:18:40
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -152,12 +152,12 @@
                 <el-table-column label="Current" align="center">
                   <el-table-column
                     label="Supplier"
-                    prop="supplier"
+                    prop="currentSupplier"
                     align="center"
                     minWidth="80"
                   >
                     <template slot-scope="scope">
-                      {{ scope.row["supplier"] }}
+                      {{ scope.row["currentSupplier"] }}
                     </template>
                   </el-table-column>
                 </el-table-column>
@@ -170,7 +170,7 @@
                 <el-table-column>
                   <el-table-column
                     label="A Price"
-                    prop="cfPartAPrice"
+                    prop="currentAPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -185,7 +185,7 @@
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
                               (
-                                scope.row.cfPartAPrice - scope.row.selAPrice
+                                scope.row.currentAPrice - scope.row.selAPrice
                               ).toFixed(2) | toThousands(true)
                             }}
                           </div>
@@ -200,13 +200,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartAPrice"] | toThousands(true)
+                              scope.row["currentAPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                        {{ scope.row["currentAPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>
@@ -220,7 +220,7 @@
                 <el-table-column label="F-target" align="center">
                   <el-table-column
                     label="B Price"
-                    prop="cfPartBPrice"
+                    prop="currentBPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -235,7 +235,7 @@
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
                               (
-                                scope.row.cfPartBPrice - scope.row.selAPrice
+                                scope.row.currentBPrice - scope.row.selAPrice
                               ).toFixed(2) | toThousands(true)
                             }}
                           </div>
@@ -250,13 +250,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartBPrice"] | toThousands(true)
+                              scope.row["currentBPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                        {{ scope.row["currentBPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>

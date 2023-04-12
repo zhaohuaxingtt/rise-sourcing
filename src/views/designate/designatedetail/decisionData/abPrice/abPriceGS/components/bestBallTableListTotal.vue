@@ -31,7 +31,7 @@
         </el-table-column>
         <el-table-column
           label="A Price"
-          prop="targetAPrice"
+          prop="currentAPrice"
           minWidth="85"
           align="right"
           header-align="center"
@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column
           label="B Price"
-          prop="targetBPrice"
+          prop="currentBPrice"
           minWidth="85"
           align="right"
           header-align="center"

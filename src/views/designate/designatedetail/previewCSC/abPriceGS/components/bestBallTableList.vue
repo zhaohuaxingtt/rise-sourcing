@@ -93,18 +93,18 @@
           <el-table-column label="Current" align="center">
             <el-table-column
               label="Supplier"
-              prop="supplier"
+              prop="currentSupplier"
               align="right"
               header-align="center"
               minWidth="85"
             >
               <template slot-scope="scope">
-                {{ scope.row.supplier }}
+                {{ scope.row.currentSupplier }}
               </template>
             </el-table-column>
             <el-table-column
               label="A Price"
-              prop="targetAPrice"
+              prop="currentAPrice"
               align="right"
               header-align="center"
               minWidth="85"
@@ -119,7 +119,7 @@
                     <div>
                       {{ language("零件目标价A价", "零件目标价A价") }}：{{
                         (
-                          deleteThousands(scope.row.targetAPrice) -
+                          deleteThousands(scope.row.currentAPrice) -
                           scope.row.selAPrice
                         ).toFixed(2) | toThousands(true)
                       }}
@@ -135,7 +135,7 @@
                       <span style="color: red">*</span>
                       <span>
                         {{
-                          deleteThousands(scope.row.targetAPrice)
+                          deleteThousands(scope.row.currentAPrice)
                             | toThousands(true)
                         }}</span
                       >
@@ -144,14 +144,14 @@
                 </el-popover>
                 <template v-else>
                   {{
-                    deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                    deleteThousands(scope.row.currentAPrice) | toThousands(true)
                   }}
                 </template>
               </template>
             </el-table-column>
             <el-table-column
               label="B Price"
-              prop="targetBPrice"
+              prop="currentBPrice"
               align="right"
               header-align="center"
               minWidth="85"
@@ -166,7 +166,7 @@
                     <div>
                       {{ language("零件目标价A价", "零件目标价A价") }}：{{
                         (
-                          deleteThousands(scope.row.targetBPrice) -
+                          deleteThousands(scope.row.currentBPrice) -
                           scope.row.selAPrice
                         ).toFixed(2) | toThousands(true)
                       }}
@@ -182,7 +182,7 @@
                       <span style="color: red">*</span>
                       <span>
                         {{
-                          deleteThousands(scope.row.targetBPrice)
+                          deleteThousands(scope.row.currentBPrice)
                             | toThousands(true)
                         }}</span
                       >
@@ -191,7 +191,7 @@
                 </el-popover>
                 <template v-else>
                   {{
-                    deleteThousands(scope.row.targetBPrice) | toThousands(true)
+                    deleteThousands(scope.row.currentBPrice) | toThousands(true)
                   }}
                 </template>
               </template>
@@ -517,8 +517,8 @@ export default {
           if (res?.code == "200") {
             let tableData = res.data.analysisNomiPriceInfoList;
             const totalData = JSON.parse(JSON.stringify(this.totalData));
-            totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
-            totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
+            totalData[0]["currentAPrice"] = res.data.targetMixAPrice;
+            totalData[0]["currentBPrice"] = res.data.targetMixBPrice;
             totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
             totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
             totalData[0]["invest"] = res.data.totalInvest;
