@@ -145,7 +145,7 @@
       <el-table-column
         align="right"
         header-align="center"
-        prop="totalSavingTotal"
+        prop="savingTotal"
         min-width="130"
       >
         <template slot="header" slot-scope="scope">
