@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-12 11:18:40
+ * @LastEditTime: 2023-04-12 17:37:44
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -268,7 +268,12 @@
         <template v-for="(item, index) in supplierList">
           <el-table-column :key="item.supplierId + index" align="center">
             <div slot="header" slot-scope="scope">
-              {{ item.supplierEn || "-" }}
+                <tooltip :text="item.supplierEn">
+                  <template slot="content">
+                    <p>{{ item.supplier }}</p>
+                    <p>{{ item.supplierEn }}</p>
+                  </template>
+                </tooltip>
             </div>
             <el-table-column :label="item.TE" align="center">
               <template slot-scope="scope" slot="header">

@@ -23,7 +23,16 @@
                         label="Supplier"
                         align="center"
                         minWidth="140"
-                      ></el-table-column>
+                      >
+                      
+                      <template slot-scope="scope">
+                      <tooltip :text="scope.row.supplierNameEn">
+                        <template slot="content">
+                          <p>{{ (scope.row.supplier||'').split('\n')[1] || "-" }}</p>
+                          <p>{{ scope.row.supplierNameEn }}</p>
+                        </template>
+                      </tooltip>
+                    </template></el-table-column>
                     </el-table-column>
                   </el-table-column>
                   </el-table-column>
@@ -36,7 +45,7 @@
           <el-table-column label="Carline">
             <el-table-column label="Volume">
               <el-table-column label="Current Supplier">
-                <el-table-column label="Current Average">
+                <el-table-column label="Current Price">
                   <el-table-column label="Rating" align="center">
                     <el-table-column
                       prop="te"
