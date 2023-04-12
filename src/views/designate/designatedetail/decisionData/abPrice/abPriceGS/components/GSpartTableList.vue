@@ -87,7 +87,7 @@
               </template></el-table-column
             >
           </template>
-          <el-table-column label="F-target" align="center">
+          <el-table-column label="Current" align="center">
             <el-table-column
               label="Supplier"
               prop="supplier"
@@ -197,12 +197,16 @@
             minWidth="100"
           >
             <template slot-scope="scope">
-              <tooltip
-                :text="scope.row['supplierNameEn']"
-                :content="
-                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-                "
-              />
+              <tooltip :text="scope.row['supplierNameEn']">
+                <template slot="content">
+                  <p :title="scope.row.supplierNameZh">
+                    {{ scope.row.supplierNameZh }}
+                  </p>
+                  <p :title="scope.row.supplierNameEn">
+                    ({{ scope.row.supplierNameEn }})
+                  </p>
+                </template>
+              </tooltip>
             </template>
           </el-table-column>
           <el-table-column label="Rating" align="center">
@@ -523,24 +527,22 @@ export default {
     },
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
-      let className = ''
-      if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
+      let className = "";
+      if (columnIndex > 10) {
         if (row.suggestFlag) {
-          className = "blue-border font-green";
-        } else {
-          className = "font-green";
+          className = "blue-border";
         }
+      }
+      if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
+        className += " font-green";
       }
       if (["Total Turnover"].includes(column.label)) {
-        if (this.label == "Best ball") {
-          className = "font-green";
-        } else
-          if (row.isMinTto) {
-          className = "font-green";
+        if (row.isMinTto) {
+          className += " font-green";
         }
       }
-      if(row.underline) className += ' fs-group'
-      return className
+      if (row.underline) className += " fs-group";
+      return className;
     },
     gotoDetail(row) {
       this.row = JSON.parse(JSON.stringify(row));

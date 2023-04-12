@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-03-24 14:23:26
+ * @LastEditTime: 2023-04-11 17:09:37
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
@@ -38,7 +38,7 @@
           <el-radio-button label="supplier">Supplier</el-radio-button>
           <el-radio-button label="part">Part</el-radio-button>
           <el-radio-button label="best_ball">Best ball</el-radio-button>
-          <el-radio-button label="gs_part">GS Part</el-radio-button>
+          <el-radio-button label="gs_part">Detail</el-radio-button>
           <el-radio-button
             label="Detailed_Worksheet"
           >Detailed Worksheet</el-radio-button>
@@ -529,7 +529,7 @@ export default {
   }
 }
 ::v-deep .blue-border {
-  background: #d1e0ea !important;
+  background: #e2f2fd !important;
 }
 ::v-deep .font-green {
   color: #43b02a;

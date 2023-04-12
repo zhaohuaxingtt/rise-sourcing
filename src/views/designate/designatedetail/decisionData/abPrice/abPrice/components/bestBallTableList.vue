@@ -131,14 +131,15 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
-                        | toThousands(true)
+                      (
+                        deleteThousands(scope.row.targetAPrice) -
+                        scope.row.selAPrice
+                      ).toFixed(2) | toThousands(true)
                     }}
                   </div>
                   <div>
                     {{ language("SEL目标价", "SEL目标价") }}：{{
-                      (scope.row.selAPrice || "0.00")
-                        | toThousands(true)
+                      (scope.row.selAPrice || "0.00") | toThousands(true)
                     }}
                   </div>
                 </div>
@@ -146,9 +147,11 @@
                   <p>
                     <span style="color: red">*</span>
                     <span>
-                {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                }}</span>
+                      {{
+                        deleteThousands(scope.row.targetAPrice)
+                          | toThousands(true)
+                      }}</span
+                    >
                   </p>
                 </div>
               </el-popover>
@@ -175,14 +178,15 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
-                        | toThousands(true)
+                      (
+                        deleteThousands(scope.row.targetBPrice) -
+                        scope.row.selAPrice
+                      ).toFixed(2) | toThousands(true)
                     }}
                   </div>
                   <div>
                     {{ language("SEL目标价", "SEL目标价") }}：{{
-                      (scope.row.selAPrice || "0.00")
-                        | toThousands(true)
+                      (scope.row.selAPrice || "0.00") | toThousands(true)
                     }}
                   </div>
                 </div>
@@ -190,15 +194,17 @@
                   <p>
                     <span style="color: red">*</span>
                     <span>
-                {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
-                }}</span>
+                      {{
+                        deleteThousands(scope.row.targetBPrice)
+                          | toThousands(true)
+                      }}</span
+                    >
                   </p>
                 </div>
               </el-popover>
               <template v-else>
                 {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                  deleteThousands(scope.row.targetBPrice) | toThousands(true)
                 }}
               </template>
             </template>
@@ -265,15 +271,9 @@
               v-if="scope.row.investFeeIsShared && scope.row.invest"
             >
               <div>
+                <div>Apportioned amount：{{ scope.row.toolingShareTotal }}</div>
                 <div>
-                  Apportioned amount：{{
-                    scope.row.toolingShareTotal
-                  }}
-                </div>
-                <div>
-                  Unassessed amount：{{
-                    scope.row.toolingNotShareTotal
-                  }}
+                  Unassessed amount：{{ scope.row.toolingNotShareTotal }}
                 </div>
               </div>
               <div slot="reference">
@@ -292,13 +292,18 @@
           minWidth="100"
         >
           <template slot-scope="scope">
-            <tooltip
-              :text="scope.row['supplierNameEn']"
-              :content="
-                scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-              "
-            /> </template
-        ></el-table-column>
+            <tooltip :text="scope.row['supplierNameEn']">
+              <template slot="content">
+                <p :title="scope.row.supplierNameZh">
+                  {{ scope.row.supplierNameZh }}
+                </p>
+                <p :title="scope.row.supplierNameEn">
+                  ({{ scope.row.supplierNameEn }})
+                </p>
+              </template>
+            </tooltip>
+          </template></el-table-column
+        >
         <el-table-column label="Rating" align="center">
           <el-table-column label="E" align="center" prop="erate" minWidth="60">
             <template slot-scope="scope">
@@ -336,7 +341,7 @@
             <p>Date</p>
           </template>
           <template slot-scope="scope">
-            <template v-if="scope.row.ltc!=0">{{
+            <template v-if="scope.row.ltc != 0">{{
               scope.row.ltcStartDate
             }}</template>
           </template></el-table-column
@@ -359,14 +364,10 @@
             >
               <div>
                 <div>
-                  Apportioned amount：{{
-                    scope.row.developShareCostTotal
-                  }}
+                  Apportioned amount：{{ scope.row.developShareCostTotal }}
                 </div>
                 <div>
-                  Unassessed amount：{{
-                    scope.row.developNotShareCostTotal
-                  }}
+                  Unassessed amount：{{ scope.row.developNotShareCostTotal }}
                 </div>
               </div>
               <div slot="reference">
@@ -782,6 +783,25 @@ export default {
           }
         }
       }
+      let className = "";
+      if (columnIndex > 13) {
+        if (this.label == "Best ball") {
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            className += "blue-border";
+          }
+        } else {
+          className += "blue-border";
+        }
+      }
+      if (["Total Turnover"].includes(column.label)) {
+        if (this.label == "Best ball") {
+          className += " font-green";
+        } else if (row.isFsMinTto) {
+          className += " font-green";
+        }
+      }
+      return className;
       if (["Total Turnover"].includes(column.label)) {
         if (this.label == "Best ball") {
           return "font-green";

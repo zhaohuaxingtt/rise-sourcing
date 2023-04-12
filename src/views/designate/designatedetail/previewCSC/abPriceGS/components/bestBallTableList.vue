@@ -111,40 +111,43 @@
             >
               <template slot-scope="scope">
                 <el-popover
-                placement="top-start"
-                trigger="hover"
-                v-if="+scope.row.selAPrice"
-              >
-                <div>
+                  placement="top-start"
+                  trigger="hover"
+                  v-if="+scope.row.selAPrice"
+                >
                   <div>
-                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
-                        | toThousands(true)
-                    }}
+                    <div>
+                      {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                        (
+                          deleteThousands(scope.row.targetAPrice) -
+                          scope.row.selAPrice
+                        ).toFixed(2) | toThousands(true)
+                      }}
+                    </div>
+                    <div>
+                      {{ language("SEL目标价", "SEL目标价") }}：{{
+                        (scope.row.selAPrice || "0.00") | toThousands(true)
+                      }}
+                    </div>
                   </div>
-                  <div>
-                    {{ language("SEL目标价", "SEL目标价") }}：{{
-                      (scope.row.selAPrice || "0.00")
-                        | toThousands(true)
-                    }}
+                  <div slot="reference">
+                    <p>
+                      <span style="color: red">*</span>
+                      <span>
+                        {{
+                          deleteThousands(scope.row.targetAPrice)
+                            | toThousands(true)
+                        }}</span
+                      >
+                    </p>
                   </div>
-                </div>
-                <div slot="reference">
-                  <p>
-                    <span style="color: red">*</span>
-                    <span>
-                {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                }}</span>
-                  </p>
-                </div>
-              </el-popover>
-              <template v-else>
-                {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                }}
+                </el-popover>
+                <template v-else>
+                  {{
+                    deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                  }}
+                </template>
               </template>
-            </template>
             </el-table-column>
             <el-table-column
               label="B Price"
@@ -154,41 +157,44 @@
               minWidth="85"
             >
               <template slot-scope="scope">
-              <el-popover
-                placement="top-start"
-                trigger="hover"
-                v-if="+scope.row.selAPrice"
-              >
-                <div>
+                <el-popover
+                  placement="top-start"
+                  trigger="hover"
+                  v-if="+scope.row.selAPrice"
+                >
                   <div>
-                    {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
-                        | toThousands(true)
-                    }}
+                    <div>
+                      {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                        (
+                          deleteThousands(scope.row.targetBPrice) -
+                          scope.row.selAPrice
+                        ).toFixed(2) | toThousands(true)
+                      }}
+                    </div>
+                    <div>
+                      {{ language("SEL目标价", "SEL目标价") }}：{{
+                        (scope.row.selAPrice || "0.00") | toThousands(true)
+                      }}
+                    </div>
                   </div>
-                  <div>
-                    {{ language("SEL目标价", "SEL目标价") }}：{{
-                      (scope.row.selAPrice || "0.00")
-                        | toThousands(true)
-                    }}
+                  <div slot="reference">
+                    <p>
+                      <span style="color: red">*</span>
+                      <span>
+                        {{
+                          deleteThousands(scope.row.targetBPrice)
+                            | toThousands(true)
+                        }}</span
+                      >
+                    </p>
                   </div>
-                </div>
-                <div slot="reference">
-                  <p>
-                    <span style="color: red">*</span>
-                    <span>
-                {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
-                }}</span>
-                  </p>
-                </div>
-              </el-popover>
-              <template v-else>
-                {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
-                }}
+                </el-popover>
+                <template v-else>
+                  {{
+                    deleteThousands(scope.row.targetBPrice) | toThousands(true)
+                  }}
+                </template>
               </template>
-            </template>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -203,12 +209,16 @@
             minWidth="100"
           >
             <template slot-scope="scope">
-              <tooltip
-                :text="scope.row['supplierNameEn']"
-                :content="
-                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-                "
-              />
+              <tooltip :text="scope.row['supplierNameEn']">
+                <template slot="content">
+                  <p :title="scope.row.supplierNameZh">
+                    {{ scope.row.supplierNameZh }}
+                  </p>
+                  <p :title="scope.row.supplierNameEn">
+                    ({{ scope.row.supplierNameEn }})
+                  </p>
+                </template>
+              </tooltip>
             </template>
           </el-table-column>
           <el-table-column label="Rating" align="center">
@@ -325,14 +335,10 @@
               >
                 <div>
                   <div>
-                    Apportioned amount：{{
-                      scope.row.toolingShareTotal
-                    }}
+                    Apportioned amount：{{ scope.row.toolingShareTotal }}
                   </div>
                   <div>
-                    Unassessed amount：{{
-                      scope.row.toolingNotShareTotal
-                    }}
+                    Unassessed amount：{{ scope.row.toolingNotShareTotal }}
                   </div>
                 </div>
                 <div slot="reference">
@@ -362,14 +368,10 @@
               >
                 <div>
                   <div>
-                    Apportioned amount：{{
-                      scope.row.developShareCostTotal
-                    }}
+                    Apportioned amount：{{ scope.row.developShareCostTotal }}
                   </div>
                   <div>
-                    Unassessed amount：{{
-                      scope.row.developNotShareCostTotal
-                    }}
+                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
                   </div>
                 </div>
                 <div slot="reference">
@@ -490,9 +492,9 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
-    format(date){
-      if(!date) return ''
-      return window.moment(date).format('YYYY-MM')
+    format(date) {
+      if (!date) return "";
+      return window.moment(date).format("YYYY-MM");
     },
     getInt(val) {
       if (!val) return val;
@@ -545,7 +547,9 @@ export default {
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
     setColSpan() {
-      const row = this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
+      const row =
+        this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0]
+          .rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 20, "colSpan");
     },
@@ -617,7 +621,7 @@ export default {
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex == 0 && [0,2].includes(columnIndex)) {
+      if (rowIndex == 0 && [0, 2].includes(columnIndex)) {
         return "white-bg unit";
       } else if (rowIndex == 0) {
         return "primary-label";
@@ -643,17 +647,28 @@ export default {
           }
         }
       }
-      if([4,5,6].includes(columnIndex)){
-        return "current-column"
+      if ([4, 5, 6].includes(columnIndex)) {
+        return "current-column";
+      }
+      let className = "";
+      if (columnIndex > 12) {
+        if (this.label == "Best ball") {
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            className += "blue-border";
+          }
+        } else {
+          className += "blue-border";
+        }
       }
       if (["Total Turnover"].includes(column.label)) {
         if (this.label == "Best ball") {
-          return "font-green";
+          className += " font-green";
         } else if (row.isFsMinTto) {
-          // if (row.isMinTto) {
-          return "font-green";
+          className += " font-green";
         }
       }
+      return className;
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
       if ([1, 2, 3].includes(columnIndex)) {

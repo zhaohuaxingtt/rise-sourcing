@@ -28,12 +28,15 @@ export default {
     };
   },
   watch:{
-    isGS(val){
-      if(val){
-        this.component = "abPriceGS";
-      }else{
-        this.component = "abPrice";
-      }
+    isGS:{
+      handler(val){
+        if(val){
+          this.component = "abPriceGS";
+        }else{
+          this.component = "abPrice";
+        }
+      },
+      immediate:true
     }
   }
 };

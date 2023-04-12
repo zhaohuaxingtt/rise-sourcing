@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-10 18:30:28
+ * @LastEditTime: 2023-04-11 17:09:28
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\index.vue
@@ -540,7 +540,7 @@ export default {
   }
 }
 ::v-deep .blue-border {
-  background: #d1e0ea !important;
+  background: #e2f2fd !important;
 }
 ::v-deep .font-green {
   color: #43b02a;

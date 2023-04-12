@@ -235,12 +235,16 @@
             minWidth="100"
           >
             <template slot-scope="scope">
-              <tooltip
-                :text="scope.row['supplierNameEn']"
-                :content="
-                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-                "
-              />
+              <tooltip :text="scope.row['supplierNameEn']">
+                <template slot="content">
+                  <p :title="scope.row.supplierNameZh">
+                    {{ scope.row.supplierNameZh }}
+                  </p>
+                  <p :title="scope.row.supplierNameEn">
+                    ({{ scope.row.supplierNameEn }})
+                  </p>
+                </template>
+              </tooltip>
             </template>
           </el-table-column>
           <el-table-column label="Rating" align="center">
@@ -295,7 +299,7 @@
               <p>Date</p>
             </template>
             <template slot-scope="scope">
-              <template v-if="scope.row.ltc!=0">{{
+              <template v-if="scope.row.ltc != 0">{{
                 scope.row.ltcStartDate
               }}</template>
             </template></el-table-column
@@ -741,14 +745,25 @@ export default {
           }
         }
       }
-      if (["Total Turnover"].includes(column.label)) {
+      let className = "";
+      if (columnIndex > 13) {
         if (this.label == "Best ball") {
-          return "font-green";
-        } else if (row.isFsMinTto) {
-          // if (row.isMinTto) {
-          return "font-green";
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            className += "blue-border";
+          }
+        } else {
+          className += "blue-border";
         }
       }
+      if (["Total Turnover"].includes(column.label)) {
+        if (this.label == "Best ball") {
+          className += " font-green";
+        } else if (row.isFsMinTto) {
+          className += " font-green";
+        }
+      }
+      return className;
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
       if ([3, 4, 5].includes(columnIndex)) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-10 17:59:55
+ * @LastEditTime: 2023-04-11 11:23:07
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -99,12 +99,15 @@ export default {
     }),
   },
   watch:{
-    isGS(val){
-      if(val){
-        this.component = "abPriceGS";
-      }else{
-        this.component = "abPrice";
-      }
+    isGS:{
+      handler(val){
+        if(val){
+          this.component = "abPriceGS";
+        }else{
+          this.component = "abPrice";
+        }
+      },
+      immediate:true
     }
   },
   created() {

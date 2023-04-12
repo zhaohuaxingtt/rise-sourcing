@@ -542,7 +542,7 @@ export default {
   }
 }
 ::v-deep .blue-border {
-  background: #d1e0ea !important;
+  background: #e2f2fd !important;
 }
 ::v-deep .font-green {
   color: #43b02a;
