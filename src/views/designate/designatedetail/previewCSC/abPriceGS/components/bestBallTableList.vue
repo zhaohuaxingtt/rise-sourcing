@@ -360,28 +360,6 @@
               <p>Release</p>
               <p>Cost</p>
             </template>
-            <template slot-scope="scope">
-              <el-popover
-                placement="top-start"
-                trigger="hover"
-                v-if="scope.row.devFeeIsShared && scope.row.developCost"
-              >
-                <div>
-                  <div>
-                    Apportioned amount：{{ scope.row.developShareCostTotal }}
-                  </div>
-                  <div>
-                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
-                  </div>
-                </div>
-                <div slot="reference">
-                  <span style="color: red">*</span>{{ scope.row.developCost }}
-                </div>
-              </el-popover>
-              <template v-else>
-                {{ scope.row.developCost }}
-              </template>
-            </template>
           </el-table-column>
           <el-table-column
             align="right"

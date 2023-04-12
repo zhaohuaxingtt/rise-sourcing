@@ -102,12 +102,9 @@
                 <template slot="header" slot-scope="scope">
                   {{ getInt(item.volume) | toThousands(true) }}
                 </template>
-                <el-table-column :label="item.CurrentSupplier" align="center">
-                  <template slot="header" slot-scope="scope">
-                    <span>{{ item.CurrentSupplier }}80%</span>/{{ item.CurrentSupplier }}20%
-                  </template>
+                <el-table-column :label="item.currentSupplier" align="center">
                   <el-table-column
-                    :label="item.targetAPrice"
+                    :label="item.currentAPrice"
                     header-align="right"
                   >
                     <el-table-column :label="item.fsGsNum" align="center">
@@ -142,7 +139,7 @@
                     </el-table-column>
                   </el-table-column>
                   <el-table-column
-                    :label="item.targetBPrice"
+                    :label="item.currentBPrice"
                     header-align="right"
                   >
                     <el-table-column :label="item.fsGsNum" align="center">
@@ -346,8 +343,15 @@ export default {
           width: "130",
         },
         {
-          prop: "sopDate",
+          prop: "saving",
           label: ["Saving", "@100% Share"],
+          target: "",
+          budget: "",
+          width: "130",
+        },
+        {
+          prop: "sopDate",
+          label: ["SOP"],
           target: "",
           budget: "",
           width: "130",
@@ -500,7 +504,10 @@ export default {
         if (columnIndex == 1) {
           return "supllier-header";
         }
-        if (columnIndex == 2 && [4, 5].includes(rowIndex)) {
+        if (columnIndex == 2 && [4].includes(rowIndex)) {
+          return "current-header";
+        }
+        if (rowIndex == 5 && columnIndex > 1) {
           return "current-header";
         }
         return "white-bg supllier-header";
@@ -541,7 +548,7 @@ export default {
         this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
         this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
         this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
+        // this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
       } else {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");

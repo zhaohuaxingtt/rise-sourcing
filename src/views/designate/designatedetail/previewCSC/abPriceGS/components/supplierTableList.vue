@@ -326,35 +326,6 @@
                             {{ scope.row[item.prop] }}
                           </template>
                         </template>
-                        <template
-                          v-else-if="['totalDevelopCost'].includes(item.prop)"
-                        >
-                          <el-popover
-                            placement="top-start"
-                            trigger="hover"
-                            v-if="scope.row.devFeeIsShared"
-                          >
-                            <div>
-                              <div>
-                                Apportioned amount：{{
-                                  scope.row.developShareCostTotal
-                                }}
-                              </div>
-                              <div>
-                                Unassessed amount：{{
-                                  scope.row.developNotShareCostTotal
-                                }}
-                              </div>
-                            </div>
-                            <div slot="reference">
-                              <span style="color: red">*</span
-                              >{{ scope.row[item.prop] }}
-                            </div>
-                          </el-popover>
-                          <template v-else>
-                            {{ scope.row[item.prop] }}
-                          </template>
-                        </template>
                         <template v-else>
                           {{ scope.row[item.prop] }}
                         </template>
@@ -423,7 +394,7 @@ export default {
           width: "130",
         },
         {
-          prop: "totalSavingTotal",
+          prop: "savingTotal",
           label: ["Saving", "@100% Share"],
           target: "",
           budget: "",
