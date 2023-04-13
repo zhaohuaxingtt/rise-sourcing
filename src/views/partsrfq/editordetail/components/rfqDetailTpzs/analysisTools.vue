@@ -7,7 +7,8 @@
 -->
 <template>
   <div>
-    <gather />
+    <!-- //source1是内部 -->
+    <gather :source="'1'" />
   </div>
 </template>
 <script>

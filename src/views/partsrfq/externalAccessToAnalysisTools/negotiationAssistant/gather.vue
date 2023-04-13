@@ -42,7 +42,7 @@
     <pcaOverview v-else-if="pageType === 'TIA'"
                  pageType="TIA" />
     <bobOverview v-else-if="pageType === 'BoB'"
-                 pageType="BoB" />
+                :source="source" pageType="BoB" />
     <mekOverview v-else-if="pageType === 'MEK'"></mekOverview>
     <piOverView v-else-if="pageType === 'PI'"
                 pageType="PI" />
@@ -75,6 +75,12 @@ export default {
     icon,
     iNavMvp,
     iButton,
+  },
+  props: {
+    source: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {
