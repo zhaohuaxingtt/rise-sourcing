@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-29 09:45:27
+ * @LastEditTime: 2023-04-13 14:07:04
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\index.vue
 -->
 
 <template>
-  <div class="meeting" ref="meeting" :class="isPreview && 'isPreview'">
+  <div class="meeting isPreview" ref="meeting">
     <div id="hide" class="rs-content">
       <div class="page-flex">
         <div ref="page-flex">
@@ -145,8 +145,7 @@
           </div>
         </div>
         </div>
-        <div class="header-table-box" v-if="!showHeader" :style="{ 'padding-right': gutter, height: headerTableHeight+'px'}">
-        <!-- <div class="header-table-box" :style="{ 'padding-right': gutter, height: headerTableHeight+'px' }"> -->
+        <!-- <div class="header-table-box" v-if="!showHeader" :style="{ 'padding-right': gutter, height: headerTableHeight+'px'}">
           <tableList
             ref="header-table"
             v-update
@@ -172,18 +171,15 @@
               </div>
             </template>
 
-            <!-- 供应商 -->
             <template #supplierName="scope">
               <span>{{ scope.row.supplierName }}</span>
               <br />
               <span>{{ scope.row.supplierNameEn }}</span>
             </template>
-            <!-- 年降 -->
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
 
-            <!-- 年降开始时间 -->
             <template #beginYearReduce="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
             </template>
@@ -426,7 +422,7 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-        </div>
+        </div> -->
       </div>
       <div
         class="rsCard-content"
@@ -435,6 +431,7 @@
       >
         <div class="rsCard">
           <tableList
+            height="100%"
             v-update
             :selection="false"
             indexKey
@@ -444,9 +441,9 @@
             class="rsTable table"
             :cell-class-name="cellClass"
             @onScroll="onScroll"
-            :show-header="showHeader"
             border
           >
+            <!-- :show-header="showHeader" -->
             <template #fsnrGsnrNum="scope">
               <div>
                 <p>{{ scope.row.fsnrGsnrNum }}</p>
@@ -487,12 +484,6 @@
             <template #svwCode="scope">
               <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
             </template>
-            <!-- <template #demand="scope">
-            <span>{{ scope.row.demand | kFilter }}</span>
-          </template>
-          <template #output="scope">
-            <span>{{ scope.row.output | kFilter }}</span>
-          </template> -->
             <template #presentPrice="scope">
               <span>{{ scope.row.presentPrice | toThousands }}</span>
             </template>
@@ -719,179 +710,125 @@
             <template #share="scope">
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
-          </tableList>
-          <!-- v-if="isPreview" -->
-          <div class="out-compute">
-            <div style="margin-left: 20px">
-              <span style="color: red">*</span><span>代表投资费已分摊</span>
-            </div>
-            <div class="beizhu">
-              备注 Remarks:
-              <div class="beizhu-value">
-                <p
-                  v-for="(item, index) in remarkItem"
-                  :key="index"
-                  v-html="remarkProcess(item && item.value)"
-                ></p>
+            <div slot="append">
+              <div class="out-compute">
+                <div style="margin-left: 20px">
+                  <span style="color: red">*</span><span>代表投资费已分摊</span>
+                </div>
+                <div class="beizhu">
+                  备注 Remarks:
+                  <div class="beizhu-value">
+                    <p
+                      v-for="(item, index) in remarkItem"
+                      :key="index"
+                      v-html="remarkProcess(item && item.value)"
+                    ></p>
+                  </div>
+                </div>
+                <div
+                  v-if="
+                    projectType === partProjTypes.DBLINGJIAN ||
+                    projectType === partProjTypes.DBYICHIXINGCAIGOU
+                  "
+                  style="text-align: right"
+                >
+                  汇率：Exchange rate:
+                  <span
+                    class="exchangeRageCurrency"
+                    v-for="item in exchangeRageCurrency"
+                    :key="item"
+                  >
+                    1{{
+                      basicData.currencyMap && basicData.currencyMap[item]
+                        ? basicData.currencyMap[item].code
+                        : item
+                    }}={{ basicData.currencyRateMap[item]
+                    }}{{
+                      basicData.currencyMap.RMB
+                        ? basicData.currencyMap.RMB.code
+                        : "RMB"
+                    }}
+                  </span>
+                </div>
+                <div v-else>
+                  <div class="margin-top10">
+                    <template v-if="basicData.currency == 'RMB'">
+                      Exchange rate: 1RMB=1RMB
+                    </template>
+                    <template v-else>
+                      <p
+                        v-for="(exchangeRate, index) in exchangeRates"
+                        :key="index"
+                      >
+                        Exchange rate{{
+                          exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
+                        }}: {{ exchangeRate.str
+                        }}{{
+                          exchangeRate.fsNumsStr
+                            ? `（${exchangeRate.fsNumsStr}）`
+                            : ""
+                        }}
+                      </p>
+                    </template>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div
-              v-if="
-                projectType === partProjTypes.DBLINGJIAN ||
-                projectType === partProjTypes.DBYICHIXINGCAIGOU
-              "
-              style="text-align: right"
-            >
-              汇率：Exchange rate:
-              <span
-                class="exchangeRageCurrency"
-                v-for="item in exchangeRageCurrency"
-                :key="item"
+              <div
+                v-if="!showSignatureForm && !isAuth"
+                class="checkDate Application margin-top20"
+                :title="`Application Date：${dateFilter(
+                  processApplyDate,
+                  'YYYY-MM-DD'
+                )}`"
               >
-                1{{
-                  basicData.currencyMap && basicData.currencyMap[item]
-                    ? basicData.currencyMap[item].code
-                    : item
-                }}={{ basicData.currencyRateMap[item]
-                }}{{
-                  basicData.currencyMap.RMB
-                    ? basicData.currencyMap.RMB.code
-                    : "RMB"
-                }}
-              </span>
-            </div>
-            <div v-else>
-              <div class="margin-top10">
-                <template v-if="basicData.currency == 'RMB'">
-                  Exchange rate: 1RMB=1RMB
-                </template>
-                <template v-else>
-                  <p
-                    v-for="(exchangeRate, index) in exchangeRates"
+                <div class="checkList">
+                  <div
+                    class="checkList-item"
+                    v-for="(item, index) in checkList"
                     :key="index"
                   >
-                    Exchange rate{{
-                      exchangeRate.fsNumsStr ? ` ${index + 1}` : ""
-                    }}: {{ exchangeRate.str
-                    }}{{
-                      exchangeRate.fsNumsStr
-                        ? `（${exchangeRate.fsNumsStr}）`
-                        : ""
-                    }}
-                  </p>
-                </template>
+                    <icon
+                      v-if="item.approveStatus === true"
+                      symbol
+                      name="iconrs-wancheng"
+                    ></icon>
+                    <icon
+                      v-else-if="item.approveStatus === false"
+                      symbol
+                      name="iconrs-quxiao"
+                    ></icon>
+                    <div v-else class="">-</div>
+                    <div class="checkList-item-info">
+                      <span>Dept.:</span>
+                      <span class="checkList-item-info-depart">{{
+                        item.approveDeptNumName
+                      }}</span>
+                    </div>
+                    <div class="checkList-item-info">
+                      <span>Date:</span>
+                      <span>{{ dateFilter(item.approveDate, "YYYY-MM-DD") }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="!isPreview && !showSignatureForm && !isAuth"
-          :title="language('SHANGHUIBEIZHU', '上会备注')"
-          class="margin-top20"
-        >
-          <iButton
-            slot="header-control"
-            @click="handleSaveRemarks"
-            :loading="saveLoading"
-            v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE | 保存"
-            >{{ language("BAOCUN", "保存") }}</iButton
-          >
-          <div>
-            <div class="meetingRemark" v-if="isApproval">
               <div
-                class="meetingRemark-item"
-                v-for="(item, index) in remarkItem"
-                :key="index"
+                title="Prototype Cost List"
+                class="margin-top20"
+                v-if="!showSignatureForm && PrototypeList.length > 5"
               >
-                <span class="meetingRemark-item-title">{{
-                  language(item.key, item.label)
-                }}</span>
-                <iInput
-                  class="margin-top10"
-                  type="textarea"
-                  :rows="10"
-                  resize="none"
-                  v-model="remarks[item.type]"
-                  disabled
-                ></iInput>
+                <el-table :data="PrototypeList" class="prototypeList">
+                  <template v-for="(items, index) in prototypeTitleList">
+                    <el-table-column
+                      :key="index"
+                      :prop="items.props"
+                      align="center"
+                      :label="language(items.i18nKey, items.i18nName)"
+                    ></el-table-column>
+                  </template>
+                </el-table>
               </div>
             </div>
-            <div class="meetingRemark" v-else>
-              <div
-                class="meetingRemark-item"
-                v-for="(item, index) in remarkItem"
-                :key="index"
-                v-permission.dynamic.auto="item.permissionKey"
-              >
-                <span class="meetingRemark-item-title">{{
-                  language(item.key, item.label)
-                }}</span>
-                <iInput
-                  class="margin-top10"
-                  type="textarea"
-                  :rows="10"
-                  resize="none"
-                  v-model="remarks[item.type]"
-                  @input="(val) => handleInput(val, item.type)"
-                ></iInput>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="!showSignatureForm && !isAuth"
-          class="checkDate Application"
-          :class="!isPreview && 'margin-top20'"
-          :title="`Application Date：${dateFilter(
-            processApplyDate,
-            'YYYY-MM-DD'
-          )}`"
-        >
-          <div class="checkList">
-            <div
-              class="checkList-item"
-              v-for="(item, index) in checkList"
-              :key="index"
-            >
-              <icon
-                v-if="item.approveStatus === true"
-                symbol
-                name="iconrs-wancheng"
-              ></icon>
-              <icon
-                v-else-if="item.approveStatus === false"
-                symbol
-                name="iconrs-quxiao"
-              ></icon>
-              <div v-else class="">-</div>
-              <div class="checkList-item-info">
-                <span>Dept.:</span>
-                <span class="checkList-item-info-depart">{{
-                  item.approveDeptNumName
-                }}</span>
-              </div>
-              <div class="checkList-item-info">
-                <span>Date:</span>
-                <span>{{ dateFilter(item.approveDate, "YYYY-MM-DD") }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          title="Prototype Cost List"
-          class="margin-top20"
-          v-if="!showSignatureForm && PrototypeList.length > 5"
-        >
-          <el-table :data="PrototypeList" class="prototypeList">
-            <template v-for="(items, index) in prototypeTitleList">
-              <el-table-column
-                :key="index"
-                :prop="items.props"
-                align="center"
-                :label="language(items.i18nKey, items.i18nName)"
-              ></el-table-column>
-            </template>
-          </el-table>
+          </tableList>
         </div>
       </div>
     </div>
@@ -921,7 +858,7 @@ import {
   rightTitle,
   RSTableTitle,
 } from "./data";
-import tableList from "@/views/designate/designatedetail/components/tableList";
+import tableList from "../tableList";
 import {
   getList,
   getRemark,
@@ -943,9 +880,8 @@ import { dateFilter } from "../circulation/data";
 export default {
   mixins: [filters],
   props: {
-    isPreview: { type: Boolean, default: false },
+    isGS:{ type: Boolean, default: false },
     nominateId: { type: String },
-    // projectType: {type:String},
     showSignatureForm: { type: Boolean, default: false },
   },
   components: { iCard, tableList, iButton, iInput, icon, rsPdf },
@@ -1129,9 +1065,6 @@ export default {
         result.push(item.value);
       }
       return result.join("\n").split("\n");
-    },
-    isRoutePreview() {
-      return this.$route.query.isPreview == 1;
     },
     isApproval() {
       return this.$route.query.isApproval === "true";
@@ -1473,6 +1406,7 @@ export default {
               temdata.partName = `${temdata.partName}/${temdata.partNameDe}`;
             }
             this.basicData = temdata;
+            if(this.isGS) this.basicData.project = 'GS Project'
             let data = Array.isArray(res.data?.lines) ? res.data.lines : [];
             data.forEach((val, index) => {
               let suppliersNowCn = [];
@@ -1897,8 +1831,33 @@ export default {
   .rsCard-content {
     flex: 1;
     overflow: auto;
+    height: 100%;
+    ::v-deep .el-table{
+        border-left: 0;
+        &::after{
+          content: unset;
+        }
+      .el-table__body-wrapper{
+        overflow-y: auto;
+        border-left: 0;
+        .el-table__body{
+          position: relative;
+          &::before{
+            content: '';
+            top: 0;
+            left: 0;
+            width: 0.0625rem;
+            height: 100%;
+            position: absolute;
+            z-index: 9;
+            background: #d9d9d9;
+          }
+        }
+      }
+    }
   }
   .rsCard {
+    height: 100%;
     ::v-deep .cardHeader {
       flex-wrap: wrap;
 

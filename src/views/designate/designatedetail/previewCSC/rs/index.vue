@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-12 21:31:08
+ * @LastEditTime: 2023-04-12 18:44:35
  * @Description: 定点管理-决策资料-RS
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\index.vue
 -->
 
 <template>
@@ -31,6 +31,7 @@
     <!-- <template v-else> -->
       <div v-if="isApproval">
         <circulation
+          v-bind="$attrs"
           ref="circulation"
           v-if="isCirculation"
           :isPreview="isPreview || nominationDisabled || rsDisabled"
@@ -77,6 +78,7 @@
           </template>
         </circulation>
         <meeting
+          v-bind="$attrs"
           ref="meeting"
           v-else
           :isPreview="isPreview || nominationDisabled || rsDisabled"
