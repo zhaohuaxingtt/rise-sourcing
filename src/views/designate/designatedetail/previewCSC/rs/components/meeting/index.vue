@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-13 14:07:04
+ * @LastEditTime: 2023-04-13 14:28:42
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\index.vue
 -->
@@ -776,11 +776,12 @@
               <div
                 v-if="!showSignatureForm && !isAuth"
                 class="checkDate Application margin-top20"
-                :title="`Application Date：${dateFilter(
-                  processApplyDate,
-                  'YYYY-MM-DD'
-                )}`"
               >
+                <p class="application-date">
+                  {{
+                    `Application Date：${dateFilter(processApplyDate, "YYYY-MM-DD")}`
+                  }}
+                </p>
                 <div class="checkList">
                   <div
                     class="checkList-item"
@@ -2124,6 +2125,11 @@ export default {
     // font-size: 16px;
     font-weight: 400;
     color: rgba(75, 75, 76, 1);
+  }
+  .application-date{
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 14px;  /*no*/
   }
 }
 
