@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-12-20 20:33:03
+ * @LastEditTime: 2023-04-13 16:46:45
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 特殊表格实现
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
   <div class="conent">
@@ -162,7 +162,7 @@
                   <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                <div class="tag" v-if="scope.row.isOriginprice">
+                <div class="tag" v-if="scope.row[getOriginpriceProp(item.props)]">
                   <el-tooltip :content="language('TONGPILIANG','同批量')" placement="bottom" effect="light">
                     <icon name='iconxialakuang_qiehuanlingjian_yiwancheng' class="icon"></icon>
                   </el-tooltip>
@@ -290,6 +290,15 @@ export default{
     }
   },
   methods:{
+    // 获取对应供应商isOriginprice
+    getOriginpriceProp(prop){
+      let index = parseInt(prop)
+      if(!isNaN(index)){
+        return index+'isOriginprice'
+      }else{
+        return 'isOriginprice'
+      }
+    },
     setfixElement(){
       try {
         const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
@@ -575,6 +584,7 @@ export default{
         height: 40px;
         background: #54b88e;
         transform: translate3d(50%, -50%, 0) rotate(-135deg);
+        z-index: 1;
         .icon{
           transform: rotate(135deg) scale(0.8);
           display: inline-block;
