@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-13 14:28:42
+ * @LastEditTime: 2023-04-13 15:51:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\index.vue
 -->
@@ -881,7 +881,6 @@ import { dateFilter } from "../circulation/data";
 export default {
   mixins: [filters],
   props: {
-    isGS:{ type: Boolean, default: false },
     nominateId: { type: String },
     showSignatureForm: { type: Boolean, default: false },
   },
@@ -1003,8 +1002,6 @@ export default {
         this.projectType === partProjTypes.GSLINGJIAN ||
         this.projectType === partProjTypes.GSCOMMONSOURCING
       ) {
-        console.log("GSLINGJIAN");
-
         //GS零件
         return gsTableTitle;
       } else if (
@@ -1087,8 +1084,17 @@ export default {
         this.getPrototypeListHeight();
       },
     },
-    scrollLeft(val){
-      this.$refs['header-table'].$refs.multipleTable.bodyWrapper.scrollLeft = val
+    // scrollLeft(val){
+    //   this.$refs['header-table'].$refs.multipleTable.bodyWrapper.scrollLeft = val
+    // },
+    projectType(val){
+      if(
+        val === partProjTypes.GSLINGJIAN ||
+        val === partProjTypes.GSCOMMONSOURCING
+      ){
+        console.log(val);
+        this.basicData.project = 'GS Project'
+      }
     }
   },
   created() {
@@ -1407,7 +1413,6 @@ export default {
               temdata.partName = `${temdata.partName}/${temdata.partNameDe}`;
             }
             this.basicData = temdata;
-            if(this.isGS) this.basicData.project = 'GS Project'
             let data = Array.isArray(res.data?.lines) ? res.data.lines : [];
             data.forEach((val, index) => {
               let suppliersNowCn = [];
@@ -2094,6 +2099,7 @@ export default {
 .checkList {
   display: flex;
   overflow: auto;
+  flex-wrap: wrap;
   &-item {
     flex-shrink: 0;
     width: 224px;
@@ -2101,7 +2107,7 @@ export default {
     max-width: 224px;
     border-radius: 15px;
     background-color: rgba(22, 96, 241, 0.03);
-    margin-right: 19px;
+    margin: 5px 20px 5px 0;
     display: flex;
     flex-direction: column;
     align-items: center;

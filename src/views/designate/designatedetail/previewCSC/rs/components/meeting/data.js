@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-12 18:24:10
+ * @LastEditTime: 2023-04-13 15:54:04
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\data.js
  */
@@ -261,12 +261,12 @@ export const gsTableTitle = [
   {props:'aprice',name:'A价', subItem: ['A Price'], key: "", minWidth: 80 },
   {props:'bprice',name:'B价', subItem: ['B Price'], key: "", minWidth: 80},
   {props:'ltc',name:'年降', subItem: ['LTC'], key: "", width: 60 },
-  {props:'beginYearReduce',name:'年降开始时间', subItem: ['LTC','Start','Date'], key: "", minWidth: 70},
+  {props:'beginYearReduce',name:'年降开始时间', subItem: ['LTC','Start','Date'], key: "", minWidth: 65},
   {props:'investFee',name:'投资费', subItem: ['Invest'], key: "", minWidth: 70},
-  {props:'devFee',name:'开发费', subItem: ['Develop','Cost'], key: "", minWidth: 90},
-  {props:'addFee',name:'认可费', subItem: ['Release','Cost'], key: "", minWidth: 85},
-  {props:'savingFee',name:'估算节约值', subItem: ['Estimated','Savings'], key: "", minWidth: 100},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'devFee',name:'开发费', subItem: ['Develop','Cost'], key: "", minWidth: 80},
+  {props:'addFee',name:'认可费', subItem: ['Release','Cost'], key: "", minWidth: 80},
+  {props:'savingFee',name:'估算节约值', subItem: ['Estimated','Savings'], key: "", minWidth: 90},
+  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 90},
 ]
 
 // DB零件

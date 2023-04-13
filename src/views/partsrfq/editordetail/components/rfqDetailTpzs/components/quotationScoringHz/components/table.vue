@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-12-20 20:33:03
+ * @LastEditTime: 2023-04-13 15:14:38
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 特殊表格实现
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
   <div class="conent">
@@ -263,6 +263,11 @@ export default{
       }else{
         return val
       }
+    }
+  },
+  watch:{
+    tableData(val){
+      console.log('tableData=>',val);
     }
   },
   computed:{
