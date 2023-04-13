@@ -170,7 +170,9 @@ export default {
       if (this.status === 1) {
         this.form.status = 'NOMINATED'
       }
+ 
       let params = {
+        source:this.$route.query.source||'',
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
         ...this.form
