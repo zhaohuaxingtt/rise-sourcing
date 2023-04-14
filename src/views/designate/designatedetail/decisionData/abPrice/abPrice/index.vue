@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-14 10:56:53
+ * @LastEditTime: 2023-04-14 16:17:36
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
@@ -70,17 +70,6 @@
               :key="item.rfqId"
             ></el-radio-button>
           </template>
-        </el-radio-group>
-        <!-- 表格是否展示 -->
-        <el-radio-group
-         v-if="!nominationDisabled && !rsDisabled"
-          v-show="tab == 'table'"
-          class="radio-group margin-left20"
-          v-model="config[tabTable].isShow"
-          @change="changeConfig"
-        >
-          <el-radio :label="true">展示</el-radio>
-          <el-radio :label="false">隐藏</el-radio>
         </el-radio-group>
       </div>
       <div class="header-btn" v-if="tab == 'table' && index > -1">
