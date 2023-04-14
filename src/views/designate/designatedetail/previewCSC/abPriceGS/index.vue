@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-11 17:09:28
+ * @LastEditTime: 2023-04-14 15:52:29
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\index.vue
@@ -35,22 +35,11 @@
           v-model="tabTable"
           @change="change"
         >
-          <el-radio-button label="supplier" v-if="config.supplier.isShow"
-            >Supplier</el-radio-button
-          >
-          <el-radio-button label="part" v-if="config.part.isShow"
-            >Part</el-radio-button
-          >
-          <el-radio-button label="best_ball" v-if="config['best_ball'].isShow"
-            >Best ball</el-radio-button
-          >
-          <el-radio-button label="gs_part" v-if="config['gs_part'].isShow"
-            >Detail</el-radio-button
-          >
-          <el-radio-button
-            v-if="config['Detailed_Worksheet'].isShow"
-            label="Detailed_Worksheet"
-            @click="exportExcel"
+          <el-radio-button label="supplier">Supplier</el-radio-button>
+          <el-radio-button label="part">Part</el-radio-button>
+          <el-radio-button label="best_ball">Best ball</el-radio-button>
+          <el-radio-button label="gs_part">Detail</el-radio-button>
+          <el-radio-button label="Detailed_Worksheet" @click="exportExcel"
             >Detailed Worksheet</el-radio-button
           >
         </el-radio-group>
@@ -549,7 +538,7 @@ export default {
   background: #fdf0d0 !important;
 }
 
-::v-deep .current-header{
+::v-deep .current-header {
   background: #fdf0d0 !important;
   .cell {
     white-space: normal;
