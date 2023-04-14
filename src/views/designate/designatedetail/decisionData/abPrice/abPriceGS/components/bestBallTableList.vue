@@ -56,11 +56,7 @@
               align="center"
             >
               <template slot-scope="scope">
-                <tooltip
-                  :text="
-                    scope.row[item.prop] || scope.row.carTypeNames.join('、')
-                  "
-                />
+                <tooltip :text="scope.row.carTypeNames.join('、')" />
               </template>
             </el-table-column>
             <el-table-column
@@ -350,7 +346,7 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="developCost"
+            prop="releaseCost"
             min-width="100"
           >
             <template slot="header" slot-scope="scope">
@@ -492,13 +488,10 @@ export default {
           if (res?.code == "200") {
             let tableData = res.data.analysisNomiPriceInfoList;
             const totalData = JSON.parse(JSON.stringify(this.totalData));
-            totalData[0]["currentAPrice"] = res.data.targetMixAPrice;
-            totalData[0]["currentBPrice"] = res.data.targetMixBPrice;
-            totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
-            totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
             totalData[0]["invest"] = res.data.totalInvest;
-            totalData[0]["developCost"] = res.data.totalDevelopCost;
+            totalData[0]["totalReleaseCost"] = res.data.totalReleaseCost;
             totalData[0]["totalTurnover"] = res.data.totalTurnover;
+            totalData[0]["totalSaving"] = res.data.totalSaving;
             totalData[1]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;

@@ -1,6 +1,6 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div :ref="ref">
+  <div :ref="ref" v-loading="loading">
     <!-- 内容表 -->
     <div class="table-box">
       <el-table
@@ -340,6 +340,10 @@
             prop="developCost"
             min-width="90"
           >
+            <template slot="header" slot-scope="scope">
+              <p>Develop</p>
+              <p>Cost</p>
+            </template>
             <template slot-scope="scope">
               {{ getInt(scope.row["developCost"]) | toThousands(true) }}
             </template></el-table-column
@@ -409,6 +413,7 @@ export default {
       ],
       tableData: [],
       visible: false,
+      loading: false,
       row: {},
       totalTableHeight: 120,
     };
@@ -440,6 +445,7 @@ export default {
       return (val * 100).toFixed(2) + "%";
     },
     getData() {
+      this.loading = true
       this.index = this.label == "Best ball" ? 0 : 1;
       getNomiEffectiveQuotation(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
@@ -460,7 +466,9 @@ export default {
         } else {
           this.tableData = [];
         }
-      });
+      }).finally(()=>{
+          this.loading = false
+        });
     },
     isCLevel(val) {
       if (!val) return val;
@@ -484,11 +492,11 @@ export default {
         }
       }
       if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        className += "font-green";
+        className += " font-green";
       }
       if (["Total Turnover"].includes(column.label)) {
         if (row.isMinTto) {
-          className += "font-green";
+          className += " font-green";
         }
       }
       if (row.underline) className += " fs-group";

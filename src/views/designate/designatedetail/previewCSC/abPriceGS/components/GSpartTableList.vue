@@ -1,6 +1,6 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div style="height: 100%" :ref="ref">
+  <div style="height: 100%" v-loading="loading" :ref="ref">
     <!-- 内容表 -->
     <div class="table-box">
       <el-table
@@ -55,11 +55,7 @@
               align="center"
             >
               <template slot-scope="scope">
-                <tooltip
-                  :text="
-                    scope.row[item.prop] || scope.row.carTypeNames.join('、')
-                  "
-                />
+                <tooltip :text="scope.row.carTypeNames.join('、')" />
               </template>
             </el-table-column>
             <el-table-column
@@ -457,6 +453,7 @@ export default {
       ],
       tableData: [],
       visible: false,
+      loading: false,
       row: {},
       totalTableHeight: 120,
     };
@@ -488,6 +485,7 @@ export default {
       return (val * 100).toFixed(2) + "%";
     },
     getData() {
+      this.loading = true
       this.index = this.label == "Best ball" ? 0 : 1;
       getNomiEffectiveQuotation(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
@@ -505,6 +503,8 @@ export default {
         } else {
           this.tableData = [];
         }
+      }).finally(()=>{
+        this.loading = false
       });
     },
     isCLevel(val) {

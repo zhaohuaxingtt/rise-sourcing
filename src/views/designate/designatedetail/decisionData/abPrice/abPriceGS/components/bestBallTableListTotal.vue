@@ -122,11 +122,11 @@
         label="Release Cost"
         align="right"
         header-align="center"
-        prop="releaseCost"
+        prop="totalReleaseCost"
         min-width="100"
       >
         <template slot-scope="scope">
-          {{ getInt(scope.row["releaseCost"]) | toThousands(true) }}
+          {{ getInt(scope.row["totalReleaseCost"]) | toThousands(true) }}
         </template></el-table-column
       >
       <el-table-column
@@ -145,7 +145,7 @@
       <el-table-column
         align="right"
         header-align="center"
-        prop="savingTotal"
+        prop="totalSaving"
         min-width="130"
       >
         <template slot="header" slot-scope="scope">
@@ -156,9 +156,7 @@
       <el-table-column
         align="right"
         header-align="center"
-        prop="totalTurnover"
         min-width="80"
-        label="SOP"
       ></el-table-column>
     </el-table-column>
   </el-table>

@@ -81,12 +81,7 @@
                     align="center"
                   >
                     <template slot-scope="scope">
-                      <tooltip
-                        :text="
-                          scope.row.carProType ||
-                          scope.row.carTypeNames.join('、')
-                        "
-                      ></tooltip>
+                      <tooltip :text="scope.row.carTypeNames.join('、')" />
                     </template>
                   </el-table-column>
                   <el-table-column

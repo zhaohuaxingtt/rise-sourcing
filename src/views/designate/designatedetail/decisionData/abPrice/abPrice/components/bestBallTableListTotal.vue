@@ -5,8 +5,8 @@
     :data="totalData"
     :span-method="totalCellClass"
     :cell-class-name="totalColClass"
-    :show-header="false"
   >
+    <!-- :show-header="false" -->
     <el-table-column label="Unit：RMB">
       <template v-for="item in fixedTitle">
         <el-table-column
@@ -59,19 +59,19 @@
           label="E"
           align="center"
           prop="erate"
-          min-width="40"
+          min-width="60"
         ></el-table-column>
         <el-table-column
           label="Q"
           align="center"
           prop="qrate"
-          min-width="40"
+          min-width="60"
         ></el-table-column>
         <el-table-column
           label="L"
           align="center"
           prop="lrate"
-          min-width="40"
+          min-width="60"
         ></el-table-column>
       </el-table-column>
       <el-table-column
@@ -97,17 +97,6 @@
         </template></el-table-column
       >
       <el-table-column
-        label="LTC"
-        align="center"
-        prop="ltc"
-      ></el-table-column>
-      <el-table-column
-        label="LTC Start Date"
-        align="center"
-        prop="ltcStartDate"
-        min-width="90"
-      ></el-table-column>
-      <el-table-column
         label="Invest"
         align="right"
         header-align="center"
@@ -118,6 +107,17 @@
           {{ getInt(scope.row["invest"]) | toThousands(true) }}
         </template></el-table-column
       >
+      <el-table-column
+        label="LTC"
+        align="center"
+        prop="ltc"
+      ></el-table-column>
+      <el-table-column
+        label="LTC Start Date"
+        align="center"
+        prop="ltcStartDate"
+        min-width="90"
+      ></el-table-column>
       <el-table-column
         label="Release Cost"
         align="right"

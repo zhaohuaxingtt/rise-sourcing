@@ -153,6 +153,66 @@
             {{ label }}
           </template>
           <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameEn"
+            minWidth="100"
+          >
+            <template slot-scope="scope">
+              <tooltip :text="scope.row['supplierNameEn']">
+                <template slot="content">
+                  <p :title="scope.row.supplierNameZh">
+                    {{ scope.row.supplierNameZh }}
+                  </p>
+                  <p :title="scope.row.supplierNameEn">
+                    ({{ scope.row.supplierNameEn }})
+                  </p>
+                </template>
+              </tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="Rating" align="center">
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="60"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.erate)">{{
+                  scope.row.erate
+                }}</span>
+                <span v-else>{{ scope.row.erate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="60"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
+                  scope.row.qrate
+                }}</span>
+                <span v-else>{{ scope.row.qrate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="60"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
+                  scope.row.lrate
+                }}</span>
+                <span v-else>{{ scope.row.lrate }}</span>
+              </template></el-table-column
+            >
+          </el-table-column>
+          <el-table-column
             label="A Price(LC)"
             prop="lcAPrice"
             align="right"
@@ -228,66 +288,6 @@
               </template>
             </template></el-table-column
           >
-          <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameEn"
-            minWidth="100"
-          >
-            <template slot-scope="scope">
-              <tooltip :text="scope.row['supplierNameEn']">
-                <template slot="content">
-                  <p :title="scope.row.supplierNameZh">
-                    {{ scope.row.supplierNameZh }}
-                  </p>
-                  <p :title="scope.row.supplierNameEn">
-                    ({{ scope.row.supplierNameEn }})
-                  </p>
-                </template>
-              </tooltip>
-            </template>
-          </el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.erate)">{{
-                  scope.row.erate
-                }}</span>
-                <span v-else>{{ scope.row.erate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
-                  scope.row.qrate
-                }}</span>
-                <span v-else>{{ scope.row.qrate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
-                  scope.row.lrate
-                }}</span>
-                <span v-else>{{ scope.row.lrate }}</span>
-              </template></el-table-column
-            >
-          </el-table-column>
           <el-table-column
             label="LTC"
             align="center"
@@ -412,6 +412,32 @@
         </el-table-column>
         <el-table-column>
           <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameZh"
+            minWidth="100"
+          ></el-table-column>
+          <el-table-column label="Rating" align="center">
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="60"
+            ></el-table-column>
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="60"
+            ></el-table-column>
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="60"
+            ></el-table-column>
+          </el-table-column>
+          <el-table-column
             label="A Price(LC)"
             align="right"
             header-align="center"
@@ -444,32 +470,6 @@
               {{ getInt(scope.row["invest"]) | toThousands(true) }}
             </template></el-table-column
           >
-          <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameZh"
-            minWidth="100"
-          ></el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            ></el-table-column>
-          </el-table-column>
           <el-table-column
             label="LTC"
             align="center"

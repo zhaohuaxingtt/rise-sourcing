@@ -45,7 +45,7 @@
             >Best ball</el-radio-button
           >
           <el-radio-button label="gs_part" v-if="config['gs_part'].isShow"
-            >GS Part</el-radio-button
+            >Detail</el-radio-button
           >
           <el-radio-button
             v-if="config['Detailed_Worksheet'].isShow"

@@ -1,6 +1,6 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div style="height: 100%" :ref="ref">
+  <div style="height: 100%" :ref="ref" v-loading="loading">
     <!-- 内容表 -->
     <div class="table-box">
       <el-table
@@ -289,22 +289,6 @@
             </template></el-table-column
           >
           <el-table-column
-            label="LTC"
-            align="center"
-            prop="ltc"
-          ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="90">
-            <template slot="header" slot-scope="scope">
-              <p>LTC Start</p>
-              <p>Date</p>
-            </template>
-            <template slot-scope="scope">
-              <template v-if="scope.row.ltc != 0">{{
-                scope.row.ltcStartDate
-              }}</template>
-            </template></el-table-column
-          >
-          <el-table-column
             label="Invest"
             prop="invest"
             align="right"
@@ -335,13 +319,29 @@
             </template></el-table-column
           >
           <el-table-column
+            label="LTC"
+            align="center"
+            prop="ltc"
+          ></el-table-column>
+          <el-table-column align="center" prop="ltcStartDate" min-width="90">
+            <template slot="header" slot-scope="scope">
+              <p>LTC Start</p>
+              <p>Date</p>
+            </template>
+            <template slot-scope="scope">
+              <template v-if="scope.row.ltc != 0">{{
+                scope.row.ltcStartDate
+              }}</template>
+            </template></el-table-column
+          >
+          <el-table-column
             align="right"
             header-align="center"
             prop="developCost"
             min-width="100"
           >
             <template slot="header" slot-scope="scope">
-              <p>Release</p>
+              <p>Develop</p>
               <p>Cost</p>
             </template>
             <template slot-scope="scope">
@@ -380,30 +380,6 @@
             </template></el-table-column
           >
         </el-table-column>
-        <el-table-column>
-          <el-table-column
-            align="right"
-            header-align="center"
-            prop="saving"
-            min-width="130"
-          >
-            <template slot="header" slot-scope="scope">
-              <p>Saving</p>
-              <p>@100% Share</p>
-            </template></el-table-column
-          >
-          <el-table-column
-            align="right"
-            header-align="center"
-            prop="sopDate"
-            min-width="80"
-            label="SOP"
-          >
-            <template slot-scope="scope">
-              {{ format(scope.row.sopDate) }}
-            </template></el-table-column
-          >
-        </el-table-column>
       </el-table>
     </div>
     <partTableDetail :visible.sync="visible" :row="row" />
@@ -439,6 +415,16 @@ export default {
           width: 120,
         },
         {
+          prop: "ebr",
+          label: ["EBR"],
+          width: 85,
+        },
+        {
+          prop: "mixQty",
+          label: ["Mixed", "Qty"],
+          width: 60,
+        },
+        {
           prop: "volume",
           label: ["Volume"],
           width: 80,
@@ -446,6 +432,7 @@ export default {
       ],
       tableData: [],
       visible: false,
+      loading: false,
       row: {},
       totalTableHeight: 120,
     };
@@ -477,6 +464,7 @@ export default {
       return (val * 100).toFixed(2) + "%";
     },
     getData() {
+      this.loading = true
       this.index = this.label == "Best ball" ? 0 : 1;
       getNomiEffectiveQuotation(this.$route.query.desinateId).then((res) => {
         if (res?.code == "200") {
@@ -494,6 +482,8 @@ export default {
         } else {
           this.tableData = [];
         }
+      }).finally(()=>{
+        this.loading = false
       });
     },
     isCLevel(val) {
