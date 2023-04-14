@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-02 15:34:46
+ * @LastEditors: 余继鹏 917955345@qq.com
+ * @LastEditTime: 2023-04-14 15:32:26
  * @Description: 项目进度监控
- * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
+ * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
 <template>
   <div class="projectoverview" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_PAGE|项目进度监控页面">
@@ -35,10 +35,16 @@
           <!--  -->
           <span class="switch">
             {{!showTips ? language("TIPSBIAO","TIPS表") : `${language("TIPSBIAOZONGJI","TIPS表总计")}:`}}
-            <el-tooltip placement="top" popper-class="tooltip-proper" v-if="showTips">
+            <!-- <el-tooltip placement="top" popper-class="tooltip-proper" v-if="showTips">
               <div slot="content">{{language('TIPSBIAOCONTENTDESC','本数字为匹配异常至EM&OTS已完成八个模块与CKD/HT零件的零件个数汇总')}}</div>
               <span class="tipsSum">{{tipsSum}}</span>
-            </el-tooltip>
+            </el-tooltip> -->
+            <!-- TIPS：XXXX，NewPro：XXXX，RiSE手工：XXXX -->
+            <template v-if="showTips">
+              <span class="margin-left5">TIPS:{{tipsObj.tipsCount}},</span>
+              <span class="margin-left5">NewPro:{{tipsObj.newProCount}},</span>
+              <span class="margin-left5 margin-right5">RiSE手工:{{tipsObj.sourcingCount}}</span>
+            </template>
             <el-switch v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPSBIAO_SWITCH|项目进度监控-TIPS表-按钮开关" v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
@@ -93,7 +99,7 @@ import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
 import {pendingChartData,chartData,projectRisk,partProc,projectDone,patchStatus} from './components/lib/data'
-import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
+import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData, carModelDataSource} from '@/api/project/process'
 import {selectDictByKeyss} from '@/api/dictionary'
 
 export default {
@@ -116,7 +122,10 @@ export default {
       tipsSum: 0,
       options: {},
       loading: false,
-      csfFgBemerkung: 0
+      csfFgBemerkung: 0,
+      tipsObj:{
+
+      },
     }
   },
   computed: {
@@ -294,6 +303,8 @@ export default {
       try {
         // const res = require('./moke.json')
         this.loading = true
+        let tips_ = await carModelDataSource(carProjectId)
+        this.tipsObj = tips_.data
         const res = await getProjectProgressMonitor({
           carTypeProjectId: carProjectId
         })
@@ -466,6 +477,8 @@ export default {
   }
 }
 .switch {
+  display: flex;
+  align-items: center;
   .tipsSum {
     display: inline-block;
     padding: 0px 5px;
