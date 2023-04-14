@@ -9,14 +9,30 @@
       <img src="@/assets/images/CSC_bg.png" alt="" />
     </div>
     <div class="content">
-      <template v-for="item in items">
-        <div class="infos" :key="item.label" v-if="item.key != 'partType'">
-          <div class="label">{{ item.label }}:</div>
-          <div class="value" v-if="item.key == 'tnr'">
-            {{ data[item.key] }}({{ data.partType }})
+      <template v-if="isGS">
+        <template v-for="item in items">
+          <div class="infos" :key="item.label" v-if="!['partType','soptime'].includes(item.key)">
+            <div class="label">{{ item.label }}:</div>
+            <div class="value" v-if="item.key == 'projectType'">
+              {{ data[item.key] }} ({{ data.partType }})
+            </div>
+            <div class="value" v-else-if="item.key == 'carline'">
+              {{ data[item.key] }} (SOP {{ data.soptime }})
+            </div>
+            <div class="value" v-else>{{ data[item.key] }}</div>
           </div>
-          <div class="value" v-else>{{ data[item.key] }}</div>
-        </div>
+        </template>
+      </template>
+      <template v-else>
+        <template v-for="item in items">
+          <div class="infos" :key="item.label" v-if="!['partType','ep'].includes(item.key)">
+            <div class="label">{{ item.label }}:</div>
+            <div class="value" v-if="item.key == 'tnr'">
+              {{ data[item.key] }} ({{ data.partType }})
+            </div>
+            <div class="value" v-else>{{ data[item.key] }}</div>
+          </div>
+        </template>
       </template>
     </div>
   </div>
@@ -33,6 +49,10 @@ export default {
   props: {
     tableList: { type: Array, default: () => [] },
     prototypeTableList: { type: Array, default: () => [] },
+    isGS:{
+      type:Boolean,
+      default: false
+    }
   },
   computed: {
     userName() {
@@ -56,6 +76,7 @@ export default {
     };
   },
   created() {
+    console.log(this.isGS);
     this.findLayoutTitleInfo();
   },
   methods: {
@@ -89,7 +110,7 @@ export default {
                 this.$set(
                   this.data,
                   item.key,
-                  res.data.carline || res.data.projects.join("、")
+                  (Array.isArray(res.data.projects) && res.data.projects.length) ? res.data.projects.join("、") : res.data.carline
                 );
 
                 break;

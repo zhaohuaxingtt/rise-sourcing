@@ -37,7 +37,7 @@
           <el-table-column
             label="A Price"
             prop="targetAPrice"
-            minWidth="80"
+            minWidth="85"
             align="right"
             header-align="center"
           >
@@ -45,7 +45,7 @@
           <el-table-column
             label="B Price"
             prop="targetBPrice"
-            minWidth="80"
+            minWidth="85"
             align="right"
             header-align="center"
           >
@@ -84,7 +84,7 @@
           align="right"
           header-align="center"
           prop="lcAPrice"
-          minWidth="80"
+          minWidth="85"
         >
           <template slot-scope="scope">
             {{ scope.row["lcAPrice"] | toThousands(true) }}
@@ -95,7 +95,7 @@
           align="right"
           header-align="center"
           prop="lcBPrice"
-          minWidth="80"
+          minWidth="85"
         >
           <template slot-scope="scope">
             {{ scope.row["lcBPrice"] | toThousands(true) }}
@@ -106,7 +106,7 @@
           align="right"
           header-align="center"
           prop="invest"
-          minWidth="90"
+          minWidth="100"
         >
           <template slot-scope="scope">
             {{ getInt(scope.row["invest"]) | toThousands(true) }}
@@ -121,14 +121,14 @@
           label="LTC Start Date"
           align="center"
           prop="ltcStartDate"
-          min-width="90"
+          min-width="110"
         ></el-table-column>
         <el-table-column
           label="Develop Cost"
           align="right"
           header-align="center"
           prop="developCost"
-          min-width="90"
+          min-width="100"
         >
           <template slot-scope="scope">
             {{ getInt(scope.row["developCost"]) | toThousands(true) }}
@@ -139,7 +139,7 @@
           align="right"
           header-align="center"
           prop="totalTurnover"
-          min-width="90"
+          min-width="110"
         >
           <template slot-scope="scope">
             {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
@@ -164,18 +164,18 @@ export default {
         {
           prop: "fsNum",
           label: ["FS No. (Plant)"],
-          width: 120,
+          width: 130,
         },
         {
           prop: "partNum",
           label: ["Part No."],
-          width: 130,
+          width: 140,
         },
         {
           prop: "carTypeProjectNum",
           label: ["Carline"],
           tooltip: true,
-          width: 110,
+          width: 120,
         },
         {
           prop: "ebr",
@@ -207,7 +207,6 @@ export default {
           ebr: "Budget",
         },
       ],
-      totalTableHeight: 120,
     };
   },
   filters: {
@@ -364,6 +363,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-header-content {
+  ::v-deep tr {
+    padding: 0;
+    .cell {
+      color: #000 !important;
+    }
+  }
+}
 ::v-deep .el-table {
   .hidden {
     display: none;
@@ -407,7 +414,7 @@ export default {
       background-color: #364d6e;
     }
     td {
-      background: #fff;
+      background-color: #ffffff;
       padding-top: 0px;
       padding-bottom: 0px;
       .cell {
@@ -422,6 +429,19 @@ export default {
     tr:nth-child(even) {
       background-color: #364d6e;
     }
+  }
+}
+
+.tips {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  .legend {
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    background: #bdd7ee;
   }
 }
 </style>

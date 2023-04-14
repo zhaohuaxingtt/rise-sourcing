@@ -434,16 +434,10 @@ export default {
       visible: false,
       loading: false,
       row: {},
-      totalTableHeight: 120,
     };
   },
   filters: {
     toThousands,
-  },
-  updated() {
-    this.$nextTick(() => {
-      this.totalTableHeight = this.$refs["total-table"]?.scrollHeight + 1;
-    });
   },
   created() {
     this.getData();
@@ -598,33 +592,6 @@ export default {
   }
   .fs-group {
     border-bottom: 5px solid #365d63 !important;
-  }
-}
-
-.total-table {
-  font-size: 16px !important;
-  ::v-deep .el-table__row {
-    height: unset !important;
-  }
-
-  ::v-deep tr {
-    .table-header {
-      background: #364d6e;
-      .cell {
-        font-weight: 700;
-        color: #fff;
-      }
-    }
-    &:hover > td.table-header {
-      background-color: #364d6e;
-    }
-  }
-  ::v-deep td {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    .cell {
-      padding: 0 4px;
-    }
   }
 }
 

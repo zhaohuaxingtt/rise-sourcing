@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-11 17:09:37
+ * @LastEditTime: 2023-04-14 10:56:53
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
@@ -511,9 +511,6 @@ export default {
 }
 .content {
   margin-top: 20px;
-  overflow: auto;
-  max-height: 100%;
-  flex: 1 1 auto;
 }
 .content-chart {
   height: calc(100% - 84px);

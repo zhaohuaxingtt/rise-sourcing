@@ -1,7 +1,7 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <el-table
-    class="header total-table"
+    class="total-table"
     :data="totalData"
     :span-method="totalCellClass"
     :cell-class-name="totalColClass"
@@ -230,22 +230,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  ::v-deep th {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    .cell {
-      padding: 0 4px;
-    }
-  }
-  ::v-deep td {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    .cell {
-      padding: 0 4px;
-    }
-  }
-}
 ::v-deep .el-table {
   .hidden {
     display: none;
@@ -289,13 +273,13 @@ export default {
     &:hover > td.table-header {
       background-color: #364d6e;
     }
-  }
-  ::v-deep td {
-    background-color: #ffffff;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    .cell {
-      padding: 0 4px;
+    td {
+      background-color: #ffffff;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      .cell {
+        padding: 0 4px;
+      }
     }
   }
 }

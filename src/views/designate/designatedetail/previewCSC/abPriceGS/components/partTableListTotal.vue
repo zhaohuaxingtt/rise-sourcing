@@ -257,22 +257,6 @@ export default {
     color: #f00;
   }
 }
-.header {
-  ::v-deep th {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    .cell {
-      padding: 0 4px;
-    }
-  }
-  ::v-deep td {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    .cell {
-      padding: 0 4px;
-    }
-  }
-}
 .table-header-content {
   ::v-deep tr {
     padding: 0;

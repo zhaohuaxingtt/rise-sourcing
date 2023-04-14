@@ -15,4 +15,5 @@ export const titleData = [
   { label: 'SOP', key: 'soptime' },
   { label: 'Linie Buyer', key: 'buyer' },
   { label: 'Part Type', key: 'partType' },
+  { label: 'EP', key: 'ep' },
 ]

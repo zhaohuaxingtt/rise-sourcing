@@ -2,454 +2,266 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-26 17:25:51
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\partTableList.vue
+ * @LastEditTime: 2023-04-14 14:36:25
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <div ref="part-table" v-loading="loading">
-    <div
-      class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
+    <el-table
+      :data="tableData"
+      class="header table"
+      ref="table"
+      :key="index"
+      show-summary
+      :summary-method="summaryMethod"
+      height="100%"
+      :header-cell-class-name="cellClass"
+      :header-row-class-name="rowClass"
+      :cell-class-name="colClass"
     >
-      <el-table
-        v-show="totalTableHeight"
-        :data="tableData"
-        class="header table"
-        ref="table"
-        :key="index"
-        border
-        height="100%"
-        :header-cell-class-name="cellClass"
-        :header-row-class-name="rowClass"
-        :cell-class-name="colClass"
-      >
-        <!-- 左侧固定表头 -->
-        <template v-for="item in fixedTitle">
-          <el-table-column :key="item.prop" label="Unit：RMB">
+      <!-- 左侧固定表头 -->
+      <template v-for="item in fixedTitle">
+        <el-table-column :key="item.prop" label="Unit：RMB">
+          <el-table-column>
             <el-table-column>
               <el-table-column>
-                <el-table-column>
-                  <el-table-column
-                    v-if="item.prop == 'partPrjCode'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <span class="link" @click="gotoDetail(scope.row)">{{
-                        scope.row.partPrjCode
-                      }}</span>
-                      <br />
-                      <span class="link" @click="gotoDetail(scope.row)"
-                        >({{ scope.row.factoryEn }})</span
-                      >
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'partName'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <tooltip>
-                        <template slot="content">
-                          <p class="partName" :title="scope.row.partName">
-                            {{ scope.row.partName }}
-                          </p>
-                          <p class="partName" :title="scope.row.partNameDe">
-                            ({{ scope.row.partNameDe }})
-                          </p>
-                        </template>
-                        <template slot="text">
-                          <p class="partName" :title="scope.row.partName">
-                            {{ scope.row.partName }}
-                          </p>
-                          <p class="partName" :title="scope.row.partNameDe">
-                            ({{ scope.row.partNameDe }})
-                          </p>
-                        </template>
-                      </tooltip>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'carProType'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'ebr'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <span>{{ percent(scope.row.ebr) }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'ebrCalculatedValue'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p v-for="(text, index) in item.label" :key="index">
-                        {{ text }}
-                      </p>
-                    </template>
-                    <template slot-scope="scope">
-                      <span>{{
-                        numberProcessor(scope.row.ebrCalculatedValue, 2)
-                      }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else-if="item.prop == 'volume'"
-                    :prop="item.prop"
-                    :label="item.label"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      {{ getInt(scope.row[item.prop]) | toThousands(true) }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    v-else
-                    :prop="item.prop"
-                    :width="item.width"
-                    align="center"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p v-for="(text, index) in item.label" :key="index">
-                        {{ text }}
-                      </p>
-                    </template>
-                  </el-table-column>
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </template>
-        <el-table-column label="Supplier" align="center">
-          <el-table-column label="Rating" align="center">
-            <el-table-column>
-              <el-table-column>
-                <el-table-column label="F-target" align="center">
-                  <el-table-column
-                    label="A Price"
-                    prop="cfPartAPrice"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot-scope="scope">
-                      {{ scope.row["cfPartAPrice"] | toThousands(true) }}
-                    </template>
-                  </el-table-column>
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-          <el-table-column label="E" align="center">
-            <el-table-column label="Q" align="center">
-              <el-table-column label="L" align="center">
-                <el-table-column label="F-target" align="center">
-                  <el-table-column
-                    label="B Price"
-                    prop="cfPartBPrice"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot-scope="scope">
-                      {{ scope.row["cfPartBPrice"] | toThousands(true) }}
-                    </template>
-                  </el-table-column>
-                </el-table-column>
-              </el-table-column>
-            </el-table-column>
-          </el-table-column>
-        </el-table-column>
-        <template v-for="(item, index) in supplierList">
-          <!-- :key="item.supplierId + index" -->
-          <el-table-column :key="index" align="center">
-            <div slot="header" slot-scope="scope">
-              {{ item.supplierEn || "-" }}
-            </div>
-            <el-table-column :label="item.TE" align="center">
-              <template slot-scope="scope" slot="header">
-                <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
-                <span v-else>{{ item.TE }}</span>
-              </template>
-              <el-table-column :label="item.Q" align="center">
-                <template slot-scope="scope" slot="header">
-                  <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
-                  <span v-else>{{ item.Q }}</span>
-                </template>
-                <el-table-column :label="item.L" align="center">
-                  <template slot-scope="scope" slot="header">
-                    <span class="red" v-if="isCLevel(item.L)">{{
-                      item.L
+                <el-table-column
+                  v-if="item.prop == 'partPrjCode'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <span class="link" @click="gotoDetail(scope.row)">{{
+                      scope.row.partPrjCode
                     }}</span>
-                    <span v-else>{{ item.L }}</span>
+                    <br />
+                    <span class="link" @click="gotoDetail(scope.row)"
+                      >({{ scope.row.factoryEn }})</span
+                    >
                   </template>
-                  <el-table-column
-                    :prop="item.supplierId + 'aPrice'"
-                    label="A price(LC)"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p>A Price</p>
-                    </template>
-
-                    <template slot-scope="scope">
-                      <span
-                        v-if="
-                          scope.row[item.supplierId + 'quotationType'] ==
-                            'SKD' ||
-                          scope.row[item.supplierId + 'quotationType'] ==
-                            'SKDLC'
-                        "
-                        style="color: red"
-                        >*</span
-                      >{{
-                        scope.row[item.supplierId + "aPrice"]
-                          | toThousands(true)
-                      }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    :prop="item.supplierId + 'bPrice'"
-                    label="B price(LC)"
-                    align="right"
-                    header-align="center"
-                    minWidth="80"
-                  >
-                    <template slot="header" slot-scope="scope">
-                      <p>B Price</p>
-                    </template>
-                    <template slot-scope="scope">
-                      <span
-                        v-if="
-                          scope.row[item.supplierId + 'quotationType'] ==
-                            'SKD' ||
-                          scope.row[item.supplierId + 'quotationType'] ==
-                            'SKDLC'
-                        "
-                        style="color: red"
-                        >*</span
-                      >{{
-                        scope.row[item.supplierId + "bPrice"]
-                          | toThousands(true)
-                      }}
-                    </template>
-                  </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'partName'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <tooltip>
+                      <template slot="content">
+                        <p class="partName" :title="scope.row.partName">
+                          {{ scope.row.partName }}
+                        </p>
+                        <p class="partName" :title="scope.row.partNameDe">
+                          ({{ scope.row.partNameDe }})
+                        </p>
+                      </template>
+                      <template slot="text">
+                        <p class="partName" :title="scope.row.partName">
+                          {{ scope.row.partName }}
+                        </p>
+                        <p class="partName" :title="scope.row.partNameDe">
+                          ({{ scope.row.partNameDe }})
+                        </p>
+                      </template>
+                    </tooltip>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'carProType'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'ebr'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    <span>{{ percent(scope.row.ebr) }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'ebrCalculatedValue'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p v-for="(text, index) in item.label" :key="index">
+                      {{ text }}
+                    </p>
+                  </template>
+                  <template slot-scope="scope">
+                    <span>{{
+                      numberProcessor(scope.row.ebrCalculatedValue, 2)
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else-if="item.prop == 'volume'"
+                  :prop="item.prop"
+                  :label="item.label"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot-scope="scope">
+                    {{ getInt(scope.row[item.prop]) | toThousands(true) }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-else
+                  :prop="item.prop"
+                  :width="item.width"
+                  align="center"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p v-for="(text, index) in item.label" :key="index">
+                      {{ text }}
+                    </p>
+                  </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
           </el-table-column>
-        </template>
-      </el-table>
-    </div>
-    <div ref="total-table" :style="{ 'padding-right': gutter }">
-      <el-table
-        class="header total-table"
-        border
-        :data="totalData"
-        :show-header="false"
-        :span-method="totalCellClass"
-        :cell-class-name="totalColClass"
-      >
-        <!-- 左侧固定表头 -->
-        <template v-for="(item, index) in fixedTitle">
-          <el-table-column :key="index">
-            <el-table-column
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="right"
-            ></el-table-column>
-          </el-table-column>
-        </template>
-        <el-table-column>
-          <el-table-column
-            label="A Price"
-            prop="aPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["aPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
-              </template>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="B Price"
-            prop="bPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["bPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
-              </template>
-            </template>
+        </el-table-column>
+      </template>
+      <el-table-column label="Supplier" align="center">
+        <el-table-column label="Rating" align="center">
+          <el-table-column>
+            <el-table-column>
+              <el-table-column label="F-target" align="center">
+                <el-table-column
+                  label="A Price"
+                  prop="cfPartAPrice"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot-scope="scope">
+                    {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
           </el-table-column>
         </el-table-column>
-        <template v-for="(item, index) in supplierList">
-          <el-table-column
-            :label="item.supplierEn"
-            :key="item.supplierId + index"
-            align="center"
-          >
-            <el-table-column
-              :prop="item.supplierId + 'aPrice'"
-              label="A price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>A price</p>
-              </template>
-              <template slot-scope="scope">
-                <template v-if="scope.$index == 0">
-                  {{
-                    scope.row[item.supplierId + "aPrice"] | toThousands(true)
-                  }}
-                </template>
-                <template v-else-if="scope.$index == 1">
-                  <p
-                    v-for="(text, index) in scope.row[
-                      item.supplierId + 'aPrice'
-                    ]"
-                    :key="index"
-                  >
-                    {{ text }}
-                  </p>
-                </template>
-                <template v-else-if="scope.$index == 2">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.investFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
+        <el-table-column label="E" align="center">
+          <el-table-column label="Q" align="center">
+            <el-table-column label="L" align="center">
+              <el-table-column label="F-target" align="center">
+                <el-table-column
+                  label="B Price"
+                  prop="cfPartBPrice"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot-scope="scope">
+                    {{ scope.row["cfPartBPrice"] | toThousands(true) }}
                   </template>
-                </template>
-                <template v-else-if="scope.$index == 4">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.devFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        {{ language("FENTANJINE", "分摊金额") }}：{{
-                          getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
-                          getInt(scope.row[
-                            item.supplierId + "developNotShareCostTotal"
-                          ]) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
-                  </template>
-                </template>
-                <template v-else>{{
-                  getInt(scope.row[item.supplierId + "aPrice"])
-                    | toThousands(true)
-                }}</template>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :prop="item.supplierId + 'bPrice'"
-              label="B price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>B price</p>
-              </template>
+                </el-table-column>
+              </el-table-column>
             </el-table-column>
           </el-table-column>
-        </template>
-      </el-table>
-    </div>
+        </el-table-column>
+      </el-table-column>
+      <template v-for="(item, index) in supplierList">
+        <!-- :key="item.supplierId + index" -->
+        <el-table-column :key="index" align="center">
+          <div slot="header" slot-scope="scope">
+            {{ item.supplierEn || "-" }}
+          </div>
+          <el-table-column :label="item.TE" align="center">
+            <template slot-scope="scope" slot="header">
+              <span class="red" v-if="isCLevel(item.TE)">{{ item.TE }}</span>
+              <span v-else>{{ item.TE }}</span>
+            </template>
+            <el-table-column :label="item.Q" align="center">
+              <template slot-scope="scope" slot="header">
+                <span class="red" v-if="isCLevel(item.Q)">{{ item.Q }}</span>
+                <span v-else>{{ item.Q }}</span>
+              </template>
+              <el-table-column :label="item.L" align="center">
+                <template slot-scope="scope" slot="header">
+                  <span class="red" v-if="isCLevel(item.L)">{{
+                    item.L
+                  }}</span>
+                  <span v-else>{{ item.L }}</span>
+                </template>
+                <el-table-column
+                  :prop="item.supplierId + 'aPrice'"
+                  label="A price(LC)"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>A Price</p>
+                  </template>
+
+                  <template slot-scope="scope">
+                    <span
+                      v-if="
+                        scope.row[item.supplierId + 'quotationType'] ==
+                          'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] ==
+                          'SKDLC'
+                      "
+                      style="color: red"
+                      >*</span
+                    >{{
+                      scope.row[item.supplierId + "aPrice"]
+                        | toThousands(true)
+                    }}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :prop="item.supplierId + 'bPrice'"
+                  label="B price(LC)"
+                  align="right"
+                  header-align="center"
+                  minWidth="80"
+                >
+                  <template slot="header" slot-scope="scope">
+                    <p>B Price</p>
+                  </template>
+                  <template slot-scope="scope">
+                    <span
+                      v-if="
+                        scope.row[item.supplierId + 'quotationType'] ==
+                          'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] ==
+                          'SKDLC'
+                      "
+                      style="color: red"
+                      >*</span
+                    >{{
+                      scope.row[item.supplierId + "bPrice"]
+                        | toThousands(true)
+                    }}
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+        </el-table-column>
+      </template>
+    </el-table>
     <partTableDetail :visible.sync="visible" :row="row" />
   </div>
 </template>
@@ -459,8 +271,9 @@ import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
+import partTableListTotal from "./partTableListTotal.vue";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, partTableListTotal, tooltip },
   data() {
     return {
       ref: "part-table",
@@ -699,10 +512,16 @@ export default {
         showLength: this.showLength,
         total: this.allData.length,
       });
+      const row_footer =
+        this.$refs["part-table"]?.getElementsByClassName("el-table__footer")[0]
+          .rows;
+      if (this.tableData.length)
+        this.mergeFooter(row_footer, 0, 0, 9 + this.showLength * 2);
       this.$nextTick(() => {
         setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
         }, 0);
+        this.$refs.table.doLayout(); // table重新布局
       });
     },
     // 计算表头合并
@@ -752,6 +571,29 @@ export default {
         }
       }
       row[rowIndex].cells[colIndex][type] = span;
+    },
+    // 计算表格合计行合并
+    mergeFooter(row, rowIndex, colIndex, span) {
+      if (!row) return;
+      const col = row[rowIndex].cells;
+      if (!(row || col)) return;
+      if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rIndex = rowIndex;
+      let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+      for (let i = 1; i < span; i++) {
+        let cIndex = i + colIndex;
+        colSpan_ += row[rIndex].cells[cIndex].colSpan;
+        if (colSpan_ == span) {
+          row[rIndex].cells[cIndex].style.display = "none";
+          break;
+        }
+        if (colSpan_ > span) {
+          row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+          break;
+        }
+        row[rIndex].cells[cIndex].style.display = "none";
+      }
+      row[rowIndex].cells[colIndex].colSpan = span;
     },
     // 计算统计表表头合并
     totalCellClass({ row, column, rowIndex, columnIndex }) {
@@ -870,6 +712,22 @@ export default {
         this.visible = true;
       });
     },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = (
+            <partTableListTotal
+              totalData={this.totalData}
+              supplierList={this.supplierList}
+            />
+          );
+          return;
+        }
+      });
+      return sums;
+    },
   },
 };
 </script>
@@ -934,6 +792,23 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+  .el-table__footer-wrapper {
+    .el-table__footer {
+      .has-gutter {
+        & > tr {
+          & > td {
+            padding: 0;
+            & > .cell {
+              padding: 0;
+            }
+            &:first-of-type {
+              border-right: 0;
+            }
+          }
+        }
+      }
+    }
   }
   .red {
     color: #f00;
