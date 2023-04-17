@@ -145,14 +145,14 @@
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{
                                   item.targetAPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetAPrice }}
+                            <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{ item.targetAPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -213,14 +213,14 @@
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{
                                   item.targetBPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetBPrice }}
+                            <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{ item.targetBPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -777,6 +777,9 @@ export default {
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 .left {

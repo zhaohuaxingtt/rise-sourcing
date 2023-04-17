@@ -152,9 +152,39 @@
                   header-align="center"
                   minWidth="80"
                 >
-                  <template slot-scope="scope">
-                    {{ scope.row["cfPartAPrice"] | toThousands(true) }}
-                  </template>
+                    <template slot-scope="scope">
+                      <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        v-if="+scope.row.selAPrice"
+                      >
+                        <div>
+                          <div>
+                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                              (scope.row.cfPartAPrice - scope.row.selAPrice).toFixed(2)
+                                | toThousands(true)
+                            }}
+                          </div>
+                          <div>
+                            {{ language("SEL目标价", "SEL目标价") }}：{{
+                              (scope.row.selAPrice || "0.00")
+                                | toThousands(true)
+                            }}
+                          </div>
+                        </div>
+                        <div slot="reference">
+                          <p>
+                            <span style="color: red">*</span>
+                            <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
+                              scope.row["cfPartAPrice"] | toThousands(true)
+                            }}</span>
+                          </p>
+                        </div>
+                      </el-popover>
+                      <template v-else>
+                        <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ scope.row["cfPartAPrice"] | toThousands(true) }}</span>
+                      </template>
+                    </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -171,9 +201,39 @@
                   header-align="center"
                   minWidth="80"
                 >
-                  <template slot-scope="scope">
-                    {{ scope.row["cfPartBPrice"] | toThousands(true) }}
-                  </template>
+                    <template slot-scope="scope">
+                      <el-popover
+                        placement="top-start"
+                        trigger="hover"
+                        v-if="+scope.row.selAPrice"
+                      >
+                        <div>
+                          <div>
+                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                              (scope.row.cfPartBPrice - scope.row.selAPrice).toFixed(2)
+                                | toThousands(true)
+                            }}
+                          </div>
+                          <div>
+                            {{ language("SEL目标价", "SEL目标价") }}：{{
+                              (scope.row.selAPrice || "0.00")
+                                | toThousands(true)
+                            }}
+                          </div>
+                        </div>
+                        <div slot="reference">
+                          <p>
+                            <span style="color: red">*</span>
+                            <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{
+                              scope.row["cfPartBPrice"] | toThousands(true)
+                            }}</span>
+                          </p>
+                        </div>
+                      </el-popover>
+                      <template v-else>
+                        <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ scope.row["cfPartBPrice"] | toThousands(true) }}</span>
+                      </template>
+                    </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -812,6 +872,9 @@ export default {
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 

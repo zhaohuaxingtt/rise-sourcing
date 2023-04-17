@@ -146,7 +146,7 @@
                 <div slot="reference">
                   <p>
                     <span style="color: red">*</span>
-                    <span>
+                    <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">
                       {{
                         deleteThousands(scope.row.targetAPrice)
                           | toThousands(true)
@@ -156,9 +156,9 @@
                 </div>
               </el-popover>
               <template v-else>
-                {{
+                <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
                   deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                }}
+                }}</span>
               </template>
             </template>
           </el-table-column>
@@ -193,7 +193,7 @@
                 <div slot="reference">
                   <p>
                     <span style="color: red">*</span>
-                    <span>
+                    <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">
                       {{
                         deleteThousands(scope.row.targetBPrice)
                           | toThousands(true)
@@ -203,7 +203,7 @@
                 </div>
               </el-popover>
               <template v-else>
-                {{
+                <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}"></span>{{
                   deleteThousands(scope.row.targetBPrice) | toThousands(true)
                 }}
               </template>
@@ -738,6 +738,9 @@ export default {
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 .table {

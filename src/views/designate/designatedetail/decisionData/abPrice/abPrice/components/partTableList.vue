@@ -171,14 +171,14 @@
                         <div slot="reference">
                           <p>
                             <span style="color: red">*</span>
-                            <span>{{
+                            <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
                               scope.row["cfPartAPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                        <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ scope.row["cfPartAPrice"] | toThousands(true) }}</span>
                       </template>
                     </template>
                 </el-table-column>
@@ -220,14 +220,14 @@
                         <div slot="reference">
                           <p>
                             <span style="color: red">*</span>
-                            <span>{{
+                            <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{
                               scope.row["cfPartBPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                        <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ scope.row["cfPartBPrice"] | toThousands(true) }}</span>
                       </template>
                     </template>
                 </el-table-column>
@@ -858,6 +858,9 @@ export default {
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 
