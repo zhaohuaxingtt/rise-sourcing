@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-20 18:30:26
+ * @LastEditTime: 2023-04-17 18:41:38
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -228,14 +228,21 @@
                 :data="item"
                 :max="max"
               />
-              <!-- <template v-else-if="item.prop == 'Recommendation'">
+              <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
                 popper-class="supplier-pop"
               >
+                <h2>recommendation</h2>
                 <div class="supplier-box">
-                  <p v-for="i in 30" :key="i"><span>{{supplierSap||'sap'}}</span>-<span>{{supplier||'supplier'}}</span></p>
+                  <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
+                    <p class="supplier-name">{{item.supplier}}</p>
+                    <p class="data-info">
+                      <span>TTO:{{item.tto}}</span>
+                      <span class="margin-left20">{{percent(item.ratio)}}</span>
+                    </p>
+                  </div>
                 </div>
                 <div slot="reference">
                   <barItem
@@ -248,7 +255,7 @@
                   />
                 </div>
               </el-popover>
-              </template> -->
+              </template>
               <barItem
                 v-else
                 :key="item.prop"
@@ -386,6 +393,7 @@ export default {
         "totalTurnover",
       ], // 'bar不显示,只占位
       supplierList: [],
+      dialogSupplierList:[],
       fixedList: [
         { prop: "Recommendation", label: "Recommendation", colorA: "#395e78" },
         { prop: "LTC", label: "After LTC", colorA: "#395e78" },
@@ -407,6 +415,9 @@ export default {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
+    percent(val) {
+      return (val * 100).toFixed(2) + "%";
+    },
     analysisSummaryNomi() {
       this.loading = true;
       analysisSummaryNomi({
@@ -417,6 +428,7 @@ export default {
           if (res?.code != 200) return;
           this.max = null;
           let allPrice = [this.detail.vsi || 0];
+          this.dialogSupplierList = res.data.recommendationNomiSupplierList || []
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];
