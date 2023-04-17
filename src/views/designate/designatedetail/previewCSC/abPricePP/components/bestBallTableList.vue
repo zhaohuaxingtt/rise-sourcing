@@ -481,6 +481,7 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
