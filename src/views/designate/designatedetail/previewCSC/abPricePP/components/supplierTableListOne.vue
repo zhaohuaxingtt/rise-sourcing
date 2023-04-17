@@ -427,7 +427,7 @@
 <script>
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
-import tooltip from "../../../components/tooltip.vue";
+import tooltip from "../../components/tooltip.vue";
 export default {
   name:'supplierTableListOne',
   components: {

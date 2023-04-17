@@ -323,6 +323,7 @@ export default {
     background-color: #ffffff;
     padding-top: 0px;
     padding-bottom: 0px;
+    color: #000;
     .cell {
       padding: 0 4px;
     }

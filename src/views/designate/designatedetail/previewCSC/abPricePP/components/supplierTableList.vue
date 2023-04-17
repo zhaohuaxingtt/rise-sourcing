@@ -133,9 +133,42 @@
                         :label="item.targetAPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetAPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
+                            {{ item.targetAPrice }}
+                          </template>
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            {{ item.fsGsNum }}({{ item.factoryEn }})
+                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -168,6 +201,39 @@
                         :label="item.targetBPrice"
                         header-align="right"
                       >
+                        <template slot="header" slot-scope="scope">
+                          <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            v-if="+item.selAPrice"
+                          >
+                            <div>
+                              <div>
+                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
+                                    | toThousands(true)
+                                }}
+                              </div>
+                              <div>
+                                {{ language("SEL目标价", "SEL目标价") }}：{{
+                                  (item.selAPrice || "0.00")
+                                    | toThousands(true)
+                                }}
+                              </div>
+                            </div>
+                            <div slot="reference">
+                              <p>
+                                <span style="color: red">*</span>
+                                <span>{{
+                                  item.targetBPrice
+                                }}</span>
+                              </p>
+                            </div>
+                          </el-popover>
+                          <template v-else>
+                            {{ item.targetBPrice }}
+                          </template>
+                        </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <el-table-column
                             :prop="item.fsGsNum + 'lcBPrice'"
@@ -379,8 +445,10 @@
 import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
+import partTableDetail from "./partTableDetail";
 export default {
   components: {
+    partTableDetail,
     tooltip,
   },
   props: {
@@ -453,6 +521,14 @@ export default {
   },
   methods: {
     numberProcessor,
+    deleteThousands,
+    gotoDetail(row) {
+      this.itemFS = JSON.parse(JSON.stringify(row));
+      this.itemFS.fsNum = this.itemFS.fsGsNum
+      this.$nextTick(() => {
+        this.visible = true;
+      });
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");

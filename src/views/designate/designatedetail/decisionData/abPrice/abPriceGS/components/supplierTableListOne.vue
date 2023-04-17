@@ -524,23 +524,21 @@ export default {
     },
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
+      let className = "";
+      if (columnIndex > 3 && row.suggestFlag.length) {
+        className = "blue-border";
+      }
       if (["partAPrice", "partBPrice"].includes(column.label)) {
-        if (
-          row.suggestFlag.includes(column.property) &&
-          row.isMinTtoList.includes(column.property)
-        ) {
-          return "blue-border font-green";
-        } else if (row.suggestFlag.includes(column.property)) {
-          return "blue-border";
-        } else if (row.isMinTtoList.includes(column.property)) {
-          return "font-green";
+        if (row.isMinTtoList.includes(column.property)) {
+          className += " font-green";
         }
       }
       if (column.property == "totalTurnover") {
         if (row.isMinTto) {
-          return "font-green";
+          className += " font-green";
         }
       }
+      return className;
     },
     // 表头合并
     setColSpan() {

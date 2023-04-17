@@ -32,6 +32,34 @@
                 >
               </template>
             </el-table-column>
+          <el-table-column
+            :key="item.prop"
+            v-else-if="item.prop == 'ebr'"
+            :prop="item.prop"
+            :label="item.label"
+            :width="item.width"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <span>{{ percent(scope.row.ebr) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :key="item.prop"
+            v-else-if="item.prop == 'mixQty'"
+            :prop="item.prop"
+            :label="item.label"
+            :width="item.width"
+            align="center"
+            ><template slot="header" slot-scope="scope">
+              <p v-for="(text, index) in item.label" :key="index">
+                {{ text }}
+              </p>
+            </template>
+            <template slot-scope="scope">
+              <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
+            </template>
+          </el-table-column>
             <el-table-column
               :key="item.prop"
               v-else-if="item.prop == 'volume'"
