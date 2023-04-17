@@ -352,7 +352,7 @@ export default {
           width: "130",
         },
         {
-          prop: "saving",
+          prop: "savingTotal",
           label: ["Saving", "@100% Share"],
           target: "",
           budget: "",

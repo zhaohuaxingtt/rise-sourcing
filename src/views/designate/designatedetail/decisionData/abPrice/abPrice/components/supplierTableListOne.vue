@@ -549,7 +549,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  +child.ltc
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });
