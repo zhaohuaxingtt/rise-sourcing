@@ -1007,7 +1007,7 @@ export default {
         };
       });
       Promise.all(
-        res.suppliers?.map(async (supplier) => {
+        suppliers?.map(async (supplier) => {
           return this.querySuppliers(
             supplier.supplierCode,
             supplier.supplierId,
