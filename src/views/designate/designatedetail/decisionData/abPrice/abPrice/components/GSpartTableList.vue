@@ -519,10 +519,7 @@ export default {
           className = "blue-border";
         }
       }
-      if (["A Price(LC)", "B Price(LC)"].includes(column.label)) {
-        className += " font-green";
-      }
-      if (["Total Turnover"].includes(column.label)) {
+      if (["A Price(LC)", "B Price(LC)", 'Total Turnover'].includes(column.label) && row.isMinTto) {
         if (row.isMinTto) {
           className += " font-green";
         }
