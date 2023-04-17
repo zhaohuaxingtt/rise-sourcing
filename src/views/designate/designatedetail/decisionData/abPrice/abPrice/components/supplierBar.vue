@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-17 18:41:38
+ * @LastEditTime: 2023-04-17 18:43:59
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -619,5 +619,37 @@ export default {
 .font-size20 {
   font-size: 20px;
   font-weight: bold;
+}
+</style>
+<style lang="scss">
+.supplier-pop{
+  margin-left: -20px !important;
+  .supplier-box{
+    height: 300px;
+    overflow: auto;
+    
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      min-height: 8px;
+      min-width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      width: 8px;
+    }
+    .supplier-item{
+      margin: 10px 5px;
+      .supplier-name{
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .data-info{
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
 }
 </style>
