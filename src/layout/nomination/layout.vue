@@ -53,8 +53,9 @@ export default {
   },
   created(){
     const {query} = this.$route;
-    const {isPreview = '0'} = query;
+    const { isPreview = "0",  partProjType = ''} = query;
     this.isPreview = isPreview;
+    this.isGS = ['1000003'].includes(partProjType)
     this.$store.dispatch('setPreviewState', isPreview)
     this.nominateAppSDetail()
     if (this.$route.query.sd == 1) {
@@ -111,7 +112,6 @@ export default {
             const query = this.$router.history.current.query
             const path = this.$router.history.current.path
             const newQuery = JSON.parse(JSON.stringify(query))
-            this.isGS = ['1000003'].includes(res.data.partProjType)
             newQuery.designateType = res.data.nominateProcessType
             this.$router.replace({path, query: newQuery})
           } else {

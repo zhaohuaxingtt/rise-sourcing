@@ -610,7 +610,7 @@ export default {
           });
         });
     },
-    prev() {
+    next() {
       if (this.index < this.partAllData.length - 1) {
         this.index++;
       } else {
@@ -625,7 +625,7 @@ export default {
         });
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -679,6 +679,7 @@ export default {
         this.$refs["supplier-table"].getElementsByClassName(
           "el-table__header"
         )[0].rows;
+      this.$refs.table.doLayout(); // table重新布局
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
       this.merge(row, 8, 2, 2, "colSpan");

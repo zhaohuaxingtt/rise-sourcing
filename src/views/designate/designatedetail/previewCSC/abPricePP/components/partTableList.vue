@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-14 14:36:25
+ * @LastEditTime: 2023-04-18 14:42:39
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -654,55 +654,6 @@ export default {
         row[rIndex].cells[cIndex].style.display = "none";
       }
       row[rowIndex].cells[colIndex].colSpan = span;
-    },
-    // 计算统计表表头合并
-    totalCellClass({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex == 0 && rowIndex == 0) {
-        return [7, 3];
-      } else if (columnIndex < 3 && rowIndex < 7) {
-        return [0, 0];
-      }
-      if ([0, 1, 4, 5].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [1, 4];
-        } else if ([4, 5, 6].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([2].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [2, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([3].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([7].includes(columnIndex) && rowIndex > 0) {
-        return [1, 2];
-      }
-      if ([8].includes(columnIndex) && rowIndex > 0) {
-        return [0, 0];
-      }
-      for (let i = 0; i < this.supplierList.length; i++) {
-        if ([2 * i + 9].includes(columnIndex)) {
-          if ([1, 4, 5].includes(rowIndex)) {
-            return [1, 2];
-          } else if ([2].includes(rowIndex)) {
-            return [2, 2];
-          } else if ([3].includes(rowIndex)) {
-            return [0, 0];
-          }
-        }
-        if ([2 * i + 10].includes(columnIndex) && rowIndex > 0) {
-          return [0, 0];
-        }
-      }
     },
     prev() {
       if (this.index < this.supplierAllData.length - 1) {

@@ -690,7 +690,7 @@ export default {
         }
       }
     },
-    prev() {
+    next() {
       if (this.index < this.supplierAllData.length - 1) {
         this.index++;
       } else {
@@ -700,7 +700,7 @@ export default {
         this.setColSpan();
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {

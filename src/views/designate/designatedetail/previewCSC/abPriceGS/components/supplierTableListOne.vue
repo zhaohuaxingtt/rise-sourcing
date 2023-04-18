@@ -486,36 +486,6 @@ export default {
           });
         });
     },
-    prev() {
-      if (this.index < this.partAllData.length - 1) {
-        this.index++;
-      } else {
-        this.index = 0;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
-    },
-    next() {
-      if (this.index > 0) {
-        this.index--;
-      } else {
-        this.index = this.partAllData.length - 1;
-      }
-      this.$nextTick(() => {
-        this.setColSpan();
-        this.$emit("setPage", {
-          index: this.index,
-          showLength: this.showLength,
-          total: this.allData.length,
-        });
-      });
-    },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
       if (rowIndex == 0 && columnIndex == 0) {

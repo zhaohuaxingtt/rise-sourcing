@@ -1,6 +1,6 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div style="height: 100%" :ref="ref" v-loading="loading" :key="index">
+  <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
       height="100%"
@@ -500,6 +500,7 @@ export default {
           this.partAllData = _.chunk(res.data.headList, this.showLength);
           this.allData = res.data.headList;
           this.tableData = tableData;
+          // this.$set(this, 'tableData', tableData)
         })
         .finally(() => {
           this.loading = false;
@@ -513,7 +514,7 @@ export default {
           });
         });
     },
-    prev() {
+    next() {
       if (this.index < this.partAllData.length - 1) {
         this.index++;
       } else {
@@ -528,7 +529,7 @@ export default {
         });
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -585,9 +586,10 @@ export default {
     // 表头合并
     setColSpan() {
       const row =
-        this.$refs["supplier-table"].getElementsByClassName(
+        this.$refs["supplier-table"]?.getElementsByClassName(
           "el-table__header"
         )[0].rows;
+        this.$refs.table.doLayout(); // table重新布局
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 6, "rowSpan");
       this.partList.forEach((item, i) => {

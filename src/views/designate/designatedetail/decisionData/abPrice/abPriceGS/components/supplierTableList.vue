@@ -510,7 +510,7 @@ export default {
           });
         });
     },
-    prev() {
+    next() {
       if (this.index < this.partAllData.length - 1) {
         this.index++;
       } else {
@@ -525,7 +525,7 @@ export default {
         });
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -590,6 +590,7 @@ export default {
       this.partList.forEach((item,i)=>{
         this.merge(row, 6, i*2+2, 2, "colSpan");
       })
+      this.$refs.table.doLayout(); // table重新布局
       this.merge(row, 0, this.partList.length + 2, 6, "colSpan");
       this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
     },
