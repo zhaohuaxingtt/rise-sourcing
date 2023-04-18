@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-14 16:12:31
+ * @LastEditTime: 2023-04-18 10:52:01
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\index.vue
 -->
 <template>
-  <div :class="isRoutePreview ? 'isRoutePreview' : ''">
+  <div :class="isRoutePreview ? 'isRoutePreview' : ''" v-loading="loading">
     <slot name="tabTitle"></slot>
     <div class="page-nav">
       <div class="nav">
@@ -112,7 +112,7 @@
       @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'supplier') ||
-        tabTable == 'Detailed_Worksheet'
+        (this.oldTabTable== 'supplier' && tabTable == 'Detailed_Worksheet')
       "
     />
     <partTableList
@@ -121,7 +121,7 @@
       @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'part') ||
-        tabTable == 'Detailed_Worksheet'
+        (this.oldTabTable== 'part' && tabTable == 'Detailed_Worksheet')
       "
     />
     <GSpartTableList
@@ -130,7 +130,7 @@
       @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'gs_part') ||
-        tabTable == 'Detailed_Worksheet'
+        (this.oldTabTable== 'gs_part' && tabTable == 'Detailed_Worksheet')
       "
     />
     <bestBallTableList
@@ -139,7 +139,7 @@
       @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'best_ball') ||
-        tabTable == 'Detailed_Worksheet'
+        (this.oldTabTable== 'best_ball' && tabTable == 'Detailed_Worksheet')
       "
     />
     <!-- bar -->
@@ -292,7 +292,8 @@ export default {
         },
       ],
       tab: "table",
-      tabTable: "",
+      tabTable: "supplier",
+      oldTabTable:'supplier',
       tabBar: "",
       tabLine: "",
       carTypeList: [],
@@ -313,6 +314,7 @@ export default {
         Detailed_Worksheet: {},
       },
       strategy: "",
+      loading:false,
     };
   },
   computed: {
@@ -338,6 +340,7 @@ export default {
             if (item.isShow && !this.tabTable) {
               // 显示第一个true
               this.tabTable = item.operateCode;
+              this.oldTabTable = item.operateCode;
             }
           });
         }
@@ -437,6 +440,7 @@ export default {
       }
     },
     exportExcel() {
+      this.loading = true
       exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, [
         "EBR",
         "Volume",
@@ -445,7 +449,9 @@ export default {
         "Dev.\nCost",
         "Supplier \nSOP Date",
         "Total\n Turnover",
-      ]);
+      ]).finally(()=>{
+        this.loading = false
+      });
     },
   },
 };
