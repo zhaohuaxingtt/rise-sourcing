@@ -650,7 +650,7 @@ export default {
         }
       }
       let className = "";
-      if (columnIndex > 13) {
+      if (columnIndex > 7) {
         if (this.label == "Best ball") {
           // best_ball 全绿,只判断蓝色背景
           if (row.suggestFlag) {

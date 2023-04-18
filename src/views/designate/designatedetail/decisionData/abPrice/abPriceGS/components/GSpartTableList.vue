@@ -531,7 +531,7 @@ export default {
       if([4,5,6].includes(columnIndex)){
         className = "current-column"
       }
-      if (columnIndex > 10) {
+      if (columnIndex > 6) {
         if (row.suggestFlag) {
           className = "blue-border";
         }
