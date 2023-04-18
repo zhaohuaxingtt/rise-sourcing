@@ -113,7 +113,7 @@
                 </template>
                 <el-table-column :label="item.CurrentSupplier" align="center">
                   <template slot="header" slot-scope="scope">
-                    <span>{{ item.currentSupplier }}</span>
+                    <tooltip :text="item.currentSupplier"></tooltip>
                   </template>
                   <el-table-column
                     :label="item.currentAPrice"

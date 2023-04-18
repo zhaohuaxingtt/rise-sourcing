@@ -26,7 +26,7 @@
                 label="Supplier"
                 prop="supplier"
                 align="right"
-                minWidth="80"
+                minWidth="85"
               >
                 <template slot-scope="scope">
                   {{ scope.row["supplier"] }}

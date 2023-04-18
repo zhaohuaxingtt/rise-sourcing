@@ -93,7 +93,7 @@
               minWidth="85"
             >
               <template slot-scope="scope">
-                {{ scope.row.currentSupplier }}
+                <tooltip :text="scope.row.currentSupplier"></tooltip>
               </template>
             </el-table-column>
             <el-table-column
