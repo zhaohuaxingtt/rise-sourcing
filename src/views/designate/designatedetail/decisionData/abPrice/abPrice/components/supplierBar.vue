@@ -625,7 +625,7 @@ export default {
 .supplier-pop{
   margin-left: -20px !important;
   .supplier-box{
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
     
     &::-webkit-scrollbar {

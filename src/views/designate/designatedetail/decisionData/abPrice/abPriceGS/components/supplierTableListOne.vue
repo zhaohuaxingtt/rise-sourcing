@@ -282,6 +282,9 @@
                             {{ scope.row[item.prop] }}
                           </template>
                         </template>
+                        <template v-else-if="['sopDate'].includes(item.prop)">
+                          {{ format(scope.row.sopDate) }}
+                        </template>
                         <template v-else>
                           {{ scope.row[item.prop] }}
                         </template>
@@ -390,6 +393,10 @@ export default {
   },
   methods: {
     numberProcessor,
+    format(date) {
+      if (!date) return "";
+      return window.moment(date).format("YYYY-MM");
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");

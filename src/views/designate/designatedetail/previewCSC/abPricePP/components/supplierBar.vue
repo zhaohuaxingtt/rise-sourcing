@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-17 18:44:15
+ * @LastEditTime: 2023-04-18 10:25:49
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -415,6 +415,9 @@ export default {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
+    percent(val) {
+      return (val * 100).toFixed(2) + "%";
+    },
     analysisSummaryNomi() {
       this.loading = true;
       analysisSummaryNomi({
@@ -623,7 +626,7 @@ export default {
 .supplier-pop{
   margin-left: -20px !important;
   .supplier-box{
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
     
     &::-webkit-scrollbar {
