@@ -87,8 +87,7 @@
             <el-table-column
               label="Supplier"
               prop="currentSupplier"
-              align="right"
-              header-align="center"
+              align="center"
               minWidth="85"
             >
               <template slot-scope="scope">

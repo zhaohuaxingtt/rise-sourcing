@@ -165,7 +165,7 @@ export default {
 }
 #preview-csc {
   height: 100%;
-  overflow: auto;
+  // overflow: auto;
   ::v-deep * {
     font-family: 'Arial', 'Helvetica', 'sans-serif';
     letter-spacing:0;

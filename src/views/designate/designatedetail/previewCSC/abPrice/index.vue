@@ -5,7 +5,7 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\index.vue
 -->
 <template>
-  <component :is="component" :key="component" />
+  <component class="abPrice-page" :is="component" :key="component" />
 </template>
 
 <script>
@@ -43,4 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.abPrice-page{
+  margin: 0 -40px;
+}
 </style>
