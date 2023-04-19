@@ -442,6 +442,7 @@
         </el-table-column>
       </template>
     </el-table>
+    <partTableDetail :visible.sync="visible" v-if="visible" :row="itemFS" />
   </div>
 </template>
 
@@ -509,6 +510,8 @@ export default {
       partAllData: [],
       allData: [],
       index: -1,
+      itemFS: {},
+      visible: false,
     };
   },
   computed: {
@@ -530,7 +533,7 @@ export default {
       this.itemFS = JSON.parse(JSON.stringify(row));
       this.itemFS.fsNum = this.itemFS.fsGsNum
       this.$nextTick(() => {
-        this.visible = true;
+        this.visible = !this.visible;
       });
     },
     getInt(val) {
@@ -788,6 +791,9 @@ export default {
         font-weight: 500;
         color: #000 !important;
       }
+    }
+    .decoration {
+      text-decoration: underline;
     }
   }
   .red {

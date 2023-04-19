@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-01 14:13:42
+ * @LastEditTime: 2023-04-19 15:20:49
  * @Description: 定点管理-决策资料-BDL
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\bdl\index.vue
 -->
 
 <template>
@@ -44,35 +44,54 @@
           "
         >
           <template #supplierName="scope">
-            <div>
-              <p class="factoryDesc">
-                <span>{{ scope.row.supplierName }}</span>
-                <img class="mbdl" :src="MBDL" v-if="scope.row.isMbdl" alt="" />
-              </p>
-              <el-tooltip
-                effect="light"
-                :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
-                  scope.row.frmRate
-                }`"
-                v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1"
-              >
-                <span>
-                  <icon symbol name="iconzhongyaoxinxitishi" />
-                </span>
-              </el-tooltip>
-              <supplierBlackIcon
-                :isShowStatus="
-                  typeof scope.row.isComplete === 'boolean'
-                    ? !scope.row.isComplete
-                    : false
-                "
-                :BlackList="scope.row.blackStuffs || []"
-              />
-              <div>
-                <span>{{ scope.row.sapCode }}</span>
-                {{ scope.row.supplierNameEn }}
-              </div>
-            </div>
+            <tooltip>
+              <template slot="text">
+                <div>
+                  <p class="factoryDesc">
+                    <span>{{ scope.row.supplierName }}</span>
+                    <img
+                      class="mbdl"
+                      :src="MBDL"
+                      v-if="scope.row.isMbdl"
+                      alt=""
+                    />
+                  </p>
+                  <el-tooltip
+                    effect="light"
+                    :content="`${language('LK_FRMPINGJI', 'FRM评级')}：${
+                      scope.row.frmRate
+                    }`"
+                    v-if="
+                      $route.query.isPreview != 1 && scope.row.isFRMRate === 1
+                    "
+                  >
+                    <span>
+                      <icon symbol name="iconzhongyaoxinxitishi" />
+                    </span>
+                  </el-tooltip>
+                  <supplierBlackIcon
+                    :isShowStatus="
+                      typeof scope.row.isComplete === 'boolean'
+                        ? !scope.row.isComplete
+                        : false
+                    "
+                    :BlackList="scope.row.blackStuffs || []"
+                  />
+                  <div>
+                    <span>{{ scope.row.sapCode }}</span>
+                    {{ scope.row.supplierNameEn }}
+                  </div>
+                </div>
+              </template>
+              <template slot="content">
+                <p :title="scope.row.supplierFullNameZh">
+                  {{ scope.row.supplierFullNameZh }}
+                </p>
+                <p :title="scope.row.supplierFullNameEn">
+                  ({{ scope.row.supplierFullNameEn }})
+                </p>
+              </template>
+            </tooltip>
           </template>
           <template #plantLocations="scope">
             <el-tooltip
@@ -138,6 +157,7 @@ import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon";
 import filters from "@/utils/filters";
 import success from "@/assets/images/cscIcon/csc-bdl-success.svg";
 import MBDL from "@/assets/images/cscIcon/mbdl.svg";
+import tooltip from "../components/tooltip.vue";
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -150,6 +170,7 @@ export default {
     icon,
     supplierBlackIcon,
     iTabsList,
+    tooltip,
   },
   props: {
     isExportPdf: {
