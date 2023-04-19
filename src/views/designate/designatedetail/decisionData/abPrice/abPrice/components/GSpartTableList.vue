@@ -222,11 +222,11 @@
             <template slot-scope="scope">
               <tooltip :text="scope.row['supplierNameEn']">
                 <template slot="content">
-                  <p :title="scope.row.supplierNameZh">
-                    {{ scope.row.supplierNameZh }}
+                  <p :title="scope.row.supplierFullNameZh">
+                    {{ scope.row.supplierFullNameZh }}
                   </p>
-                  <p :title="scope.row.supplierNameEn">
-                    ({{ scope.row.supplierNameEn }})
+                  <p :title="scope.row.supplierFullNameEn">
+                    ({{ scope.row.supplierFullNameEn }})
                   </p>
                 </template>
               </tooltip>

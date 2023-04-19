@@ -240,7 +240,16 @@
         <!-- :key="item.supplierId + index" -->
         <el-table-column :key="index" align="center">
           <div slot="header" slot-scope="scope">
-            {{ item.supplierEn || "-" }}
+            <tooltip :text="item.supplierEn">
+              <template slot="content">
+                <p :title="item.supplierFullNameZh">
+                  {{ item.supplierFullNameZh }}
+                </p>
+                <p :title="item.supplierFullNameEn">
+                  ({{ item.supplierFullNameEn }})
+                </p>
+              </template>
+            </tooltip>
           </div>
           <el-table-column :label="item.TE" align="center">
             <template slot-scope="scope" slot="header">
@@ -461,6 +470,8 @@ export default {
               obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
+              obj[item.supplierId].supplierFullNameZh = item.supplierFullNameZh;
+              obj[item.supplierId].supplierFullNameEn = item.supplierFullNameEn;
             });
             totalData[2].investFeeIsShared = [];
             totalData[4].devFeeIsShared = [];

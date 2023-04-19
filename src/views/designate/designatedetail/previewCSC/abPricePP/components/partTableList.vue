@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-18 14:42:39
+ * @LastEditTime: 2023-04-19 11:03:02
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -80,7 +80,12 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <tooltip :text="scope.row.carProType||scope.row.carTypeNames.join('、')"></tooltip>
+                    <tooltip
+                      :text="
+                        scope.row.carProType ||
+                        scope.row.carTypeNames.join('、')
+                      "
+                    ></tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -152,39 +157,51 @@
                   header-align="center"
                   minWidth="80"
                 >
-                    <template slot-scope="scope">
-                      <el-popover
-                        placement="top-start"
-                        trigger="hover"
-                        v-if="+scope.row.selAPrice"
-                      >
+                  <template slot-scope="scope">
+                    <el-popover
+                      placement="top-start"
+                      trigger="hover"
+                      v-if="+scope.row.selAPrice"
+                    >
+                      <div>
                         <div>
-                          <div>
-                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                              (scope.row.cfPartAPrice - scope.row.selAPrice).toFixed(2)
-                                | toThousands(true)
-                            }}
-                          </div>
-                          <div>
-                            {{ language("SEL目标价", "SEL目标价") }}：{{
-                              (scope.row.selAPrice || "0.00")
-                                | toThousands(true)
-                            }}
-                          </div>
+                          {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                            (
+                              scope.row.cfPartAPrice - scope.row.selAPrice
+                            ).toFixed(2) | toThousands(true)
+                          }}
                         </div>
-                        <div slot="reference">
-                          <p>
-                            <span style="color: red">*</span>
-                            <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
+                        <div>
+                          {{ language("SEL目标价", "SEL目标价") }}：{{
+                            (scope.row.selAPrice || "0.00") | toThousands(true)
+                          }}
+                        </div>
+                      </div>
+                      <div slot="reference">
+                        <p>
+                          <span style="color: red">*</span>
+                          <span
+                            :class="{
+                              chengse: scope.row['cfPartAPriceStatus'] == 2,
+                            }"
+                            >{{
                               scope.row["cfPartAPrice"] | toThousands(true)
-                            }}</span>
-                          </p>
-                        </div>
-                      </el-popover>
-                      <template v-else>
-                        <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ scope.row["cfPartAPrice"] | toThousands(true) }}</span>
-                      </template>
+                            }}</span
+                          >
+                        </p>
+                      </div>
+                    </el-popover>
+                    <template v-else>
+                      <span
+                        :class="{
+                          chengse: scope.row['cfPartAPriceStatus'] == 2,
+                        }"
+                        >{{
+                          scope.row["cfPartAPrice"] | toThousands(true)
+                        }}</span
+                      >
                     </template>
+                  </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -201,39 +218,51 @@
                   header-align="center"
                   minWidth="80"
                 >
-                    <template slot-scope="scope">
-                      <el-popover
-                        placement="top-start"
-                        trigger="hover"
-                        v-if="+scope.row.selAPrice"
-                      >
+                  <template slot-scope="scope">
+                    <el-popover
+                      placement="top-start"
+                      trigger="hover"
+                      v-if="+scope.row.selAPrice"
+                    >
+                      <div>
                         <div>
-                          <div>
-                            {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                              (scope.row.cfPartBPrice - scope.row.selAPrice).toFixed(2)
-                                | toThousands(true)
-                            }}
-                          </div>
-                          <div>
-                            {{ language("SEL目标价", "SEL目标价") }}：{{
-                              (scope.row.selAPrice || "0.00")
-                                | toThousands(true)
-                            }}
-                          </div>
+                          {{ language("零件目标价A价", "零件目标价A价") }}：{{
+                            (
+                              scope.row.cfPartBPrice - scope.row.selAPrice
+                            ).toFixed(2) | toThousands(true)
+                          }}
                         </div>
-                        <div slot="reference">
-                          <p>
-                            <span style="color: red">*</span>
-                            <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{
+                        <div>
+                          {{ language("SEL目标价", "SEL目标价") }}：{{
+                            (scope.row.selAPrice || "0.00") | toThousands(true)
+                          }}
+                        </div>
+                      </div>
+                      <div slot="reference">
+                        <p>
+                          <span style="color: red">*</span>
+                          <span
+                            :class="{
+                              chengse: scope.row['cfPartBPriceStatus'] == 2,
+                            }"
+                            >{{
                               scope.row["cfPartBPrice"] | toThousands(true)
-                            }}</span>
-                          </p>
-                        </div>
-                      </el-popover>
-                      <template v-else>
-                        <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ scope.row["cfPartBPrice"] | toThousands(true) }}</span>
-                      </template>
+                            }}</span
+                          >
+                        </p>
+                      </div>
+                    </el-popover>
+                    <template v-else>
+                      <span
+                        :class="{
+                          chengse: scope.row['cfPartBPriceStatus'] == 2,
+                        }"
+                        >{{
+                          scope.row["cfPartBPrice"] | toThousands(true)
+                        }}</span
+                      >
                     </template>
+                  </template>
                 </el-table-column>
               </el-table-column>
             </el-table-column>
@@ -244,7 +273,16 @@
         <!-- :key="item.supplierId + index" -->
         <el-table-column :key="index" align="center">
           <div slot="header" slot-scope="scope">
-            {{ item.supplierEn || "-" }}
+            <tooltip :text="item.supplierEn">
+              <template slot="content">
+                <p :title="item.supplierFullNameZh">
+                  {{ item.supplierFullNameZh }}
+                </p>
+                <p :title="item.supplierFullNameEn">
+                  ({{ item.supplierFullNameEn }})
+                </p>
+              </template>
+            </tooltip>
           </div>
           <el-table-column :label="item.TE" align="center">
             <template slot-scope="scope" slot="header">
@@ -258,9 +296,7 @@
               </template>
               <el-table-column :label="item.L" align="center">
                 <template slot-scope="scope" slot="header">
-                  <span class="red" v-if="isCLevel(item.L)">{{
-                    item.L
-                  }}</span>
+                  <span class="red" v-if="isCLevel(item.L)">{{ item.L }}</span>
                   <span v-else>{{ item.L }}</span>
                 </template>
                 <el-table-column
@@ -277,16 +313,13 @@
                   <template slot-scope="scope">
                     <span
                       v-if="
-                        scope.row[item.supplierId + 'quotationType'] ==
-                          'SKD' ||
-                        scope.row[item.supplierId + 'quotationType'] ==
-                          'SKDLC'
+                        scope.row[item.supplierId + 'quotationType'] == 'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] == 'SKDLC'
                       "
                       style="color: red"
                       >*</span
                     >{{
-                      scope.row[item.supplierId + "aPrice"]
-                        | toThousands(true)
+                      scope.row[item.supplierId + "aPrice"] | toThousands(true)
                     }}
                   </template>
                 </el-table-column>
@@ -303,16 +336,13 @@
                   <template slot-scope="scope">
                     <span
                       v-if="
-                        scope.row[item.supplierId + 'quotationType'] ==
-                          'SKD' ||
-                        scope.row[item.supplierId + 'quotationType'] ==
-                          'SKDLC'
+                        scope.row[item.supplierId + 'quotationType'] == 'SKD' ||
+                        scope.row[item.supplierId + 'quotationType'] == 'SKDLC'
                       "
                       style="color: red"
                       >*</span
                     >{{
-                      scope.row[item.supplierId + "bPrice"]
-                        | toThousands(true)
+                      scope.row[item.supplierId + "bPrice"] | toThousands(true)
                     }}
                   </template>
                 </el-table-column>
@@ -474,6 +504,8 @@ export default {
               obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
+              obj[item.supplierId].supplierFullNameZh = item.supplierFullNameZh;
+              obj[item.supplierId].supplierFullNameEn = item.supplierFullNameEn;
             });
             totalData[2].investFeeIsShared = [];
             totalData[4].devFeeIsShared = [];
@@ -487,7 +519,7 @@ export default {
                   !totalData[1][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
                   ) &&
-                  child.ltc!=0
+                  child.ltc != 0
                 ) {
                   totalData[1][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
@@ -824,7 +856,7 @@ export default {
   .red {
     color: #f00;
   }
-  .chengse{
+  .chengse {
     color: $color-delete;
   }
 }

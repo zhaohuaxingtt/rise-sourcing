@@ -15,27 +15,31 @@
         <el-table-column>
           <el-table-column>
             <el-table-column>
+              <el-table-column>
+                <el-table-column>
                   <el-table-column>
-                    <el-table-column>
-                    <el-table-column>
-                      <el-table-column
-                        prop="supplierNameEn"
-                        label="Supplier"
-                        align="center"
-                        minWidth="140"
-                      >
-                      
+                    <el-table-column
+                      prop="supplierNameEn"
+                      label="Supplier"
+                      align="center"
+                      minWidth="140"
+                    >
                       <template slot-scope="scope">
-                      <tooltip :text="scope.row.supplierNameEn">
-                        <template slot="content">
-                          <p>{{ (scope.row.supplier||'').split('\n')[1] || "-" }}</p>
-                          <p>{{ scope.row.supplierNameEn }}</p>
-                        </template>
-                      </tooltip>
-                    </template></el-table-column>
-                    </el-table-column>
+                        <tooltip :text="scope.row.supplierNameEn">
+                          <template slot="content">
+                            <p :title="scope.row.supplierFullNameZh">
+                              {{ scope.row.supplierFullNameZh }}
+                            </p>
+                            <p :title="scope.row.supplierFullNameEn">
+                              ({{ scope.row.supplierFullNameEn }})
+                            </p>
+                          </template>
+                        </tooltip>
+                      </template></el-table-column
+                    >
                   </el-table-column>
-                  </el-table-column>
+                </el-table-column>
+              </el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table-column>
@@ -105,7 +109,9 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
+                <tooltip
+                  :text="item.carline || item.carTypeNames.join('、')"
+                ></tooltip>
               </template>
               <el-table-column :label="item.volume" align="center">
                 <template slot="header" slot-scope="scope">
@@ -131,13 +137,15 @@
                           <p>A Price</p>
                         </template>
                         <template slot-scope="scope">
-                          <p v-if="
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKD' ||
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKDLC'
-                              ">
-                            <span style="color: red" >*</span>
+                          <p
+                            v-if="
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKD' ||
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKDLC'
+                            "
+                          >
+                            <span style="color: red">*</span>
                             {{ scope.row[item.fsGsNum + "skdAPrice"] }}
                           </p>
                           <p v-else>
@@ -163,13 +171,15 @@
                           <p>B Price</p>
                         </template>
                         <template slot-scope="scope">
-                          <p v-if="
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKD' ||
-                                scope.row[item.fsGsNum + 'quotationType'] ==
-                                  'SKDLC'
-                              ">
-                            <span style="color: red" >*</span>
+                          <p
+                            v-if="
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKD' ||
+                              scope.row[item.fsGsNum + 'quotationType'] ==
+                                'SKDLC'
+                            "
+                          >
+                            <span style="color: red">*</span>
                             {{ scope.row[item.fsGsNum + "skdBPrice"] }}
                           </p>
                           <p v-else>
@@ -210,9 +220,7 @@
                       <template slot-scope="scope">
                         <template
                           v-if="
-                            ['ltcList', 'ltcStartDateList'].includes(
-                              item.prop
-                            )
+                            ['ltcList', 'ltcStartDateList'].includes(item.prop)
                           "
                         >
                           <p
@@ -252,9 +260,7 @@
                           </template>
                         </template>
                         <template
-                          v-else-if="
-                            ['totalDevelopCost'].includes(item.prop)
-                          "
+                          v-else-if="['totalDevelopCost'].includes(item.prop)"
                         >
                           <el-popover
                             placement="top-start"
@@ -448,7 +454,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  child.ltc!=0
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });

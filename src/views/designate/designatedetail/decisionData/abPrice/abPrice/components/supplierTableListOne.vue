@@ -23,7 +23,19 @@
                         label="Supplier"
                         align="center"
                         minWidth="140"
-                      ></el-table-column>
+                        ><template slot-scope="scope">
+                          <tooltip :text="scope.row.supplierNameEn">
+                            <template slot="content">
+                              <p :title="scope.row.supplierFullNameZh">
+                                {{ scope.row.supplierFullNameZh }}
+                              </p>
+                              <p :title="scope.row.supplierFullNameEn">
+                                ({{ scope.row.supplierFullNameEn }})
+                              </p>
+                            </template>
+                          </tooltip>
+                        </template></el-table-column
+                      >
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -101,7 +113,9 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
+                <tooltip
+                  :text="item.carline || item.carTypeNames.join('、')"
+                ></tooltip>
               </template>
               <el-table-column :label="percent(item.ebr)" align="center">
                 <el-table-column
@@ -128,24 +142,25 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetAPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
-                                  item.targetAPrice
-                                }}</span>
+                                <span>{{ item.targetAPrice }}</span>
                               </p>
                             </div>
                           </el-popover>
@@ -155,7 +170,9 @@
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span>{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span
+                              >{{ item.fsGsNum }}({{ item.factoryEn }})</span
+                            >
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -196,24 +213,25 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetBPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
-                                  item.targetBPrice
-                                }}</span>
+                                <span>{{ item.targetBPrice }}</span>
                               </p>
                             </div>
                           </el-popover>
@@ -365,7 +383,9 @@
                                     }}
                                   </div>
                                   <div>
-                                    Unassessed amount：{{ scope.row.toolingNotShareTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.toolingNotShareTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -394,7 +414,9 @@
                                     }}
                                   </div>
                                   <div>
-                                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.developNotShareCostTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -429,7 +451,7 @@ import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../../components/tooltip.vue";
 export default {
-  name:'supplierTableListOne',
+  name: "supplierTableListOne",
   components: {
     tooltip,
   },
@@ -610,9 +632,7 @@ export default {
     // 表头合并
     setColSpan() {
       const row =
-        this.$refs[this.ref].getElementsByClassName(
-          "el-table__header"
-        )[0].rows;
+        this.$refs[this.ref].getElementsByClassName("el-table__header")[0].rows;
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
       this.merge(row, 8, 2, 2, "colSpan");

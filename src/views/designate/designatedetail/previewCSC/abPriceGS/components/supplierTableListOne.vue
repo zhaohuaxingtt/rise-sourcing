@@ -27,12 +27,12 @@
                       <template slot-scope="scope">
                         <tooltip :text="scope.row.supplierNameEn">
                           <template slot="content">
-                            <p>
-                              {{
-                                (scope.row.supplier || "").split("\n")[1] || "-"
-                              }}
+                            <p :title="scope.row.supplierFullNameZh">
+                              {{ scope.row.supplierFullNameZh }}
                             </p>
-                            <p>{{ scope.row.supplierNameEn }}</p>
+                            <p :title="scope.row.supplierFullNameEn">
+                              ({{ scope.row.supplierFullNameEn }})
+                            </p>
                           </template>
                         </tooltip>
                       </template></el-table-column

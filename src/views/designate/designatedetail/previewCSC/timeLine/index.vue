@@ -102,11 +102,11 @@
           <div class="supplier" :key="item.supplierId + index">
             <tooltip class="supplier-name" :text="item.supplierNameEn">
               <template slot="content">
-                <p class="partName">
-                  {{ item.supplierName }}
+                <p :title="item.supplierFullNameZh">
+                  {{ item.supplierFullNameZh }}
                 </p>
-                <p class="partName">
-                  {{ item.supplierNameEn }}
+                <p :title="item.supplierFullNameEn">
+                  ({{ item.supplierFullNameEn }})
                 </p>
               </template>
             </tooltip>
