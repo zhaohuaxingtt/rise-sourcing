@@ -611,7 +611,7 @@ export default {
     color: #f00;
   }
   .fs-group {
-    border-bottom: 5px solid #365d63 !important;
+    border-bottom: 3px solid #364d6e !important;
   }
 }
 .table {

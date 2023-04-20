@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-19 11:02:51
+ * @LastEditTime: 2023-04-20 16:08:51
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -820,7 +820,7 @@ export default {
 }
 
 .total-table {
-  font-size: 16px !important;
+  // font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }

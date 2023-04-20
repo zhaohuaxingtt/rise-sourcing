@@ -733,7 +733,7 @@ export default {
 }
 
 .total-table {
-  font-size: 16px !important;
+  // font-size: 16px !important;
   ::v-deep .el-table__row {
     height: unset !important;
   }
