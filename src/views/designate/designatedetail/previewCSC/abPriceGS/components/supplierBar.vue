@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-20 20:44:47
+ * @LastEditTime: 2023-04-20 20:46:34
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -237,7 +237,7 @@
                 <h2>Recommendation</h2>
                 <div class="supplier-box">
                   <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
-                    <p class="supplier-name">{{item.supplier}}</p>
+                    <p class="supplier-name">{{item.supplierNameEn}}</p>
                     <p class="data-info">
                       <span>TTO:{{item.tto}}</span>
                       <span class="margin-left20">{{percent(item.ratio)}}</span>
