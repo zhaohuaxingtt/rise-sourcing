@@ -23,7 +23,21 @@
                         label="Supplier"
                         align="center"
                         minWidth="140"
-                      ></el-table-column>
+                      >
+                        <template slot-scope="scope">
+                          <tooltip
+                            :text="scope.row.supplierNameEn"
+                          >
+                            <template slot="content">
+                              <p :title="scope.row.supplierFullNameZh">
+                                {{ scope.row.supplierFullNameZh }}
+                              </p>
+                              <p :title="scope.row.supplierFullNameEn">
+                                ({{ scope.row.supplierFullNameEn }})
+                              </p>
+                            </template>
+                          </tooltip>
+                        </template></el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -145,19 +159,19 @@
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{
                                   item.targetAPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetAPrice }}
+                            <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{ item.targetAPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }} ({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -213,14 +227,14 @@
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
+                                <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{
                                   item.targetBPrice
                                 }}</span>
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetBPrice }}
+                            <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{ item.targetBPrice }}</span>
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -332,9 +346,35 @@
                           :minWidth="item.width"
                           align="center"
                         >
-                          <template slot="header" slot-scope="scope">
-                            <template v-for="(text, index) in item.label">
-                              <p :key="index">{{ text }}</p>
+                          <template slot="header" slot-scope="scope"
+                            ><template v-if="item.tips">
+                              <div class="icon-box">
+                                <div class="margin-right5">
+                                  <p
+                                    :key="index"
+                                    v-for="(text, index) in item.label"
+                                  >
+                                    {{ text }}
+                                  </p>
+                                </div>
+                                <el-tooltip
+                                  effect="light"
+                                  placement="top"
+                                  :content="item.tips"
+                                >
+                                  <span>
+                                    <icon symbol name="iconxinxitishi" />
+                                  </span>
+                                </el-tooltip>
+                              </div>
+                            </template>
+                            <template v-else>
+                              <p
+                                :key="index"
+                                v-for="(text, index) in item.label"
+                              >
+                                {{ text }}
+                              </p>
                             </template>
                           </template>
                           <template slot-scope="scope">
@@ -432,10 +472,12 @@ import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../../components/tooltip.vue";
 import partTableDetail from "./partTableDetail";
+import { icon } from "rise";
 export default {
   components: {
     tooltip,
-    partTableDetail
+    partTableDetail,
+    icon
   },
   props: {
     row: {
@@ -456,10 +498,10 @@ export default {
         },
         {
           prop: "ltcStartDateList",
-          label: ["LTC Start", " Date"],
+          label: ["LTC", "Start", " Date"],
           target: "",
           budget: "",
-          width: "100",
+          width: "80",
         },
         {
           prop: "totalInvest",
@@ -480,7 +522,8 @@ export default {
           label: ["Total", "Turnover"],
           target: "",
           budget: "",
-          width: "120",
+          width: "110",
+          tips:'base on RFQ volume and latest Quatation'
         },
       ],
       tableData: [],
@@ -597,7 +640,7 @@ export default {
           });
         });
     },
-    prev() {
+    next() {
       if (this.index < this.partAllData.length - 1) {
         this.index++;
       } else {
@@ -612,7 +655,7 @@ export default {
         });
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -666,6 +709,7 @@ export default {
         this.$refs["supplier-table"]?.getElementsByClassName(
           "el-table__header"
         )[0].rows;
+      this.$refs.table.doLayout(); // table重新布局
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
       this.merge(row, 8, 2, 2, "colSpan");
@@ -771,12 +815,20 @@ export default {
         color: #000 !important;
       }
     }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .decoration{
       text-decoration: underline
     }
   }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 .left {

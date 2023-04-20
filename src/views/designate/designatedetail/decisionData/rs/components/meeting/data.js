@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-24 21:19:29
+ * @LastEditTime: 2023-04-12 18:02:29
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -239,7 +239,7 @@ export const gsTableTitle = [
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
-  {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
+  {props:'savingFee',name:'估算节约值', enName: 'Estimated Savings', key: "", minWidth: 120},
   {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 

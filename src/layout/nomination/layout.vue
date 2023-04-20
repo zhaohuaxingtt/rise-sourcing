@@ -13,7 +13,7 @@
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading" id="pdfHide">
-      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision" :isGS="isGS"></router-view>
       <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
@@ -48,12 +48,14 @@ export default {
       isPreview:'0',
       showDecisionLoading: false,
       showDecision: false, // 是否显示决策资料
+      isGS: false,
     }
   },
   created(){
     const {query} = this.$route;
-    const {isPreview = '0'} = query;
+    const { isPreview = "0",  partProjType = ''} = query;
     this.isPreview = isPreview;
+    this.isGS = ['1000003'].includes(partProjType)
     this.$store.dispatch('setPreviewState', isPreview)
     this.nominateAppSDetail()
     if (this.$route.query.sd == 1) {

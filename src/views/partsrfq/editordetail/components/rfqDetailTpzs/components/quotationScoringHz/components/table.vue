@@ -265,6 +265,11 @@ export default{
       }
     }
   },
+  watch:{
+    tableData(val){
+      console.log('tableData=>',val);
+    }
+  },
   computed:{
     cWidth(){
       const indexTabs = this.tableTitle.findIndex(i=>i.props == "headerEbr")

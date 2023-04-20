@@ -2,25 +2,22 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-08 16:18:40
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\partTableList.vue
+ * @LastEditTime: 2023-04-19 11:02:57
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <!-- AB价-零件表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
   <div ref="part-table" v-loading="loading">
-    <div
-      class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
-    >
+    <div class="table-box">
       <el-table
-        v-show="totalTableHeight"
         :data="tableData"
         class="header table"
         ref="table"
         :key="index"
-        border
         height="100%"
+        show-summary
+        :summary-method="summaryMethod"
         :header-cell-class-name="cellClass"
         :header-row-class-name="rowClass"
         :cell-class-name="colClass"
@@ -84,12 +81,7 @@
                     align="center"
                   >
                     <template slot-scope="scope">
-                      <tooltip
-                        :text="
-                          scope.row.carProType ||
-                          scope.row.carTypeNames.join('、')
-                        "
-                      ></tooltip>
+                      <tooltip :text="scope.row.carTypeNames.join('、')" />
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -153,10 +145,28 @@
           <el-table-column label="Rating" align="center">
             <el-table-column>
               <el-table-column>
-                <el-table-column label="F-target" align="center">
+                <el-table-column label="Current" align="center">
+                  <el-table-column
+                    label="Supplier"
+                    prop="currentSupplier"
+                    align="center"
+                    minWidth="85"
+                  >
+                    <template slot-scope="scope">
+                      <tooltip :text="scope.row.currentSupplier"></tooltip>
+                    </template>
+                  </el-table-column>
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+          </el-table-column>
+          <el-table-column>
+            <el-table-column>
+              <el-table-column>
+                <el-table-column>
                   <el-table-column
                     label="A Price"
-                    prop="cfPartAPrice"
+                    prop="currentAPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -170,8 +180,9 @@
                         <div>
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                              (scope.row.cfPartAPrice - scope.row.selAPrice).toFixed(2)
-                                | toThousands(true)
+                              (
+                                scope.row.currentAPrice - scope.row.selAPrice
+                              ).toFixed(2) | toThousands(true)
                             }}
                           </div>
                           <div>
@@ -185,13 +196,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartAPrice"] | toThousands(true)
+                              scope.row["currentAPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                        {{ scope.row["currentAPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>
@@ -205,7 +216,7 @@
                 <el-table-column label="F-target" align="center">
                   <el-table-column
                     label="B Price"
-                    prop="cfPartBPrice"
+                    prop="currentBPrice"
                     align="right"
                     header-align="center"
                     minWidth="80"
@@ -219,8 +230,9 @@
                         <div>
                           <div>
                             {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                              (scope.row.cfPartBPrice - scope.row.selAPrice).toFixed(2)
-                                | toThousands(true)
+                              (
+                                scope.row.currentBPrice - scope.row.selAPrice
+                              ).toFixed(2) | toThousands(true)
                             }}
                           </div>
                           <div>
@@ -234,13 +246,13 @@
                           <p>
                             <span style="color: red">*</span>
                             <span>{{
-                              scope.row["cfPartBPrice"] | toThousands(true)
+                              scope.row["currentBPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                        {{ scope.row["currentBPrice"] | toThousands(true) }}
                       </template>
                     </template>
                   </el-table-column>
@@ -250,10 +262,18 @@
           </el-table-column>
         </el-table-column>
         <template v-for="(item, index) in supplierList">
-          <!-- :key="item.supplierId + index" -->
-          <el-table-column :key="index" align="center">
+          <el-table-column :key="item.supplierId + index" align="center">
             <div slot="header" slot-scope="scope">
-              {{ item.supplierEn || "-" }}
+              <tooltip :text="item.supplierEn">
+                <template slot="content">
+                  <p :title="item.supplierFullNameZh">
+                    {{ item.supplierFullNameZh }}
+                  </p>
+                  <p :title="item.supplierFullNameEn">
+                    ({{ item.supplierFullNameEn }})
+                  </p>
+                </template>
+              </tooltip>
             </div>
             <el-table-column :label="item.TE" align="center">
               <template slot-scope="scope" slot="header">
@@ -332,215 +352,25 @@
         </template>
       </el-table>
     </div>
-    <div ref="total-table" :style="{ 'padding-right': gutter }">
-      <el-table
-        class="header total-table"
-        border
-        :data="totalData"
-        :show-header="false"
-        :span-method="totalCellClass"
-        :cell-class-name="totalColClass"
-      >
-        <!-- 左侧固定表头 -->
-        <template v-for="(item, index) in fixedTitle">
-          <el-table-column :key="index">
-            <el-table-column
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="right"
-            ></el-table-column>
-          </el-table-column>
-        </template>
-        <el-table-column>
-          <el-table-column
-            label="A Price"
-            prop="aPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["aPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
-              </template>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="B Price"
-            prop="bPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["bPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
-              </template>
-            </template>
-          </el-table-column>
-        </el-table-column>
-        <template v-for="(item, index) in supplierList">
-          <el-table-column
-            :label="item.supplierEn"
-            :key="item.supplierId + index"
-            align="center"
-          >
-            <el-table-column
-              :prop="item.supplierId + 'aPrice'"
-              label="A price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>A price</p>
-              </template>
-              <template slot-scope="scope">
-                <template v-if="scope.$index == 0">
-                  {{
-                    scope.row[item.supplierId + "aPrice"] | toThousands(true)
-                  }}
-                </template>
-                <template v-else-if="scope.$index == 1">
-                  <p
-                    v-for="(text, index) in scope.row[
-                      item.supplierId + 'aPrice'
-                    ]"
-                    :key="index"
-                  >
-                    {{ text }}
-                  </p>
-                </template>
-                <template v-else-if="scope.$index == 2">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.investFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        Apportioned amount：{{
-                          getInt(
-                            scope.row[item.supplierId + "toolingShareTotal"]
-                          ) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        Unassessed amount：{{
-                          getInt(
-                            scope.row[item.supplierId + "toolingNotShareTotal"]
-                          ) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
-                  </template>
-                </template>
-                <template v-else-if="scope.$index == 4">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.devFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        Apportioned amount：{{
-                          getInt(
-                            scope.row[item.supplierId + "developShareCostTotal"]
-                          ) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        Unassessed amount：{{
-                          getInt(
-                            scope.row[
-                              item.supplierId + "developNotShareCostTotal"
-                            ]
-                          ) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
-                  </template>
-                </template>
-                <template v-else>{{
-                  getInt(scope.row[item.supplierId + "aPrice"])
-                    | toThousands(true)
-                }}</template>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :prop="item.supplierId + 'bPrice'"
-              label="B price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>B price</p>
-              </template>
-            </el-table-column>
-          </el-table-column>
-        </template>
-      </el-table>
-    </div>
     <partTableDetail :visible.sync="visible" :row="row" />
   </div>
 </template>
 
 <script>
-import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
+import { gsParts } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
+import partTableListTotal from "./partTableListTotal.vue";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, tooltip, partTableListTotal },
   data() {
     return {
       ref: "part-table",
       fixedTitle: [
         {
           prop: "partPrjCode",
-          label: ["FS No. (Plant)"],
+          label: ["GS No. (Plant)"],
           width: 130,
         },
         {
@@ -559,16 +389,6 @@ export default {
           width: 120,
         },
         {
-          prop: "ebr",
-          label: ["EBR"],
-          width: 85,
-        },
-        {
-          prop: "ebrCalculatedValue",
-          label: ["Mixed", "Qty"],
-          width: 60,
-        },
-        {
           prop: "volume",
           label: ["Volume"],
           width: 85,
@@ -579,30 +399,28 @@ export default {
       row: {},
       totalData: [
         {
-          carProType: "Mixed Price",
-          aPrice: "",
-          bPrice: "",
+          supplier: "LTC from Start Date",
         },
         {
-          carProType: "LTC from Start Date",
-        },
-        {
-          carProType: "Total Invest",
+          supplier: "Total Invest",
           volume: "Target",
-          aPrice: "",
         },
         {
-          carProType: "Total Invest",
-          volume: "Budget",
-          aPrice: "",
+          supplier: "Total Budget",
+          volume: "Target",
         },
         {
-          carProType: "Total Development",
-          aPrice: "",
+          supplier: "Total Release Cost",
+          volume: "Cost",
         },
         {
-          carProType: "Total Turnover",
+          supplier: "Total Turnover",
           isMinTto: [],
+          tips:'base on RFQ volume and latest Quatation'
+        },
+        {
+          supplier: "Saving @100% Share",
+          tips:'Total Turnover + Develop cost + Release cost - TTO of current supplier'
         },
       ],
       index: -1,
@@ -640,7 +458,7 @@ export default {
     },
     getData() {
       this.loading = true;
-      fsPartsAsRow(this.$route.query.desinateId)
+      gsParts(this.$route.query.desinateId)
         .then((res) => {
           if (res?.code == "200") {
             let tableData =
@@ -674,59 +492,44 @@ export default {
               obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
+              obj[item.supplierId].supplierFullNameZh = item.supplierFullNameZh;
+              obj[item.supplierId].supplierFullNameEn = item.supplierFullNameEn;
             });
-            totalData[2].investFeeIsShared = [];
-            totalData[4].devFeeIsShared = [];
-            totalData[5].isMinTto = [];
+            totalData[1].investFeeIsShared = [];
+            totalData[4].isMinTto = [];
             let supplierList = Object.values(obj).map((item) => {
-              totalData[0][item.supplierId + "aPrice"] = item.lcMixAPrice;
-              totalData[0][item.supplierId + "bPrice"] = item.lcMixBPrice;
-              totalData[1][item.supplierId + "aPrice"] = [];
+              totalData[0][item.supplierId + "aPrice"] = [];
               item.priceReduceDTOList.forEach((child) => {
                 if (
-                  !totalData[1][item.supplierId + "aPrice"].includes(
+                  !totalData[0][item.supplierId + "aPrice"].includes(
                     `${child.ltc} from ${child.ltcStartDate}`
                   ) &&
-                  child.ltc!=0
+                  child.ltc != 0
                 ) {
-                  totalData[1][item.supplierId + "aPrice"].push(
+                  totalData[0][item.supplierId + "aPrice"].push(
                     `${child.ltc} from ${child.ltcStartDate}`
                   );
                 }
               });
-              totalData[2][item.supplierId + "aPrice"] = item.toolingTotal;
+
+              totalData[1][item.supplierId + "aPrice"] = item.toolingTotal;
               if (item.investFeeIsShared) {
-                totalData[2].investFeeIsShared.push(item.supplierId + "aPrice");
-                totalData[2][item.supplierId + "toolingShareTotal"] =
+                totalData[1].investFeeIsShared.push(item.supplierId + "aPrice");
+                totalData[1][item.supplierId + "toolingShareTotal"] =
                   item.toolingShareTotal;
-                totalData[2][item.supplierId + "toolingNotShareTotal"] =
+                totalData[1][item.supplierId + "toolingNotShareTotal"] =
                   item.toolingNotShareTotal;
               }
-              totalData[4][item.supplierId + "aPrice"] = item.developCostTotal;
-              if (item.devFeeIsShared) {
-                totalData[4].devFeeIsShared.push(item.supplierId + "aPrice");
-                totalData[4][item.supplierId + "developShareCostTotal"] =
-                  item.developShareCostTotal;
-                totalData[4][item.supplierId + "developNotShareCostTotal"] =
-                  item.developNotShareCostTotal;
-              }
-              totalData[5][item.supplierId + "aPrice"] = item.ttoTotal;
+              totalData[2][item.supplierId + "aPrice"] = item.budget;
+              totalData[3][item.supplierId + "aPrice"] = item.releaseCost;
+              totalData[4][item.supplierId + "aPrice"] = item.ttoTotal;
               if (item.isMinTto) {
-                totalData[5].isMinTto.push(item.supplierId + "aPrice");
+                totalData[4].isMinTto.push(item.supplierId + "aPrice");
               }
+              totalData[5][item.supplierId + "aPrice"] = item.totalSaving;
               return item;
             });
             this.allData = supplierList;
-            totalData[0]["aPrice"] =
-              res.data.fsPriceInfo?.targetMixLcAPrice || "";
-            totalData[0]["bPrice"] =
-              res.data.fsPriceInfo?.targetMixLcBPrice || "";
-            totalData[2]["aPrice"] =
-              res.data.fsPriceInfo?.targetTotalInvest || "";
-            totalData[3]["aPrice"] =
-              res.data.fsPriceInfo?.budgetTotalInvest || "";
-            totalData[4]["aPrice"] =
-              res.data.fsPriceInfo?.targetSelTotalSel || "";
             let supplierAllData = _.chunk(supplierList, this.showLength);
             let lastIndex = supplierAllData.length - 1;
             if (supplierAllData[lastIndex].length < this.showLength) {
@@ -737,7 +540,7 @@ export default {
             }
             this.supplierAllData = supplierAllData;
             this.index = 0;
-            this.totalData = totalData;
+            this.totalData = JSON.parse(JSON.stringify(totalData));
             this.$nextTick(() => {
               this.tableData = tableData;
             });
@@ -763,19 +566,26 @@ export default {
         this.$refs["part-table"]?.getElementsByClassName("el-table__header")[0]
           .rows;
       //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 7, "colSpan");
+      this.merge(row, 0, 0, 5, "colSpan");
       this.merge(row, 0, 0, 4, "rowSpan");
-      this.merge(row, 1, 7, 3, "rowSpan");
-      this.merge(row, 4, 7, 2, "colSpan");
+      this.merge(row, 1, 5, 3, "rowSpan");
+      this.merge(row, 1, 5, 2, "colSpan");
+      this.merge(row, 4, 5, 3, "colSpan");
       this.$emit("setPage", {
         index: this.index,
         showLength: this.showLength,
         total: this.allData.length,
       });
+      const row_footer =
+        this.$refs["part-table"]?.getElementsByClassName("el-table__footer")[0]
+          .rows;
+      if (this.tableData.length)
+        this.mergeFooter(row_footer, 0, 0, 8 + this.showLength * 2);
       this.$nextTick(() => {
         setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
         }, 0);
+        this.$refs.table.doLayout();
       });
     },
     // 计算表头合并
@@ -826,54 +636,28 @@ export default {
       }
       row[rowIndex].cells[colIndex][type] = span;
     },
-    // 计算统计表表头合并
-    totalCellClass({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex == 0 && rowIndex == 0) {
-        return [7, 3];
-      } else if (columnIndex < 3 && rowIndex < 7) {
-        return [0, 0];
-      }
-      if ([0, 1, 4, 5].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [1, 4];
-        } else if ([4, 5, 6].includes(columnIndex)) {
-          return [0, 0];
+    // 计算表格合计行合并
+    mergeFooter(row, rowIndex, colIndex, span) {
+      if (!row) return;
+      const col = row[rowIndex].cells;
+      if (!(row || col)) return;
+      if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rIndex = rowIndex;
+      let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+      for (let i = 1; i < span; i++) {
+        let cIndex = i + colIndex;
+        colSpan_ += row[rIndex].cells[cIndex].colSpan;
+        if (colSpan_ == span) {
+          row[rIndex].cells[cIndex].style.display = "none";
+          break;
         }
-      }
-      if ([2].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [2, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
+        if (colSpan_ > span) {
+          row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+          break;
         }
+        row[rIndex].cells[cIndex].style.display = "none";
       }
-      if ([3].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([7].includes(columnIndex) && rowIndex > 0) {
-        return [1, 2];
-      }
-      if ([8].includes(columnIndex) && rowIndex > 0) {
-        return [0, 0];
-      }
-      for (let i = 0; i < this.supplierList.length; i++) {
-        if ([2 * i + 9].includes(columnIndex)) {
-          if ([1, 4, 5].includes(rowIndex)) {
-            return [1, 2];
-          } else if ([2].includes(rowIndex)) {
-            return [2, 2];
-          } else if ([3].includes(rowIndex)) {
-            return [0, 0];
-          }
-        }
-        if ([2 * i + 10].includes(columnIndex) && rowIndex > 0) {
-          return [0, 0];
-        }
-      }
+      row[rowIndex].cells[colIndex].colSpan = span;
     },
     prev() {
       if (this.index < this.supplierAllData.length - 1) {
@@ -905,10 +689,10 @@ export default {
       if (rowIndex == 0 && columnIndex == 0) {
         return "white-bg unit";
       }
-      if (rowIndex == 0 && columnIndex > 7) {
+      if (rowIndex == 0 && columnIndex > 5) {
         return "white-bg";
       }
-      if (rowIndex < 4 && columnIndex > 8) {
+      if (rowIndex < 4 && columnIndex > 7) {
         return "white-bg";
       }
     },
@@ -926,15 +710,8 @@ export default {
           return "font-green";
         }
       }
-    },
-    totalColClass({ row, column, rowIndex, columnIndex }) {
-      if ([3, 4, 5, 6].includes(columnIndex)) {
-        return "table-header";
-      }
-      if (rowIndex == "5") {
-        if (row.isMinTto.includes(column.property)) {
-          return "font-green";
-        }
+      if (["Supplier", "A Price", "B Price"].includes(column.label)) {
+        return "current-column";
       }
     },
     gotoDetail(row) {
@@ -943,13 +720,29 @@ export default {
         this.visible = true;
       });
     },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = (
+            <partTableListTotal
+              totalData={this.totalData}
+              supplierList={this.supplierList}
+            />
+          );
+          return;
+        }
+      });
+      return sums;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .table-box {
-  height: calc(100% - 280px);
+  height: 100%;
 }
 .header {
   ::v-deep th {
@@ -1007,6 +800,23 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+  .el-table__footer-wrapper {
+    .el-table__footer {
+      .has-gutter {
+        & > tr {
+          & > td {
+            padding: 0;
+            & > .cell {
+              padding: 0;
+            }
+            &:first-of-type {
+              border-right: 0;
+            }
+          }
+        }
+      }
+    }
   }
   .red {
     color: #f00;

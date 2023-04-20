@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-02-24 16:17:37
+ * @LastEditTime: 2023-04-14 15:51:07
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -14,11 +14,23 @@
         SOURCING_NOMINATION_ATTATCH_ABPRICE | (决策资料 - abprice)
       "
     >
-      <div class="btn-list" v-if="!nominationDisabled && !rsDisabled">
-        <iButton @click="visible = true">输入VSI</iButton>
-        <iButton v-show="false" @click="strategyVisible = true">strategy</iButton>
+      <div class="card-header">
+        <div v-if="!nominationDisabled && !rsDisabled">
+          <span class="margin-right20">默认展示:</span>
+          <i-select v-model="defaultTable" style="width:200px" @change="changeStatus">
+            <template v-for="item in config_list">
+              <el-option v-if="config_Name[item.operateCode]" :value="item.operateCode" :label="config_Name[item.operateCode]" :key="item.operateCode"></el-option>
+            </template>
+          </i-select>
+        </div>
+        <div class="btn-list" v-if="!nominationDisabled && !rsDisabled">
+          <iButton @click="visible = true">输入VSI</iButton>
+          <iButton v-show="false" @click="strategyVisible = true">strategy</iButton>
+        </div>
       </div>
-      <abPrice ref="abPrice" :strategy="strategy" />
+      <!-- <abPrice ref="abPrice" :strategy="strategy" />
+      <abPriceGS ref="abPrice" :strategy="strategy" /> -->
+      <component ref="abPrice" :is="component" :key="component" :strategy="strategy" />
     </iCard>
 
     <editDialog
@@ -38,17 +50,26 @@
   </div>
 </template> 
 <script>
-import { iButton, iCard } from "rise";
+import { iButton, iCard, iSelect } from "rise";
 import editDialog from "./components/editDialog";
 import strategyDialog from "./components/strategyDialog";
 import abPrice from "./abPrice"; // UI一样,但是布局需要调整
+import abPriceGS from "./abPriceGS"; // UI一样,但是布局需要调整
 import {
+  getList,
+  update,
   analysisNomiCarProject,
   getNomiRemark,
   updateNomiRemark,
 } from "@/api/partsrfq/editordetail/abprice";
 export default {
-  components: { editDialog, strategyDialog, iButton, iCard, abPrice },
+  components: { editDialog, strategyDialog, iButton, iCard, abPrice, iSelect, abPriceGS },
+  props:{
+    isGS:{
+      type:Boolean,
+      default: false
+    }
+  },
   computed: {
     isRoutePreview() {
       return this.$route.query.isPreview == 1;
@@ -59,7 +80,16 @@ export default {
       visible: false,
       strategyVisible: false,
       carTypeList: [],
+      config_Name:{
+        supplier:'Supplier',
+        part:'Part',
+        best_ball:'Best ball',
+        gs_part:'Detail',
+      },
+      config_list:[],
       strategy: "",
+      defaultTable:'',
+      component:''
     };
   },
   computed:{
@@ -68,11 +98,44 @@ export default {
       rsDisabled: state => state.nomination.rsDisabled,
     }),
   },
+  watch:{
+    isGS:{
+      handler(val){
+        if(val){
+          this.component = "abPriceGS";
+        }else{
+          this.component = "abPrice";
+        }
+      },
+      immediate:true
+    }
+  },
   created() {
+    this.getList()
     this.getNomiRemark();
     this.analysisNomiCarProject();
   },
   methods: {
+    getList() {
+      getList({
+        businessId:this.$route.query.desinateId,
+        type: "nominate_ab_price",
+      }).then(res=>{
+        console.log(res);
+        this.config_list = res.data
+        this.defaultTable = res.data.find(item=>{return item.isShow})?.operateCode || 'supplier'
+      })
+    },
+    changeStatus() {
+      let params = this.config_list.map(item=>{
+        item.isShow = false
+        if(item.operateCode==this.defaultTable){
+          item.isShow = true
+        }
+        return item
+      });
+      update(params)
+    },
     getData() {
       this.$refs.abPrice.findVsi()
     },
@@ -124,8 +187,14 @@ export default {
     }
   }
 }
-.btn-list {
-  text-align: right;
+.card-header{
+  display: flex;
+  font-size: 16px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  .btn-list {
+    text-align: right;
+  }
 }
 .abPrice {
   ::v-deep * {

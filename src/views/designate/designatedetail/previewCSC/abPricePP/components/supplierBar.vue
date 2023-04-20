@@ -2,8 +2,8 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-30 17:41:06
- * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPrice\components\supplierBar.vue
+ * @LastEditTime: 2023-04-20 20:46:41
+ * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -42,7 +42,7 @@
       :data="tableData"
       class="header"
       ref="table"
-      :key="detail.carTypeProjectNum"
+      :key="tableData.length"
       :highlight-current-row="false"
       :cell-class-name="colClass"
       :row-class-name="rowClass"
@@ -70,7 +70,7 @@
             <template v-if="scope.$index == 0">
               <barItem
                 :height="height"
-                :key="detail.carTypeProjectNum + item.supplierNameEn"
+                :key="item.supplierNameEn"
                 :barName="item.supplierNameEn"
                 :data="item"
                 :max="max"
@@ -130,34 +130,30 @@
             <template
               v-else-if="['totalInvest'].includes(columnLabel[scope.$index])"
             >
-              <el-popover
+            <el-popover
                 placement="top-start"
                 trigger="hover"
                 v-if="item.investFeeIsShared && item[columnLabel[scope.$index]]"
               >
                 <div>
                   <div>
-                    Apportioned amount：{{
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
                       getInt(item.toolingShareTotal) | toThousands(true)
+
                     }}
                   </div>
                   <div>
-                    Unassessed amount：{{
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
                       getInt(item.toolingNotShareTotal) | toThousands(true)
                     }}
                   </div>
                 </div>
                 <div slot="reference">
-                  <span style="color: red">*</span
-                  >{{
-                    getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-                  }}
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
                 </div>
               </el-popover>
               <template v-else>
-                {{
-                  getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-                }}
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
               </template>
             </template>
             <template
@@ -165,40 +161,36 @@
                 ['totalDevelopCost'].includes(columnLabel[scope.$index])
               "
             >
-              <el-popover
+            <el-popover
                 placement="top-start"
                 trigger="hover"
                 v-if="item.devFeeIsShared && item[columnLabel[scope.$index]]"
               >
                 <div>
                   <div>
-                    Apportioned amount：{{
+                    {{ language("FENTANJINE", "分摊金额") }}：{{
                       getInt(item.developShareCostTotal) | toThousands(true)
+
                     }}
                   </div>
                   <div>
-                    Unassessed amount：{{
+                    {{ language("WEIFENTANJINE", "未分摊金额") }}：{{
                       getInt(item.developNotShareCostTotal) | toThousands(true)
                     }}
                   </div>
                 </div>
                 <div slot="reference">
-                  <span style="color: red">*</span
-                  >{{
-                    getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-                  }}
+                  <span style="color: red">*</span>{{ getInt(item[columnLabel[scope.$index]]) | toThousands(true) }}
                 </div>
               </el-popover>
               <template v-else>
-                {{
-                  getInt(item[columnLabel[scope.$index]]) | toThousands(true)
-                }}
+                {{getInt(item[columnLabel[scope.$index]]) | toThousands(true)}}
               </template>
             </template>
             <template
               v-else-if="['totalTurnover'].includes(columnLabel[scope.$index])"
             >
-              <span :class="{ 'font-green': item.isMinTto }">{{
+              <span>{{
                 getInt(item[columnLabel[scope.$index]]) | toThousands(true)
               }}</span>
             </template>
@@ -220,7 +212,7 @@
             <template v-if="scope.$index == 0">
               <barItemVSI
                 v-if="item.prop == 'VSI'"
-                :key="detail.carTypeProjectNum"
+                :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
@@ -230,20 +222,27 @@
               />
               <barItemKGF
                 v-else-if="item.prop == 'KGF'"
-                :key="detail.carTypeProjectNum"
+                :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
                 :max="max"
               />
-              <!-- <template v-else-if="item.prop == 'Recommendation'">
+              <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
                 popper-class="supplier-pop"
               >
+                <h2>Recommendation</h2>
                 <div class="supplier-box">
-                  <p v-for="i in 30" :key="i"><span>{{supplierSap}}</span>-<span>{{supplier}}</span></p>
+                  <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
+                    <p class="supplier-name">{{item.supplierNameEn}}</p>
+                    <p class="data-info">
+                      <span>TTO:{{item.tto}}</span>
+                      <span class="margin-left20">{{percent(item.ratio)}}</span>
+                    </p>
+                  </div>
                 </div>
                 <div slot="reference">
                   <barItem
@@ -256,10 +255,10 @@
                   />
                 </div>
               </el-popover>
-              </template> -->
+              </template>
               <barItem
                 v-else
-                :key="detail.carTypeProjectNum + item.prop"
+                :key="item.prop"
                 :height="height"
                 :barName="item.label"
                 :data="item"
@@ -394,6 +393,7 @@ export default {
         "totalTurnover",
       ], // 'bar不显示,只占位
       supplierList: [],
+      dialogSupplierList:[],
       fixedList: [
         { prop: "Recommendation", label: "Recommendation", colorA: "#395e78" },
         { prop: "LTC", label: "After LTC", colorA: "#395e78" },
@@ -415,6 +415,9 @@ export default {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
+    percent(val) {
+      return (val * 100).toFixed(2) + "%";
+    },
     analysisSummaryNomi() {
       this.loading = true;
       analysisSummaryNomi({
@@ -424,16 +427,15 @@ export default {
         .then((res) => {
           if (res?.code != 200) return;
           this.max = null;
-          // VSI
           let allPrice = [this.detail.vsi || 0];
           let fixedList = JSON.parse(JSON.stringify(this.fixedList));
           let tableData = JSON.parse(JSON.stringify(this.tableData));
+          this.dialogSupplierList = res.data.recommendationNomiSupplierList || []
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];
               item.aPrice = item.mixAPrice;
               item.bPrice = item.mixBPrice;
-              // 供应商
               allPrice.push(
                 deleteThousands(item.mixAPrice || 0),
                 deleteThousands(item.mixBPrice || 0)
@@ -454,7 +456,6 @@ export default {
             }) || [];
           fixedList[0].aPrice = res.data.recommendationNomi?.lcMixAPrice || 0;
           fixedList[0].bPrice = res.data.recommendationNomi?.lcMixBPrice || 0;
-          // recommendation
           allPrice.push(
             deleteThousands(res.data.recommendationNomi?.lcMixAPrice || 0),
             deleteThousands(res.data.recommendationNomi?.lcMixBPrice || 0)
@@ -465,15 +466,12 @@ export default {
           fixedList[1].bPrice = deleteThousands(
             res.data.ltcPriceInfo.ltcMixBPrice || 0
           );
-          // After LTC
           allPrice.push(
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0),
             deleteThousands(res.data.ltcPriceInfo?.ltcMixAPrice || 0)
           );
           fixedList[2].aPrice = res.data.targetMixAPrice;
           fixedList[2].bPrice = res.data.targetMixBPrice;
-
-          // After F-Target
           allPrice.push(
             deleteThousands(res.data.targetMixAPrice || 0),
             deleteThousands(res.data.targetMixBPrice || 0)
@@ -481,7 +479,6 @@ export default {
           fixedList[3].aPrice = res.data.kmInfo?.pca || 0;
           fixedList[3].bPrice = res.data.kmInfo?.openGap || 0;
           fixedList[3].cPrice = res.data.kmInfo?.greenFieldMeasure || 0;
-          // After KGF
           if (res.data.kmInfo)
             allPrice.push(
               deleteThousands(res.data.kmInfo?.pca || 0),
@@ -625,12 +622,12 @@ export default {
 }
 </style>
 <style lang="scss">
-.supplier-pop {
+.supplier-pop{
   margin-left: -20px !important;
-  .supplier-box {
-    height: 300px;
+  .supplier-box{
+    max-height: 300px;
     overflow: auto;
-
+    
     &::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -641,6 +638,17 @@ export default {
     }
     &::-webkit-scrollbar-track {
       width: 8px;
+    }
+    .supplier-item{
+      margin: 10px 5px;
+      .supplier-name{
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .data-info{
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-27 17:51:24
+ * @LastEditTime: 2023-04-13 15:54:04
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\rs\components\meeting\data.js
  */
@@ -244,29 +244,29 @@ export const accessoryTableTitle = [
 
 // GS零件
 export const gsTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'GS-NO.', key: "",minWidth:84, fixed: true},
-  {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74, fixed: true},
-  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)', key: "", minWidth: 74, fixed: true},
-  {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68, fixed: true},
-  {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 70},
-  {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 70},
-  {props:'suppliersNow',name:'现供供应商', enName: 'Current Supplier', key: "", minWidth: 110},
-  {props:'svwCode',name:'供应商号', enName: 'Code', key: "", minWidth: 58},
-  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 66},
-  {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 88},
-  {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "", minWidth: 60},
-  {props:'carTypeName',name:'车型', enName: 'Car Type Name', key: "", minWidth: 60},
-  {props:'presentPrice',name:'现供价格', enName: 'Current Price', key: "", minWidth: 90},
-  {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 68},
-  {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 80 },
-  {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 80},
-  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 100 },
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 116},
-  {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
-  {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
-  {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
+  {props:'fsnrGsnrNum',name: 'GS-NO.', subItem:['(Plant)'], key: "",minWidth:90},
+  {props:'demand',name:'年需求', subItem:['Demand', '(K)'], key: "", minWidth: 60},
+  {props:'output',name:'年产能', subItem:['Capa.', '(K)'], key: "", minWidth: 50},
+  {props:'partNo',name:'零件号', subItem:['Part No.'], key: "", minWidth: 100},
+  {props:'partName',name:'零件名称', subItem:['Part Name'], key: "", minWidth: 100},
+  {props:'logNorm',name:'物流标准', subItem:['Log','Norm'], key: "", minWidth: 60},
+  {props:'suppliersNow',name:'现供供应商', subItem:['Current','Supplier'], key: "", minWidth: 80},
+  {props:'svwCode',name:'供应商号', subItem: ['Code'], key: "", minWidth: 50},
+  {props:'supplierName',name:'供应商', subItem: ['Supplier'], key: "", minWidth: 66},
+  {props:'prodLocation',name:'产地', subItem: ['Prod.','Location'], key: "", minWidth: 70},
+  {props:'share',name:'份额', subItem: ['Share', '(%)'], key: "", minWidth: 50},
+  {props:'carTypeName',name:'车型', subItem: ['Car','Type','Name'], key: "", minWidth: 60},
+  {props:'presentPrice',name:'现供价格', subItem: ['Current','Price'], key: "", minWidth: 70},
+  {props:'status',name:'供货状态', subItem: ['Status'], key: "", minWidth: 68},
+  {props:'aprice',name:'A价', subItem: ['A Price'], key: "", minWidth: 80 },
+  {props:'bprice',name:'B价', subItem: ['B Price'], key: "", minWidth: 80},
+  {props:'ltc',name:'年降', subItem: ['LTC'], key: "", width: 60 },
+  {props:'beginYearReduce',name:'年降开始时间', subItem: ['LTC','Start','Date'], key: "", minWidth: 65},
+  {props:'investFee',name:'投资费', subItem: ['Invest'], key: "", minWidth: 70},
+  {props:'devFee',name:'开发费', subItem: ['Develop','Cost'], key: "", minWidth: 80},
+  {props:'addFee',name:'认可费', subItem: ['Release','Cost'], key: "", minWidth: 80},
+  {props:'savingFee',name:'估算节约值', subItem: ['Estimated','Savings'], key: "", minWidth: 90},
+  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 90},
 ]
 
 // DB零件

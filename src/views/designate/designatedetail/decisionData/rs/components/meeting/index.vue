@@ -517,43 +517,6 @@
         </div>
       </div>
     </div>
-    <div class="rsPdfWrapper" :style="{ width: pageWidth + 'px' }">
-      <rsPdf
-        ref="rsPdf"
-        v-if="showpdf"
-        :cardTitle="cardTitle"
-        :cardTitleEn="cardTitleEn"
-        :isSingle="isSingle"
-        :leftTitle="leftTitle"
-        :rightTitle="rightTitle"
-        :basicData="basicData"
-        :tableTitle="tableTitle"
-        :tableData="tableData"
-        :remarkItem="remarkItem"
-        :remarkList="remarkList"
-        :projectType="projectType"
-        :exchangeRageCurrency="exchangeRageCurrency"
-        :exchangeRates="exchangeRates"
-        :showSignatureForm="showSignatureForm"
-        :isAuth="isAuth"
-        :checkList="checkList"
-        :processApplyDate="processApplyDate"
-        :prototypeList="PrototypeList"
-        :tableList="tableList"
-        :tableHeight="tableHeight"
-        :otherPageHeight="otherPageHeight"
-        :residualRemark="residualRemark"
-        :hasLastPage="hasLastPage"
-        :prototypeListPageHeight="prototypeListPageHeight"
-        :prototypeTableList="prototypeTableList"
-        :prototypeTitleList="prototypeTitleList"
-      >
-        <template #tabTitle>
-          <slot name="tabTitle"></slot>
-        </template>
-      </rsPdf>
-      <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
-    </div>
     <div id="hide">
       <iCard class="rsCard">
         <template #header>
