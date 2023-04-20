@@ -304,9 +304,10 @@
           align="center"
           prop="ltc"
         ></el-table-column>
-        <el-table-column align="center" prop="ltcStartDate" min-width="90">
+        <el-table-column align="center" prop="ltcStartDate" min-width="80">
           <template slot="header" slot-scope="scope">
-            <p>LTC Start</p>
+            <p>LTC</p>
+            <p>Start</p>
             <p>Date</p>
           </template>
           <template slot-scope="scope">
@@ -360,13 +361,22 @@
           align="right"
           header-align="center"
           prop="totalTurnover"
-          min-width="90"
+          min-width="110"
           label="Total Turnover"
         >
           <template slot="header" slot-scope="scope">
-            <p>Total</p>
-            <p>Turnover</p>
-          </template></el-table-column
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Total</p>
+                  <p>Turnover</p>
+                </div>
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quatation">
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
+            </template></el-table-column
         >
       </el-table-column>
       <el-table-column>
@@ -374,12 +384,22 @@
           align="right"
           header-align="center"
           prop="saving"
-          min-width="130"
+          min-width="100"
         >
           <template slot="header" slot-scope="scope">
-            <p>Saving</p>
-            <p>@100% Share</p>
-          </template></el-table-column
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Saving</p>
+                  <p>@100%</p>
+                  <p>Share</p>
+                </div>
+                <el-tooltip effect="light" placement="top" content="Total Turnover + Develop cost + Release cost - TTO of current supplier">
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
+            </template></el-table-column
         >
         <el-table-column
           align="right"
@@ -407,8 +427,9 @@ import {
 import partTableDetail from "./partTableDetail";
 import bestBallTableListTotal from "./bestBallTableListTotal";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
+import { icon } from "rise";
 export default {
-  components: { partTableDetail, tooltip, bestBallTableListTotal },
+  components: { partTableDetail, tooltip, bestBallTableListTotal, icon },
   data() {
     return {
       ref: "best-ball",
@@ -416,7 +437,7 @@ export default {
       fixedTitle: [
         {
           prop: "fsNum",
-          label: ["FS No. (Plant)"],
+          label: ["GS No. (Plant)"],
           width: 130,
         },
         {
@@ -614,7 +635,7 @@ export default {
         return "current-column";
       }
       let className = "";
-      if (columnIndex > 6) {
+      if (columnIndex > 6 && columnIndex < 18) {
         if (this.label == "Best ball") {
           // best_ball 全绿,只判断蓝色背景
           if (row.suggestFlag) {
@@ -702,6 +723,11 @@ export default {
       .cell {
         color: #000 !important;
       }
+    }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .el-table__footer-wrapper {

@@ -351,9 +351,10 @@
             align="center"
             prop="ltc"
           ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="90">
+          <el-table-column align="center" prop="ltcStartDate" min-width="80">
             <template slot="header" slot-scope="scope">
-              <p>LTC Start</p>
+              <p>LTC</p>
+              <p>Start</p>
               <p>Date</p>
             </template>
             <template slot-scope="scope">
@@ -399,12 +400,34 @@
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="90"
+            min-width="110"
             label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
-              <p>Total</p>
-              <p>Turnover</p>
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Total</p>
+                  <p>Turnover</p>
+                </div>
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quatation">
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
+            </template></el-table-column
+          >
+        </el-table-column>
+        <el-table-column>
+          <el-table-column
+            align="right"
+            header-align="center"
+            prop="budgetInvest"
+            min-width="90"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>Invest</p>
+              <p>Budget</p>
             </template></el-table-column
           >
         </el-table-column>
@@ -419,8 +442,9 @@ import tooltip from "../../components/tooltip.vue";
 import { getNomiEffectiveQuotation } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
+import { icon } from "rise";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, tooltip, icon },
   data() {
     return {
       ref: "detail",
@@ -593,6 +617,11 @@ export default {
       .cell {
         color: #000 !important;
       }
+    }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .el-table__footer-wrapper {

@@ -400,6 +400,7 @@ export default {
         {
           carProType: "Total Turnover",
           isMinTto: [],
+          tips:'base on RFQ volume and latest Quatation'
         },
       ],
       index: -1,

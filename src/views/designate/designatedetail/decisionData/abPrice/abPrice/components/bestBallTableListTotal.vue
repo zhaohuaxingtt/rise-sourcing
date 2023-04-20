@@ -37,7 +37,7 @@
           <el-table-column
             label="A Price"
             prop="targetAPrice"
-            minWidth="80"
+            minWidth="85"
             align="right"
             header-align="center"
           >
@@ -45,7 +45,7 @@
           <el-table-column
             label="B Price"
             prop="targetBPrice"
-            minWidth="80"
+            minWidth="85"
             align="right"
             header-align="center"
           >
@@ -84,7 +84,7 @@
           align="right"
           header-align="center"
           prop="lcAPrice"
-          minWidth="80"
+          minWidth="85"
         >
           <template slot-scope="scope">
             {{ scope.row["lcAPrice"] | toThousands(true) }}
@@ -95,7 +95,7 @@
           align="right"
           header-align="center"
           prop="lcBPrice"
-          minWidth="80"
+          minWidth="85"
         >
           <template slot-scope="scope">
             {{ scope.row["lcBPrice"] | toThousands(true) }}
@@ -121,7 +121,7 @@
           label="LTC Start Date"
           align="center"
           prop="ltcStartDate"
-          min-width="90"
+          min-width="80"
         ></el-table-column>
         <el-table-column
           label="Develop Cost"
@@ -139,7 +139,7 @@
           align="right"
           header-align="center"
           prop="totalTurnover"
-          min-width="90"
+          min-width="110"
         >
           <template slot-scope="scope">
             {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}

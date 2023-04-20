@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-17 18:43:59
+ * @LastEditTime: 2023-04-20 19:23:42
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -234,7 +234,7 @@
                 trigger="hover"
                 popper-class="supplier-pop"
               >
-                <h2>recommendation</h2>
+                <h2>Recommendation</h2>
                 <div class="supplier-box">
                   <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
                     <p class="supplier-name">{{item.supplier}}</p>

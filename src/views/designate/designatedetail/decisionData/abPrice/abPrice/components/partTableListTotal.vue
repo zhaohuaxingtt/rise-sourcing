@@ -15,7 +15,26 @@
           :label="item.label"
           :width="item.width"
           align="right"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <template v-if="scope.row.tips">
+              <div class="icon-box">
+                <div class="margin-right5">
+                  {{ scope.row[item.prop] }}
+                </div>
+                <el-tooltip
+                  effect="light"
+                  placement="top"
+                  :content="scope.row.tips"
+                >
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
+            </template>
+            <template v-else>{{ scope.row[item.prop] }}</template>
+          </template></el-table-column>
       </el-table-column>
     </template>
     <el-table-column>
@@ -186,7 +205,9 @@
 
 <script>
 import { numberProcessor, toThousands } from "@/utils";
+import { icon } from "rise";
 export default {
+  components:{icon},
   props: {
     totalData: { type: Array, default: () => [] },
     supplierList: { type: Array, default: () => [] },
@@ -381,58 +402,12 @@ export default {
     color: #000;
     .cell {
       padding: 0 4px;
+      .icon-box{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
-  }
-}
-.left {
-  transform: translate(-12px, 0px);
-  width: 12px;
-  height: 84px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    transform: rotate(180deg);
-    width: 12px;
-    user-select: none;
-  }
-}
-.right {
-  transform: translate(-3px, 0px);
-  width: 12px;
-  height: 84px;
-  background: #0092eb;
-  border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  z-index: 999;
-  .icon {
-    width: 12px;
-    user-select: none;
-  }
-}
-
-.table {
-  ::v-deep .el-table__header {
-    background-color: #364d6e;
-    tr:nth-child(even) {
-      background-color: #364d6e;
-    }
-  }
-}
-
-.tips {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  .legend {
-    display: inline-block;
-    width: 25px;
-    height: 20px;
-    background: #bdd7ee;
   }
 }
 </style>

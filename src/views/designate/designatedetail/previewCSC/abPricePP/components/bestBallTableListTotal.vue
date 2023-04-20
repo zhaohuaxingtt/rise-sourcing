@@ -121,7 +121,7 @@
           label="LTC Start Date"
           align="center"
           prop="ltcStartDate"
-          min-width="110"
+          min-width="80"
         ></el-table-column>
         <el-table-column
           label="Develop Cost"
@@ -389,6 +389,11 @@ export default {
       .cell {
         color: #000 !important;
       }
+    }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .red {

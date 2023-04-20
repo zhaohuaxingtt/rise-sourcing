@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-20 15:14:00
+ * @LastEditTime: 2023-04-20 17:28:33
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\index.vue
@@ -35,13 +35,13 @@
           v-model="tabTable"
           @change="change"
         >
+          <el-radio-button label="gs_part">Detail</el-radio-button>
           <el-radio-button label="supplier">Supplier</el-radio-button>
           <el-radio-button label="part">Part</el-radio-button>
-          <el-radio-button label="best_ball">Best ball</el-radio-button>
-          <el-radio-button label="gs_part">Detail</el-radio-button>
-          <el-radio-button label="Detailed_Worksheet" @click="exportExcel"
+          <el-radio-button label="best_ball">{{'Bestball & Recom.'}}</el-radio-button>
+          <!-- <el-radio-button label="Detailed_Worksheet" @click="exportExcel"
             >Detailed Worksheet</el-radio-button
-          >
+          > -->
         </el-radio-group>
         <!-- 柱状图 -->
         <el-radio-group

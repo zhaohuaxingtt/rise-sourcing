@@ -212,9 +212,32 @@
                       :minWidth="item.width"
                       align="center"
                     >
-                      <template slot="header" slot-scope="scope">
-                        <template v-for="(text, index) in item.label">
-                          <p :key="index">{{ text }}</p>
+                      <template slot="header" slot-scope="scope"
+                        ><template v-if="item.tips">
+                          <div class="icon-box">
+                            <div class="margin-right5">
+                              <p
+                                :key="index"
+                                v-for="(text, index) in item.label"
+                              >
+                                {{ text }}
+                              </p>
+                            </div>
+                            <el-tooltip
+                              effect="light"
+                              placement="top"
+                              :content="item.tips"
+                            >
+                              <span>
+                                <icon symbol name="iconxinxitishi" />
+                              </span>
+                            </el-tooltip>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <p :key="index" v-for="(text, index) in item.label">
+                            {{ text }}
+                          </p>
                         </template>
                       </template>
                       <template slot-scope="scope">
@@ -311,9 +334,11 @@
 import { analysisSummaryNomiGS } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
+import { icon } from "rise";
 export default {
   components: {
     tooltip,
+    icon
   },
   props: {
     row: {
@@ -359,13 +384,15 @@ export default {
           target: "",
           budget: "",
           width: "130",
+          tips:'base on RFQ volume and latest Quatation'
         },
         {
           prop: "savingTotal",
-          label: ["Saving", "@100% Share"],
+          label: ["Saving", "@100%","Share"],
           target: "",
           budget: "",
-          width: "130",
+          width: "100",
+          tips:'Total Turnover + Develop cost + Release cost - TTO of current supplier'
         },
         {
           prop: "sopDate",
@@ -508,7 +535,7 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       let className = "";
-      if (columnIndex > 3 && row.suggestFlag.length) {
+      if (columnIndex > 3 && columnIndex < 11 && row.suggestFlag.length) {
         className = "blue-border";
       }
       if (["partAPrice", "partBPrice"].includes(column.label)) {
@@ -538,10 +565,6 @@ export default {
         this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
         this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
         this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
-        // this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
-      } else {
-        this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-        this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
       }
     },
     // 计算表头合并
@@ -628,6 +651,11 @@ export default {
         font-weight: 500;
         color: #000 !important;
       }
+    }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .red {

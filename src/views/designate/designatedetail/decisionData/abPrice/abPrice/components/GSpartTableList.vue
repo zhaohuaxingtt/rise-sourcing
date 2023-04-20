@@ -32,34 +32,34 @@
                 >
               </template>
             </el-table-column>
-          <el-table-column
-            :key="item.prop"
-            v-else-if="item.prop == 'ebr'"
-            :prop="item.prop"
-            :label="item.label"
-            :width="item.width"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <span>{{ percent(scope.row.ebr) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :key="item.prop"
-            v-else-if="item.prop == 'mixQty'"
-            :prop="item.prop"
-            :label="item.label"
-            :width="item.width"
-            align="center"
-            ><template slot="header" slot-scope="scope">
-              <p v-for="(text, index) in item.label" :key="index">
-                {{ text }}
-              </p>
-            </template>
-            <template slot-scope="scope">
-              <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
-            </template>
-          </el-table-column>
+            <el-table-column
+              :key="item.prop"
+              v-else-if="item.prop == 'ebr'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <span>{{ percent(scope.row.ebr) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="item.prop"
+              v-else-if="item.prop == 'mixQty'"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.width"
+              align="center"
+              ><template slot="header" slot-scope="scope">
+                <p v-for="(text, index) in item.label" :key="index">
+                  {{ text }}
+                </p>
+              </template>
+              <template slot-scope="scope">
+                <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               :key="item.prop"
               v-else-if="item.prop == 'volume'"
@@ -147,7 +147,11 @@
                   <div slot="reference">
                     <p>
                       <span style="color: red">*</span>
-                      <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">
+                      <span
+                        :class="{
+                          chengse: scope.row['cfPartAPriceStatus'] == 2,
+                        }"
+                      >
                         {{
                           deleteThousands(scope.row.targetAPrice)
                             | toThousands(true)
@@ -157,9 +161,13 @@
                   </div>
                 </el-popover>
                 <template v-else>
-                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
-                    deleteThousands(scope.row.targetAPrice) | toThousands(true)
-                  }}</span>
+                  <span
+                    :class="{ chengse: scope.row['cfPartAPriceStatus'] == 2 }"
+                    >{{
+                      deleteThousands(scope.row.targetAPrice)
+                        | toThousands(true)
+                    }}</span
+                  >
                 </template>
               </template>
             </el-table-column>
@@ -194,7 +202,11 @@
                   <div slot="reference">
                     <p>
                       <span style="color: red">*</span>
-                      <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">
+                      <span
+                        :class="{
+                          chengse: scope.row['cfPartBPriceStatus'] == 2,
+                        }"
+                      >
                         {{
                           deleteThousands(scope.row.targetBPrice)
                             | toThousands(true)
@@ -204,9 +216,13 @@
                   </div>
                 </el-popover>
                 <template v-else>
-                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{
-                    deleteThousands(scope.row.targetBPrice) | toThousands(true)
-                  }}</span>
+                  <span
+                    :class="{ chengse: scope.row['cfPartBPriceStatus'] == 2 }"
+                    >{{
+                      deleteThousands(scope.row.targetBPrice)
+                        | toThousands(true)
+                    }}</span
+                  >
                 </template>
               </template>
             </el-table-column>
@@ -350,9 +366,10 @@
             align="center"
             prop="ltc"
           ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="90">
+          <el-table-column align="center" prop="ltcStartDate" min-width="80">
             <template slot="header" slot-scope="scope">
-              <p>LTC Start</p>
+              <p>LTC</p>
+              <p>Start</p>
               <p>Date</p>
             </template>
             <template slot-scope="scope">
@@ -380,12 +397,37 @@
             align="right"
             header-align="center"
             prop="totalTurnover"
-            min-width="90"
+            min-width="110"
             label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
-              <p>Total</p>
-              <p>Turnover</p>
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Total</p>
+                  <p>Turnover</p>
+                </div>
+                <el-tooltip
+                  effect="light"
+                  placement="top"
+                  content="base on RFQ volume and latest Quatation"
+                >
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div> </template
+          ></el-table-column>
+        </el-table-column>
+        <el-table-column>
+          <el-table-column
+            align="right"
+            header-align="center"
+            prop="budgetInvest"
+            min-width="90"
+          >
+            <template slot="header" slot-scope="scope">
+              <p>Invest</p>
+              <p>Budget</p>
             </template></el-table-column
           >
         </el-table-column>
@@ -400,8 +442,9 @@ import tooltip from "../../../components/tooltip.vue";
 import { getNomiEffectiveQuotation } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
+import { icon } from "rise";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, tooltip, icon },
   data() {
     return {
       ref: "detail",
@@ -473,29 +516,31 @@ export default {
       return (val * 100).toFixed(2) + "%";
     },
     getData() {
-      this.loading = true
+      this.loading = true;
       this.index = this.label == "Best ball" ? 0 : 1;
-      getNomiEffectiveQuotation(this.$route.query.desinateId).then((res) => {
-        if (res?.code == "200") {
-          let tableData = (res.data.analysisNomiPriceInfoList || []).map(
-            (child, i) => {
-              let item = JSON.parse(JSON.stringify(child));
-              let next = res.data.analysisNomiPriceInfoList[1 + i];
-              if (!next || next.fsNum != item.fsNum) {
-                item.underline = true;
-              } else {
-                item.underline = false;
+      getNomiEffectiveQuotation(this.$route.query.desinateId)
+        .then((res) => {
+          if (res?.code == "200") {
+            let tableData = (res.data.analysisNomiPriceInfoList || []).map(
+              (child, i) => {
+                let item = JSON.parse(JSON.stringify(child));
+                let next = res.data.analysisNomiPriceInfoList[1 + i];
+                if (!next || next.fsNum != item.fsNum) {
+                  item.underline = true;
+                } else {
+                  item.underline = false;
+                }
+                return item;
               }
-              return item;
-            }
-          );
-          this.tableData = tableData;
-          console.log("tableData=>", tableData);
-        } else {
-          this.tableData = [];
-        }
-      }).finally(()=>{
-          this.loading = false
+            );
+            this.tableData = tableData;
+            console.log("tableData=>", tableData);
+          } else {
+            this.tableData = [];
+          }
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     isCLevel(val) {
@@ -519,7 +564,12 @@ export default {
           className = "blue-border";
         }
       }
-      if (["A Price(LC)", "B Price(LC)", 'Total Turnover'].includes(column.label) && row.isMinTto) {
+      if (
+        ["A Price(LC)", "B Price(LC)", "Total Turnover"].includes(
+          column.label
+        ) &&
+        row.isMinTto
+      ) {
         if (row.isMinTto) {
           className += " font-green";
         }
@@ -584,6 +634,11 @@ export default {
         color: #000 !important;
       }
     }
+    .icon-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
   .el-table__footer-wrapper {
     .el-table__footer {
@@ -605,7 +660,7 @@ export default {
   .red {
     color: #f00;
   }
-  .chengse{
+  .chengse {
     color: $color-delete;
   }
   .fs-group {

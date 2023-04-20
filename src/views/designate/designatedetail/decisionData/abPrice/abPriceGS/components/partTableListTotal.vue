@@ -29,7 +29,23 @@
                 minWidth="80"
               >
                 <template slot-scope="scope">
-                  {{ scope.row["supplier"] }}
+                    <template v-if="scope.row.tips">
+                      <div class="icon-box">
+                        <div class="margin-right5">
+                          {{ scope.row["supplier"] }}
+                        </div>
+                        <el-tooltip
+                          effect="light"
+                          placement="top"
+                          :content="scope.row.tips"
+                        >
+                          <span>
+                            <icon symbol name="iconxinxitishi" />
+                          </span>
+                        </el-tooltip>
+                      </div>
+                    </template>
+                    <template v-else>{{ scope.row["supplier"] }}</template>
                 </template>
               </el-table-column>
             </el-table-column>
@@ -157,7 +173,9 @@
 
 <script>
 import { numberProcessor, toThousands } from "@/utils";
+import { icon } from "rise";
 export default {
+  components:{icon},
   props: {
     totalData: { type: Array, default: () => [] },
     supplierList: { type: Array, default: () => [] },
@@ -326,6 +344,11 @@ export default {
     color: #000;
     .cell {
       padding: 0 4px;
+      .icon-box{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
   }
 }

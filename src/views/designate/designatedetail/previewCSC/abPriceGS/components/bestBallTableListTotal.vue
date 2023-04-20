@@ -105,7 +105,7 @@
         label="LTC Start Date"
         align="center"
         prop="ltcStartDate"
-        min-width="90"
+        min-width="80"
       ></el-table-column>
       <el-table-column
         label="Invest"
@@ -134,7 +134,7 @@
         align="right"
         header-align="center"
         prop="totalTurnover"
-        min-width="90"
+        min-width="110"
       >
         <template slot-scope="scope">
           {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
@@ -146,12 +146,8 @@
         align="right"
         header-align="center"
         prop="totalSaving"
-        min-width="130"
-      >
-        <template slot="header" slot-scope="scope">
-          <p>Saving</p>
-          <p>@100% Share</p>
-        </template></el-table-column
+        min-width="100"
+      ></el-table-column
       >
       <el-table-column
         align="right"

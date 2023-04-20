@@ -26,9 +26,7 @@
                         minWidth="140"
                       >
                         <template slot-scope="scope">
-                          <tooltip
-                            :text="scope.row.supplierNameEn"
-                          >
+                          <tooltip :text="scope.row.supplierNameEn">
                             <template slot="content">
                               <p :title="scope.row.supplierFullNameZh">
                                 {{ scope.row.supplierFullNameZh }}
@@ -38,7 +36,8 @@
                               </p>
                             </template>
                           </tooltip>
-                        </template></el-table-column>
+                        </template></el-table-column
+                      >
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -145,34 +144,49 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetAPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{
-                                  item.targetAPrice
-                                }}</span>
+                                <span
+                                  :class="{
+                                    chengse: item['cfPartAPriceStatus'] == 2,
+                                  }"
+                                  >{{ item.targetAPrice }}</span
+                                >
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            <span :class="{chengse:item['cfPartAPriceStatus'] == 2}">{{ item.targetAPrice }}</span>
+                            <span
+                              :class="{
+                                chengse: item['cfPartAPriceStatus'] == 2,
+                              }"
+                              >{{ item.targetAPrice }}</span
+                            >
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }} ({{ item.factoryEn }})</span>
+                            <span
+                              class="cursor decoration"
+                              @click="gotoDetail(item)"
+                              >{{ item.fsGsNum }} ({{ item.factoryEn }})</span
+                            >
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -213,29 +227,40 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetBPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{
-                                  item.targetBPrice
-                                }}</span>
+                                <span
+                                  :class="{
+                                    chengse: item['cfPartBPriceStatus'] == 2,
+                                  }"
+                                  >{{ item.targetBPrice }}</span
+                                >
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            <span :class="{chengse:item['cfPartBPriceStatus'] == 2}">{{ item.targetBPrice }}</span>
+                            <span
+                              :class="{
+                                chengse: item['cfPartBPriceStatus'] == 2,
+                              }"
+                              >{{ item.targetBPrice }}</span
+                            >
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -347,9 +372,35 @@
                           :minWidth="item.width"
                           align="center"
                         >
-                          <template slot="header" slot-scope="scope">
-                            <template v-for="(text, index) in item.label">
-                              <p :key="index">{{ text }}</p>
+                          <template slot="header" slot-scope="scope"
+                            ><template v-if="item.tips">
+                              <div class="icon-box">
+                                <div class="margin-right5">
+                                  <p
+                                    :key="index"
+                                    v-for="(text, index) in item.label"
+                                  >
+                                    {{ text }}
+                                  </p>
+                                </div>
+                                <el-tooltip
+                                  effect="light"
+                                  placement="top"
+                                  :content="item.tips"
+                                >
+                                  <span>
+                                    <icon symbol name="iconxinxitishi" />
+                                  </span>
+                                </el-tooltip>
+                              </div>
+                            </template>
+                            <template v-else>
+                              <p
+                                :key="index"
+                                v-for="(text, index) in item.label"
+                              >
+                                {{ text }}
+                              </p>
                             </template>
                           </template>
                           <template slot-scope="scope">
@@ -451,10 +502,12 @@ import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
 import partTableDetail from "./partTableDetail";
+import { icon } from "rise";
 export default {
   components: {
     partTableDetail,
     tooltip,
+    icon
   },
   props: {
     row: {
@@ -500,6 +553,7 @@ export default {
           target: "",
           budget: "",
           width: "130",
+          tips:'base on RFQ volume and latest Quatation'
         },
       ],
       tableData: [],
@@ -531,7 +585,7 @@ export default {
     deleteThousands,
     gotoDetail(row) {
       this.itemFS = JSON.parse(JSON.stringify(row));
-      this.itemFS.fsNum = this.itemFS.fsGsNum
+      this.itemFS.fsNum = this.itemFS.fsGsNum;
       this.$nextTick(() => {
         this.visible = !this.visible;
       });
@@ -792,6 +846,11 @@ export default {
         color: #000 !important;
       }
     }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .decoration {
       text-decoration: underline;
     }
@@ -799,7 +858,7 @@ export default {
   .red {
     color: #f00;
   }
-  .chengse{
+  .chengse {
     color: $color-delete;
   }
 }

@@ -416,9 +416,11 @@ export default {
         {
           supplier: "Total Turnover",
           isMinTto: [],
+          tips:'base on RFQ volume and latest Quatation'
         },
         {
           supplier: "Saving @100% Share",
+          tips:'Total Turnover + Develop cost + Release cost - TTO of current supplier'
         },
       ],
       index: -1,

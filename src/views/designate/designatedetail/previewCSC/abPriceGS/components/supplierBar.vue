@@ -228,6 +228,34 @@
                 :data="item"
                 :max="max"
               />
+              <template v-else-if="item.prop == 'Recommendation'">
+              <el-popover
+                placement="right"
+                trigger="hover"
+                popper-class="supplier-pop"
+              >
+                <h2>Recommendation</h2>
+                <div class="supplier-box">
+                  <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
+                    <p class="supplier-name">{{item.supplier}}</p>
+                    <p class="data-info">
+                      <span>TTO:{{item.tto}}</span>
+                      <span class="margin-left20">{{percent(item.ratio)}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div slot="reference">
+                  <barItem
+                    :key="item.prop"
+                    :height="height"
+                    :barName="item.label"
+                    :data="item"
+                    :colorA="item.colorA"
+                    :max="max"
+                  />
+                </div>
+              </el-popover>
+              </template>
               <barItem
                 v-else
                 :key="item.prop"
@@ -365,6 +393,7 @@ export default {
         "totalTurnover",
       ], // 'bar不显示,只占位
       supplierList: [],
+      dialogSupplierList:[],
       fixedList: [
         { prop: "Recommendation", label: "Recommendation", colorA: "#395e78" },
         { prop: "LTC", label: "After LTC", colorA: "#395e78" },
@@ -386,6 +415,9 @@ export default {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
     },
+    percent(val) {
+      return (val * 100).toFixed(2) + "%";
+    },
     analysisSummaryNomi() {
       this.loading = true;
       analysisSummaryNomi({
@@ -397,6 +429,7 @@ export default {
           this.max = null;
           // VSI
           let allPrice = [this.detail.vsi || 0];
+          this.dialogSupplierList = res.data.recommendationNomiSupplierList || []
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];

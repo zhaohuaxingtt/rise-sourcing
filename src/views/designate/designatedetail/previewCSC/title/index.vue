@@ -13,10 +13,10 @@
         <div class="infos" :key="item.label" v-if="!['partType','soptime'].includes(item.key)">
           <div class="label">{{ item.label }}:</div>
           <div class="value" v-if="item.key == 'projectType'">
-            {{ data[item.key] }} ({{ data.partType }})
+            {{ data[item.key] }} {{ data.partType ? ` (${data.partType})`: '' }}
           </div>
           <div class="value" v-else-if="item.key == 'carline'">
-            {{ data[item.key] }} (SOP {{ data.soptime }})
+            {{ data[item.key] }}{{ data.soptime ? ` (SOP ${data.soptime}` : '' }}
           </div>
           <div class="value" v-else>{{ data[item.key] }}</div>
         </div>
