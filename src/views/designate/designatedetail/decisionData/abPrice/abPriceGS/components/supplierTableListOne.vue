@@ -124,7 +124,7 @@
                   >
                     <el-table-column :label="item.fsGsNum" align="center">
                       <template slot="header" slot-scope="scope">
-                        {{ item.fsGsNum }}({{ item.factoryEn }})
+                        {{ item.fsGsNum }} ({{ item.factoryEn }})
                       </template>
                       <el-table-column
                         :prop="item.fsGsNum + 'lcAPrice'"

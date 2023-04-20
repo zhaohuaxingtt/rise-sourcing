@@ -200,7 +200,7 @@
       <p class="tips" v-else-if="tab == 'table'">
         <span class="legend margin-right5"></span><span>: Recommendation</span
         ><span class="font-green margin-left20 margin-right5">99.99</span
-        ><span>Best offer</span>
+        ><span>Best offer (TTO)</span>
       </p>
     </div>
 

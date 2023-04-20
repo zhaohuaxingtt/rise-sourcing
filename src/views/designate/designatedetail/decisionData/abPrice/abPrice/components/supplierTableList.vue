@@ -171,7 +171,7 @@
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }} ({{ item.factoryEn }})</span>
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"

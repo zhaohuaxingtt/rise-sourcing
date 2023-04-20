@@ -161,7 +161,7 @@
                         <span
                           class="cursor decoration"
                           @click="gotoDetail(item)"
-                          >{{ item.fsGsNum }}({{ item.factoryEn }})</span
+                          >{{ item.fsGsNum }} ({{ item.factoryEn }})</span
                         >
                       </template>
                       <el-table-column

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-19 15:20:49
+ * @LastEditTime: 2023-04-20 15:14:30
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\bdl\index.vue
 -->
@@ -242,19 +242,19 @@ export default {
         children: [
           {
             props: rates["MQ"] || "Q",
-            name: `Q(${rates["MQ"] || "-"})`,
+            name: `Q (${rates["MQ"] || "-"})`,
             key: "",
             type: "rate",
           },
           {
             props: rates["EP"] || "E",
-            name: `E(${rates["EP"] || "-"})`,
+            name: `E (${rates["EP"] || "-"})`,
             key: "",
             type: "rate",
           },
           {
             props: rates["PL"] || "L",
-            name: `L(PL)`,
+            name: `L (PL)`,
             key: "",
           },
         ],
