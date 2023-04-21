@@ -305,6 +305,23 @@
           </template></el-table-column
         >
         <el-table-column
+          label="LTC"
+          align="center"
+          prop="ltc"
+        ></el-table-column>
+        <el-table-column align="center" prop="ltcStartDate" min-width="80">
+          <template slot="header" slot-scope="scope">
+            <p>LTC</p>
+            <p>Start</p>
+            <p>Date</p>
+          </template>
+          <template slot-scope="scope">
+            <template v-if="scope.row.ltc != 0">{{
+              scope.row.ltcStartDate
+            }}</template>
+          </template></el-table-column
+        >
+        <el-table-column
           label="Invest"
           prop="invest"
           align="right"
@@ -336,23 +353,6 @@
             <template v-else>
               {{ scope.row.invest }}
             </template>
-          </template></el-table-column
-        >
-        <el-table-column
-          label="LTC"
-          align="center"
-          prop="ltc"
-        ></el-table-column>
-        <el-table-column align="center" prop="ltcStartDate" min-width="80">
-          <template slot="header" slot-scope="scope">
-            <p>LTC</p>
-            <p>Start</p>
-            <p>Date</p>
-          </template>
-          <template slot-scope="scope">
-            <template v-if="scope.row.ltc != 0">{{
-              scope.row.ltcStartDate
-            }}</template>
           </template></el-table-column
         >
         <el-table-column
@@ -405,7 +405,7 @@
                   <p>Total</p>
                   <p>Turnover</p>
                 </div>
-                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quatation">
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quotation">
                   <span>
                     <icon symbol name="iconxinxitishi" />
                   </span>

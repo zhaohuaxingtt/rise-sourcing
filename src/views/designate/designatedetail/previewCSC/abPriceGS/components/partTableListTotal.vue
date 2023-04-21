@@ -153,6 +153,9 @@
                 }}
               </template>
             </template>
+            <template v-else-if="scope.$index == 2">
+              {{budgetTotal}}
+            </template>
             <template v-else>{{
               getInt(scope.row[item.supplierId + "aPrice"]) | toThousands(true)
             }}</template>
@@ -180,6 +183,7 @@ export default {
     totalData: { type: Array, default: () => [] },
     supplierList: { type: Array, default: () => [] },
     index: { type: String | Number, default: -1 },
+    budgetTotal:{ type: String | Number, default: '' },
   },
   data() {
     return {
@@ -237,6 +241,13 @@ export default {
       } else if ([6, 7].includes(columnIndex)) {
         return [0, 0];
       }
+      if(rowIndex==2){
+       if(columnIndex == 8){
+          return [1,8]
+        }else{
+          return [0, 0];
+        }
+      }
       if (columnIndex > 7) {
         if (!(columnIndex % 2)) {
           return [1, 2];
@@ -247,6 +258,9 @@ export default {
     totalColClass({ row, column, rowIndex, columnIndex }) {
       if ([3, 4, 5, 6].includes(columnIndex)) {
         return "table-header";
+      }
+      if (rowIndex == "2" && columnIndex == 8) {
+          return "text-center";
       }
       if (rowIndex == "4") {
         if (row.isMinTto.includes(column.property)) {
@@ -336,6 +350,9 @@ export default {
     }
     &:hover > td.table-header {
       background-color: #364d6e;
+    }
+    .text-center{
+      text-align: center !important;
     }
   }
   ::v-deep td {

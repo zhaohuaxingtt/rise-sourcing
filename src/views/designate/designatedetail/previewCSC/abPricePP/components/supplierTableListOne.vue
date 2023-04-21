@@ -528,7 +528,7 @@ export default {
           target: "",
           budget: "",
           width: "130",
-          tips:'base on RFQ volume and latest Quatation'
+          tips:'base on RFQ volume and latest Quotation'
         },
       ],
       tableData: [],

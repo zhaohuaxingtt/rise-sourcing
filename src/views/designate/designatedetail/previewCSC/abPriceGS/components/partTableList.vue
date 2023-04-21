@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-19 11:02:57
+ * @LastEditTime: 2023-04-21 17:02:41
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -406,7 +406,7 @@ export default {
           volume: "Target",
         },
         {
-          supplier: "Total Budget",
+          supplier: "Total Invest Budget",
           volume: "Target",
         },
         {
@@ -416,7 +416,7 @@ export default {
         {
           supplier: "Total Turnover",
           isMinTto: [],
-          tips:'base on RFQ volume and latest Quatation'
+          tips:'base on RFQ volume and latest Quotation'
         },
         {
           supplier: "Saving @100% Share",
@@ -429,6 +429,7 @@ export default {
       allData: [],
       loading: false,
       totalTableHeight: 310,
+      budgetTotal:''
     };
   },
   computed: {
@@ -538,6 +539,7 @@ export default {
                 supplierAllData[lastIndex].push({ supplierId: i });
               }
             }
+            this.budgetTotal = res.data.budgetTotal
             this.supplierAllData = supplierAllData;
             this.index = 0;
             this.totalData = JSON.parse(JSON.stringify(totalData));
@@ -729,6 +731,7 @@ export default {
             <partTableListTotal
               totalData={this.totalData}
               supplierList={this.supplierList}
+              budgetTotal={this.budgetTotal}
             />
           );
           return;

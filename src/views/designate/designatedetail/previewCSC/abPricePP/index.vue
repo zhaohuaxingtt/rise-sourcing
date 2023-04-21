@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-20 17:28:33
+ * @LastEditTime: 2023-04-21 11:02:50
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\index.vue
@@ -33,15 +33,11 @@
           v-show="tab == 'table'"
           class="radio-group margin-left20"
           v-model="tabTable"
-          @change="change"
         >
           <el-radio-button label="gs_part">Detail</el-radio-button>
           <el-radio-button label="supplier">Supplier</el-radio-button>
           <el-radio-button label="part">Part</el-radio-button>
           <el-radio-button label="best_ball">{{'Bestball & Recom.'}}</el-radio-button>
-          <!-- <el-radio-button label="Detailed_Worksheet" @click="exportExcel"
-            >Detailed Worksheet</el-radio-button
-          > -->
         </el-radio-group>
         <!-- 柱状图 -->
         <el-radio-group
@@ -111,8 +107,7 @@
       ref="table"
       @setPage="setPage"
       v-if="
-        (tab == 'table' && tabTable == 'supplier') ||
-        (this.oldTabTable== 'supplier' && tabTable == 'Detailed_Worksheet')
+        (tab == 'table' && tabTable == 'supplier')
       "
     />
     <partTableList
@@ -120,8 +115,7 @@
       ref="table"
       @setPage="setPage"
       v-if="
-        (tab == 'table' && tabTable == 'part') ||
-        (this.oldTabTable== 'part' && tabTable == 'Detailed_Worksheet')
+        (tab == 'table' && tabTable == 'part')
       "
     />
     <GSpartTableList
@@ -129,8 +123,7 @@
       ref="table"
       @setPage="setPage"
       v-if="
-        (tab == 'table' && tabTable == 'gs_part') ||
-        (this.oldTabTable== 'gs_part' && tabTable == 'Detailed_Worksheet')
+        (tab == 'table' && tabTable == 'gs_part')
       "
     />
     <bestBallTableList
@@ -138,8 +131,7 @@
       ref="table"
       @setPage="setPage"
       v-if="
-        (tab == 'table' && tabTable == 'best_ball') ||
-        (this.oldTabTable== 'best_ball' && tabTable == 'Detailed_Worksheet')
+        (tab == 'table' && tabTable == 'best_ball')
       "
     />
     <!-- bar -->
@@ -293,7 +285,6 @@ export default {
       ],
       tab: "table",
       tabTable: "supplier",
-      oldTabTable:'supplier',
       tabBar: "",
       tabLine: "",
       carTypeList: [],
@@ -337,10 +328,9 @@ export default {
         if (res?.code == "200") {
           res.data.forEach((item) => {
             this.config[item.operateCode] = item;
-            if (item.isShow && !this.tabTable) {
+            if (item.isShow) {
               // 显示第一个true
               this.tabTable = item.operateCode;
-              this.oldTabTable = item.operateCode;
             }
           });
         }
@@ -430,14 +420,6 @@ export default {
     },
     changeRFQ(val) {
       this.rfqDetail = this.rfqObj[val];
-    },
-    change(val) {
-      if (val == "Detailed_Worksheet") {
-        this.exportExcel();
-        this.tabTable = this.oldTabTable;
-      } else {
-        this.oldTabTable = this.tabTable;
-      }
     },
     exportExcel() {
       this.loading = true

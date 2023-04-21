@@ -314,7 +314,7 @@
             label="Invest"
             prop="invest"
             align="right"
-            minWidth="85"
+            minWidth="90"
             header-align="center"
           >
             <template slot-scope="scope">
@@ -386,7 +386,7 @@
                   <p>Total</p>
                   <p>Turnover</p>
                 </div>
-                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quatation">
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quotation">
                   <span>
                     <icon symbol name="iconxinxitishi" />
                   </span>
