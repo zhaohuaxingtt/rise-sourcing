@@ -315,7 +315,7 @@
             label="Invest"
             prop="invest"
             align="right"
-            minWidth="85"
+            minWidth="90"
             header-align="center"
           >
             <template slot-scope="scope">

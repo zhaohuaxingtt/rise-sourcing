@@ -303,6 +303,23 @@
           </template></el-table-column
         >
         <el-table-column
+          label="LTC"
+          align="center"
+          prop="ltc"
+        ></el-table-column>
+        <el-table-column align="center" prop="ltcStartDate" min-width="80">
+          <template slot="header" slot-scope="scope">
+            <p>LTC</p>
+            <p>Start</p>
+            <p>Date</p>
+          </template>
+          <template slot-scope="scope">
+            <template v-if="scope.row.ltc != 0">{{
+              scope.row.ltcStartDate
+            }}</template>
+          </template></el-table-column
+        >
+        <el-table-column
           label="Invest"
           prop="invest"
           align="right"
@@ -330,23 +347,6 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column
-          label="LTC"
-          align="center"
-          prop="ltc"
-        ></el-table-column>
-        <el-table-column align="center" prop="ltcStartDate" min-width="80">
-          <template slot="header" slot-scope="scope">
-            <p>LTC</p>
-            <p>Start</p>
-            <p>Date</p>
-          </template>
-          <template slot-scope="scope">
-            <template v-if="scope.row.ltc != 0">{{
-              scope.row.ltcStartDate
-            }}</template>
-          </template></el-table-column
-        >
         <el-table-column
           align="right"
           header-align="center"

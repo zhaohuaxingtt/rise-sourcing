@@ -18,25 +18,27 @@
               <el-table-column>
                 <el-table-column>
                   <el-table-column>
-                    <el-table-column
-                      prop="supplierNameEn"
-                      label="Supplier"
-                      align="center"
-                      minWidth="140"
-                    >
-                      <template slot-scope="scope">
-                        <tooltip :text="scope.row.supplierNameEn">
-                          <template slot="content">
-                            <p :title="scope.row.supplierFullNameZh">
-                              {{ scope.row.supplierFullNameZh }}
-                            </p>
-                            <p :title="scope.row.supplierFullNameEn">
-                              ({{ scope.row.supplierFullNameEn }})
-                            </p>
-                          </template>
-                        </tooltip>
-                      </template></el-table-column
-                    >
+                    <el-table-column>
+                      <el-table-column
+                        prop="supplierNameEn"
+                        label="Supplier"
+                        align="center"
+                        minWidth="140"
+                      >
+                        <template slot-scope="scope">
+                          <tooltip :text="scope.row.supplierNameEn">
+                            <template slot="content">
+                              <p :title="scope.row.supplierFullNameZh">
+                                {{ scope.row.supplierFullNameZh }}
+                              </p>
+                              <p :title="scope.row.supplierFullNameEn">
+                                ({{ scope.row.supplierFullNameEn }})
+                              </p>
+                            </template>
+                          </tooltip>
+                        </template></el-table-column
+                      >
+                    </el-table-column>
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -48,48 +50,50 @@
         <el-table-column label="Part Name">
           <el-table-column label="Carline">
             <el-table-column label="Volume">
-              <el-table-column label="Current Supplier">
-                <el-table-column label="Current Price">
-                  <el-table-column label="Rating" align="center">
-                    <el-table-column
-                      prop="te"
-                      label="E"
-                      minWidth="50"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.te)">{{
-                          scope.row.te
-                        }}</span>
-                        <span v-else>{{ scope.row.te }}</span>
-                      </template>
+              <el-table-column label="Budget">
+                <el-table-column label="Current Supplier">
+                  <el-table-column label="Current Price">
+                    <el-table-column label="Rating" align="center">
+                      <el-table-column
+                        prop="te"
+                        label="E"
+                        minWidth="50"
+                        align="center"
+                      >
+                        <template slot-scope="scope">
+                          <span class="red" v-if="isCLevel(scope.row.te)">{{
+                            scope.row.te
+                          }}</span>
+                          <span v-else>{{ scope.row.te }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                        prop="q"
+                        label="Q"
+                        minWidth="50"
+                        align="center"
+                      >
+                        <template slot-scope="scope">
+                          <span class="red" v-if="isCLevel(scope.row.q)">{{
+                            scope.row.q
+                          }}</span>
+                          <span v-else>{{ scope.row.q }}</span>
+                        </template></el-table-column
+                      >
+                      <el-table-column
+                        prop="l"
+                        label="L"
+                        minWidth="50"
+                        align="center"
+                      >
+                        <template slot-scope="scope">
+                          <span class="red" v-if="isCLevel(scope.row.l)">{{
+                            scope.row.l
+                          }}</span>
+                          <span v-else>{{ scope.row.l }}</span>
+                        </template></el-table-column
+                      >
                     </el-table-column>
-                    <el-table-column
-                      prop="q"
-                      label="Q"
-                      minWidth="50"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.q)">{{
-                          scope.row.q
-                        }}</span>
-                        <span v-else>{{ scope.row.q }}</span>
-                      </template></el-table-column
-                    >
-                    <el-table-column
-                      prop="l"
-                      label="L"
-                      minWidth="50"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <span class="red" v-if="isCLevel(scope.row.l)">{{
-                          scope.row.l
-                        }}</span>
-                        <span v-else>{{ scope.row.l }}</span>
-                      </template></el-table-column
-                    >
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -117,75 +121,80 @@
                 <template slot="header" slot-scope="scope">
                   {{ getInt(item.volume) | toThousands(true) }}
                 </template>
-                <el-table-column :label="item.currentSupplier" align="center">
-                  <el-table-column
-                    :label="item.currentAPrice"
-                    header-align="right"
-                  >
-                    <el-table-column :label="item.fsGsNum" align="center">
-                      <template slot="header" slot-scope="scope">
-                        {{ item.fsGsNum }} ({{ item.factoryEn }})
-                      </template>
-                      <el-table-column
-                        :prop="item.fsGsNum + 'lcAPrice'"
-                        label="partAPrice"
-                        align="right"
-                        header-align="center"
-                        minWidth="85"
-                      >
+                <el-table-column :label="item.budget" align="center">
+                  <template slot="header" slot-scope="scope">
+                    {{ getInt(item.budget) | toThousands(true) }}
+                  </template>
+                  <el-table-column :label="item.currentSupplier" align="center">
+                    <el-table-column
+                      :label="item.currentAPrice"
+                      header-align="right"
+                    >
+                      <el-table-column :label="item.fsGsNum" align="center">
                         <template slot="header" slot-scope="scope">
-                          <p>A Price</p>
+                          {{ item.fsGsNum }} ({{ item.factoryEn }})
                         </template>
-                        <template slot-scope="scope">
-                          <p
-                            v-if="
-                              scope.row[item.fsGsNum + 'quotationType'] ==
-                                'SKD' ||
-                              scope.row[item.fsGsNum + 'quotationType'] ==
-                                'SKDLC'
-                            "
-                          >
-                            <span style="color: red">*</span>
-                            {{ scope.row[item.fsGsNum + "skdAPrice"] }}
-                          </p>
-                          <p v-else>
-                            {{ scope.row[item.fsGsNum + "lcAPrice"] }}
-                          </p>
-                        </template>
+                        <el-table-column
+                          :prop="item.fsGsNum + 'lcAPrice'"
+                          label="partAPrice"
+                          align="right"
+                          header-align="center"
+                          minWidth="85"
+                        >
+                          <template slot="header" slot-scope="scope">
+                            <p>A Price</p>
+                          </template>
+                          <template slot-scope="scope">
+                            <p
+                              v-if="
+                                scope.row[item.fsGsNum + 'quotationType'] ==
+                                  'SKD' ||
+                                scope.row[item.fsGsNum + 'quotationType'] ==
+                                  'SKDLC'
+                              "
+                            >
+                              <span style="color: red">*</span>
+                              {{ scope.row[item.fsGsNum + "skdAPrice"] }}
+                            </p>
+                            <p v-else>
+                              {{ scope.row[item.fsGsNum + "lcAPrice"] }}
+                            </p>
+                          </template>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                  </el-table-column>
-                  <el-table-column
-                    :label="item.currentBPrice"
-                    header-align="right"
-                  >
-                    <el-table-column :label="item.fsGsNum" align="center">
-                      <el-table-column
-                        :prop="item.fsGsNum + 'lcBPrice'"
-                        label="partBPrice"
-                        align="right"
-                        header-align="center"
-                        minWidth="85"
-                      >
-                        <template slot="header" slot-scope="scope">
-                          <p>B Price</p>
-                        </template>
-                        <template slot-scope="scope">
-                          <p
-                            v-if="
-                              scope.row[item.fsGsNum + 'quotationType'] ==
-                                'SKD' ||
-                              scope.row[item.fsGsNum + 'quotationType'] ==
-                                'SKDLC'
-                            "
-                          >
-                            <span style="color: red">*</span>
-                            {{ scope.row[item.fsGsNum + "skdBPrice"] }}
-                          </p>
-                          <p v-else>
-                            {{ scope.row[item.fsGsNum + "lcBPrice"] }}
-                          </p>
-                        </template>
+                    <el-table-column
+                      :label="item.currentBPrice"
+                      header-align="right"
+                    >
+                      <el-table-column :label="item.fsGsNum" align="center">
+                        <el-table-column
+                          :prop="item.fsGsNum + 'lcBPrice'"
+                          label="partBPrice"
+                          align="right"
+                          header-align="center"
+                          minWidth="85"
+                        >
+                          <template slot="header" slot-scope="scope">
+                            <p>B Price</p>
+                          </template>
+                          <template slot-scope="scope">
+                            <p
+                              v-if="
+                                scope.row[item.fsGsNum + 'quotationType'] ==
+                                  'SKD' ||
+                                scope.row[item.fsGsNum + 'quotationType'] ==
+                                  'SKDLC'
+                              "
+                            >
+                              <span style="color: red">*</span>
+                              {{ scope.row[item.fsGsNum + "skdBPrice"] }}
+                            </p>
+                            <p v-else>
+                              {{ scope.row[item.fsGsNum + "lcBPrice"] }}
+                            </p>
+                          </template>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                   </el-table-column>
@@ -201,111 +210,113 @@
           <el-table-column>
             <el-table-column>
               <el-table-column>
-                <el-table-column>
-                  <el-table-column :label="item.target" align="center">
-                    <template slot="header" slot-scope="scope">
-                      {{ getInt(item.target) | toThousands(true) }}
-                    </template>
-                    <el-table-column
-                      :prop="item.prop"
-                      :label="item.label"
-                      :minWidth="item.width"
-                      align="center"
-                    >
-                      <template slot="header" slot-scope="scope"><template v-if="item.tips">
-                          <div class="icon-box">
-                            <div class="margin-right5">
-                              <p :key="index" v-for="(text, index) in item.label">{{ text }}</p>
-                            </div>
-                            <el-tooltip effect="light" placement="top" :content="item.tips">
-                              <span>
-                                <icon symbol name="iconxinxitishi" />
-                              </span>
-                            </el-tooltip>
-                          </div>
-                        </template>
-                        <template v-else>
-                          <p :key="index" v-for="(text, index) in item.label">{{ text }}</p>
-                        </template>
-                      </template>
-                      <template slot-scope="scope">
-                        <template
-                          v-if="
-                            ['ltcList', 'ltcStartDateList'].includes(item.prop)
-                          "
-                        >
-                          <p
-                            v-for="(child, index) in scope.row[item.prop]"
-                            :key="index"
-                          >
-                            {{ child }}
-                          </p>
-                        </template>
-                        <template
-                          v-else-if="['totalInvest'].includes(item.prop)"
-                        >
-                          <el-popover
-                            placement="top-start"
-                            trigger="hover"
-                            v-if="scope.row.investFeeIsShared"
-                          >
-                            <div>
-                              <div>
-                                Apportioned amount：{{
-                                  scope.row.toolingShareTotal
-                                }}
+                <el-table-column align="center">
+                  <template slot="header" slot-scope="scope">
+                    {{ getInt(item.budget) | toThousands(true) }}
+                  </template>
+                  <el-table-column>
+                    <el-table-column :label="item.target" align="center">
+                      <el-table-column
+                        :prop="item.prop"
+                        :label="item.label"
+                        :minWidth="item.width"
+                        align="center"
+                      >
+                        <template slot="header" slot-scope="scope"><template v-if="item.tips">
+                            <div class="icon-box">
+                              <div class="margin-right5">
+                                <p :key="index" v-for="(text, index) in item.label">{{ text }}</p>
                               </div>
+                              <el-tooltip effect="light" placement="top" :content="item.tips">
+                                <span>
+                                  <icon symbol name="iconxinxitishi" />
+                                </span>
+                              </el-tooltip>
+                            </div>
+                          </template>
+                          <template v-else>
+                            <p :key="index" v-for="(text, index) in item.label">{{ text }}</p>
+                          </template>
+                        </template>
+                        <template slot-scope="scope">
+                          <template
+                            v-if="
+                              ['ltcList', 'ltcStartDateList'].includes(item.prop)
+                            "
+                          >
+                            <p
+                              v-for="(child, index) in scope.row[item.prop]"
+                              :key="index"
+                            >
+                              {{ child }}
+                            </p>
+                          </template>
+                          <template
+                            v-else-if="['totalInvest'].includes(item.prop)"
+                          >
+                            <el-popover
+                              placement="top-start"
+                              trigger="hover"
+                              v-if="scope.row.investFeeIsShared"
+                            >
                               <div>
-                                Unassessed amount：{{
-                                  scope.row.toolingNotShareTotal
-                                }}
+                                <div>
+                                  Apportioned amount：{{
+                                    scope.row.toolingShareTotal
+                                  }}
+                                </div>
+                                <div>
+                                  Unassessed amount：{{
+                                    scope.row.toolingNotShareTotal
+                                  }}
+                                </div>
                               </div>
-                            </div>
-                            <div slot="reference">
-                              <span style="color: red">*</span
-                              >{{ scope.row[item.prop] }}
-                            </div>
-                          </el-popover>
+                              <div slot="reference">
+                                <span style="color: red">*</span
+                                >{{ scope.row[item.prop] }}
+                              </div>
+                            </el-popover>
+                            <template v-else>
+                              {{ scope.row[item.prop] }}
+                            </template>
+                          </template>
+                          <template
+                            v-else-if="['totalDevelopCost'].includes(item.prop)"
+                          >
+                            <el-popover
+                              placement="top-start"
+                              trigger="hover"
+                              v-if="scope.row.devFeeIsShared"
+                            >
+                              <div>
+                                <div>
+                                  Apportioned amount：{{
+                                    scope.row.developShareCostTotal
+                                  }}
+                                </div>
+                                <div>
+                                  Unassessed amount：{{
+                                    scope.row.developNotShareCostTotal
+                                  }}
+                                </div>
+                              </div>
+                              <div slot="reference">
+                                <span style="color: red">*</span
+                                >{{ scope.row[item.prop] }}
+                              </div>
+                            </el-popover>
+                            <template v-else>
+                              {{ scope.row[item.prop] }}
+                            </template>
+                          </template>
+                          <template v-else-if="['sopDate'].includes(item.prop)">
+                            {{ format(scope.row.sopDate) }}
+                          </template>
                           <template v-else>
                             {{ scope.row[item.prop] }}
                           </template>
                         </template>
-                        <template
-                          v-else-if="['totalDevelopCost'].includes(item.prop)"
-                        >
-                          <el-popover
-                            placement="top-start"
-                            trigger="hover"
-                            v-if="scope.row.devFeeIsShared"
-                          >
-                            <div>
-                              <div>
-                                Apportioned amount：{{
-                                  scope.row.developShareCostTotal
-                                }}
-                              </div>
-                              <div>
-                                Unassessed amount：{{
-                                  scope.row.developNotShareCostTotal
-                                }}
-                              </div>
-                            </div>
-                            <div slot="reference">
-                              <span style="color: red">*</span
-                              >{{ scope.row[item.prop] }}
-                            </div>
-                          </el-popover>
-                          <template v-else>
-                            {{ scope.row[item.prop] }}
-                          </template>
-                        </template>
-                        <template v-else-if="['sopDate'].includes(item.prop)">
-                          {{ format(scope.row.sopDate) }}
-                        </template>
-                        <template v-else>
-                          {{ scope.row[item.prop] }}
-                        </template>
-                      </template>
+                      </el-table-column>
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -480,10 +491,7 @@ export default {
           let fixedTitle = JSON.parse(JSON.stringify(this.fixedTitle));
           this.targetMixAPrice = res.data.targetMixAPrice;
           this.targetMixBPrice = res.data.targetMixBPrice;
-          fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
-          fixedTitle[2].target = res.data.targetTotalInvest;
-          fixedTitle[3].target = res.data.targetSelTotalSel;
-          fixedTitle[4].target = res.data.sumTotalTurnover;
+          fixedTitle[0].budget = res.data.sumBudgetTotalInvest;
           this.fixedTitle = fixedTitle;
           this.partAllData = _.chunk(res.data.headList, this.showLength);
           this.allData = res.data.headList;
@@ -507,14 +515,14 @@ export default {
         return "white-bg unit";
       }
 
-      if (rowIndex < 6) {
+      if (rowIndex < 7) {
         if (columnIndex == 1) {
           return "supllier-header";
         }
-        if (columnIndex == 2 && [4].includes(rowIndex)) {
+        if (columnIndex == 2 && [5, 6].includes(rowIndex)) {
           return "current-header";
         }
-        if (rowIndex == 5 && columnIndex > 1) {
+        if (columnIndex == 3 && [6].includes(rowIndex)) {
           return "current-header";
         }
         return "white-bg supllier-header";
@@ -545,15 +553,16 @@ export default {
           "el-table__header"
         )[0].rows;
       //   行数据,行,列,合并数,方向
-      this.merge(row, 0, 0, 6, "rowSpan");
-      this.merge(row, 6, 2, 2, "colSpan");
+      this.merge(row, 0, 0, 7, "rowSpan");
+      this.merge(row, 7, 2, 2, "colSpan");
+      this.merge(row, 0, this.partList.length * 2 + 6, 2, "colSpan"); // saving, sop 合并
+      this.merge(row, 0, this.partList.length * 2 + 6, 7, "rowSpan"); // saving, sop 合并
       if (this.row?.partPrjCode || this.row?.fsNum) {
-        this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
-        this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
-        // this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 0, 2, this.partList.length * 2 + 5, "colSpan");
+        this.merge(row, 1, 2, this.partList.length * 2 + 5, "colSpan");
+        this.merge(row, 2, 2, this.partList.length * 2 + 5, "colSpan");
+        this.merge(row, 3, 2, this.partList.length * 2 + 5, "colSpan");
+        this.merge(row, 4, 3, 5, "colSpan");
       } else {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
