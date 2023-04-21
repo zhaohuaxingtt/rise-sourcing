@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-03-08 11:43:32
+ * @LastEditTime: 2023-04-21 11:04:58
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
+ * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
 -->
 <template>
-  <div :class="isRoutePreview ? 'isRoutePreview' : ''">
+  <div :class="isRoutePreview ? 'isRoutePreview' : ''" v-loading="loading">
     <slot name="tabTitle"></slot>
     <div class="page-nav">
       <div class="nav">
@@ -35,13 +35,13 @@
           v-model="tabTable"
           @change="change"
         >
+          <el-radio-button label="gs_part">Detail</el-radio-button>
           <el-radio-button label="supplier">Supplier</el-radio-button>
           <el-radio-button label="part">Part</el-radio-button>
-          <el-radio-button label="best_ball">Best ball</el-radio-button>
-          <el-radio-button label="gs_part">GS Part</el-radio-button>
+          <el-radio-button label="best_ball">{{'Bestball & Recom.'}}</el-radio-button>
           <el-radio-button
             label="Detailed_Worksheet"
-          >Detailed Worksheet</el-radio-button>
+          >Download Worksheet</el-radio-button>
         </el-radio-group>
         <!-- 柱状图 -->
         <el-radio-group
@@ -71,19 +71,8 @@
             ></el-radio-button>
           </template>
         </el-radio-group>
-        <!-- 表格是否展示 -->
-        <el-radio-group
-         v-if="!nominationDisabled && !rsDisabled"
-          v-show="tab == 'table'"
-          class="radio-group margin-left20"
-          v-model="config[tabTable].isShow"
-          @change="changeConfig"
-        >
-          <el-radio :label="true">展示</el-radio>
-          <el-radio :label="false">隐藏</el-radio>
-        </el-radio-group>
       </div>
-      <div class="header-btn" v-if="tab == 'table' && index > -1">
+      <div class="header-btn" v-if="tab == 'table' && total > 0">
         <template v-if="tabTable == 'best_ball'">
           <span> 当前展示第{{ index + 1 }}页，总共 2 页 </span>
           <img :src="left" alt="lrft" class="allow" @click="prev" />
@@ -116,7 +105,7 @@
       @setPage="setPage"
       v-if="
         (tab == 'table' && tabTable == 'supplier') ||
-        tabTable == 'Detailed_Worksheet'
+        (this.oldTabTable== 'supplier' && tabTable == 'Detailed_Worksheet')
       "
     />
     <partTableList
@@ -124,21 +113,21 @@
       ref="table"
       @setPage="setPage"
       v-if="(tab == 'table' && tabTable == 'part') ||
-        tabTable == 'Detailed_Worksheet'"
+        (this.oldTabTable== 'part' && tabTable == 'Detailed_Worksheet')"
     />
     <GSpartTableList
       class="content"
       ref="table"
       @setPage="setPage"
       v-if="(tab == 'table' && tabTable == 'gs_part') ||
-        tabTable == 'Detailed_Worksheet'"
+        (this.oldTabTable== 'gs_part' && tabTable == 'Detailed_Worksheet')"
     />
     <bestBallTableList
       class="content"
       ref="table"
       @setPage="setPage"
       v-if="(tab == 'table' && tabTable == 'best_ball') ||
-        tabTable == 'Detailed_Worksheet'"
+        (this.oldTabTable== 'best_ball' && tabTable == 'Detailed_Worksheet')"
     />
     <!-- bar -->
     <supplierBar
@@ -282,7 +271,8 @@ export default {
         },
       ],
       tab: "table",
-      tabTable: "supplier",
+      tabTable: "",
+      oldTabTable:'',
       tabBar: "",
       tabLine: "",
       carTypeList: [],
@@ -330,9 +320,20 @@ export default {
         businessId:this.$route.query.desinateId,
         type: "nominate_ab_price",
       }).then(res=>{
-        res.data.forEach(item=>{
-          this.config[item.operateCode] = item
-        })
+        if (res?.code == "200") {
+          res.data.forEach((item) => {
+            this.config[item.operateCode] = item;
+            if (item.isShow && !this.tabTable) {
+              // 显示第一个true
+              this.tabTable = item.operateCode;
+              this.oldTabTable = item.operateCode;
+            }
+          });
+        }
+        if (!this.tabTable) {
+          // 没有表格就显示bar
+          this.tab = "bar";
+        }
       })
     },
     update() {
@@ -511,9 +512,6 @@ export default {
 }
 .content {
   margin-top: 20px;
-  overflow: auto;
-  max-height: 100%;
-  flex: 1 1 auto;
 }
 .content-chart {
   height: calc(100% - 84px);
@@ -529,7 +527,7 @@ export default {
   }
 }
 ::v-deep .blue-border {
-  background: #d1e0ea !important;
+  background: #e2f2fd !important;
 }
 ::v-deep .font-green {
   color: #43b02a;

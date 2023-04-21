@@ -1,11 +1,12 @@
 <!-- AB价-供应商表格 -->
 <template>
-  <div :ref="ref" v-loading="loading" :key="index">
+  <div :ref="ref" v-loading="loading">
     <el-table
       :data="tableData"
       height="100%"
       class="header table"
       ref="table"
+      :key="index"
       :header-cell-class-name="cellClass"
       :cell-class-name="colClass"
     >
@@ -23,7 +24,20 @@
                         label="Supplier"
                         align="center"
                         minWidth="140"
-                      ></el-table-column>
+                      >
+                        <template slot-scope="scope">
+                          <tooltip :text="scope.row.supplierNameEn">
+                            <template slot="content">
+                              <p :title="scope.row.supplierFullNameZh">
+                                {{ scope.row.supplierFullNameZh }}
+                              </p>
+                              <p :title="scope.row.supplierFullNameEn">
+                                ({{ scope.row.supplierFullNameEn }})
+                              </p>
+                            </template>
+                          </tooltip>
+                        </template></el-table-column
+                      >
                     </el-table-column>
                   </el-table-column>
                 </el-table-column>
@@ -101,7 +115,9 @@
           <el-table-column :label="item.partNumDe" align="center">
             <el-table-column :label="item.carline" align="center">
               <template slot="header" slot-scope="scope">
-                <tooltip :text="item.carline||item.carTypeNames.join('、')"></tooltip>
+                <tooltip
+                  :text="item.carline || item.carTypeNames.join('、')"
+                ></tooltip>
               </template>
               <el-table-column :label="percent(item.ebr)" align="center">
                 <el-table-column
@@ -128,34 +144,49 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                                  (deleteThousands(item.targetAPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetAPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
-                                  item.targetAPrice
-                                }}</span>
+                                <span
+                                  :class="{
+                                    chengse: item['cfPartAPriceStatus'] == 2,
+                                  }"
+                                  >{{ item.targetAPrice }}</span
+                                >
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetAPrice }}
+                            <span
+                              :class="{
+                                chengse: item['cfPartAPriceStatus'] == 2,
+                              }"
+                              >{{ item.targetAPrice }}</span
+                            >
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
                           <template slot="header" slot-scope="scope">
-                            <span class="cursor decoration" @click="gotoDetail(item)">{{ item.fsGsNum }}({{ item.factoryEn }})</span>
+                            <span
+                              class="cursor decoration"
+                              @click="gotoDetail(item)"
+                              >{{ item.fsGsNum }} ({{ item.factoryEn }})</span
+                            >
                           </template>
                           <el-table-column
                             :prop="item.fsGsNum + 'lcAPrice'"
@@ -196,29 +227,40 @@
                           >
                             <div>
                               <div>
-                                {{ language("零件目标价B价", "零件目标价B价") }}：{{
-                                  (deleteThousands(item.targetBPrice) - item.selAPrice).toFixed(2)
-                                    | toThousands(true)
+                                {{
+                                  language("零件目标价A价", "零件目标价A价")
+                                }}：{{
+                                  (
+                                    deleteThousands(item.targetBPrice) -
+                                    item.selAPrice
+                                  ).toFixed(2) | toThousands(true)
                                 }}
                               </div>
                               <div>
                                 {{ language("SEL目标价", "SEL目标价") }}：{{
-                                  (item.selAPrice || "0.00")
-                                    | toThousands(true)
+                                  (item.selAPrice || "0.00") | toThousands(true)
                                 }}
                               </div>
                             </div>
                             <div slot="reference">
                               <p>
                                 <span style="color: red">*</span>
-                                <span>{{
-                                  item.targetBPrice
-                                }}</span>
+                                <span
+                                  :class="{
+                                    chengse: item['cfPartBPriceStatus'] == 2,
+                                  }"
+                                  >{{ item.targetBPrice }}</span
+                                >
                               </p>
                             </div>
                           </el-popover>
                           <template v-else>
-                            {{ item.targetBPrice }}
+                            <span
+                              :class="{
+                                chengse: item['cfPartBPriceStatus'] == 2,
+                              }"
+                              >{{ item.targetBPrice }}</span
+                            >
                           </template>
                         </template>
                         <el-table-column :label="item.fsGsNum" align="center">
@@ -330,9 +372,35 @@
                           :minWidth="item.width"
                           align="center"
                         >
-                          <template slot="header" slot-scope="scope">
-                            <template v-for="(text, index) in item.label">
-                              <p :key="index">{{ text }}</p>
+                          <template slot="header" slot-scope="scope"
+                            ><template v-if="item.tips">
+                              <div class="icon-box">
+                                <div class="margin-right5">
+                                  <p
+                                    :key="index"
+                                    v-for="(text, index) in item.label"
+                                  >
+                                    {{ text }}
+                                  </p>
+                                </div>
+                                <el-tooltip
+                                  effect="light"
+                                  placement="top"
+                                  :content="item.tips"
+                                >
+                                  <span>
+                                    <icon symbol name="iconxinxitishi" />
+                                  </span>
+                                </el-tooltip>
+                              </div>
+                            </template>
+                            <template v-else>
+                              <p
+                                :key="index"
+                                v-for="(text, index) in item.label"
+                              >
+                                {{ text }}
+                              </p>
                             </template>
                           </template>
                           <template slot-scope="scope">
@@ -365,7 +433,9 @@
                                     }}
                                   </div>
                                   <div>
-                                    Unassessed amount：{{ scope.row.toolingNotShareTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.toolingNotShareTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -394,7 +464,9 @@
                                     }}
                                   </div>
                                   <div>
-                                    Unassessed amount：{{ scope.row.developNotShareCostTotal }}
+                                    Unassessed amount：{{
+                                      scope.row.developNotShareCostTotal
+                                    }}
                                   </div>
                                 </div>
                                 <div slot="reference">
@@ -430,11 +502,18 @@ import { analysisSummaryNomi } from "@/api/partsrfq/editordetail/abprice";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
 import tooltip from "../../components/tooltip.vue";
 import partTableDetail from "./partTableDetail";
+import { icon } from "rise";
 export default {
-  name:'supplierTableList',
   components: {
+    partTableDetail,
     tooltip,
-    partTableDetail
+    icon
+  },
+  props: {
+    row: {
+      type: Array,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -474,6 +553,7 @@ export default {
           target: "",
           budget: "",
           width: "130",
+          tips:'base on RFQ volume and latest Quotation'
         },
       ],
       tableData: [],
@@ -484,8 +564,8 @@ export default {
       partAllData: [],
       allData: [],
       index: -1,
-      itemFS:{},
-      visible:false
+      itemFS: {},
+      visible: false,
     };
   },
   computed: {
@@ -505,7 +585,7 @@ export default {
     deleteThousands,
     gotoDetail(row) {
       this.itemFS = JSON.parse(JSON.stringify(row));
-      this.itemFS.fsNum = this.itemFS.fsGsNum
+      this.itemFS.fsNum = this.itemFS.fsGsNum;
       this.$nextTick(() => {
         this.visible = !this.visible;
       });
@@ -525,12 +605,17 @@ export default {
     },
     analysisSummaryNomi() {
       this.loading = true;
-      this.index = 0;
       analysisSummaryNomi({
         nomiId: this.$route.query.desinateId,
+        // partTable携带partPrjCode, best ball携带的是fsNum
+        fsGsNumList:
+          this.row?.partPrjCode || this.row?.fsNum
+            ? [this.row.partPrjCode || this.row?.fsNum]
+            : undefined,
       })
         .then((res) => {
           if (res?.code != 200) return;
+          this.index = 0;
           let tableData =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcList = [];
@@ -554,7 +639,7 @@ export default {
                 if (!ltcList.includes(child.ltc)) ltcList.push(child.ltc);
                 if (
                   !ltcStartDateList.includes(child.ltcStartDate) &&
-                  child.ltc!=0
+                  child.ltc != 0
                 )
                   ltcStartDateList.push(child.ltcStartDate);
               });
@@ -586,7 +671,7 @@ export default {
           });
         });
     },
-    prev() {
+    next() {
       if (this.index < this.partAllData.length - 1) {
         this.index++;
       } else {
@@ -601,7 +686,7 @@ export default {
         });
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -655,6 +740,7 @@ export default {
         this.$refs["supplier-table"].getElementsByClassName(
           "el-table__header"
         )[0].rows;
+      this.$refs.table.doLayout(); // table重新布局
       //   行数据,行,列,合并数,方向
       this.merge(row, 0, 0, 8, "rowSpan");
       this.merge(row, 8, 2, 2, "colSpan");
@@ -662,8 +748,18 @@ export default {
       if (this.partList.length > 1) this.merge(row, 8, 6, 2, "colSpan");
       if (this.partList.length > 2) this.merge(row, 8, 8, 2, "colSpan");
       if (this.partList.length > 3) this.merge(row, 8, 10, 2, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
-      this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+
+      if (this.row?.partPrjCode || this.row?.fsNum) {
+        this.merge(row, 0, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 1, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 2, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 3, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 4, 2, this.partList.length * 2 + 7, "colSpan");
+        this.merge(row, 5, 2, this.partList.length * 2 + 7, "colSpan");
+      } else {
+        this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
+        this.merge(row, 0, this.partList.length + 2, 6, "rowSpan");
+      }
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -750,12 +846,20 @@ export default {
         color: #000 !important;
       }
     }
-    .decoration{
-      text-decoration: underline
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .decoration {
+      text-decoration: underline;
     }
   }
   .red {
     color: #f00;
+  }
+  .chengse {
+    color: $color-delete;
   }
 }
 .table {

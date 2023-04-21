@@ -1,17 +1,15 @@
 <!-- AB价-best ball表格:注意不能出现横向滚动条,翻页按钮会错位 -->
 <template>
-  <div :ref="ref">
+  <div style="height: 100%" :ref="ref">
     <!-- 内容表 -->
-    <div
-      class="table-box"
-      :style="{ height: `calc(100% - ${totalTableHeight}px)` }"
-    >
+    <div class="table-box">
       <el-table
         :data="tableData"
         class="header table"
         ref="table"
-        height="100%"
         border
+        show-summary
+        :summary-method="summaryMethod"
         :header-cell-class-name="cellClass"
         :cell-class-name="colClass"
       >
@@ -38,34 +36,6 @@
             </el-table-column>
             <el-table-column
               :key="item.prop"
-              v-else-if="item.prop == 'ebr'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            >
-              <template slot-scope="scope">
-                <span>{{ percent(scope.row.ebr) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
-              v-else-if="item.prop == 'mixQty'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-              ><template slot="header" slot-scope="scope">
-                <p v-for="(text, index) in item.label" :key="index">
-                  {{ text }}
-                </p>
-              </template>
-              <template slot-scope="scope">
-                <span>{{ numberProcessor(scope.row.mixQty, 2) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
               v-else-if="item.prop == 'volume'"
               :prop="item.prop"
               :label="item.label"
@@ -86,11 +56,7 @@
               align="center"
             >
               <template slot-scope="scope">
-                <tooltip
-                  :text="
-                    scope.row[item.prop] || scope.row.carTypeNames.join('、')
-                  "
-                />
+                <tooltip :text="scope.row.carTypeNames.join('、')" />
               </template>
             </el-table-column>
             <el-table-column
@@ -119,13 +85,24 @@
               </template></el-table-column
             >
           </template>
-          <el-table-column label="F-target" align="center">
+          <el-table-column label="Current" align="center">
             <el-table-column
-              label="A Price"
-              prop="targetAPrice"
+              label="Supplier"
+              prop="currentSupplier"
               align="right"
               header-align="center"
-              minWidth="90"
+              minWidth="85"
+            >
+              <template slot-scope="scope">
+                <tooltip :text="scope.row.currentSupplier"></tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="A Price"
+              prop="currentAPrice"
+              align="right"
+              header-align="center"
+              minWidth="85"
             >
               <template slot-scope="scope">
                 <el-popover
@@ -136,7 +113,7 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetAPrice) - scope.row.selAPrice).toFixed(2)
+                      (deleteThousands(scope.row.currentAPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
                     }}
                   </div>
@@ -152,26 +129,26 @@
                     <span style="color: red">*</span>
                     <span>
                 {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                  deleteThousands(scope.row.currentAPrice) | toThousands(true)
                 }}</span>
                   </p>
                 </div>
               </el-popover>
               <template v-else>
                 {{
-                  deleteThousands(scope.row.targetAPrice) | toThousands(true)
+                  deleteThousands(scope.row.currentAPrice) | toThousands(true)
                 }}
               </template>
-              </template>
+            </template>
             </el-table-column>
             <el-table-column
               label="B Price"
-              prop="targetBPrice"
+              prop="currentBPrice"
               align="right"
               header-align="center"
-              minWidth="90"
-            > 
-            <template slot-scope="scope">
+              minWidth="85"
+            >
+              <template slot-scope="scope">
               <el-popover
                 placement="top-start"
                 trigger="hover"
@@ -180,7 +157,7 @@
                 <div>
                   <div>
                     {{ language("零件目标价A价", "零件目标价A价") }}：{{
-                      (deleteThousands(scope.row.targetBPrice) - scope.row.selAPrice).toFixed(2)
+                      (deleteThousands(scope.row.currentBPrice) - scope.row.selAPrice).toFixed(2)
                         | toThousands(true)
                     }}
                   </div>
@@ -196,14 +173,14 @@
                     <span style="color: red">*</span>
                     <span>
                 {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                  deleteThousands(scope.row.currentBPrice)| toThousands(true)
                 }}</span>
                   </p>
                 </div>
               </el-popover>
               <template v-else>
                 {{
-                  deleteThousands(scope.row.targetBPrice)| toThousands(true)
+                  deleteThousands(scope.row.currentBPrice)| toThousands(true)
                 }}
               </template>
             </template>
@@ -214,6 +191,66 @@
           <template slot="header" slot-scope="scope">
             {{ label }}
           </template>
+          <el-table-column
+            label="Supplier"
+            align="center"
+            prop="supplierNameEn"
+            minWidth="100"
+          >
+            <template slot-scope="scope">
+              <tooltip :text="scope.row['supplierNameEn']">
+                <template slot="content">
+                  <p :title="scope.row.supplierFullNameZh">
+                    {{ scope.row.supplierFullNameZh }}
+                  </p>
+                  <p :title="scope.row.supplierFullNameEn">
+                    ({{ scope.row.supplierFullNameEn }})
+                  </p>
+                </template>
+              </tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="Rating" align="center">
+            <el-table-column
+              label="E"
+              align="center"
+              prop="erate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.erate)">{{
+                  scope.row.erate
+                }}</span>
+                <span v-else>{{ scope.row.erate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="Q"
+              align="center"
+              prop="qrate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
+                  scope.row.qrate
+                }}</span>
+                <span v-else>{{ scope.row.qrate }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              label="L"
+              align="center"
+              prop="lrate"
+              min-width="40"
+            >
+              <template slot-scope="scope">
+                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
+                  scope.row.lrate
+                }}</span>
+                <span v-else>{{ scope.row.lrate }}</span>
+              </template></el-table-column
+            >
+          </el-table-column>
           <el-table-column
             label="A Price(LC)"
             prop="lcAPrice"
@@ -257,10 +294,27 @@
             </template></el-table-column
           >
           <el-table-column
+            label="LTC"
+            align="center"
+            prop="ltc"
+          ></el-table-column>
+          <el-table-column align="center" prop="ltcStartDate" min-width="80">
+            <template slot="header" slot-scope="scope">
+              <p>LTC</p>
+              <p>Start</p>
+              <p>Date</p>
+            </template>
+            <template slot-scope="scope">
+              <template v-if="scope.row.ltc != 0">{{
+                scope.row.ltcStartDate
+              }}</template>
+            </template></el-table-column
+          >
+          <el-table-column
             label="Invest"
             prop="invest"
             align="right"
-            minWidth="100"
+            minWidth="85"
             header-align="center"
           >
             <template slot-scope="scope">
@@ -291,112 +345,14 @@
             </template></el-table-column
           >
           <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameEn"
-            minWidth="100"
-          >
-            <template slot-scope="scope">
-              <tooltip
-                :text="scope.row['supplierNameEn']"
-                :content="
-                  scope.row.supplierNameZh + ' ' + scope.row.supplierNameEn
-                "
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.erate)">{{
-                  scope.row.erate
-                }}</span>
-                <span v-else>{{ scope.row.erate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.qrate)">{{
-                  scope.row.qrate
-                }}</span>
-                <span v-else>{{ scope.row.qrate }}</span>
-              </template></el-table-column
-            >
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            >
-              <template slot-scope="scope">
-                <span class="red" v-if="isCLevel(scope.row.lrate)">{{
-                  scope.row.lrate
-                }}</span>
-                <span v-else>{{ scope.row.lrate }}</span>
-              </template></el-table-column
-            >
-          </el-table-column>
-          <el-table-column
-            label="LTC"
-            align="center"
-            prop="ltc"
-          ></el-table-column>
-          <el-table-column align="center" prop="ltcStartDate" min-width="110">
-            <template slot="header" slot-scope="scope">
-              <p>LTC Start</p>
-              <p>Date</p>
-            </template>
-            <template slot-scope="scope">
-              <template v-if="scope.row.ltc!=0">{{
-                scope.row.ltcStartDate
-              }}</template>
-            </template></el-table-column
-          >
-          <el-table-column
             align="right"
             header-align="center"
-            prop="developCost"
+            prop="releaseCost"
             min-width="100"
           >
             <template slot="header" slot-scope="scope">
-              <p>Develop</p>
+              <p>Release</p>
               <p>Cost</p>
-            </template>
-            <template slot-scope="scope">
-              <el-popover
-                placement="top-start"
-                trigger="hover"
-                v-if="scope.row.devFeeIsShared && scope.row.developCost"
-              >
-                <div>
-                  <div>
-                    Apportioned amount：{{
-                      scope.row.developShareCostTotal
-                    }}
-                  </div>
-                  <div>
-                    Unassessed amount：{{
-                      scope.row.developNotShareCostTotal
-                    }}
-                  </div>
-                </div>
-                <div slot="reference">
-                  <span style="color: red">*</span>{{ scope.row.developCost }}
-                </div>
-              </el-popover>
-              <template v-else>
-                {{ scope.row.developCost }}
-              </template>
             </template>
           </el-table-column>
           <el-table-column
@@ -407,160 +363,53 @@
             label="Total Turnover"
           >
             <template slot="header" slot-scope="scope">
-              <p>Total</p>
-              <p>Turnover</p>
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Total</p>
+                  <p>Turnover</p>
+                </div>
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quotation">
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
             </template></el-table-column
           >
-        </el-table-column>
-      </el-table>
-    </div>
-    <!-- 汇总表 -->
-    <div ref="total-table" :style="{ 'padding-right': gutter }">
-      <el-table
-        class="header total-table"
-        border
-        :data="totalData"
-        :span-method="totalCellClass"
-        :cell-class-name="totalColClass"
-        :show-header="false"
-      >
-        <el-table-column label="Unit：RMB">
-          <template v-for="item in fixedTitle">
-            <el-table-column
-              :key="item.prop"
-              v-if="item.prop == 'fsNum'"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            >
-              <template slot-scope="scope">
-                <span class="link" @click="gotoDetail(scope.row)">{{
-                  scope.row[item.prop]
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              v-else
-              :key="item.prop"
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="center"
-            ></el-table-column>
-          </template>
-          <el-table-column label="F-target" align="center">
-            <el-table-column
-              label="A Price"
-              prop="targetAPrice"
-              minWidth="90"
-              align="right"
-              header-align="center"
-            >
-            </el-table-column>
-            <el-table-column
-              label="B Price"
-              prop="targetBPrice"
-              minWidth="90"
-              align="right"
-              header-align="center"
-            >
-            </el-table-column>
-          </el-table-column>
         </el-table-column>
         <el-table-column>
           <el-table-column
-            label="A Price(LC)"
             align="right"
             header-align="center"
-            prop="lcAPrice"
-            minWidth="85"
-          >
-            <template slot-scope="scope">
-              {{ scope.row["lcAPrice"] | toThousands(true) }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="B Price(LC)"
-            align="right"
-            header-align="center"
-            prop="lcBPrice"
-            minWidth="85"
-          >
-            <template slot-scope="scope">
-              {{ scope.row["lcBPrice"] | toThousands(true) }}
-            </template></el-table-column
-          >
-          <el-table-column
-            label="Invest"
-            align="right"
-            header-align="center"
-            prop="invest"
-            minWidth="100"
-          >
-            <template slot-scope="scope">
-              {{ getInt(scope.row["invest"]) | toThousands(true) }}
-            </template></el-table-column
-          >
-          <el-table-column
-            label="Supplier"
-            align="center"
-            prop="supplierNameZh"
-            minWidth="100"
-          ></el-table-column>
-          <el-table-column label="Rating" align="center">
-            <el-table-column
-              label="E"
-              align="center"
-              prop="erate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="Q"
-              align="center"
-              prop="qrate"
-              min-width="60"
-            ></el-table-column>
-            <el-table-column
-              label="L"
-              align="center"
-              prop="lrate"
-              min-width="60"
-            ></el-table-column>
-          </el-table-column>
-          <el-table-column
-            label="LTC"
-            align="center"
-            prop="ltc"
-          ></el-table-column>
-          <el-table-column
-            label="LTC Start Date"
-            align="center"
-            prop="ltcStartDate"
-            min-width="110"
-          ></el-table-column>
-          <el-table-column
-            label="Develop Cost"
-            align="right"
-            header-align="center"
-            prop="developCost"
+            prop="saving"
             min-width="100"
           >
-            <template slot-scope="scope">
-              {{ getInt(scope.row["developCost"]) | toThousands(true) }}
+            <template slot="header" slot-scope="scope">
+              <div class="icon-box">
+                <div class="margin-right5">
+                  <p>Saving</p>
+                  <p>@100%</p>
+                  <p>Share</p>
+                </div>
+                <el-tooltip effect="light" placement="top" content="Total Turnover + Develop cost + Release cost - TTO of current supplier">
+                  <span>
+                    <icon symbol name="iconxinxitishi" />
+                  </span>
+                </el-tooltip>
+              </div>
             </template></el-table-column
           >
           <el-table-column
-            label="Total Turnover"
             align="right"
             header-align="center"
-            prop="totalTurnover"
-            min-width="110"
+            prop="sopDate"
+            min-width="80"
+            label="SOP"
           >
             <template slot-scope="scope">
-              {{ getInt(scope.row["totalTurnover"]) | toThousands(true) }}
-            </template></el-table-column
-          >
+              {{ format(scope.row.sopDate) }}
+            </template>
+          </el-table-column>
         </el-table-column>
       </el-table>
     </div>
@@ -569,15 +418,17 @@
 </template>
 
 <script>
-import tooltip from "../../components/tooltip.vue";
+import tooltip from "../../../components/tooltip.vue";
 import {
   getAnalysisRecommendationNomi,
   getAnalysisBestBallNomi,
 } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
+import bestBallTableListTotal from "./bestBallTableListTotal";
 import { numberProcessor, toThousands, deleteThousands } from "@/utils";
+import { icon } from "rise";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, tooltip, bestBallTableListTotal, icon },
   data() {
     return {
       ref: "best-ball",
@@ -585,13 +436,13 @@ export default {
       fixedTitle: [
         {
           prop: "fsNum",
-          label: ["FS No. (Plant)"],
+          label: ["GS No. (Plant)"],
           width: 130,
         },
         {
           prop: "partNum",
           label: ["Part No."],
-          width: 140,
+          width: 120,
         },
         {
           prop: "carTypeProjectNum",
@@ -600,19 +451,9 @@ export default {
           width: 120,
         },
         {
-          prop: "ebr",
-          label: ["EBR"],
-          width: 85,
-        },
-        {
-          prop: "mixQty",
-          label: ["Mixed", "Qty"],
-          width: 60,
-        },
-        {
           prop: "volume",
           label: ["Volume"],
-          width: 85,
+          width: 80,
         },
       ],
       tableData: [],
@@ -620,13 +461,10 @@ export default {
       row: {},
       totalData: [
         {
-          ebr: "Mixed Price",
+          partNum: "Total",
         },
         {
-          ebr: "Target",
-        },
-        {
-          ebr: "Budget",
+          partNum: "Budget",
         },
       ],
       totalTableHeight: 120,
@@ -646,6 +484,10 @@ export default {
   methods: {
     numberProcessor,
     deleteThousands,
+    format(date){
+      if(!date) return ''
+      return window.moment(date).format('YYYY-MM')
+    },
     getInt(val) {
       if (!val) return val;
       let result = val.split(",").join("");
@@ -667,16 +509,11 @@ export default {
           if (res?.code == "200") {
             let tableData = res.data.analysisNomiPriceInfoList;
             const totalData = JSON.parse(JSON.stringify(this.totalData));
-            totalData[0]["targetAPrice"] = res.data.targetMixAPrice;
-            totalData[0]["targetBPrice"] = res.data.targetMixBPrice;
-            totalData[0]["lcAPrice"] = res.data.lcMixAPrice;
-            totalData[0]["lcBPrice"] = res.data.lcMixBPrice;
             totalData[0]["invest"] = res.data.totalInvest;
-            totalData[0]["developCost"] = res.data.totalDevelopCost;
+            totalData[0]["totalReleaseCost"] = res.data.totalReleaseCost;
             totalData[0]["totalTurnover"] = res.data.totalTurnover;
-            totalData[1]["invest"] = res.data.totalTargetInvest;
-            totalData[1]["developCost"] = res.data.targetSelTotalSel;
-            totalData[2]["invest"] = res.data.totalBudgetTotalInvest;
+            totalData[0]["totalSaving"] = res.data.totalSaving;
+            totalData[1]["invest"] = res.data.totalBudgetTotalInvest;
             this.totalData = totalData;
             this.tableData = tableData;
           } else {
@@ -685,16 +522,23 @@ export default {
         })
         .finally(() => {
           this.$nextTick(() => {
+            this.setColSpan();
             this.$emit("setPage", {
               index: this.label == "Best ball" ? 0 : 1,
               total: 2,
             });
+            this.$refs.table.doLayout(); // table重新布局
           });
         });
     },
     isCLevel(val) {
       if (!val) return val;
       return val.indexOf("c") > -1 || val.indexOf("C") > -1;
+    },
+    setColSpan() {
+      const row = this.$refs["best-ball"]?.getElementsByClassName("el-table__footer")[0].rows;
+      //   行数据,行,列,合并数,方向
+      this.merge(row, 0, 0, 20, "colSpan");
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
@@ -704,23 +548,23 @@ export default {
       let rowSpan = row[rowIndex].cells[colIndex].rowSpan;
       let colSpan = row[rowIndex].cells[colIndex].colSpan;
       if (type == "colSpan") {
-        for (let r = 0; r < rowSpan; r++) {
-          let rIndex = r + rowIndex;
-          let colSpan_ = row[rIndex].cells[colIndex].colSpan;
-          for (let i = 1; i < span; i++) {
-            let cIndex = i + colIndex;
-            colSpan_ += row[rIndex].cells[cIndex].colSpan;
-            if (colSpan_ == span) {
-              row[rIndex].cells[cIndex].style.display = "none";
-              break;
-            }
-            if (colSpan_ > span) {
-              row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
-              break;
-            }
+        // for (let r = 0; r < rowSpan; r++) {
+        let rIndex = rowIndex;
+        let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+        for (let i = 1; i < span; i++) {
+          let cIndex = i + colIndex;
+          colSpan_ += row[rIndex].cells[cIndex].colSpan;
+          if (colSpan_ == span) {
             row[rIndex].cells[cIndex].style.display = "none";
+            break;
           }
+          if (colSpan_ > span) {
+            row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+            break;
+          }
+          row[rIndex].cells[cIndex].style.display = "none";
         }
+        // }
       }
       if (type == "rowSpan") {
         for (let c = 0; c < colSpan; c++) {
@@ -746,28 +590,14 @@ export default {
     // 计算统计表表头合并
     totalCellClass({ row, column, rowIndex, columnIndex }) {
       if (columnIndex == 0 && rowIndex == 0) {
-        return [3, 3];
-      } else if (columnIndex < 3 && rowIndex < 3) {
+        return [3, 1];
+      } else if (columnIndex == 0 && rowIndex < 3) {
         return [0, 0];
       }
-      if ([0, 1, 2].includes(rowIndex)) {
-        if (columnIndex == 3) {
+      if ([0, 1].includes(rowIndex)) {
+        if (columnIndex == 1) {
           return [1, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([2, 4].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [2, 3];
-        } else if ([4, 5].includes(columnIndex)) {
-          return [0, 0];
-        }
-      }
-      if ([3, 5].includes(rowIndex)) {
-        if (columnIndex == 3) {
-          return [0, 0];
-        } else if ([4, 5].includes(columnIndex)) {
+        } else if ([2, 3].includes(columnIndex)) {
           return [0, 0];
         }
       }
@@ -778,7 +608,7 @@ export default {
     },
     // 表头单元格背景调整
     cellClass({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex == 0 && columnIndex == 0) {
+      if (rowIndex == 0 && [0,2].includes(columnIndex)) {
         return "white-bg unit";
       } else if (rowIndex == 0) {
         return "primary-label";
@@ -804,17 +634,31 @@ export default {
           }
         }
       }
-      if (["Total Turnover"].includes(column.label)) {
+      if([4,5,6].includes(columnIndex)){
+        return "current-column"
+      }
+      let className = ''
+      if (columnIndex>6 && columnIndex < 18) {
         if (this.label == "Best ball") {
-          return "font-green";
-        } else if (row.isFsMinTto) {
-          // if (row.isMinTto) {
-          return "font-green";
+          // best_ball 全绿,只判断蓝色背景
+          if (row.suggestFlag) {
+            className += "blue-border";
+          }
+        } else {
+            className += "blue-border";
         }
       }
+      if (["Total Turnover"].includes(column.label)) {
+        if (this.label == "Best ball") {
+          className += " font-green";
+        } else if (row.isFsMinTto) {
+          className += " font-green";
+        }
+      }
+      return className
     },
     totalColClass({ row, column, rowIndex, columnIndex }) {
-      if ([3, 4, 5].includes(columnIndex)) {
+      if ([1, 2, 3].includes(columnIndex)) {
         return "table-header";
       }
     },
@@ -824,13 +668,24 @@ export default {
         this.visible = true;
       });
     },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = <bestBallTableListTotal totalData={this.totalData} />;
+          return;
+        }
+      });
+      return sums;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .table-box {
-  height: calc(100% - 120px);
+  height: 100%;
 }
 .header {
   ::v-deep th {
@@ -873,6 +728,28 @@ export default {
       background: #fff;
       .cell {
         color: #000 !important;
+      }
+    }
+    .icon-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .el-table__footer-wrapper {
+    .el-table__footer {
+      .has-gutter {
+        & > tr {
+          & > td {
+            padding: 0;
+            .cell {
+              padding: 0;
+            }
+            &:first-of-type {
+              border-right: 0;
+            }
+          }
+        }
       }
     }
   }

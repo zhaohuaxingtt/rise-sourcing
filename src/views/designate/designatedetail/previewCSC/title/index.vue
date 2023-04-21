@@ -10,10 +10,13 @@
     </div>
     <div class="content">
       <template v-for="item in items">
-        <div class="infos" :key="item.label" v-if="item.key != 'partType'">
+        <div class="infos" :key="item.label" v-if="!['partType','soptime'].includes(item.key)">
           <div class="label">{{ item.label }}:</div>
-          <div class="value" v-if="item.key == 'tnr'">
-            {{ data[item.key] }}({{ data.partType }})
+          <div class="value" v-if="item.key == 'projectType'">
+            {{ data[item.key] }} {{ data.partType ? ` (${data.partType})`: '' }}
+          </div>
+          <div class="value" v-else-if="item.key == 'carline'">
+            {{ data[item.key] }}{{ data.soptime ? ` (SOP ${data.soptime})` : '' }}
           </div>
           <div class="value" v-else>{{ data[item.key] }}</div>
         </div>
@@ -89,7 +92,7 @@ export default {
                 this.$set(
                   this.data,
                   item.key,
-                  res.data.carline || res.data.projects.join("、")
+                  (Array.isArray(res.data.projects) && res.data.projects.length) ? res.data.projects.join("、") : res.data.carline
                 );
 
                 break;
