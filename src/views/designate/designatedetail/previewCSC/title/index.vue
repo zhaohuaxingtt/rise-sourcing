@@ -16,7 +16,7 @@
             {{ data[item.key] }} {{ data.partType ? ` (${data.partType})`: '' }}
           </div>
           <div class="value" v-else-if="item.key == 'carline'">
-            {{ data[item.key] }}{{ data.soptime ? ` (SOP ${data.soptime}` : '' }}
+            {{ data[item.key] }}{{ data.soptime ? ` (SOP ${data.soptime})` : '' }}
           </div>
           <div class="value" v-else>{{ data[item.key] }}</div>
         </div>
