@@ -45,5 +45,8 @@ export default {
 <style lang="scss" scoped>
 .abPrice-page{
   margin: 0 -40px;
+  ::v-deep .page-nav{
+    padding: 0 40px;
+  }
 }
 </style>

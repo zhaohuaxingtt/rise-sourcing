@@ -102,17 +102,6 @@
           </template></el-table-column
         >
         <el-table-column
-          label="Invest"
-          align="right"
-          header-align="center"
-          prop="invest"
-          minWidth="90"
-        >
-          <template slot-scope="scope">
-            {{ getInt(scope.row["invest"]) | toThousands(true) }}
-          </template></el-table-column
-        >
-        <el-table-column
           label="LTC"
           align="center"
           prop="ltc"
@@ -123,6 +112,17 @@
           prop="ltcStartDate"
           min-width="80"
         ></el-table-column>
+        <el-table-column
+          label="Invest"
+          align="right"
+          header-align="center"
+          prop="invest"
+          minWidth="90"
+        >
+          <template slot-scope="scope">
+            {{ getInt(scope.row["invest"]) | toThousands(true) }}
+          </template></el-table-column
+        >
         <el-table-column
           label="Develop Cost"
           align="right"

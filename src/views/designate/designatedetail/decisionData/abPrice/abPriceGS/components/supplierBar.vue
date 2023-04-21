@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-20 20:46:29
+ * @LastEditTime: 2023-04-21 21:18:54
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -228,7 +228,7 @@
                 :data="item"
                 :max="max"
               />
-              <template v-else-if="item.prop == 'Recommendation'">
+              <!-- <template v-else-if="item.prop == 'Recommendation'">
               <el-popover
                 placement="right"
                 trigger="hover"
@@ -255,7 +255,7 @@
                   />
                 </div>
               </el-popover>
-              </template>
+              </template> -->
               <barItem
                 v-else
                 :key="item.prop"
