@@ -113,6 +113,12 @@ export default {
     buttonTableSetting,
     detailDialog,
   },
+  props:{
+    isGS:{
+      type:Boolean,
+      default: false
+    }
+  },
   filters: {
     toThousands,
   },
@@ -126,7 +132,7 @@ export default {
       loading: false,
       saveLoading: false,
       tableListData: [],
-      tableTitle,
+      tableTitle: tableTitle,
       row: {},
     };
   },
@@ -145,6 +151,19 @@ export default {
     isApproval() {
       return this.$route.query.isApproval === "true";
     },
+  },
+  watch:{
+    isGS:{
+      handler(val){
+        if(val){
+          tableTitle[0] = { props: 'fsNum',isHeaderSetting:true, HeaderSettingList:[{name:'采购项目编号 (工厂)'},{name:'GS No. (Plant)'},], minWidth:180 }
+        }else{
+          tableTitle[0] = { props: 'fsNum',isHeaderSetting:true, HeaderSettingList:[{name:'采购项目编号 (工厂)'},{name:'FS No. (Plant)'},], minWidth:180 }
+        }
+        this.tableTitle = tableTitle
+      },
+      immediate:true
+    }
   },
   methods: {
     numberProcessor,

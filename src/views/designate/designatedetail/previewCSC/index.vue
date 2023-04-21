@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-18 14:38:19
+ * @LastEditTime: 2023-04-21 21:22:17
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,17 +38,16 @@ export default {
   data() {
     return {
       loading: false,
-      isGS: false,
+      isGS: '',
       isPreview: "1",
     };
   },
-  created() {
+  async created() {
     const { query } = this.$route;
-    const { isPreview = "0",  partProjType = ''} = query;
+    const { isPreview = "0"} = query;
     this.isPreview = isPreview;
-    this.isGS = ['1000003'].includes(partProjType)
     this.$store.dispatch("setPreviewState", isPreview);
-    this.nominateAppSDetail();
+    await this.nominateAppSDetail();
     if (this.$route.query.sd == 1) {
       this.getNomiPosition();
     }
@@ -73,50 +72,49 @@ export default {
         this.showDecisionLoading = false
       })
     },
-    nominateAppSDetail() {
+    async nominateAppSDetail() {
       this.loading = true;
       if (this.$route.query.desinateId) {
-        nominateAppSDetail({
+        let res = await nominateAppSDetail({
           nominateAppId: this.$route.query.desinateId,
         })
-          .then((res) => {
-            if (res.code == 200) {
-              this.$store.dispatch(
-                "setNominationDisabled",
-                getNominateDisabled(
-                  {
-                    ...res.data,
-                    designateType: this.$route.query.designateType,
-                  } || {}
-                )
-              );
-              this.$store.dispatch(
-                "setRsDisabled",
-                res.data.rsStatus === "FROZEN"
-              );
-              this.$store.dispatch(
-                "setApplicationStatus",
-                res.data.applicationStatus
-              );
-              this.$store.dispatch(
-                "setNominationType",
-                res.data.nominateProcessType
-              );
-              this.$store.dispatch("setMtzAppid", res.data.mtzApplyId);
-              this.$store.dispatch("setNominateData", res.data || {});
+        if (res?.code == 200) {
+          this.$store.dispatch(
+            "setNominationDisabled",
+            getNominateDisabled(
+              {
+                ...res.data,
+                designateType: this.$route.query.designateType,
+              } || {}
+            )
+          );
+          this.$store.dispatch(
+            "setRsDisabled",
+            res.data.rsStatus === "FROZEN"
+          );
+          this.$store.dispatch(
+            "setApplicationStatus",
+            res.data.applicationStatus
+          );
+          this.$store.dispatch(
+            "setNominationType",
+            res.data.nominateProcessType
+          );
+          this.$store.dispatch("setMtzAppid", res.data.mtzApplyId);
+          this.$store.dispatch("setNominateData", res.data || {});
 
-              const query = this.$router.history.current.query;
-              const path = this.$router.history.current.path;
-              const newQuery = JSON.parse(JSON.stringify(query));
-              newQuery.designateType = res.data.nominateProcessType;
-              this.$router.replace({ path, query: newQuery });
-            } else {
-              iMessage.error(
-                this.$i18n.locale === "zh" ? res.desZh : res.desEn
-              );
-            }
-          })
-          .finally(() => (this.loading = false));
+          const query = this.$router.history.current.query;
+          const path = this.$router.history.current.path;
+          const newQuery = JSON.parse(JSON.stringify(query));
+          this.isGS = ['1000003'].includes(res.data.partProjType)
+          newQuery.designateType = res.data.nominateProcessType;
+          this.$router.replace({ path, query: newQuery });
+        } else {
+          iMessage.error(
+            this.$i18n.locale === "zh" ? res.desZh : res.desEn
+          );
+        }
+        this.loading = false
       } else {
         this.loading = false;
       }
