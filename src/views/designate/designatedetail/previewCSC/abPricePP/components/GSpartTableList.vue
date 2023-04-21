@@ -548,7 +548,7 @@ export default {
     // 内容单元格蓝色背景调整
     colClass({ row, column, rowIndex, columnIndex }) {
       let className = "";
-      if (columnIndex > 7) {
+      if (columnIndex > 7 & columnIndex < 19) {
         if (row.suggestFlag) {
           className = "blue-border";
         }

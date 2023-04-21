@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-20 17:29:52
+ * @LastEditTime: 2023-04-21 09:42:07
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
@@ -72,7 +72,7 @@
           </template>
         </el-radio-group>
       </div>
-      <div class="header-btn" v-if="tab == 'table' && index > -1">
+      <div class="header-btn" v-if="tab == 'table' && total > 0">
         <template v-if="tabTable == 'best_ball'">
           <span> 当前展示第{{ index + 1 }}页，总共 2 页 </span>
           <img :src="left" alt="lrft" class="allow" @click="prev" />
