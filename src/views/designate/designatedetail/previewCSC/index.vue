@@ -2,18 +2,18 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-01-31 17:59:31
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-02-22 17:42:08
+ * @LastEditTime: 2023-04-21 21:22:17
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <iPage class="preview-csc" :class="isPreview === '1' ? 'no-padding' : ''" @click.native="isClick">
+  <iPage class="preview-csc no-padding" @click.native="isClick">
     <div
       id="preview-csc"
     >
       <decisionDataHeader class="tab-nav"/>
       <div class="nomination-content" v-loading="loading" id="pdfHide">
-        <router-view class="page-content"></router-view>
+        <router-view class="page-content" :isGS="isGS"></router-view>
       </div>
     </div>
   </iPage>
@@ -38,15 +38,16 @@ export default {
   data() {
     return {
       loading: false,
-      isPreview: "0",
+      isGS: '',
+      isPreview: "1",
     };
   },
-  created() {
+  async created() {
     const { query } = this.$route;
-    const { isPreview = "0" } = query;
+    const { isPreview = "0"} = query;
     this.isPreview = isPreview;
     this.$store.dispatch("setPreviewState", isPreview);
-    this.nominateAppSDetail();
+    await this.nominateAppSDetail();
     if (this.$route.query.sd == 1) {
       this.getNomiPosition();
     }
@@ -65,80 +66,58 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.showDecision = res.data
-          // 缓存当前步骤
-          this.getStepStatus();
         }
       })
       .finally(() => {
         this.showDecisionLoading = false
       })
     },
-    // 获取步骤状态
-    async getStepStatus(){
-      const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
-      // 临时跳转，将不调接口更新当前步骤
-      if (this.$route.query.route !== 'temp') {
-        await this.$store.dispatch('setNominationStep',{nominateId})
-      }
-    },
-    nominateAppSDetail() {
+    async nominateAppSDetail() {
       this.loading = true;
       if (this.$route.query.desinateId) {
-        nominateAppSDetail({
+        let res = await nominateAppSDetail({
           nominateAppId: this.$route.query.desinateId,
         })
-          .then((res) => {
-            if (res.code == 200) {
-              this.$store.dispatch(
-                "setNominationDisabled",
-                getNominateDisabled(
-                  {
-                    ...res.data,
-                    designateType: this.$route.query.designateType,
-                  } || {}
-                )
-              );
-              this.$store.dispatch(
-                "setRsDisabled",
-                res.data.rsStatus === "FROZEN"
-              );
-              this.$store.dispatch(
-                "setApplicationStatus",
-                res.data.applicationStatus
-              );
-              this.$store.dispatch(
-                "setNominationType",
-                res.data.nominateProcessType
-              );
-              this.$store.dispatch("setMtzAppid", res.data.mtzApplyId);
-              this.$store.dispatch("setNominateData", res.data || {});
+        if (res?.code == 200) {
+          this.$store.dispatch(
+            "setNominationDisabled",
+            getNominateDisabled(
+              {
+                ...res.data,
+                designateType: this.$route.query.designateType,
+              } || {}
+            )
+          );
+          this.$store.dispatch(
+            "setRsDisabled",
+            res.data.rsStatus === "FROZEN"
+          );
+          this.$store.dispatch(
+            "setApplicationStatus",
+            res.data.applicationStatus
+          );
+          this.$store.dispatch(
+            "setNominationType",
+            res.data.nominateProcessType
+          );
+          this.$store.dispatch("setMtzAppid", res.data.mtzApplyId);
+          this.$store.dispatch("setNominateData", res.data || {});
 
-              const query = this.$router.history.current.query;
-              const path = this.$router.history.current.path;
-              const newQuery = JSON.parse(JSON.stringify(query));
-              newQuery.designateType = res.data.nominateProcessType;
-              this.$router.replace({ path, query: newQuery });
-            } else {
-              iMessage.error(
-                this.$i18n.locale === "zh" ? res.desZh : res.desEn
-              );
-            }
-          })
-          .finally(() => (this.loading = false));
+          const query = this.$router.history.current.query;
+          const path = this.$router.history.current.path;
+          const newQuery = JSON.parse(JSON.stringify(query));
+          this.isGS = ['1000003'].includes(res.data.partProjType)
+          newQuery.designateType = res.data.nominateProcessType;
+          this.$router.replace({ path, query: newQuery });
+        } else {
+          iMessage.error(
+            this.$i18n.locale === "zh" ? res.desZh : res.desEn
+          );
+        }
+        this.loading = false
       } else {
         this.loading = false;
       }
-    },
-  },
-  watch: {
-    $route(to, from) {
-      const { query = {} } = to;
-      const { isPreview = "0", nominateId } = query;
-      this.isPreview = isPreview;
-      // 缓存/更新预览状态
-      this.$store.dispatch("setPreviewState", isPreview);
-      // 缓存当前步骤
-      this.getStepStatus();
     },
   },
 };
@@ -146,9 +125,6 @@ export default {
 <style lang="scss" scoped>
 .no-padding {
   padding: 0;
-  .isPreview {
-    min-height: 100%;
-  }
 }
 .page {
   position: relative;
@@ -187,7 +163,7 @@ export default {
 }
 #preview-csc {
   height: 100%;
-  overflow: auto;
+  // overflow: auto;
   ::v-deep * {
     font-family: 'Arial', 'Helvetica', 'sans-serif';
     letter-spacing:0;
@@ -263,6 +239,11 @@ export default {
         .cell {
           line-height: 20px;
         }
+      }
+    }
+    .el-table__footer-wrapper{
+      tr:nth-child(even) {
+        background-color: #FFFFFF;
       }
     }
     tr {

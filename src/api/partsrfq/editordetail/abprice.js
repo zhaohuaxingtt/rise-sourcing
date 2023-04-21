@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2023-02-24 17:18:06
+ * @LastEditTime: 2023-04-07 18:12:00
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -133,5 +133,29 @@ export function update(data){
       url: `/business-operate/update`,
       method: 'post',
       data
+  })
+}
+
+// 获取GS横轴供应商场景
+export function analysisSummaryNomiGS(data){
+  return nego({
+      url: `nego-assistant/nego-analysis-summary/gs-supplier/analysisSummaryNomi`,
+      method: 'post',
+      data
+  })
+}
+// 获取定点GS横轴零件场景
+export function gsParts(nomiId){
+  return nego({
+      url: `nego-assistant/nego-analysis-summary/gs-parts/${nomiId}`,
+      method: 'get',
+  })
+}
+
+// 获取定点申请有效报价
+export function getNomiEffectiveQuotation(nomiId){
+  return nego({
+      url: `nego-assistant/nego-analysis-summary/getNomiEffectiveQuotation/${nomiId}`,
+      method: 'get',
   })
 }

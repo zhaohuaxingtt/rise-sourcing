@@ -2,12 +2,12 @@
 <template>
   <div ref="part-table" v-loading="loading">
     <el-table
-      v-show="totalTableHeight"
       :data="tableData"
       class="header table"
       ref="table"
       :key="index"
-      border
+      show-summary
+      :summary-method="summaryMethod"
       :header-cell-class-name="cellClass"
       :header-row-class-name="rowClass"
       :cell-class-name="colClass"
@@ -171,14 +171,14 @@
                         <div slot="reference">
                           <p>
                             <span style="color: red">*</span>
-                            <span>{{
+                            <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{
                               scope.row["cfPartAPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartAPrice"] | toThousands(true) }}
+                        <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ scope.row["cfPartAPrice"] | toThousands(true) }}</span>
                       </template>
                     </template>
                 </el-table-column>
@@ -220,14 +220,14 @@
                         <div slot="reference">
                           <p>
                             <span style="color: red">*</span>
-                            <span>{{
+                            <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{
                               scope.row["cfPartBPrice"] | toThousands(true)
                             }}</span>
                           </p>
                         </div>
                       </el-popover>
                       <template v-else>
-                        {{ scope.row["cfPartBPrice"] | toThousands(true) }}
+                        <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ scope.row["cfPartBPrice"] | toThousands(true) }}</span>
                       </template>
                     </template>
                 </el-table-column>
@@ -240,7 +240,16 @@
         <!-- :key="item.supplierId + index" -->
         <el-table-column :key="index" align="center">
           <div slot="header" slot-scope="scope">
-            {{ item.supplierEn || "-" }}
+            <tooltip :text="item.supplierEn">
+              <template slot="content">
+                <p :title="item.supplierFullNameZh">
+                  {{ item.supplierFullNameZh }}
+                </p>
+                <p :title="item.supplierFullNameEn">
+                  ({{ item.supplierFullNameEn }})
+                </p>
+              </template>
+            </tooltip>
           </div>
           <el-table-column :label="item.TE" align="center">
             <template slot-scope="scope" slot="header">
@@ -310,191 +319,6 @@
         </el-table-column>
       </template>
     </el-table>
-    <div ref="total-table" :style="{ 'padding-right': gutter }">
-      <el-table
-        class="header total-table"
-        border
-        :data="totalData"
-        :show-header="false"
-        :span-method="totalCellClass"
-        :cell-class-name="totalColClass"
-      >
-        <!-- 左侧固定表头 -->
-        <template v-for="(item, index) in fixedTitle">
-          <el-table-column :key="index">
-            <el-table-column
-              :prop="item.prop"
-              :label="item.label"
-              :width="item.width"
-              align="right"
-            ></el-table-column>
-          </el-table-column>
-        </template>
-        <el-table-column>
-          <el-table-column
-            label="A Price"
-            prop="aPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["aPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["aPrice"]) | toThousands(true) }}
-              </template>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="B Price"
-            prop="bPrice"
-            align="right"
-            header-align="center"
-            minWidth="80"
-          >
-            <template slot-scope="scope">
-              <template v-if="scope.$index == 0">
-                {{ scope.row["bPrice"] | toThousands(true) }}
-              </template>
-              <template v-else>
-                {{ getInt(scope.row["bPrice"]) | toThousands(true) }}
-              </template>
-            </template>
-          </el-table-column>
-        </el-table-column>
-        <template v-for="(item, index) in supplierList">
-          <el-table-column
-            :label="item.supplierEn"
-            :key="item.supplierId + index"
-            align="center"
-          >
-            <el-table-column
-              :prop="item.supplierId + 'aPrice'"
-              label="A price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>A price</p>
-                <p>(LC)</p>
-              </template>
-              <template slot-scope="scope">
-                <template v-if="scope.$index == 0">
-                  {{
-                    scope.row[item.supplierId + "aPrice"] | toThousands(true)
-                  }}
-                </template>
-                <template v-else-if="scope.$index == 1">
-                  <p
-                    v-for="(text, index) in scope.row[
-                      item.supplierId + 'aPrice'
-                    ]"
-                    :key="index"
-                  >
-                    {{ text }}
-                  </p>
-                </template>
-                <template v-else-if="scope.$index == 2">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.investFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        Apportioned amount：{{
-                          getInt(scope.row[item.supplierId + "toolingShareTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        Unassessed amount：{{
-                          getInt(scope.row[item.supplierId + "toolingNotShareTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
-                  </template>
-                </template>
-                <template v-else-if="scope.$index == 4">
-                  <el-popover
-                    placement="top-start"
-                    trigger="hover"
-                    v-if="
-                      scope.row.devFeeIsShared.includes(
-                        item.supplierId + 'aPrice'
-                      )
-                    "
-                  >
-                    <div>
-                      <div>
-                        Apportioned amount：{{
-                          getInt(scope.row[item.supplierId + "developShareCostTotal"]) | toThousands(true)
-                        }}
-                      </div>
-                      <div>
-                        Unassessed amount：{{
-                          getInt(scope.row[
-                            item.supplierId + "developNotShareCostTotal"
-                          ]) | toThousands(true)
-                        }}
-                      </div>
-                    </div>
-                    <div slot="reference">
-                      <span style="color: red">*</span
-                      >{{
-                        getInt(scope.row[item.supplierId + "aPrice"])
-                          | toThousands(true)
-                      }}
-                    </div>
-                  </el-popover>
-                  <template v-else>
-                    {{
-                      getInt(scope.row[item.supplierId + "aPrice"])
-                        | toThousands(true)
-                    }}
-                  </template>
-                </template>
-                <template v-else>{{
-                  getInt(scope.row[item.supplierId + "aPrice"])
-                    | toThousands(true)
-                }}</template>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :prop="item.supplierId + 'bPrice'"
-              label="B price(LC)"
-              align="right"
-              header-align="center"
-              minWidth="80"
-            >
-              <template slot="header" slot-scope="scope">
-                <p>B price</p>
-                <p>(LC)</p>
-              </template>
-            </el-table-column>
-          </el-table-column>
-        </template>
-      </el-table>
-    </div>
     <partTableDetail :visible.sync="visible" :row="row" />
   </div>
 </template>
@@ -504,8 +328,9 @@ import { fsPartsAsRow } from "@/api/partsrfq/editordetail/abprice";
 import partTableDetail from "./partTableDetail";
 import { numberProcessor, toThousands } from "@/utils";
 import tooltip from "../../../components/tooltip.vue";
+import partTableListTotal from "./partTableListTotal.vue";
 export default {
-  components: { partTableDetail, tooltip },
+  components: { partTableDetail, partTableListTotal, tooltip },
   data() {
     return {
       ref: "part-table",
@@ -575,6 +400,7 @@ export default {
         {
           carProType: "Total Turnover",
           isMinTto: [],
+          tips:'base on RFQ volume and latest Quotation'
         },
       ],
       index: -1,
@@ -622,6 +448,7 @@ export default {
                 item.bdlInfoList.forEach((child) => {
                   item[child.supplierId + "aPrice"] = child.lcAPrice;
                   item[child.supplierId + "bPrice"] = child.lcBPrice;
+                  item[child.supplierId + "quotationType"] = child.quotationType;
                   if (child.suggestFlag)
                     item.suggestFlag.push(
                       child.supplierId + "aPrice",
@@ -644,6 +471,8 @@ export default {
               obj[item.supplierId][item.rateType] = item.rateList;
               obj[item.supplierId].supplier = item.supplierName;
               obj[item.supplierId].supplierEn = item.supplierNameEn;
+              obj[item.supplierId].supplierFullNameZh = item.supplierFullNameZh;
+              obj[item.supplierId].supplierFullNameEn = item.supplierFullNameEn;
             });
             totalData[2].investFeeIsShared = [];
             totalData[4].devFeeIsShared = [];
@@ -742,10 +571,16 @@ export default {
         showLength: this.showLength,
         total: this.allData.length,
       });
+      const row_footer =
+        this.$refs["part-table"]?.getElementsByClassName("el-table__footer")[0]
+          .rows;
+      if (this.tableData.length)
+        this.mergeFooter(row_footer, 0, 0, 9 + this.showLength * 2);
       this.$nextTick(() => {
         setTimeout(() => {
           this.totalTableHeight = this.$refs["total-table"]?.scrollHeight;
         }, 0);
+        this.$refs.table.doLayout(); // table重新布局
       });
     },
     // 计算表头合并
@@ -794,6 +629,29 @@ export default {
         }
       }
       row[rowIndex].cells[colIndex][type] = span;
+    },
+    // 计算表格合计行合并
+    mergeFooter(row, rowIndex, colIndex, span) {
+      if (!row) return;
+      const col = row[rowIndex].cells;
+      if (!(row || col)) return;
+      if (rowIndex < 0 || colIndex < 0 || span < 0) return;
+      let rIndex = rowIndex;
+      let colSpan_ = row[rIndex].cells[colIndex].colSpan;
+      for (let i = 1; i < span; i++) {
+        let cIndex = i + colIndex;
+        colSpan_ += row[rIndex].cells[cIndex].colSpan;
+        if (colSpan_ == span) {
+          row[rIndex].cells[cIndex].style.display = "none";
+          break;
+        }
+        if (colSpan_ > span) {
+          row[rIndex].cells[cIndex].colSpan = colSpan_ - span;
+          break;
+        }
+        row[rIndex].cells[cIndex].style.display = "none";
+      }
+      row[rowIndex].cells[colIndex].colSpan = span;
     },
     // 计算统计表表头合并
     totalCellClass({ row, column, rowIndex, columnIndex }) {
@@ -844,7 +702,7 @@ export default {
         }
       }
     },
-    prev() {
+    next() {
       if (this.index < this.supplierAllData.length - 1) {
         this.index++;
       } else {
@@ -854,7 +712,7 @@ export default {
         this.setColSpan();
       });
     },
-    next() {
+    prev() {
       if (this.index > 0) {
         this.index--;
       } else {
@@ -911,6 +769,22 @@ export default {
       this.$nextTick(() => {
         this.visible = true;
       });
+    },
+    summaryMethod(param) {
+      const { columns } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = (
+            <partTableListTotal
+              totalData={this.totalData}
+              supplierList={this.supplierList}
+            />
+          );
+          return;
+        }
+      });
+      return sums;
     },
   },
 };
@@ -977,8 +851,28 @@ export default {
     white-space: nowrap;
     overflow: hidden;
   }
+  .el-table__footer-wrapper {
+    .el-table__footer {
+      .has-gutter {
+        & > tr {
+          & > td {
+            padding: 0;
+            & > .cell {
+              padding: 0;
+            }
+            &:first-of-type {
+              border-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
   .red {
     color: #f00;
+  }
+  .chengse{
+    color: $color-delete;
   }
 }
 
