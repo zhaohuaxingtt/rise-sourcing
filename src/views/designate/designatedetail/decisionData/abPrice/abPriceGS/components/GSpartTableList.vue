@@ -431,7 +431,7 @@
           <el-table-column
             align="right"
             header-align="center"
-            prop="budget"
+            prop="budgetInvest"
             min-width="90"
           >
             <template slot="header" slot-scope="scope">
