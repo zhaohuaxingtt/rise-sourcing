@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-21 09:42:07
+ * @LastEditTime: 2023-04-21 11:04:58
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPrice\index.vue
@@ -271,8 +271,8 @@ export default {
         },
       ],
       tab: "table",
-      tabTable: "supplier",
-      oldTabTable:'supplier',
+      tabTable: "",
+      oldTabTable:'',
       tabBar: "",
       tabLine: "",
       carTypeList: [],
