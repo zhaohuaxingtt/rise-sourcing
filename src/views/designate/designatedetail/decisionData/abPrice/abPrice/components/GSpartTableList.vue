@@ -409,7 +409,7 @@
                 <el-tooltip
                   effect="light"
                   placement="top"
-                  content="base on RFQ volume and latest Quatation"
+                  content="base on RFQ volume and latest Quotation"
                 >
                   <span>
                     <icon symbol name="iconxinxitishi" />

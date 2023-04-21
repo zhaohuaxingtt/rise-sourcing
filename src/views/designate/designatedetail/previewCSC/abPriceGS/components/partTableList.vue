@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-24 16:16:02
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-21 09:33:27
+ * @LastEditTime: 2023-04-21 10:35:05
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\components\partTableList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -416,7 +416,7 @@ export default {
         {
           supplier: "Total Turnover",
           isMinTto: [],
-          tips:'base on RFQ volume and latest Quatation'
+          tips:'base on RFQ volume and latest Quotation'
         },
         {
           supplier: "Saving @100% Share",

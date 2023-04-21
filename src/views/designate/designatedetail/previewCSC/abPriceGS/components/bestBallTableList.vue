@@ -370,7 +370,7 @@
                   <p>Total</p>
                   <p>Turnover</p>
                 </div>
-                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quatation">
+                <el-tooltip effect="light" placement="top" content="base on RFQ volume and latest Quotation">
                   <span>
                     <icon symbol name="iconxinxitishi" />
                   </span>
