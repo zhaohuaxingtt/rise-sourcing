@@ -491,7 +491,7 @@ export default {
           let fixedTitle = JSON.parse(JSON.stringify(this.fixedTitle));
           this.targetMixAPrice = res.data.targetMixAPrice;
           this.targetMixBPrice = res.data.targetMixBPrice;
-          fixedTitle[0].budget = res.data.sumBudgetTotalInvest;
+          fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
           this.fixedTitle = fixedTitle;
           this.partAllData = _.chunk(res.data.headList, this.showLength);
           this.allData = res.data.headList;
@@ -562,7 +562,7 @@ export default {
         this.merge(row, 1, 2, this.partList.length * 2 + 5, "colSpan");
         this.merge(row, 2, 2, this.partList.length * 2 + 5, "colSpan");
         this.merge(row, 3, 2, this.partList.length * 2 + 5, "colSpan");
-        this.merge(row, 4, 3, 5, "colSpan");
+        // this.merge(row, 4, 3, 5, "colSpan");
       } else {
         this.merge(row, 0, this.partList.length + 2, 7, "colSpan");
         this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");

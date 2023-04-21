@@ -536,7 +536,7 @@ export default {
           let fixedTitle = JSON.parse(JSON.stringify(this.fixedTitle));
           this.targetMixAPrice = res.data.targetMixAPrice;
           this.targetMixBPrice = res.data.targetMixBPrice;
-          fixedTitle[0].budget = res.data.sumBudgetTotalInvest;
+          fixedTitle[2].budget = res.data.sumBudgetTotalInvest;
           this.fixedTitle = fixedTitle;
           this.partAllData = _.chunk(res.data.headList, this.showLength);
           this.allData = res.data.headList;
@@ -640,7 +640,7 @@ export default {
       this.$refs.table.doLayout(); // table重新布局
       this.merge(row, 0, this.partList.length + 2, 6, "colSpan");
       this.merge(row, 0, this.partList.length + 2, 4, "rowSpan");
-      this.merge(row, 4, this.partList.length + 2, 6, "colSpan"); // Budget合并
+      // this.merge(row, 4, this.partList.length + 2, 6, "colSpan"); // Budget合并
     },
     // 计算表头合并
     merge(row, rowIndex, colIndex, span, type = "colSpan") {
