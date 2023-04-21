@@ -153,6 +153,9 @@
                 }}
               </template>
             </template>
+            <template v-else-if="scope.$index == 2">
+              {{budgetTotal}}
+            </template>
             <template v-else>{{
               getInt(scope.row[item.supplierId + "aPrice"]) | toThousands(true)
             }}</template>
@@ -180,6 +183,7 @@ export default {
     totalData: { type: Array, default: () => [] },
     supplierList: { type: Array, default: () => [] },
     index: { type: String | Number, default: -1 },
+    budgetTotal:{ type: String | Number, default: '' },
   },
   data() {
     return {
