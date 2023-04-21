@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-21 11:02:56
+ * @LastEditTime: 2023-04-21 22:28:34
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPriceGS\index.vue
@@ -320,7 +320,7 @@ export default {
         if (res?.code == "200") {
           res.data.forEach((item) => {
             this.config[item.operateCode] = item;
-            if (item.isShow) {
+            if (item.isShow && item.operateCode!='Detailed_Worksheet') {
               // 显示第一个true
               this.tabTable = item.operateCode;
             }
