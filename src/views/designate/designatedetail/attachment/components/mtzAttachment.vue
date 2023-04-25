@@ -64,6 +64,9 @@ export default {
     tablelist,
     iPagination,
   },
+  props:{
+    type: { type: String, default: '' },
+  },
   data() {
     return {
       mtzAppId: "",

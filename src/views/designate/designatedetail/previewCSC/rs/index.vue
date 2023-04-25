@@ -168,7 +168,7 @@ export default {
      * @return {*}
      */
     isPreview() {
-      return this.$route.query.isPreview == 1 || this.otherPreview;
+      return this.$route.query.isPreview == 1 || this.$route.query.isPreview == 'true' || this.otherPreview;
     },
     /**
      * @Description: 定点id，如果从其他页面点击预览，则从props里取定点id，如是定点流程中的rs，则从url上获取定点id

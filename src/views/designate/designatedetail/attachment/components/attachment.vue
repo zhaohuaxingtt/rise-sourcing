@@ -7,7 +7,7 @@
 -->
 <template>
   <iCard class="attachment margin-bottom25">
-    <div class="margin-bottom25 clearFloat">
+    <div v-if="type!='approval'" class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
         {{ language("Attachment", "Attachment") }}
       </span>
@@ -125,6 +125,9 @@ export default {
     iPagination,
     tablelist,
     upload,
+  },
+  props:{
+    type: { type: String, default: '' },
   },
   data() {
     return {

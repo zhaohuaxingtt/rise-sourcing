@@ -78,6 +78,7 @@ export default{
   methods:{
     getDeptLeader(deptId, grade, row) {
       getDeptLeader({
+        nominateId:this.$route.query.desinateId,
         deptNum: deptId,
         grade,
         nominateType: this.nominationType
