@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-08 15:45:59
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-13 09:25:03
+ * @LastEditTime: 2023-04-12 14:48:50
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\attachment\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -256,7 +256,7 @@ export default {
     .collapse-transition {
       width: 500px;
       height: 100%;
-
+      overflow: auto;
       .file-ul {
         &:last-of-type {
           margin-bottom: 0;

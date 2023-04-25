@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2023-02-16 09:40:15
+ * @LastEditTime: 2023-04-10 10:02:46
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -562,7 +562,7 @@ export default [
       activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/decisionData/rs/preview'),
+      import('@/views/designate/designatedetail/previewCSC/rs/preview'),
   },
   {
     path: '/designate/designateCirculateSingleSourcing',
