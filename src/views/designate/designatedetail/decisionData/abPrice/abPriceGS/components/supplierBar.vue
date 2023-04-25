@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-21 21:18:54
+ * @LastEditTime: 2023-04-25 18:27:17
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\abPriceGS\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -45,7 +45,6 @@
       :key="tableData.length"
       :highlight-current-row="false"
       :cell-class-name="colClass"
-      :row-class-name="rowClass"
       :show-header="false"
       :span-method="arraySpanMethod"
     >
@@ -228,34 +227,56 @@
                 :data="item"
                 :max="max"
               />
-              <!-- <template v-else-if="item.prop == 'Recommendation'">
-              <el-popover
-                placement="right"
-                trigger="hover"
-                popper-class="supplier-pop"
-              >
-                <h2>Recommendation</h2>
-                <div class="supplier-box">
-                  <div v-for="item in dialogSupplierList" :key="item.supplierId" class="supplier-item">
-                    <p class="supplier-name">{{item.supplierNameEn}}</p>
-                    <p class="data-info">
-                      <span>TTO:{{item.tto}}</span>
-                      <span class="margin-left20">{{percent(item.ratio)}}</span>
-                    </p>
+              <template v-else-if="item.prop == 'Recommendation'">
+                <el-popover
+                  placement="right"
+                  trigger="hover"
+                  popper-class="supplier-pop"
+                >
+                  <p class="font-size20">Recommendation</p>
+                  <p class="font-size20">TTO: {{partTtoNomiInfo.partTtoTotal}}</p>
+                  <el-table :data="dialogSupplierList" max-height="300px" height="100%" :header-row-class-name="rowClass">
+                    <el-table-column label="Supplier" align="center">
+                      <el-table-column label="Total" prop="supplierNameEn" width="200" align="center"></el-table-column>
+                    </el-table-column>
+                    <el-table-column align="center">
+                      <template slot-scope="scope" slot="header">
+                        <p>Awarded</p>
+                        <p>TTO</p>
+                      </template>
+                      <el-table-column prop="tto" width="140" align="right">
+                        <template slot-scope="scope" slot="header">
+                          {{partTtoNomiInfo.tto}}
+                        </template>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column align="center">
+                      <template slot-scope="scope" slot="header">
+                        <p>Awarded</p>
+                        <p>Percent</p>
+                      </template>
+                      <el-table-column prop="ratio" width="120" align="right">
+                        <template slot-scope="scope" slot="header">
+                          {{percent(partTtoNomiInfo.ratio)}}
+                        </template>
+                        <template slot-scope="scope">
+                          {{percent(scope.row.ratio)}}
+                        </template>
+                      </el-table-column>
+                    </el-table-column>
+                  </el-table>
+                  <div slot="reference">
+                    <barItem
+                      :key="item.prop"
+                      :height="height"
+                      :barName="item.label"
+                      :data="item"
+                      :colorA="item.colorA"
+                      :max="max"
+                    />
                   </div>
-                </div>
-                <div slot="reference">
-                  <barItem
-                    :key="item.prop"
-                    :height="height"
-                    :barName="item.label"
-                    :data="item"
-                    :colorA="item.colorA"
-                    :max="max"
-                  />
-                </div>
-              </el-popover>
-              </template> -->
+                </el-popover>
+              </template>
               <barItem
                 v-else
                 :key="item.prop"
@@ -394,6 +415,7 @@ export default {
       ], // 'bar不显示,只占位
       supplierList: [],
       dialogSupplierList:[],
+      partTtoNomiInfo:{},
       fixedList: [
         { prop: "Recommendation", label: "Recommendation", colorA: "#395e78" },
         { prop: "LTC", label: "After LTC", colorA: "#395e78" },
@@ -431,6 +453,7 @@ export default {
           let fixedList = JSON.parse(JSON.stringify(this.fixedList));
           let tableData = JSON.parse(JSON.stringify(this.tableData));
           this.dialogSupplierList = res.data.recommendationNomiSupplierList || []
+          this.partTtoNomiInfo = res.data.partTtoNomiInfo || {}
           this.supplierList =
             res.data.nomiAnalysisSummarySuppliers.map((item) => {
               let ltcStartDateList = [];
@@ -518,8 +541,8 @@ export default {
         }
       }
     },
-    rowClass({ row }) {
-      // return ["E", "Q", "L"].includes(row.subLabel) ? "small" : "";  // 暂时保留,避免后续又要调整
+    rowClass({ rowIndex }) {
+      return [1].includes(rowIndex) ? "white-bg" : "";
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex == 0 && [1].includes(rowIndex)) {
@@ -608,16 +631,54 @@ export default {
     }
   }
 }
-.cell {
-  display: inline-block;
-  border: 1px solid #666;
-  vertical-align: top;
-  .red {
-    color: #f00;
-  }
+.red {
+  color: #f00;
 }
 .font-size20 {
   font-size: 20px;
   font-weight: bold;
+}
+</style>
+<style lang="scss">
+.supplier-pop{
+  margin-left: -20px !important;
+  .el-table {
+    font-size: 16px;
+    .el-table__header {
+        background-color: #364d6e;
+      th{
+        border-color: #d9d9d9;
+        &.gutter:last-of-type{
+          background-color: #fff;
+          border: 0;
+        }
+      }
+      .cell{
+        color: #fff;
+      }
+      .white-bg {
+        th{
+          background: #fff;
+          .cell {
+            white-space: normal;
+            color: #000 !important;
+          }
+        }
+      }
+    }
+    .el-table__body-wrapper {
+      tr:nth-child(even) {
+        background-color: #ffffff;
+      }
+      td {
+        border-color: #d9d9d9;
+        border-top: 0;
+        border-bottom: 1px solid #d9d9d9;
+        .cell {
+          line-height: 20px;
+        }
+      }
+    }
+  }
 }
 </style>

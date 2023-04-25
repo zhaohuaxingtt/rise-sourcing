@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2023-04-14 15:51:07
+ * @LastEditTime: 2023-04-25 17:55:20
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -81,10 +81,10 @@ export default {
       strategyVisible: false,
       carTypeList: [],
       config_Name:{
+        gs_part:'Detail',
         supplier:'Supplier',
         part:'Part',
         best_ball:'Best ball',
-        gs_part:'Detail',
       },
       config_list:[],
       strategy: "",
@@ -121,9 +121,8 @@ export default {
         businessId:this.$route.query.desinateId,
         type: "nominate_ab_price",
       }).then(res=>{
-        console.log(res);
         this.config_list = res.data
-        this.defaultTable = res.data.find(item=>{return item.isShow})?.operateCode || 'supplier'
+        this.defaultTable = res.data.find(item=>{return item.isShow})?.operateCode || 'gs_part'
       })
     },
     changeStatus() {
