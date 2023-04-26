@@ -1,10 +1,10 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2022-03-23 16:35:01
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-04-26 14:13:57
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: m签字单新增、详情
- * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
+ * @FilePath: \front-web\src\views\designate\home\signSheet\details.vue
 -->
 <template>
   <div v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
@@ -228,6 +228,7 @@ export default {
             return res
         })
         this.tableListData = this.tableListData.concat(newTamDAta)
+        this.$emit('save')
       }
     },
     // 多选

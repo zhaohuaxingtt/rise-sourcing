@@ -81,6 +81,7 @@
               :is="tab.component"
               :description.sync="description"
               @deleteData="deleteData"
+              @save="save"
             />
           </div>
         </el-tab-pane>
@@ -165,7 +166,7 @@ export default {
         query,
       });
     },
-    save() {
+    async save(type) {
       const params = {
         signId: this.$route.query.id,
         description: this.description,
@@ -190,38 +191,40 @@ export default {
         : [];
 
       this.updateLoading = true;
-      saveSignSheet(params)
-        .then((res) => {
-          if (res.code == 200) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res.desZh : res.desEn
-            );
-            this.$refs.partDesignateOrders[0].getChooseData();
-            this.$refs.partDesignateOrders[0].getSignSheetDetails();
-            this.$refs.MTZDesignateOrders[0].getTableData();
-            this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
-            this.$refs.CHIPDesignateOrders[0].getTableData();
-            this.$refs.CHIPDesignateOrders[0].getSignSheetDetails();
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
-        .finally(() => (this.updateLoading = false));
-      // this.$refs.signSheetCom.handleSave()
+      let res = await saveSignSheet(params)
+      this.updateLoading = false
+      if (res.code == 200) {
+        // 如果是提交则不用重复提示
+        if(type!='submit'){
+          iMessage.success(
+            this.$i18n.locale === "zh" ? res.desZh : res.desEn
+          );
+          this.$refs.partDesignateOrders[0].getChooseData();
+          this.$refs.partDesignateOrders[0].getSignSheetDetails();
+          this.$refs.MTZDesignateOrders[0].getTableData();
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails();
+          this.$refs.CHIPDesignateOrders[0].getTableData();
+          this.$refs.CHIPDesignateOrders[0].getSignSheetDetails();
+        }
+        return true
+      } else {
+        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        return false
+      }
     },
     async submit() {
       const params = {
         signIdArr: [this.$route.query.id],
       };
-
-      const confirmInfo = await this.$confirm(
-        this.language(
-          "QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU",
-          "请确定提交之前已经保存数据？"
-        )
-      );
-      if (confirmInfo !== "confirm") return;
-
+      // const confirmInfo = await this.$confirm(
+      //   this.language(
+      //     "QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU",
+      //     "请确定提交之前已经保存数据？"
+      //   )
+      // );
+      // if (confirmInfo !== "confirm") return;
+      let isSave = await this.save('submit')
+      if(!isSave) return
       this.updateLoading = true;
       submitSignSheet(params)
         .then((res) => {
@@ -254,6 +257,7 @@ export default {
         this.$refs.MTZDesignateOrders[0].forceDelete(
           data.map((item) => item.mtzApplyId)
         );
+        this.save()
     },
   },
 };
