@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-03-20 13:57:42
+ * @LastEditTime: 2023-04-24 11:13:05
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -516,6 +516,43 @@
           <p>{{ new Date().getTime() | dateFilter("YYYY-MM-DD") }}</p>
         </div>
       </div>
+    </div>
+    <div class="rsPdfWrapper" :style="{ width: pageWidth + 'px' }">
+      <rsPdf
+        ref="rsPdf"
+        v-if="showpdf"
+        :cardTitle="cardTitle"
+        :cardTitleEn="cardTitleEn"
+        :isSingle="isSingle"
+        :leftTitle="leftTitle"
+        :rightTitle="rightTitle"
+        :basicData="basicData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :remarkItem="remarkItem"
+        :remarkList="remarkList"
+        :projectType="projectType"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :exchangeRates="exchangeRates"
+        :showSignatureForm="showSignatureForm"
+        :isAuth="isAuth"
+        :checkList="checkList"
+        :processApplyDate="processApplyDate"
+        :prototypeList="PrototypeList"
+        :tableList="tableList"
+        :tableHeight="tableHeight"
+        :otherPageHeight="otherPageHeight"
+        :residualRemark="residualRemark"
+        :hasLastPage="hasLastPage"
+        :prototypeListPageHeight="prototypeListPageHeight"
+        :prototypeTableList="prototypeTableList"
+        :prototypeTitleList="prototypeTitleList"
+      >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+      </rsPdf>
+      <div class="contentPdf" ref="contentPdf" id="contentPdf"></div>
     </div>
     <div id="hide">
       <iCard class="rsCard">
