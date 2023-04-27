@@ -1,10 +1,10 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-11-29 11:16:24
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2023-04-14 14:51:29
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 项目管理-项目进度监控接口
- * @FilePath: \front-sourcing\src\api\project\process.js
+ * @FilePath: \front-web\src\api\project\process.js
  */
 
 
@@ -38,6 +38,14 @@ export function getProjectProgressMonitor(params) {
     url: `/project-progress-monitor/carModelStatus/${params.carTypeProjectId}`,
     method: 'GET',
     params
+  })
+}
+
+// 获取独立Tips数据
+export function carModelDataSource(carTypeProjectId) {
+  return requst({
+    url: `/project-progress-monitor/carModelDataSource/${carTypeProjectId}`,
+    method: 'GET',
   })
 }
 
