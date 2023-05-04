@@ -1,41 +1,44 @@
 <template>
-  <iTabsList type="card" v-model="tab">
-    <el-tab-pane
-      v-for="(tab, $index) in tabs"
-      :key="$index"
-      :label="tab.name"
-      :name="tab.key"
-    >
-      <div class="margin-top20">
-        <component :ref="tab.key" :is="tab.component" />
-      </div>
-    </el-tab-pane>
-  </iTabsList>
+  <iPage>
+    <iTabsList type="card" v-model="tab">
+      <el-tab-pane
+        v-for="tab in tabs"
+        :key="tab.name"
+        :label="language(tab.key,tab.name)"
+        :name="tab.name"
+      >
+        <div class="margin-top20">
+          <component :ref="tab.key" :is="tab.component" />
+        </div>
+      </el-tab-pane>
+    </iTabsList>
+  </iPage>
 </template>
 
 <script>
-import { iTabsList } from "rise";
+import { iPage, iTabsList } from "rise";
 import approved from "./approved";
 import pending from "./pending";
 export default {
   components: {
+    iPage,
     iTabsList,
     approved,
     pending,
   },
   data() {
     return {
-      tab: "pending",
+      tab: "待审批",
       tabs: [
         {
-          label: "pending",
+          name: "待审批",
           component: "pending",
-          key: "pending",
+          key:'LK_DAISHENPI'
         },
         {
-          label: "approved",
+          name: "已审批",
           component: "approved",
-          key: "approved",
+          key:'LK_YISHENPI'
         },
       ],
     };
