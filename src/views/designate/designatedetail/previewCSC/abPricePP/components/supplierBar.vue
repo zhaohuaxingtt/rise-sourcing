@@ -2,7 +2,7 @@
  * @Author: 余继鹏 917955345@qq.com
  * @Date: 2023-02-02 23:24:33
  * @LastEditors: 余继鹏 917955345@qq.com
- * @LastEditTime: 2023-04-26 15:08:35
+ * @LastEditTime: 2023-05-04 13:57:07
  * @FilePath: \front-web\src\views\designate\designatedetail\previewCSC\abPricePP\components\supplierBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -235,7 +235,7 @@
                   popper-class="supplier-pop"
                 >
                   <p class="font-size20">Recommendation</p>
-                  <p class="font-size20">TTO: {{partTtoNomiInfo.partTtoTotal}}</p>
+                  <p class="font-size20">TTO: {{getInt(partTtoNomiInfo.partTtoTotal) | toThousands(true)}}</p>
                   <el-table :data="dialogSupplierList" max-height="300px" height="100%" :header-row-class-name="rowClass">
                     <el-table-column label="Supplier" align="center">
                       <el-table-column label="Total" prop="supplierNameEn" width="240" align="center"></el-table-column>
@@ -247,7 +247,10 @@
                       </template>
                       <el-table-column prop="tto" width="180" align="right">
                         <template slot-scope="scope" slot="header">
-                          {{partTtoNomiInfo.tto}}
+                          {{getInt(partTtoNomiInfo.tto) | toThousands(true)}}
+                        </template>
+                        <template slot-scope="scope">
+                          {{getInt(scope.row.tto) | toThousands(true)}}
                         </template>
                       </el-table-column>
                     </el-table-column>
