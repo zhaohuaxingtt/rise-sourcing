@@ -409,7 +409,6 @@ export default [
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/signSheet/components/headerNav/index'),
-        // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
         children: [
           {
             path: 'details',
@@ -420,16 +419,6 @@ export default [
             },
             component: () => import('@/views/designate/home/signSheet/details'),
           },
-          // {
-          //   path: 'mtzDetails',
-          //   name: 'mtzDesignateNewSignSheet',
-          //   meta: {
-          //     title: 'MTZ定点申请单',
-          //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-          //   },
-          //   component: () =>
-          //     import('@/views/designate/home/signSheet/mtzDetails/index.vue'),
-          // },
         ],
       },
       {

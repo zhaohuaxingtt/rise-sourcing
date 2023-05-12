@@ -170,26 +170,51 @@ export default {
       const params = {
         signId: this.$route.query.id,
         description: this.description,
+        nominateIdArr:[],
+        nomiAppInfolist:[],
+        mtzApplyIdAttr:[],
+        mtzAppInfolist:[],
+        chipApplyIdAttr:[],
+        chipAppInfolist:[]
       };
-
-      params.nominateIdArr = Array.isArray(
-        this.$refs.partDesignateOrders[0].tableListData
-      )
-        ? this.$refs.partDesignateOrders[0].tableListData.map((item) => item.id)
-        : [];
-        // MTZ
-      params.mtzApplyIdAttr = Array.isArray(
-        this.$refs.MTZDesignateOrders[0].tableListData
-      )
-        ? this.$refs.MTZDesignateOrders[0].tableListData.map((item) => item.id)
-        : [];
-        // 芯片
-      params.chipApplyIdAttr = Array.isArray(
-        this.$refs.CHIPDesignateOrders[0].tableListData
-      )
-        ? this.$refs.CHIPDesignateOrders[0].tableListData.map((item) => item.id)
-        : [];
-
+      if(Array.isArray(this.$refs.partDesignateOrders[0].tableListData)){
+        this.$refs.partDesignateOrders[0].tableListData.forEach(item=>{
+          params.nominateIdArr.push(item.id)
+          params.nomiAppInfolist.push({
+            appNo: item.id,
+            meetingName: item.meetingName,
+            appName: item.nominateName,
+            partProjType: item.partProjType,
+            linieDept: item.linieDept
+          })
+        })
+      }
+      // MTZ
+      if(Array.isArray(this.$refs.MTZDesignateOrders[0].tableListData)){
+        this.$refs.MTZDesignateOrders[0].tableListData.forEach(item=>{
+          params.mtzApplyIdAttr.push(item.id)
+          params.mtzAppInfolist.push({
+            appNo: item.id,
+            meetingName: item.meetingName,
+            appName: item.appName,
+            partProjType: 'MTZ',
+            linieDept: item.linieDeptName
+          })
+        })
+      }
+      // CHIP
+      if(Array.isArray(this.$refs.CHIPDesignateOrders[0].tableListData)){
+        this.$refs.CHIPDesignateOrders[0].tableListData.forEach(item=>{
+          params.chipApplyIdAttr.push(item.id)
+          params.chipAppInfolist.push({
+            appNo: item.id,
+            meetingName: item.meetingName,
+            appName: item.appName,
+            partProjType: 'CHIP',
+            linieDept: item.linieDeptName
+          })
+        })
+      }
       this.updateLoading = true;
       let res = await saveSignSheet(params)
       this.updateLoading = false

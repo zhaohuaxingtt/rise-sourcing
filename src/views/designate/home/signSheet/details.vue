@@ -154,6 +154,7 @@ import {
   removeSignsheetItems,
   getsignSheetDetails
 } from '@/api/designate/nomination/signsheet'
+import { removeSignApp } from '@/api/designate/nomination/mApprove'
 import buttonTableSetting from '@/components/buttonTableSetting'
 import {
   iPage,
@@ -326,10 +327,19 @@ export default {
     async handleRemove () {
       if (!this.selectTableData.length) return iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
       await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-      this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
+      let params = {
+        nominateIdArr: this.selectTableData.map(item=>item.id),
+        signId: this.form.signId
+      }
+      removeSignApp(params).then(res=>{
+        if(res?.code==200){
+          this.getSignSheetDetails()
+        }
+      })
+      // this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
       // 清空之前先发出事件
-      this.$emit("deleteData", this.selectTableData)
-      this.selectTableData = []
+      // this.$emit("deleteData", this.selectTableData)
+      // this.selectTableData = []
     },
     // 查看详情
     viewNominationDetail (row) {

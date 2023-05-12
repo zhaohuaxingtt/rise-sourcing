@@ -22,20 +22,20 @@
         </div>
         <div class="drawer-header margin-bottom20">
           <span>
-            定点申请: 600012345 5JASS621E21-VADASDNVJDSJFN-前盖铰链加强版总成{{
-              status
-            }}
+            定点申请: {{ nomination }} {{ row.appName }}{{ status }}
           </span>
           <span class="value" ref="menuIcon">
             <img
               @click="prev"
-              class="list-icon cursor left"
+              class="list-icon left"
+              :class="index == 0 ? 'disable' : ''"
               :src="allow"
               alt="上箭头"
             />
             <img
               @click="next"
-              class="list-icon cursor right"
+              class="list-icon right"
+              :class="index == menuList.length - 1 ? 'disable' : ''"
               :src="allow"
               alt="下箭头"
             />
@@ -61,11 +61,9 @@
                   <div class="content">
                     <p class="text margin-bottom5">
                       <span>{{ 1 + i }}</span
-                      ><span
-                        >{{ item.presenterDept || 'presenterDept' }} {{ item.presenterEn || 'presenterEn' }}</span
-                      >
+                      ><span>{{ item.linieDept }}</span>
                     </p>
-                    <p>{{ item.topic || 'topic' }}</p>
+                    <p>{{ item.appName }}</p>
                   </div>
                 </li>
               </ul>
@@ -79,11 +77,17 @@
           </span>
         </div>
         <div class="drawer-btn">
-          <iButton>批准</iButton>
-          <iButton>拒绝</iButton>
+          <iButton @click="signApprove(1)">批准</iButton>
+          <iButton @click="signApprove(0)">拒绝</iButton>
         </div>
         <mtzDetails v-if="isMtz" class="margin-top10" />
-        <RS v-else class="margin-top10" />
+        <RS
+          :otherNominationId="nomination"
+          :key="nomination"
+          :otherPreview="true"
+          v-else
+          class="margin-top10 data-container"
+        />
       </div>
     </div>
   </el-drawer>
@@ -93,15 +97,16 @@
 import left from "@/assets/images/cscIcon/allow-right.svg";
 import allow from "@/assets/images/cscIcon/right.svg";
 import menu from "@/assets/images/cscIcon/menu.svg";
-import { iButton } from "rise";
+import { iButton, iMessage } from "rise";
 import RS from "@/views/designate/designatedetail/previewCSC/rs/home.vue";
 import mtzDetails from "./mtzDetails.vue";
+import { signApprove } from "@/api/designate/nomination/mApprove";
 export default {
   components: { iButton, RS, mtzDetails },
   props: {
-    menuList:{
+    menuList: {
       type: Array,
-      default:()=>[]
+      default: () => [],
     },
     isMtz: {
       type: Boolean,
@@ -125,20 +130,17 @@ export default {
       index: 0,
     };
   },
-  watch: {
-    row(val) {
-      if (val.nomination) {
-        console.log(val);
-      }
+  computed: {
+    nomination() {
+      return this.row.appNo || "";
     },
   },
-  created() {},
   methods: {
     close() {
-      this.$refs.menuIcon.click() // 关闭列表弹窗
-      this.$nextTick(()=>{
+      this.$refs.menuIcon.click(); // 关闭列表弹窗
+      this.$nextTick(() => {
         this.$emit("update:visible", false);
-      })
+      });
     },
     // 滚动到当前议题
     showItem() {
@@ -162,9 +164,55 @@ export default {
       }
     },
     getData(index) {
-      if(this.index==index) return
-      this.index = index
-      console.log("获取数据",index);
+      if (this.index == index) return;
+      this.index = index;
+      this.row = this.menuList[index];
+    },
+    
+    signApprove(isAgree) {
+      // 0拒绝、1同意
+      let params = {
+        isAgree: isAgree, // 0拒绝、1同意
+        isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
+        reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+        signIds: [this.$route.query.signId],
+        signAppIds: [this.row.signAppIds],
+      };
+      signApprove(params).then(async (res) => {
+        if (res?.code == 200) {
+          iMessage.success("操作成功");
+          this.$refs.partTable.getData(),
+          this.$refs.mtzTable.getData();
+        } else {
+          await this.$confirm(
+            res.data,
+            this.language("LK_WENXINTISHI", "温馨提示"),
+            {
+              confirmButtonText: this.language("LK_QUEDING", "确定"),
+              cancelButtonText: this.language("LK_QUXIAO", "取 消"),
+            }
+          )
+            .then(() => {
+              let params = {
+                isAgree: isAgree, // 0拒绝、1同意
+                isConfirm: 0, // 是否确认弹窗请求，1-是，0-否
+                reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+                signIds: [this.$route.query.signId],
+                signAppIds: [this.row.signAppIds],
+              };
+              signApprove(params).then((res) => {
+                if (res?.code == 200) {
+                  iMessage.success("操作成功");
+                  this.$refs.partTable.getData(),
+                  this.$refs.mtzTable.getData();
+                } else {
+                  iMessage.error("操作失败");
+                }
+              });
+            })
+            .catch(() => {});
+        }
+      });
     },
   },
 };
@@ -189,66 +237,70 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 }
-  .item-list {
-    height: calc(100vh - 148px);
-    min-height: 400px;
-    overflow: auto;
-    padding-right: 20px;
-    padding: 0;
-    color: #4f4f4f;
-    .list-item {
-      padding: 0 18px;
-      .content {
-        padding: 12px 0;
-        border-bottom: 1px solid #efefef;
-      }
+.item-list {
+  height: calc(100vh - 148px);
+  min-height: 400px;
+  overflow: auto;
+  padding-right: 20px;
+  padding: 0;
+  color: #4f4f4f;
+  .list-item {
+    padding: 0 18px;
+    .content {
+      padding: 12px 0;
+      border-bottom: 1px solid #efefef;
     }
-    .text {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
+  }
+  .text {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .is-active {
+    background: #364d6e;
+    color: #fff;
+    .content {
+      padding: 12px 0;
+      border-bottom: 0px;
     }
-    .is-active {
+    &:hover {
       background: #364d6e;
       color: #fff;
-      .content {
-        padding: 12px 0;
-        border-bottom: 0px;
-      }
-      &:hover {
-        background: #364d6e;
-        color: #fff;
-        opacity: 1;
-      }
+      opacity: 1;
     }
+  }
 
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      min-height: 8px;
-      min-width: 8px;
-    }
-    &::-webkit-scrollbar-track {
-      width: 8px;
-    }
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
-  .list-icon {
-    margin-right: 10px;
-    height: 30px;
-    &.right {
-      transform: rotateZ(90deg);
-    }
-    &.left {
-      transform: rotateZ(-90deg);
-    }
+  &::-webkit-scrollbar-thumb {
+    min-height: 8px;
+    min-width: 8px;
   }
-  .list-icon-menu {
-    height: 30px;
+  &::-webkit-scrollbar-track {
+    width: 8px;
   }
+}
+.list-icon {
+  margin-right: 10px;
+  height: 30px;
+  cursor: pointer;
+  &.right {
+    transform: rotateZ(90deg);
+  }
+  &.left {
+    transform: rotateZ(-90deg);
+  }
+}
+.list-icon-menu {
+  height: 30px;
+}
+.disable {
+  cursor: no-drop;
+  opacity: 0.8;
+}
 .drawer-btn {
   text-align: right;
 }
@@ -313,6 +365,7 @@ export default {
 .m-drawer.el-drawer {
   background: transparent;
   .el-drawer__body {
+    height: 100%;
     background: transparent;
     .drawer-container {
       height: 100%;
@@ -324,6 +377,9 @@ export default {
         background: #fff;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
+        .data-container{
+          height: calc(100% - 135px);
+        }
       }
     }
   }

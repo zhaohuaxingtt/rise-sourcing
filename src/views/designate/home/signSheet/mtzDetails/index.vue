@@ -72,6 +72,7 @@ import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
 import { getMTZSignPage, getsignSheetDetails, removeSignsheetItems, submitSignSheet, saveSignSheet } from '@/api/designate/nomination/signsheet'
+import { removeSignApp } from '@/api/designate/nomination/mApprove'
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
@@ -163,6 +164,7 @@ export default {
         return o
       })
       this.$set(this, 'tableListData', this.tableListData.concat(val))
+      this.$emit('save')
     },
     // 选中数据
     handleSelectionChange(val) {
@@ -223,8 +225,17 @@ export default {
       }
 
       await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-      this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
-      this.selection = []
+      let params = {
+        mtzApplyIdAttr: this.selection.map(item=>item.id),
+        signId: Number(this.$route.query.id)
+      }
+      removeSignApp(params).then(res=>{
+        if(res?.code==200){
+          this.getSignSheetDetails()
+        }
+      })
+      // this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
+      // this.selection = []
     },
     handleInputByDescription(value) {
       this.$emit("update:description", value)

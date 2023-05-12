@@ -7,12 +7,12 @@
     :searchKey="NORNIMATION_CONFIRMBUTTON"
   >
     <el-form>
-      <el-form-item label="会议名称">
+      <!-- <el-form-item label="会议名称">
         <iInput v-model="name"></iInput>
       </el-form-item>
       <el-form-item label="议题名称">
         <iInput v-model="name"></iInput>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="科室/股别">
         <iInput v-model="name"></iInput>
       </el-form-item>
@@ -49,6 +49,7 @@
 import { iSearch, iInput, iCard, iTableCustom, iButton, iPagination } from "rise";
 import { approveTable as tableTitle } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
+import { signAppApprovedPage } from "@/api/designate/nomination/mApprove";
 export default {
   components: {
     iSearch,
@@ -61,8 +62,10 @@ export default {
     mixins: [pageMixins],
   data() {
     return {
-      name: "",
-      remark: "",
+      searchForm: {
+        signName: "",
+        remark: "",
+      },
       tableData:[],
       tableTitle,
       tableLoading: false
@@ -73,12 +76,29 @@ export default {
   },
   methods: {
     sure() {
-      console.log("sure");
+      this.page.currPage = 1
+      this.getData();
     },
     reset() {
-      console.log("reset");
+      this.searchForm = {
+        signName: "",
+        remark: "",
+      }
+      this.sure()
     },
-    getData() {},
+    getData() {
+      let params = {
+        // ...this.searchForm,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+      };
+      signAppApprovedPage(params).then((res) => {
+        if (res?.code == 200) {
+          this.tableData = res.data.records;
+          this.page.totalCount = res.data.total;
+        }
+      });
+    },
   },
 };
 </script>

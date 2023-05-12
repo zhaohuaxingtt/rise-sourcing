@@ -10,8 +10,8 @@
       <span class="title">签字单:{{ id }}</span>
       <div class="button-box">
         <iButton>导出</iButton>
-        <iButton>批准</iButton>
-        <iButton>拒绝</iButton>
+        <iButton @click="signApprove(1)">批准</iButton>
+        <iButton @click="signApprove(0)">拒绝</iButton>
       </div>
     </div>
     <div class="margin-top20">
@@ -22,15 +22,26 @@
         >
       </el-radio-group>
     </div>
-    <partTable class="margin-top10" v-if="tab == 'part'"></partTable>
-    <mtzTable class="margin-top10" v-if="tab == 'mtz'"></mtzTable>
+    <partTable
+      class="margin-top10"
+      ref="partTable"
+      v-show="tab == 'part'"
+      @setCount="setCount"
+    ></partTable>
+    <mtzTable
+      class="margin-top10"
+      ref="mtzTable"
+      v-show="tab == 'mtz'"
+      @setCount="setCount"
+    ></mtzTable>
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton } from "rise";
+import { iPage, iButton, iMessage } from "rise";
 import partTable from "./components/partTable";
 import mtzTable from "./components/mtzTable";
+import { signApprove } from "@/api/designate/nomination/mApprove";
 export default {
   components: {
     iPage,
@@ -42,15 +53,69 @@ export default {
     return {
       id: "2023-CW15073",
       tab: "part",
-      partNum: 24,
-      mtzNum: 12,
+      partNum: "",
+      mtzNum: "",
     };
   },
-  created() {
-    this.getDetails();
-  },
   methods: {
-    getDetails() {},
+    setCount(key, count) {
+      this[key] = count;
+    },
+
+    signApprove(isAgree) {
+      let selectData = [
+        ...this.$refs.partTable.selectData,
+        ...this.$refs.mtzTable.selectData,
+      ];
+      // 0拒绝、1同意
+      if (!selectData.length) return iMessage.warn("请选择至少一条数据");
+      let params = {
+        isAgree: isAgree, // 0拒绝、1同意
+        isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
+        reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+        signIds: [this.$route.query.signId],
+        signAppIds: selectData.map((item) => {
+          return item.signAppId;
+        }),
+      };
+      signApprove(params).then(async (res) => {
+        if (res?.code == 200) {
+          iMessage.success("操作成功");
+          this.$refs.partTable.getData(),
+          this.$refs.mtzTable.getData();
+        } else {
+          await this.$confirm(
+            res.data,
+            this.language("LK_WENXINTISHI", "温馨提示"),
+            {
+              confirmButtonText: this.language("LK_QUEDING", "确定"),
+              cancelButtonText: this.language("LK_QUXIAO", "取 消"),
+            }
+          )
+            .then(() => {
+              let params = {
+                isAgree: isAgree, // 0拒绝、1同意
+                isConfirm: 0, // 是否确认弹窗请求，1-是，0-否
+                reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+                signIds: [this.$route.query.signId],
+                signAppIds: selectData.map((item) => {
+                  return item.signAppId;
+                }),
+              };
+              signApprove(params).then((res) => {
+                if (res?.code == 200) {
+                  iMessage.success("操作成功");
+                  this.$refs.partTable.getData(),
+                  this.$refs.mtzTable.getData();
+                } else {
+                  iMessage.error("操作失败");
+                }
+              });
+            })
+            .catch(() => {});
+        }
+      });
+    },
   },
 };
 </script>

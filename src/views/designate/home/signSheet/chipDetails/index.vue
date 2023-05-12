@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-12-07 15:16:10
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
+ * @FilePath: \front-web\src\views\designate\home\signSheet\components\chipDetails\index.vue
 -->
 <template>
   <div>
@@ -107,7 +107,7 @@ export default {
         } else iMessage.error(res.desZh);
       });
     },
-    // 获取MTZ签字单详情
+    // 获取芯片签字单详情
     getSignSheetDetails() {
       getsignSheetDetails({
         signId: this.$route.query.id,
@@ -143,6 +143,7 @@ export default {
           o.ttNominateAppId = o.appNo
         });
       this.$set(this, "tableListData", this.tableListData.concat(val));
+      this.$emit('save')
     },
     // 选中数据
     handleSelectionChange(val) {
@@ -150,8 +151,6 @@ export default {
     },
     // 移除
     async handleRemove() {
-      console.log(this.selection);
-      console.log(this.selection.length);
       if (this.selection && this.selection.length == 0) {
         return iMessage.warn(this.language("QINGZHISHAOXUANZHONGYITIAOSHUJU", "请至少选中一条数据"));
       }
@@ -177,10 +176,19 @@ export default {
       await this.$confirm(
         this.language("LK_REMOVESURE", "您确定要执行移除操作吗？")
       );
-      this.tableListData = this.tableListData.filter(
-        (item) => !this.selection.includes(item)
-      );
-      this.selection = [];
+      let params = {
+        chipApplyIdAttr: this.selection.map(item=>item.id),
+        signId: Number(this.$route.query.id)
+      }
+      removeSignApp(params).then(res=>{
+        if(res?.code==200){
+          this.getSignSheetDetails()
+        }
+      })
+      // this.tableListData = this.tableListData.filter(
+      //   (item) => !this.selection.includes(item)
+      // );
+      // this.selection = [];
     },
     handleInputByDescription(value) {
       this.$emit("update:description", value);

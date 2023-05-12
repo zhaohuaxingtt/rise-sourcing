@@ -1136,7 +1136,10 @@ export default {
       const { query } = this.$route;
       let routeUrl = this.$router.resolve({
         path: "/designate/designateCirculateSingleSourcing",
-        query,
+        query:{
+          ...query,
+          desinateId: this.nominateId
+        },
       });
       window.open(routeUrl.href, "_blank");
     },
