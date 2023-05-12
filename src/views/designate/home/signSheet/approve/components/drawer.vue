@@ -175,7 +175,6 @@ export default {
         isAgree: isAgree, // 0拒绝、1同意
         isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
         reason: isAgree ? "【同意】" : "【拒绝】", // 原因
-        signIds: [this.$route.query.signId],
         signAppIds: [this.row.signAppIds],
       };
       signApprove(params).then(async (res) => {
@@ -197,7 +196,6 @@ export default {
                 isAgree: isAgree, // 0拒绝、1同意
                 isConfirm: 0, // 是否确认弹窗请求，1-是，0-否
                 reason: isAgree ? "【同意】" : "【拒绝】", // 原因
-                signIds: [this.$route.query.signId],
                 signAppIds: [this.row.signAppIds],
               };
               signApprove(params).then((res) => {
