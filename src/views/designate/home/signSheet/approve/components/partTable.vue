@@ -38,7 +38,7 @@
         label="Nomination No."
         prop="appNo"
         align="center"
-        minWidth="180"
+        minWidth="140"
       >
         <template slot-scope="scope">
           <span class="link" @click="openDetail(scope.row)">{{
@@ -50,7 +50,12 @@
         label="Carline"
         prop="carline"
         align="center"
-      ></el-table-column>
+        minWidth="180"
+      >
+        <template slot-scope="scope">
+          <tooltip :text="scope.row.carline"></tooltip>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Com."
         prop="linieDept"
@@ -68,7 +73,7 @@
         header-align="center"
         prop="tto"
         align="right"
-        width="180"
+        width="160"
         ><template slot-scope="scope">
           {{ scope.row.tto | toThousands(true) }}
         </template></el-table-column
@@ -138,8 +143,9 @@
 import drawer from "./drawer";
 import { signAppPartPage } from "@/api/designate/nomination/mApprove";
 import { toThousands } from "@/utils";
+import tooltip from "./tooltip";
 export default {
-  components: { drawer },
+  components: { drawer, tooltip },
   data() {
     return {
       tableData: [],
