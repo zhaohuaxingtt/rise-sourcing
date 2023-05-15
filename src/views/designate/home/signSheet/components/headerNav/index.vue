@@ -27,6 +27,7 @@
           </iButton>
           <iButton
             :loading="updateLoading"
+            v-if="showBtn"
             @click="submit"
             v-permission.auto="
               SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT | 签字单详情提交
@@ -82,6 +83,7 @@
               :description.sync="description"
               @deleteData="deleteData"
               @save="save"
+              @setData="setData"
             />
           </div>
         </el-tab-pane>
@@ -136,6 +138,7 @@ export default {
       ],
       description: "",
       updateLoading: false,
+      childData: {}
     };
   },
   components: {
@@ -148,6 +151,17 @@ export default {
     MTZDesignateOrders,
     iLoger,
   },
+  computed:{
+    showBtn(){
+      let result = false
+      Object.values(this.childData).forEach(child=>{
+        if(child){
+          result = true
+        }
+      })
+      return result
+    }
+  },
   created() {
     const heaederSubMenuItem = this.heaederSubMenu.find(
       (o) => o.path === this.$route.path
@@ -156,6 +170,9 @@ export default {
     this.updateNavList;
   },
   methods: {
+    setData(key,value){
+      this.$set(this.childData,key, value)
+    },
     change() {},
     // tab切换
     handleTabClick() {

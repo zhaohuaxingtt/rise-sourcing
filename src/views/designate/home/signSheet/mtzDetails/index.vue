@@ -107,6 +107,9 @@ export default {
   watch: {
     description(nv) {
       this.infoForm.description = nv
+    },
+    tableListData(val){
+      this.$emit('setData','mtz',val.length)
     }
   },
   created() {
@@ -231,7 +234,10 @@ export default {
       }
       removeSignApp(params).then(res=>{
         if(res?.code==200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getSignSheetDetails()
+        }else{
+          iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
         }
       })
       // this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
