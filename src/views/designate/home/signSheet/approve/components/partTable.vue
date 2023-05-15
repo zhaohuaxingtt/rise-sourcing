@@ -120,10 +120,15 @@
       </el-table-column>
       <el-table-column
         label="Status"
-        prop="status"
+        prop="approvedStatus"
         align="center"
         width="160"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <p>{{scope.row.approvedStatus}}</p>
+          <p>{{scope.row.approvedDate}}</p>
+        </template>
+      </el-table-column>
     </el-table>
     <drawer :visible.sync="visible" :menuList="tableData" :row="row" />
   </div>
