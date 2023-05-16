@@ -127,7 +127,7 @@
             <el-option
               :value="item.code"
               :label="item.name"
-              v-for="(item, index) in fromGroup.PART_TYPE"
+              v-for="(item, index) in fromGroup.SPT"
               :key="index"
             ></el-option>
           </iSelect>
@@ -380,6 +380,7 @@ import {
   purchasingDept,
   purchasingLiline,
 } from "@/api/partsprocure/editordetail";
+import { selectDictByRootKeys } from "@/api/dictionary";
 import { creatFsGsNr, createNomiappBtn } from "@/components";
 import { translateDataForService } from "../editordetail/components/data";
 import { filterProjectList } from "@/utils";
@@ -435,6 +436,7 @@ export default {
     };
   },
   created() {
+    this.getDict()
     this.getProcureGroup();
     this.getCartypeDict();
     this.purchasingDept();
@@ -461,6 +463,20 @@ export default {
             if (key !== "LINIE_DEPT" && key !== "LINIE") {
               this.$set(this.fromGroup, key, res.data[key]);
             }
+          });
+        }
+      });
+    },
+    // 获取零件类型字典
+    getDict() {
+      selectDictByRootKeys([
+        { keys: "SPT" }, // 寻源零件类型，去除总成类型
+      ]).then((res) => {
+        if (res.code == 200) {
+          Object.keys(res.data || {}).forEach((key) => {
+            this.fromGroup = Object.assign({}, this.fromGroup, {
+              [key]: Array.isArray(res.data[key]) ? res.data[key] : [],
+            });
           });
         }
       });
