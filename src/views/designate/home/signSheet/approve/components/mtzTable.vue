@@ -95,7 +95,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <drawer :visible.sync="visible" :row="row" isMtz />
+    <drawer :visible.sync="visible" :row="row" :menuList="tableData" isMtz />
   </div>
 </template>
 

@@ -7,303 +7,285 @@
  * @FilePath: \front-web\src\views\designate\home\signSheet\approve\components\mtzDetails.vue
 -->
 <template>
-  <div style="padding-bottom: 30px; position: relative">
-    <div style="position: relative">
-      <div>
-        <div class="headBox">
-          <p class="headTitle">{{ title }}</p>
-          <div class="tabs_box_right">
-            <div class="big_text">
-              <span class="samll_val"
-                >{{ formData.mtzAppId }}-{{ formData.appName }}</span
-              >
-            </div>
-            <div class="small_text">
-              <span>Application date：</span>
-              <span class="samll_val">{{ formData.createDate }}</span>
-            </div>
-            <div class="small_text">
-              <span>Commodity：</span>
-              <span class="samll_val">{{ formData.linieDeptName }}</span>
-            </div>
-            <div>
-              <span>Buyer：</span>
-              <span class="samll_val">{{ formData.linieNameEn }}</span>
-            </div>
-          </div>
+  <div v-loading="loading">
+    <div class="headBox">
+      <p class="headTitle">{{ title }}</p>
+      <div class="tabs_box_right">
+        <div class="big_text">
+          <span class="samll_val"
+            >{{ formData.mtzAppId }}-{{ formData.appName }}</span
+          >
         </div>
-        <div class="mtz-content">
-          <div>
-            <el-divider class="hr_divider" />
-            <div class="centerBox">
-              <p>
-                补差金额=零件结算数量
-                <iTooltip :txtInfo="tipList[0]" :num="'1'"></iTooltip>
-                *[原材料市场价<iTooltip
-                  :txtInfo="tipList[1]"
-                  :num="'2'"
-                ></iTooltip>
-                -原材料基价<iTooltip :txtInfo="tipList[2]" :num="'3'">
-                </iTooltip>
-                *(1+阈值<iTooltip :txtInfo="tipList[3]" :num="'4'"></iTooltip
-                >*阈值系数<iTooltip :txtInfo="tipList[4]" :num="'5'"></iTooltip>
-                )]*原材料用量
-                <iTooltip :txtInfo="tipList[5]" :num="'6'"></iTooltip>
-                *补差%<iTooltip :txtInfo="tipList[6]" :num="'7'"></iTooltip>
-              </p>
-              <p class="enStyle">
-                <span
-                  >MTZ Payment= Settle Accounts Quantity*[Effective Price-Base
-                  Price(1+Threshold*Coefficient)]*Raw Material Weight*
-                  Compensation%</span
-                ><span>When: effective price > base price *(1+threshold)</span>
-              </p>
-            </div>
-
-            <p class="tableTitle font20_b">
-              {{ language("GUIZEQINGDAN", "规则清单") }}-Regulation
-            </p>
-          </div>
-          <div class="margin-top20 formStyle">
-            <tableList
-              :tagNum="'1'"
-              :tableData="ruleTableListData"
-              :tableTitle="
-                ruleTableListData.some((val) => {
-                  if (val.materialCode.slice(1, 6) == '01006') {
-                    return true;
-                  }
-                })
-                  ? ruleTableTitle1_all
-                  : ruleTableTitle1_1
-              "
-              :tableLoading="loadingRule"
-              :header-row-class-name="'ruleTableHeader'"
-              :index="true"
-              :rowClassName="'table-row'"
-              :selection="false"
-              border
-            >
-              <template slot-scope="scope" slot="compensationPeriod">
-                <span>{{
-                  scope.row.compensationPeriod == "A"
-                    ? "年度"
-                    : scope.row.compensationPeriod == "H"
-                    ? "半年度"
-                    : scope.row.compensationPeriod == "Q"
-                    ? "季度"
-                    : scope.row.compensationPeriod == "M"
-                    ? "月度"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="thresholdCompensationLogic">
-                <span>{{
-                  scope.row.thresholdCompensationLogic == "A"
-                    ? "全额补差"
-                    : scope.row.thresholdCompensationLogic == "B"
-                    ? "超额补差"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="sapCode">
-                <span>{{ scope.row.sapCode }}</span
-                ><br />
-                <iText>{{ scope.row.supplierName }}</iText>
-              </template>
-              <template slot-scope="scope" slot="materialCode">
-                <span class="link" @click="openPageMarket(scope.row)">{{
-                  scope.row.materialCode
-                }}</span
-                ><br />
-                <span class="link" @click="openPageMarket(scope.row)">{{
-                  scope.row.materialName
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="formalFlag">
-                <span>{{ scope.row.formalFlag == "Y" ? "否" : "是" }}</span>
-              </template>
-              <template slot-scope="scope" slot="method">
-                <span>{{
-                  scope.row.method == "1"
-                    ? "一次性补差"
-                    : scope.row.method == "2"
-                    ? "变价单补差"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="partBalanceCountType">
-                <span>{{
-                  scope.row.partBalanceCountType == "SYSTEM"
-                    ? "系统预读"
-                    : scope.row.partBalanceCountType == "HANDWORK"
-                    ? "手工上传"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="avgPeriod">
-                <span>{{
-                  scope.row.avgPeriod || scope.row.avgPeriod == "0"
-                    ? avgPeriodList.find(
-                        (val) => val.code == scope.row.avgPeriod
-                      ).name
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="offsetMonth">
-                <span>{{
-                  scope.row.offsetMonth || scope.row.offsetMonth == "0"
-                    ? offsetList.find(
-                        (val) => val.code == scope.row.offsetMonth
-                      ).name
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="compensationRatio">
-                <span>{{
-                  scope.row.compensationRatio
-                    ? scope.row.compensationRatio * 100 + "%"
-                    : ""
-                }}</span>
-              </template>
-            </tableList>
-          </div>
-          <p class="margin-top20 tableTitle font20_b">
-            {{ language("LJQD", "零件清单") }}-Part List
+        <div class="small_text">
+          <span>Application date：</span>
+          <span class="samll_val">{{ formData.createDate }}</span>
+        </div>
+        <div class="small_text">
+          <span>Commodity：</span>
+          <span class="samll_val">{{ formData.linieDeptName }}</span>
+        </div>
+        <div>
+          <span>Buyer：</span>
+          <span class="samll_val">{{ formData.linieNameEn }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mtz-content">
+      <div>
+        <el-divider class="hr_divider" />
+        <div class="centerBox">
+          <p>
+            补差金额=零件结算数量
+            <iTooltip :txtInfo="tipList[0]" :num="'1'"></iTooltip>
+            *[原材料市场价<iTooltip :txtInfo="tipList[1]" :num="'2'"></iTooltip>
+            -原材料基价<iTooltip :txtInfo="tipList[2]" :num="'3'"> </iTooltip>
+            *(1+阈值<iTooltip :txtInfo="tipList[3]" :num="'4'"></iTooltip
+            >*阈值系数<iTooltip :txtInfo="tipList[4]" :num="'5'"></iTooltip>
+            )]*原材料用量
+            <iTooltip :txtInfo="tipList[5]" :num="'6'"></iTooltip>
+            *补差%<iTooltip :txtInfo="tipList[6]" :num="'7'"></iTooltip>
           </p>
-          <div class="margin-top20 formStyle">
-            <tableList
-              :tagNum="'1'"
-              class="over_flow_y_ture"
-              :tableData="partTableListData"
-              :tableTitle="
-                partTableListData.some((val) => {
-                  if (val.materialCode.slice(1, 6) == '01006') {
-                    return true;
-                  }
-                })
-                  ? partTableTitle1_all
-                  : [...partTableTitle1_1]
-              "
-              :tableLoading="loadingPart"
-              :index="true"
-              :rowClassName="'part-table-row'"
-              :header-row-class-name="'partTableHeader'"
-              :selection="false"
-              border
-            >
-              <template slot-scope="scope" slot="compensationPeriod">
-                <span>{{
-                  scope.row.compensationPeriod == "A"
-                    ? "年度"
-                    : scope.row.compensationPeriod == "H"
-                    ? "半年度"
-                    : scope.row.compensationPeriod == "Q"
-                    ? "季度"
-                    : scope.row.compensationPeriod == "M"
-                    ? "月度"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="sapCode">
-                <span>{{ scope.row.sapCode }}</span
-                ><br />
-                <iText>{{ scope.row.supplierName }}</iText>
-              </template>
-              <template slot-scope="scope" slot="materialCode">
-                <span class="link" @click="openPageMarket(scope.row)">{{
-                  scope.row.materialCode
-                }}</span
-                ><br />
-                <span class="link" @click="openPageMarket(scope.row)">{{
-                  scope.row.materialName
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="materialDoseSource">
-                <span>{{
-                  scope.row.materialDoseSource
-                    ? materialDoseSourceList.find(
-                        (val) => val.code == scope.row.materialDoseSource
-                      ).name
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="method">
-                <span>{{
-                  scope.row.method == "1"
-                    ? "一次性补差"
-                    : scope.row.method == "2"
-                    ? "变价单补差"
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="avgPeriod">
-                <span>{{
-                  scope.row.avgPeriod || scope.row.avgPeriod == "0"
-                    ? avgPeriodList.find(
-                        (val) => val.code == scope.row.avgPeriod
-                      ).name
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="offsetMonth">
-                <span>{{
-                  scope.row.offsetMonth || scope.row.offsetMonth == "0"
-                    ? offsetList.find(
-                        (val) => val.code == scope.row.offsetMonth
-                      ).name
-                    : ""
-                }}</span>
-              </template>
-              <template slot-scope="scope" slot="compensationRatio">
-                <span>{{
-                  scope.row.compensationRatio
-                    ? scope.row.compensationRatio * 100 + "%"
-                    : ""
-                }}</span>
-              </template>
-            </tableList>
-          </div>
-          <div slot="header" class="headBox">
-            <p class="headTitle">{{ language("BEIZHU", "备注") }}-Remarks</p>
-          </div>
-          <pre v-html="formData.linieMeetingMemo"></pre>
-          <div class="margin-top20">
-            <p class="applyDate">
-              {{ language("SHENQINGRIQI", "申请日期") }}:{{
-                moment(new Date()).format("YYYY-MM-DD")
-              }}
+          <p class="enStyle">
+            <span
+              >MTZ Payment= Settle Accounts Quantity*[Effective Price-Base
+              Price(1+Threshold*Coefficient)]*Raw Material Weight*
+              Compensation%</span
+            ><span>When: effective price > base price *(1+threshold)</span>
+          </p>
+        </div>
+
+        <p class="tableTitle font20_b">
+          {{ language("GUIZEQINGDAN", "规则清单") }}-Regulation
+        </p>
+      </div>
+      <div class="margin-top20 formStyle">
+        <tableList
+          :tagNum="'1'"
+          :tableData="ruleTableListData"
+          :tableTitle="
+            ruleTableListData.some((val) => {
+              if (val.materialCode.slice(1, 6) == '01006') {
+                return true;
+              }
+            })
+              ? ruleTableTitle1_all
+              : ruleTableTitle1_1
+          "
+          :tableLoading="loadingRule"
+          :header-row-class-name="'ruleTableHeader'"
+          :index="true"
+          :rowClassName="'table-row'"
+          :selection="false"
+          border
+        >
+          <template slot-scope="scope" slot="compensationPeriod">
+            <span>{{
+              scope.row.compensationPeriod == "A"
+                ? "年度"
+                : scope.row.compensationPeriod == "H"
+                ? "半年度"
+                : scope.row.compensationPeriod == "Q"
+                ? "季度"
+                : scope.row.compensationPeriod == "M"
+                ? "月度"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="thresholdCompensationLogic">
+            <span>{{
+              scope.row.thresholdCompensationLogic == "A"
+                ? "全额补差"
+                : scope.row.thresholdCompensationLogic == "B"
+                ? "超额补差"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="sapCode">
+            <p>{{ scope.row.sapCode }}</p>
+            <p>{{ scope.row.supplierName }}</p>
+          </template>
+          <template slot-scope="scope" slot="materialCode">
+            <p class="link" @click="openPageMarket(scope.row)">
+              {{ scope.row.materialCode }}
             </p>
-            <div class="applyDateBox">
-              <div
-                class="applyDateContent"
-                v-for="(item, index) in applyDateData"
-                :key="index"
-              >
-                <img
-                  class="margin-left5 applyDateIcon"
-                  :src="
-                    item.taskStatus === '同意'
-                      ? require('@/assets/images/icon/yes.png')
-                      : require('@/assets/images/icon/no.png')
-                  "
-                  :fit="fit"
-                />
-                <div class="applyDateContentItem">
-                  <span>部门：</span>
-                  <span class="applyDateDeptTitle">{{
-                    item.deptFullCode
-                  }}</span>
-                </div>
-                <div class="applyDateContentItem">
-                  <span>审批人：</span>
-                  <span>{{ item.nameZh }}</span>
-                </div>
-                <div class="applyDateContentItem">
-                  <span>日期：</span>
-                  <span>{{ item.endTime }}</span>
-                </div>
-              </div>
+            <p class="link" @click="openPageMarket(scope.row)">
+              {{ scope.row.materialName }}
+            </p>
+          </template>
+          <template slot-scope="scope" slot="formalFlag">
+            <span>{{ scope.row.formalFlag == "Y" ? "否" : "是" }}</span>
+          </template>
+          <template slot-scope="scope" slot="method">
+            <span>{{
+              scope.row.method == "1"
+                ? "一次性补差"
+                : scope.row.method == "2"
+                ? "变价单补差"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="partBalanceCountType">
+            <span>{{
+              scope.row.partBalanceCountType == "SYSTEM"
+                ? "系统预读"
+                : scope.row.partBalanceCountType == "HANDWORK"
+                ? "手工上传"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="avgPeriod">
+            <span>{{
+              scope.row.avgPeriod || scope.row.avgPeriod == "0"
+                ? avgPeriodList.find((val) => val.code == scope.row.avgPeriod)
+                    .name
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="offsetMonth">
+            <span>{{
+              scope.row.offsetMonth || scope.row.offsetMonth == "0"
+                ? offsetList.find((val) => val.code == scope.row.offsetMonth)
+                    .name
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="compensationRatio">
+            <span>{{
+              scope.row.compensationRatio
+                ? scope.row.compensationRatio * 100 + "%"
+                : ""
+            }}</span>
+          </template>
+        </tableList>
+      </div>
+      <p class="margin-top20 tableTitle font20_b">
+        {{ language("LJQD", "零件清单") }}-Part List
+      </p>
+      <div class="margin-top20 formStyle">
+        <tableList
+          :tagNum="'1'"
+          class="over_flow_y_ture"
+          :tableData="partTableListData"
+          :tableTitle="
+            partTableListData.some((val) => {
+              if (val.materialCode.slice(1, 6) == '01006') {
+                return true;
+              }
+            })
+              ? partTableTitle1_all
+              : [...partTableTitle1_1]
+          "
+          :tableLoading="loadingPart"
+          :index="true"
+          :rowClassName="'part-table-row'"
+          :header-row-class-name="'partTableHeader'"
+          :selection="false"
+          border
+        >
+          <template slot-scope="scope" slot="compensationPeriod">
+            <span>{{
+              scope.row.compensationPeriod == "A"
+                ? "年度"
+                : scope.row.compensationPeriod == "H"
+                ? "半年度"
+                : scope.row.compensationPeriod == "Q"
+                ? "季度"
+                : scope.row.compensationPeriod == "M"
+                ? "月度"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="sapCode">
+            <p>{{ scope.row.sapCode }}</p>
+            <p>{{ scope.row.supplierName }}</p>
+          </template>
+          <template slot-scope="scope" slot="materialCode">
+            <p class="link" @click="openPageMarket(scope.row)">
+              {{ scope.row.materialCode }}
+            </p>
+            <p class="link" @click="openPageMarket(scope.row)">
+              {{ scope.row.materialName }}
+            </p>
+          </template>
+          <template slot-scope="scope" slot="materialDoseSource">
+            <span>{{
+              scope.row.materialDoseSource
+                ? materialDoseSourceList.find(
+                    (val) => val.code == scope.row.materialDoseSource
+                  ).name
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="method">
+            <span>{{
+              scope.row.method == "1"
+                ? "一次性补差"
+                : scope.row.method == "2"
+                ? "变价单补差"
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="avgPeriod">
+            <span>{{
+              scope.row.avgPeriod || scope.row.avgPeriod == "0"
+                ? avgPeriodList.find((val) => val.code == scope.row.avgPeriod)
+                    .name
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="offsetMonth">
+            <span>{{
+              scope.row.offsetMonth || scope.row.offsetMonth == "0"
+                ? offsetList.find((val) => val.code == scope.row.offsetMonth)
+                    .name
+                : ""
+            }}</span>
+          </template>
+          <template slot-scope="scope" slot="compensationRatio">
+            <span>{{
+              scope.row.compensationRatio
+                ? scope.row.compensationRatio * 100 + "%"
+                : ""
+            }}</span>
+          </template>
+        </tableList>
+      </div>
+      <div slot="header" class="headBox">
+        <p class="headTitle">{{ language("BEIZHU", "备注") }}-Remarks</p>
+      </div>
+      <pre v-html="formData.linieMeetingMemo"></pre>
+      <div class="margin-top20">
+        <p class="applyDate">
+          {{ language("SHENQINGRIQI", "申请日期") }}:{{
+            moment(new Date()).format("YYYY-MM-DD")
+          }}
+        </p>
+        <div class="applyDateBox">
+          <div
+            class="applyDateContent"
+            v-for="(item, index) in applyDateData"
+            :key="index"
+          >
+            <img
+              class="margin-left5 applyDateIcon"
+              :src="
+                item.taskStatus === '同意'
+                  ? require('@/assets/images/icon/yes.png')
+                  : require('@/assets/images/icon/no.png')
+              "
+              :fit="fit"
+            />
+            <div class="applyDateContentItem">
+              <span>部门：</span>
+              <span class="applyDateDeptTitle">{{ item.deptFullCode }}</span>
+            </div>
+            <div class="applyDateContentItem">
+              <span>审批人：</span>
+              <span>{{ item.nameZh }}</span>
+            </div>
+            <div class="applyDateContentItem">
+              <span>日期：</span>
+              <span>{{ item.endTime }}</span>
             </div>
           </div>
         </div>
@@ -313,15 +295,7 @@
 </template>
 
 <script>
-import {
-  iText,
-  iCard,
-  icon,
-  iInput,
-  iButton,
-  iMessage,
-  iPagination,
-} from "rise";
+import { iCard, icon, iInput, iButton, iMessage, iPagination } from "rise";
 import tableList from "./mtzComponents/tableList.vue";
 import iTooltip from "./mtzComponents/iTooltip";
 import {
@@ -334,18 +308,16 @@ import {
   offsetList,
   materialDoseSourceList,
 } from "./mtzComponents/data";
-// import {
-//   getAppFormInfo,
-//   pageAppRule,
-//   pagePartMasterData,
-//   approvalList
-// } from '@/api/mtz/annualGeneralBudget/replenishmentManagement/mtzLocation/details'
-// import { pageApprove } from '@/api/mtz/annualGeneralBudget/replenishmentManagement/mtzLocation/approve'
+import {
+  getAppFormInfo,
+  pageAppRule,
+  pagePartMasterData,
+  approvalList,
+} from "@/api/designate/nomination/mApprove";
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
   components: {
-    iText,
     iTooltip,
     iCard,
     icon,
@@ -355,9 +327,7 @@ export default {
     tableList,
   },
   props: {
-    flowType: { type: String },
-    appStatus: { type: String },
-    meetingStatus: { type: String },
+    mtzAppId: { type: String },
   },
   data() {
     return {
@@ -374,16 +344,13 @@ export default {
       partTableListData: [],
       loadingRule: false,
       loadingPart: false,
+      loading: false,
       applyDateData: [],
       moment: window.moment,
     };
   },
   created() {
-    // this.initapplyDateData()
-    // this.getAppFormInfo()
-    // this.getPageAppRule()
-    // this.getPagePartMasterData()
-    // this.getApprove()
+    this.init();
   },
   computed: {
     title() {
@@ -416,26 +383,22 @@ export default {
         : val;
     },
   },
-  methods: {
-    // 获取审批节点
-    getApprove() {
-      let params = {
-        isDeptLead: true,
-        mtzAppId: this.$route.query.mtzAppId,
-        pageNo: 1,
-        pageSize: 999,
-      };
-      pageApprove(params).then((res) => {
-        if (res?.code === "200") {
-          this.applyDateDataAll = res.data || [];
-        } else {
-          iMessage.error(res.desZh);
-        }
-      });
+  watch: {
+    mtzAppId() {
+      this.init();
     },
-    initapplyDateData() {
+  },
+  methods: {
+    init() {
+      this.initApplyDateData();
+      this.getAppFormInfo();
+      this.getPageAppRule();
+      this.getPagePartMasterData();
+    },
+    // 获取审批记录
+    initApplyDateData() {
       approvalList({
-        mtzAppId: this.$route.query.mtzAppId,
+        mtzAppId: this.mtzAppId,
       }).then((res) => {
         if (res?.code === "200") {
           let data = res.data;
@@ -448,7 +411,7 @@ export default {
     // 获取申请单信息
     getAppFormInfo() {
       getAppFormInfo({
-        mtzAppId: this.$route.query.mtzAppId,
+        mtzAppId: this.mtzAppId,
       }).then((res) => {
         if (res && res.code == 200) {
           this.formData = res.data;
@@ -458,33 +421,41 @@ export default {
     // 获取规则清单表格数据
     getPageAppRule() {
       var list = {};
-
+      this.loadingRule = true;
       list = {
-        mtzAppId: this.$route.query.mtzAppId,
+        mtzAppId: this.mtzAppId,
         pageNo: 1,
         pageSize: 99999,
       };
-      pageAppRule(list).then((res) => {
-        if (res && res.code == 200) {
-          this.ruleTableListData = res.data;
-        } else iMessage.error(res.desZh);
-      });
+      pageAppRule(list)
+        .then((res) => {
+          if (res && res.code == 200) {
+            this.ruleTableListData = res.data;
+          } else iMessage.error(res.desZh);
+        })
+        .finally(() => {
+          this.loadingRule = false;
+        });
     },
 
     // 获取零件清单表格数据
     getPagePartMasterData() {
       var list = {};
-
+      this.loadingPart = true;
       list = {
-        mtzAppId: this.$route.query.mtzAppId,
+        mtzAppId: this.mtzAppId,
         pageNo: 1,
         pageSize: 99999,
       };
-      pagePartMasterData(list).then((res) => {
-        if (res && res.code == 200) {
-          this.partTableListData = res.data;
-        } else iMessage.error(res.desZh);
-      });
+      pagePartMasterData(list)
+        .then((res) => {
+          if (res && res.code == 200) {
+            this.partTableListData = res.data;
+          } else iMessage.error(res.desZh);
+        })
+        .finally(() => {
+          this.loadingPart = false;
+        });
     },
     openPageMarket(row) {
       let routeUrl = this.$router.resolve({
@@ -537,11 +508,6 @@ export default {
     font-family: Arial;
     color: #000000;
     opacity: 1;
-  }
-
-  .buttonBox {
-    position: absolute;
-    right: 13px;
   }
 }
 .applyDate {
@@ -600,17 +566,17 @@ export default {
   .el-table {
     border-radius: 0;
     font-size: 18px;
-    tr {
-      background-color: #364d6e;
-    }
-    tr:nth-child(even) {
-      background-color: #364d6e;
-    }
     th.gutter:last-of-type {
       background: #fff;
       border: 0;
     }
     .el-table__header {
+      tr {
+        background-color: #364d6e;
+      }
+      tr:nth-child(even) {
+        background-color: #364d6e;
+      }
       th {
         border-color: #d9d9d9;
         .cell {
@@ -667,11 +633,6 @@ export default {
 
 .tabs_box_right {
   height: 40px;
-
-  .samll_title {
-    width: 80px;
-  }
-
   div {
     display: flex;
     align-items: flex-start;
@@ -687,35 +648,7 @@ export default {
     float: left;
   }
 }
-
 ::v-deep .el-form-item__content {
-  line-height: 0px !important;
-}
-
-.page-item {
-  width: 100%;
-  position: relative;
-}
-
-.page-logo {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  align-items: center;
-  border-top: 1px solid #666;
-}
-
-.padding-bottom30 {
-  padding-bottom: 30px;
-}
-
-.remarkCard {
-  ::v-deep .card {
-    box-shadow: none;
-  }
-}
-.mtz-content {
-  height: 80vh;
-  overflow: auto;
+  line-height: 20px;
 }
 </style>

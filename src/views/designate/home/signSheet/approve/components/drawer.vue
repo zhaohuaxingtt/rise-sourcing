@@ -80,7 +80,7 @@
           <iButton @click="signApprove(1)">批准</iButton>
           <iButton @click="signApprove(0)">拒绝</iButton>
         </div>
-        <mtzDetails v-if="isMtz" class="margin-top10" />
+        <mtzDetails v-if="isMtz" :mtzAppId="nomination" class="margin-top10 data-container" />
         <RS
           :otherNominationId="nomination"
           :key="nomination"
@@ -120,6 +120,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    indexInit: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -127,13 +130,15 @@ export default {
       allow,
       menu,
       status: "待审批",
-      index: 0,
     };
   },
   computed: {
     nomination() {
       return this.row.appNo || "";
     },
+    index(){
+      return this.menuList.map(item=>item.appNo).indexOf(this.nomination)
+    }
   },
   methods: {
     close() {
@@ -165,7 +170,6 @@ export default {
     },
     getData(index) {
       if (this.index == index) return;
-      this.index = index;
       this.row = this.menuList[index];
     },
     
@@ -175,7 +179,7 @@ export default {
         isAgree: isAgree, // 0拒绝、1同意
         isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
         reason: isAgree ? "【同意】" : "【拒绝】", // 原因
-        signAppIds: [this.row.signAppIds],
+        signAppIds: [this.row.signAppId],
       };
       signApprove(params).then(async (res) => {
         if (res?.code == 200) {
@@ -196,7 +200,7 @@ export default {
                 isAgree: isAgree, // 0拒绝、1同意
                 isConfirm: 0, // 是否确认弹窗请求，1-是，0-否
                 reason: isAgree ? "【同意】" : "【拒绝】", // 原因
-                signAppIds: [this.row.signAppIds],
+                signAppIds: [this.row.signAppId],
               };
               signApprove(params).then((res) => {
                 if (res?.code == 200) {
@@ -377,6 +381,7 @@ export default {
         border-top-right-radius: 10px;
         .data-container{
           height: calc(100% - 135px);
+          overflow: auto;
         }
       }
     }

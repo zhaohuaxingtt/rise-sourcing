@@ -9,7 +9,7 @@
     <div class="page-header">
       <span class="title">签字单:{{ id }}</span>
       <div class="button-box">
-        <iButton>导出</iButton>
+        <iButton @click="signDocExport">导出</iButton>
         <iButton @click="signApprove(1)">批准</iButton>
         <iButton @click="signApprove(0)">拒绝</iButton>
       </div>
@@ -41,7 +41,7 @@
 import { iPage, iButton, iMessage } from "rise";
 import partTable from "./components/partTable";
 import mtzTable from "./components/mtzTable";
-import { signApprove } from "@/api/designate/nomination/mApprove";
+import { signApprove, signDocExport } from "@/api/designate/nomination/mApprove";
 export default {
   components: {
     iPage,
@@ -114,6 +114,15 @@ export default {
         }
       });
     },
+    // 导出
+    signDocExport(){
+      let params = {
+        signId: this.$route.query.signId
+      }
+      signDocExport(params).then(res=>{
+        console.log(res);
+      })
+    }
   },
 };
 </script>
