@@ -29,7 +29,7 @@
       <brief :nominateId="nominateId" />
     </div> -->
     <!-- <template v-else> -->
-      <div v-if="isApproval">
+      <div>
         <circulation
           v-bind="$attrs"
           ref="circulation"
@@ -49,46 +49,6 @@
           :nominateId="nominateId"
           :projectType="projectType"
           :showSignatureForm="showSignatureForm"
-        >
-          <template #tabTitle>
-            <slot name="tabTitle"></slot>
-          </template>
-        </meeting>
-      </div>
-      <div style="height: 100%"
-        v-else
-        v-permission.auto.array="[
-          'SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs',
-          'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS|定点记录-RS',
-        ]"
-      >
-        <circulation
-          ref="circulation"
-          v-if="isCirculation"
-          :isPreview="isPreview || nominationDisabled || rsDisabled"
-          :nominateId="nominateId"
-          :projectType="projectType"
-          v-permission.auto.array="[
-            'SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation',
-            'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_CIRCULATION|定点记录-circulation',
-          ]"
-        >
-          <template #tabTitle>
-            <slot name="tabTitle"></slot>
-          </template>
-        </circulation>
-        <meeting
-          v-bind="$attrs"
-          ref="meeting"
-          v-else
-          :isPreview="isPreview || nominationDisabled || rsDisabled"
-          :nominateId="nominateId"
-          :projectType="projectType"
-          :showSignatureForm="showSignatureForm"
-          v-permission.auto.array="[
-            'SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting',
-            'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_METTING|定点记录-meeting',
-          ]"
         >
           <template #tabTitle>
             <slot name="tabTitle"></slot>
@@ -208,9 +168,6 @@ export default {
      */
     projectType() {
       return this.otherPartProjectType;
-    },
-    isApproval() {
-      return this.$route.query.isApproval === "true";
     },
   },
   methods: {
