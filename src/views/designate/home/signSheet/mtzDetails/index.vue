@@ -150,21 +150,6 @@ export default {
         }
       })
     },
-    forceDelete(ids = []) {
-      let params = {
-        mtzApplyIdAttr: ids,
-        signId: Number(this.$route.query.id)
-      }
-      removeSignApp(params).then(res=>{
-        if(res?.code==200){
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getTableData()
-          this.$emit('getSignSheetDetails')
-        }else{
-          iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
-        }
-      })
-    }
   }
 }
 </script>

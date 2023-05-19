@@ -40,35 +40,31 @@ export const approveTable = [
         type: 'index',
         i18n: '#'
     }, {
-    //     prop: 'signCode',
-    //     name: '会议名称',
-    //     i18n: '会议名称',
-    // }, {
-        prop: 'signCode',
+        prop: 'appNo',
         name: '定点申请编号',
         i18n: '定点申请编号',
     }, {
-        prop: 'signCode',
+        prop: 'appName',
         name: '申请名称',
         i18n: '申请名称',
     }, {
-        prop: 'signCode',
+        prop: 'appType',
         name: '类型',
         i18n: '类型',
     }, {
-        prop: 'signCode',
+        prop: 'linieDept',
         name: 'commodity',
         i18n: 'commodity',
     }, {
-        prop: 'signCode',
+        prop: 'approvedStatusName',
         name: '审批结果',
         i18n: '审批结果',
     }, {
-        prop: 'signCode',
+        prop: 'approvedMsg',
         name: '审批意见',
         i18n: '审批意见',
     }, {
-        prop: 'signCode',
+        prop: 'approvedDate',
         name: '审批时间',
         i18n: '审批时间',
     },

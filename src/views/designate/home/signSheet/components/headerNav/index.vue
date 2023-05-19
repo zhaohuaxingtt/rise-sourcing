@@ -104,7 +104,6 @@
               :isRefuse="isRefuse"
               :isDraft="isDraft"
               @getSignSheetDetails="getSignSheetDetails"
-              @deleteData="deleteData"
               @save="save"
               @setData="setData"
             />
@@ -323,13 +322,6 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
-    // 删除零件时同时删除零件对应定点申请单关联的mtz
-    deleteData(data) {
-      if (Array.isArray(data))
-        this.$refs.MTZDesignateOrders[0].forceDelete(
-          data.map((item) => item.mtzApplyId)
-        );
-    },
   },
 };
 </script>
