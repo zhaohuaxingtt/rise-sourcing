@@ -92,7 +92,7 @@
                   </el-col>
                   <el-col span="12">
                     <el-form-item :label="`${language('MIAOSHU','描述')}:`" class="desc">
-                      <iInput v-model="infoForm.description" :placeholder="language('QINGSHURUMIAOSHU','请输入描述')" @input="handleInputByDescription"></iInput>
+                      <iInput v-model="infoForm.description" :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"></iInput>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -159,7 +159,6 @@ export default {
           component: ChipDesignateOrders,
         },
       ],
-      description: "",
       updateLoading: false,
       childData: {},
       infoForm:{},
@@ -220,16 +219,16 @@ export default {
     getTableData(){
       const params = {
         nominateIdArr:[],
-        nomiAppInfolist:[],
+        nomiAppInfoList:[],
         mtzApplyIdAttr:[],
-        mtzAppInfolist:[],
+        mtzAppInfoList:[],
         chipApplyIdAttr:[],
-        chipAppInfolist:[]
+        chipAppInfoList:[]
       };
       if(Array.isArray(this.$refs.partDesignateOrders[0].tableListData)){
         this.$refs.partDesignateOrders[0].tableListData.forEach(item=>{
           params.nominateIdArr.push(item.id)
-          params.nomiAppInfolist.push({
+          params.nomiAppInfoList.push({
             appNo: item.id,
             meetingName: item.meetingName,
             appName: item.nominateName,
@@ -242,7 +241,7 @@ export default {
       if(Array.isArray(this.$refs.MTZDesignateOrders[0].tableListData)){
         this.$refs.MTZDesignateOrders[0].tableListData.forEach(item=>{
           params.mtzApplyIdAttr.push(item.id)
-          params.mtzAppInfolist.push({
+          params.mtzAppInfoList.push({
             appNo: item.id,
             meetingName: item.meetingName,
             appName: item.appName,
@@ -255,7 +254,7 @@ export default {
       if(Array.isArray(this.$refs.CHIPDesignateOrders[0].tableListData)){
         this.$refs.CHIPDesignateOrders[0].tableListData.forEach(item=>{
           params.chipApplyIdAttr.push(item.id)
-          params.chipAppInfolist.push({
+          params.chipAppInfoList.push({
             appNo: item.id,
             meetingName: item.meetingName,
             appName: item.appName,
@@ -270,7 +269,7 @@ export default {
     async save(type) {
       const params = {
         signId: this.$route.query.id,
-        description: this.description,
+        description: this.infoForm.description,
         ...this.getTableData()
       };
       this.updateLoading = true;
