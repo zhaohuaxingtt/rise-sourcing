@@ -69,6 +69,15 @@ export default {
       ];
       // 0拒绝、1同意
       if (!selectData.length) return iMessage.warn("请选择至少一条数据");
+      let approvedList = [] // 已完成审批的数据
+      selectData.forEach(item=>{
+        if(item.approvedStatus!='M_CHECK_INPROCESS'){
+          approvedList.push('['+item.appNo+']')
+        }
+      })
+      if(approvedList.length){
+        return iMessage.error(approvedList.join('、')+'已完成审批，请重新选择数据')
+      }
       let params = {
         isAgree: isAgree, // 0拒绝、1同意
         isConfirm: 1, // 是否确认弹窗请求，1-是，0-否

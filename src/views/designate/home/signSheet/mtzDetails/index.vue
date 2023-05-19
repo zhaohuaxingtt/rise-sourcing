@@ -9,69 +9,31 @@
 <template>
     <div>
       <iCard class="margin-top20">
-        <el-form :inline="true" :model="infoForm" label-position="left">
-          <el-form-item 
-          style="width: 300px;margin-right:68px;"
-          :label="language('QIANZIDANHAO', '签字单号')">
-            <iInput
-            v-model="infoForm.signCode"
-            :disabled="true"/>
-          </el-form-item>
-          <el-form-item 
-          style="width: 300px; margin-right:68px;"
-          :label="language('ZHUANGTAI', '状态')">
-            <iInput
-            v-model="infoForm.statusDesc"
-            :disabled="true"/>
-          </el-form-item>
-          <el-form-item 
-          style="width: 500px;margin-right:68px;"
-          :label="language('CAOGAO', '草稿')">
-            <iInput
-            style="width: 300px;"
-            v-model="infoForm.description"
-            :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"
-            @input="handleInputByDescription" />
-          </el-form-item>
-        </el-form>
-      </iCard>
-      <iCard class="margin-top20">
         <div slot="header" class="headBox">
           <p class="headTitle">{{language('XIANGQINGLIEBIAO', '详情列表')}}</p>
-          <span class="buttonBox" v-if="$route.query.mode === 'add'">
-            <iButton @click="handleClickChoose">{{language('XUANZE', '选择')}}</iButton>
-            <iButton @click="handleRemove">{{language('YICHU', '移除')}}</iButton>
-          </span>
+          <span class="buttonBox">
+          <iButton v-if="isDraft" @click="handleClickChoose">{{ language("XUANZE", "选择")}}</iButton>
+          <iButton v-if="isDraft || isRefuse" @click="handleRemove">{{ language("YICHU", "移除") }}</iButton>
+        </span>
         </div>
         <tableList
-          class="margin-top20"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
           :index="true"
           @handleSelectionChange="handleSelectionChange">
         </tableList>
-        <!-- <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableData)"
-        @current-change="handleCurrentChange($event, getTableData)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"/> -->
       </iCard>
-      <detail v-model="detailParams.visible" :key="detailParams.key" :params="detailParams.data" @handleCloseModal="handleCloseModal" @handleSubmitAdd="handleSubmitAdd"/>
+      <detail v-model="detailParams.visible" v-if="detailParams.visible" :params="detailParams.data" @handleCloseModal="handleCloseModal" @handleSubmitAdd="handleSubmitAdd"/>
     </div>
 </template>
 
 <script>
-import { iCard, iButton, iInput, iPage, iMessage } from 'rise'
+import { iCard, iButton, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
-import { getMTZSignPage, getsignSheetDetails, removeSignsheetItems, submitSignSheet, saveSignSheet } from '@/api/designate/nomination/signsheet'
+import { getMTZSignPage } from '@/api/designate/nomination/signsheet'
 import { removeSignApp } from '@/api/designate/nomination/mApprove'
 import { pageMixins } from "@/utils/pageMixins";
 export default {
@@ -79,43 +41,38 @@ export default {
   components: {
     iCard,
     iButton,
-    iInput,
-    iPage,
     tableList,
     detail
   },
   data () {
     return {
-      infoForm: {},
       tableListData: [],
       tableTitle,
       loading: false,
       detailParams: {
-        key: 0,
         visible: false,
         data: []
       },
       selection: []
     }
   },
-  props: {
-    description: {
-      type: String,
-      default: ""
-    }
-  },
   watch: {
-    description(nv) {
-      this.infoForm.description = nv
-    },
     tableListData(val){
       this.$emit('setData','mtz',val.length)
     }
   },
+  props: {
+    isRefuse: {
+      type:Boolean,
+      default:false
+    },
+    isDraft: {
+      type:Boolean,
+      default:false
+    },
+  },
   created() {
-    this.infoForm.description = this.description
     this.getTableData()
-    this.getsignSheetDetails()
   },
   methods: {
     // 获取table数据
@@ -123,7 +80,6 @@ export default {
       this.loading = true
       getMTZSignPage({
         signId: Number(this.$route.query.id)
-        // signId: 69
       }).then(res => {
         this.loading = false
         if (res && res.code == 200) {
@@ -131,21 +87,10 @@ export default {
         } else iMessage.error(res.desZh)
       })
     },
-    // 获取MTZ签字单详情 
-    getsignSheetDetails() {
-      getsignSheetDetails({
-        signId: this.$route.query.id
-      }).then(res => {
-        if (res && res.code == 200) {
-          this.infoForm = res.data
-        } else iMessage.error(res.desZh)
-      })
-    },
     // 点击选择
     handleClickChoose() {
       this.detailParams = {
         ...this.detailParams,
-        key: Math.random(),
         visible: true,
         data: this.tableListData.map(item => item.id)
       }
@@ -167,48 +112,11 @@ export default {
         return o
       })
       this.$set(this, 'tableListData', this.tableListData.concat(val))
-      this.$emit('save')
+      this.$emit('save','MTZDesignateOrders')
     },
     // 选中数据
     handleSelectionChange(val) {
       this.selection = val
-    },
-    // 保存
-    async handleSave () {
-      if (!this.tableListData.length) {
-        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.language('LK_SAVESURE', '您确定要执行保存操作吗？'))
-      console.log('confirmInfo', confirmInfo);
-      if (confirmInfo !== 'confirm') return
-      const params = {
-        signId: Number(this.$route.query.id),
-        description: this.infoForm.description,
-        mtzApplyIdAttr: this.tableListData.map(o => Number(o.id))
-      }
-      const res = await saveSignSheet(params)
-      if (res.code === '200') {
-        iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-        this.getTableData()
-      } else {
-        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      } 
-    },
-    // 提交
-    async handleSubmit() {
-      const confirmInfo = await this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？'))
-      if (confirmInfo !== 'confirm') return
-      submitSignSheet({
-        signIdArr:[Number(this.$route.query.id)]
-      }).then(res => {
-        if (res.code === '200') {
-          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          this.getTableData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
     },
     // 移除
     async handleRemove() {
@@ -235,19 +143,27 @@ export default {
       removeSignApp(params).then(res=>{
         if(res?.code==200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getSignSheetDetails()
+          this.getTableData()
+          this.$emit('getSignSheetDetails')
         }else{
           iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
         }
       })
-      // this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
-      // this.selection = []
-    },
-    handleInputByDescription(value) {
-      this.$emit("update:description", value)
     },
     forceDelete(ids = []) {
-      this.tableListData = this.tableListData.filter(item => !(ids.map(item => item + "")).includes(item.id + ""))
+      let params = {
+        mtzApplyIdAttr: ids,
+        signId: Number(this.$route.query.id)
+      }
+      removeSignApp(params).then(res=>{
+        if(res?.code==200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getTableData()
+          this.$emit('getSignSheetDetails')
+        }else{
+          iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
+        }
+      })
     }
   }
 }

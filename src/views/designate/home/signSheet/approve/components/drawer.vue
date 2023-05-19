@@ -76,7 +76,7 @@
             </el-popover>
           </span>
         </div>
-        <div class="drawer-btn">
+        <div class="drawer-btn" v-if="showApproveBtn">
           <iButton @click="signApprove(1)">批准</iButton>
           <iButton @click="signApprove(0)">拒绝</iButton>
         </div>
@@ -138,6 +138,9 @@ export default {
     },
     index(){
       return this.menuList.map(item=>item.appNo).indexOf(this.nomination)
+    },
+    showApproveBtn(){
+      return this.row.approvedStatus == 'M_CHECK_INPROCESS'
     }
   },
   methods: {

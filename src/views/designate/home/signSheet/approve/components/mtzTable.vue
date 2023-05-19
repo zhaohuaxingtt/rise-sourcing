@@ -32,7 +32,7 @@
         label="Nomination No."
         prop="appNo"
         align="center"
-        minWidth="180"
+        width="160"
       >
         <template slot-scope="scope">
           <span class="link" @click="openDetail(scope.row)">{{
@@ -87,10 +87,10 @@
         label="Status"
         prop="approvedStatus"
         align="center"
-        width="160"
+        width="220"
       >
         <template slot-scope="scope">
-          <p>{{scope.row.approvedStatus}}</p>
+          <p>{{scope.row.approvedStatusName}}</p>
           <p>{{scope.row.approvedDate}}</p>
         </template>
       </el-table-column>

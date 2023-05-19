@@ -28,22 +28,19 @@ export default {
       type:Boolean,
       default:false
     },
-    chooseSienSheet: {type: Object, default: () => {}},
   },
   methods: {
     clearDialog() {
       this.$emit('changeVisible',false)
     },
-    handleChoose(data) {
-      this.tableListData = data
-      this.$emit('choose', this.tableListData)
+    handleChoose(data=[]) {
+      this.$emit('choose', data)
       this.$emit('changeVisible',false)
     },
   },
   data() {
     return {
       designateSignRefresh: false,
-      tableListData:[]
     }
   }
 }

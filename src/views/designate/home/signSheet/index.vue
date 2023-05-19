@@ -167,8 +167,8 @@ export default {
             id: row.id,
             status: row.status && row.status.name || row.status,
             desc: encodeURIComponent(row.description),
-            // 仅仅允许草稿或者已拒绝的单子编辑
-            mode: ['1', '2'].includes(statusCode) ? 'add' : ''
+            // 只有草稿状态单子编辑
+            mode: ['2'].includes(statusCode) ? 'add' : ''
           }
         })
         
@@ -227,23 +227,30 @@ export default {
         return
       }
       
-      let cannotDeleted = []
       let idList = []
+      // let approvalList = [] //审批中
+      // let approvedList = [] // 审批通过
       this.selectTableData.forEach(item=>{
         idList.push(item.id)
-        // 1：已拒绝，2：草稿
-        if(!['1','2'].includes(item.status)){
-          cannotDeleted.push(item)
-        }
+        // if(['3'].includes(item.status)){
+        //   approvalList.push('['+item.signCode+']')
+        // }
+        // if(['4'].includes(item.status)){
+        //   approvedList.push('['+item.signCode+']')
+        // }
       })
-      if(cannotDeleted.length) return iMessage.error(this.language('只能删除草稿和已拒绝状态的数据', '只能删除草稿和已拒绝状态的数据'))
+      // if(approvalList.length){
+      //   let str = approvalList.join('、') + '状态为审批中，不可删除签字单'
+      //   return iMessage.error(str)
+      // } else if(approvedList.length){
+      //   let str = approvedList.join('、') + '状态为审批通过，不可删除签字单，请将审批驳回的单据从签字单中移除，再重新创建签字单'
+      //   return iMessage.error(str)
+      // } 
       const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
-      // const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        // const res = await batchDelete({signIdArr: idList})
         const res = await deleteSignDoc({signIdArr: idList})
-        if (res.code === '200') {
+        if (res?.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
