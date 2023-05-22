@@ -135,7 +135,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <drawer :visible.sync="visible" :menuList="tableData" :row="row" />
+    <drawer  @refreshData="getData" :visible.sync="visible" :menuList="tableData" :row="row" />
   </div>
 </template>
 

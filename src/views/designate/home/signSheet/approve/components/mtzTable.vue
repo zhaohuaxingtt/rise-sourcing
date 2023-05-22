@@ -14,7 +14,12 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column label="#" align="center" width="60"></el-table-column>
+      <el-table-column
+        type="index"
+        label="#"
+        align="center"
+        width="60"
+      ></el-table-column>
       <el-table-column
         label="Present Items"
         prop="appName"
@@ -90,12 +95,18 @@
         width="220"
       >
         <template slot-scope="scope">
-          <p>{{scope.row.approvedStatusName}}</p>
-          <p>{{scope.row.approvedDate}}</p>
+          <p>{{ scope.row.approvedStatusName }}</p>
+          <p>{{ scope.row.approvedDate }}</p>
         </template>
       </el-table-column>
     </el-table>
-    <drawer :visible.sync="visible" :row="row" :menuList="tableData" isMtz />
+    <drawer
+      @refreshData="getData"
+      :visible.sync="visible"
+      :row="row"
+      :menuList="tableData"
+      isMtz
+    />
   </div>
 </template>
 

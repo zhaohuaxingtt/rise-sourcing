@@ -7,7 +7,7 @@
 <template>
   <iPage class="details">
     <div class="page-header">
-      <span class="title">签字单:{{ id }}</span>
+      <span class="title">签字单:{{ signCode }}</span>
       <div class="button-box">
         <iButton @click="signDocExport">导出</iButton>
         <iButton @click="signApprove(1)">批准</iButton>
@@ -51,11 +51,14 @@ export default {
   },
   data() {
     return {
-      id: "2023-CW15073",
+      signCode: "",
       tab: "part",
       partNum: "",
       mtzNum: "",
     };
+  },
+  created(){
+    this.signCode = this.$route.query.signCode || '-'
   },
   methods: {
     setCount(key, count) {
@@ -93,7 +96,7 @@ export default {
           this.$refs.mtzTable.getData();
         } else {
           await this.$confirm(
-            res.data,
+            this.$i18n.locale == 'zh' ? res.desZh : res.desEn,
             this.language("LK_WENXINTISHI", "温馨提示"),
             {
               confirmButtonText: this.language("LK_QUEDING", "确定"),

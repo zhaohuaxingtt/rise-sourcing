@@ -137,6 +137,8 @@ export default {
         if(res?.code==200){
           this.getTableData()
           this.$emit('getSignSheetDetails')
+        }else{
+          iMessage.error( this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
         }
       })
     },

@@ -22,7 +22,11 @@
         </div>
         <div class="drawer-header margin-bottom20">
           <span>
-            定点申请: {{ nomination }} {{ row.appName }}{{ status }}
+            定点申请: {{ nomination }}
+            <template v-if="nomination"> - 
+              <span class="link" @click="gotoMTZ">{{nomination}}</span>
+            </template>
+            {{ row.appName }} ({{ row.approvedStatusName }})
           </span>
           <span class="value" ref="menuIcon">
             <img
@@ -129,8 +133,16 @@ export default {
       left,
       allow,
       menu,
-      status: "待审批",
+      showApproveBtn:false
     };
+  },
+  watch:{
+    row:{
+      handler(val){
+        this.showApproveBtn = val.approvedStatus == 'M_CHECK_INPROCESS'
+      },
+      deep:true,
+    }
   },
   computed: {
     nomination() {
@@ -139,9 +151,6 @@ export default {
     index(){
       return this.menuList.map(item=>item.appNo).indexOf(this.nomination)
     },
-    showApproveBtn(){
-      return this.row.approvedStatus == 'M_CHECK_INPROCESS'
-    }
   },
   methods: {
     close() {
@@ -187,11 +196,12 @@ export default {
       signApprove(params).then(async (res) => {
         if (res?.code == 200) {
           iMessage.success("操作成功");
-          this.$refs.partTable.getData(),
-          this.$refs.mtzTable.getData();
+          this.$emit('refreshData')
+          this.showApproveBtn = false
+          // this.$forceUpdate()
         } else {
           await this.$confirm(
-            res.data,
+            this.$i18n.locale == 'zh' ? res.desZh:res.desEn,
             this.language("LK_WENXINTISHI", "温馨提示"),
             {
               confirmButtonText: this.language("LK_QUEDING", "确定"),
@@ -208,8 +218,9 @@ export default {
               signApprove(params).then((res) => {
                 if (res?.code == 200) {
                   iMessage.success("操作成功");
-                  this.$refs.partTable.getData(),
-                  this.$refs.mtzTable.getData();
+                  this.$emit('refreshData')
+                  this.showApproveBtn = false
+                  // this.$forceUpdate() 
                 } else {
                   iMessage.error("操作失败");
                 }
@@ -219,6 +230,16 @@ export default {
         }
       });
     },
+    // 跳转MTZ详情
+    gotoMTZ(){
+      const router = this.$router.resolve({
+        path: window.location.origin + "/portal#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreview",
+        query: {
+          mtzAppId: row.signId,
+        },
+      });
+      window.open(router.href, "_blank");
+    }
   },
 };
 </script>

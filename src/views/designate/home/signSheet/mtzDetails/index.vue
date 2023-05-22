@@ -146,7 +146,7 @@ export default {
           this.getTableData()
           this.$emit('getSignSheetDetails')
         }else{
-          iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
+          iMessage.error( this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
         }
       })
     },

@@ -192,7 +192,7 @@ export default {
           this.$emit('getSignSheetDetails')
           this.$emit("deleteData", this.selectTableData)
         }else{
-          iMessage.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'))
+          iMessage.error( this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
         }
       })
       // this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))

@@ -116,6 +116,7 @@ export default {
         path: "/sourcing/partsnomination/signSheet/approve/details",
         query: {
           signId: row.signId,
+          signCode: row.signCode,
         },
       });
       window.open(router.href, "_blank");
@@ -137,7 +138,7 @@ export default {
           this.getData();
         } else {
           await this.$confirm(
-            res.data,
+            this.$i18n.locale == 'zh' ? res.desZh : res.desEn,
             this.language("LK_WENXINTISHI", "温馨提示"),
             {
               confirmButtonText: this.language("LK_QUEDING", "确定"),
