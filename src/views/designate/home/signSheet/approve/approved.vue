@@ -14,13 +14,17 @@
         <iInput v-model="name"></iInput>
       </el-form-item> -->
       <el-form-item label="科室/股别">
-        <iInput v-model="name"></iInput>
+        <iInput v-model="searchForm.linieDept"></iInput>
       </el-form-item>
       <el-form-item label="申请编号/名称">
-        <iInput v-model="name"></iInput>
+        <iInput v-model="searchForm.appName"></iInput>
       </el-form-item>
       <el-form-item label="审批结果">
-        <iInput v-model="remark"></iInput>
+        <iSelect v-model="searchForm.approvedStatus">
+          <el-option value="" :label="language('ALL','全部')"></el-option>
+          <el-option value="M_CHECK_FAIL" label="M审批退回"></el-option>
+          <el-option value="M_CHECK_PASS" label="M审批通过"></el-option>
+        </iSelect>
       </el-form-item>
     </el-form>
   </iSearch>
@@ -46,7 +50,7 @@
 </template>
 
 <script>
-import { iSearch, iInput, iCard, iTableCustom, iButton, iPagination } from "rise";
+import { iSearch, iInput, iSelect, iCard, iTableCustom, iButton, iPagination } from "rise";
 import { approveTable as tableTitle } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import { signAppApprovedPage } from "@/api/designate/nomination/mApprove";
@@ -54,6 +58,7 @@ export default {
   components: {
     iSearch,
     iInput,
+    iSelect,
     iCard,
     iTableCustom,
     iButton,
@@ -63,8 +68,9 @@ export default {
   data() {
     return {
       searchForm: {
-        signName: "",
-        remark: "",
+        linieDept: "",
+        appName: "",
+        approvedStatus: "",
       },
       tableData:[],
       tableTitle,
@@ -81,14 +87,15 @@ export default {
     },
     reset() {
       this.searchForm = {
-        signName: "",
-        remark: "",
+        linieDept: "",
+        appName: "",
+        approvedStatus: "",
       }
       this.sure()
     },
     getData() {
       let params = {
-        // ...this.searchForm,
+        ...this.searchForm,
         current: this.page.currPage,
         size: this.page.pageSize,
       };

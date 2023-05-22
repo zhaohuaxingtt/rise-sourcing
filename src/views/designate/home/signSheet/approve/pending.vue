@@ -97,7 +97,7 @@ export default {
     },
     getData() {
       let params = {
-        // ...this.searchForm,
+        ...this.searchForm,
         current: this.page.currPage,
         size: this.page.pageSize,
       };
