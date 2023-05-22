@@ -1,6 +1,8 @@
 import axios from "@/utils/axios"
+import axiosFile from '@/utils/axios.download'
 
 const request = axios(process.env.VUE_APP_SOURCING)
+const requestDownload = axiosFile(process.env.VUE_APP_SOURCING)
 
 const requestMTZ = axios(process.env.VUE_APP_MTZ + '/web/mtz')
 
@@ -69,7 +71,7 @@ export function signAppApprovedPage(data) {
 
 // 总经理-审批-签字单-导出定点申请单详情
 export function signDocExport(data) {
-    return request({
+    return requestDownload({
         url: `/nominate/sign/signDocExport`,
         method: "post",
         data
