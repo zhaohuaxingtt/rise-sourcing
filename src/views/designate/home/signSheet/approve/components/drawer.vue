@@ -23,9 +23,9 @@
         <div class="drawer-header margin-bottom20">
           <span>
             定点申请: {{ nomination }}
-            <template v-if="nomination"> - 
+            <!-- <template v-if="nomination"> - 
               <span class="link" @click="gotoMTZ">{{nomination}}</span>
-            </template>
+            </template> -->
             {{ row.appName }} ({{ row.approvedStatusName }})
           </span>
           <span class="value" ref="menuIcon">
