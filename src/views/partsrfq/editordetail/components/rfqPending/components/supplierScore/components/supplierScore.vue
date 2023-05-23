@@ -235,10 +235,10 @@ export default {
         this.page.totalCount = res.total;
         this.tableLoading = false;
         this.supplierProducePlaces = this.tableListData.map((item) => {
-          if (!item.companyAddressCode && item.companyAddress) {
-            item.companyAddressCode = item.companyAddress;
-            item.isNoCodeData = true;
-          }
+          // if (!item.companyAddressCode && item.companyAddress) {
+          //   item.companyAddressCode = item.companyAddress;
+          //   item.isNoCodeData = true;
+          // }
 
           return {
             key: item.companyAddressCode,
