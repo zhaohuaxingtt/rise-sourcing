@@ -28,7 +28,7 @@ export const fstitle = [
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ebrCalculatedValue',label:'Mixed Qty',i18n:'',width:'55',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
 export const gstitle = [
@@ -53,7 +53,7 @@ export const gstitle = [
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>TTO</p>'},
  // {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Sup.Saving</p>'},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ebrCalculatedValue',label:'Mixed Qty',i18n:'',width:'55',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
 //表格循环部分
