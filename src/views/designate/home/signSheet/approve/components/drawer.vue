@@ -84,7 +84,11 @@
           <iButton @click="signApprove(1)">批准</iButton>
           <iButton @click="signApprove(0)">拒绝</iButton>
         </div>
-        <mtzDetails v-if="isMtz" :mtzAppId="nomination" class="margin-top10 data-container" />
+        <mtzDetails
+          v-if="isMtz"
+          :mtzAppId="nomination"
+          class="margin-top10 data-container"
+        />
         <RS
           :otherNominationId="nomination"
           :key="nomination"
@@ -120,7 +124,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    row: {
+    rowInit: {
       type: Object,
       default: () => ({}),
     },
@@ -133,23 +137,27 @@ export default {
       left,
       allow,
       menu,
-      showApproveBtn:false
+      row: {},
     };
-  },
-  watch:{
-    row:{
-      handler(val){
-        this.showApproveBtn = val.approvedStatus == 'M_CHECK_INPROCESS'
-      },
-      deep:true,
-    }
   },
   computed: {
     nomination() {
       return this.row.appNo || "";
     },
-    index(){
-      return this.menuList.map(item=>item.appNo).indexOf(this.nomination)
+    index() {
+      return this.menuList.map((item) => item.appNo).indexOf(this.nomination);
+    },
+    showApproveBtn() {
+      return this.row.approvedStatus == "M_CHECK_INPROCESS";
+    },
+  },
+  watch: {
+    rowInit: {
+      handler(val) {
+        this.row = val;
+      },
+      deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -182,10 +190,10 @@ export default {
     },
     getData(index) {
       if (this.index == index) return;
-      this.row = this.menuList[index];
-      this.$set(this, 'row', this.menuList[index])
+      // this.row = this.menuList[index];
+      this.$set(this, "row", this.menuList[index]);
     },
-    
+
     signApprove(isAgree) {
       // 0拒绝、1同意
       let params = {
@@ -194,15 +202,17 @@ export default {
         reason: isAgree ? "【同意】" : "【拒绝】", // 原因
         signAppIds: [this.row.signAppId],
       };
+      console.log("this.row=>", this.row.appNo);
       signApprove(params).then(async (res) => {
         if (res?.code == 200) {
           iMessage.success("操作成功");
-          this.$emit('refreshData')
-          this.showApproveBtn = false
+          this.$emit("refreshData");
+          this.row.approvedStatus = isAgree ? "M_CHECK_PASS" : "M_CHECK_FAIL";
+          this.row.approvedStatusName = isAgree ? "M审批通过" : "M退回";
           // this.$forceUpdate()
         } else {
           await this.$confirm(
-            this.$i18n.locale == 'zh' ? res.desZh:res.desEn,
+            this.$i18n.locale == "zh" ? res.desZh : res.desEn,
             this.language("LK_WENXINTISHI", "温馨提示"),
             {
               confirmButtonText: this.language("LK_QUEDING", "确定"),
@@ -216,31 +226,41 @@ export default {
                 reason: isAgree ? "【同意】" : "【拒绝】", // 原因
                 signAppIds: [this.row.signAppId],
               };
-              signApprove(params).then((res) => {
-                if (res?.code == 200) {
-                  iMessage.success("操作成功");
-                  this.$emit('refreshData')
-                  this.showApproveBtn = false
-                  // this.$forceUpdate() 
-                } else {
-                  iMessage.error("操作失败");
-                }
-              });
+              signApprove(params)
+                .then((res) => {
+                  if (res?.code == 200) {
+                    iMessage.success("操作成功");
+                    this.$emit("refreshData");
+                    this.row.approvedStatus = isAgree
+                      ? "M_CHECK_PASS"
+                      : "M_CHECK_FAIL";
+                    this.row.approvedStatusName = isAgree
+                      ? "M审批通过"
+                      : "M退回";
+                  } else {
+                    iMessage.error("操作失败");
+                  }
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
             })
             .catch(() => {});
         }
       });
     },
     // 跳转MTZ详情
-    gotoMTZ(){
+    gotoMTZ() {
       const router = this.$router.resolve({
-        path: window.location.origin + "/portal#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreview",
+        path:
+          window.location.origin +
+          "/portal#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreview",
         query: {
           mtzAppId: row.signId,
         },
       });
       window.open(router.href, "_blank");
-    }
+    },
   },
 };
 </script>
@@ -404,7 +424,7 @@ export default {
         background: #fff;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        .data-container{
+        .data-container {
           height: calc(100% - 135px);
           overflow: auto;
         }

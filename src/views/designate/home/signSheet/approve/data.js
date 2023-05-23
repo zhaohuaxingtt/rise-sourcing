@@ -48,7 +48,7 @@ export const approveTable = [
         name: '申请名称',
         i18n: '申请名称',
     }, {
-        prop: 'appType',
+        prop: 'appTypeName',
         name: '类型',
         i18n: '类型',
     }, {

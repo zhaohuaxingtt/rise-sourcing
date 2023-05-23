@@ -130,12 +130,17 @@
         width="220"
       >
         <template slot-scope="scope">
-          <p>{{scope.row.approvedStatusName}}</p>
-          <p>{{scope.row.approvedDate}}</p>
+          <p>{{ scope.row.approvedStatusName }}</p>
+          <p>{{ scope.row.approvedDate }}</p>
         </template>
       </el-table-column>
     </el-table>
-    <drawer  @refreshData="getData" :visible.sync="visible" :menuList="tableData" :row="row" />
+    <drawer
+      @refreshData="getData"
+      :visible.sync="visible"
+      :menuList="tableData"
+      :rowInit="row"
+    />
   </div>
 </template>
 

@@ -103,7 +103,7 @@
     <drawer
       @refreshData="getData"
       :visible.sync="visible"
-      :row="row"
+      :rowInit="row"
       :menuList="tableData"
       isMtz
     />

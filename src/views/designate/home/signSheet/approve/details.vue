@@ -41,7 +41,10 @@
 import { iPage, iButton, iMessage } from "rise";
 import partTable from "./components/partTable";
 import mtzTable from "./components/mtzTable";
-import { signApprove, signDocExport } from "@/api/designate/nomination/mApprove";
+import {
+  signApprove,
+  signDocExport,
+} from "@/api/designate/nomination/mApprove";
 export default {
   components: {
     iPage,
@@ -57,8 +60,8 @@ export default {
       mtzNum: "",
     };
   },
-  created(){
-    this.signCode = this.$route.query.signCode || '-'
+  created() {
+    this.signCode = this.$route.query.signCode || "-";
   },
   methods: {
     setCount(key, count) {
@@ -66,41 +69,75 @@ export default {
     },
 
     signApprove(isAgree) {
+      // 0拒绝、1同意
       let selectData = [
         ...this.$refs.partTable.selectData,
         ...this.$refs.mtzTable.selectData,
       ];
-      // 0拒绝、1同意
-      if (!selectData.length) return iMessage.warn("请选择至少一条数据");
-      let approvedList = [] // 已完成审批的数据
-      selectData.forEach(item=>{
-        if(item.approvedStatus!='M_CHECK_INPROCESS'){
-          approvedList.push('['+item.appNo+']')
-        }
-      })
-      if(approvedList.length){
-        return iMessage.error(approvedList.join('、')+'已完成审批，请重新选择数据')
-      }
-      let params = {
-        isAgree: isAgree, // 0拒绝、1同意
-        isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
-        reason: isAgree ? "【同意】" : "【拒绝】", // 原因
-        signAppIds: selectData.map((item) => {
-          return item.signAppId;
-        }),
-      };
-      signApprove(params).then(async (res) => {
-        if (res?.code == 200) {
-          iMessage.success("操作成功");
-          this.$refs.partTable.getData(),
-          this.$refs.mtzTable.getData();
+      // 没有勾选数据，则全部审批
+      if (!selectData.length) {
+        let params = {
+          isAgree: isAgree, // 0拒绝、1同意
+          isConfirm: 1, // 是否确认弹窗请求，1-是，0-否
+          reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+          signIds: [this.$route.query.signId],
+        };
+        signApprove(params).then(async (res) => {
+          if (res?.code == 200) {
+            iMessage.success("操作成功");
+            this.$refs.partTable.getData();
+            this.$refs.mtzTable.getData();
+          } else {
+            await this.$confirm(
+              this.$i18n.locale == "zh" ? res.desZh : res.desEn,
+              this.language("LK_WENXINTISHI", "温馨提示"),
+              {
+                confirmButtonText: this.language("LK_QUEDING", "确定"),
+                cancelButtonText: this.language("LK_QUXIAO", "取 消"),
+                type: "warning",
+              }
+            )
+              .then(() => {
+                let params = {
+                  isAgree: isAgree, // 0拒绝、1同意
+                  isConfirm: 0, // 是否确认弹窗请求，1-是，0-否
+                  reason: isAgree ? "【同意】" : "【拒绝】", // 原因
+                  signIds: [this.$route.query.signId],
+                };
+                signApprove(params).then((res) => {
+                  if (res?.code == 200) {
+                    iMessage.success("操作成功");
+                    this.$refs.partTable.getData(),
+                      this.$refs.mtzTable.getData();
+                  } else {
+                    iMessage.error("操作失败");
+                  }
+                });
+              })
+              .catch(() => {});
+          }
+        });
+      } else {
+        let approvedList = []; // 已完成审批的数据
+        selectData.forEach((item) => {
+          if (item.approvedStatus != "M_CHECK_INPROCESS") {
+            approvedList.push("[" + item.appNo + "]");
+          }
+        });
+        if (approvedList.length) {
+          return iMessage.error(
+            `所选记录${approvedList.join(
+              "、"
+            )}已完成审批，请选择待审批的记录进行操作`
+          );
         } else {
-          await this.$confirm(
-            this.$i18n.locale == 'zh' ? res.desZh : res.desEn,
+          this.$confirm(
+            `是否对所选记录${approvedList.join("、")}审批${
+              isAgree ? "通过" : "拒绝"
+            }？`,
             this.language("LK_WENXINTISHI", "温馨提示"),
             {
-              confirmButtonText: this.language("LK_QUEDING", "确定"),
-              cancelButtonText: this.language("LK_QUXIAO", "取 消"),
+              type: "warning",
             }
           )
             .then(() => {
@@ -115,26 +152,25 @@ export default {
               signApprove(params).then((res) => {
                 if (res?.code == 200) {
                   iMessage.success("操作成功");
-                  this.$refs.partTable.getData(),
-                  this.$refs.mtzTable.getData();
+                  this.$refs.partTable.getData(), this.$refs.mtzTable.getData();
                 } else {
                   iMessage.error("操作失败");
                 }
               });
             })
-            .catch(() => {});
+            .catch();
         }
-      });
+      }
     },
     // 导出
-    signDocExport(){
+    signDocExport() {
       let params = {
-        signId: this.$route.query.signId
-      }
-      signDocExport(params).then(res=>{
+        signId: this.$route.query.signId,
+      };
+      signDocExport(params).then((res) => {
         console.log(res);
-      })
-    }
+      });
+    },
   },
 };
 </script>
