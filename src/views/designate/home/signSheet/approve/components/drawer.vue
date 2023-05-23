@@ -183,6 +183,7 @@ export default {
     getData(index) {
       if (this.index == index) return;
       this.row = this.menuList[index];
+      this.$set(this, 'row', this.menuList[index])
     },
     
     signApprove(isAgree) {
