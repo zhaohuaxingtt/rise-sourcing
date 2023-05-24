@@ -26,7 +26,11 @@
         header-align="center"
         align="left"
         minWidth="260"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <tooltip :text="scope.row.appName"></tooltip>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Type"
         prop="appType"

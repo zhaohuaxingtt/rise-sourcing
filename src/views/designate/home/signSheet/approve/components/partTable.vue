@@ -27,12 +27,16 @@
         header-align="center"
         align="left"
         minWidth="260"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <tooltip :text="scope.row.appName"></tooltip>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Type"
         prop="appType"
         align="center"
-        width="120"
+        width="100"
       ></el-table-column>
       <el-table-column
         label="Nomination No."
@@ -60,7 +64,7 @@
         label="Com."
         prop="linieDept"
         align="center"
-        width="100"
+        width="80"
       ></el-table-column>
       <el-table-column
         label="EP"
@@ -83,7 +87,7 @@
           label="Name"
           header-align="center"
           align="left"
-          prop="supplier"
+          prop="Awarded Supplier"
           width="190"
         >
           <template slot-scope="scope">
@@ -94,12 +98,12 @@
               :show-header="false"
             >
               <el-table-column prop="name" width="190"></el-table-column>
-              <el-table-column prop="tto" width="140">
+              <el-table-column prop="tto" width="130">
                 <template slot-scope="scope">
                   {{ scope.row.tto | toThousands(true) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="share" width="69"></el-table-column>
+              <el-table-column prop="share" width="119"></el-table-column>
             </el-table>
             <!-- <template v-for="(item,index) in scope.row.supplierInfo">
           <div class="supplier-info" :key="index">
@@ -111,16 +115,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Turnover"
+          label="TTO"
           header-align="center"
           align="right"
-          width="140"
+          width="130"
         ></el-table-column>
         <el-table-column
-          label="Share"
+          label="Total Share"
           header-align="center"
           align="right"
-          width="70"
+          width="120"
         ></el-table-column>
       </el-table-column>
       <el-table-column
