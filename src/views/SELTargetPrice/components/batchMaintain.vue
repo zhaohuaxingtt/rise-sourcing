@@ -187,7 +187,7 @@ export default {
       console.log('value=>',value.split(',').join(''));
       if(name=='shareTargetPrice'){
         this.$set(row, name, numberProcessor(value, 2)); // 目标价·分摊，输入整数
-        this.$set(row, "estimateShareAPrice",Number(numberProcessor(row.shareTargetPrice / row.releaseOutput, 6)).toFixed(2)); // 计算预计A价=  目标价·分摊/分摊量
+        this.$set(row, "estimateShareAPrice",Number((row.shareTargetPrice / row.releaseOutput).toFixed(6)).toFixed(2)); // 计算预计A价=  目标价·分摊/分摊量
       }else{
         this.$set(row, name, numberProcessor(value, 2)); // 目标价·分摊，输入整数
       }
