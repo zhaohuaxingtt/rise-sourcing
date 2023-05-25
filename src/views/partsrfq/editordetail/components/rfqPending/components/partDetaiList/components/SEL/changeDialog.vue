@@ -122,7 +122,7 @@ export default {
       this.$set(
         row,
         "estimateShareAPrice",
-        numberProcessor(row.shareTargetPrice / row.releaseOutput, 2)
+        Number(numberProcessor(row.shareTargetPrice / row.releaseOutput, 6)).toFixed(2)
       ); // 计算预计A价=  目标价·分摊/分摊量
     },
   },
