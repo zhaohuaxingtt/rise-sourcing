@@ -82,12 +82,10 @@
           {{ scope.row.tto | toThousands(true) }}
         </template></el-table-column
       >
-      <el-table-column label="Supplier" align="center">
+      <el-table-column label="Awarded Supplier" align="center">
         <el-table-column
           label="Name"
           header-align="center"
-          align="left"
-          prop="Awarded Supplier"
           width="190"
         >
           <template slot-scope="scope">
