@@ -23,9 +23,9 @@
         <div class="drawer-header margin-bottom20">
           <span>
             定点申请: {{ nomination }}
-            <!-- <template v-if="nomination"> - 
-              <span class="link" @click="gotoMTZ">{{nomination}}</span>
-            </template> -->
+            <template v-if="row.relationMtzAppNo"> - 
+              <span class="link" @click="gotoMTZ(row.relationMtzAppNo)">{{row.relationMtzAppNo}}</span>
+            </template>
             {{ row.appName }} ({{ row.approvedStatusName }})
           </span>
           <span class="value" ref="menuIcon">
@@ -250,16 +250,9 @@ export default {
       });
     },
     // 跳转MTZ详情
-    gotoMTZ() {
-      const router = this.$router.resolve({
-        path:
-          window.location.origin +
-          "/portal#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreview",
-        query: {
-          mtzAppId: row.signId,
-        },
-      });
-      window.open(router.href, "_blank");
+    gotoMTZ(MtzAppNo) {
+      let url = window.location.origin + `/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreviewBefore?mtzAppId=${MtzAppNo}`
+      window.open(url, "_blank");
     },
   },
 };
