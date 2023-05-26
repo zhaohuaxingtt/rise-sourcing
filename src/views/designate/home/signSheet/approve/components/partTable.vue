@@ -25,7 +25,7 @@
         label="Year CW"
         prop="yearCw"
         align="center"
-        width="100"
+        width="120"
       ></el-table-column>
       <el-table-column
         label="Present Items"
@@ -48,7 +48,7 @@
         label="Nomination No."
         prop="appNo"
         align="center"
-        width="140"
+        width="160"
       >
         <template slot-scope="scope">
           <span class="link" @click="openDetail(scope.row)">{{
@@ -60,7 +60,7 @@
         label="Carline"
         prop="carline"
         align="center"
-        minWidth="180"
+        minWidth="150"
       >
         <template slot-scope="scope">
           <tooltip :text="scope.row.carline"></tooltip>
@@ -83,7 +83,7 @@
         header-align="center"
         prop="tto"
         align="right"
-        width="160"
+        width="140"
         ><template slot-scope="scope">
           {{ scope.row.tto | toThousands(true) }}
         </template></el-table-column
@@ -194,16 +194,16 @@ export default {
         });
     },
     cellClassName({ row, column, rowIndex, columnIndex }) {
-      if ([9].includes(columnIndex)) {
+      if ([10].includes(columnIndex)) {
         return "supplier-box";
       } else {
         return "";
       }
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if ([9].includes(columnIndex)) {
+      if ([10].includes(columnIndex)) {
         return [1, 3];
-      } else if ([10, 11].includes(columnIndex)) {
+      } else if ([11, 12].includes(columnIndex)) {
         return [0, 0];
       }
     },
