@@ -157,7 +157,7 @@ export default {
     },
 
     cellClassName({ row, column, rowIndex, columnIndex }) {
-      if ([5].includes(columnIndex)) {
+      if ([6].includes(columnIndex)) {
         return "supplier-box";
       } else {
         return "";
@@ -165,9 +165,9 @@ export default {
     },
 
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if ([5].includes(columnIndex)) {
+      if ([6].includes(columnIndex)) {
         return [1, 3];
-      } else if ([6, 7].includes(columnIndex)) {
+      } else if ([7, 8].includes(columnIndex)) {
         return [0, 0];
       }
     },
