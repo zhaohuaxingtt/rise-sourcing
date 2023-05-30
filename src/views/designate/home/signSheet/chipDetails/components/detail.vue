@@ -11,30 +11,33 @@
     <iDialog :title="language('芯片定点申请单', '芯片定点申请单')" :visible.sync="value" width="85%" @close="handleCloseModal">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
-          <el-form-item style="marginRight:68px;" :label="language('SHENQINGDANHAO', '申请单号')">
+          <el-form-item style="marginRight:50px;" :label="language('SHENQINGDANHAO', '申请单号')">
             <iInput v-model="searchForm.mtzAppId" :placeholder="language('LK_QINGSHURU','请输入')"></iInput>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('LINGJIANHAO', '零件号')">
+          <el-form-item style="marginRight:50px;" :label="language('LINGJIANHAO', '零件号')">
             <input-custom 
               v-model="searchForm.assemblyPartnum"
               style="width:100%"
               :editPlaceholder="language('QINGSHURU','请输入')"
               :placeholder="language('QINGSHURU','请输入')"> </input-custom>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('CAIGOUYUAN', '采购员')">
+          <el-form-item style="marginRight:50px;" :label="language('CAIGOUYUAN', '采购员')">
             <iInput v-model="searchForm.buyer" :placeholder="language('LK_QINGSHURU','请输入')"></iInput>
           </el-form-item>
         </el-form>
         <div class="searchButton">
-          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_SUBMIT|芯片签字单确认" @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
-          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_RESET|芯片签字单重置"  @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
+            <!-- v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_SUBMIT|芯片签字单确认" -->
+            <!-- v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_RESET|芯片签字单重置"   -->
+          <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+          <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
         </div>
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="contentBox" >
-        <div class="tableOptionBox">
+        <div class="tableOptionBox margin-bottom20">
           <p class="tableTitle">{{language('DINGDIANSHENQINGLIEBIAO', '定点申请列表')}}</p>
-          <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_CHOOSE|芯片签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
+           <!-- v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_CHOOSE|芯片签字单选择" -->
+          <iButton @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
         </div>
         <tableList
           ref="addTable"
@@ -44,8 +47,8 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @click="handleSubmitChoose"
-          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_TABLE|芯片签字表格" 
           >
+          <!-- v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHIP_TABLE|芯片签字表格"  -->
           <template #appType="scope">
             {{scope.row.appType=='1'?$t('定点'):$t('变更')}}
           </template>
