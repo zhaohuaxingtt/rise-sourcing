@@ -160,6 +160,7 @@ export default {
                   this.getData();
                 } else {
                   iMessage.error("操作失败");
+                  this.getData();
                 }
               });
             })

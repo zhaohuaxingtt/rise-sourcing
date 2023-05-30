@@ -152,9 +152,12 @@ export default {
               signApprove(params).then((res) => {
                 if (res?.code == 200) {
                   iMessage.success("操作成功");
-                  this.$refs.partTable.getData(), this.$refs.mtzTable.getData();
+                  this.$refs.partTable.getData();
+                  this.$refs.mtzTable.getData();
                 } else {
                   iMessage.error("操作失败");
+                  this.$refs.partTable.getData();
+                  this.$refs.mtzTable.getData();
                 }
               });
             })
