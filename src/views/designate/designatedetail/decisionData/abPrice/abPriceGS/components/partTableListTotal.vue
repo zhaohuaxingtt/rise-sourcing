@@ -368,5 +368,8 @@ export default {
       }
     }
   }
+  ::v-deep .font-green {
+    color: #43b02a;
+  }
 }
 </style>

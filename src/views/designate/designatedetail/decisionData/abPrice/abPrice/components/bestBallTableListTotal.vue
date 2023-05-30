@@ -415,6 +415,9 @@ export default {
         padding: 0 4px;
       }
     }
+    .font-green {
+      color: #43b02a;
+    }
   }
 }
 .table {
