@@ -24,14 +24,14 @@
         label="Year CW"
         prop="yearCw"
         align="center"
-        width="100"
+        width="120"
       ></el-table-column>
       <el-table-column
         label="Present Items"
         prop="appName"
         header-align="center"
         align="left"
-        minWidth="220"
+        minWidth="200"
       >
         <template slot-scope="scope">
           <tooltip :text="scope.row.appName"></tooltip>
@@ -47,7 +47,7 @@
         label="Nomination No."
         prop="appNo"
         align="center"
-        width="140"
+        width="160"
       >
         <template slot-scope="scope">
           <span class="link" @click="openDetail(scope.row)">{{
