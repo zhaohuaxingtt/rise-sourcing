@@ -30,6 +30,5 @@ export default [
    activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
   },
   component: () => import('@/views/outsouringorder/newapplication/index'),
-  // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details'
  },
 ]

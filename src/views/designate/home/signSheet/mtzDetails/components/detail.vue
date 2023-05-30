@@ -11,7 +11,7 @@
     <iDialog :title="language('MTZDINGDIANSHENQINGDAN', 'MTZ定点申请单')" :visible.sync="value" width="85%" @close="handleCloseModal">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
-          <el-form-item style="marginRight:68px;" :label="language('SHENQINGDANHAO', '申请单号')">
+          <el-form-item style="marginRight:50px;" :label="language('SHENQINGDANHAO', '申请单号')">
             <i-select v-model="searchForm['mtzAppId']"
                       clearable
                       filterable
@@ -25,7 +25,7 @@
                 </el-option>
             </i-select>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('YUANCAILIAOPAIHAO', '原材料牌号')">
+          <el-form-item style="marginRight:50px;" :label="language('YUANCAILIAOPAIHAO', '原材料牌号')">
             <i-select v-model="searchForm['materialCode']"
                       clearable
                       filterable
@@ -39,7 +39,7 @@
                 </el-option>
             </i-select>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('LINGJIANHAO', '零件号')">
+          <el-form-item style="marginRight:50px;" :label="language('LINGJIANHAO', '零件号')">
             
             <!-- <iInput v-model="searchForm['assemblyPartnum']" :placeholder="language('QINGSHURU','请输入')"></iInput> -->
             <input-custom 
@@ -48,7 +48,7 @@
               :editPlaceholder="language('QINGSHURU','请输入')"
               :placeholder="language('QINGSHURU','请输入')"> </input-custom>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('CAIGOUYUAN', '采购员')">
+          <el-form-item style="marginRight:50px;" :label="language('CAIGOUYUAN', '采购员')">
             <i-select v-model="searchForm['buyer']"
                       clearable
                       filterable
@@ -62,7 +62,7 @@
                 </el-option>
             </i-select>
           </el-form-item>
-          <el-form-item style="marginRight:68px;" :label="language('GUANLIANDANHAO', '关联单号')">
+          <el-form-item style="marginRight:50px;" :label="language('GUANLIANDANHAO', '关联单号')">
             <i-select v-model="searchForm['ttNominateAppId']"
                       clearable
                       filterable
@@ -86,7 +86,7 @@
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="contentBox" >
-        <div class="tableOptionBox">
+        <div class="tableOptionBox margin-bottom20">
           <p class="tableTitle">{{language('DINGDIANSHENQINGLIEBIAO', '定点申请列表')}}</p>
           <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_CHOOSE|MTZ签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
           <!-- <iButton  @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton> -->

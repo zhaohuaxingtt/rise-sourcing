@@ -262,12 +262,6 @@ export const staticRouter = [
 				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
-			// {
-			// 	path: '/targetpriceandscore/configscoredept',
-			// 	name: 'configscoredept',
-			// 	meta: { title: '配置评分部门' },
-			// 	component: () => import('@/views/configscoredept'),
-			// },
 			{
 				path: '/tooling/budgetManagement/addModelBag',
 				name: 'addModelBag',
@@ -417,5 +411,17 @@ router.afterEach(() => {
 		appLoading.style.display = 'none'
 	}
 })
-
+function getRoute(baseUrl,routes){
+	let result = []
+	routes.forEach(child=>{
+	  let childUrl = child.path.indexOf('/')!=0?(baseUrl!='/'?baseUrl:'')+'/'+child.path:child.path
+	  if(child.children&&child.children.length){
+		result = [...result,...getRoute(childUrl,child.children)]
+	  }
+	  result.push(childUrl)
+	})
+	return result
+  }
+  
+  console.log('routeConfig=>',getRoute('',router.options.routes));
 export default router

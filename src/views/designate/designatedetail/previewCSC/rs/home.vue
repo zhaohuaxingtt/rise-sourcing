@@ -13,7 +13,7 @@
         <slot name="tabTitle"></slot>
       </template>
   </rsCapacityExpan>
-  <RS v-else style="height: 100%">
+  <RS v-bind="$attrs" v-else style="height: 100%">
     <template #tabTitle>
         <slot name="tabTitle"></slot>
       </template>

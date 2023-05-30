@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2023-04-10 10:02:46
+ * @LastEditTime: 2023-04-26 17:52:03
  * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -409,7 +409,6 @@ export default [
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/signSheet/components/headerNav/index'),
-        // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
         children: [
           {
             path: 'details',
@@ -420,17 +419,15 @@ export default [
             },
             component: () => import('@/views/designate/home/signSheet/details'),
           },
-          // {
-          //   path: 'mtzDetails',
-          //   name: 'mtzDesignateNewSignSheet',
-          //   meta: {
-          //     title: 'MTZ定点申请单',
-          //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-          //   },
-          //   component: () =>
-          //     import('@/views/designate/home/signSheet/mtzDetails/index.vue'),
-          // },
         ],
+      },
+      {
+        path: '/sourcing/partsnomination/signSheet/approve',
+        name: 'designateApprove',
+        meta: {
+          title: 'M签字单-审批页面',
+        },
+        component: () => import('@/views/designate/home/signSheet/approve/index.vue'),
       },
       {
         path: '/sourcing/designate/rfqdetail/addRfq',
@@ -652,15 +649,12 @@ export default [
       return route
     })
   },
-  // {
-
-  //   path: '/previewCSC/title',
-  //   name: 'designatePreviewtitle',
-  //   meta: {
-  //     title: '定点管理-决策资料预览',
-  //     layoutPath: '/desinatepreview',
-  //     activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
-  //   },
-  //   component: () => import('@/views/designate/designatedetail/previewCSC/title'),
-  // }
+  {
+    path: '/sourcing/partsnomination/signSheet/approve/details',
+    name: 'designateApprove',
+    meta: {
+      title: 'M签字单-审批详情页面',
+    },
+    component: () => import('@/views/designate/home/signSheet/approve/details.vue'),
+  },
 ]

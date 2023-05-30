@@ -1,55 +1,22 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2022-03-23 16:35:01
- * @LastEditors: YoHo
+ * @LastEditTime: 2023-04-26 14:13:57
+ * @LastEditors: 余继鹏 917955345@qq.com
  * @Description: m签字单新增、详情
- * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
+ * @FilePath: \front-web\src\views\designate\home\signSheet\details.vue
 -->
 <template>
   <div v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
-    <iCard>
-
-      <el-form class="signsheet-filter"
-               :inline="true">
-        <el-row gutter="20">
-          <el-col span="6">
-            <!-- 签字单号 -->
-            <el-form-item :label="`${language('QIANZIDANHAO','签字单号')}:`">
-              <iInput v-model="form.signCode"
-                      :disabled="true"
-                      :placeholder="``"></iInput>
-            </el-form-item>
-          </el-col>
-          <el-col span="6">
-            <!-- 状态 -->
-            <el-form-item :label="`${language('ZHUANGTAI','状态')}:`">
-              <iInput v-model="form.statusDesc"
-                      :disabled="true"
-                      :placeholder="``"></iInput>
-            </el-form-item>
-          </el-col>
-          <el-col span="12">
-            <!-- 描述 -->
-            <el-form-item :label="`${language('MIAOSHU','描述')}:`"
-                          class="desc">
-              <iInput v-model="form.description"
-                      :placeholder="language('LK_QINGSHURU','请输入')" @input="handleInputByDescription"></iInput>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </iCard>
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
        <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
-        <div class="floatright">
-          
-          <template  v-if="mode === 'add'">
-            <iButton @click="chooseSignsheet()">
+        <div class="floatright btn-right">
+          <template>
+            <iButton v-if="isDraft" @click="chooseSignsheet()">
               {{ language("XUANZE", '选择') }}
             </iButton>
-            <iButton @click="handleRemove"
+            <iButton v-if="isDraft || isRefuse" @click="handleRemove"
                       v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
               {{ language("YICHU",'移除') }}
             </iButton>
@@ -92,11 +59,6 @@
           <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
         </template>
 
-        <!-- 一致性校验 -->
-        <!-- <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
-      </template> -->
-
         <!-- 定点日期 -->
         <template #nominateDate="scope">
           <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
@@ -123,56 +85,27 @@
     </iCard>
     <addSignsheet :dialogVisible='dialogVisible'
                   @changeVisible='dialogVisible = false'
-                  @getChooseData='getChooseData'
                   @choose="handleChoose"
-                  :form='form'
                   v-if="dialogVisible"
                   ></addSignsheet>
-    <div class="margin-top20">
-      <!-- 引入定点申请综合管理页面 -->
-      <!-- <designateSign
-          :mode="'sign'"
-          @choose="handleChoose"
-          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
-          :refresh.sync="designateSignRefresh" /> -->
-    </div>
   </div>
 </template>
 <script>
 import { detailsTableTitle as tableTitle, } from './components/data'
 import filters from "@/utils/filters"
-// import tablelist from "@/views/designate/supplier/components/tableList";
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import designateSign from "@/views/designate/home/designateSign/index";
 import addSignsheet from "./components/addSignsheet";
-import {
-  getNomiSelectedPage,
-  getNomiNotSelectedPage,
-  saveSignSheet,
-  submitSignSheet,
-  removeSignsheetItems,
-  getsignSheetDetails
-} from '@/api/designate/nomination/signsheet'
+import {  getNomiSelectedPage } from '@/api/designate/nomination/signsheet'
+import { removeSignApp } from '@/api/designate/nomination/mApprove'
 import buttonTableSetting from '@/components/buttonTableSetting'
-import {
-  iPage,
-  iCard,
-  iInput,
-  iButton,
-  iMessage
-} from "rise";
+import { iCard, iButton, iMessage } from "rise";
 
 export default {
   mixins: [filters,tableSortMixins],
   data () {
     return {
       mode: this.$route.query.mode || '',
-      form: {
-        signId: '',
-        statusDesc: '',
-        description: ''
-      },
       tableTitle,
       tableListData: [],
       selectTableData: [],
@@ -180,42 +113,35 @@ export default {
       designateSignRefresh: false,
       dialogVisible: false,
       templateTable:[],
-      chooseSienSheet:[]
-    }
-  },
-  props: {
-    description: {
-      type: String,
-      default: ""
     }
   },
   watch: {
-    description(nv) {
-      this.form.description = nv
+    tableListData(val){
+      this.$emit('setData','part',val.length)
     }
   },
+  props: {
+    isRefuse: {
+      type:Boolean,
+      default:false
+    },
+    isDraft: {
+      type:Boolean,
+      default:false
+    },
+  },
   components: {
-    iPage,
     iCard,
-    iInput,
     iButton,
     tablelist,
     addSignsheet,
     buttonTableSetting
-    // designateSign
   },
   created () {
-    this.form.description = this.description
-    const { query = {} } = this.$route
-    const { signCode, status, id, desc } = query
-    this.form.signId = id
-    this.form.signCode = signCode
-    this.form.status = status
-    this.form.description = this.form.description && decodeURIComponent(desc) || ''
-    this.getSignSheetDetails()
     this.getChooseData()
   },
   methods: {
+    // 添加数据后回调
     handleChoose (data) {
       if(this.tableListData.length == '0') {
         this.tableListData = data
@@ -229,36 +155,17 @@ export default {
         })
         this.tableListData = this.tableListData.concat(newTamDAta)
       }
+      this.$emit('save','partDesignateOrders')
     },
     // 多选
     handleSelectionChange (data) {
       this.selectTableData = data
     },
-    getSignSheetDetails () {
-      this.tableLoading = true
-      getsignSheetDetails({
-        signId: Number(this.$route.query.id) || ''
-      }).then(res => {
-        this.tableLoading = false
-        if (res.code === '200') {
-          const data = res.data || {}
-          const status = data.status && data.status.name ? data.status.name : ''
-          status && (this.form.status = status)
-          data.signCode && (this.form.signCode = data.signCode)
-          data.statusDesc && (this.form.statusDesc = data.statusDesc)
-          data.description && (this.form.description = data.description)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      }).catch(e => {
-        this.tableLoading = false
-      })
-    },
     // 获取已经选择的数据
     getChooseData() {
       this.tableLoading = true
       getNomiSelectedPage({
-        signId: Number(this.form.signId) || ''
+        signId: Number(this.$route.query.id) || ''
       }).then(res => {
         this.tableLoading = false
         if (res.code == 200) {
@@ -266,69 +173,31 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(res)
       }).catch(e => {
         this.tableLoading = false
       })
-    },
-    // 保存
-    async handleSave () {
-      if (!this.tableListData.length) {
-        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.language('LK_SAVESURE', '您确定要执行保存操作吗？'))
-      if (confirmInfo !== 'confirm') return
-      const idList = this.tableListData.map(o => Number(o.id))
-      try {
-        const params = {
-          signId: Number(this.form.signId) || '',
-          description: this.form.description,
-          nominateIdArr: idList
-        }
-        console.log(this.form, params)
-        const res = await saveSignSheet(params)
-        if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-          this.getChooseData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
-    },
-    async handleSubmit () {
-      if (!this.tableListData.length) {
-        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.language('QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU', '请确定提交之前已经保存数据？'))
-      if (confirmInfo !== 'confirm') return
-      const idList = this.tableListData.map(o => Number(o.id))
-      try {
-        const res = await submitSignSheet({
-          signIdArr:[Number(this.form.signId)]
-        })
-        if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-          this.getChooseData()
-          this.$router.go(0)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
     },
     // 移除项目
     async handleRemove () {
       if (!this.selectTableData.length) return iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
       await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-      this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
+      let params = {
+        nominateIdArr: this.selectTableData.map(item=>item.id),
+        signId: Number(this.$route.query.id)
+      }
+      removeSignApp(params).then(res=>{
+        if(res?.code==200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getChooseData()
+          this.$emit('getSignSheetDetails')
+          this.$emit("deleteData", this.selectTableData)
+        }else{
+          iMessage.error( this.$i18n.locale == 'zh' ? res.desZh : res.desEn)
+        }
+      })
+      // this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
       // 清空之前先发出事件
-      this.$emit("deleteData", this.selectTableData)
-      this.selectTableData = []
+      // this.selectTableData = []
     },
     // 查看详情
     viewNominationDetail (row) {
@@ -352,11 +221,7 @@ export default {
     },
     chooseSignsheet () {
       this.dialogVisible = true
-      this.chooseSienSheet=[]
     },
-    handleInputByDescription(value) {
-      this.$emit("update:description", value)
-    }
   }
 
 }
@@ -365,7 +230,7 @@ export default {
 .btn-right {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 20px;
+  align-items: center;
 }
 .signsheet-filter {
   .el-form-item {
