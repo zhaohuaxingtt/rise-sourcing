@@ -1162,35 +1162,10 @@ export default {
         });
 
         refreshNomiPartNum(data).then((res) => {
-          console.log(res);
-          if (res.result) {
-            let obj = {}
-            res.data.forEach(item=>{
-              let key =
-              "vsiPartNum" +
-              item.parameterVsiPartNum +
-              "nomiPartNum" +
-              item.parameterNomiPartNum +
-              "cartypeProId" +
-              this.searchParams.search1;
-              obj[key] = item
-            })
-            let selectList = this.selectList.map(child=>{
-              if(obj[child.key]){
-                this.dataPoint.forEach((e) => {
-                  child[e.props] = obj[child.key][e.props];
-                });
-              }
-              return child
-            })
-            console.log(selectList);
-            //编辑
-            modifyProjectProgressReport(
-              //新增
-              selectList
-            ).then(() => {
+          if (res?.result) {
               this.getTableList();
-            });
+          }else{
+            iMessage.error(res.desZh)
           }
         });
       }
