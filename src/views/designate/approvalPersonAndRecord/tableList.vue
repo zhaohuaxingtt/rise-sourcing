@@ -87,9 +87,12 @@ export default{
         if (res.code == 200 && Array.isArray(res.data)) {
           this.$set(row, 'deptManager', res.data.map(item => item.id).join(","))
           this.$set(row, 'deptManagerName', res.data.map(item => item.nameZh).join(","))
+          this.$set(row, 'approvalInfo', res.data[0].officeLocal)
         } else {
           this.$set(row, 'deptManager', "")
           this.$set(row, 'deptManagerName', "")
+          this.$set(row, 'approvalInfo', "")
+
         }
       })
     },
@@ -139,9 +142,11 @@ export default{
         if (res.code == 200 && Array.isArray(res.data)) {
           this.$set(row, 'deptManager', res.data.map(item => item.id).join(","))
           this.$set(row, 'deptManagerName', res.data.map(item => item.nameZh).join(","))
+          this.$set(row, 'approvalInfo', res.data[0].officeLocal)
         } else {
           this.$set(row, 'deptManager', "")
           this.$set(row, 'deptManagerName', "")
+          this.$set(row, 'approvalInfo', "")
         }
       })
     },
