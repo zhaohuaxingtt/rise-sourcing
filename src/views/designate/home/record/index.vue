@@ -9,20 +9,21 @@
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
     <!-- 头部 -->
     <headerNav />
-    <!-- 筛选框 -->
-    <div style="clear: both"></div>
     <!-- 查询区 -->
     <search @search="query" ref="search"/>
     <!-- 表格区 -->
-    <iCard class="cardMargin">
-      <div class="btnright margin-bottom20">
-        <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+    <iCard class="cardMargin table-card">
+      <div class="clearFloat margin-bottom20">
+        <div class="floatright">
+          <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+        </div>
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME_RECORD"
         lang
-        class="aotoTableHeight"
+        class="table-box"
+        height="100%"
         :tableTitle="tableTitle"
         :tableData="tableListData"
         :tableLoading="tableLoading"
@@ -165,17 +166,24 @@ export default {
   .openLinkText{
     color:$color-blue;
   }
-  .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
+.designatehome{
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    ::v-deep .table-card {
+      flex: 1;
+      overflow: hidden;
+      min-height: 400px;
+      .card-body-box {
+        height: 100%;
+        .table-box {
+          height: calc(100% - 105px);
+        }
+      }
     }
   }
   .cardMargin{
     margin-top:20px
-  }
-  .btnright{
-    float: right;
   }
   .icon-gray{
     cursor: pointer;

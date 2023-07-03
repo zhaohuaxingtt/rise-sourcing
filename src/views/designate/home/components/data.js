@@ -21,6 +21,7 @@ export const tableTitle = [{
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: true,
   width: 105,
+  fixed: true,
   sortable: true
 },
 {
@@ -29,6 +30,7 @@ export const tableTitle = [{
   width: 280,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: false,
+  fixed: true,
   sortable: true
 },
 {
@@ -37,6 +39,7 @@ export const tableTitle = [{
   key: 'PROJECT',
   tooltip: true,
   width:130,
+  fixed: true,
   sortable: true
 },
 {
@@ -45,6 +48,7 @@ export const tableTitle = [{
   key: 'nominationLanguage_LeiXing',
   tooltip: true,
   width:80,
+  fixed: true,
   sortable: true
 },
 {
@@ -53,6 +57,7 @@ export const tableTitle = [{
 	key: 'LK_ZHUANGTAI',
 	tooltip:false,
   width:80,
+  fixed: true,
   sortable: true
 },
 {

@@ -7,12 +7,10 @@
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_PAGE|定点管理页面">
     <!-- 头部 -->
     <headerNav />
-    <!-- 筛选框 -->
-    <div style="clear: both"></div>
     <!-- 搜索区 -->
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
-    <iCard class="designateTable">
+    <iCard class="designateTable table-card">
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
@@ -114,7 +112,8 @@
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME"
-        class="aotoTableHeight"
+        class="table-box"
+        height="100%"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -123,39 +122,16 @@
         @handleSelectionChange="handleSelectionChange"
         ref="tableList"
       >
-      <!-- <template #LK_CAOZUO="scope">
-        <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
-      </template> -->
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-        <!-- <div class="flexBox"> -->
-          <!-- <div class="left"> -->
-            <div class="flexBox">
-              <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
-                <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
-              </el-tooltip>
-              <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
-            </div>
-          <!-- </div> -->
-          <!-- <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
-            <icon symbol class="show" name="icontiaozhuananniu" />
-            <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-          </div> -->
-        <!-- </div> -->
+        <div class="flexBox">
+          <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+            <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
+          </el-tooltip>
+          <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
+        </div>
       </template>
-      <!-- 定点类型 -->
-      <!-- <template #nominateProcessType="scope">
-        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
-      </template> -->
-      <!-- 状态 -->
-      <!-- <template #applicationStatus="scope">
-        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
-      </template> -->
-      <!-- 会议状态 -->
-      <!-- <template #meetingStatus="scope">
-        <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
-      </template> -->
 
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
@@ -221,7 +197,6 @@
 import { tableTitle } from './components/data'
 import headerNav from '@/components/headerNav'
 import search from './components/search'
-// import tablelist from "@/views/designate/supplier/components/tableList";
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { 
@@ -670,6 +645,20 @@ export default {
 
 <style lang="scss" scoped>
 .designateHome {
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 165px);
+      }
+    }
+  }
   .flexBox {
     display: flex;
     align-items: center;

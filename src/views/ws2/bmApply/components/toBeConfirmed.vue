@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <SearchBlock @sure="allSerch" />
-    <iCard>
+    <iCard class="table-card">
       <div class="table-head">
         <div class="tmCartypePro">
           <!-- <div>{{$t('LK_CHEXINXIANGMU')}}</div>
@@ -31,6 +31,8 @@
       </div>
       <tableList
         ref="tableList"
+        height="100%"
+        class="table-box"
         permissionKey="toBeConfirmed"
         :tableData="bmTableList"
         :tableTitle="bmTableHead"
@@ -303,6 +305,12 @@ export default {
 
 <style lang="scss" scoped>
 .block{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .table-box {
+    height: calc(100% - 114px);
+  }
   .table-txtStyle{
     color: #1663F6;
     text-decoration: underline;

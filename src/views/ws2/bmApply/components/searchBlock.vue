@@ -1,7 +1,6 @@
 <template>
   <iSearch
     class="search-block"
-    style="margin-top: 20px"
     @sure="sure"
     @reset="reset"
     :icon="false"

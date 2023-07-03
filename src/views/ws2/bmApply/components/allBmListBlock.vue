@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <SearchBlock @sure="allSerch" />
-      <iCard>
+      <iCard class="table-card">
         <div class="table-head">
           <iButton @click="downloadList" v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL_DOWNLOAD">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
@@ -9,6 +9,8 @@
         
         <tableList
           ref="tableList"
+          height="100%"
+          class="table-box"
           permissionKey="allBmListBlock"
           :tableData="allTableList"
           :tableTitle="allTableHead"
@@ -203,6 +205,12 @@ export default {
 
 <style lang="scss" scoped>
 .block{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .table-box {
+    height: calc(100% - 114px);
+  }
   .unitExplain{
     display: flex;
     justify-content: flex-end;

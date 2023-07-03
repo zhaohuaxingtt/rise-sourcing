@@ -9,8 +9,8 @@
 
 export const tableTitle = [
   {props:'partNum',name:'附件零件号', key: "FUJIANLINGJIANHAO", tooltip: true, minWidth: 120, fixed: "left", sortable: true},
-  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120, sortable: true},
-  {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100, sortable: true},
+  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120, fixed: "left", sortable: true},
+  {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100, fixed: "left", sortable: true},
   {props:'item',name:'导入项次', key: "DAORUXIANGCI", tooltip: true, minWidth: 105, sortable: true},
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 105, sortable: true},
   {props:'csfuserDeptName',name:'CSF科室', key: "CSFKESHI", tooltip: true, minWidth: 140, sortable: true},
@@ -18,7 +18,7 @@ export const tableTitle = [
   {props:'linieDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, minWidth: 120, sortable: true},
   {props:'linieUserName',name:'LINIE', key: "LINIE", tooltip: true, minWidth: 100, sortable: true},
   {props:'statusDesc',name:'状态', key: "ZHUANGTAI", tooltip: true, minWidth: 140, sortable: true},
-  {props:'partNameCh',name:'附件零件名称', key: "FUJIANLINGJIANMINGCHENG", tooltip: true, minWidth: 140, sortable: true},
+  {props:'partNameCh',name:'附件零件名称', key: "FUJIANLINGJIANMINGCHENG", tooltip: true, minWidth: 140, fixed: "left", sortable: true},
   {props:'carType',name:'使用车型', key: "SHIYONGCHEXING", tooltip: true, minWidth: 120, sortable: true},
   {props:'carQty',name:'每车用量', key: "MEICHEYONGLIANG", tooltip: true, sortable: true},
   {props:'fujian',name:'附件', key: "FUJIAN", tooltip: true, sortable: true},

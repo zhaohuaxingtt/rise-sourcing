@@ -79,14 +79,16 @@
 		</div>
 
 		<keep-alive>
-			<div v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
+			<div class="BA-container" v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
 				<SearchBlock @sure="handleSureBlock" />
 
-				<iCard>
+				<iCard class="table-card">
 					<div class="table-head">
 						<iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
 					</div>
 					<iTableList
+						height="100%"
+						class="table-box"
 						:tableData="allTableData"
 						:tableTitle="allBAATableHead"
 						:tableLoading="allListLoading"
@@ -118,14 +120,17 @@
 
 		<keep-alive>
 			<div
+        class="BA-container"
 				v-if="tableIndex === 1"
 				v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY"
 			>
-				<iCard>
+				<iCard class="table-card">
 					<div class="table-head">
 						<iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
 					</div>
 					<iTableList
+						height="100%"
+						class="table-box"
 						:tableData="waitTableData"
 						:tableTitle="waitBAATableHead"
 						:tableLoading="waitTableLoading"
@@ -180,14 +185,17 @@
 
 		<keep-alive>
 			<div
+        class="BA-container"
 				v-if="tableIndex === 3"
 				v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY"
 			>
-				<iCard>
+				<iCard class="table-card">
 					<div class="table-head">
 						<iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
 					</div>
 					<iTableList
+						height="100%"
+						class="table-box"
 						:tableData="waitAddTableData"
 						:tableTitle="waitAddTableHead"
 						:tableLoading="waitAddTableLoading"
@@ -434,10 +442,6 @@ export default {
 				amountCount: 0,
 				applyCount: 0,
 			},
-			page: {
-				currPage: 1,
-				pageSize: 10,
-			},
 			detailPage: {
 				currPage: 1,
 				pageSize: 10,
@@ -671,9 +675,7 @@ export default {
 			}
 			findListConditoons(param)
 				.then((res) => {
-					this.page.currPage = ~~res.pageNum || 1
-					this.page.pageSize = ~~res.pageSize || 10
-					this.page.totalCount = ~~res.total
+					this.page.totalCount = res.total
 					this.allTableData = res.data
 
 					this.allListLoading = false
@@ -724,11 +726,7 @@ export default {
 
 					if (res.data) {
 						this[dataMap[tableIndex]] = res.data
-						this[pageMap[tableIndex]] = {
-							currPage: ~~res.pageNum,
-							pageSize: ~~res.pageSize,
-							totalCount: ~~res.total,
-						}
+						this[pageMap[tableIndex]].totalCount =  ~~res.total
 					} else {
 						iMessage.error(result)
 					}
@@ -806,10 +804,8 @@ export default {
 			this.allSelectList = []
 			this.waitSelectList = []
 			this.waitAddSelectList = []
-			this.page = {
-				currPage: 1,
-				pageSize: 10,
-			}
+			this.page.currPage = 1
+      this.page.pageSize = 10,
 			this.getPageData()
 		},
 	},
@@ -817,6 +813,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.generateInvestmentList{
+	height: calc(100% - 42px);
+  .BA-container{
+    display: flex;
+    flex-flow: column;
+    height: calc(100% - 200px);
+    ::v-deep .table-card {
+      flex: 1;
+      overflow: hidden;
+      min-height: 400px;
+      .card-body-box {
+        height: 100%;
+        .table-box {
+          height: calc(100% - 114px);
+        }
+      }
+    }
+  }
+}
 .unitExplain {
 	display: flex;
 	justify-content: flex-end;

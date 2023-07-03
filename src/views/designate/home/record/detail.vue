@@ -6,7 +6,7 @@
  * @LastEditors: YoHo
 -->
 <template>
-  <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
+  <iPage class="record-detail" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
     <topComponents :logModuleName="'定点明细'" :logBizIdKey="'id'" optionDicKey2="定点申请详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('DINGDIANMINGXI','定点明细')}}
@@ -19,15 +19,18 @@
         </iFormItem>
       </iFormGroup>
     </iCard>
-    <iCard class="margin-top20">
-      <div class="btnRight">
-        <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+    <iCard class="margin-top20 table-card">
+      <div class="clearFloat margin-bottom20">
+        <div class="floatright">
+          <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+        </div>
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME_RECORD_DETAIL"
         lang
-        class="aotoTableHeight"
+        class="table-box"
+        height="100%"
         :tableTitle="tableDetailTitle"
         :tableData="tableListData"
         :tableLoading="tableLoading"
@@ -191,12 +194,22 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
+.record-detail{
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
+}
 .accessoryPartDetail {
   .el-form-item {
     ::v-deep .el-form-item__label {
@@ -204,8 +217,4 @@ export default {
     }
   }
 }
-  .btnRight{
-    float: right;
-    margin-bottom: 20px;
-  }
 </style>

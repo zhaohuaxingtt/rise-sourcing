@@ -10,9 +10,9 @@
       <iNavWS2
       ></iNavWS2>
     </div>
-    <DetailsSearch @reset="handleReset" @sure="handleSearchSure" />
+    <DetailsSearch @sure="handleSearchSure" />
 
-    <iCard>
+    <iCard class="table-card">
       <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" @refresh="refresh" />
       <div class="unitExplain">
         <UnitExplain />
@@ -60,10 +60,6 @@ export default {
     return {
       tableListData: [],
       tableLoading: false,
-      page: {
-        currPage: 1,
-        pageSize: 10,
-      },
       isBa: false,
       form: cloneDeep(detailsForm)
     }
@@ -81,17 +77,10 @@ export default {
 
     handleSearchSure(data){
       this.form = data;
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      },
+      this.page.currPage = 1
       this.handleSure();
     },
     refresh(){
-      this.page = {
-        currPage: 1,
-        pageSize: 10,
-      },
       this.handleSure();
     },
     //  查询
@@ -105,33 +94,35 @@ export default {
         baAcountType: this.$store.state.baApply.baAcountType,
       }
       findBaPartsList(param).then(res => {
-        this.tableListData = res.data;
-        this.page.currPage = ~~res.pageNum;
-        // this.page.pageSize = ~~res.pageSize;
-        this.page.totalCount = ~~res.total;
-        this.page.layout = 'sizes, prev, pager, next, jumper';
-        this.page.pageSizes = [10,20,50,100,300]
-
+        if(res?.data){
+          this.tableListData = res.data;
+          this.page.totalCount = res.total;
+        }else{
+          iMessage.error(res?.desZh)
+        }
         this.tableLoading = false;
       }).catch(err => {
         this.tableLoading = false;
       })
     },
-
-    //  获取列表
-    getList(){
-
-    },
-
-    //  重置
-    handleReset(form){
-      console.log('handleReset', form);
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.partsprocureHome{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 450px;
+    ::v-deep .card-body-box {
+      height: 100%;
+    }
+  }
+}
 .unitExplain{
   display: flex;
   justify-content: flex-end;
