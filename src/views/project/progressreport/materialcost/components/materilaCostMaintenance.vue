@@ -207,9 +207,11 @@
       <tableList
         :tableData="tableListData"
         ref="contractForm"
+        height="400px"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :index="true"
+        indexFixed
         :selectable="editType"
         border
         @handleSelectionChange="handleSelectionChange"

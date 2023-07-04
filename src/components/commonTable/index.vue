@@ -22,7 +22,7 @@
               :border="border"
               :row-class-name="handleTableRow">
       <el-table-column v-if="selection" :selectable="selectionType" type='selection' width="55" align='center'></el-table-column>
-      <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
+      <el-table-column v-if='index' :fixed="indexFixed" type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
         <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' :sortable="items.sortable"
@@ -144,7 +144,8 @@ export default {
     openPageGetRowData: {type: Boolean, default: false},
     inputType: {type: String, default: ''},
     fileSizeProps: {type: String, default: 'fileSize'},
-    lang: {type: Boolean, default: false}
+    lang: {type: Boolean, default: false},
+    indexFixed:{type:Boolean,default:false}, // 序号是否固定
   },
   components: {
     iInput,
