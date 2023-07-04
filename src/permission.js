@@ -8,8 +8,8 @@
  */
 import router from './router'
 import store from '@/store'
-import {getToken, removeToken} from '@/utils'
-import {MessageBox} from 'element-ui'
+import { getToken, removeToken } from '@/utils'
+import { MessageBox } from 'element-ui'
 // eslint-disable-next-line no-unused-vars
 const whiteList = ['/login', '/ui', '/superLogin', '/sourceinquirypoint/designate/decisiondata/exportPdf']
 
@@ -21,6 +21,26 @@ router.beforeEach((to, from, next) => {
             //有token的时候，如果输入了一个登陆界面。则将其定向到主页
             next('/')
         } else {
+            var _vds = _vds || [];
+            window._vds = _vds;
+            _vds.push(["setAccountId", "c9jaGnRybxEMznFF"]);
+            let userNum = JSON.parse(sessionStorage.getItem('userInfo'))?.userNum
+            if (userNum) {
+                _vds.push(["setUserId", userNum]);
+                _vds.push(["setTrackerHost", 'webbehavior.csvw.com/saicio']);
+                console.log('记录行为==>', _vds);
+                if (!document.getElementsByTagName("script")['saic']) {
+                    var vds = document.createElement("script");
+                    vds.id = 'saic'
+                    vds.type = "text/javascript";
+                    vds.async = true;
+                    vds.src = ("https:" == document.location.protocol ? "https://" : "http://") + "webbehavior.csvw.com/saicio/js/saic.js";
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(vds, s);
+                }
+            } else {
+                console.log('未获取到员工号')
+            }
             const userRule = store.state.permission.userInfo.id
             if (!userRule) {
                 store
@@ -57,7 +77,7 @@ router.beforeEach((to, from, next) => {
                                     )
                                 } else {
                                     //router.addRoutes(res);
-                                    router.replace({path: to.path, query: to.query})
+                                    router.replace({ path: to.path, query: to.query })
                                 }
                             })
                             .catch(() => {
@@ -100,7 +120,7 @@ router.beforeEach((to, from, next) => {
             //当前没token，并且路由满足白名单，则按照当前路由来控制。
             next()
         } else {
-            next('/login'+`?state=${encodeURIComponent(window.location.href)}`)
+            next('/login' + `?state=${encodeURIComponent(window.location.href)}`)
         }
     }
 })
