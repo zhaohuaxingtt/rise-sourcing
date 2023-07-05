@@ -6,7 +6,9 @@
 <template>
   <iPage class="letterAndLoi" v-permission.auto="LK_LETTERANDLOI_PAGE|定点信/LOI页面">
     <headerNav />
-    <letterList class="margin-top30" />
+    <div class="page-content">
+      <letterList />
+    </div>
   </iPage>
 </template>
 
@@ -26,4 +28,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.letterAndLoi{
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  .page-content{
+    flex: 1;
+    overflow: auto;
+    ::v-deep .letterList{
+      height: 100%;
+      display: flex;
+      flex-flow: column;
+      .table-card {
+        flex: 1;
+        overflow: hidden;
+        min-height: 350px;
+        .card-body-box {
+            height: 100%;
+            .table-box {
+                height: calc(100% - 105px);
+            }
+        }
+      }
+    }
+  }
+}
 </style>

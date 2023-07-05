@@ -7,7 +7,7 @@
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
 <template>
-  <iPage>
+  <iPage class="steelDemandCreation">
     <headerNav />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
@@ -29,7 +29,7 @@
       <template>
       </template>
     </iSearch>
-    <iCard>
+    <iCard class="table-card">
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('GANGCAICHUANGJIAN','钢材创建') }}</span>
         <div  class="floatright">
@@ -45,7 +45,8 @@
         permissionKey="STEELDEMANDCREATION_HOME"
         ref="tableList"
         :lang="true"
-        radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
+        height="100%"
+        radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="table-box" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>
@@ -234,6 +235,23 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.steelDemandCreation{
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+      flex: 1;
+      overflow: hidden;
+      min-height: 350px;
+      .card-body-box {
+          height: 100%;
+          .table-box {
+              height: calc(100% - 105px);
+          }
+      }
+  }
+}
 .openLinkText {
   color: $color-blue;
 }
@@ -251,12 +269,6 @@ export default{
     margin: 0 10px;
     &:nth-child(2){
       margin-right: 0px;
-    }
-  }
-  .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 410px !important;  
-      overflow: auto !important ;
     }
   }
 

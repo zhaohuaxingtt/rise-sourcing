@@ -4,10 +4,9 @@
  * @LastEditTime: 2022-03-31 14:32:01
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
 <template>
-  <iPage>
+  <iPage class="out-souring-order">
     <headerNav />
     <iSearch class="margin-bottom20" @sure="sure" @reset="reset()">
       <el-form>
@@ -67,7 +66,7 @@
         </template>
       </el-form>
     </iSearch>
-    <iCard>
+    <iCard class="table-card">
       <div class="margin-bottom20 clearFloat">
         <div class="showMe">
           <span>{{ $t("MODEL-ORDER.LK_JINKANZIJI") }}</span>
@@ -120,6 +119,7 @@
           >
             {{ language("LK_GUANBI", "关闭") }}
           </iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <!-- radio 单选数据 -->
@@ -131,7 +131,9 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         index
-        class="aotoTableHeight"
+        indexFixed
+        height="100%"
+        class="table-box"
       >
         <template #riseCode="scope">
           <span
@@ -271,6 +273,7 @@ import { toOwner } from "@/api/ws2/purchaserequest";
 import { pageMixins } from "@/utils/pageMixins";
 import tablePart from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from '@/components/buttonTableSetting'
 import { getDepartmentsCombo } from "@/api/ws2/purchase/investmentList";
 import TransferDialog from "./components/transferDialog.vue";
 import TurningPointDialog from "./components/turningPointDialog.vue";
@@ -297,6 +300,7 @@ export default {
     TransferDialog,
     backEps,
     deleteDialog,
+    buttonTableSetting
   },
   data() {
     return {
@@ -711,6 +715,23 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.out-souring-order{
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+      flex: 1;
+      overflow: hidden;
+      min-height: 350px;
+      .card-body-box {
+          height: 100%;
+          .table-box {
+              height: calc(100% - 105px);
+          }
+      }
+  }
+}
 .openLinkText {
   color: $color-blue;
 }
@@ -746,12 +767,6 @@ export default {
   margin: 0 10px;
   &:nth-child(2) {
     margin-right: 0px;
-  }
-}
-.aotoTableHeight {
-  ::v-deep .el-table__body-wrapper {
-    min-height: 410px !important;
-    overflow: auto !important ;
   }
 }
 </style>

@@ -24,7 +24,7 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard class="contain margin-top20" >
+    <iCard class="contain table-card margin-top20" >
         <!-- <template v-slot:header-control> -->
         <div class="margin-bottom20 clearFloat">
          <span class="font18 font-weight">{{language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')}}</span>
@@ -44,7 +44,8 @@
         <!-- 表单区域 -->
         <tableList
             permissionKey="LETTERANDLOI_LOI_LIST"
-            class="table aotoTableHeight"
+            class="table table-box"
+            height="100%"
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -468,12 +469,6 @@ export default {
 <style lang="scss" scoped>
     .openLinkText{
      color:$color-blue;
-    }
-    .aotoTableHeight{
-        ::v-deep .el-table__body-wrapper {
-        min-height: 410px !important;  
-        overflow: auto !important ;
-        }
     }
     .loiList{
         .datePicker {
