@@ -260,7 +260,7 @@
       </el-form>
     </iSearch>
     <iCard
-      class="margin-top30"
+      class="margin-top30 table-card"
       :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')"
     >
       <template #header-control>
@@ -270,35 +270,34 @@
           >{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton
         >
       </template>
-      <div class="body">
-        <tableList
-          class="table"
-          index
-          :lang="true"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <template #rfqId="scope">
-            <span class="link-underline" @click="jumpRfqDetail(scope.row)">{{
-              scope.row.rfqId
-            }}</span>
-          </template>
-        </tableList>
-        <iPagination
-          v-update
-          class="margin-top30"
-          @size-change="handleSizeChange($event, searchRfqBdlRatings)"
-          @current-change="handleCurrentChange($event, searchRfqBdlRatings)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount"
-        />
-      </div>
+      <tableList
+        class="table table-box"
+        height="100%"
+        index
+        :lang="true"
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template #rfqId="scope">
+          <span class="link-underline" @click="jumpRfqDetail(scope.row)">{{
+            scope.row.rfqId
+          }}</span>
+        </template>
+      </tableList>
+      <iPagination
+        v-update
+        class="margin-top30"
+        @size-change="handleSizeChange($event, searchRfqBdlRatings)"
+        @current-change="handleCurrentChange($event, searchRfqBdlRatings)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount"
+      />
       <forwardDialog
         ref="forwardDialog"
         :visible.sync="forwardDialogVisible"
@@ -629,6 +628,28 @@ export default {
 
 <style lang="scss" scoped>
 .supplierScore {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
   .header {
     width: 100%;
     position: relative;
@@ -650,21 +671,8 @@ export default {
       display: flex;
       align-items: center;
     }
-    .nav {
-      // position: absolute;
-      // top: 50%;
-      // right: 130px;
-      // transform: translate(0, -50%);
-      // &:first-child {
-      //   left: 0;
-      // }
-    }
 
     .control {
-      // position: absolute;
-      // top: 50%;
-      // right: 0;
-      // transform: translate(0, -50%);
       display: flex;
       align-items: center;
       height: 30px;

@@ -62,6 +62,28 @@ export default {
 
 <style lang="scss" scoped>
 .rfqdetail {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
   .header {
     display: flex;
     justify-content: space-between;

@@ -8,25 +8,22 @@
 -->
 <template>
   <iPage class="home">
-    <div class="header">
-      <!-- <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp> -->
-      <headerNav class="headerNav" type="costanalysismanage">
-        <div class="control">
-          <iLoger
-            :config="{
-              module_obj_ae: '成本分析管理', 
-              menuName_obj_ae: ''
-            }"
-            isPage
-            isUser
-            credentials
-            class="margin-left20" />
-          <span class="margin-left20">
-            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-          </span>
-        </div>
-      </headerNav>
-    </div>
+    <headerNav class="headerNav" type="costanalysismanage">
+      <div class="control">
+        <iLoger
+          :config="{
+            module_obj_ae: '成本分析管理', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          isUser
+          credentials
+          class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
+    </headerNav>
     <iSearch
       class="margin-top25"
       @sure="sure"
@@ -158,8 +155,10 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20" :title="language('RFQLIEBIAO', 'RFQ列表')">
+    <iCard class="margin-top20 table-card" :title="language('RFQLIEBIAO', 'RFQ列表')">
       <tableList
+        class="table-box"
+        height="100%"
         index
         :lang="true"
         :tableData="tableListData"
@@ -468,22 +467,34 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    ::v-deep .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
   .headerNav {
     display: flex;
     width: 100%;
   }
   
-  .header {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
   .control {
-    // position: absolute;
-    // top: 30px;
-    // right: 40px;
     display: flex;
     align-items: center;
     height: 30px;

@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iPage
+  <iPage class="maintenance"
     v-permission.auto="
       MODELTARGETPRICE_MAINTENANCE_PAGE | (模具目标价管理 - 目标价维护 - 页面)
     "
@@ -89,7 +89,7 @@
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
     <iCard
-      class="margin-top20"
+      class="margin-top20 table-card"
       v-permission.auto="
         MODELTARGETPRICE_MAINTENANCE_TABLE |
           (模具目标价管理 - 目标价维护 - 表格)
@@ -115,6 +115,9 @@
         :activeItems="'rfqId'"
         selection
         indexKey
+        fixed
+        class="table-box"
+        height="100%"
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -446,4 +449,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.maintenance{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>

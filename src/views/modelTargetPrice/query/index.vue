@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iPage
+  <iPage class="query"
     v-permission.auto="
       MODELTARGETPRICE_QUERY_PAGE | (模具目标价管理 - 目标价查询 - 页面)
     "
@@ -85,7 +85,7 @@
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
     <iCard
-      class="margin-top20"
+      class="margin-top20 table-card"
       v-permission.auto="
         MODELTARGETPRICE_QUERY_TABLE | (模具目标价管理 - 目标价查询 - 表格)
       "
@@ -109,6 +109,9 @@
         :activeItems="'fsNum'"
         selection
         indexKey
+        fixed
+        height="100%"
+        class="table-box"
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -395,4 +398,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.query{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>
