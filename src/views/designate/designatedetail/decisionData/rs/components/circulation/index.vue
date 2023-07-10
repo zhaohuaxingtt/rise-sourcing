@@ -281,6 +281,7 @@
         <div class="text-align-right margin-bottom20">
           <Upload
             hideTip
+            :uploadButtonLoading="uploadButtonLoading"
             @on-success="upLoadsucess"
             class="margin-right10"
           ></Upload>
@@ -753,6 +754,7 @@
         <div class="text-align-right margin-bottom20">
           <Upload
             hideTip
+            :uploadButtonLoading="uploadButtonLoading"
             @on-success="upLoadsucess"
             v-permission.auto="
               SOURCING_NOMINATION_RFQDETAIL_RS_FILE_UPLOAD | RS单上传附件
@@ -876,6 +878,7 @@ export default {
       key: "0",
       tableList: [[]],
       loading: false,
+      uploadButtonLoading: false,
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
@@ -1185,6 +1188,7 @@ export default {
      * @return {*}
      */
     upLoadsucess(res) {
+      this.uploadButtonLoading = true
       const sendMap = {
         hostId: res.data.hostId || this.$store.getters.nomiAppId || "",
         filePath: res.data.path,
@@ -1204,6 +1208,8 @@ export default {
         })
         .catch((err) => {
           iMessage.error(err.desZh);
+        }).finally(()=>{
+          this.uploadButtonLoading = false
         });
     },
     getFileList() {

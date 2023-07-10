@@ -15,6 +15,7 @@
     :http-request="upload"
     :show-file-list="false" 
     :before-upload="beforeUpload"
+    :disabled="uploadLoading"
     :accept="accept">
       <slot></slot>
   </el-upload>
@@ -40,10 +41,22 @@ export default {
     beforeUpload: {
       type: Function,
       default: () => file => { return true }
+    },
+    uploadButtonLoading: {type: Boolean, default: false},
+  },
+  data() {
+    return {
+      loading: false
+    }
+  },
+  computed:{
+    uploadLoading(){
+      return this.loading || this.uploadButtonLoading
     }
   },
   methods: {
     upload(content) {
+      this.loading = true
       uploadUdFile({
         multifile: content.file
       })
@@ -52,6 +65,8 @@ export default {
       })
       .catch(rej => {
         this.$emit("error", rej, content.file)
+      }).finally(()=>{
+        this.loading = false
       })
     },
   }

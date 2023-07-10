@@ -59,6 +59,7 @@
             style="display: inline-block"
             :http-request="importSelCfceMaintained"
             :show-file-list="false"
+            :disabled="uploadLoading"
             v-permission.auto="
               SELTARGETPRICE_MAINTENANCE_PILIANGDAORUWEIHU |
                 (SEL目标价管理 - 目标价维护 - 导入批量维护)

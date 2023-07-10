@@ -9,8 +9,9 @@
     :before-upload="beforeAvatarUpload"
     :http-request="myUpload"
     accept=".xlsx,.xls"
+    :disabled="upLoading"
   >
-    <iButton :loading="uploadButtonLoading">{{ $t(buttonText) }}</iButton>
+    <iButton :loading="upLoading">{{ $t(buttonText) }}</iButton>
   </el-upload>
 </template>
 <script>
@@ -27,16 +28,23 @@ export default {
   },
   data() {
     return {
-
+      loading:true
     };
+  },
+  computed:{
+    upLoading(){
+      return this.loading || this.uploadButtonLoading
+    }
   },
   methods: {
     beforeAvatarUpload() {},
     handleAvatarSuccess() {},
     myUpload(content) {
+      this.loading=true
       const formData = new FormData();
       formData.append("file", content.file);
       this.$emit("uploadedCallback", formData);
+      this.loading=false
     },
   },
 };

@@ -94,6 +94,7 @@
             accept=".xlsx"
             style="display: inline-block"
             :show-file-list="false"
+            :disabled="uploadLoading"
             :on-progress="
               () => {
                 uploadLoading = true;

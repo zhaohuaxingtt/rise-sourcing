@@ -74,12 +74,14 @@
             :action="actionUrl"
             :on-change="beforeUpload"
             :on-success="onSuccess"
+            :on-error="onError"
             :before-upload="beforeAvatarUpload"
             :before-remove="beforeRemove"
             :limit="1"
             :show-file-list="false"
+            :disabled="loading"
             :file-list="fileList">
-            <iButton>{{ $t('批量上传') }}</iButton>
+            <iButton :loading="loading">{{ $t('批量上传') }}</iButton>
           </Upload>
           <iButton @click="hanldeExport">{{ $t('LK_DAOCHU') }}</iButton>
         </div>
@@ -406,7 +408,11 @@ export default {
       } else {
         iMessage.error(result);
       }
+      this.loading = false
       this.tableLoading = false
+    },
+    onError(){
+      this.loading = false
     },
     beforeAvatarUpload(file) {
       this.tableLoading = true;
@@ -415,6 +421,8 @@ export default {
       if (!flag) {
         this.tableLoading = false;
         iMessage.error("只能上传excel文件!");
+      }else{
+        this.loading = true
       }
       return flag;
     },

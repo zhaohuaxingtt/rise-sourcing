@@ -9,6 +9,7 @@
           <upload
             class="upload-trigger"
             :hideTip="true"
+            :uploadButtonLoading="uploadButtonLoading"
             :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
             @on-success="onUploadsucess(Object.assign(...arguments, {fileType, hostId: nomiAppId}), getFetchData)"

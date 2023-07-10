@@ -463,8 +463,9 @@
               :before-upload="beforeAvatarUpload"
               :show-file-list="false"
               :http-request="httpUpload"
+              :disabled="uploadLoading"
             >
-              <iButton>{{ language("BIDDING_XINZHENG", "新增") }}</iButton>
+              <iButton :loading="uploadLoading">{{ language("BIDDING_XINZHENG", "新增") }}</iButton>
             </el-upload>
             <iButton @click="delAttachments">{{
               language("BIDDING_SHANCHU", "删除")
@@ -571,7 +572,7 @@ export default {
   data() {
     return {
       showSupplierDialog: false,
-
+      uploadLoading: false,
       id: 0,
       orgRuleForm: {
         biddingProducts: [],
@@ -1337,13 +1338,16 @@ export default {
     },
     // 附件
     async httpUpload(content) {
+      this.uploadLoading = true
       let formData = new FormData();
       formData.append("file", content.file);
       const res = await uploadFile(formData).catch((err) => {
+        this.uploadLoading = false
         this.$message.error(
           this.language("BIDDING_SHANGCHUANSHIBAI", "上传失败")
         );
       });
+      this.uploadLoading = false
       // this.attachmentId = res.id;
       this.ruleForm.attachments.push({
         attachmentId: res.id,

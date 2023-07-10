@@ -55,6 +55,7 @@
             class="upload-trigger margin-left10"
             v-if="!$store.getters.isPreview"
             :hideTip="true"
+            :uploadButtonLoading="uploadButtonLoading"
             :accept="'.doc,.docx,.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian', '上传文件')"
             @on-success="

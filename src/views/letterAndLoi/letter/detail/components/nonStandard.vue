@@ -9,6 +9,7 @@
             <span class="margin-right10" v-if="isEdit">
                 <Upload 
                     hideTip
+                    :uploadButtonLoading="uploadButtonLoading"
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
                     v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_UPLOAD|非标准定点信上传"

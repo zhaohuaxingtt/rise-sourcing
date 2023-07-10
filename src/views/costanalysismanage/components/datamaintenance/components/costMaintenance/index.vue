@@ -27,6 +27,7 @@
           :http-request="upload"
           accept=".pdf,.xlsx,.docx"
           :show-file-list="false"
+          :disabled="uploadLoading"
           v-permission.auto="
             COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_UPLOAD |
               上传
