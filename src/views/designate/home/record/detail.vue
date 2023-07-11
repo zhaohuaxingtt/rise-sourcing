@@ -119,8 +119,13 @@ export default {
             Array.isArray(dtoList.records) && dtoList.records.forEach(val=>{
              val.isModeApportion === true ? val.isModeApportion = '是' : val.isModeApportion = '否'
            })
-           this.tableListData = res.data.dtoList.records || []
+           this.tableListData = res.data.dtoList.records?.map(item=>{
+              item.developApportionPrice = parseFloat(item.developApportionPrice||0).toFixed(2)
+            return item
+           }) || []
          } 
+      }).catch((e)=>{
+        console.log(e);
       })
     },
     gotoRs() {
