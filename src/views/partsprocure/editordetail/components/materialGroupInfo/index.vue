@@ -68,7 +68,7 @@ import infos from './components/infos'
 import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import { getMaterialGroup, getMeterialStuff, meterialStuffByCid, getAttachMeterialStuff, getMaterialGroupByCategoryCode} from '@/api/partsprocure/editordetail'
+import { queryCategoryInfo, getMaterialGroup, getMeterialStuff, meterialStuffByCid, getAttachMeterialStuff, getMaterialGroupByCategoryCode} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 import { cloneDeep } from "lodash"
@@ -156,7 +156,10 @@ export default {
       if(this.params.status=='NOMINATED'){
         getMaterialData = getMaterialGroupByCategoryCode({ categoryCode:categoryCode||this.detailData.categoryCode, pprjId: this.params.id })
       }else{
-        getMaterialData = getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id }) // 根据零件六位号查询
+        getMaterialData = queryCategoryInfo({ partNum: this.params.partNum, pprjId: this.params.id })
+        // getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id }).then(res=>{
+        //   console.log(res);
+        // }) // 根据零件六位号查询
       }
       getMaterialData.then(res => {
           if (res.code == 200) {
