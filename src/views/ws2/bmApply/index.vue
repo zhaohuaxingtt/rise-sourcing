@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="BM-container">
     <div class="page-head">
       <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL" class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
         <div class="line-divL line-div">
@@ -45,28 +45,28 @@
 
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
-      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL">
+      <div class="BM-content" v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL">
         <AllBmListBlock @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
-      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED">
+      <div class="BM-content" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED">
         <ToBeConfirmed @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
-      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE">
+      <div class="BM-content" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE">
         <IncrementBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
-      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE">
+      <div class="BM-content" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE">
         <ImpairmentBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
@@ -550,6 +550,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.BM-container{
+  height: calc(100% - 42px);
+  .BM-content{
+    height: calc(100% - 200px);
+  }
+}
 .table-link{
   color: #1663F6;
   text-decoration: underline;

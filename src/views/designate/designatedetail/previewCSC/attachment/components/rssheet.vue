@@ -49,6 +49,7 @@
               class="upload-trigger btn"
               v-if="!$store.getters.isPreview"
               :hideTip="true"
+              :uploadButtonLoading="uploadButtonLoading"
               :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
               :buttonText="
                 language('strategicdoc_ShangChuanXianXiaRS', '上传线下RS文件')

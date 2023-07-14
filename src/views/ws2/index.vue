@@ -272,4 +272,17 @@ export default {
     }
   }
 }
+.partsprocureHome{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+    }
+  }
+}
 </style>

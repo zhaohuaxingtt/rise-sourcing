@@ -35,6 +35,16 @@ export function autonomi(params) {
 		data: params
 	})
 }
+
+// 采购项目-根据零件六位号查询categoryCode
+export function queryCategoryInfo(params) {
+	return requstParts({
+		url: '/queryCategoryInfo',
+		method: 'GET',
+		params
+	})
+}
+
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({

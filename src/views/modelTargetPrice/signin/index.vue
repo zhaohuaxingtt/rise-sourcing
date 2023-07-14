@@ -9,6 +9,7 @@
 
 <template>
   <iPage
+    class="sign"
     v-permission.auto="
       MODELTARGETPRICE_SIGNIN_PAGE | (模具目标价管理 - 目标价签收 - 页面)
     "
@@ -88,7 +89,7 @@
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
     <iCard
-      class="margin-top20"
+      class="margin-top20 table-card"
       v-permission.auto="
         MODELTARGETPRICE_SIGNIN_TABLE | (模具目标价管理 - 目标价签收 - 表格)
       "
@@ -138,8 +139,11 @@
         </div>
       </div>
       <tableList
+        class="table-box"
+        height="100%"
         selection
         indexKey
+        fixed
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -637,6 +641,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.sign{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 .openLinkText {
   color: $color-blue;
   text-decoration: underline;

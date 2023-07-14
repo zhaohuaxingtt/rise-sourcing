@@ -30,9 +30,19 @@ export const tabRouterList = [
     activePath: 'productionCapacity',
     key: 'partsprocure.LJJXJ',
     permissionKey: 'FINANCIALMANAGE_MENU_PRODUCTIONCAPACITY',
-    // permissionKey: 'FINANCIALMANAGE_MENU_PRODUCTIONCAPACITY',
     permissionName: '零件经销价',
     group: 3,
+  },
+  {
+    value: 4,
+    name: 'SEL目标价',
+    message: 0,
+    url: '/targetpriceandscore/seltargetprice/signin',
+    activePath: 'seltargetprice',
+    key: 'SELMUBIAOJIA',
+    permissionName: 'SEL目标价',
+    permissionKey: 'FINANCIALMANAGE_MENU_SELTARGETPRICE',
+    group: 4,
   },
 ]
 export const tableTitledistribution = [

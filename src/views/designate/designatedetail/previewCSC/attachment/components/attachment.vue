@@ -48,13 +48,9 @@
 </template>
 
 <script>
-import {
-  uploadtableTitle,
-  // mokeUploadTableListData
-} from "./data";
+import { uploadtableTitle } from "./data";
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { iCard, iButton, iPagination } from "rise";
-import upload from "@/components/Upload";
 import { attachMixins } from "@/utils/attachMixins";
 import { pageMixins } from "@/utils/pageMixins";
 
@@ -65,12 +61,10 @@ export default {
     iButton,
     iPagination,
     tablelist,
-    upload,
   },
   data() {
     return {
       nomiAppId: this.$route.query.desinateId || "",
-      // tableListData: mokeUploadTableListData,
       tableLoading: false,
       uploadtableTitle,
       multiEditState: false,

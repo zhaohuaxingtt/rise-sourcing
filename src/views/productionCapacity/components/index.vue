@@ -10,13 +10,14 @@
       <iCard style="margin-top: 20px">
         <div class="margin-bottom20 displayFlex">
           <div class="floatright">
-            <iButton v-permission="PURCHASEORDER_ORDER_DISTRIBUTION_SHANGCHUAN" @click="importFile">
+            <iButton v-permission="PURCHASEORDER_ORDER_DISTRIBUTION_SHANGCHUAN" @click="importFile" :loading="loading">
               <el-upload
               action="1"
               accept=".xls, .xlsx"
               :on-success="handleFileSuccess"
               :before-upload="beforeAvatarUpload"
               :show-file-list="false"
+              :disabled="loading"
               :http-request="importFile"
               >{{ $t('LK_SHANGCHUANWENJIAN') }}</el-upload
             ></iButton>
@@ -30,7 +31,7 @@
         </tableList>
       </iCard>
     </iPage>
-  </template>
+</template>
   
   <script>
     // import { exportTemp, findPriceList,importFile } from '@/api/ws2/productionCapacity/whosale'
@@ -58,6 +59,7 @@
     data() {
       return {
         tabsList: tabsList,
+        loading: false,
         tableLoading:false,
         supplierCodeOrName: '', // 供应商名称or供应商SAP号
         tableListData: [],
@@ -70,9 +72,11 @@
     },
     methods: {
       async importFile(content) {
+        this.loading = true
         const formData = new FormData();
         formData.append("uploadFile", content.file);
-          const res = await importFile(formData)
+        const res = await importFile(formData)
+        this.loading = false
           console.log(res.result)
           if (res.result=='200') {
             this.getTableList()

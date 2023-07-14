@@ -20,8 +20,8 @@ export const infos = [
 ]
 
 export const partListTableTitle = [
-  { props: "fsnrGsnrNum", name: "FSNF/GSNF/SPNR", key: "FSNFGSNFSPNR", tooltip: true, width: 130 },
-  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, width: 130 },
+  { props: "fsnrGsnrNum", name: "FSNF/GSNF/SPNR", key: "FSNFGSNFSPNR", tooltip: true, width: 130, fixed: true },
+  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, width: 130, fixed: true },
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
   { props: "procureFactoryName", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },

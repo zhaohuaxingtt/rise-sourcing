@@ -16,8 +16,7 @@
 </template>
 
 <script>
-import { iInput, iCard, iButton, iMessage, iEditor } from "rise";
-import upload from "@/components/Upload";
+import { iCard, iButton, iMessage, iEditor } from "rise";
 import {
   addBackgroundAndObjectiveInfo,
   getBackgroundAndObjectiveInfo,
@@ -56,11 +55,9 @@ export default {
     },
   },
   components: {
-    // iInput,
     iCard,
     iButton,
     iEditor,
-    upload,
   },
   mounted() {
     this.getFetchData();

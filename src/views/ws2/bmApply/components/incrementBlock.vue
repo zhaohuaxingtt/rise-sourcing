@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <SearchBlock @sure="allSerch" />
-    <iCard>
+    <iCard class="table-card">
       <div class="table-head">
         <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
         <iButton @click="toVoid" :loading="bmCancelLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE_INVALID">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
@@ -10,6 +10,8 @@
       </div>
       <tableList
         ref="tableList"
+        height="100%"
+        class="table-box"
         permissionKey="incrementBlock"
         :tableData="aekoTableList"
         :tableTitle="aekoTableHead"
@@ -260,6 +262,12 @@ buttonTableSetting
 
 <style lang="scss" scoped>
 .block{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .table-box {
+    height: calc(100% - 114px);
+  }
   .table-txtStyle{
     color: #1663F6;
     text-decoration: underline;

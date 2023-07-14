@@ -95,6 +95,7 @@
           ref="tableList"
           class="aeko-pending-table"
           index
+          indexFixed
           :selection="true"
           :tableData="pendingList"
           :tableTitle="pendingHeader"

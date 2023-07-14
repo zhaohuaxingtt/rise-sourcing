@@ -9,17 +9,9 @@
 
 <template>
   <iPage class="signForParts">
-    <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-
           <headerNav>
             <iLoger ref="log" :config="{module_obj_ae: '附件需求',  queryParams:[]}" :credentials="true" isPage :isUser="true" class="font-24 margin-left25" />
           </headerNav>
-
-
-          <!-- <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div> -->
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -62,7 +54,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20" v-permission.auto="ACCESSORY_MANAGEMENT_TABLE|附件-附件管理-表格">
+          <iCard class="margin-top20 table-card" v-permission.auto="ACCESSORY_MANAGEMENT_TABLE|附件-附件管理-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
@@ -84,7 +76,8 @@
             permissionKey="DESIGNATEFILES_FILEMANAGE"
             ref="tableList"
             :lang="true"
-            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight">
+            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="table-box"
+            height="100%">
               <template #fujian="scope">
                 <el-popover
                   placement="right"
@@ -598,10 +591,18 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-  .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 410px !important;  
-      overflow: auto !important ;
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
   .tab {

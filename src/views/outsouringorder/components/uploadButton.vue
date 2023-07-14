@@ -3,8 +3,8 @@
  * @Date: 2021-03-17 17:24:15
 -->
 <template>
-  <el-upload class="upload" action="/fileApi/upload" :show-file-list="false" :data="{ applicationName: 'rise' }" name="multipartFile" with-credentials :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="myUpload" accept=".xlsx,.xls">
-    <iButton :loading="uploadButtonLoading">{{ $t(buttonText) }}</iButton>
+  <el-upload :disabled="upLoading" class="upload" action="/fileApi/upload" :show-file-list="false" :data="{ applicationName: 'rise' }" name="multipartFile" with-credentials :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="myUpload" accept=".xlsx,.xls">
+    <iButton :loading="upLoading">{{ $t(buttonText) }}</iButton>
   </el-upload>
 </template>
 <script>
@@ -21,12 +21,20 @@ export default {
     dataInfo: { type: Object, default: () => {} },
   },
   data() {
-    return {}
+    return {
+      loading: false
+    }
+  },
+  computed:{
+    upLoading(){
+      return this.loading || this.uploadButtonLoading
+    }
   },
   methods: {
     beforeAvatarUpload() {},
     handleAvatarSuccess() {},
     async myUpload(content) {
+      this.loading = true
       const { id, cstBookType, isSpareParts } = this.dataInfo
       const formData = new FormData()
       formData.append('file', content.file)
@@ -35,6 +43,7 @@ export default {
       formData.append('isSpareParts', isSpareParts)
       const res = await importSopPrice(formData)
       this.$emit('uploadedCallback', res)
+      this.loading = false
     },
   },
 }

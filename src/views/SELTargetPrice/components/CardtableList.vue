@@ -1,10 +1,10 @@
 <template>
-  <iCard class="margin-top20">
+  <iCard class="margin-top20 table-card">
     <template v-slot:header-control>
       <slot name="header-btn"></slot>
       <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
     </template>
-    <tableList v-bind="$attrs" v-on="$listeners" ref="tableList">
+    <tableList v-bind="$attrs" v-on="$listeners" ref="tableList" class="table-box" height="100%">
       <template #fsnrGsnrNum="scope">
         <span class="link-underline cursor" @click="openPage(scope.row)">{{
           scope.row.fsnrGsnrNum

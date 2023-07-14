@@ -20,6 +20,7 @@
             <span class="margin-left10">
                 <Upload 
                     hideTip
+                    :uploadButtonLoading="uploadButtonLoading"
                     :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
                     :request="uploadImportFile"
                     @on-success="onDraingUploadsucess"
@@ -110,6 +111,7 @@ export default {
         return{
             tableListData:[],
             tableTitle:filesTableTitle,
+            uploadButtonLoading:false,
             loading:false,
             selectItems:[],
 
@@ -156,12 +158,15 @@ export default {
             //     affixId:uploadId,
             //     ...filesData,
             // }
+            this.uploadButtonLoading = true
             await uploadAttachments(formData).then((res)=>{
                 const { code } = res;
                 if(code == 200) this.getList();
 
             }).catch((e)=>{
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            }).finally(()=>{
+                this.uploadButtonLoading = false
             });
         },
         

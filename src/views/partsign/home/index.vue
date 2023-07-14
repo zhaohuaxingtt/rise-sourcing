@@ -8,7 +8,6 @@
 -->
 <template>
   <iPage class="partsignHome">
-    <div>
       <headerNav />
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
@@ -246,7 +245,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard>
+      <iCard class="table-card">
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -276,7 +275,8 @@
         </div>
         <tablelist
           permissionKey="PARTSIGN_HOME"
-          class="aotoTableHeight"
+          class="table-box"
+          height="100%"
           ref="tableList"
           :lang="true"
           :tableData="tableListData"
@@ -348,10 +348,6 @@
       <!--                  退回弹出框                                         --->
       <!------------------------------------------------------------------------>
       <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
-    </div>
-    <!-- </el-tab-pane> -->
-    <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
-    <!-- </el-tabs> -->
   </iPage>
 </template>
 <script>
@@ -743,10 +739,18 @@ export default {
 <style lang="scss" scoped>
 .partsignHome {
   position: relative;
-  .aotoTableHeight {
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;
-      overflow: auto !important ;
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
   .topMenu {

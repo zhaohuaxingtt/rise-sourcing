@@ -9,18 +9,18 @@
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
     <el-table-column v-if="selection" type='selection' width="55" align='center' ></el-table-column>
-    <el-table-column v-if='indexKey' type='index' width='40' align='center' label='#'>
+    <el-table-column v-if='indexKey' type='index'  :fixed="fixed" width='40' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
       </template>
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name"  :sortable="items.sortable||false" :sort-method="items.sortMethod">
+      <el-table-column :key="index" align='center' :fixed="items.fixed" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name"  :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name"  :sortable="items.sortable||false" :sort-method="items.sortMethod">
+      <el-table-column :key="index" align='center' :fixed="items.fixed" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name"  :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <template slot="header">
           <span>{{items.key ? language(items.key, items.name) : items.name}}</span>
           <span v-if="items.required" style="color:red;">*</span>
@@ -39,7 +39,7 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :sortable="items.sortable||false" :sort-method="items.sortMethod">
+      <el-table-column :key="index" align='center' :fixed="items.fixed" :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :sortable="items.sortable||false" :sort-method="items.sortMethod">
         <template slot="header">
           <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
@@ -87,6 +87,7 @@ export default{
       default:''
     },
     indexKey:Boolean,
+    fixed:Boolean,
     notEdit:Boolean,
     doubleHeader:Boolean,
     selectedItems:{type:Array},

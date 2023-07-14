@@ -15,6 +15,7 @@
     :http-request="upload"
     :show-file-list="false" 
     :before-upload="beforeUpload"
+    :disabled="upLoading"
     :accept="accept">
       <slot></slot>
   </el-upload>
@@ -44,6 +45,12 @@ export default {
     beforeUpload: {
       type: Function,
       default: () => file => { return true }
+    },
+    uploadButtonLoading: { type: Boolean, default: false },
+  },
+  computed:{
+    upLoading(){
+      return this.loading || this.uploadButtonLoading
     }
   },
   methods: {

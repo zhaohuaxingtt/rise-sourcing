@@ -157,6 +157,7 @@
           :data="uploadData"
           :before-upload="beforeUpload"
           :on-exceed="handleExceed"
+          :disabled="upLoading"
           :headers="{
             token: getToken(),
           }"
@@ -207,9 +208,11 @@
       <tableList
         :tableData="tableListData"
         ref="contractForm"
+        height="400px"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :index="true"
+        indexFixed
         :selectable="editType"
         border
         @handleSelectionChange="handleSelectionChange"
@@ -544,6 +547,7 @@ export default {
       uploadData: {
         id: "",
       },
+      upLoading:false,
       VSIeditType: true,
       searchParams: {
         search1: "",
@@ -1070,6 +1074,7 @@ export default {
       });
     },
     uploadSuccess(res, file) {
+      this.upLoading = false
       if (res.code == 200 && res.result) {
         iMessage.success(this.$t("SHANGCHUANCHENGGONG"));
         this.page.pageSize = 10;
@@ -1089,6 +1094,8 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 20;
       if (!isLt2M) {
         iMessage.error("上传文件大小不能超过 20MB!");
+      }else{
+        this.upLoading = true
       }
       return isLt2M;
     },

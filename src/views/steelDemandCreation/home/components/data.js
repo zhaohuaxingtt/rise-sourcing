@@ -146,19 +146,19 @@ export const form = {
 }
 
 export const tableTitle = [
-  { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true, width: 105, sortable: true },
-  { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true, width: 105, sortable: true },
-  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true, width: 110, sortable: true},
-  { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true, sortable: true  },
+  { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true, minWidth: 115, sortable: true, fixed: true },
+  { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true, minWidth: 115, sortable: true, fixed: true },
+  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true, minWidth: 120, sortable: true, fixed: true},
+  { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true, sortable: true, fixed: true  },
   { props: 'applicationStatusDesc', name: '状态', key: 'ZHUANGTAI', tooltip: true, sortable: true },
-  { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true, width: 105, sortable: true },
+  { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true, minWidth: 115, sortable: true },
   { props: 'meeting', name: '会议', key: 'HUIYI', tooltip: true, sortable: true },
-  { props: 'nominateUserName', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true, width: 120, sortable: true  },
-  { props: 'linieName', name: 'LINIE', key: 'LINIE', tooltip: true, width: 85, sortable: true },
-  { props: 'rsStatusDesc', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true, width: 110, sortable: true  },
-  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true, width:125, sortable: true },
-  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true , width:180, sortable: true },
-  { props: 'printStatusDesc', name: '打印状态', key: 'DAYINGZHUANGTAI', tooltip: true, width: 105, sortable: true  },
-  { props: 'freezeDate', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true, width: 105, sortable: true  },
-  { props: 'nominateDate', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true, width: 105, sortable: true  }
+  { props: 'nominateUserName', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true, minWidth: 130, sortable: true  },
+  { props: 'linieName', name: 'LINIE', key: 'LINIE', tooltip: true, minWidth: 95, sortable: true },
+  { props: 'rsStatusDesc', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true, minWidth: 120, sortable: true  },
+  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true, minWidth:135, sortable: true },
+  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true , minWidth:190, sortable: true },
+  { props: 'printStatusDesc', name: '打印状态', key: 'DAYINGZHUANGTAI', tooltip: true, minWidth: 115, sortable: true  },
+  { props: 'freezeDate', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true, minWidth: 115, sortable: true  },
+  { props: 'nominateDate', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true, minWidth: 115, sortable: true  }
 ]

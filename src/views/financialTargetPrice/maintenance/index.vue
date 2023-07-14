@@ -34,7 +34,7 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLE|财务目标价管理-目标价维护-表格">
+    <iCard class="margin-top20 table-card" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLE|财务目标价管理-目标价维护-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
@@ -54,6 +54,7 @@
             :http-request="upload"
             :show-file-list='false'
             :before-upload="beforeUpload"
+            :disabled="uploadLoading"
             v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLEIMPORT|财务目标价管理-目标价维护-表格导入批量维护"
           >
             <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
@@ -61,11 +62,14 @@
         </div>
       </div>
       <tableList 
+        class="table-box"
+        height="100%"
         ref="tableList"
         :activeItems='"partNum"' 
         :isEdit="isEdit" 
         selection 
-        indexKey 
+        indexKey
+        fixed
         :tableData="tableData" 
         :tableTitle="tableTitle" 
         :tableLoading="tableLoading" 
@@ -499,6 +503,28 @@ export default {
 
 <style lang="scss" scoped>
 .maintenance {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
   .control {
     display: flex;
     align-items: center;

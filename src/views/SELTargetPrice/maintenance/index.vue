@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage class="maintenance">
     <headerNav :config="config" />
     <search
       @sure="sure"
@@ -59,6 +59,7 @@
             style="display: inline-block"
             :http-request="importSelCfceMaintained"
             :show-file-list="false"
+            :disabled="uploadLoading"
             v-permission.auto="
               SELTARGETPRICE_MAINTENANCE_PILIANGDAORUWEIHU |
                 (SEL目标价管理 - 目标价维护 - 导入批量维护)
@@ -490,4 +491,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.maintenance{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>

@@ -210,7 +210,7 @@ export const tableTitle = [
 
 // 表头
 export const tableCsfTitle = [
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:150 },
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:150, fixed: true },
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width:135  },
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true ,width:55},
   { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:115  },
@@ -243,7 +243,7 @@ export const selectConfig = {
 }
 
 export const tableAKEOApprovedTitle = [
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:125 },
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:125, fixed: true },
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:135,},
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true,width:50  },
   { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:103  },

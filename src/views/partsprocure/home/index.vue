@@ -8,9 +8,6 @@
 -->
 <template>
   <iPage class="partsprocureHome">
-    <!-- <el-tabs v-model="tab" class="tab"> -->
-    <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-    <div>
       <headerNav />
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
@@ -290,7 +287,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard>
+      <iCard class="table-card">
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -353,7 +350,8 @@
         </div>
         <tablelist
           permissionKey="PARTSPROCURE_HOME"
-          class="aotoTableHeight"
+          class="table-box"
+          height="100%"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -391,9 +389,6 @@
           language('LK_LINGJIANCAIGOUXIANGMUZHUANPAI', '零件采购项目转派')
         "
       ></changeItems>
-    </div>
-    <!-- </el-tab-pane> -->
-    <!-- </el-tabs> -->
   </iPage>
 </template>
 <script>
@@ -711,10 +706,18 @@ export default {
 
 .partsprocureHome {
   position: relative;
-  .aotoTableHeight {
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;
-      overflow: auto !important ;
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
   .topMenu {

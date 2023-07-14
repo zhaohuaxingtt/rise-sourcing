@@ -21,7 +21,7 @@
       <iCard class="mainCard" :title="language('MINGXIXIANG', '明细项')">
         <template #header-control>
           <iButton v-permission.auto="FACTORYRELOCATE_EXPORT_ITEMS|工厂迁移-明细项导出" :loading="exportLoading" @click="handleExport">{{ language('MINGXIXIANGDAOCHU', '明细项导出') }}</iButton>
-          <uploadButton v-permission.auto="FACTORYRELOCATE_REIMPORT|工厂迁移-重新导入" v-if="operableStatus" :id="id" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+          <uploadButton :uploadButtonLoading="uploadLoading" v-permission.auto="FACTORYRELOCATE_REIMPORT|工厂迁移-重新导入" v-if="operableStatus" :id="id" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
             <iButton :loading="uploadLoading">{{ language('CHONGXINDAORU', '重新导入') }}</iButton>
           </uploadButton>
           <iButton v-permission.auto="FACTORYRELOCATE_DELETE|工厂迁移-删除" v-if="operableStatus" :loading="deleteLoading" @click="handleDelete">{{ language('SHANCHU', '删除') }}</iButton>

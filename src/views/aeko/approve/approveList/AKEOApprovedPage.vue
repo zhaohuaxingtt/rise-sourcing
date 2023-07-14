@@ -95,6 +95,7 @@
           ref="tableList"
           class="margin-top20 aeko-approved-table"
           index
+          indexFixed
           :selection="true"
           :tableData="approvedList"
           :tableTitle="approvedHeader"

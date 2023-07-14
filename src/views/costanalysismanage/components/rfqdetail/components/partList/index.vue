@@ -7,16 +7,17 @@ s<!--
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <iCard :title="language('LK_LINGJIANQINGDAN','零件清单')">
+  <iCard class="table-card" :title="language('LK_LINGJIANQINGDAN','零件清单')">
     <template v-slot:header-control>
       <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
       <iButton @click="handleDownloadTechnicalData" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_DOWNLOADTECHNICALDATA|下载技术资料">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
       <iButton :loading="downloadLoading" @click="handleDownloadCbd" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_DOWNLOADCBD|下载CBD">{{ language("XIAZAICBD", "下载CBD") }}</iButton>
     </template>
-    <div class="body">
       <tableList
         index
-        class="table"
+        fixed
+        class="table table-box"
+        height="100%"
         ref="table"
         :lang="true"
         :cellClassName="cellClass"
@@ -66,7 +67,6 @@ s<!--
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
-    </div>
     <downloadDialog :rfqNum="rfqId" :dialogVisible="downloadDialogVisible" @changeVisible="changeVisible"/>
   </iCard>
 </template>

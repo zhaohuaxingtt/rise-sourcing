@@ -5,6 +5,7 @@ export const ModeltableTitle = (vm) => [
         name: '车型项目',
         key: 'partsprocure.PARTSPROCUREMODELPROJECT',
         width:150,
+        fixed: true,
         rule: [
             { required: true, message: "11212121", trigger: "change" },
         ],
@@ -14,6 +15,7 @@ export const ModeltableTitle = (vm) => [
         name: 'VSI参考零件号',
         key: 'PROJECTVSI参考零件号',
         width:150,
+        fixed: true,
         rule: [
             { required: true, message: "11212121", trigger: "blur" },
         ],
@@ -23,6 +25,7 @@ export const ModeltableTitle = (vm) => [
         name: 'VSI参考零件名称',
         key: 'PROJECTVSI参考零件名称',
         width:150,
+        fixed: true,
         rule: [
             { required: true, message: "11212121", trigger: "blur" },
         ],
@@ -31,17 +34,20 @@ export const ModeltableTitle = (vm) => [
         name: 'VW Set',
         key: 'PROJECTVWSet',
         width:150,
+        fixed: true,
     },{
         props: 'vsiModel',tooltip:true,
         name: 'VSI参考模块',
         key: 'PROJECTVSI参考模块',
         width:150,
+        fixed: true,
     },{
         required:true,tooltip:true,
         props: 'vsiPrice',
         name: 'VSI-单价',
         key: 'PROJECTVSI单价',
         width:150,
+        fixed: true,
         rule: [
             { required: true, message: "11212121", trigger: "blur" },
         ],

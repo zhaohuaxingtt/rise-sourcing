@@ -447,6 +447,7 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
               :http-request="myUpload"
+              :disabled="uploadButtonLoading"
               accept=".jpg,.jpeg,.gif,.png,.bmp,.xlsx,.xls,.pdf,.doc,.docx,.ppt,.pptx">
             <iButton :loading="uploadButtonLoading">{{ language('LK_SHANGCHUANWENJIAN', '上传文件') }}</iButton>
           </Upload>

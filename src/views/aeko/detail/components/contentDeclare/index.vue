@@ -470,6 +470,7 @@
           permissionKey="AEKO_DETAIL_COMPONENTS_CONTENTDECLARE"
           class="table"
           ref="tableList"
+          maxHeight='500px'
           index
           fixed
           v-permission.auto="

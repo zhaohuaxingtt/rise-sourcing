@@ -441,9 +441,6 @@ import {
   icon,
   iInput
 } from "rise";
-import {
-  Upload
-} from "element-ui";
 import {changeTaskBmInfoTitle , changeTaskInfoTableTitle} from "../components/data"
 import changeOrder from "../components/changeOrder"
 import confirm from "../components/confirm"
@@ -989,10 +986,6 @@ export default {
 }
 .enclosure-block{
   margin-top: 20px;
-  .upload{
-    margin-left: 10px;
-    display: inline-block;
-  }
   .head{
     display: flex;
     justify-content: space-between;

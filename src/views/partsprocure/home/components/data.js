@@ -16,6 +16,7 @@ export const tableTitle = [{
 	tooltip: true,
 	width: 160,
 	isAekoShow: true,
+	fixed: true,
 	sortable: true
 },
 {
@@ -25,6 +26,7 @@ export const tableTitle = [{
 	tooltip: true,
 	width: 130,
 	isAekoShow: true,
+	fixed: true,
 	sortable: true
 },
 {
@@ -145,7 +147,7 @@ export const tableTitle = [{
 	name: '询价采购员',
 	key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 	tooltip: true,
-	minWidth: 135,
+	minWidth: 125,
 	isAekoShow: false,
 	sortable: true,
 },
