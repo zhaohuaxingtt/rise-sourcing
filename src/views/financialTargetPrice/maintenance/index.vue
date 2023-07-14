@@ -54,6 +54,7 @@
             :http-request="upload"
             :show-file-list='false'
             :before-upload="beforeUpload"
+            :disabled="uploadLoading"
             v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLEIMPORT|财务目标价管理-目标价维护-表格导入批量维护"
           >
             <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>

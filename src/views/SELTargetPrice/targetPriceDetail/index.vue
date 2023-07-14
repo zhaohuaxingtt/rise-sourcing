@@ -23,7 +23,7 @@
           :http-request="upload"
           :show-file-list='false'
           :before-upload="beforeUpload"
-          
+          :disabled="uploadLoading"
         >
           <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
         </el-upload>

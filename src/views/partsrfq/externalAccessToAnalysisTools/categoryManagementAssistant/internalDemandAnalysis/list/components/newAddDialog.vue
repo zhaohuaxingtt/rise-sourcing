@@ -56,6 +56,7 @@
                         :before-upload="beforeUpload"
                         :on-change="fileChange"
                         :on-remove="revomefileList"
+                        :disabled="uploadLoading"
                         accept=".pdf,.xlsx,.xls,.docx,.cvs">
                     <iButton v-if="form.type==2" :loading="uploadLoading">{{ $t('LK_XZWJ') }}</iButton>
                 </el-upload>

@@ -20,6 +20,7 @@
                    with-credentials
                    :on-success="handleAvatarSuccess"
                    :http-request="myUpload"
+                   :disabled="uploadButtonLoading"
                    accept=".pdf">
           <iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
         </el-upload>

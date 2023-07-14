@@ -20,8 +20,9 @@
               :before-remove="beforeRemove"
               :limit="1"
               :show-file-list="false"
+              :disabled="mainLoading"
               :file-list="uploadFiles">
-            <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
+            <iButton icon="el-icon-circle-plus-outline" type="primary" :loading="mainLoading">新增车型包</iButton>
           </Upload>
         </div>
 <!--        <iButton icon="el-icon-circle-plus-outline" @click="addCarTypeBag" type="primary">新增车型包</iButton>-->

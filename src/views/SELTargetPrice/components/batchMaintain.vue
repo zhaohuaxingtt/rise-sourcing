@@ -17,6 +17,7 @@
             accept=".xlsx"
             style="display: inline-block"
             :http-request="upload"
+            :disabled="uploadLoading"
             :show-file-list="false"
           >
             <iButton :loading="uploadLoading">{{

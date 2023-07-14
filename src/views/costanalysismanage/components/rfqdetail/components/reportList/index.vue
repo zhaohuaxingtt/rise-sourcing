@@ -16,10 +16,10 @@
                 <!-- <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
                 </uploadButton> -->
-                <uploadButton v-if="isPca" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
+                <uploadButton v-if="isPca" uploadClass="uploadButton" :uploadButtonLoading="uploadLoading" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUANPCABAOGAO", "上传PCA报告") }}</iButton>
                 </uploadButton>
-                <uploadButton v-if="isTia" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
+                <uploadButton v-if="isTia" uploadClass="uploadButton" :uploadButtonLoading="uploadLoading" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUANTIABAOGAO", "上传TIA报告") }}</iButton>
                 </uploadButton>
             </span>

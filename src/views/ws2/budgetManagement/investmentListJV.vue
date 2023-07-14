@@ -182,11 +182,13 @@
 								:headers="uploadHeader"
 								:show-file-list="false"
 								:on-success="uploadSuccess"
+                				:on-error="onError"
 								:on-progress="uploadProgress"
 								:data="uploadData"
+								:disabled="loading"
 								:before-upload="beforeUpload"
 								:on-exceed="handleExceed">
-							<iButton>{{ $t('SHANGCHUANFUJIJAN') }}</iButton>
+							<iButton :loading="loading">{{ $t('SHANGCHUANFUJIJAN') }}</iButton>
 						</el-upload>
 						<iButton @click="downloadList">{{
 							$t('LK_XIAZHAITOUZHIQINDAN')
@@ -648,11 +650,17 @@ export default {
 					// this.cancelNo = true
 				}
 			}
+			this.loading = false
+		},
+		onError(){
+			this.loading = false
 		},
 		beforeUpload (file) {
 			const isLt2M = file.size / 1024 / 1024 < 20
 			if (!isLt2M) {
 				iMessage.error('上传文件大小不能超过 20MB!')
+			}else{
+				this.loading = true
 			}
 			return isLt2M
 		},

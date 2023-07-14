@@ -53,6 +53,7 @@
               :buttonText="
                 language('strategicdoc_ShangChuanXianXiaRS', '上传线下RS文件')
               "
+              :uploadButtonLoading="uploadButtonLoading"
               @on-success="
                 onUploadsucess(
                   Object.assign(...arguments, { fileType: '103' }),

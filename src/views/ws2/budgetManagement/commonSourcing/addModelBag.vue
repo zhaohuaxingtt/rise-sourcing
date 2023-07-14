@@ -105,9 +105,10 @@
                 :before-upload="beforeAvatarUpload"
                 :before-remove="beforeRemove"
                 :limit="1"
+                :disabled="mainLoading"
                 :show-file-list="false"
                 :file-list="fileList">
-              <iButton :disabled="!currentVersion">{{ $t('上传清单') }}</iButton>
+              <iButton :disabled="!currentVersion" :loading="mainLoading">{{ $t('上传清单') }}</iButton>
             </Upload>
             <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
             <iButton :disabled="!currentVersion" @click="sendToAdmin">{{$t('发送项目采购员')}}</iButton>

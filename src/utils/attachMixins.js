@@ -24,6 +24,8 @@ export const attachMixins = {
     return {
     // 加载状态
     tableLoading: false,
+    // 上传loading
+    uploadButtonLoading: false,
     //  选中的数据
     multipleSelection: [],
     // 列表
@@ -64,6 +66,7 @@ export const attachMixins = {
     getDataList(params = {}) {
       if (!this.nomiAppId && params.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
+      this.uploadButtonLoading = true
       params = Object.assign({
         nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
         sortColumn: 'sort',
@@ -83,10 +86,12 @@ export const attachMixins = {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
         this.tableLoading = false
+        this.uploadButtonLoading = false
         console.log(res)
       }).catch(e => {
         console.log(e)
         this.tableLoading = false
+        this.uploadButtonLoading = false
       })
     },
     // 上传成功回调，配合@/components/Upload 食用

@@ -14,8 +14,9 @@
       :before-upload="beforeAvatarUpload"
       :http-request="myUpload"
       accept=".xlsx,.pdf,.docx"
+      :disabled="upLoading"
   >
-    <iButton :loading="uploadButtonLoading">{{ $t(buttonText) }}</iButton>
+    <iButton :loading="upLoading">{{ $t(buttonText) }}</iButton>
   </el-upload>
 </template>
 <script>
@@ -32,7 +33,14 @@ export default {
     uploadButtonLoading: {type: Boolean, default: false}
   },
   data() {
-    return {}
+    return {
+      loading: false
+    }
+  },
+  computed:{
+    upLoading(){
+      return this.loading || this.uploadButtonLoading
+    }
   },
   methods: {
     beforeAvatarUpload() {
@@ -40,6 +48,7 @@ export default {
     handleAvatarSuccess() {
     },
     async myUpload(content) {
+      this.loading = true
       // const formData = new FormData()
       // formData.append('multipartFile', content.file)
       // formData.append('applicationName', 'rise')
@@ -48,7 +57,7 @@ export default {
       const res = await uploadUdFile({
         multifile: content.file
       })
-      
+      this.loading = false
       this.$emit('uploadedCallback', res.data[0], content.file.size)
     },
   }
