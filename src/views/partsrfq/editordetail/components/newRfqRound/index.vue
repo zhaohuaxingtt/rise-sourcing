@@ -32,6 +32,7 @@
           <template>
             <iButton
               @click="save"
+              :loading="loading"
               v-permission.auto="
                 PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE |
                   (新建rfq轮次弹窗 - 保存)
@@ -237,6 +238,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       editStatus: false,
       tableListData: [],
       tableLoading: false,
@@ -362,11 +364,13 @@ export default {
           roundsType: this.roundType,
           bdlInfos: this.selectTableData,
         };
+        this.loading = true
         const res = await rfqRoundCreated(req);
+        this.loading = false
         //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
         if (res?.code == "200") {
           // 更新数据
-          this.$emit("refreshBaseInfo", "2");
+          this.$emit("refreshBaseInfo");
         }
         if (res.data) {
           this.clearDiolog();
