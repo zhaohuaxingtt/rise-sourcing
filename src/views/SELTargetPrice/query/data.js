@@ -7,8 +7,8 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 export const tableTitle = [
-  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "FSGSSPNO", tooltip: true, minWidth: 145, sortable: true },
-  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120, sortable: true },
+  { props: 'fsnrGsnrNum', name: '零件采购项目号', key: "FSGSSPNO", tooltip: true, minWidth: 145, sortable: true, fixed: true },
+  { props: 'partNum', name: '零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120, sortable: true, fixed: true },
   { props: 'partNameZh', name: '零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, minWidth: 140, sortable: true },
   { props: 'carTypeProjectName', name: '车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120, sortable: true },
   { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 110, sortable: true },

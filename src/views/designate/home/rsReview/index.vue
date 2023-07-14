@@ -7,12 +7,10 @@
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|上会复核页面">
     <!-- 头部 -->
     <headerNav />
-    <!-- 筛选框 -->
-    <div style="clear: both"></div>
     <!-- 搜索区 -->
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
-    <iCard class="designateTable" >
+    <iCard class="table-card" >
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
@@ -86,7 +84,8 @@
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME_RSREVIEW"
-        class="aotoTableHeight"
+        class="table-box"
+        height="100%"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -543,14 +542,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.designateHome{
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+      flex: 1;
+      overflow: hidden;
+      min-height: 350px;
+      .card-body-box {
+          height: 100%;
+          .table-box {
+              height: calc(100% - 105px);
+          }
+      }
+  }
+}
   .openLinkText{
     color:$color-blue;
-  }
-  .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
-    }
   }
   .designateSearch {
     margin-top: 20px;

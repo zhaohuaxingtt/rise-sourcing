@@ -9,8 +9,8 @@
 import { permissionTitle } from '@/utils'
 export const tableTitle = [
 // export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
-    { props: 'id', name: 'RFQ编号', key: 'RFQBIANHAO', tooltip: true, width:110, sortable: true, },
-    { props: 'rfqName', name: 'RFQ名称', key: 'RFQMINGCHENG', tooltip: true, width: 280, sortable: true, },
+    { props: 'id', name: 'RFQ编号', key: 'RFQBIANHAO', tooltip: true, width:110, sortable: true, fixed: true },
+    { props: 'rfqName', name: 'RFQ名称', key: 'RFQMINGCHENG', tooltip: true, width: 280, sortable: true, fixed: true },
     { props: 'rfqType', name: 'RFQ类型', key: 'RFQLEIXING', tooltip: true, width: 110, sortable: true, },
     // { props: 'carType', name: '车型项目', key: 'CHEXINGXIANGMU', tooltip: true, width: 280 },
     { props: 'createDate', name: '创建日期', key: 'CHUANGJIANRIQI', tooltip: true, width:115, sortable: true, },

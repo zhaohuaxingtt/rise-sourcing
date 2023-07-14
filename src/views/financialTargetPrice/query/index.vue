@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iPage v-permission.auto="FINANCIALTARGETPRICE_QUERY_PAGE|财务目标价管理-目标价查询-页面">
+  <iPage class="query" v-permission.auto="FINANCIALTARGETPRICE_QUERY_PAGE|财务目标价管理-目标价查询-页面">
     <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
@@ -35,7 +35,7 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20" v-permission.auto="FINANCIALTARGETPRICE_QUERY_TABLE|财务目标价管理-目标价查询-表格">
+    <iCard class="margin-top20 table-card" v-permission.auto="FINANCIALTARGETPRICE_QUERY_TABLE|财务目标价管理-目标价查询-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
@@ -46,6 +46,9 @@
         </div>
       </div>
       <tableList 
+        fixed
+        height="100%"
+        class="table-box"
         :isEdit="isEdit" 
         selection 
         indexKey 
@@ -491,5 +494,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.query{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>

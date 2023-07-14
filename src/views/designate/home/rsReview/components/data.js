@@ -20,7 +20,8 @@ export const tableTitle = [{
   width: 105,
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: true,
-  sortable: true
+  sortable: true,
+  fixed: true
 },
 {
   props: 'nominateName',
@@ -28,7 +29,8 @@ export const tableTitle = [{
   width: 250,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: true,
-  sortable: true
+  sortable: true,
+  fixed: true
 },
 {
   props: 'carType',
@@ -36,7 +38,8 @@ export const tableTitle = [{
   key: 'PROJECT',
   tooltip: true,
   width:200,
-  sortable: true
+  sortable: true,
+  fixed: true
 },
 {
 	props: 'applicationStatusDesc',

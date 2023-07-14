@@ -24,7 +24,7 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard class="contain margin-top20">
+    <iCard class="contain table-card margin-top20">
         <div class="margin-bottom20 clearFloat">
 
         <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
@@ -43,7 +43,8 @@
         <!-- 表单区域 -->
         <tableList
             permissionKey="LETTERANDLOI_LETTER_LIST"
-            class="table aotoTableHeight"
+            class="table table-box"
+            height="100%"
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -504,12 +505,6 @@ export default {
     .letterList{
         .datePicker {
             width: 100% !important;
-        }
-        .aotoTableHeight{
-            ::v-deep .el-table__body-wrapper {
-            min-height: 410px !important;  
-            overflow: auto !important ;
-            }
         }
         ::v-deep .el-date-editor .el-range__close-icon{
             display: block;

@@ -479,12 +479,12 @@ export default {
   // ::v-deep.el-table__body-wrapper {
   //   height: auto!important;
   // }
-  ::v-deep.el-table__fixed{
-    height: auto!important;
-    bottom: 14px;
-    position: absolute;
-    top: 0;
-  }
+  // ::v-deep.el-table__fixed{
+  //   height: auto!important;
+  //   bottom: 14px;
+  //   position: absolute;
+  //   top: 0;
+  // }
 }
   .openLinkText{
     color:$color-blue;

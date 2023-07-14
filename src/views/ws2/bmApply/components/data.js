@@ -21,6 +21,7 @@ export const allTableHead = [
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
     width: 200,
+    fixed: true,
     tooltip: false
   },
   {
@@ -28,6 +29,7 @@ export const allTableHead = [
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     width: 130,
+    fixed: true,
     tooltip: false
   },
   {
@@ -35,6 +37,7 @@ export const allTableHead = [
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
     width: 170,
+    fixed: true,
     tooltip: false
   },
   {
@@ -42,6 +45,7 @@ export const allTableHead = [
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     width: 250,
+    fixed: true,
     tooltip: false
   },
   {
@@ -49,6 +53,7 @@ export const allTableHead = [
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -147,6 +152,7 @@ export const bmTableHead = [
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
     width: 200,
+    fixed: true,
     tooltip: false
   },
   {
@@ -154,6 +160,7 @@ export const bmTableHead = [
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     width: 130,
+    fixed: true,
     tooltip: false
   },
   {
@@ -161,6 +168,7 @@ export const bmTableHead = [
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
     width: 170,
+    fixed: true,
     tooltip: false
   },
   {
@@ -168,6 +176,7 @@ export const bmTableHead = [
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -175,6 +184,7 @@ export const bmTableHead = [
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -252,6 +262,7 @@ export const aekoTableHead = [
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
     width: 200,
+    fixed: true,
     tooltip: false
   },
   {
@@ -259,6 +270,7 @@ export const aekoTableHead = [
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     width: 130,
+    fixed: true,
     tooltip: false
   },
   {
@@ -266,6 +278,7 @@ export const aekoTableHead = [
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
     width: 170,
+    fixed: true,
     tooltip: false
   },
   {
@@ -273,6 +286,7 @@ export const aekoTableHead = [
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -280,6 +294,7 @@ export const aekoTableHead = [
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -364,6 +379,7 @@ export const aekoBmTableHead = [
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
     width: 200,
+    fixed: true,
     tooltip: false
   },
   {
@@ -371,6 +387,7 @@ export const aekoBmTableHead = [
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     width: 130,
+    fixed: true,
     tooltip: false
   },
   {
@@ -378,6 +395,7 @@ export const aekoBmTableHead = [
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
     width: 170,
+    fixed: true,
     tooltip: false
   },
   {
@@ -385,6 +403,7 @@ export const aekoBmTableHead = [
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {
@@ -392,6 +411,7 @@ export const aekoBmTableHead = [
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
+    fixed: true,
     tooltip: false
   },
   {

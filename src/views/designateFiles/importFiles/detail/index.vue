@@ -5,7 +5,6 @@
 -->
 <template>
     <iPage class="filesDetailList">
-        <div>
             <p class="title margin-bottom10">{{language('LK_FUJIANQINGDAN','附件清单')}}：{{importfilesId}}</p>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
@@ -24,14 +23,17 @@
                         </el-form-item>
                     </el-form>
                 </iSearch>
-            <iCard class="margin-top20">
-                <div class="floatright margin-bottom20">
-                    <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+            <iCard class="margin-top20 table-card">
+                <div class="margin-bottom20 clearFloat">
+                    <div class="floatright">
+                        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+                    </div>
                 </div>
                 <!-- 表格区域 -->
                 <tableList
                     permissionKey="DESIGNATEFILES_IMPORTFILES_DETAIL"
-                    class="table"
+                    class="table table-box"
+                    height="100%"
                     index
                     :lang="true"
                     :tableData="tableListData"
@@ -72,7 +74,6 @@
                     :total="page.totalCount" v-update
                 />
             </iCard>
-        </div>
 
         <uploadList
             v-if="dialogVisible"  
@@ -207,6 +208,21 @@ export default {
 
 <style lang="scss" scoped>
     .filesDetailList{
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+        ::v-deep .table-card {
+            flex: 1;
+            overflow: hidden;
+            min-height: 350px;
+            .card-body-box {
+                height: 100%;
+                .table-box {
+                    height: calc(100% - 105px);
+                }
+            }
+        }
         .openLinkText{
             color:$color-blue;
         }

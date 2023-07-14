@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\ws2\baApply\components\detailsTable.vue
 -->
 <template>
-	<div>
+	<div class="table-container">
 		<div class="page-head">
 			<iButton @click="takeChange(false)">{{
 				$t('SHIXIAO')
@@ -21,6 +21,8 @@
 		</div>
 
 		<iTableList
+			class="table-box"
+      		height="100%"
 			:tableData="tableListData"
 			:tableTitle="tableTitle"
 			:tableLoading="tableLoading"
@@ -375,6 +377,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-container{
+  height: calc(100% - 64px);
+}
+.table-box {
+  height: calc(100% - 54px);
+}
 .baApply-table {
 	::v-deep .el-input__inner {
 		width: 120px !important;

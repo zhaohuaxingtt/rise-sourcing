@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage class="sign">
     <headerNav :config="config" />
     <search
       @sure="sure"
@@ -349,6 +349,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.sign{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-flow: column;
+    .card-body-box {
+      flex: 1;
+      overflow: hidden;
+      .cardBody {
+        display: flex;
+        flex-flow: column;
+      }
+      .table-box {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+}
 .openLinkText {
   color: $color-blue;
   text-decoration: underline;

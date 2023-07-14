@@ -147,6 +147,7 @@ export const tableTitle = [
 		tooltip: true,
 		minWidth: 215,
 		sortable: true,
+		fixed: true
 	},
 	{
 		props: 'partNum',
@@ -161,14 +162,14 @@ export const tableTitle = [
 		name: '零件名称（中）',
 		key: 'LINGJIANMINGCZH',
 		tooltip: true,
-		minWidth: 150,
+		minWidth: 160,
 		sortable: true,
 	}, {
 		props: 'sapItem',
 		name: '项次',
 		key: 'MODEL-ORDER.LK_XIANGCI',
 		tooltip: true,
-		width: 75,
+		width: 85,
 		sortable: true,
 	},
 	{

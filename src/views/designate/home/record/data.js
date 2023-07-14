@@ -109,12 +109,14 @@ export const tableDetailTitle = [
     props: 'supplierId',
     name: '厂商',
     key: 'CHANGSHANG',
+    fixed: true,
     tooltip: true
   },
   {
     props: 'supplierNameCn',
     name: '供应商',
     key: 'GONGYINGSHANG',
+    fixed: true,
     tooltip: true
   },
   {

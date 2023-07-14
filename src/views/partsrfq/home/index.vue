@@ -8,13 +8,7 @@
 -->
 <template>
   <iPage class="partsrfqHome">
-    <!-- <el-tabs v-model="tab" class="tab">
-      <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
     <headerNav />
-    <div>
-      <!-- <div class="margin-bottom33">
-            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div> -->
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
@@ -308,7 +302,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard>
+      <iCard class="table-card">
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -400,9 +394,11 @@
           @openPage="openPage"
           :activeItems="'id'"
           :index="true"
+          indexFixed
           icon-props="recordId"
           :lang="true"
-          class="aotoTableHeight"
+          class="table-box"
+          height="100%"
           ref="tableList"
         >
           <template #recordId="scope">
@@ -508,10 +504,6 @@
         :visible.sync="nominateTypeDialogVisible"
         @confirm="createDesignate"
       />
-    </div>
-    <!-- </el-tab-pane> -->
-    <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
-    <!-- </el-tabs> -->
   </iPage>
 </template>
 <script>
@@ -1153,10 +1145,18 @@ export default {
 
 .partsrfqHome {
   position: relative;
-  .aotoTableHeight {
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;
-      overflow: auto !important ;
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 350px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
   .tab {

@@ -9,9 +9,6 @@
 
 <template>
   <iPage class="signForParts">
-    <!-- <el-tabs v-model="tab" class="tab"> -->
-    <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-    <div>
       <headerNav />
       <!----------------------------------------------------------------->
       <!---------------------------搜索区域------------------------------->
@@ -74,8 +71,7 @@
       <!----------------------------------------------------------------->
       <!---------------------------表格区域------------------------------->
       <!----------------------------------------------------------------->
-      <iCard
-        class="margin-top20"
+      <iCard class="margin-top20 table-card"
         v-permission.auto="APREPART_MANAGFMENT_TABLE | (配件 - 配件管理 - 表格)"
       >
         <div class="margin-bottom20 clearFloat">
@@ -169,7 +165,8 @@
           @handleSelectionChange="handleSelectionChange"
           @openPage="openPage"
           @openPage2="openPage2"
-          class="aotoTableHeight"
+          class="table-box"
+          height="100%"
         >
           <template #supplierSapCode="scope">
             <span>{{
@@ -249,10 +246,6 @@
         @joinRfq="joinRfq"
         :partType="partProjTypes.PEIJIAN"
       />
-    </div>
-    <!-- </el-tab-pane> -->
-    <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
-    <!-- </el-tabs> -->
   </iPage>
 </template>
 
@@ -992,10 +985,18 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-  .aotoTableHeight {
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;
-      overflow: auto !important ;
+	height: 100%;
+  display: flex;
+  flex-flow: column;
+  ::v-deep .table-card {
+    flex: 1;
+    overflow: hidden;
+    min-height: 350px;
+    .card-body-box {
+      height: 100%;
+      .table-box {
+        height: calc(100% - 105px);
+      }
     }
   }
   .topMenu {
