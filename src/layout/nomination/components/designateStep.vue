@@ -58,7 +58,7 @@
           ></el-option>
         </iSelect>
       </div>
-      <div class="btnList flex-align-center">
+      <div class="btnList flex-align-center" v-if="showDecision">
         <iButton
           @click="gotoRsMainten"
           v-if="designateType === 'MEETING' && showBtn"
@@ -88,7 +88,7 @@
           >{{ language("DAOCHUPDF", "导出PDF") }}</iButton
         >
         <iButton
-          v-if="isDecision"
+          v-if="isDecision && showDecision"
           @click="preview"
           v-permission.auto="NOMINATION_MENU_PREVIEW | 预览"
           >{{ language("LK_YULAN", "预览") }}</iButton

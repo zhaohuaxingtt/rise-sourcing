@@ -8,12 +8,11 @@
 -->
 <template>
   <iPage class="preview-csc no-padding" @click.native="isClick">
-    <div
-      id="preview-csc"
-    >
+    <div id="preview-csc">
       <decisionDataHeader class="tab-nav"/>
-      <div class="nomination-content" v-loading="loading" id="pdfHide">
-        <router-view class="page-content" :isGS="isGS"></router-view>
+      <div class="nomination-content" v-if="showDecisionLoading" v-loading="loading" id="pdfHide">
+        <router-view class="page-content" v-if="showDecision" :isGS="isGS"></router-view>
+        <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
       </div>
     </div>
   </iPage>
@@ -37,7 +36,9 @@ export default {
   },
   data() {
     return {
+      showDecision: false, // 是否显示决策资料,默认显示
       loading: false,
+      showDecisionLoading:false,
       isGS: '',
       isPreview: "1",
     };
@@ -47,10 +48,7 @@ export default {
     const { isPreview = "0"} = query;
     this.isPreview = isPreview;
     this.$store.dispatch("setPreviewState", isPreview);
-    await this.nominateAppSDetail();
-    if (this.$route.query.sd == 1) {
-      this.getNomiPosition();
-    }
+    this.getNomiPosition();
   },
   methods: {
     isClick(){
@@ -58,18 +56,18 @@ export default {
     },
     
     getNomiPosition() {
-      this.showDecisionLoading = true
-
+      this.showDecisionLoading = false
       getNomiPosition({
         nomiId: this.$route.query.desinateId || this.$store.getters.nomiAppId
       })
       .then(res => {
         if (res.code == 200) {
           this.showDecision = res.data
+          if(this.showDecision) this.nominateAppSDetail();
         }
       })
       .finally(() => {
-        this.showDecisionLoading = false
+        this.showDecisionLoading = true
       })
     },
     async nominateAppSDetail() {
@@ -265,6 +263,14 @@ export default {
       }
     }
   }
+}
+
+.tip {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: rgb(151, 166, 196);
+  line-height: calc(100vh - 360px);
 }
 </style>
 
