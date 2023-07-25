@@ -253,6 +253,12 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <el-form-item :label="language('LK_SOPRIQI', 'SOP日期') + ':'">
+          <iDatePicker
+            v-model="batch.sopDate"
+            type="date"
+          ></iDatePicker>
+        </el-form-item>
       </el-form>
       <template slot="button">
         <iButton
@@ -369,7 +375,7 @@
   </iPage>
 </template>
 <script>
-import { iPage, iButton, iSearch, iSelect, iMessage } from "rise";
+import { iPage, iButton, iSearch, iSelect, iDatePicker, iMessage } from "rise";
 import outputPlan from "./components/outputPlan";
 import { batchUpdateStuff, updateProcureButch } from "@/api/partsprocure/home";
 import { getCartypeDict } from "@/api/partsrfq/home";
@@ -391,6 +397,7 @@ export default {
     iButton,
     iSearch,
     iSelect,
+    iDatePicker,
     outputPlan,
     creatFsGsNr,
     createNomiappBtn,
@@ -422,6 +429,7 @@ export default {
         unit: "PC", //单位
         purchaseProjectIds: [], //采购项目id
         categoryId: null, // 材料组id
+        sopDate: null, // sop日期
       },
       stuff: {},
       categoryObj: {},
@@ -646,6 +654,7 @@ export default {
         procureFactory: this.batch.procureFactory,
         procureFactoryName: factoryItems ? factoryItems.name : null,
         unit: this.batch.unit,
+        sopDate: this.batch.sopDate,
         procureFactoryId: factoryItems ? factoryItems.id : null,
       };
       updateInfo["oldProjectRelations"] = this.oldProjectRelations;
