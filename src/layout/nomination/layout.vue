@@ -13,7 +13,7 @@
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading" id="pdfHide">
-      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision" :isGS="isGS"></router-view>
+      <router-view v-if="showDecision" :isGS="isGS"></router-view>
       <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
