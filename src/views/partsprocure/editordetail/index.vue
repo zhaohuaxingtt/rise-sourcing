@@ -1968,7 +1968,10 @@ export default {
           detailData[i] = this.detailData[i];
         }
       }
-
+      // linieName不存在时，根据LinieId获取对应名称
+      detailData.linieName = detailData.linieName || this.fromGroup.LINIE.find(item=>item.code==detailData.linieId)?.name || ''
+      // linieName不存在时，根据LinieId获取对应名称
+      detailData.cfControllerName = detailData.cfControllerName || this.fromGroup.CF_CONTROL.find(item=>item.id==detailData.cfController)?.name || ''
       // 手动加一下cf控制员cfControllerName缺失问题
       this.checkCfController();
 
