@@ -19,13 +19,24 @@
       >
         <iText>{{ rfqInfo[item.props] }}</iText>
       </iFormItem>
+      <template v-if="!isSQE">
+        <iFormItem
+          v-for="(item, index) in infosSQE"
+          :label-width="item.labelWidth||'110px'"
+          :key="index"
+          :row="item.row"
+          :label="language(item.key, item.name)"
+        >
+          <iText>{{ rfqInfo[item.props] }}</iText>
+        </iFormItem>
+      </template>
     </iFormGroup>
   </iCard>
 </template>
 
 <script>
 import { iCard, iFormGroup, iFormItem, iText } from "rise"
-import { infos } from "../data"
+import { infos, infosSQE } from "../data"
 
 export default {
   components: {
@@ -44,9 +55,15 @@ export default {
       default: false
     }
   },
+  computed:{
+    isSQE(){
+      return this.rfqInfo.isSQE || false
+    }
+  },
   data() {
     return {
-      infos
+      infos,
+      infosSQE,
     }
   }
 };

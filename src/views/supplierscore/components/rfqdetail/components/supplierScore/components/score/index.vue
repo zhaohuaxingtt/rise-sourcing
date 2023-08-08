@@ -13,6 +13,10 @@
   >
     <template #header-control>
       <div key="1" v-if="!editStatus">
+        <iButton icon="el-icon-download" @click="exportSQE">{{ language("下载SQE评分表") }}</iButton>
+        <iButton icon="el-icon-download" @click="exportMQ">{{ language("下载质量评分表") }}</iButton>
+        <iButton @click="handleEdit">{{ language("编辑SQE评分审核") }}</iButton>
+        <iButton>{{ language("退回SQE评分") }}</iButton>
         <!-- 转派--该评分任务的协调人 -->
         <iButton
           v-if="rfqInfo.coordinatorId == userInfo.id"
@@ -129,6 +133,29 @@
             <span>{{ scope.row[item.props] }}</span>
           </template>
         </el-table-column>
+        <template v-if="isSQE">
+          <el-table-column
+            align="center"
+            :label="language('SQE评分')"
+          >
+            <el-table-column
+              align="center"
+              v-for="item in SQETableTitle"
+              :key="item.props"
+              :label="language(item.key, item.name)"
+              :show-overflow-tooltip="item.tooltip"
+              :width="item.width"
+            >
+              <template v-if="item.props === 'approval'" v-slot="scope">
+                <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" />
+                <span v-else>{{ scope.row.rate }}</span>
+              </template>
+              <template v-else v-slot="scope">
+                <span>{{ scope.row[item.props] }}</span>
+              </template>
+            </el-table-column>
+          </el-table-column>
+        </template>
         <template v-if="isFileRfqType">
           <el-table-column
             align="center"
@@ -476,12 +503,12 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iSelect, iMessage, iMessageBox } from "rise";
+import { iCard, icon, iButton, iInput, iSelect, iMessage, iMessageBox } from "rise";
 import forwardDialog from "@/views/supplierscore/components/forwardDialog";
 import rejectDialog from "./components/rejectDialog";
 import remarkDialog from "@/views/supplierscore/components/remarkDialog";
 import { pageMixins } from "@/utils/pageMixins";
-import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data";
+import { scoreTableTitle as tableTitle, deptScoreTableTitle, SQETableTitle } from "../data";
 import { cloneDeep, isEqual } from "lodash";
 import {
   getRfqBdlRatingsByCurrentDept,
@@ -500,6 +527,7 @@ import { selectDictByKeys } from "@/api/dictionary";
 export default {
   components: {
     iCard,
+    icon,
     iButton,
     iInput,
     iSelect,
@@ -540,6 +568,9 @@ export default {
     isEP() {
       return this.tableListData.some((item) => item.rateTag == "EP");
     },
+    isSQE(){
+      return this.rfqInfo.isSQE || true
+    }
   },
   created() {
     // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
@@ -553,6 +584,7 @@ export default {
       editStatus: false,
       loading: false,
       tableTitle: tableTitle,
+      SQETableTitle,
       // deptScoreTableTitle,
       tableListData: [],
       tableListDataCache: [],

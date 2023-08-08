@@ -11,16 +11,9 @@
     <div class="header">
       <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div>
+        <iButton @click="openDialog">{{language('选择SQE评分股')}}</iButton>
         <iLoger :config="{ bizId_obj_ae: 'rfqId', module_obj_ae:'供应商评分', queryParams:['bizId_obj_ae']}" isPage :isUser="true" class="margin-left25" />
-        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
-            class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
-      <!-- <div class="control">
-        <logButton class="margin-left20" />
-        <span class="margin-left20">
-          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-        </span>
-      </div> -->
     </div>
     <infos class="margin-top30" :rfqInfo="rfqInfo" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
@@ -28,16 +21,22 @@
         <component :ref="tab.name" :is="component" :rfqInfo="rfqInfo" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>
+    <transferSQEDeptDialog
+        ref="forwardDialog"
+        :visible.sync="forwardDialogVisible"
+        @confirm="confirmForward"
+      />
   </iPage>
 </template>
 
 <script>
-import { iPage, icon, iTabsList, iMessage } from "rise"
+import { iPage, iButton, iTabsList, iMessage } from "rise"
 import logButton from "@/components/logButton"
 import infos from "./components/infos"
 import partList from "./components/partList"
 import supplierScore from "./components/supplierScore"
 import inquiryAttachment from "./components/inquiryAttachment"
+import transferSQEDeptDialog from "../transferSQEDeptDialog"
 import { getRfqDetailByCurrentDept } from "@/api/supplierscore"
 
 import iLoger from 'rise/web/components/iLoger'
@@ -45,13 +44,14 @@ import iLoger from 'rise/web/components/iLoger'
 export default {
   components: {
     iPage,
-    icon,
+    iButton,
     iTabsList,
     logButton,
     infos,
     partList,
     supplierScore,
     inquiryAttachment,
+    transferSQEDeptDialog,
     iLoger
   },
   data() {
@@ -63,7 +63,8 @@ export default {
         { label: "供应商评分", name: "supplierScore", key: "LK_GONGYINGSHANGPINGFEN", components: [ "supplierScore" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_SUPPLIERSCORE|供应商评分" },
         { label: "询价附件", name: "inquiryAttachment", key: "LK_XUNJIAFUJIAN", components: [ "inquiryAttachment" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_INQUIRYATTACHMENT|询价附件" }
       ],
-      rfqInfo: {}
+      rfqInfo: {},
+      forwardDialogVisible: false
     }
   },
   provide() {
@@ -113,8 +114,13 @@ export default {
     updateRfq() {
       this.getRfqDetailByCurrentDept("update")
     },
-    
-    gotoDBhistory() {
+    // 选择SQE评分股
+    openDialog() {
+      this.forwardDialogVisible = true
+    },
+    // 
+    confirmForward(){
+      this.forwardDialogVisible = false
     }
   }
 }
