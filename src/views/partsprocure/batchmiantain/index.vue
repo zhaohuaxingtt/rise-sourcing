@@ -646,9 +646,10 @@ export default {
         cfController: this.batch.cfController,
         linieDept: this.batch.linieDept,
         linieDeptName: this.batch.linieDeptName,
-        linieName: this.linie.name,
-        linieId: this.linie.code,
+        linieName: this.linie?.name,
+        linieId: this.linie?.code,
         partProjectType: this.batch.type,
+        carTypeModel: this.batch.carTypeModel,
         partType: this.batch.partType,
         currencyCode: this.batch.currencyCode,
         procureFactory: this.batch.procureFactory,
@@ -657,6 +658,16 @@ export default {
         sopDate: this.batch.sopDate,
         procureFactoryId: factoryItems ? factoryItems.id : null,
       };
+      if (updateInfo.carTypeModel != undefined) {
+        let temData =
+          (this.fromGroup.CAR_TYPE &&
+            Array.isArray(this.fromGroup.CAR_TYPE) &&
+            this.fromGroup["CAR_TYPE"].filter((item) => {
+              return updateInfo.carTypeModel.indexOf(item.id) > -1;
+            })) ||
+          [];
+        updateInfo["cartypes"] = temData;
+      }
       updateInfo["oldProjectRelations"] = this.oldProjectRelations;
       const ids = this.batch.purchaseProjectIds;
       updateProcureButch({ updateInfo: updateInfo, ids: ids })
