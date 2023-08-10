@@ -2772,7 +2772,7 @@
 		LK_XINGMING: 'Name',
 		LK_DIANHUA: 'Tel',
 		LK_YOUXINAG: 'Email',
-		LK_XIANGMUJINDU: 'Project Progress',
+		LK_XIANGMUJINDU: 'Proj. Progress(Vehicle delivery time)',
 		LK_SHENGMINGZHOUQI: 'Life Cycle',
 		LK_VFF: 'VFF',
 		LK_PVS: 'PVS',

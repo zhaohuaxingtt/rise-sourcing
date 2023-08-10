@@ -27,10 +27,10 @@ export const tableTitle = [
     {props:'rfqTime',name:'RFQ'},
     {props:'cscTime',name:'CSC'},
     {props:'bfConfirmTime',name:'BF Confirm'},
-    {props:'vffTbtTime',name:'VFF TBT'},
-    {props:'pvsTbtTime',name:'PVS TBT'},
-    {props:'osTbtTime',name:'OS TBT'},
-    {props:'sopTbtTime',name:'SOP TBT'},
+    {props:'vffTbtTime',name:'VFF'},
+    {props:'pvsTbtTime',name:'PVS'},
+    {props:'osTbtTime',name:'OS'},
+    {props:'sopTbtTime',name:'SOP'},
 ]
 
 export const tableTitleSupplier = [
