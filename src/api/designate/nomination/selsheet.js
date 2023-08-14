@@ -6,9 +6,11 @@
  * @Description: sel 上会复核列表部分
  */
 import axios from "@/utils/axios"
+import download from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_SOURCING)
 const longRequst = axios(process.env.VUE_APP_SOURCING, 25000)
+const fileRequst = download(process.env.VUE_APP_SOURCING)
 
 // 获取sel 复核列表
 export function getSelList(params) {
@@ -58,7 +60,7 @@ export function batchConfirmSelSheet(params) {
 
 // sel单导出
 export function batchExportSelSheet(params) {
-  return requst({
+  return fileRequst({
       url: `/nominate/check/export`,
       method: "GET",
       params

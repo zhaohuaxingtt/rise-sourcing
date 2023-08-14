@@ -67,6 +67,7 @@
           <!-- 导出 -->
           <iButton
             @click="rsexport"
+            :loading="exportLoading"
             v-permission.auto="SOURCING_NOMINATION_RSREVIEW_DAOCHU|导出"
           >
             {{ language("DAOCHU", "导出") }}
@@ -191,7 +192,7 @@ import {
   batchRevoke,
   batchRevokeToPass,
   batchConfirmSelSheet,
-  // batchExportSelSheet
+  batchExportSelSheet
 } from '@/api/designate/nomination/selsheet'
 import { 
   createSignSheet
@@ -231,7 +232,8 @@ export default {
       selDialogVisibal: false,
       // 签字单菜单
       signMenu,
-      params: {}
+      params: {},
+      exportLoading: false
     }
   },
   components: {
@@ -435,28 +437,30 @@ export default {
       const confirmInfo = await this.$confirm(this.language('LK_EXCUTESURE','您确定要执行该操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
-      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/check/export?nomiAppIds=${idList.join(',')}`
-      console.log(fileURL)
-      window.open(fileURL)
-      // try {
-      //   const res = await batchExportSelSheet({nomiAppIds: idList})
-      //   if (res) {
-      //     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-      //     let url = window.URL.createObjectURL(new Blob([res]))
-      //     let link = document.createElement('a')
-      //     link.style.display = 'none'
-      //     link.href = url
-      //     link.setAttribute('download', 'rsexport.xlsx')// 文件名
-      //     document.body.appendChild(link)
-      //     link.click()
-      //     document.body.removeChild(link) // 下载完成移除元素
-      //     window.URL.revokeObjectURL(url) // 释放掉blob对象
-      //   }
-      // } catch (e) {
-      //   console.log('e', e)
-      //   iMessage.error(e && e.message ? e.message : this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      // }
+      // const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/check/export?nomiAppIds=${idList.join(',')}`
+      // console.log(fileURL)
+      // window.open(fileURL)
+      try {
+        this.exportLoading = true
+        const res = await batchExportSelSheet({nomiAppIds: idList.join(',')})
+        this.exportLoading = false
+        // if (res) {
+        //   iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+        //   let url = window.URL.createObjectURL(new Blob([res]))
+        //   let link = document.createElement('a')
+        //   link.style.display = 'none'
+        //   link.href = url
+        //   link.setAttribute('download', 'rsexport.xlsx')// 文件名
+        //   document.body.appendChild(link)
+        //   link.click()
+        //   document.body.removeChild(link) // 下载完成移除元素
+        //   window.URL.revokeObjectURL(url) // 释放掉blob对象
+        // }
+      } catch (e) {
+        this.exportLoading = false
+        iMessage.error(e && e.message ? e.message : this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     },
     // 定点
     async confirm(){
