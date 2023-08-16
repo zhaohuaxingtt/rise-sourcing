@@ -13,10 +13,15 @@
   >
     <template #header-control>
       <div key="1" v-if="!editStatus">
-        <iButton icon="el-icon-download" @click="exportSQE">{{ language("下载SQE评分表") }}</iButton>
-        <iButton icon="el-icon-download" @click="exportMQ">{{ language("下载质量评分表") }}</iButton>
-        <iButton @click="handleEdit">{{ language("编辑SQE评分审核") }}</iButton>
-        <iButton>{{ language("退回SQE评分") }}</iButton>
+        <template v-if="showSQE">
+          <iButton icon="el-icon-download" @click="exportSQE">{{ language("下载SQE评分表") }}</iButton>
+          <iButton icon="el-icon-download" @click="exportMQ">{{ language("下载质量评分表") }}</iButton>
+          <iButton @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分审核") }}</iButton>
+          <iButton @click="handleEdit('sqe')">{{ language("编辑SQE评分") }}</iButton>
+          <iButton @click="back">{{ language("退回SQE评分") }}</iButton>
+          <iButton @click="reject">{{ language("驳回") }}</iButton>
+          <iButton @click="approve">{{ language("通过") }}</iButton>
+        </template>
         <!-- 转派--该评分任务的协调人 -->
         <iButton
           v-if="rfqInfo.coordinatorId == userInfo.id"
@@ -133,7 +138,7 @@
             <span>{{ scope.row[item.props] }}</span>
           </template>
         </el-table-column>
-        <template v-if="isSQE">
+        <template v-if="showSQE">
           <el-table-column
             align="center"
             :label="language('SQE评分')"
@@ -146,11 +151,15 @@
               :show-overflow-tooltip="item.tooltip"
               :width="item.width"
             >
-              <template v-if="item.props === 'approval'" v-slot="scope">
-                <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" />
-                <span v-else>{{ scope.row.rate }}</span>
+              <template v-if="item.props === 'rateStatus'" #header="scope">
+                <span>{{ scope.row[item.props] }}</span>
+              </template>
+              <template v-else-if="item.props === 'sqeAuditRemark'" v-slot="scope">
+                <iInput v-if="editStatus && hasEditLine(scope.row.id) && editType==='sqeApproval'" v-model="scope.row[item.props]" />
+                <span v-else>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else v-slot="scope">
+                <iInput v-if="editStatus && hasEditLine(scope.row.id) && editType==='sqe'" v-model="scope.row[item.props]" />
                 <span>{{ scope.row[item.props] }}</span>
               </template>
             </el-table-column>
@@ -249,7 +258,7 @@
                 :show-overflow-tooltip="item.tooltip"
                 :width="item.width"
               >
-                <template v-if="item.props === 'rate'" #header="scope">
+                <template v-if="item.props === 'rate'">
                   <span>{{ scope.column.label }}<i class="required">*</i></span>
                 </template>
                 <template v-if="item.props === 'rate'" v-slot="scope">
@@ -415,71 +424,6 @@
             </el-table-column>
           </template>
         </template>
-        <!-- <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
-              <template v-if="item.props === 'rate'" #header="scope">
-                <span>{{ scope.column.label }}<i class="required">*</i></span>
-              </template>
-              <template v-if="item.props === 'rate'" v-slot="scope">
-                <div v-if="editStatus && hasEditLine(scope.row.id)">
-                  <div v-if="!isFileRfqType">
-                    <template v-if="scope.row.rateTag == 'MQ'">
-                      <iSelect  v-model="scope.row.rate">
-                        <el-option
-                          v-for="(item, index) in mqGrage"
-                          :key="index"
-                          :value="item.code"
-                          :label="item.nameEn"
-                        >
-                        </el-option>
-                      </iSelect>
-                    </template>
-                    <template v-if="scope.row.rateTag == 'EP'">
-                      <iSelect  v-model="scope.row.rate">
-                        <el-option
-                          v-for="(item, index) in epGrade"
-                          :key="index"
-                          :value="item.code"
-                          :label="item.nameEn"
-                        >
-                        </el-option>
-                      </iSelect>
-                    </template>
-                  </div>
-                  <iSelect v-else v-model="scope.row.rate">
-                    <el-option
-                      v-for="(item, index) in affixGrade"
-                      :key="index"
-                      :value="item.code"
-                      :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
-                    >
-                    </el-option>
-                  </iSelect>
-                </div>
-                <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
-              </template>
-              <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
-                <iInput style="width:90%" v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
-                <span v-else>{{ scope.row[item.props] }}</span>
-              </template>
-              <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
-                <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
-                <span v-else>{{ scope.row.confirmCycle }}</span>
-              </template>
-              <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <el-tooltip placement="top" :disabled="!scope.row.memo">
-                  <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
-                  <div>
-                    <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.memo"/>
-                    <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
-                  </div>
-                </el-tooltip>
-              </template>
-              <template v-else v-slot="scope">
-                <span>{{ scope.row[item.props] }}</span>
-              </template>
-            </el-table-column>
-          </el-table-column> -->
       </el-table>
     </div>
     <forwardDialog
@@ -503,7 +447,7 @@
 </template>
 
 <script>
-import { iCard, icon, iButton, iInput, iSelect, iMessage, iMessageBox } from "rise";
+import { iCard, iButton, iInput, iSelect, iMessage, iMessageBox } from "rise";
 import forwardDialog from "@/views/supplierscore/components/forwardDialog";
 import rejectDialog from "./components/rejectDialog";
 import remarkDialog from "@/views/supplierscore/components/remarkDialog";
@@ -520,14 +464,18 @@ import {
   updateRfqBdlRatings,
   updateRfqBdlRatingMemo,
   recallRate,
+  exportSqeRating,
+  updateSqeRateBatch,
+  back,
+  submit,
+  reject,
+  approve
 } from "@/api/supplierscore";
-import { afterSaleLeaderIds } from "@/views/supplierscore/components/data";
 import { numberProcessor } from "@/utils";
 import { selectDictByKeys } from "@/api/dictionary";
 export default {
   components: {
     iCard,
-    icon,
     iButton,
     iInput,
     iSelect,
@@ -544,6 +492,10 @@ export default {
     rfqInfo: {
       type: Object,
       default: () => {},
+    },
+    showSQE: {
+      type: Boolean,
+      default: false
     },
   },
   computed: {
@@ -568,15 +520,6 @@ export default {
     isEP() {
       return this.tableListData.some((item) => item.rateTag == "EP");
     },
-    isSQE(){
-      return this.rfqInfo.isSQE || true
-    }
-  },
-  created() {
-    // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
-    //   this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
-    // }
-    // this.getRate()
   },
   inject: ["getRfqDetailByCurrentDept"],
   data() {
@@ -585,7 +528,6 @@ export default {
       loading: false,
       tableTitle: tableTitle,
       SQETableTitle,
-      // deptScoreTableTitle,
       tableListData: [],
       tableListDataCache: [],
       multipleSelection: [],
@@ -598,12 +540,12 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
-      afterSaleLeaderIds,
       mqGrage: [],
       epGrade: [],
       affixGrade: [],
       recallLoading: false,
       editIdList: [],
+      editType: ''
     };
   },
   methods: {
@@ -695,30 +637,34 @@ export default {
     },
     // 提交
     async handleSubmit() {
-      const rfqBdlRateIds = this.tableListData
-        .filter((item) => ["待评分", "待提交"].includes(item.rateStatus))
-        .map((item) => item.id);
+      if(this.rfqInfo.isSQE){
+        this.submit()
+      }else{
+        const rfqBdlRateIds = this.tableListData
+            .filter((item) => ["待评分", "待提交"].includes(item.rateStatus))
+            .map((item) => item.id);
 
-      this.submitLoading = true;
+        this.submitLoading = true;
 
-      submitRfqBdlRatings({
-        rfqBdlRateIds,
-        rfqId: this.rfqId,
-      })
-        .then((res) => {
-          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-
-          if (res.code == 200) {
-            iMessage.success(message);
-            // this.$emit("updateRfq")
-            this.getRfqBdlRatingsByCurrentDept();
-          } else {
-            iMessage.error(message);
-          }
-
-          this.submitLoading = false;
+        submitRfqBdlRatings({
+          rfqBdlRateIds,
+          rfqId: this.rfqId,
         })
-        .catch(() => (this.submitLoading = false));
+            .then((res) => {
+              const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+
+              if (res.code == 200) {
+                iMessage.success(message);
+                // this.$emit("updateRfq")
+                this.getRfqBdlRatingsByCurrentDept();
+              } else {
+                iMessage.error(message);
+              }
+
+              this.submitLoading = false;
+            })
+            .catch(() => (this.submitLoading = false));
+      }
     },
     // 批准
     async handleApprove() {
@@ -813,45 +759,46 @@ export default {
           }
         );
       }
-
-      // 过滤一下编辑项的变更
-      const filterTableData = this.tableListData.filter((item) =>
-        this.editIdList.includes(item.id)
-      );
-
-      if (filterTableData.some((item) => !item.rate && item.rate !== 0)) {
-        return iMessage.warn(
-          this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项")
+      if(this.editType==='sqe'){
+      //   todo
+        this.updateSqeRateBatch()
+      }else if(this.editType === 'sqeApproval'){
+        this.updateSqeRateBatch()
+      //   todo
+      }else{
+        // 过滤一下编辑项的变更
+        const filterTableData = this.tableListData.filter((item) =>
+            this.editIdList.includes(item.id)
         );
+        if (filterTableData.some((item) => !item.rate && item.rate !== 0)) {
+          return iMessage.warn(
+              this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项")
+          );
+        }
+        this.saveLoading = true;
+        updateRfqBdlRatings(
+            filterTableData.map((item) => ({
+              addFee: item.addFee,
+              confirmCycle: item.confirmCycle,
+              externalFee: item.externalFee,
+              id: item.id,
+              rate: item.rate,
+              rfqId: this.rfqId,
+              memo: item.memo,
+            }))
+        )
+            .then((res) => {
+              const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+              if (res.code == 200) {
+                iMessage.success(message);
+                this.getRfqBdlRatingsByCurrentDept();
+              } else {
+                iMessage.error(message);
+              }
+              this.saveLoading = false;
+            })
+            .catch(() => (this.saveLoading = false));
       }
-
-      this.saveLoading = true;
-
-      updateRfqBdlRatings(
-        filterTableData.map((item) => ({
-          addFee: item.addFee,
-          confirmCycle: item.confirmCycle,
-          externalFee: item.externalFee,
-          id: item.id,
-          rate: item.rate,
-          rfqId: this.rfqId,
-          memo: item.memo,
-        }))
-      )
-        .then((res) => {
-          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-
-          if (res.code == 200) {
-            iMessage.success(message);
-            // this.$emit("updateRfq")
-            this.getRfqBdlRatingsByCurrentDept();
-          } else {
-            iMessage.error(message);
-          }
-
-          this.saveLoading = false;
-        })
-        .catch(() => (this.saveLoading = false));
     },
     // 查看零件评分
     viewPartScore(row) {
@@ -864,11 +811,6 @@ export default {
         },
       });
       window.open(route.href, "_blank");
-    },
-    // 编辑/查看 备注
-    editRemark(row) {
-      this.currentRow = row;
-      this.remarkDialogVisible = true;
     },
     // 确认备注
     confirmRemark(remark) {
@@ -921,25 +863,9 @@ export default {
         return rate;
       }
     },
-    // 判断是否勾选项
-    async isSelectItem(tips = null) {
-      const { multipleSelection } = this;
-      tips =
-        tips ||
-        this.language(
-          "createparts.QingXuanZeZhiShaoYiTiaoShuJu",
-          "请选择至少一条数据"
-        );
-      if (!multipleSelection.length) {
-        this.$message.warning(tips);
-        return false;
-      } else {
-        return true;
-      }
-    },
-
     // 编辑
-    async handleEdit() {
+    async handleEdit(type) {
+      this.editType = type
       this.editStatus = true;
       this.editIdList = this.tableListData
         .filter((item) => ["待评分", "待提交"].includes(item.rateStatus))
@@ -947,13 +873,11 @@ export default {
     },
     // 判断该行是否可编辑
     hasEditLine(id) {
-      if (this.editIdList.includes(id)) return true;
-      else false;
+      return this.editIdList.includes(id);
     },
     // 列表是否可勾选
     selectInit() {
-      if (this.editStatus) return false;
-      else return true;
+      return !this.editStatus;
     },
     // 撤回评分
     handleRecall() {
@@ -990,6 +914,61 @@ export default {
           .finally(() => (this.recallLoading = false));
       });
     },
+    // 导出SQE评分任务
+    exportSQE(){
+      exportSqeRating(this.multipleSelection.map(item=>item.id)).then(res=>{
+        console.log(res)
+      })
+    },
+    // 编辑SQE评分
+    updateSqeRateBatch(){
+      let filterTableData = this.tableListData.filter((item) =>
+          this.editIdList.includes(item.id)
+      );
+      updateSqeRateBatch(filterTableData.map(item=>{
+        return {
+          id:item.id,
+          sqeAuditRemark:item.sqeAuditRemark,
+          sqePerformance:item.sqePerformance,
+          sqeQtr:item.sqeQtr,
+          sqeRemark:item.sqeRemark
+        }
+      })).then(res=>{
+        console.log('res=>',res)
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+        if(res?.code==200){
+          iMessage.success(message)
+          this.editStatus = false;
+          this.getRfqBdlRatingsByCurrentDept()
+        }else{
+          iMessage.error(message)
+        }
+      })
+    },
+  //   提交SQE评分
+    submit(){
+      submit(this.multipleSelection.map(item=>item.id)).then(res=>{
+
+      })
+    },
+  //   退回SQE评分
+    back(){
+      back(this.multipleSelection.map(item=>item.id)).then(res=>{
+
+      })
+    },
+  //   驳回SQE
+    reject(){
+      reject(this.multipleSelection.map(item=>item.id)).then(res=>{
+
+      })
+    },
+  //   批准通过SQE
+    approve(){
+      approve(this.multipleSelection.map(item=>item.id)).then(res=>{
+
+      })
+    }
   },
 };
 </script>

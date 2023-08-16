@@ -23,11 +23,11 @@ export const deptScoreTableTitle = [
 ]
 
 export const SQETableTitle = [
-  { props: "rate", name: "绩效", key: "绩效", tooltip: true },
-  { props: "externalFee", name: "QTR", key: "QTR", tooltip: true },
-  { props: "remark", name: "备注", key: "BEIZHU",width:200, },
+  { props: "sqePerformance", name: "绩效", key: "绩效", tooltip: true },
+  { props: "sqeQtr", name: "QTR", key: "QTR", tooltip: true },
+  { props: "sqeRemark", name: "备注", key: "BEIZHU",width:200, },
   { props: "rateStatus", name: "状态", key: "ZHUANGTAI", tooltip: true },
-  { props: "approval", name: "审核", key: "审核", tooltip: true },
+  { props: "sqeAuditRemark", name: "审核", key: "审核", tooltip: true },
 ]
 export const attachmentTableTile = [
   { props: "fileName", name: "文件名称", key: "WENJIANMINGCHENG", tooltip: true },

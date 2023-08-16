@@ -11,20 +11,21 @@
     <div class="header">
       <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div>
-        <iButton @click="openDialog">{{language('选择SQE评分股')}}</iButton>
+        <iButton v-if="showSQE" @click="openDialog">{{language('选择SQE评分股')}}</iButton>
         <iLoger :config="{ bizId_obj_ae: 'rfqId', module_obj_ae:'供应商评分', queryParams:['bizId_obj_ae']}" isPage :isUser="true" class="margin-left25" />
       </div>
     </div>
-    <infos class="margin-top30" :rfqInfo="rfqInfo" />
+    <infos class="margin-top30" :rfqInfo="rfqInfo" :showSQE="showSQE" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
-        <component :ref="tab.name" :is="component" :rfqInfo="rfqInfo" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
+        <component :ref="tab.name" :is="component" :rfqInfo="rfqInfo" :showSQE="showSQE" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>
     <transferSQEDeptDialog
         ref="forwardDialog"
         :visible.sync="forwardDialogVisible"
-        @confirm="confirmForward"
+        @getData="getRfqDetailByCurrentDept"
+        :rows="[rfqInfo]"
       />
   </iPage>
 </template>
@@ -65,6 +66,11 @@ export default {
       ],
       rfqInfo: {},
       forwardDialogVisible: false
+    }
+  },
+  computed:{
+    showSQE(){
+      return this.rfqInfo.showSQE || true
     }
   },
   provide() {

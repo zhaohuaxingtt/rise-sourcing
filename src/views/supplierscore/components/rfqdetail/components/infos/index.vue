@@ -19,7 +19,7 @@
       >
         <iText>{{ rfqInfo[item.props] }}</iText>
       </iFormItem>
-      <template v-if="!isSQE">
+      <template v-if="showSQE">
         <iFormItem
           v-for="(item, index) in infosSQE"
           :label-width="item.labelWidth||'110px'"
@@ -53,12 +53,11 @@ export default {
     loading: {
       type: Boolean,
       default: false
-    }
-  },
-  computed:{
-    isSQE(){
-      return this.rfqInfo.isSQE || false
-    }
+    },
+    showSQE: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {

@@ -1,124 +1,124 @@
 <template>
   <div>
     <iSearch
-      class="margin-top25"
-      @sure="sure"
-      @reset="reset"
-      :resetKey="PARTSIGN_RESETBUTTON"
-      :searchKey="PARTSIGN_CONFIRMBUTTON"
+        class="margin-top25"
+        @sure="sure"
+        @reset="reset"
+        :resetKey="PARTSIGN_RESETBUTTON"
+        :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
         <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')">
-          <iInput v-model="form.rfqId" :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')" />
+          <iInput v-model="form.rfqId" :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')"/>
         </el-form-item>
         <el-form-item :label="language('RFQMINGCHENG', 'RFQ名称')">
           <iInput
-            v-model="form.rfqName"
-            :placeholder="language('QINGSHURURFQMINGCHENG', '请输入RFQ名称')"
+              v-model="form.rfqName"
+              :placeholder="language('QINGSHURURFQMINGCHENG', '请输入RFQ名称')"
           />
         </el-form-item>
         <el-form-item label="LINIE">
           <iSelect
-            filterable
-            remote
-            clearable
-            v-model="form.linieUserId"
-            :remote-method="findLinieByName"
-            :loading="linieLoading"
-            :placeholder="language('QINGSHURULINIE', '请输入LINIE')"
-            :loading-text="language('JIAZAIZHONG', '加载中')"
+              filterable
+              remote
+              clearable
+              v-model="form.linieUserId"
+              :remote-method="findLinieByName"
+              :loading="linieLoading"
+              :placeholder="language('QINGSHURULINIE', '请输入LINIE')"
+              :loading-text="language('JIAZAIZHONG', '加载中')"
           >
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in linieOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in linieOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LINGJIANHAO', '零件号')">
-          <iMultiLineInput v-model="form.partNum" :title="language('LINGJIANHAO', '零件号')" />
+          <iMultiLineInput v-model="form.partNum" :title="language('LINGJIANHAO', '零件号')"/>
         </el-form-item>
         <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')">
           <iInput
-            v-model="form.partName"
-            :placeholder="
+              v-model="form.partName"
+              :placeholder="
                     language('QINGSHURULINGJIANMINGCHENG', '请输入零件名称')
                   "
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGSVWHAO', '供应商SVW号')">
           <iInput
-            v-model="form.supplierSvwCode"
-            :placeholder="
+              v-model="form.supplierSvwCode"
+              :placeholder="
                     language('QINGSHURUGONGYINGSHANGSVWHAO', '请输入供应商SVW号')
                   "
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGSAPHAO', '供应商SAP号')">
           <iInput
-            v-model="form.supplierSapCode"
-            :placeholder="
+              v-model="form.supplierSapCode"
+              :placeholder="
                     language('QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')
                   "
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')">
           <iInput
-            v-model="form.supplierName"
-            :placeholder="
+              v-model="form.supplierName"
+              :placeholder="
                   language('QINGSHURUGONGYINGSHANGMINGCHENG', '请输入供应商名称')
                 "
           />
         </el-form-item>
         <el-form-item :label="language('CHEXING', '车型')">
           <iSelect
-            filterable
-            v-model="form.modelNameZh"
-            :placeholder="language('QINGXUANZECHEXING', '请选择车型')"
+              filterable
+              v-model="form.modelNameZh"
+              :placeholder="language('QINGXUANZECHEXING', '请选择车型')"
           >
             <el-option value :label="language('ALL', '全部') | capitalizeFilter"></el-option>
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in carTypeOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in carTypeOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
-            filterable
-            v-model="form.carTypeProject"
-            :placeholder="
+              filterable
+              v-model="form.carTypeProject"
+              :placeholder="
                     language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')
                   "
           >
             <el-option value :label="language('ALL', '全部') | capitalizeFilter"></el-option>
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in cartypeProjectOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in cartypeProjectOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item label="SQE评分人">
           <iSelect
-            filterable
-            remote
-            clearable
-            v-model="form.sqeUserId"
-            :remote-method="findLinieByName"
-            :loading="linieLoading"
-            :placeholder="language('请输入SQE评分人', '请输入SQE评分人')"
-            :loading-text="language('JIAZAIZHONG', '加载中')"
+              filterable
+              remote
+              clearable
+              v-model="form.sqeUserId"
+              :remote-method="findLinieByName"
+              :loading="linieLoading"
+              :placeholder="language('请输入SQE评分人', '请输入SQE评分人')"
+              :loading-text="language('JIAZAIZHONG', '加载中')"
           >
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in linieOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in linieOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -126,21 +126,20 @@
           <iSelect v-model="form.showSelf" :placeholder="language('partsprocure.CHOOSE', '请选择')">
             <el-option value :label="language('ALL', '全部') | capitalizeFilter"></el-option>
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in showSelfOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in showSelfOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('SQE评分状态')">
-          <iSelect v-model="form.showSelf" :placeholder="language('partsprocure.CHOOSE', '请选择')">
-            <el-option value :label="language('ALL', '全部') | capitalizeFilter"></el-option>
+          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in showSelfOptions"
-              :key="item.key"
+                :value="item.value"
+                :label="item.label"
+                v-for="item in statusOptions"
+                :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -148,53 +147,54 @@
     </iSearch>
     <iCard class="margin-top30" :title="language('待审核任务列表')">
       <template #header-control>
-        <iButton>{{ language("退回") }}</iButton>
+        <iButton @click="back">{{ language("退回") }}</iButton>
         <iButton @click="transferDept">{{ language("分配股") }}</iButton>
         <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
       </template>
       <tableList
-        class="table"
-        :lang="true"
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange"
+          class="table"
+          :lang="true"
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange"
       >
         <template #rfqId="scope">
           <span class="link-underline" @click="jumpRfqDetail(scope.row)">
             {{
-            scope.row.rfqId
+              scope.row.rfqId
             }}
           </span>
         </template>
       </tableList>
       <iPagination
-        v-update
-        class="margin-top30"
-        @size-change="handleSizeChange($event, searchRfqBdlRatings)"
-        @current-change="handleCurrentChange($event, searchRfqBdlRatings)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount"
+          v-update
+          class="margin-top30"
+          @size-change="handleSizeChange($event, sure)"
+          @current-change="handleCurrentChange($event, getData)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"
       />
       <transferSQEDeptDialog
-        ref="forwardDialog"
-        :visible.sync="transferDeptDialogVisible"
-        @confirm="confirmForward"
+          ref="forwardDialog"
+          :visible.sync="transferDeptDialogVisible"
+          :rows="multipleSelection"
+          @confirm="confirmForward"
       />
-      <forwardDialog
-        ref="forwardDialog"
-        :visible.sync="forwardDialogVisible"
-        @confirm="confirmForward"
+      <forwardSQEDialog
+          ref="forwardDialog"
+          :visible.sync="forwardSQEDialogVisible"
+          @confirm="confirmForward"
       />
     </iCard>
   </div>
 </template>
-    
-      
+
+
 <script>
 import {
   iSearch,
@@ -207,23 +207,25 @@ import {
   iMultiLineInput
 } from "rise";
 import transferSQEDeptDialog from "../components/transferSQEDeptDialog";
-import forwardDialog from "../components/forwardDialog";
+import forwardSQEDialog from "../components/forwardSQEDialog";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import filters from "@/utils/filters";
-import { pageMixins } from "@/utils/pageMixins";
-import { queryForm, tableTitle } from "./data";
-import { cloneDeep } from "lodash";
+import {pageMixins} from "@/utils/pageMixins";
+import {queryForm, tableTitle} from "./data";
+import {cloneDeep} from "lodash";
 import {
   findDropDownBox,
   findLinieByName,
   findInquiryBuyerByName,
-  searchRfqBdlRatings,
-  forward
+  forward,
+  search,
+  assignSqeRater,
+  back
 } from "@/api/supplierscore";
-import { getCartypeDict } from "@/api/partsrfq/home";
+import {getCartypeDict} from "@/api/partsrfq/home";
 import axios from "axios";
-import { TAB } from "@/views/financialTargetPrice/components/data";
-import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import {TAB} from "@/views/financialTargetPrice/components/data";
+import {getCarTypeSop} from "@/api/partsprocure/editordetail";
 
 export default {
   components: {
@@ -234,7 +236,7 @@ export default {
     iButton,
     iPagination,
     transferSQEDeptDialog,
-    forwardDialog,
+    forwardSQEDialog,
     tableList,
     iMultiLineInput
   },
@@ -242,6 +244,7 @@ export default {
   data() {
     return {
       scoreStatusOptions: [],
+      sqeRateStatus: [],
       findLinieByNameSource: null,
       linieLoading: false,
       linieOptions: [],
@@ -255,11 +258,18 @@ export default {
       tableTitle,
       tableListData: [],
       multipleSelection: [],
-      forwardDialogVisible: false,
+      forwardSQEDialogVisible: false,
       transferDeptDialogVisible: false,
       showSelfOptions: [
-        { label: "是", key: "nominationLanguage.Yes", value: true },
-        { label: "否", key: "nominationLanguage.No", value: false }
+        {label: "是", key: "nominationLanguage.Yes", value: true},
+        {label: "否", key: "nominationLanguage.No", value: false}
+      ],
+      statusOptions: [
+        {label: "待提交", key: "待提交", value: 'WATING_FOR_SUBMIT'},
+        {label: "待审核", key: "待审核", value: 'RATING_FOR_AUDITING'},
+        {label: "审批驳回", key: "审批驳回", value: 'AUDIT_REJECT'},
+        {label: "评分完成", key: "评分完成", value: 'RATING_COMPLETED'},
+        {label: "已保存", key: "已保存", value: 'SAVED'}
       ]
     };
   },
@@ -272,7 +282,7 @@ export default {
     this.findDropDownBox();
     this.getCartypeDict();
     this.getCarTypeSop();
-    this.searchRfqBdlRatings();
+    this.getData();
   },
   methods: {
     // 设置初始查询条件
@@ -303,33 +313,35 @@ export default {
         // 仅评分人（包含 JZSPFR、ZLPFR任一角色，但不包含JSPFXTY、ZLPFXTY）：默认查询待评分、待提交
         this.form.rateStatus = ["WATING_FOR_RATING", "WATING_FOR_SUBMIT"];
       }
+      this.sqeRateStatus = []
     },
     // 获取评分状态
     findDropDownBox() {
       findDropDownBox({
         types: ["RFQ_RATE_STATUS"]
       })
-        .then(res => {
-          if (res.code == 200) {
-            this.scoreStatusOptions =
-              Array.isArray(res.data) && res.data[0] && res.data[0].list
-                ? res.data[0].list
-                    .map(item => ({
-                      key: item.key,
-                      label: item.name,
-                      value: item.key
-                    }))
-                    .filter(
-                      item =>
-                        !["NO_GRADE", "WATING_FOR_HANDLING"].includes(item.key)
-                    )
-                : [];
-            this.setDefault();
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
-        .catch(() => {});
+          .then(res => {
+            if (res.code == 200) {
+              this.scoreStatusOptions =
+                  Array.isArray(res.data) && res.data[0] && res.data[0].list
+                      ? res.data[0].list
+                          .map(item => ({
+                            key: item.key,
+                            label: item.name,
+                            value: item.key
+                          }))
+                          .filter(
+                              item =>
+                                  !["NO_GRADE", "WATING_FOR_HANDLING"].includes(item.key)
+                          )
+                      : [];
+              this.setDefault();
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
+          .catch(() => {
+          });
     },
     // 查询Linie
     findLinieByName(name) {
@@ -339,25 +351,25 @@ export default {
       this.findLinieByNameSource = axios.CancelToken.source();
 
       findLinieByName(
-        {
-          name
-        },
-        { cancelToken: this.findLinieByNameSource.token }
+          {
+            name
+          },
+          {cancelToken: this.findLinieByNameSource.token}
       )
-        .then(res => {
-          if (res.code == 200) {
-            this.linieOptions = Array.isArray(res.data)
-              ? res.data.map(item => ({
-                  key: item.id,
-                  label: item.nameZh,
-                  value: item.id
-                }))
-              : [];
-          }
+          .then(res => {
+            if (res.code == 200) {
+              this.linieOptions = Array.isArray(res.data)
+                  ? res.data.map(item => ({
+                    key: item.id,
+                    label: item.nameZh,
+                    value: item.id
+                  }))
+                  : [];
+            }
 
-          this.linieLoading = false;
-        })
-        .catch(() => (this.linieLoading = false));
+            this.linieLoading = false;
+          })
+          .catch(() => (this.linieLoading = false));
     },
     // 查询询价采购员
     findInquiryBuyerByName(name) {
@@ -368,37 +380,37 @@ export default {
       this.findInquiryBuyerByNameSource = axios.CancelToken.source();
 
       findInquiryBuyerByName(
-        {
-          name
-        },
-        { cancelToken: this.findInquiryBuyerByNameSource.token }
+          {
+            name
+          },
+          {cancelToken: this.findInquiryBuyerByNameSource.token}
       )
-        .then(res => {
-          if (res.code == 200) {
-            this.buyerOptions = Array.isArray(res.data)
-              ? res.data.map(item => ({
-                  key: item.id,
-                  label: item.nameZh,
-                  value: item.id
-                }))
-              : [];
-          }
+          .then(res => {
+            if (res.code == 200) {
+              this.buyerOptions = Array.isArray(res.data)
+                  ? res.data.map(item => ({
+                    key: item.id,
+                    label: item.nameZh,
+                    value: item.id
+                  }))
+                  : [];
+            }
 
-          this.buyerLoading = false;
-        })
-        .catch(() => (this.buyerLoading = false));
+            this.buyerLoading = false;
+          })
+          .catch(() => (this.buyerLoading = false));
     },
     // 查询车型
     getCartypeDict() {
       getCartypeDict().then(res => {
         if (res.code == 200) {
           this.carTypeOptions = Array.isArray(res.data)
-            ? res.data.map(item => ({
+              ? res.data.map(item => ({
                 key: item.code,
                 label: item.name,
                 value: item.name
               }))
-            : [];
+              : [];
         }
       });
     },
@@ -407,42 +419,72 @@ export default {
       getCarTypeSop().then(res => {
         if (res.code == 200) {
           this.cartypeProjectOptions = Array.isArray(res.data)
-            ? res.data.map(item => ({
+              ? res.data.map(item => ({
                 key: item.cartypeProCode,
                 name: item.cartypeProName,
                 value: item.cartypeProCode
               }))
-            : [];
+              : [];
 
           this.$forceUpdate();
         }
       });
     },
-    searchRfqBdlRatings() {
-      const form = {};
-      Object.keys(this.form).forEach(key => {
-        form[key] =
-          this.form[key] || this.form[key] === 0 || this.form[key] === false
-            ? this.form[key]
-            : undefined;
-      });
-      form.current = this.page.currPage;
-      form.size = this.page.pageSize;
-      // form.showSelf = form.showSelf=='YES'
-
+    getData() {
+      const params = {
+        ...this.form,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        sqeRateStatus: this.sqeRateStatus.length ? this.sqeRateStatus : this.statusOptions.map(item => item.value)
+      };
       this.loading = true;
-      searchRfqBdlRatings(form)
-        .then(res => {
-          if (res.code == 200) {
-            this.tableListData = Array.isArray(res.data) ? res.data : [];
-            this.page.totalCount = res.total || 0;
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-
-          this.loading = false;
-        })
-        .catch(() => (this.loading = false));
+      search(params)
+          .then(res => {
+            if (res?.code == 200) {
+              this.tableListData = Array.isArray(res.data) ? res.data : [];
+              this.page.totalCount = res.total || 0;
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          }).finally(() => {
+        this.loading = false;
+      });
+    },
+    // 退回
+    back() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('请选择需要退回的数据'))
+      let params = {
+        idList: this.multipleSelection.map(item => item.id)
+      }
+      back(params).then(res => {
+        if (res?.code == 200) {
+          iMessage.success(this.$t('操作成功'))
+          this.sure()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    // 分配股
+    transferDept() {
+      if (!this.multipleSelection.length) return iMessage.warn(
+          this.language(
+              "QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU",
+              "请选择需要转派的评分任务"
+          )
+      );
+      this.transferDeptDialogVisible = true
+    },
+    // 转派评分任务
+    handleTransfer() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+            this.language(
+                "QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU",
+                "请选择需要转派的评分任务"
+            )
+        );
+      this.forwardSQEDialogVisible = true;
     },
     handleSelectionChange(list) {
       this.multipleSelection = list;
@@ -450,49 +492,34 @@ export default {
     // 查询
     sure() {
       this.page.currPage = 1;
-      this.searchRfqBdlRatings();
+      this.getData();
     },
     // 重置
     reset() {
       this.form = cloneDeep(queryForm);
       this.setDefault();
-      this.page.currPage = 1;
-      this.searchRfqBdlRatings();
-    },
-    // 转派评分任务
-    handleTransfer() {
-      if (!this.multipleSelection.length)
-        return iMessage.warn(
-          this.language(
-            "QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU",
-            "请选择需要转派的评分任务"
-          )
-        );
-      this.forwardDialogVisible = true;
+      this.sure();
     },
     // 确认转派
     confirmForward(userInfo) {
       this.$refs.forwardDialog.updateConfirmLoading(true);
 
-      forward({
-        raterId: userInfo.id,
-        rater: userInfo.nameZh,
-        rfqIds: this.multipleSelection.map(item => item.rfqId)
+      assignSqeRater({
+        rfqIds: this.multipleSelection.map(item => item.id),
+        sqeRaterId: userInfo.id,
+        sqeRaterName: userInfo.nameZh
       })
-        .then(res => {
-          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-
-          if (res.code == 200) {
-            iMessage.success(message);
-            this.forwardDialogVisible = false;
-            this.searchRfqBdlRatings();
-          } else {
-            iMessage.error(message);
-          }
-
-          this.$refs.forwardDialog.updateConfirmLoading(false);
-        })
-        .catch(() => this.$refs.forwardDialog.updateConfirmLoading(false));
+          .then(res => {
+            const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+            if (res?.code == 200) {
+              iMessage.success(message);
+              this.forwardSQEDialogVisible = false;
+              this.getData();
+            } else {
+              iMessage.error(message);
+            }
+          })
+          .finally(() => this.$refs.forwardDialog.updateConfirmLoading(false));
     },
     // 跳转RFQ详情
     jumpRfqDetail(row) {
@@ -505,12 +532,8 @@ export default {
       });
       window.open(route.href, "_blank");
     },
-    // 分配股
-    transferDept() {
-      this.transferDeptDialogVisible = true;
-    }
   }
 };
 </script>
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
 </style>

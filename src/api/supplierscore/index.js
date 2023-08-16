@@ -190,3 +190,85 @@ export function recallRate(data) {
     data,
   })
 }
+
+// 根据标签获取所有的部门
+export function listDepartByTag(data) {
+  return requst({
+    url: `/rfq-rate-departs/listDepartByTag/${data.tagId}`,
+    method: "POST",
+  })
+}
+// 设置SQE评分股
+export function setSqeRateDeptNum(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/setSqeRateDeptNum',
+    method: "POST",
+    data,
+  })
+}
+
+// SQE评分任务查询
+export function search(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/search',
+    method: "POST",
+    data,
+  })
+}
+
+// 批准SQE评分结果
+export function approve(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/approve',
+    method: "PATCH",
+    data,
+  })
+}
+// 分配SQE评分人
+export function assignSqeRater(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/assignSqeRater',
+    method: "POST",
+    data,
+  })
+}
+// SQE评分退回
+export function back(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/back',
+    method: "PATCH",
+    data,
+  })
+}
+// 导出SQE评分任务
+export function exportSqeRating(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/exportSqeRating',
+    method: "POST",
+    data,
+  })
+}
+// 拒绝SQE评分结果
+export function reject(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/reject',
+    method: "POST",
+    data,
+  })
+}
+// SQE评分提交
+export function submit(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/submit',
+    method: "PATCH",
+    data,
+  })
+}
+// 编辑SQE评分
+export function updateSqeRateBatch(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/updateSqeRateBatch',
+    method: "POST",
+    data,
+  })
+}
