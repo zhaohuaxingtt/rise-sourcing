@@ -18,10 +18,10 @@ export const infos = [
 ]
 
 export const infosSQE = [
-  { row: 4, name: "SQE评分股", props: "buyerName", key: "SQE评分股" },
-  { row: 4, name: "SQE评分人", props: "linie", key: "SQE评分人" },
-  { row: 4, name: "SQE股长", props: "rater", key: "SQE股长" },
-  { row: 4, name: "SQE评分推送状态", props: "coordinator", key: "SQE评分推送状态", labelWidth: '150px' }
+  { row: 4, name: "SQE评分股", props: "sqeRateDepartNum", key: "SQE评分股" },
+  { row: 4, name: "SQE评分人", props: "sqeRater", key: "SQE评分人" },
+  { row: 4, name: "SQE股长", props: "sqeCoordinator", key: "SQE股长" },
+  { row: 4, name: "SQE评分推送状态", props: "sqeStatus", key: "SQE评分推送状态", labelWidth: '150px' }
 ]
 
 export const partListTableTitle = [

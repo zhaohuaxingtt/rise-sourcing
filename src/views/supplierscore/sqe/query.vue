@@ -145,9 +145,9 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top30" :title="language('待审核任务列表')">
+    <iCard class="margin-top30" :title="language('全部任务列表')">
       <template #header-control>
-        <iButton @click="back">{{ language("退回") }}</iButton>
+        <iButton @click="backByRfq">{{ language("退回") }}</iButton>
         <iButton @click="transferDept">{{ language("分配股") }}</iButton>
         <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
       </template>
@@ -220,7 +220,7 @@ import {
   forward,
   search,
   assignSqeRater,
-  back
+  backByRfq
 } from "@/api/supplierscore";
 import {getCartypeDict} from "@/api/partsrfq/home";
 import axios from "axios";
@@ -451,12 +451,9 @@ export default {
       });
     },
     // 退回
-    back() {
+    backByRfq() {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('请选择需要退回的数据'))
-      let params = {
-        idList: this.multipleSelection.map(item => item.id)
-      }
-      back(params).then(res => {
+      backByRfq(this.multipleSelection.map(item => item.rfqId)).then(res => {
         if (res?.code == 200) {
           iMessage.success(this.$t('操作成功'))
           this.sure()
@@ -527,7 +524,8 @@ export default {
         path: "/targetpriceandscore/supplierscore/rfqdetail",
         query: {
           rfqId: row.rfqId,
-          currentTab: "supplierScore"
+          currentTab: "supplierScore",
+          from:'SQE'
         }
       });
       window.open(route.href, "_blank");

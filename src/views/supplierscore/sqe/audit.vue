@@ -135,7 +135,7 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard :title="language('全部任务列表')" class="margin-top30">
+    <iCard :title="language('待审核任务列表')" class="margin-top30">
       <template #header-control>
         <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
       </template>
@@ -341,13 +341,13 @@ export default {
     },
     // 转派评分任务
     handleTransfer() {
-      // if (!this.multipleSelection.length)
-      //   return iMessage.warn(
-      //       this.language(
-      //           "QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU",
-      //           "请选择需要转派的评分任务"
-      //       )
-      //   );
+      if (!this.multipleSelection.length)
+        return iMessage.warn(
+            this.language(
+                "QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU",
+                "请选择需要转派的评分任务"
+            )
+        );
       this.forwardSQEDialogVisible = true;
     },
     // 确认转派

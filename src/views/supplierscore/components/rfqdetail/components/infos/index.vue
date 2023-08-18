@@ -27,7 +27,8 @@
           :row="item.row"
           :label="language(item.key, item.name)"
         >
-          <iText>{{ rfqInfo[item.props] }}</iText>
+          <iText v-if="item.props==='sqeStatus'">{{ rfqInfo[item.props] || $t('未推送') }}</iText>
+          <iText v-else>{{ rfqInfo[item.props] }}</iText>
         </iFormItem>
       </template>
     </iFormGroup>

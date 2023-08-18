@@ -26,7 +26,7 @@ export const SQETableTitle = [
   { props: "sqePerformance", name: "绩效", key: "绩效", tooltip: true },
   { props: "sqeQtr", name: "QTR", key: "QTR", tooltip: true },
   { props: "sqeRemark", name: "备注", key: "BEIZHU",width:200, },
-  { props: "rateStatus", name: "状态", key: "ZHUANGTAI", tooltip: true },
+  { props: "sqeStatus", name: "状态", key: "ZHUANGTAI", tooltip: true },
   { props: "sqeAuditRemark", name: "审核", key: "审核", tooltip: true },
 ]
 export const attachmentTableTile = [

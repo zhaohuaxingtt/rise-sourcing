@@ -7,7 +7,9 @@
  * @FilePath: \front-web\src\api\supplierscore\index.js
  */
 import axios from "@/utils/axios"
+import axiosDownload from "@/utils/axios.download"
 const requst = axios(process.env.VUE_APP_SOURCING)
+const requstDown = axiosDownload(process.env.VUE_APP_SOURCING)
 
 export function findDropDownBox(params) {
   return requst({
@@ -16,14 +18,6 @@ export function findDropDownBox(params) {
     data: params
   })
 }
-
-// 获取评分人列表
-// export function getRater() {
-//   return requst({
-//     url: `/rfq-bdl-ratings/getRater`,
-//     method: "GET"
-//   })
-// }
 
 // 获取评分人列表
 export function findRaterByCurrentUser() {
@@ -240,10 +234,26 @@ export function back(data) {
     data,
   })
 }
+// SQE评分退回
+export function backByRfq(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/backByRfq',
+    method: "PATCH",
+    data,
+  })
+}
 // 导出SQE评分任务
 export function exportSqeRating(data) {
-  return requst({
+  return requstDown({
     url: 'rfq-sqe-ratings/exportSqeRating',
+    method: "POST",
+    data,
+  })
+}
+// 导出质量评分任务
+export function exportMqRating(data) {
+  return requstDown({
+    url: 'rfq-sqe-ratings/exportMqRating',
     method: "POST",
     data,
   })
@@ -270,5 +280,20 @@ export function updateSqeRateBatch(data) {
     url: 'rfq-sqe-ratings/updateSqeRateBatch',
     method: "POST",
     data,
+  })
+}
+// 编辑SQE审核
+export function updateSeqAuditBatch(data) {
+  return requst({
+    url: 'rfq-sqe-ratings/updateSeqAuditBatch',
+    method: "POST",
+    data,
+  })
+}
+// 根据rfqId获取RFQ详情
+export function getRfqDetail(params) {
+  return requst({
+    url: `rfq-sqe-ratings/${params.rfqId}/detail/rate-depart`,
+    method: "GET",
   })
 }
