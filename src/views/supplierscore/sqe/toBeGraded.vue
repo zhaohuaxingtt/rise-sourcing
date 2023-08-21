@@ -316,7 +316,7 @@ export default {
         ...this.form,
         current: this.page.currPage,
         size: this.page.pageSize,
-        sqeRateStatus: ['WATING_FOR_RATING', 'SAVED', 'GO_BACK']
+        sqeRateStatus: ['WATING_FOR_RATING', 'SAVED', 'AUDIT_REJECT']
       };
       this.loading = true;
       search(params)

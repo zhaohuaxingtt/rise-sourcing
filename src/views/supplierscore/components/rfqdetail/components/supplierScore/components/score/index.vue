@@ -1078,6 +1078,8 @@ export default {
     },
     //   退回SQE评分
     back() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn(this.language("请选择需要退回的数据"));
       back(this.multipleSelection.map(item => item.id)).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
@@ -1091,6 +1093,8 @@ export default {
     },
     //   驳回SQE
     reject() {
+      if (!this.multipleSelection.length)
+        return iMessage.warn(this.language("请选择需要驳回的数据"));
       reject(this.multipleSelection.map(item => item.id)).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
@@ -1104,7 +1108,13 @@ export default {
     },
     //   批准通过SQE
     approve() {
-      approve(this.multipleSelection.map(item => item.id)).then(res => {
+      let ids = []
+      if (this.multipleSelection.length) {
+        ids = this.multipleSelection.map(item => item.id)
+      } else {
+        ids = this.tableListData.map(item => item.id)
+      }
+      approve(ids).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
           iMessage.success(message)
