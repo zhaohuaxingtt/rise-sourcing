@@ -529,6 +529,9 @@ export default {
       type: Boolean,
       default: false
     },
+    isFromSQE(){
+      return this.$route.query.from === 'SQE'
+    },
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -693,7 +696,7 @@ export default {
     },
     // 提交
     async handleSubmit() {
-      if (this.showSQE) {
+      if (this.isFromSQE) { // SQE页面进来就提交SQE
         this.submit()
       } else {
         const rfqBdlRateIds = this.tableListData
