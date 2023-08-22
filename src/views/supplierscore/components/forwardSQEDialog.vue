@@ -4,7 +4,7 @@
     v-bind="$props" 
     v-on="$listeners"
     :visible.sync="visible"
-    :title="language('ZHUANPAIPINGFENRENWU', '转派评分任务')"
+    :title="language('转派SQE评分人')"
     :close-on-click-modal="false">
     <div class="body">
       <iFormGroup class="total margin-left20" :row="1" inline>
@@ -24,7 +24,7 @@
 
 <script>
 import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from 'rise'
-import { listUserByRoleCode } from "@/api/scoreConfig/configscoredept"
+import { findRaterByCurrentUser } from "@/api/scoreConfig/configscoredept"
 export default {
   components: { iDialog, iSelect, iFormGroup, iFormItem, iButton },
   props: {
@@ -37,7 +37,7 @@ export default {
   watch: {
     visible(nv) {
       if (nv) {
-        this.listUserByRoleCode()
+        this.findRaterByCurrentUser()
       } else {
         this.userId = ""
         this.options = []
@@ -55,16 +55,15 @@ export default {
     }
   },
   methods: {
-    listUserByRoleCode() {
+    findRaterByCurrentUser() {
       this.loading = true
-      listUserByRoleCode({roleCode:'SQEPFR'})
+      findRaterByCurrentUser()
       .then(res => {
         if (res?.code == 200) {
             this.options = res.data?.map((itemUser)=>{
               return {
-                ...itemUser,
-                value:itemUser.id+'',
-                label: itemUser.nameZh+(itemUser.deptDTO&&itemUser.deptDTO['deptNum'] ? '-'+itemUser.deptDTO['deptNum'] : '')
+                value:itemUser.userId+'',
+                label: itemUser.userNameZh
               }
             })||[]
         } else {
