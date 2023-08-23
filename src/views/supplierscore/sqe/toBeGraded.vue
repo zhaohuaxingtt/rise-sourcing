@@ -137,7 +137,7 @@
     </iSearch>
     <iCard class="margin-top30" :title="language('待评分任务列表')">
       <template #header-control>
-        <iButton @click="backByRfq">{{ language("退回") }}</iButton>
+        <iButton @click="backByRfq">{{ language("partsignLanguage.TuiHui") }}</iButton>
         <iButton @click="transferDept">{{ language("分配股") }}</iButton>
         <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
       </template>

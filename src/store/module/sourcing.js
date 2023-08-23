@@ -614,7 +614,7 @@ const state = {
       message: 0,
       url: '/targetpriceandscore/supplierscore/sqe/query',
       activePath: 'query',
-      key: '查询',
+      key: 'CHAXUN',
       permissionKey: 'CSCSCOREMANAGE_MENU_SUPPLIERSCORE',
       // permissionKey: 'CSCSCOREMANAGE_MENU_SQESCORE_QUERY',
       // permissionName: '查询',
