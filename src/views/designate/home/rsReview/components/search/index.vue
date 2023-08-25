@@ -410,7 +410,7 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applicationStatus: RSReviewApplicationStatus,
+      applicationStatus: [],
       signSheetStatus,
       priceConsistentStatus,
       selectOptions: {},
@@ -448,6 +448,9 @@ export default {
       this.form.endRecheckDueDate = data[1];
     },
     getOptions() {
+      // 上会RS复核支持以下状态查询
+      let searchStatus = ['CHECK_FAIL','CHECK_INPROCESS','CHECK_PASS','M_CHECK_FAIL','M_CHECK_INPROCESS','M_CHECK_PASS','PASS','NOMINATE']
+      this.applicationStatus = RSReviewApplicationStatus.filter(item=>searchStatus.includes((item.id)))
       this.getDictionary();
       // 获取车型项目
       this.getCarTypeSop();
