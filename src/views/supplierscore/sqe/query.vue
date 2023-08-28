@@ -503,8 +503,8 @@ export default {
 
       assignSqeRater({
         rfqIds: this.multipleSelection.map(item => item.id),
-        sqeRaterId: userInfo.id,
-        sqeRaterName: userInfo.nameZh
+        sqeRaterId: userInfo.value,
+        sqeRaterName: userInfo.label
       })
           .then(res => {
             const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
