@@ -23,7 +23,7 @@
                         </el-form-item>
                     </el-form>
                 </iSearch>
-            <iCard class="margin-top20 table-card">
+            <iCard class="margin-top7 table-card">
                 <div class="margin-bottom20 clearFloat">
                     <div class="floatright">
                         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
@@ -32,8 +32,8 @@
                 <!-- 表格区域 -->
                 <tableList
                     permissionKey="DESIGNATEFILES_IMPORTFILES_DETAIL"
-                    class="table table-box"
-                    height="100%"
+                    class="table"
+                    max-height="500px"
                     index
                     :lang="true"
                     :tableData="tableListData"
@@ -63,7 +63,6 @@
                 </tableList>
                 <!-- 分页 -->
                 <iPagination
-                    class="margin-bottom20"
                     @size-change="handleSizeChange($event, getList)"
                     @current-change="handleCurrentChange($event, getList)"
                     background
@@ -209,20 +208,6 @@ export default {
 <style lang="scss" scoped>
     .filesDetailList{
         position: relative;
-        height: 100%;
-        display: flex;
-        flex-flow: column;
-        ::v-deep .table-card {
-            flex: 1;
-            overflow: hidden;
-            min-height: 350px;
-            .card-body-box {
-                height: 100%;
-                .table-box {
-                    height: calc(100% - 105px);
-                }
-            }
-        }
         .openLinkText{
             color:$color-blue;
         }

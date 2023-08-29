@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\modelTargetPrice\components\tableList.vue
 -->
 <template>
-  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
+  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
     <el-table-column v-if="selection" type='selection' width="55" align='center' ></el-table-column>
     <el-table-column v-if='indexKey' type='index'  :fixed="fixed" width='40' align='center' label='#'>
       <template slot-scope="scope">
@@ -78,6 +78,7 @@ export default{
     tableLoading:{type:Boolean,default:false},
     selection:{type:Boolean,default:true},
     height:{type:Number||String},
+    maxHeight:{type:Number||String, default: '570px'},
     activeItems:{type:String,default:'b'},
     tableIndexString:{
       type:String,

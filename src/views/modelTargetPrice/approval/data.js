@@ -11,9 +11,9 @@
 export const tableTitle = [
   { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, sortable: true, fixed: true },
   { props: 'rfqName', name: 'RFQ名称', key: "RFQMINGCHENG", tooltip: true, sortable: true, fixed: true },
-  { props: 'buyerName', name: 'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true, fixed: true },
-  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true, fixed: true },
-  { props: 'cfName', name: 'CF', key: "CF", tooltip: true, width: 100, sortable: true, fixed: true },
+  { props: 'buyerName', name: 'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true },
+  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true },
+  { props: 'cfName', name: 'CF', key: "CF", tooltip: true, width: 100, sortable: true },
   { props: 'tuzhi', name: '图纸', key: "TUZHI", tooltip: true, sortable: true },
   { props: 'taskStateDesc', name: '任务状态', key: "RENWUZHUANGTAI", tooltip: true, sortable: true },
   { props: 'approvalStateDesc', name: '审批状态', key: "SHENPIZHUANGTAI", tooltip: true, sortable: true },

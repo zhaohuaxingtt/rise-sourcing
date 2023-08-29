@@ -25,7 +25,7 @@
       </div>
     </headerNav>
     <iSearch
-      class="margin-top25"
+      class="margin-top20"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
@@ -155,11 +155,11 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20 table-card" :title="language('RFQLIEBIAO', 'RFQ列表')">
+    <iCard class="margin-top7" :title="language('RFQLIEBIAO', 'RFQ列表')">
       <tableList
-        class="table-box"
-        height="100%"
+        max-height="570px"
         index
+        fixed
         :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -467,28 +467,6 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    display: flex;
-    flex-flow: column;
-    ::v-deep .card-body-box {
-      flex: 1;
-      overflow: hidden;
-      .cardBody {
-        display: flex;
-        flex-flow: column;
-      }
-      .table-box {
-        flex: 1;
-        overflow: hidden;
-      }
-    }
-  }
   .headerNav {
     display: flex;
     width: 100%;

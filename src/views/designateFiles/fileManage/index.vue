@@ -54,7 +54,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20 table-card" v-permission.auto="ACCESSORY_MANAGEMENT_TABLE|附件-附件管理-表格">
+          <iCard class="margin-top7" v-permission.auto="ACCESSORY_MANAGEMENT_TABLE|附件-附件管理-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
@@ -76,8 +76,7 @@
             permissionKey="DESIGNATEFILES_FILEMANAGE"
             ref="tableList"
             :lang="true"
-            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="table-box"
-            height="100%">
+            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload">
               <template #fujian="scope">
                 <el-popover
                   placement="right"
@@ -591,20 +590,6 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

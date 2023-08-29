@@ -8,7 +8,7 @@
 <template>
   <iPage class="out-souring-order">
     <headerNav />
-    <iSearch class="margin-bottom20" @sure="sure" @reset="reset()">
+    <iSearch class="margin-bottom7" @sure="sure" @reset="reset()">
       <el-form>
         <template v-for="(items, index) in searchForm">
           <el-form-item
@@ -66,7 +66,7 @@
         </template>
       </el-form>
     </iSearch>
-    <iCard class="table-card">
+    <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="showMe">
           <span>{{ $t("MODEL-ORDER.LK_JINKANZIJI") }}</span>
@@ -132,8 +132,6 @@
         :tableLoading="tableLoading"
         index
         indexFixed
-        height="100%"
-        class="table-box"
       >
         <template #riseCode="scope">
           <span
@@ -717,20 +715,6 @@ export default {
 <style lang="scss" scoped>
 .out-souring-order{
   position: relative;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-      flex: 1;
-      overflow: hidden;
-      min-height: 350px;
-      .card-body-box {
-          height: 100%;
-          .table-box {
-              height: calc(100% - 105px);
-          }
-      }
-  }
 }
 .openLinkText {
   color: $color-blue;

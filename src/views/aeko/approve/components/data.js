@@ -230,10 +230,15 @@ export const tableCsfTitle = [
       {key:'AEKO_BUHANSHUI',name:'(不含税)'}
     ],
   key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true,width:110 },
-  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:90 },
+  { props: "EP3",
+    isHeaderSetting:true,
+    HeaderSettingList:[
+      {key:'QITAFEIYONG',name:'其他费用'},
+      {key:'AEKO_BUHANSHUI',name:'(不含税)'}
+    ], tooltip: true,width:90 },
   { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:70 },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true,minWidth:80 },
-  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:100 },
+  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:90 },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI" ,tooltip: true ,width:120},
   { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" ,tooltip: true,width:105 },
 ]
@@ -263,7 +268,12 @@ export const tableAKEOApprovedTitle = [
       {key:'AEKO_BUHANSHUI',name:'(不含税)'}
     ],
   key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true ,width:120 },
-  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true ,width:90 },
+  { props: "EP3",
+    isHeaderSetting:true,
+    HeaderSettingList:[
+      {key:'QITAFEIYONG',name:'其他费用'},
+      {key:'AEKO_BUHANSHUI',name:'(不含税)'}
+    ], tooltip: true,width:90 },
   { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:57 },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, minWidth: 70 },
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:73 },

@@ -1,140 +1,97 @@
-<template>
+  <template>
   <div>
-    <el-form
-      class="form"
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-position="left"
-      :hideRequiredAsterisk="true"
-      :validate-on-rule-change="false"
-    >
-      <!-- 项目查询 -->
-      <iCard style="margin-top: 1rem" :title="language('BIDDING_XIANGMUCHAXUN','项目查询')" collapse>
-        <div class="form-top">
-          <!-- <div>
-            <h2>{{language('BIDDING_XIANGMUCHAXUE','项目查询')}}</h2>
-          </div> -->
-           <div class="item">
-          <iFormItem :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" prop="rfqCode">
-            <iLabel :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" slot="label"></iLabel>
-            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqCode"></iInput>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" prop="rfqName">
-            <iLabel :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" slot="label"></iLabel>
-            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqName"></iInput>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
-            <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label"></iLabel>
-            <iSelect ref='select' v-model="ruleForm.projectType" clearable @keydown.native.capture.enter.stop.prevent>
-              <el-option
-                v-for="(item, index) in projectType"
-                :key="index"
-                :value="item.value"
-                :label="language(item.key, item.label)"
-              >
-              </el-option>
-            </iSelect>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_BAOJIALEIXING', '报价类型')" prop="quoteType">
-            <iLabel :label="language('BIDDING_BAOJIALEIXING', '报价类型')" slot="label"></iLabel>
-            <iSelect ref='select' v-model="ruleForm.quoteType" clearable @keydown.native.capture.enter.stop.prevent>
-              <el-option
-                v-for="(item, index) in quoteType"
-                :key="index"
-                :value="item.value"
-                :label="language(item.key, item.label)"
-              >
-              </el-option>
-            </iSelect>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" prop="biddingType">
-            <iLabel :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" slot="label"></iLabel>
-            <iSelect ref='select' v-model="ruleForm.biddingType" clearable @keydown.native.capture.enter.stop.prevent>
-              <el-option
-                v-for="(item, index) in biddingType"
-                :key="index"
-                :value="item.value"
-                :label="language(item.key, item.label)"
-              >
-              </el-option>
-            </iSelect>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" prop="rfqEndTime">
-            <iLabel :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" slot="label"></iLabel>
-            <iDatePicker
-              clearable
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              type="datetime"
-              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
-              v-model="ruleForm.rfqEndTime"
-            />
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" prop="openTenderTime">
-            <iLabel :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" slot="label"></iLabel>
-            <iDatePicker
-              clearable
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              type="datetime"
-              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
-              v-model="ruleForm.openTenderTime"
-            />
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" prop="biddingBeginTime">
-            <iLabel :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" slot="label"></iLabel>
-            <iDatePicker
-              clearable
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              type="datetime"
-              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
-              v-model="ruleForm.biddingBeginTime"
-              :picker-options="biddingBeginTimeOptions"
-            />
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_ZHUANGTAI', '状态')" prop="biddingStatus">
-            <iLabel :label="language('BIDDING_ZHUANGTAI', '状态')" slot="label"></iLabel>
-            <iSelect ref='select' v-model="ruleForm.biddingStatus" clearable @keydown.native.capture.enter.stop.prevent>
-              <el-option
-                v-for="(item, index) in biddingStatus"
-                :key="index"
-                :value="item.value"
-                :label="language(item.key, item.label)"
-              >
-              </el-option>
-            </iSelect>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_CHUANGJIANREN', '创建人')" prop="createName">
-            <iLabel :label="language('BIDDING_CHUANGJIANREN', '创建人')" slot="label"></iLabel>
-            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.createName"></iInput>
-          </iFormItem>
-
-          <iFormItem :label="language('BIDDING_LINGJIANHAO', '零件号')" prop="partNumber">
-            <iLabel :label="language('BIDDING_LINGJIANHAO', '零件号')" slot="label"></iLabel>
-            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.partNumber"></iInput>
-          </iFormItem>
-          </div>
-          <div class="item-button">
-            <iButton @click.enter="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
-            <iButton class="item-button-child2" @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
-          </div>
-        </div>
-
-      </iCard>
-
-      <!-- 项目列表 -->
-      <iCard style="margin-top: 1rem">
+    <iSearch @sure="getTableList" @reset="handleSearchReset('ruleForm')">
+      <el-form>
+        <iFormItem :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" prop="rfqCode">
+          <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqCode"></iInput>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" prop="rfqName">
+          <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqName"></iInput>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
+          <iSelect ref='select' v-model="ruleForm.projectType" clearable @keydown.native.capture.enter.stop.prevent>
+            <el-option
+              v-for="(item, index) in projectType"
+              :key="index"
+              :value="item.value"
+              :label="language(item.key, item.label)"
+            >
+            </el-option>
+          </iSelect>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_BAOJIALEIXING', '报价类型')" prop="quoteType">
+          <iSelect ref='select' v-model="ruleForm.quoteType" clearable @keydown.native.capture.enter.stop.prevent>
+            <el-option
+              v-for="(item, index) in quoteType"
+              :key="index"
+              :value="item.value"
+              :label="language(item.key, item.label)"
+            >
+            </el-option>
+          </iSelect>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" prop="biddingType">
+          <iSelect ref='select' v-model="ruleForm.biddingType" clearable @keydown.native.capture.enter.stop.prevent>
+            <el-option
+              v-for="(item, index) in biddingType"
+              :key="index"
+              :value="item.value"
+              :label="language(item.key, item.label)"
+            >
+            </el-option>
+          </iSelect>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" prop="rfqEndTime">
+          <iDatePicker
+            clearable
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd 23:59:59"
+            type="date"
+            :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
+            v-model="ruleForm.rfqEndTime"
+          />
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" prop="openTenderTime">
+          <iDatePicker
+            clearable
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            type="date"
+            :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
+            v-model="ruleForm.openTenderTime"
+          />
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" prop="biddingBeginTime">
+          <iDatePicker
+            clearable
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            type="date"
+            :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
+            v-model="ruleForm.biddingBeginTime"
+            :picker-options="biddingBeginTimeOptions"
+          />
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_ZHUANGTAI', '状态')" prop="biddingStatus">
+          <iSelect ref='select' v-model="ruleForm.biddingStatus" clearable @keydown.native.capture.enter.stop.prevent>
+            <el-option
+              v-for="(item, index) in biddingStatus"
+              :key="index"
+              :value="item.value"
+              :label="language(item.key, item.label)"
+            >
+            </el-option>
+          </iSelect>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_CHUANGJIANREN', '创建人')" prop="createName">
+          <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.createName"></iInput>
+        </iFormItem>
+        <iFormItem :label="language('BIDDING_LINGJIANHAO', '零件号')" prop="partNumber">
+          <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.partNumber"></iInput>
+        </iFormItem>
+      </el-form>
+    </iSearch>
+    <iCard class="margin-top7">
         <div class="form-top1">
           <div>
             <h2>{{language('BIDDING_XIANGMULIEBIAO', '项目列表')}}</h2>
@@ -148,18 +105,12 @@
             >
           </div>
         </div>
-        <!-- <iTableCustom
-          :columns="projectTableTitle"
-          :loading="tableLoading"
-          :data="tableListData"
-          @handle-selection-change="handleSelectionChange"
-          @go-detail="handleGoDetail"
-        /> -->
         <commonTable
           ref="tableDataForm"
           :tableTitle="projectTableTitle"
           :tableLoading="tableLoading"
           :tableData="tableListData"
+          maxHeight="570px"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- 报价类型 -->
@@ -241,11 +192,11 @@
 
         <addManual :show.sync="showAddManual" />
       </iCard>
-    </el-form>
   </div>
 </template>
 <script>
 import {
+  iSearch,
   iInput,
   iSelect,
   iFormItem,
@@ -272,6 +223,7 @@ import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
   components: {
+    iSearch,
     iInput,
     iSelect,
     iFormItem,
@@ -369,7 +321,7 @@ export default {
     },
     // 重置
     handleSearchReset() {
-      this.$refs["ruleForm"].resetFields();
+      this.ruleForm = { ...infoForm }
       this.getTableList();
     },
     handleGoDetail(e) {
@@ -518,32 +470,6 @@ export default {
   }
 }
 
-::v-deep .el-date-editor {
-  width: 100%;
-  .el-icon-time::before {
-    content: "";
-    display: none;
-  }
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0.2rem;
-    right: 1rem;
-    width: 2rem;
-    height: 2rem;
-    color: grey;
-    background-image: url("~@/assets/images/datetime.svg");
-    background-size: 2rem 2rem;
-    background-repeat: no-repeat
-  }
-  &:hover::after {
-    display: none;
-  }
-
-  .el-input__inner {
-    padding-left: 0.875rem;
-  }
-}
 ::v-deep .el-table {
   .el-form-item {
     margin-top: 0;

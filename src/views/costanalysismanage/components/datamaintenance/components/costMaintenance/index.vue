@@ -9,14 +9,8 @@
 -->
 <template>
   <div class="datamaintenance">
-    <!-- <div class="control">
-      <logButton class="margin-left20" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
-    </div> -->
     <iCard
-      class="card"
+      class="card margin-top10"
       :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')"
     >
       <template v-slot:header-control>
@@ -108,7 +102,7 @@
 </template>
 
 <script>
-import { icon, iCard, iButton, iPagination, iMessage } from "rise";
+import {icon, iCard, iButton, iPagination, iMessage, iSearch} from "rise";
 import logButton from "@/components/logButton";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 // import uploadButton from "../../../uploadButton"
@@ -127,6 +121,7 @@ import dateSelect from "./dateSelect";
 
 export default {
   components: {
+    iSearch,
     // icon,
     iCard,
     iButton,

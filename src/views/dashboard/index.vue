@@ -11,7 +11,7 @@
     <!-- <headerNav /> -->
     <!-- 功能卡片 -->
     <div class="dashboard-card">
-      <el-row :gutter="10">
+      <el-row :gutter="7">
         <!-- 零件签收 -->
         <el-col :span="4" v-permission.auto="DASHBOARD_OVERVIEW_PARTSIGN|寻源概览-零件签收">
           <iCard :tabCard="false">
@@ -145,7 +145,7 @@
       </el-row>
     </div>
     <div class="dashboard-charts">
-      <el-row :gutter="10">
+      <el-row :gutter="7">
         <!-- 材料组定点时率及平均定点周期 -->
         <el-col :span="16" v-permission.auto="DASHBOARD_OVERVIEW_MATERIALANDNOMIRATE|寻源概览-材料组定点及时率及平均定点周期">
           <nomicharts :data="materialGroupData" v-loading="loading" />
@@ -341,9 +341,8 @@ export default {
   cursor: pointer;
 }
 .dashboard-card {
-  padding: 0 0 10px 0;
   ::v-deep.card {
-    height: 148PX;
+    height: 160PX;
     background-image: url(~@/assets/images/bgCar.gif);
     background-repeat: no-repeat;
     background-position: bottom right;
@@ -441,7 +440,7 @@ export default {
   }
 }
 .dashboard-charts {
-  margin-top: 10px;
+  margin-top: 7px;
   min-height: 400px;
 }
 </style>
