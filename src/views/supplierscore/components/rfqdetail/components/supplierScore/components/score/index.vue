@@ -529,9 +529,6 @@ export default {
       type: Boolean,
       default: false
     },
-    isFromSQE(){
-      return this.$route.query.from === 'SQE'
-    },
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -566,6 +563,9 @@ export default {
     },
     isEP() {
       return this.tableListData.some((item) => item.rateTag == "EP");
+    },
+    isFromSQE(){
+      return this.$route.query.from === 'SQE'
     },
   },
   inject: ["getRfqDetailByCurrentDept", "getSQERfqDetailByCurrentDept"],
@@ -607,13 +607,13 @@ export default {
         {keys: "MQ_GRADE"},
         {keys: "EP_GRADE"},
         {keys: "AFFIX_GRADE"},
-        {keys: "EP_GRADE"}
+        {keys: "SQE_PERFORMANCE"}
       ]
       selectDictByKeys(codeList).then((res) => {
         this.mqGrage = res?.data.MQ_GRADE;
         this.epGrade = res?.data.EP_GRADE;
         this.affixGrade = res?.data.AFFIX_GRADE;
-        this.sqeGrade = res?.data.MQ_GRADE;
+        this.sqeGrade = res?.data.SQE_PERFORMANCE;
       });
     },
     getSelectLabel(code, options = []) {
@@ -809,53 +809,53 @@ export default {
     },
     // 保存
     handleSave() {
-      if (isEqual(this.tableListData, this.tableListDataCache)) {
-        return iMessageBox(
+      if (this.editType === 'sqe') {
+        this.updateSqeRateBatch()
+      } else if (this.editType === 'sqeApproval') {
+        this.updateSeqAuditBatch()
+      } else  {
+        if (isEqual(this.tableListData, this.tableListDataCache)) {
+          return iMessageBox(
             this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"),
             this.language("TISHI", "提示"),
             {
               showCancelButton: false,
               confirmButtonText: this.language("QUEREN", "确认"),
             }
-        );
-      }
-      if (this.editType === 'sqe') {
-        this.updateSqeRateBatch()
-      } else if (this.editType === 'sqeApproval') {
-        this.updateSeqAuditBatch()
-      } else {
+          );
+        }
         // 过滤一下编辑项的变更
         const filterTableData = this.tableListData.filter((item) =>
-            this.editIdList.includes(item.id)
+          this.editIdList.includes(item.id)
         );
         if (filterTableData.some((item) => !item.rate && item.rate !== 0)) {
           return iMessage.warn(
-              this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项")
+            this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项")
           );
         }
         this.saveLoading = true;
         updateRfqBdlRatings(
-            filterTableData.map((item) => ({
-              addFee: item.addFee,
-              confirmCycle: item.confirmCycle,
-              externalFee: item.externalFee,
-              id: item.id,
-              rate: item.rate,
-              rfqId: this.rfqId,
-              memo: item.memo,
-            }))
+          filterTableData.map((item) => ({
+            addFee: item.addFee,
+            confirmCycle: item.confirmCycle,
+            externalFee: item.externalFee,
+            id: item.id,
+            rate: item.rate,
+            rfqId: this.rfqId,
+            memo: item.memo,
+          }))
         )
-            .then((res) => {
-              const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
-              if (res.code == 200) {
-                iMessage.success(message);
-                this.getRfqBdlRatingsByCurrentDept();
-              } else {
-                iMessage.error(message);
-              }
-              this.saveLoading = false;
-            })
-            .catch(() => (this.saveLoading = false));
+        .then((res) => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+          if (res.code == 200) {
+            iMessage.success(message);
+            this.getRfqBdlRatingsByCurrentDept();
+          } else {
+            iMessage.error(message);
+          }
+          this.saveLoading = false;
+        })
+        .catch(() => (this.saveLoading = false));
       }
     },
     // 查看零件评分
