@@ -83,7 +83,6 @@ export const staticRouter = [
 				children: [
 					{
 						path: '/',
-						// redirect: 'budgetManagement/carTypeOverview',
 					},
 					//  付款计划制定与查看
 					{

@@ -12,7 +12,7 @@
     </div>
     <DetailsSearch @sure="handleSearchSure" />
 
-    <iCard class="table-card">
+    <iCard>
       <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" @refresh="refresh" />
       <div class="unitExplain">
         <UnitExplain />
