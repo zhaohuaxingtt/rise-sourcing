@@ -931,7 +931,7 @@ export default {
           list.push('待审批')
         }
         if(this.isSqeRater){
-          list.push("待评分", "已保存")
+          list.push("待评分", "已保存", "审批驳回")
         }
         console.log(list)
         this.editIdList = this.tableListData
