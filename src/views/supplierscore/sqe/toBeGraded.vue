@@ -133,6 +133,16 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <el-form-item :label="language('SQE评分状态')">
+          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="item in statusOptions"
+              :key="item.key"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top30" :title="language('待评分任务列表')">
@@ -244,6 +254,13 @@ export default {
       showSelfOptions: [
         {label: "是", key: "nominationLanguage.Yes", value: true},
         {label: "否", key: "nominationLanguage.No", value: false}
+      ],
+      sqeRateStatus: [],
+      statusOptions: [
+        {label: "未分配", key: "未分配", value: 'UNDISTRIBUTED'},
+        {label: "待评分", key: "待评分", value: 'WATING_FOR_RATING'},
+        {label: "已保存", key: "已保存", value: 'SAVED'},
+        {label: "审批驳回", key: "审批驳回", value: 'AUDIT_REJECT'},
       ]
     };
   },
@@ -316,7 +333,7 @@ export default {
         ...this.form,
         current: this.page.currPage,
         size: this.page.pageSize,
-        sqeRateStatus: ['WATING_FOR_RATING', 'SAVED', 'AUDIT_REJECT']
+        sqeRateStatus: this.sqeRateStatus.length ? this.sqeRateStatus : this.statusOptions.map(item => item.value)
       };
       this.loading = true;
       search(params)
