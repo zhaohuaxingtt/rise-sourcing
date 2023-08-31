@@ -265,11 +265,14 @@ export default {
         {label: "否", key: "nominationLanguage.No", value: false}
       ],
       statusOptions: [
+        {label: "待分配", key: "待分配", value: 'UNDISTRIBUTED'},
+        {label: "待评分", key: "待评分", value: 'WATING_FOR_RATING'},
         {label: "待提交", key: "待提交", value: 'WATING_FOR_SUBMIT'},
         {label: "待审核", key: "待审核", value: 'RATING_FOR_AUDITING'},
         {label: "审批驳回", key: "审批驳回", value: 'AUDIT_REJECT'},
         {label: "评分完成", key: "评分完成", value: 'RATING_COMPLETED'},
-        {label: "已保存", key: "已保存", value: 'SAVED'}
+        {label: "已保存", key: "已保存", value: 'SAVED'},
+        {label: "已退回", key: "已退回", value: 'GO_BACK'}
       ]
     };
   },
