@@ -137,7 +137,7 @@
     </iSearch>
     <iCard :title="language('待审核任务列表')" class="margin-top30">
       <template #header-control>
-        <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
+        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_AUDIT_FENPEISQEPINGFENREN">{{ language("分配SQE评分人") }}</iButton>
       </template>
       <tableList
           :lang="true"

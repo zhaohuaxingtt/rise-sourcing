@@ -147,9 +147,9 @@
     </iSearch>
     <iCard class="margin-top30" :title="language('待评分任务列表')">
       <template #header-control>
-        <iButton @click="backByRfq">{{ language("partsignLanguage.TuiHui") }}</iButton>
-        <iButton @click="transferDept">{{ language("分配股") }}</iButton>
-        <iButton @click="handleTransfer">{{ language("分配SQE评分人") }}</iButton>
+        <iButton @click="backByRfq" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_TUIHUI">{{ language("partsignLanguage.TuiHui") }}</iButton>
+        <iButton @click="transferDept" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_FENPEIGU">{{ language("分配股") }}</iButton>
+        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_FENPEISQEPINGFENREN">{{ language("分配SQE评分人") }}</iButton>
       </template>
       <tableList
           class="table"
