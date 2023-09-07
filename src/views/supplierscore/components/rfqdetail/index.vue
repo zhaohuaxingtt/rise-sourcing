@@ -11,47 +11,48 @@
     <div class="header">
       <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div>
+        <iButton v-if="isMQRater" @click="openDialog">{{language('选择SQE评分股')}}</iButton>
         <iLoger :config="{ bizId_obj_ae: 'rfqId', module_obj_ae:'供应商评分', queryParams:['bizId_obj_ae']}" isPage :isUser="true" class="margin-left25" />
-        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
-            class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
-      <!-- <div class="control">
-        <logButton class="margin-left20" />
-        <span class="margin-left20">
-          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-        </span>
-      </div> -->
     </div>
-    <infos class="margin-top30" :rfqInfo="rfqInfo" />
+    <infos class="margin-top30" :rfqInfo="rfqInfo" :showSQE="showSQE || isMQRater" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
-        <component :ref="tab.name" :is="component" :rfqInfo="rfqInfo" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
+        <component :ref="tab.name" :is="component" :rfqInfo="rfqInfo" :showSQE="showSQE || isMQRater" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>
+    <transferSQEDeptDialog
+        ref="forwardDialog"
+        :visible.sync="forwardDialogVisible"
+        @getData="refreshPage"
+        :rows="[rfqInfo]"
+      />
   </iPage>
 </template>
 
 <script>
-import { iPage, icon, iTabsList, iMessage } from "rise"
+import { iPage, iButton, iTabsList, iMessage } from "rise"
 import logButton from "@/components/logButton"
 import infos from "./components/infos"
 import partList from "./components/partList"
 import supplierScore from "./components/supplierScore"
 import inquiryAttachment from "./components/inquiryAttachment"
-import { getRfqDetailByCurrentDept } from "@/api/supplierscore"
+import transferSQEDeptDialog from "../transferSQEDeptDialog"
+import {getRfqDetail, getRfqDetailByCurrentDept} from "@/api/supplierscore"
 
 import iLoger from 'rise/web/components/iLoger'
 
 export default {
   components: {
     iPage,
-    icon,
+    iButton,
     iTabsList,
     logButton,
     infos,
     partList,
     supplierScore,
     inquiryAttachment,
+    transferSQEDeptDialog,
     iLoger
   },
   data() {
@@ -63,18 +64,37 @@ export default {
         { label: "供应商评分", name: "supplierScore", key: "LK_GONGYINGSHANGPINGFEN", components: [ "supplierScore" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_SUPPLIERSCORE|供应商评分" },
         { label: "询价附件", name: "inquiryAttachment", key: "LK_XUNJIAFUJIAN", components: [ "inquiryAttachment" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_INQUIRYATTACHMENT|询价附件" }
       ],
-      rfqInfo: {}
+      rfqInfo: {},
+      forwardDialogVisible: false
     }
+  },
+  computed:{
+    ...Vuex.mapState({
+      userInfo: (state) => state.permission.userInfo,
+    }),
+    showSQE(){
+      return this.$route.query.from === 'SQE'
+    },
+    // 质量评分人
+    isMQRater(){
+      // 质量评分类型，质量评分人
+      return this.$route.query.rateTag === 'MQ' && this.rfqInfo.raterId === this.userInfo.id
+    },
   },
   provide() {
     return {
       getRfqDetailByCurrentDept: this.getRfqDetailByCurrentDept,
+      getSQERfqDetailByCurrentDept: this.getSQERfqDetailByCurrentDept,
     };
   },
   created() {
     this.rfqId = this.$route.query.rfqId
     this.currentTab = this.$route.query.currentTab
-    this.getRfqDetailByCurrentDept()
+    if(this.showSQE){
+      this.getSQERfqDetailByCurrentDept()
+    }else{
+      this.getRfqDetailByCurrentDept()
+    }
   },
   mounted() {
     const component = this.$refs[this.currentTab][0]
@@ -86,21 +106,58 @@ export default {
       getRfqDetailByCurrentDept({
         rfqId: this.rfqId
       })
-      .then(res => {
-        if (res.code == 200) {
-          this.rfqInfo = res.data || {}
+          .then(res => {
+            if (res.code == 200) {
+              this.rfqInfo = res.data || {}
 
-          if (type !== "update") {
-            const component = this.$refs[this.currentTab][0]
-            if (typeof component.init === "function") component.init()
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
+              if (type !== "update") {
+                const component = this.$refs[this.currentTab][0]
+                if (typeof component.init === "function") component.init()
+              }
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
 
-        this.loading = false
+            this.loading = false
+          })
+          .catch(() => this.loading = false)
+    },
+    getSQERfqDetailByCurrentDept(type) {
+      this.loading = true
+      console.log('this.rfqId=>',this.rfqId)
+      getRfqDetail({
+        rfqId: this.rfqId
       })
-      .catch(() => this.loading = false)
+          .then(res => {
+            if (res.code == 200) {
+              this.rfqInfo = res.data || {}
+
+              if (type !== "update") {
+                const component = this.$refs[this.currentTab][0]
+                if (typeof component.init === "function") component.init()
+              }
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+
+            this.loading = false
+          })
+          .catch(() => this.loading = false)
+    },
+    refreshPage(){
+      if(!this.showSQE){
+        this.getRfqDetailByCurrentDept()
+        // let router = this.$router.resolve({
+        //   path: this.$route.path,
+        //   query:{
+        //     ...this.$route.query,
+        //     from:'SQE'
+        //   }
+        // })
+        // this.$router.push(router.route.fullPath)
+      }else{
+        this.getSQERfqDetailByCurrentDept()
+      }
     },
     // 页签切换
     tabChange() {
@@ -113,8 +170,13 @@ export default {
     updateRfq() {
       this.getRfqDetailByCurrentDept("update")
     },
-    
-    gotoDBhistory() {
+    // 选择SQE评分股
+    openDialog() {
+      this.forwardDialogVisible = true
+    },
+    // 
+    confirmForward(){
+      this.forwardDialogVisible = false
     }
   }
 }

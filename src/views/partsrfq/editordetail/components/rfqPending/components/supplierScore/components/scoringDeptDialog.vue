@@ -203,7 +203,7 @@ export default {
                   key: item.rateTag,
                   label: item.rateTagDesc,
                   value: item.rateTag,
-                }))
+                })).filter(item=>item.key!=='SQE') // 过滤掉其中的SQE部门
               : [];
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);

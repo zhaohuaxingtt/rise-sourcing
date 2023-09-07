@@ -26,6 +26,43 @@ export default [
         component: () => import("@/views/supplierscore"),
       }, 
       {
+        path: "sqe",
+        name: "supplierscoreSQE",
+        meta: {
+          title: "SQE评分",
+          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
+        },
+        component: () => import("@/views/supplierscore/sqe"),
+        redirect: 'sqe/tobegraded',
+        children:[
+          {
+            path: "tobegraded",
+            name: "toBeGraded",
+            meta: {
+              title: "SQE评分-待评分",
+              activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
+            },
+            component: () => import("@/views/supplierscore/sqe/toBeGraded"),
+          },{
+            path: "audit",
+            name: "audit",
+            meta: {
+              title: "SQE评分-待审核",
+              activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
+            },
+            component: () => import("@/views/supplierscore/sqe/audit"),
+          },{
+            path: "query",
+            name: "query",
+            meta: {
+              title: "SQE评分-查询",
+              activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
+            },
+            component: () => import("@/views/supplierscore/sqe/query"),
+          },
+        ]
+      }, 
+      {
         path: "rfqdetail",
         name: "supplierscoreRfqDetail",
         meta: {

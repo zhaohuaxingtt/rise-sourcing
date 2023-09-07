@@ -618,6 +618,7 @@ export default {
         query: {
           rfqId: row.rfqId,
           currentTab: "supplierScore",
+          rateTag: row.hasMqRate ? 'MQ' : undefined
         },
       });
       window.open(route.href, "_blank");

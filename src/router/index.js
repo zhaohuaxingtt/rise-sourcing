@@ -411,17 +411,4 @@ router.afterEach(() => {
 		appLoading.style.display = 'none'
 	}
 })
-function getRoute(baseUrl,routes){
-	let result = []
-	routes.forEach(child=>{
-	  let childUrl = child.path.indexOf('/')!=0?(baseUrl!='/'?baseUrl:'')+'/'+child.path:child.path
-	  if(child.children&&child.children.length){
-		result = [...result,...getRoute(childUrl,child.children)]
-	  }
-	  result.push(childUrl)
-	})
-	return result
-  }
-  
-  console.log('routeConfig=>',getRoute('',router.options.routes));
 export default router

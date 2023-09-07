@@ -10,5 +10,6 @@ import rfq from "./rfq";
 import aeko from "./aeko";
 import deliver from "./deliver";
 import sel from "./sel";
+import sqe from "./sqe";
 import newField from "./newField";
-export default { ...menus, ...rfq, ...aeko, ...deliver, ...sel, ...newField }
+export default { ...menus, ...rfq, ...aeko, ...deliver, ...sel, ...sqe, ...newField }
