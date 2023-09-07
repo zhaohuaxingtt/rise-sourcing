@@ -15,6 +15,7 @@ const whiteList = ['/login', '/ui', '/superLogin', '/sourceinquirypoint/designat
 
 router.beforeEach((to, from, next) => {
     const token = getToken()
+    document.title = to.meta.title ? `PP_${to.meta.title}` : 'RiSE'
     // eslint-disable-next-line no-debugger
     if (token) {
         if (to.path === '/login') {
@@ -28,7 +29,6 @@ router.beforeEach((to, from, next) => {
             if (userNum) {
                 _vds.push(["setUserId", userNum]);
                 _vds.push(["setTrackerHost", 'webbehavior.csvw.com/saicio']);
-                console.log('记录行为==>', _vds);
                 if (!document.getElementsByTagName("script")['saic']) {
                     var vds = document.createElement("script");
                     vds.id = 'saic'
