@@ -9,38 +9,38 @@
 export default [
   {
     path: "seltargetprice",
-    meta: { title: "SEL目标价管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+    meta: { title: "SEL目标价管理", activeMenu: ['RISE_WORKBENCH', 'FINANCIALMANAGE'] },
     component: () => import("@/views/routerView"),
     redirect: "seltargetprice/signin",
     children: [
       {
         path: "signin",
         name: "targetPriceSignin",
-        meta: { title: "目标价签收", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "SEL目标价-签收" },
         component: () => import("@/views/SELTargetPrice/signin"),
       },
       {
         path: "maintenance",
         name: "targetPriceMaintenance",
-        meta: { title: "目标价维护", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "SEL目标价-维护" },
         component: () => import("@/views/SELTargetPrice/maintenance"),
       },
       {
         path: "approval",
         name: "targetPriceApproval",
-        meta: { title: "目标价审批", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "SEL目标价-审批" },
         component: () => import("@/views/SELTargetPrice/approval"),
       },
       {
         path: "query",
         name: "targetPriceQuery",
-        meta: { title: "目标价查询", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "SEL目标价-查询" },
         component: () => import("@/views/SELTargetPrice/query"),
       },
       {
         path: "batchMaintain",
         name: "batchMaintain",
-        meta: { title: "目标价批量维护", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "SEL目标价-批量维护" },
         component: () => import("@/views/SELTargetPrice/components/batchMaintain"),
       },
     ]

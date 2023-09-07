@@ -9,32 +9,32 @@
 export default [
   {
     path: "financialtargetprice",
-    meta: { title: "财务目标价管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+    meta: { title: "财务目标价管理", activeMenu: ['RISE_WORKBENCH', 'FINANCIALMANAGE'] },
     component: () => import("@/views/routerView"),
     redirect: "financialtargetprice/maintenance",
     children: [
       {
         path: "maintenance",
         name: "targetPriceMaintenance",
-        meta: { title: "目标价维护", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "零件目标价-维护" },
         component: () => import("@/views/financialTargetPrice/maintenance"),
       },
       {
         path: "approval",
         name: "targetPriceApproval",
-        meta: { title: "目标价审批", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "零件目标价-审批" },
         component: () => import("@/views/financialTargetPrice/approval"),
       },
       {
         path: "query",
         name: "targetPriceQuery",
-        meta: { title: "目标价查询", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "零件目标价-查询" },
         component: () => import("@/views/financialTargetPrice/query"),
       },
       {
         path: "detail",
         name: "targetPriceDetail",
-        meta: { title: "目标价详情", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "零件目标价-详情" },
         component: () => import("@/views/financialTargetPrice/targetPriceDetail"),
       },
     ]

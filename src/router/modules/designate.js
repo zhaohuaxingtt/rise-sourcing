@@ -342,7 +342,7 @@ export default [
         path: '/sourcing/partsnomination',
         name: 'designateHome',
         meta: {
-          title: '定点申请综合管理',
+          title: '定点管理-定点申请',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home'),
@@ -351,7 +351,7 @@ export default [
         path: '/sourcing/partsnomination/rsreview',
         name: 'designateRsReview',
         meta: {
-          title: '上会RS单复核',
+          title: '定点管理-上会RS单复核',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/rsReview'),
@@ -360,7 +360,7 @@ export default [
         path: '/sourcing/partsnomination/rsreview/details',
         name: 'designateRsreviewDetails',
         meta: {
-          title: '上会RS单复核详情',
+          title: '定点管理-上会RS单复核详情',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/rsReview/details'),
@@ -369,7 +369,7 @@ export default [
         path: '/sourcing/partsnomination/record',
         name: 'designateRecord',
         meta: {
-          title: '定点记录综合管理',
+          title: '定点管理-定点记录综合管理',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/record'),
@@ -378,7 +378,7 @@ export default [
         path: '/sourcing/partsnomination/record/detail',
         name: 'designateRecordDetails',
         meta: {
-          title: '定点记录详情',
+          title: '定点管理-定点记录详情',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/record/detail'),
@@ -387,7 +387,7 @@ export default [
         path: '/sourcing/partsnomination/signSheet',
         name: 'designateSignSheet',
         meta: {
-          title: '签字单列表',
+          title: '定点管理-签字单列表',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/signSheet'),
@@ -396,7 +396,7 @@ export default [
         path: '/sourcing/partsnomination/signSheetBox',
         name: 'designateSignSheetBox',
         meta: {
-          title: '签字单列表',
+          title: '定点管理-签字单列表',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/signSheet/box'),
@@ -405,7 +405,7 @@ export default [
         path: '/sourcing/partsnomination/signSheet/addSignOverView',
         name: 'addSignOverView',
         meta: {
-          title: '签字单导航',
+          title: '定点管理-签字单导航',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
         },
         component: () => import('@/views/designate/home/signSheet/components/headerNav/index'),
@@ -414,7 +414,7 @@ export default [
             path: 'details',
             name: 'designateNewSignSheet',
             meta: {
-              title: '新建签字单',
+              title: '定点管理-M签字单-新建签字单',
               activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
             },
             component: () => import('@/views/designate/home/signSheet/details'),

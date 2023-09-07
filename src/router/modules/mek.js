@@ -11,6 +11,10 @@ export default [
   {
     path: "/sourcing",
     name: "MEK",
+    meta: {
+      title: "谈判",
+      activeMenu: ['RISE_WORKBENCH', 'WORKBENCH_NEGOCIATE'],
+    },
     component: () => import("@/layout/default"),
     children: [
       {
@@ -25,6 +29,9 @@ export default [
       {
         path: "mek/mekDetails",
         name: "mekDetails",
+        meta: {
+          title: "MEK分析库",
+        },
         component: () =>
           import(
             "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails"

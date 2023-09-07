@@ -77,7 +77,7 @@ export const staticRouter = [
 				path: '/tooling',
 				name: 'tooling',
 				meta: {
-					title: '模具',
+					title: '模具投资',
 				},
 				component: () => import(`@/views/ws2`),
 				children: [
@@ -94,7 +94,7 @@ export const staticRouter = [
 						path: '/tooling/investmentAdmin/payBlock',
 						name: 'investmentAdminPayBlock',
 						meta: {
-							title: '付款看板',
+							title: '模具投资-付款计划制定与查看-付款看板',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/payBlock`),
@@ -103,7 +103,7 @@ export const staticRouter = [
 						path: '/tooling/investmentAdmin/yearlyPlan',
 						name: 'investmentAdminYearlyPlan',
 						meta: {
-							title: '年度计划',
+							title: '模具投资-付款计划制定与查看-年度计划',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/yearlyPlan`),
@@ -112,7 +112,7 @@ export const staticRouter = [
 						path: '/tooling/investmentAdmin/monthlyPlan',
 						name: 'investmentAdminMonthlyPlan',
 						meta: {
-							title: '月度计划',
+							title: '模具投资-付款计划制定与查看-月度计划',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/monthlyPlan`),
@@ -126,7 +126,7 @@ export const staticRouter = [
 						path: '/tooling/budgetManagement/carTypeOverview',
 						name: 'carTypeOverview',
 						meta: {
-							title: '生成投资清单',
+							title: '模具投资-预算管理-车型项目',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
@@ -136,7 +136,7 @@ export const staticRouter = [
 						path: '/tooling/budgetManagement/generateInvestmentList',
 						name: 'generateInvestmentList',
 						meta: {
-							title: '生成投资清单',
+							title: '模具投资-预算管理-生成投资清单',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
@@ -146,7 +146,7 @@ export const staticRouter = [
 						path: '/tooling/budgetManagement/investmentListJV',
 						name: 'investmentListJV',
 						meta: {
-							title: '投资清单JV',
+							title: '模具投资-预算管理-投资清单JV',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
@@ -156,7 +156,7 @@ export const staticRouter = [
 						path: '/tooling/budgetManagement/investmentListCommon',
 						name: 'investmentListCommon',
 						meta: {
-							title: '投资清单Common',
+							title: '模具投资-预算管理-投资清单Common',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
@@ -166,7 +166,7 @@ export const staticRouter = [
 						path: '/tooling/budgetManagement/commonSourcing',
 						name: 'commonSourcing',
 						meta: {
-							title: 'commonSourcing',
+							title: '模具投资-预算管理-commonSourcing',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
@@ -176,7 +176,7 @@ export const staticRouter = [
 						path: '/tooling/baApplyIndex',
 						name: 'baApplyIndex',
 						meta: {
-							title: 'BA申请',
+							title: '模具投资-BA申请',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApply`),
@@ -185,7 +185,7 @@ export const staticRouter = [
 						path: '/tooling/baApprovalIndex',
 						name: 'baApprovalIndex',
 						meta: {
-							title: 'BA审批',
+							title: '模具投资-BA审批',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApproval`),
@@ -195,7 +195,7 @@ export const staticRouter = [
 						path: '/tooling/dataBase',
 						name: 'dataBase',
 						meta: {
-							title: '历史数据库',
+							title: '模具投资-历史数据库',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/dataBase`),
@@ -205,7 +205,7 @@ export const staticRouter = [
 						path: '/tooling/budgetApproval',
 						name: 'budgetApproval',
 						meta: {
-							title: '预算审批',
+							title: '模具投资-预算审批',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/budgetApproval`),
@@ -214,7 +214,7 @@ export const staticRouter = [
 						path: '/tooling/bmApplyIndex',
 						name: 'bmApplyIndex',
 						meta: {
-							title: 'BM申请',
+							title: '模具投资-BM申请',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/bmApply`),
@@ -223,7 +223,7 @@ export const staticRouter = [
 						path: '/tooling/carTypeProOverview',
 						name: 'carTypeProOverview',
 						meta: {
-							title: '车型项目概览',
+							title: '模具投资-车型项目概览',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
@@ -232,7 +232,7 @@ export const staticRouter = [
 						path: '/tooling/investmentReport',
 						name: 'investmentReport',
 						meta: {
-							title: '投资报告',
+							title: '模具投资-投资报告',
 							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
@@ -243,7 +243,7 @@ export const staticRouter = [
         path: '/tooling/investmentReport/rsDetails',
         name: 'investmentReportRsDetails',
         meta: {
-          title: 'RS单号详情',
+          title: '模具投资-RS单号详情',
 					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
         },
         component: () => import (`@/views/ws2/rsDetails`),
@@ -411,17 +411,4 @@ router.afterEach(() => {
 		appLoading.style.display = 'none'
 	}
 })
-function getRoute(baseUrl,routes){
-	let result = []
-	routes.forEach(child=>{
-	  let childUrl = child.path.indexOf('/')!=0?(baseUrl!='/'?baseUrl:'')+'/'+child.path:child.path
-	  if(child.children&&child.children.length){
-		result = [...result,...getRoute(childUrl,child.children)]
-	  }
-	  result.push(childUrl)
-	})
-	return result
-  }
-  
-  console.log('routeConfig=>',getRoute('',router.options.routes));
 export default router
