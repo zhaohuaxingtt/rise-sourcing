@@ -303,6 +303,7 @@
               :label="item.categoryName"
               v-for="item in category"
               :key="item.categoryId"
+              :disabled="category.length!=1"
             ></el-option>
           </iSelect>
         </el-form-item>
