@@ -1,25 +1,9 @@
 <template>
   <div class="block">
     <SearchBlock @sure="allSerch" />
-    <iCard class="table-card">
+    <iCard>
       <div class="table-head">
         <div class="tmCartypePro">
-          <!-- <div>{{$t('LK_CHEXINXIANGMU')}}</div>
-          <iSelect
-              :placeholder="$t('partsprocure.PLEENTER')"
-              v-model="tmCartypeProId"
-              filterable
-              @change="changeCarTypeProject"
-              ref="carTypeProjectRef"
-              clearable
-          >
-            <el-option
-                :value="item.tmCartypeProId"
-                :label="item.tmCartypeProName"
-                v-for="(item, index) in fromGroup"
-                :key="index"
-            ></el-option>
-          </iSelect> -->
         </div>
         <div>
           <iButton @click="confirmApply" :loading="confirmApplyLoading" v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED_CONFIRM">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
@@ -31,8 +15,7 @@
       </div>
       <tableList
         ref="tableList"
-        height="100%"
-        class="table-box"
+        max-height="570px"
         permissionKey="toBeConfirmed"
         :tableData="bmTableList"
         :tableTitle="bmTableHead"
@@ -305,12 +288,6 @@ export default {
 
 <style lang="scss" scoped>
 .block{
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  .table-box {
-    height: calc(100% - 114px);
-  }
   .table-txtStyle{
     color: #1663F6;
     text-decoration: underline;

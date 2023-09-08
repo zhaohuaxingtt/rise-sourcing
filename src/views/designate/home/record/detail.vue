@@ -19,7 +19,7 @@
         </iFormItem>
       </iFormGroup>
     </iCard>
-    <iCard class="margin-top20 table-card">
+    <iCard class="margin-top7">
       <div class="clearFloat margin-bottom20">
         <div class="floatright">
           <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
@@ -29,8 +29,6 @@
       <tablelist
         permissionKey="DESIGNATE_HOME_RECORD_DETAIL"
         lang
-        class="table-box"
-        height="100%"
         :tableTitle="tableDetailTitle"
         :tableData="tableListData"
         :tableLoading="tableLoading"
@@ -199,22 +197,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.record-detail{
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
-}
 .accessoryPartDetail {
   .el-form-item {
     ::v-deep .el-form-item__label {

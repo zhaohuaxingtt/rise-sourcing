@@ -22,9 +22,9 @@
         </span>
       </div>
     </div>
-    <infos class="margin-top30" :rfqId="rfqId" />
-    <partList class="margin-top20" :rfqId="rfqId" />
-    <reportList class="margin-top20" />
+    <infos class="margin-top20" :rfqId="rfqId" />
+    <partList class="margin-top7" :rfqId="rfqId" />
+    <reportList class="margin-top7" />
   </iPage>
 </template>
 

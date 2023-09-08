@@ -293,6 +293,7 @@
         </div>
 
         <iTableList
+          max-height="570px"
           :tableData="aekoTableList"
           :tableTitle="bmPopupTableHead"
           :tableLoading="allTableLoading"
@@ -550,12 +551,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.BM-container{
-  height: calc(100% - 42px);
-  .BM-content{
-    height: calc(100% - 200px);
-  }
-}
 .table-link{
   color: #1663F6;
   text-decoration: underline;
@@ -659,7 +654,7 @@ export default {
 .page-head{
   display: flex;
   padding-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
 
   .head-on{
     background: linear-gradient(42deg, #1660F1 0%, #76A5FF 100%) !important;
@@ -679,7 +674,7 @@ export default {
     background: #FFFFFF;
     box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
     border-radius: 10px;
-    margin-left: 20px;
+    margin-left: 7px;
     cursor: pointer;
 
     .line-div{

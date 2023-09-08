@@ -25,6 +25,7 @@ export const nomiApplicationStatus = [
   // {id:'FINISHFLOW',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
   {id:'FLOWED',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
   {id:'NOMINATE',name:'定点',key:'LK_NOMIDINGDIANTITLE'},
+  'CHECK_FAIL','CHECK_INPROCESS','CHECK_PASS','M_CHECK_FAIL','M_CHECK_INPROCESS','PASS','NOMINATE'
 ]
 // 申请状态与定点类型之间的联动
 export const nomiApplicationObject = {

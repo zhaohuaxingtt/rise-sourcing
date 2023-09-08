@@ -8,6 +8,7 @@
 <template>
   <el-form :model="{tableData}" status-icon :rules="rules" ref="commonTableForm">
     <el-table :height="height"
+              :max-height="maxHeight"
               tooltip-effect='light'
               :data='tableData'
               :empty-text="$t('LK_ZANWUSHUJU')"
@@ -115,6 +116,7 @@ export default {
     selection: {type: Boolean, default: true},
     index: {type: Boolean, default: false},
     height: {type: Number || String},
+    maxHeight: {type: Number || String},
     openPageProps: {type: String, default: ''},
     inputProps: {
       type: Array, default: () => {

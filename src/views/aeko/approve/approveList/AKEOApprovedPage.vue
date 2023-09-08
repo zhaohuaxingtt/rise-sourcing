@@ -2,7 +2,7 @@
 <template>
   <div v-permission.auto="AEKO_APPROVED_PAGE|AEKO已审批页面">
     <!--搜索区--->
-    <i-search v-permission.auto="AEKO_APPROVED_PAGE_SEARCHAREA|AEKO已审批页面搜索区" class="margin-bottom20"
+    <i-search v-permission.auto="AEKO_APPROVED_PAGE_SEARCHAREA|AEKO已审批页面搜索区" class="margin-bottom7"
               @sure="queryApprovedAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
               :searchKey="REST">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
@@ -91,7 +91,6 @@
       <!--表格展示区-->
       <tableList
         permissionKey="AEKO_APPROVE_APPROVELIST_AKEOAPPROVEDPAGE"
-          height="400"
           ref="tableList"
           class="margin-top20 aeko-approved-table"
           index

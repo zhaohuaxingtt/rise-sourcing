@@ -71,7 +71,7 @@
       <!----------------------------------------------------------------->
       <!---------------------------表格区域------------------------------->
       <!----------------------------------------------------------------->
-      <iCard class="margin-top20 table-card"
+      <iCard class="margin-top7"
         v-permission.auto="APREPART_MANAGFMENT_TABLE | (配件 - 配件管理 - 表格)"
       >
         <div class="margin-bottom20 clearFloat">
@@ -165,8 +165,7 @@
           @handleSelectionChange="handleSelectionChange"
           @openPage="openPage"
           @openPage2="openPage2"
-          class="table-box"
-          height="100%"
+          max-height="570px"
         >
           <template #supplierSapCode="scope">
             <span>{{
@@ -985,20 +984,6 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 350px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .topMenu {
     display: flex;
     justify-content: space-between;

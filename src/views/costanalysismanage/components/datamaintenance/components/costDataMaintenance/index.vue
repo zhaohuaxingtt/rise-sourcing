@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="datamaintenance">
-    <iCard class="card" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
+    <iCard class="card margin-top10" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
         <iButton @click="handleExport" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_EXPORT|导出">{{ language("DAOCHU", "导出") }}</iButton>
         <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_UPLOAD|上传">

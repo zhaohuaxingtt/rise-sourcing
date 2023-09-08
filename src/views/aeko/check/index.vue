@@ -13,8 +13,6 @@
           </div>
           
         </div>
-        
-        
         <!-- 搜索区域 -->
         <iSearch @sure="sure" @reset="reset" class="margin-top10">
           <el-form>
@@ -67,7 +65,7 @@
               </el-form-item>
           </el-form>
         </iSearch>
-        <iCard class="margin-top20" :title="language('LK_AEKOCHAKAN','AEKO查看')">
+        <iCard class="margin-top7" :title="language('LK_AEKOCHAKAN','AEKO查看')">
           <template v-slot:header-control>
             <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </template>

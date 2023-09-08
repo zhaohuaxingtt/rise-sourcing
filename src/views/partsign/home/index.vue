@@ -13,7 +13,7 @@
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
       <iSearch
-        class="margin-bottom20"
+        class="margin-bottom7"
         @sure="sure"
         @reset="reset"
         :resetKey="PARTSIGN_RESETBUTTON"
@@ -245,7 +245,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard class="table-card">
+      <iCard>
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -275,8 +275,7 @@
         </div>
         <tablelist
           permissionKey="PARTSIGN_HOME"
-          class="table-box"
-          height="100%"
+          max-height="570px"
           ref="tableList"
           :lang="true"
           :tableData="tableListData"
@@ -739,20 +738,6 @@ export default {
 <style lang="scss" scoped>
 .partsignHome {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .topMenu {
     display: flex;
     justify-content: space-between;

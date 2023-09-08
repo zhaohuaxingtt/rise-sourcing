@@ -34,7 +34,7 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20 table-card" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLE|财务目标价管理-目标价维护-表格">
+    <iCard class="margin-top7" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLE|财务目标价管理-目标价维护-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
@@ -61,9 +61,7 @@
           </el-upload>
         </div>
       </div>
-      <tableList 
-        class="table-box"
-        height="100%"
+      <tableList
         ref="tableList"
         :activeItems='"partNum"' 
         :isEdit="isEdit" 
@@ -502,32 +500,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maintenance {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    display: flex;
-    flex-flow: column;
-    .card-body-box {
-      flex: 1;
-      overflow: hidden;
-      .cardBody {
-        display: flex;
-        flex-flow: column;
-      }
-      .table-box {
-        flex: 1;
-        overflow: hidden;
-      }
-    }
-  }
-  .control {
-    display: flex;
-    align-items: center;
-  }
-}
 </style>

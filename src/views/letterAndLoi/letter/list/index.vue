@@ -24,7 +24,7 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard class="contain table-card margin-top20">
+    <iCard class="contain margin-top7">
         <div class="margin-bottom20 clearFloat">
 
         <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
@@ -43,8 +43,7 @@
         <!-- 表单区域 -->
         <tableList
             permissionKey="LETTERANDLOI_LETTER_LIST"
-            class="table table-box"
-            height="100%"
+            class="table"
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
