@@ -17,7 +17,6 @@ import SELTargetPriceRoutes from "./SELtargetprice" // SEL目标价
 export default [
   {
     path: "/targetpriceandscore",
-    meta: { title: "目标价及评分管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
     component: () => import("@/layout/default"),
     redirect: "/targetpriceandscore/financialtargetprice/maintenance",
     children: [

@@ -32,7 +32,7 @@ export default [
             path: "index",
             name: "reportmgmt-report",
             meta: {
-              title: "寻源概览",
+              title: "寻源与定点-概览",
               activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
             },
             component: () => import("@/views/dashboard/index")
@@ -40,7 +40,7 @@ export default [
             path: "report",
             name: "reportmgmt-report",
             meta: {
-              title: "状态跟踪报表",
+              title: "寻源与定点-状态跟踪报表",
               activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
             },
             component: () => import("@/views/dashboard/report/pbi")
@@ -49,7 +49,7 @@ export default [
             path: "details",
             name: "reportmgmt-details",
             meta: {
-              title: "状态跟踪详情",
+              title: "寻源与定点-状态跟踪详情",
               activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
             },
             component: () => import("@/views/dashboard/report")

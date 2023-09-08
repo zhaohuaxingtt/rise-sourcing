@@ -14,7 +14,10 @@
 export default [{
   path: "/sourcing",
   name: "categoryManagementAssistant",
-  meta: { title: "寻源" },
+  meta: {
+    title: "品类管理助手",
+    activeMenu: ['RISE_WORKBENCH', 'WORKBENCH_NEGOCIATE'],
+  },
   component: () => import("@/layout/default"),
   children: [
     {
@@ -185,6 +188,7 @@ export default [{
       //举措清单
       path: 'categoryManagementAssistant/listOfInitiatives',
       name: 'listOfInitiatives',
+      meta: { title: "举措清单" },
       component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/listOfInitiatives')
     },
     

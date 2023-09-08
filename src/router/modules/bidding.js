@@ -135,7 +135,8 @@ export default [
     name: "biddingCompetition",
     redirect: "/bidding/competition/base/:id",
     meta: {
-      title: "在线竞价",
+      title: "竞价设置",
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
     },
     component: () => import("@/views/biddingManage/bidding/competition/index.vue"),
     children: [
@@ -143,6 +144,9 @@ export default [
         // 基础信息
         path: "/bidding/competition/base/:id",
         name: "biddingCompetitionBase",
+        meta: {
+          title: "基础信息",
+        },
         component: () =>
           import("@/views/biddingManage/bidding/competition/base/index.vue"),
       },
@@ -150,6 +154,9 @@ export default [
         // 项目信息
         path: "/bidding/competition/project/:id",
         name: "biddingCompetitionProject",
+        meta: {
+          title: "项目信息",
+        },
         component: () =>
           import("@/views/biddingManage/bidding/competition/project/index.vue"),
       },
@@ -157,6 +164,9 @@ export default [
         // 报价规则
         path: "/bidding/competition/quotation/:id",
         name: "biddingCompetitionQuotation",
+        meta: {
+          title: "报价规则",
+        },
         component: () =>
           import("@/views/biddingManage/bidding/competition/quotation/index.vue"),
       },

@@ -23,6 +23,9 @@ export default [
       {
         path: 'partsrfq/vpAnalyseDetail',
         name: 'vpAnalyseDetail',
+        meta: {
+          title: 'Volume Pricing分析',
+        },
         component: () =>
           import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail'),
       },
@@ -37,6 +40,9 @@ export default [
       {
         path: 'partsrfq/vpAnalyCreat',
         name: 'vpAnalyCreat',
+        meta: {
+          title: 'Volume Pricing创建',
+        },
         component: () =>
           import('@/views/partsrfq/vpAnalyse/vpAnalyCreat/index'),
       },
@@ -99,11 +105,17 @@ export default [
       {
         path: 'partsrfq/piAnalyseDetail',
         name: 'piAnalyseDetail',
+        meta: {
+          title: 'Price Index分析',
+        },
         component: () => import('../../views/partsrfq/piAnalyse/piDetail'),
       },
       {
         path: 'partsrfq/graph/:id',
         name: 'graph',
+        meta: {
+          title: '曲线图',
+        },
         component: () =>
           import(
             '../../views/biddingManage/bidding/project/hall/components/graph.vue'
