@@ -279,5 +279,8 @@ export default {
       padding: 0 4px;
     }
   }
+  ::v-deep .font-green {
+    color: #43b02a;
+  }
 }
 </style>

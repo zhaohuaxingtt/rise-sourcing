@@ -318,6 +318,7 @@ export default {
         return "table-header";
       }
       if (rowIndex == "5") {
+        console.log('row.isMinTto=>',row.isMinTto);
         if (row.isMinTto.includes(column.property)) {
           return "font-green";
         }
@@ -407,6 +408,9 @@ export default {
         justify-content: flex-end;
       }
     }
+  }
+  ::v-deep .font-green {
+    color: #43b02a;
   }
 }
 </style>
