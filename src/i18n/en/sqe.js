@@ -14,4 +14,6 @@ export default {
     '审核': 'Auditing',
     '分配股':'Transferred shares',
     '分配SQE评分人': 'Assign SQE raters',
+    '没有SQE评分状态为已保存的数据': 'No data with SQE rating status as saved',
+    '没有SQE评分状态为待审核的数据': 'No data with SQE rating status pending review'
 }

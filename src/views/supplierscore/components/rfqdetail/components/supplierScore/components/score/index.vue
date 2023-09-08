@@ -135,6 +135,7 @@
             :label="language(item.key, item.name)"
             :show-overflow-tooltip="item.tooltip"
             align="center"
+            :min-width="item.minWidth"
         >
           <template v-if="item.props === 'sapCode'" v-slot="scope">
             <span>{{
@@ -168,7 +169,7 @@
                 <span>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else-if="item.props === 'sqePerformance'" v-slot="scope">
-                <iSelect v-if="editStatus && hasEditLine(scope.row.id) && editType==='sqe'"
+                <iSelect v-if="editStatus && hasEditLine(scope.row.id) && ['sqeApproval','sqe'].includes(editType)"
                          v-model="scope.row.sqePerformance">
                   <el-option
                       v-for="(item, index) in sqeGrade"
@@ -186,7 +187,7 @@
                 <span v-else>{{ hideLabel(scope.row, item.props) }}</span>
               </template>
               <template v-else v-slot="scope">
-                <iInput v-if="editStatus && hasEditLine(scope.row.id) && editType==='sqe'"
+                <iInput v-if="editStatus && hasEditLine(scope.row.id) && ['sqeApproval','sqe'].includes(editType)"
                         v-model="scope.row[item.props]"/>
                 <span v-else>{{ hideLabel(scope.row, item.props) }}</span>
               </template>
@@ -569,6 +570,13 @@ export default {
     isFromSQE(){  // 如果是SQE页面入口进来的，则不能查看质量评分
       return this.$route.query.from === 'SQE'
     },
+    // SQE表头
+    SQETableTitle(){
+      if(this.isFromSQE){ // 如果是SQE进入的页面，则不显示SQE表格审核项
+        return SQETableTitle.filter(item=>!['sqeAuditRemark'].includes(item.props))
+      }
+      return SQETableTitle
+    }
   },
   inject: ["getRfqDetailByCurrentDept", "getSQERfqDetailByCurrentDept"],
   data() {
@@ -576,7 +584,6 @@ export default {
       editStatus: false,
       loading: false,
       tableTitle: tableTitle,
-      SQETableTitle,
       tableListData: [],
       tableListDataCache: [],
       multipleSelection: [],
@@ -939,7 +946,7 @@ export default {
     async handleEdit(type) {
       this.editType = type
       this.editStatus = true;
-      if (type == 'sqe') {  // 编辑SQE评分
+      if (type === 'sqe') {  // 编辑SQE评分
         let list = []
         if(this.isSqeCoordinator){
           list.push('待审批')
@@ -952,7 +959,7 @@ export default {
             .filter((item) => list.includes(item.sqeStatus))
             .map((item) => item.id);
         console.log(this.editIdList)
-      } else if (type == 'sqeApproval') {  // 编辑SQE审核
+      } else if (type === 'sqeApproval') {  // 编辑SQE审核
         this.editIdList = this.tableListData
             .filter((item) => ["评分完成"].includes(item.sqeStatus))
             .map((item) => item.id);
@@ -1080,8 +1087,9 @@ export default {
       if (this.multipleSelection.length) {
         ids = this.multipleSelection.map(item => item.id)
       } else {
-        ids = this.tableListData.map(item => item.id)
+        ids = this.tableListData.filter(item=>item.sqeStatus==='已保存').map(item => item.id)
       }
+      if(!ids.length) return iMessage.warn(this.language('没有SQE评分状态为已保存的数据'))
       submit(ids).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
@@ -1129,8 +1137,9 @@ export default {
       if (this.multipleSelection.length) {
         ids = this.multipleSelection.map(item => item.id)
       } else {
-        ids = this.tableListData.map(item => item.id)
+        ids = this.tableListData.filter(item=>item.sqeStatus==='待审核').map(item => item.id)
       }
+      if(!ids.length) return iMessage.warn(this.language('没有SQE评分状态为待审核的数据'))
       approve(ids).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
