@@ -9,7 +9,7 @@
 export const scoreTableTitle = [
   { props: "sapCode", name: "供应商号", key: "GONGYINGSHANGHAO", tooltip: true },
   { props: "supplierName", name: "供应商名", key: "GONGYINGSHANGMING", tooltip: true },
-  { props: "proLocation", name: "供应商生产场地", key: "GONGYINGSHANGSHENGCHANCHANGDI", tooltip: true },
+  { props: "proLocation", name: "供应商生产场地", key: "GONGYINGSHANGSHENGCHANCHANGDI", minWidth: 160 },
   { props: "partScore", name: "零件评分", key: "LINGJIANPINGFEN", tooltip: true },
 ]
 
