@@ -355,9 +355,7 @@
     <!---------------------------------------------------------------------->
     <onlyPartsChange
       @updateCategoryGroup="updateCategoryGroup"
-      v-if="
-        partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey
-      "
+      v-if="isOnlyPartNumChange"
       ref="onlyPartsChange"
       v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE | 仅零件变更"
       @handleSelectionChange="handleSelectionChange"
@@ -459,6 +457,10 @@ export default {
     ...Vuex.mapState({
       userInfo: (state) => state.permission.userInfo,
     }),
+    // 仅零件号变更
+    isOnlyPartNumChange(){
+      return partProjTypes.JINLINGJIANHAOGENGGAI === this.$route.query.businessKey
+    }
   },
   methods: {
     filterProjectList(a, b) {
@@ -625,6 +627,12 @@ export default {
             iMessage.success(
               this.$i18n.locale === "zh" ? res.desZh : res.desEn
             );
+            // 刷新下侧表格组件数据
+            if(this.isOnlyPartNumChange){
+              this.$refs.onlyPartsChange.getDataList()
+            }else{
+              this.$refs.outputPlan.getData()
+            }
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -676,10 +684,8 @@ export default {
           this.saveButchLoading = false;
           if (res.result === true) {
             iMessage.success(this.language("LK_XIUGAICHENGGONG", "修改成功"));
-            if (
-              partProjTypes.JINLINGJIANHAOGENGGAI ==
-              this.$route.query.businessKey
-            ) {
+            // 刷新下侧表格组件数据
+            if (this.isOnlyPartNumChange) {
               this.$refs.onlyPartsChange.getDataList();
             } else {
               this.$refs.outputPlan.getData();
