@@ -59,7 +59,7 @@ export default{
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
     activeItemsTwo:{type:String,default:'b'},
-	  radio:{type:Boolean,default:false},// 是否单选
+    radio:{type:Boolean,default:false},// 是否单选
     selectable:{type:Function,default:()=> true},
     borderLeftStatus:{type:Boolean,default:true}
   },
@@ -134,9 +134,9 @@ export default{
     color:$color-blue;
   }
   .radio{
-	  ::v-deep thead .el-table-column--selection .cell {
-	  	display: none;
-	  }
+    ::v-deep thead .el-table-column--selection .cell {
+      display: none;
+    }
   }
   .icon-gray{
     cursor: pointer;
