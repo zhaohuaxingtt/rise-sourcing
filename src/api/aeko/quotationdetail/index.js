@@ -23,14 +23,6 @@ export function bnkSupplierToken(params) {
         params,
     })
 }
-// aeko跳转BNK时获取token
-export function bnkSupplierAekoToken(params) {
-    return requst({
-        url: '/part/bnkSupplierToken',
-        method: 'GET',
-        params,
-    })
-}
 
 // 获取CBD调整部分下拉列表
 export function getAekoCarDosage() {
