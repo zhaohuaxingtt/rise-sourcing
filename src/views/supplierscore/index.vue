@@ -267,7 +267,12 @@
         <iButton
           @click="handleTransfer"
           v-permission.auto="SUPPLIERSCORE_HOME_BUTTON_TRANSFER | 转派评分任务"
-          >{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton
+        >{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton
+        >
+        <iButton
+          @click="excelExport"
+          :loading="downLoading"
+        >{{ language("DAOCHU", "导出") }}</iButton
         >
       </template>
       <tableList
@@ -339,6 +344,7 @@ import { getCartypeDict } from "@/api/partsrfq/home";
 import axios from "axios";
 import { TAB } from "@/views/financialTargetPrice/components/data";
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -379,6 +385,7 @@ export default {
         { label: "是", key: "nominationLanguage.Yes", value: true },
         { label: "否", key: "nominationLanguage.No", value: false },
       ],
+      downLoading: false
     };
   },
   computed: {
@@ -624,6 +631,12 @@ export default {
       });
       window.open(route.href, "_blank");
     },
+    // 导出
+    excelExport(){
+      this.downLoading = true
+      excelExport(this.tableListData,this.tableTitle, '评分任务'+new Date().getTime())
+      this.downLoading = false
+    }
   },
 };
 </script>
