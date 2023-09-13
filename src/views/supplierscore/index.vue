@@ -274,6 +274,7 @@
         class="table table-box"
         height="100%"
         index
+        fixed
         :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
