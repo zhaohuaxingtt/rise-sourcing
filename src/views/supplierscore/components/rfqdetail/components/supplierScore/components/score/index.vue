@@ -13,7 +13,7 @@
   >
     <template #header-control>
       <div v-if="!editStatus" key="1">
-        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE">{{
+        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE(false)">{{
             language("下载SQE评分表")
           }}
         </iButton>
@@ -1127,7 +1127,7 @@ export default {
       if (this.multipleSelection.length) {
         ids = this.multipleSelection.map(item => item.id)
       } else {
-        ids = this.tableListData.filter(item=>item.sqeStatus==='已保存').map(item => item.id)
+        ids = this.tableListData.filter(item=>item.sqeStatus==='待审核').map(item => item.id)
       }
       if(!ids.length) return iMessage.warn(this.language('没有SQE评分状态为待审核的数据'))
       reject(ids).then(res => {
