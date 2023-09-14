@@ -23,7 +23,7 @@ export default [
             path: "partsletter",
             name: "partsletter",
             meta: {
-                title:'定点信',
+                title:'寻源与定点-定点信',
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -33,7 +33,7 @@ export default [
             path: "partsletter/loi",
             name: "loi",
             meta: {
-                title:'LOI',
+                title:'寻源与定点-LOI',
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -43,7 +43,7 @@ export default [
             path: "partsletter/letterdetail",
             name: "letterdetail",
             meta: {
-                title:'定点信详情',
+                title:'寻源与定点-定点信详情',
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -53,7 +53,7 @@ export default [
             path: "partsletter/loidetail",
             name: "loidetail",
             meta: {
-                title:'LOi详情',
+                title:'寻源与定点-LOi详情',
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -172,7 +172,7 @@ export default [
           path: "partsign",
           name: "partsign",
           meta: {
-              title: "新建信息单",
+              title: "寻源与定点-批量件签收",
               activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -183,7 +183,7 @@ export default [
             path: "partsign/editordetail",
             name: "editordetail",
             meta: {
-                title: "新建信息单详情",
+                title: "寻源与定点-新建信息单详情",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -195,7 +195,7 @@ export default [
             name: "editordetailPreview",
             meta: {
                 isPreview: true,
-                title: "新建信息单预览",
+                title: "寻源与定点-新建信息单预览",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -206,7 +206,7 @@ export default [
             path: "partsign/volumeVersion",
             name: "volumeVersion",
             meta: {
-                title: "新建信息单每车用量版本",
+                title: "寻源与定点-新建信息单每车用量版本",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -217,7 +217,7 @@ export default [
             path: "partsign/enquiryVersion",
             name: "enquiryVersion",
             meta: {
-                title: "新建信息单询价资料版本",
+                title: "寻源与定点-新建信息单询价资料版本",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -228,7 +228,7 @@ export default [
             path: "partsprocure",
             name: "partsprocure",
             meta: {
-                title: "采购项目",
+                title: "寻源与定点-采购项目",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -239,7 +239,7 @@ export default [
             path: "partsprocure/editordetail",
             name: "partsprocure",
             meta: {
-                title: "采购项目详情",
+                title: "寻源与定点-采购项目详情",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -250,7 +250,7 @@ export default [
             path: "partsprocure/editordetail/priceRecord",
             name: "partsprocure",
             meta: {
-                title: "价格记录",
+                title: "寻源与定点-价格记录",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -261,7 +261,7 @@ export default [
             path: "partsprocure/batchmiantain",
             name: "batchmiantain",
             meta: {
-                title: "采购项目批量修改",
+                title: "寻源与定点-采购项目批量修改",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -272,7 +272,7 @@ export default [
             path: "partsprocure/outputplan",
             name: "outputplan",
             meta: {
-                title: "采购项目计划",
+                title: "寻源与定点-采购项目计划",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -283,7 +283,7 @@ export default [
             path: "partsrfq",
             name: "partsrfq",
             meta: {
-                title: "RFQ管理",
+                title: "寻源与定点-RFQ管理",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -294,7 +294,7 @@ export default [
             path: "partsrfq/editordetail", //RFQ详情待办
             name: "editordetail",
             meta: {
-                title: "RFQ详情待办",
+                title: "寻源与定点-RFQ详情待办",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -305,7 +305,7 @@ export default [
             path: "partsrfq/editorInfo", //RFQ详情
             name: "editordetail",
             meta: {
-                title: "RFQ详情",
+                title: "寻源与定点-RFQ详情",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -316,7 +316,7 @@ export default [
             path: "partsrfq/assistant", //RFQ谈判助手
             name: "editordetail",
             meta: {
-                title: "RFQ详情谈判助手",
+                title: "寻源与定点-RFQ详情谈判助手",
                 parentId: "/SOURCEINQUIRYPOINT/SOURCING", //指定需要挂载的ID
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
@@ -329,7 +329,7 @@ export default [
             path: "partsrfq/editordetail/partScoring", //零件评分
             name: "editordetailPartScoring",
             meta: {
-                title: "RFQ零件评分",
+                title: "寻源与定点-RFQ零件评分",
                 activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
@@ -339,7 +339,7 @@ export default [
             {
             path: "createparts/home",
             name: "createPartsHome",
-            meta: { title: "手工采购项目创建", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
+            meta: { title: "寻源与定点-手工采购项目创建", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
             component: () => import("@/views/partsprocure/createparts/components/home"),
@@ -347,7 +347,7 @@ export default [
             {
             path: "createparts/steelbatchpurchase",
             name: "createPartsSteelBatchPurchase",
-            meta: { title: "钢材批量采购", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
+            meta: { title: "寻源与定点-钢材批量采购", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
             component: () => import("@/views/partsprocure/createparts/components/steelbatchpurchase"),
@@ -355,7 +355,7 @@ export default [
             {
             path: "createparts/steelsinglepurchase",
             name: "createPartsSteelSinglePurchase",
-            meta: { title: "钢材一次性采购", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
+            meta: { title: "寻源与定点-钢材一次性采购", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
             component: () => import("@/views/partsprocure/createparts/components/steelsinglepurchase"),
@@ -363,7 +363,7 @@ export default [
             {
             path: "createparts/factoryrelocate",
             name: "createPartsFactoryRelocate",
-            meta: { title: "工厂迁移", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
+            meta: { title: "寻源与定点-工厂迁移", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
             component: () => import("@/views/partsprocure/createparts/components/factoryrelocate"),
@@ -371,7 +371,7 @@ export default [
             {
             path: "createparts/batchDetail",
             name: "createPartsBatchDetail",
-            meta: { title: "批次详情", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
+            meta: { title: "寻源与定点-批次详情", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'
                     ]
                 },
             component: () => import("@/views/partsprocure/createparts/components/factoryrelocate/components/detail"),
