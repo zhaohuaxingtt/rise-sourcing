@@ -47,7 +47,8 @@ export const tableTitle = [
   { props: "epRater", name: "技术评分人", key: "LK_EP", tooltip: true, sortable: true, width: '120' },
   { props: "epCoordinator", name: "技术协调人", key: "技术协调人", tooltip: true, sortable: true, width: '120' },
   { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true, sortable: true, width: '120', showTips: true, tips: () => `<span>${localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status'}</span>` },
-  { props: "sqeRateStatus", name: "SQE评分状态", key: "SQE评分状态", tooltip: true, sortable: true, width: '140', showTips: true, tips: () => `<span>${localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status'}</span>` },
+  { props: "sqeRater", name: "SQE", key: "SQE", tooltip: true, sortable: true, width: '100' },
+  { props: "sqeRateStatus", name: "SQE状态", key: "SQE状态", tooltip: true, sortable: true, width: '140', showTips: true, tips: () => `<span>${localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status'}</span>` },
   { props: "currentRoundsEndTime", name: "报价截止日期", key: "BAOJIAJIEZHIRIQI", tooltip: true, sortable: true, width: '140' }
 ]
 
