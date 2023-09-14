@@ -20,7 +20,7 @@ export const infos = [
 export const infosSQE = [
   { row: 4, name: "SQE评分股", props: "sqeRateDepartNum", key: "SQE评分股" },
   { row: 4, name: "SQE", props: "sqeRater", key: "SQE" },
-  { row: 4, name: "SQE协调人", props: "sqeCoordinator", key: "SQE协调人" },
+  { row: 4, name: "SQE协调", props: "sqeCoordinator", key: "SQE协调" },
   { row: 4, name: "SQE状态", props: "sqeStatus", key: "SQE状态" }
 ]
 

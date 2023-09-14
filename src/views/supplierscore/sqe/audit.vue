@@ -103,12 +103,12 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="SQE评分人">
+        <el-form-item label="SQE">
           <iSelect
               v-model="form.sqeUserId"
               :loading="linieLoading"
               :loading-text="language('JIAZAIZHONG', '加载中')"
-              :placeholder="language('请输入SQE评分人', '请输入SQE评分人')"
+              :placeholder="language('请输入SQE', '请输入SQE')"
               :remote-method="findLinieByName"
               clearable
               filterable
@@ -137,7 +137,7 @@
     </iSearch>
     <iCard :title="language('待审核任务列表')" class="margin-top30">
       <template #header-control>
-        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_AUDIT_FENPEISQEPINGFENREN">{{ language("分配SQE评分人") }}</iButton>
+        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_AUDIT_FENPEISQEPINGFENREN">{{ language("分配SQE") }}</iButton>
       </template>
       <tableList
           :lang="true"

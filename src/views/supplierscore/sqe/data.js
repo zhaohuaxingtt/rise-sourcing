@@ -23,7 +23,7 @@ export const tableTitle = [
   { props: "linie", name: "LINIE", key: "LINIE", tooltip: true, sortable: true },
   { props: "mqRater", name: "质量评分人", key: "LK_MQ", tooltip: true, sortable: true },
   { props: "pushDate", name: "推送时间", key: "LK_TUISONGSHIJIAN", tooltip: true, sortable: true },
-  { props: "sqeRater", name: "SQE评分人", key: "SQE评分人", tooltip: true, sortable: true },
+  { props: "sqeRater", name: "SQE", key: "SQE", tooltip: true, sortable: true },
   { props: "sqeCoordinator", name: "SQE股长", key: "SQE股长", tooltip: true, sortable: true },
-  { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true, sortable: true, showTips: true, tips: () => `<span>${localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status'}</span>` },
+  { props: "rateStatus", name: "SQE状态", key: "SQE状态", tooltip: true, sortable: true, showTips: true, tips: () => `<span>${localStorage.getItem('lang') === 'zh' ? '最新一条评分任务状态' : 'The latest rating task status'}</span>` },
 ]

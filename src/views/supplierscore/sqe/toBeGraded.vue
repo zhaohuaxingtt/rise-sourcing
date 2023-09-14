@@ -103,7 +103,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="SQE评分人">
+        <el-form-item label="SQE">
           <iSelect
               filterable
               remote
@@ -111,7 +111,7 @@
               v-model="form.sqeUserId"
               :remote-method="findLinieByName"
               :loading="linieLoading"
-              :placeholder="language('请输入SQE评分人', '请输入SQE评分人')"
+              :placeholder="language('请输入SQE', '请输入SQE')"
               :loading-text="language('JIAZAIZHONG', '加载中')"
           >
             <el-option
@@ -133,7 +133,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('SQE评分状态')">
+        <el-form-item :label="language('SQE状态')">
           <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
             <el-option
               :value="item.value"
@@ -149,7 +149,7 @@
       <template #header-control>
         <iButton @click="backByRfq" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_TUIHUI">{{ language("partsignLanguage.TuiHui") }}</iButton>
         <iButton @click="transferDept" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_FENPEIGU">{{ language("分配股") }}</iButton>
-        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_FENPEISQEPINGFENREN">{{ language("分配SQE评分人") }}</iButton>
+        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_TOBEGRADED_FENPEISQEPINGFENREN">{{ language("分配SQE") }}</iButton>
       </template>
       <tableList
           class="table"
@@ -255,7 +255,7 @@ export default {
         {label: "是", key: "nominationLanguage.Yes", value: true},
         {label: "否", key: "nominationLanguage.No", value: false}
       ],
-      sqeRateStatus: [],
+      sqeRateStatus: ['UNDISTRIBUTED', 'WATING_FOR_RATING'],
       statusOptions: [
         {label: "未分配", key: "未分配", value: 'UNDISTRIBUTED'},
         {label: "待评分", key: "待评分", value: 'WATING_FOR_RATING'},
@@ -371,6 +371,7 @@ export default {
     // 重置
     reset() {
       this.form = cloneDeep(queryForm);
+      this.sqeRateStatus = ['UNDISTRIBUTED', 'WATING_FOR_RATING']
       this.sure();
     },
     // 分配股

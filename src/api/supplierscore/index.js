@@ -243,7 +243,7 @@ export function backByRfq(data) {
   })
 }
 // 导出SQE评分任务
-export function exportSqeRating(data) {
+export function exportSqeRating(data, flag) {
   return requstDown({
     url: 'rfq-sqe-ratings/exportSqeRating',
     method: "POST",

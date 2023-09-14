@@ -103,7 +103,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="SQE评分人">
+        <el-form-item label="SQE">
           <iSelect
               filterable
               remote
@@ -111,7 +111,7 @@
               v-model="form.sqeUserId"
               :remote-method="findLinieByName"
               :loading="linieLoading"
-              :placeholder="language('请输入SQE评分人', '请输入SQE评分人')"
+              :placeholder="language('请输入SQE', '请输入SQE')"
               :loading-text="language('JIAZAIZHONG', '加载中')"
           >
             <el-option
@@ -133,7 +133,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('SQE评分状态')">
+        <el-form-item :label="language('SQE状态')">
           <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
             <el-option
                 :value="item.value"
@@ -149,7 +149,7 @@
       <template #header-control>
         <iButton @click="backByRfq" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_QUERY_TUIHUI">{{ language("退回") }}</iButton>
         <iButton @click="transferDept" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_QUERY_FENPEIGU">{{ language("分配股") }}</iButton>
-        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_QUERY_FENPEISQEPINGFENREN">{{ language("分配SQE评分人") }}</iButton>
+        <iButton @click="handleTransfer" v-permission="CSCSCOREMANAGE_MENU_SQESCORE_QUERY_FENPEISQEPINGFENREN">{{ language("分配SQE") }}</iButton>
       </template>
       <tableList
           class="table"
@@ -288,36 +288,6 @@ export default {
     this.getData();
   },
   methods: {
-    // 设置初始查询条件
-    setDefault() {
-      let XTR_List = ["JSPFXTY", "ZLPFXTY"]; // 协调人
-      let PFR_List = ["JSPFXTY", "ZLPFXTY"]; // 评分人
-      let isXTR = false;
-      let isPFR = false;
-      (this.userInfo.roleList || []).map(item => {
-        if (XTR_List.includes(item.code)) {
-          isXTR = true;
-        }
-        if (PFR_List.includes(item.code)) {
-          isPFR = true;
-        }
-      });
-      if (isXTR && isPFR) {
-        // 协调人&评分人（包含 JZSPFR、ZLPFR任一角色，且包含JSPFXTY、ZLPFXTY任一角色）：默认查询 待评分、待提交、待审核
-        this.form.rateStatus = [
-          "WATING_FOR_RATING", // 待评分
-          "WATING_FOR_SUBMIT", // 待提交
-          "RATING_FOR_AUDITING" // 待审核
-        ];
-      } else if (isXTR) {
-        // 仅协调人（包含JSPFXTY、ZLPFXTY任一角色，但不包含JZSPFR、ZLPFR）：默认查询 待审核
-        this.form.rateStatus = ["RATING_FOR_AUDITING"];
-      } else if (isPFR) {
-        // 仅评分人（包含 JZSPFR、ZLPFR任一角色，但不包含JSPFXTY、ZLPFXTY）：默认查询待评分、待提交
-        this.form.rateStatus = ["WATING_FOR_RATING", "WATING_FOR_SUBMIT"];
-      }
-      this.sqeRateStatus = []
-    },
     // 获取评分状态
     findDropDownBox() {
       findDropDownBox({
@@ -338,7 +308,6 @@ export default {
                                   !["NO_GRADE", "WATING_FOR_HANDLING"].includes(item.key)
                           )
                       : [];
-              this.setDefault();
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
@@ -497,7 +466,6 @@ export default {
     // 重置
     reset() {
       this.form = cloneDeep(queryForm);
-      this.setDefault();
       this.sure();
     },
     // 确认转派

@@ -13,13 +13,13 @@
   >
     <template #header-control>
       <div v-if="!editStatus" key="1">
-<!--        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE">{{-->
-<!--            language("下载SQE评分表")-->
-<!--          }}-->
-<!--        </iButton>-->
-<!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportMQ" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
+        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE">{{
+            language("下载SQE评分表")
+          }}
+        </iButton>
+        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE('MQ')" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
 <!--        保留一个下载,使用SQE下载接口-->
-        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
+<!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
         <iButton v-if="isMQRater" @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分审核") }}</iButton>
         <template v-if="showSQE">
           <iButton v-if="rfqInfo.hasShowSqeEdit" @click="handleEdit('sqe')">{{ language("编辑SQE评分") }}</iButton>
@@ -1015,7 +1015,7 @@ export default {
       });
     },
     // 导出SQE评分任务
-    async exportSQE() {
+    async exportSQE(flag='') {
       let ids = []
       if (this.multipleSelection.length) {
         ids = this.multipleSelection.map(item => item.id)
@@ -1023,7 +1023,7 @@ export default {
         ids = this.tableListData.map(item => item.id)
       }
       this.exportLoading = true
-      await exportSqeRating(ids)
+      await exportSqeRating(ids, flag)
       this.exportLoading = false
     },
     // 导出质量评分任务
@@ -1123,9 +1123,14 @@ export default {
     },
     //   驳回SQE
     reject() {
-      if (!this.multipleSelection.length)
-        return iMessage.warn(this.language("请选择需要驳回的数据"));
-      reject(this.multipleSelection.map(item => item.id)).then(res => {
+      let ids = []
+      if (this.multipleSelection.length) {
+        ids = this.multipleSelection.map(item => item.id)
+      } else {
+        ids = this.tableListData.filter(item=>item.sqeStatus==='已保存').map(item => item.id)
+      }
+      if(!ids.length) return iMessage.warn(this.language('没有SQE评分状态为待审核的数据'))
+      reject(ids).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
         if (res?.code == 200) {
           iMessage.success(message)
