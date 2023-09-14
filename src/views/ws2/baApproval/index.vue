@@ -82,13 +82,12 @@
 			<div class="BA-container" v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
 				<SearchBlock @sure="handleSureBlock" />
 
-				<iCard class="table-card">
+				<iCard>
 					<div class="table-head">
 						<iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
 					</div>
 					<iTableList
-						height="100%"
-						class="table-box"
+						max-height="570px"
 						:tableData="allTableData"
 						:tableTitle="allBAATableHead"
 						:tableLoading="allListLoading"
@@ -913,7 +912,7 @@ export default {
 .page-head {
 	display: flex;
 	padding-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 7px;
 
 	.head-on {
 		background: linear-gradient(42deg, #1660f1 0%, #76a5ff 100%) !important;
@@ -934,7 +933,7 @@ export default {
 		background: #ffffff;
 		box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
 		border-radius: 10px;
-		margin-left: 20px;
+		margin-left: 7px;
 		cursor: pointer;
 
 		.line-div {

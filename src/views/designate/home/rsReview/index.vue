@@ -10,7 +10,7 @@
     <!-- 搜索区 -->
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
-    <iCard class="table-card" >
+    <iCard>
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
@@ -85,8 +85,6 @@
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME_RSREVIEW"
-        class="table-box"
-        height="100%"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -548,20 +546,6 @@ export default {
 <style lang="scss" scoped>
 .designateHome{
   position: relative;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-      flex: 1;
-      overflow: hidden;
-      min-height: 350px;
-      .card-body-box {
-          height: 100%;
-          .table-box {
-              height: calc(100% - 105px);
-          }
-      }
-  }
 }
   .openLinkText{
     color:$color-blue;

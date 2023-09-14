@@ -1,7 +1,7 @@
 <template>
   <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
     <iSearch
-        class="margin-bottom20 giSearch"
+        class="margin-bottom7 giSearch"
         style="margin-top: 20px"
         @sure="sure"
         @reset="reset"

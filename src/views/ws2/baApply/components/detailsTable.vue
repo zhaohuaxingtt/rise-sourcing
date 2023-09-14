@@ -21,8 +21,7 @@
 		</div>
 
 		<iTableList
-			class="table-box"
-      		height="100%"
+            max-height="570px"
 			:tableData="tableListData"
 			:tableTitle="tableTitle"
 			:tableLoading="tableLoading"
@@ -377,12 +376,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-container{
-  height: calc(100% - 64px);
-}
-.table-box {
-  height: calc(100% - 54px);
-}
 .baApply-table {
 	::v-deep .el-input__inner {
 		width: 120px !important;

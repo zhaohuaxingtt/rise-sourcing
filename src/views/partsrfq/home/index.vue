@@ -13,7 +13,7 @@
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
       <iSearch
-        class="margin-bottom20"
+        class="margin-bottom7"
         :icon="false"
         @reset="handleSearchReset"
         @sure="sure"
@@ -302,7 +302,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard class="table-card">
+      <iCard>
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -397,8 +397,6 @@
           indexFixed
           icon-props="recordId"
           :lang="true"
-          class="table-box"
-          height="100%"
           ref="tableList"
         >
           <template #recordId="scope">
@@ -1145,20 +1143,6 @@ export default {
 
 .partsrfqHome {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 350px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

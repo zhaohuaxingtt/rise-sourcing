@@ -35,7 +35,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20 table-card" v-permission.auto="APREPART_SIGN_TABLE|配件-配件签收-表格">
+          <iCard class="margin-top7" v-permission.auto="APREPART_SIGN_TABLE|配件-配件签收-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
@@ -54,10 +54,10 @@
             </div>
             <tableList
               ref="tableList"
-              height="100%"
+              max-height="570px"
               permissionKey="ACCESSORYPART_SIGNFORPARTSDEMAND"
               :lang="true" 
-            :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="table-box">
+            :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
               </template>
@@ -552,20 +552,6 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 350px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .topMenu{
     display: flex;
     justify-content: space-between;

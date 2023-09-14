@@ -8,19 +8,15 @@
   <iPage class="aeko-manage-list">
     <div class="header-nav">
       <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="margin-bottom10" />
-      <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
-        <!-- <log-button @click="openLog" class="margin-left25"/> -->
         <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
     </div>
-
     <div class="margin-top10">
-
     <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
           <el-form>
@@ -121,7 +117,7 @@
             </template>
           </el-form>
       </iSearch>
-      <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
+      <iCard class="contain margin-top7" :title="language('LK_AEKOGUANLI','AEKO管理')">
       <!-- 按钮区域 -->
       <template v-slot:header-control>
           <!-- <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表" @click="gotoBIPage">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton> -->

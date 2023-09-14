@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-	<div class="headerNav-wraper margin-bottom10">
+	<div class="headerNav-wraper margin-bottom20">
 		<div class="headerNav">
 			<iNavMvp
 				:list="navListLeft"
@@ -27,7 +27,6 @@
 				<slot></slot>
 			</div>
 		</div>
-		<div class="headerNav-sub margin-top30"></div>
 	</div>
 </template>
 <script>

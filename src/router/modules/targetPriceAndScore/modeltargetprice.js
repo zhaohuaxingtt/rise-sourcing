@@ -10,38 +10,38 @@
 export default [
   {
     path: "modeltargetprice",
-    meta: { title: "模具目标价管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+    meta: { title: "模具目标价管理", activeMenu: ['RISE_WORKBENCH', 'FINANCIALMANAGE'] },
     component: () => import("@/views/routerView"),
     redirect: "modeltargetprice/signin",
     children: [
       {
         path: "signin",
         name: "targetPriceSignin",
-        meta: { title: "目标价签收", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "模具目标价-签收" },
         component: () => import("@/views/modelTargetPrice/signin"),
       },
       {
         path: "maintenance",
         name: "targetPriceMaintenance",
-        meta: { title: "目标价维护", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "模具目标价-维护" },
         component: () => import("@/views/modelTargetPrice/maintenance"),
       },
       {
         path: "approval",
         name: "targetPriceApproval",
-        meta: { title: "目标价审批", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "模具目标价-审批" },
         component: () => import("@/views/modelTargetPrice/approval"),
       },
       {
         path: "query",
         name: "targetPriceQuery",
-        meta: { title: "目标价查询", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "模具目标价-查询" },
         component: () => import("@/views/modelTargetPrice/query"),
       },
       {
         path: "detail",
         name: "targetPriceDetail",
-        meta: { title: "目标价详情", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
+        meta: { title: "模具目标价-详情" },
         component: () => import("@/views/modelTargetPrice/targetPriceDetail"),
       }
     ]

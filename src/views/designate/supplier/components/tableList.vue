@@ -6,7 +6,7 @@
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :border="border">
+  <el-table fit tooltip-effect='light' :height="height" :max-height="maxHeight" :data='tableData' default-expand-all v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :border="border">
     <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'>
       <template slot-scope="scope">
@@ -65,6 +65,7 @@ export default{
     index:{type:Boolean,default:false},
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
+    maxHeight:{type:Number||String},
     activeItems:{type:String,default:'b'},
     radio:{type:Boolean,default:false}, //是否单选
     treeProps: {type:Object},

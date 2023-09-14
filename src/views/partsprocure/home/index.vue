@@ -13,7 +13,7 @@
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
       <iSearch
-        class="margin-bottom20"
+        class="margin-bottom7"
         @sure="
           () => {
             page.currPage = 1;
@@ -287,7 +287,7 @@
           </el-form-item>
         </el-form>
       </iSearch>
-      <iCard class="table-card">
+      <iCard>
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
@@ -350,8 +350,6 @@
         </div>
         <tablelist
           permissionKey="PARTSPROCURE_HOME"
-          class="table-box"
-          height="100%"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -706,20 +704,6 @@ export default {
 
 .partsprocureHome {
   position: relative;
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 105px);
-      }
-    }
-  }
   .topMenu {
     display: flex;
     justify-content: space-between;

@@ -1,6 +1,6 @@
 <template>
   <iSearch
-      class="margin-bottom20 giSearch"
+      class="margin-bottom7 giSearch"
       @sure="sure"
       @reset="reset"
       :icon="false"

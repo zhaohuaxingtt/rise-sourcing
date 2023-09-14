@@ -69,7 +69,7 @@
               </el-form-item>
           </el-form>
       </iSearch>
-      <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
+      <iCard class="contain margin-top7" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
         <template v-slot:header-control>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </template>

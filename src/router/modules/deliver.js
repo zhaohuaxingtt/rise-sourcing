@@ -14,7 +14,7 @@ export default [
     redirect: "/deliver/overview",
     meta: {
       title: "送样管理",
-      activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+      activeMenu: ['RISE_WORKBENCH', 'SONGYANGGUANLI']
     },
     children: [
       {
@@ -22,7 +22,6 @@ export default [
         name: "overview",
         meta: {
           title: "送样管理-总览",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/overview"),
       },
@@ -30,8 +29,7 @@ export default [
         path: "delayanalysis",
         name: "delayanalysis",
         meta: {
-          title: "送样管理-延误清单-定点",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+          title: "送样管理-延误清单",
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -40,7 +38,6 @@ export default [
         name: "delayanalysisStartUp",
         meta: {
           title: "送样管理-延误清单-启动",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -49,7 +46,6 @@ export default [
         name: "delayanalysisBF",
         meta: {
           title: "送样管理-延误清单-BF",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -58,7 +54,6 @@ export default [
         name: "delayanalysisTryout",
         meta: {
           title: "送样管理-延误清单-1st Tryout",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -67,7 +62,6 @@ export default [
         name: "delayanalysisOTS",
         meta: {
           title: "送样管理-延误清单-OTS",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -76,7 +70,6 @@ export default [
         name: "delayanalysisEM",
         meta: {
           title: "送样管理-延误清单-EM",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/delayAnalysis"),
       },
@@ -85,7 +78,6 @@ export default [
         name: "overview",
         meta: {
           title: "送样管理-送样过程监控",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/progressDetail"),
       },
@@ -94,7 +86,6 @@ export default [
         name: "kickoff",
         meta: {
           title: "送样管理-kickoff",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/overview/components/kickOff"),
       },
@@ -103,7 +94,6 @@ export default [
         name: "shuttle",
         meta: {
           title: "送样管理-shuttle",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/shuttle"),
       },
@@ -112,7 +102,6 @@ export default [
         name: "activity",
         meta: {
           title: "送样管理-activity",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/activity"),
       },
@@ -121,12 +110,9 @@ export default [
         name: "deliverPlan",
         meta: {
           title: "送样管理-deliverPlan",
-          activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
         },
         component: () => import("@/views/deliver/deliverPlan"),
       },
-      
-      
     ]
   }
 ]

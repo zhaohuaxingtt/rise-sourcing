@@ -55,9 +55,9 @@ export const queryForm = {
 }
 
 export const tableTitle = permissionTitle("COSTANALYSISMANAGE_HOME_TABLE", [
-  { props: "id", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true, width: 110, sortable: true },
-  { props: "rfqName", name: "RFQ名称", key: "costanalysismanage.RfqMingCheng", tooltip: true, width: 110, sortable: true },
-  { props: "rfqType", name: "RFQ类型", key: "costanalysismanage.RfqLeiXing", tooltip: true, width: 110, sortable: true },
+  { props: "id", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true, width: 110, sortable: true, fixed: true },
+  { props: "rfqName", name: "RFQ名称", key: "costanalysismanage.RfqMingCheng", tooltip: true, width: 110, sortable: true, fixed: true },
+  { props: "rfqType", name: "RFQ类型", key: "costanalysismanage.RfqLeiXing", tooltip: true, width: 110, sortable: true, fixed: true },
   { props: "createDate", name: "创建日期", key: "costanalysismanage.ChuangJianRiQi", tooltip: true, width: 110, sortable: true },
   { props: "currentRounds", name: "当前轮次", key: "costanalysismanage.DangQianLunCi", tooltip: true, width: 105, sortable: true },
   { props: "statusName", name: "RFQ状态", key: "costanalysismanage.RfqZhuangTai", tooltip: true, width: 110, sortable: true },

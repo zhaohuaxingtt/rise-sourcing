@@ -10,7 +10,7 @@
     <!-- 搜索区 -->
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
-    <iCard class="designateTable table-card">
+    <iCard class="designateTable">
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
@@ -112,8 +112,6 @@
       </div>
       <tablelist
         permissionKey="DESIGNATE_HOME"
-        class="table-box"
-        height="100%"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -645,20 +643,6 @@ export default {
 
 <style lang="scss" scoped>
 .designateHome {
-	height: 100%;
-  display: flex;
-  flex-flow: column;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    .card-body-box {
-      height: 100%;
-      .table-box {
-        height: calc(100% - 165px);
-      }
-    }
-  }
   .flexBox {
     display: flex;
     align-items: center;
