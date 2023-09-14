@@ -19,9 +19,9 @@ export const infos = [
 
 export const infosSQE = [
   { row: 4, name: "SQE评分股", props: "sqeRateDepartNum", key: "SQE评分股" },
-  { row: 4, name: "SQE评分人", props: "sqeRater", key: "SQE评分人" },
-  { row: 4, name: "SQE股长", props: "sqeCoordinator", key: "SQE股长" },
-  { row: 4, name: "SQE评分推送状态", props: "sqeStatus", key: "SQE评分推送状态", labelWidth: '150px' }
+  { row: 4, name: "SQE", props: "sqeRater", key: "SQE" },
+  { row: 4, name: "SQE协调人", props: "sqeCoordinator", key: "SQE协调人" },
+  { row: 4, name: "SQE状态", props: "sqeStatus", key: "SQE状态", labelWidth: '150px' }
 ]
 
 export const partListTableTitle = [
