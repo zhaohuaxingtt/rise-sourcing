@@ -1071,6 +1071,9 @@ export default {
         return {
           id: item.id,
           sqeAuditRemark: item.sqeAuditRemark,
+          sqePerformance: item.sqePerformance,
+          sqeQtr: item.sqeQtr,
+          sqeRemark: item.sqeRemark
         }
       })).then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
