@@ -17,7 +17,7 @@
             language("下载SQE评分表")
           }}
         </iButton>
-        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE('MQ')" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
+        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
 <!--        保留一个下载,使用SQE下载接口-->
 <!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
         <iButton v-if="isMQRater" @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分审核") }}</iButton>
@@ -1014,8 +1014,8 @@ export default {
             .finally(() => (this.recallLoading = false));
       });
     },
-    // 导出SQE评分任务
-    async exportSQE(flag='') {
+    // 导出SQE评分任务, hasMqExport=true 为质量评分
+    async exportSQE(hasMqExport=false) {
       let ids = []
       if (this.multipleSelection.length) {
         ids = this.multipleSelection.map(item => item.id)
@@ -1023,7 +1023,7 @@ export default {
         ids = this.tableListData.map(item => item.id)
       }
       this.exportLoading = true
-      await exportSqeRating(ids, flag)
+      await exportSqeRating({hasMqExport, ids})
       this.exportLoading = false
     },
     // 导出质量评分任务
