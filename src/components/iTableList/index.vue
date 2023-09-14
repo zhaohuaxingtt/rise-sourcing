@@ -23,6 +23,7 @@
     </iSelect>
     <el-table tooltip-effect="light"
               :height="height"
+              :max-height="maxHeight"
               :data="tableData"
               v-loading="tableLoading"
               @selection-change="handleSelectionChange"
@@ -152,6 +153,7 @@ export default {
     indexLabel: { type: String, default: "#" },
     selectionWidth: { type: String, default: "50" },
     height: { type: Number || String },
+    maxHeight: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选
     showSummary: { type: Boolean, default: false }, //  是否显示总结行

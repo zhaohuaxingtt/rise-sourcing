@@ -34,7 +34,7 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20 table-card" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_TABLE|财务目标价管理-目标价审批-表格">
+    <iCard class="margin-top7" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_TABLE|财务目标价管理-目标价审批-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
@@ -44,9 +44,7 @@
           <iButton @click="handleExport" v-permission.auto="FINANCIALTARGETPRICE_APPROVAL_EXPORT|财务目标价管理-目标价审批-导出">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList 
-        height="100%"
-        class="table-box"
+      <tableList
         :activeItems='"partNum"'
         :isEdit="isEdit" 
         selection 
@@ -344,28 +342,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.approval{
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    display: flex;
-    flex-flow: column;
-    .card-body-box {
-      flex: 1;
-      overflow: hidden;
-      .cardBody {
-        display: flex;
-        flex-flow: column;
-      }
-      .table-box {
-        flex: 1;
-        overflow: hidden;
-      }
-    }
-  }
-}
 </style>

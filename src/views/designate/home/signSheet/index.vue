@@ -38,6 +38,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        maxHeight="570px"
         v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETABLE|签字单表格"
         @handleSelectionChange="handleSelectionChange"
       >

@@ -4,7 +4,7 @@
  * @Description: TCM导入清单
 -->
 <template>
-  <iCard collapse class="tcmList margin-top20" :title="language('LK_AEKO_TCMDAORUQINGDAN','TCM导⼊清单')">
+  <iCard collapse class="tcmList margin-top7" :title="language('LK_AEKO_TCMDAORUQINGDAN','TCM导⼊清单')">
       <iSearch @sure="sure" @reset="reset" :icon="true" class="search-card">
           <el-form>
               <el-form-item 

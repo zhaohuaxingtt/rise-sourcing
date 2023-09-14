@@ -11,9 +11,9 @@
 export const tableTitle = [
   { props: 'rfqId', name: 'RFQ编号', key: "RFQBIANHAO", tooltip: true, sortable: true, fixed: true },
   { props: 'rfqName', name: 'RFQ名称', key: "RFQMINGCHENG", tooltip: true, sortable: true, fixed: true },
-  { props: 'buyerName', name: 'CSF/CSS', key: "CSFCSS", tooltip: true, sortable: true, fixed: true },
-  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, sortable: true, fixed: true },
-  { props: 'cfName', name: 'CF', key: "CF", tooltip: true, sortable: true, fixed: true },
+  { props: 'buyerName', name: 'CSF/CSS', key: "CSFCSS", tooltip: true, sortable: true },
+  { props: 'linieName', name: 'LINIE', key: "LINIE", tooltip: true, sortable: true },
+  { props: 'cfName', name: 'CF', key: "CF", tooltip: true, sortable: true },
   { props: 'applicationDate', name: '申请日期', key: "SHENQINGRIQI", tooltip: true, sortable: true },
   { props: 'endDate', name: '截止日期', key: "JIEZHIRIQI", tooltip: true, sortable: true },
   // {props:'approvalStatusDesc',name:'签收状态', key: "QIANSHOUZHUANGTAI", tooltip: true},

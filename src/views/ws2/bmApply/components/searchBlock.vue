@@ -266,7 +266,7 @@ export default {
   }
 }
 .search-block{
-  margin-bottom: 20px;
+  margin-bottom: 7px;
 
   // & .el-form-item:nth-last-child(3){
   //   width: 30.6rem !important;

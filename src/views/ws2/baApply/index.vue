@@ -1,7 +1,7 @@
 <template>
   <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BAAPPLICATION_TOTAL">
     <iSearch
-          class="margin-bottom20 giSearch"
+          class="margin-bottom7 giSearch"
           style="margin-top: 20px"
           @sure="sure"
           @reset="reset"
@@ -36,6 +36,7 @@
 
       <iCard>
         <iTableList
+            max-height="570px"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="tableLoading"

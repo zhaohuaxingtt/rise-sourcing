@@ -16,6 +16,7 @@
     :tree-props="treeProps"
     v-loading='tableLoading'
     :height="height"
+    :max-height="maxHeight"
     :data='tableData'
     :empty-text="language('ZANWUSHUJU', '暂无数据')"
     :class="{'moviesTable': true, 'radio': radio}"
@@ -211,8 +212,14 @@ export default {
      * @description: 高度
      * @param {*}
      * @return {*}
-     */    
+     */
     height:{type:Number||String},
+    /**
+     * @description: 最大高度
+     * @param {*}
+     * @return {*}
+     */
+    maxHeight:{type:Number||String, default: '570px'},
     /**
      * @description: 用于高亮带链接的列
      * @param {*}
@@ -476,6 +483,7 @@ export default {
 <style lang='scss' scoped>
 .iFileTableList {
   height: 100%;
+  clear: both;
   // ::v-deep.el-table__body-wrapper {
   //   height: auto!important;
   // }

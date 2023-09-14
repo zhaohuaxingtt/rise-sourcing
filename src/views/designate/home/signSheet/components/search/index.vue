@@ -9,7 +9,7 @@
 
 <template>
   <iSearch
-    class="designateSearch margin-bottom20"
+    class="designateSearch margin-bottom7"
     @sure="sure"
     @reset="reset"
     :resetKey="NORNIMATION_RESETBUTTON"

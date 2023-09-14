@@ -2,7 +2,7 @@
 <template>
   <div v-permission.auto="AEKO_PENDING_APPROVAL_PAGE|待审批页面">
     <!--搜索区--->
-    <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :icon="true" :resetKey="QUEREN"
+    <i-search class="margin-bottom7" @sure="queryPendingAKEOForm" @reset="restQueryForm" :icon="true" :resetKey="QUEREN"
               :searchKey="REST" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
@@ -91,7 +91,6 @@
       <!--表格展示区-->
       <tableList
         permissionKey="AEKO_APPROVE_APPROVELIST_AKEOPENDINGPAGE"
-          height="400"
           ref="tableList"
           class="aeko-pending-table"
           index
@@ -104,11 +103,6 @@
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-        <!-- <template #isTop="scope">
-          <div>
-            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="icontop"/></span>
-          </div>
-        </template> -->
         <!--aekoNum-->
         <template #aekoNum="scope">
           <div class="hasIcon">
@@ -194,17 +188,15 @@
           <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
       </tableList>
-      <div class="pagination">
-        <iPagination v-update class="pagination"
-                     @size-change="handleSizeChange($event, loadPendingAKEOList)"
-                     @current-change="handleCurrentChange($event, loadPendingAKEOList)"
-                     background
-                     :current-page="page.currPage"
-                     :page-sizes="page.pageSizes"
-                     :page-size="page.pageSize"
-                     :layout="page.layout"
-                     :total="page.totalCount"/>
-      </div>
+      <iPagination v-update class="pagination"
+                   @size-change="handleSizeChange($event, loadPendingAKEOList)"
+                   @current-change="handleCurrentChange($event, loadPendingAKEOList)"
+                   background
+                   :current-page="page.currPage"
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :total="page.totalCount"/>
     </i-card>
 
     <AEKOTransferDialog v-model="transferDialogVal" @confirmTransfer="confirmTransfer"/>

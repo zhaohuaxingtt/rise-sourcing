@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="search">
-    <iSearch class="margin-top20" @sure="sure" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
       <el-form>
         <el-form-item
           :label="language('FS/GS/SP No.', 'FS/GS/SP No.')"

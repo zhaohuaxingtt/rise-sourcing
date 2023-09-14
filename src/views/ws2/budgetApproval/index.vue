@@ -1,7 +1,7 @@
 <template>
   <div v-permission="TOOLING_BUDGET_BUDGETAPPROVAL">
     <iSearch
-        class="margin-bottom20 giSearch"
+        class="margin-bottom7 giSearch"
         style="margin-top: 20px"
         @sure="getTableListFn"
         @reset="reset"
@@ -93,8 +93,8 @@
           <iButton @click="transferBtn" v-loading="transferBtnLoading">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
-<!--      570-->
       <iTableList
+          max-height="570px"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"

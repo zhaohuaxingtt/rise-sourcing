@@ -31,7 +31,8 @@
                   </div>
                   <!-- 表格区域 -->
                   <tableList
-                      class="table aotoTableHeight"
+                      class="table"
+                      max-height="570px"
                       index
                       :lang="true"
                       :tableData="tableListData"

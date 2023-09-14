@@ -12,7 +12,7 @@
     <!-- 查询区 -->
     <search @search="query" ref="search"/>
     <!-- 表格区 -->
-    <iCard class="cardMargin table-card">
+    <iCard class="margin-top7">
       <div class="clearFloat margin-bottom20">
         <div class="floatright">
           <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
@@ -22,8 +22,6 @@
       <tablelist
         permissionKey="DESIGNATE_HOME_RECORD"
         lang
-        class="table-box"
-        height="100%"
         :tableTitle="tableTitle"
         :tableData="tableListData"
         :tableLoading="tableLoading"
@@ -165,25 +163,6 @@ export default {
 <style lang="scss" scoped>
   .openLinkText{
     color:$color-blue;
-  }
-.designatehome{
-    height: 100%;
-    display: flex;
-    flex-flow: column;
-    ::v-deep .table-card {
-      flex: 1;
-      overflow: hidden;
-      min-height: 400px;
-      .card-body-box {
-        height: 100%;
-        .table-box {
-          height: calc(100% - 105px);
-        }
-      }
-    }
-  }
-  .cardMargin{
-    margin-top:20px
   }
   .icon-gray{
     cursor: pointer;

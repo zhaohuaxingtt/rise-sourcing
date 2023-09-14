@@ -24,7 +24,6 @@
       </headerNav>
     </div>
     <iSearch
-      class="margin-top25"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
@@ -260,7 +259,7 @@
       </el-form>
     </iSearch>
     <iCard
-      class="margin-top30 table-card"
+      class="margin-top7"
       :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')"
     >
       <template #header-control>
@@ -271,8 +270,8 @@
         >
       </template>
       <tableList
-        class="table table-box"
-        height="100%"
+        class="table"
+        max-height="570px"
         index
         :lang="true"
         :tableData="tableListData"
@@ -628,28 +627,6 @@ export default {
 
 <style lang="scss" scoped>
 .supplierScore {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  ::v-deep .table-card {
-    flex: 1;
-    overflow: hidden;
-    min-height: 400px;
-    display: flex;
-    flex-flow: column;
-    .card-body-box {
-      flex: 1;
-      overflow: hidden;
-      .cardBody {
-        display: flex;
-        flex-flow: column;
-      }
-      .table-box {
-        flex: 1;
-        overflow: hidden;
-      }
-    }
-  }
   .header {
     width: 100%;
     position: relative;
