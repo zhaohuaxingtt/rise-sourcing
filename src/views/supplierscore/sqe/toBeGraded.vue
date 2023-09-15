@@ -134,7 +134,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('SQE状态')">
-          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
+          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')" collapse-tags >
             <el-option
               :value="item.value"
               :label="item.label"
@@ -255,7 +255,7 @@ export default {
         {label: "是", key: "nominationLanguage.Yes", value: true},
         {label: "否", key: "nominationLanguage.No", value: false}
       ],
-      sqeRateStatus: ['UNDISTRIBUTED', 'WATING_FOR_RATING'],
+      sqeRateStatus: [],
       statusOptions: [
         {label: "未分配", key: "未分配", value: 'UNDISTRIBUTED'},
         {label: "待评分", key: "待评分", value: 'WATING_FOR_RATING'},
@@ -270,11 +270,24 @@ export default {
     }
   },
   created() {
+    this.setDefaultStatus()
     this.getCartypeDict();
     this.getCarTypeSop();
     this.getData();
   },
   methods: {
+    // 根据登录人角色设置默认查询状态
+    setDefaultStatus(){
+      let isXTR = ['SQEXTR']  // SQE协调人
+      let isPFR = ['SQEPFR'] // SQE评分人
+      this.sqeRateStatus = []
+      if(this.userInfo.roleList.some(item=>isXTR.includes(item.code))){
+        this.sqeRateStatus.push('UNDISTRIBUTED')
+      }
+      if(this.userInfo.roleList.some(item=>isPFR.includes(item.code))){
+        this.sqeRateStatus.push('WATING_FOR_RATING','SAVED','AUDIT_REJECT')
+      }
+    },
     // 查询Linie
     findLinieByName(name) {
       this.linieLoading = true;
@@ -371,7 +384,7 @@ export default {
     // 重置
     reset() {
       this.form = cloneDeep(queryForm);
-      this.sqeRateStatus = ['UNDISTRIBUTED', 'WATING_FOR_RATING']
+      this.setDefaultStatus()
       this.sure();
     },
     // 分配股
