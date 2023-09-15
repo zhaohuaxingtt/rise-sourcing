@@ -134,7 +134,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('SQE状态')">
-          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')">
+          <iSelect v-model="sqeRateStatus" multiple :placeholder="language('partsprocure.CHOOSE', '请选择')" collapse-tags >
             <el-option
                 :value="item.value"
                 :label="item.label"

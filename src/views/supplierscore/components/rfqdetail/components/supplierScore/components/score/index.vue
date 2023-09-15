@@ -13,13 +13,13 @@
   >
     <template #header-control>
       <div v-if="!editStatus" key="1">
-        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE(false)">{{
-            language("下载SQE评分表")
-          }}
-        </iButton>
-        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
+<!--        <iButton v-if="isMQRater" :loading="exportLoading" icon="el-icon-download" @click="exportSQE(false)">{{-->
+<!--            language("下载SQE评分表")-->
+<!--          }}-->
+<!--        </iButton>-->
+<!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
 <!--        保留一个下载,使用SQE下载接口-->
-<!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
+        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
         <iButton v-if="isMQRater" @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分审核") }}</iButton>
         <template v-if="showSQE">
           <iButton v-if="rfqInfo.hasShowSqeEdit" @click="handleEdit('sqe')">{{ language("编辑SQE评分") }}</iButton>
