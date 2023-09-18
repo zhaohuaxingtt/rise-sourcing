@@ -376,7 +376,6 @@ export default {
       cartypeProjectOptions: [],
       form: cloneDeep(queryForm),
       loading: false,
-      tableTitle,
       tableListData: [],
       multipleSelection: [],
       forwardDialogVisible: false,
@@ -391,6 +390,26 @@ export default {
     userInfo() {
       return this.$store.state.permission?.userInfo || {};
     },
+    tableTitle(){
+      let tableTitle_result = [...tableTitle]
+      const MQ_List = ["ZLPFR", "ZLPFXTY"]; // 质量评分人，协调人
+      const EP_List = ["JZSPFR", "JSPFXTY"]; // 技术评分人，协调人
+      let isMQ = false;
+      let isEP = false;
+      (this.userInfo.roleList || []).map((item) => {
+        if (MQ_List.includes(item.code)) {
+          isMQ = true;
+        }
+        if (EP_List.includes(item.code)) {
+          isEP = true;
+        }
+      });
+      // 不是质量评分人，协调人 则移除质量相关字段
+      if(!isMQ) tableTitle_result = tableTitle_result.filter(item=> !['mqRater','mqCoordinator'].includes(item.props))
+      // 不是技术评分人，协调人 则移除质量相关字段
+      if(!isEP) tableTitle_result = tableTitle_result.filter(item=> !['epRater','epCoordinator'].includes(item.props))
+      return tableTitle_result
+    }
   },
   created() {
     this.findDropDownBox();
