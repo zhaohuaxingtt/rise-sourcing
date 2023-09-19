@@ -1195,7 +1195,7 @@ export default {
       );
     },
     partProjectTypeArray() {
-      return this.fromGroup.PART_PROJECT_TYPE || [];
+      return this.fromGroup.PART_PROJECT_TYPE|| [];
       // return this.detailData.partProjectSource == 1 ? ((this.fromGroup.PART_PROJECT_TYPE || []).filter(item => ![this.partProjTypes.PEIJIAN, this.partProjTypes.FUJIAN].includes(item.code))) : (this.fromGroup.PART_PROJECT_TYPE || [])
     },
 
@@ -2335,8 +2335,9 @@ export default {
       const keys =
         partProjTypeCodeScenarioMap[this.partProjectSourceScenarioCode];
       const codes = keys.map((key) => this.partProjTypes[key]);
+      // 涨价零件归属到GS-涨价中,这里过滤掉涨价零件
       return this.partProjectTypeArray.filter((item) =>
-        codes.includes(item.code)
+        codes.includes(item.code) && ![partProjTypes.ZHANGJIALINGJIAN].includes(item.code)
       );
     },
 
@@ -2383,7 +2384,7 @@ export default {
 
         const codes = keys.map((key) => this.partProjTypes[key]);
         return this.partProjectTypeArray.filter((item) =>
-          codes.includes(item.code)
+          codes.includes(item.code) && ![partProjTypes.ZHANGJIALINGJIAN].includes(item.code)
         );
       }
 
