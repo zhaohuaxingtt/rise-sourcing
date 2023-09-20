@@ -148,7 +148,7 @@ export default {
     },
     // 获取材料组数据
     getMaterialGroup(categoryCode=null, stuffCode=null) {
-      if(!(categoryCode||this.detailData.categoryCode)) return // 如果没有categoryCode不调用查询接口
+      // if(!(categoryCode||this.detailData.categoryCode)) return // 如果没有categoryCode不调用查询接口
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
