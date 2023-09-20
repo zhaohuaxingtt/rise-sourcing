@@ -128,6 +128,7 @@ export default {
     if(this.$route.path == '/tooling/dataBase'){
       this.$refs.iNavMvpRef.activeIndex = 999
     }
+    console.log('newTableTitle=========>',this.newTableTitle)
   },
   methods: {
     filterRoutePermission(list){

@@ -30,7 +30,8 @@ export default [
         name: "supplierscoreRfqDetail",
         meta: {
           title: "评分任务-RFQ详情",
-          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
+          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE'],
+          permissionKey: 'COSTANALYSISMANAGE_SUPPLIERSCORE_RFQDETAIL'
         },
         component: () => import("@/views/supplierscore/components/rfqdetail"),
       },

@@ -41,7 +41,7 @@ export default [
       {
         path: "detail",
         name: "targetPriceDetail",
-        meta: { title: "模具目标价-详情" },
+        meta: { title: "模具目标价-详情", permissionKey: 'FINANCIALMANAGE_MODELTARGETPRICE_DETAIL' },
         component: () => import("@/views/modelTargetPrice/targetPriceDetail"),
       }
     ]

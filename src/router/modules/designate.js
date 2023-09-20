@@ -15,7 +15,8 @@ const nominationpages = [
     name: 'designateDecisionData',
     meta: {
       title: '定点管理-决策资料-title',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'TITLE'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/title'),
@@ -25,7 +26,8 @@ const nominationpages = [
     name: 'designateDecisionDataPartList',
     meta: {
       title: '定点管理-决策资料-Part List',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'PARTLIST'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/partList'),
@@ -35,7 +37,8 @@ const nominationpages = [
     name: 'designateDecisionDataSingleSourcing',
     meta: {
       title: '定点管理-决策资料-Single Sourcing',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SINGLESOURCING'
     },
     component: () =>
       import(
@@ -47,7 +50,8 @@ const nominationpages = [
     name: 'designateDecisionDataTimeLine',
     meta: {
       title: '定点管理-决策资料-Time Line',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'TIMELINE'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/timeLine'),
@@ -57,7 +61,8 @@ const nominationpages = [
     name: 'designateDecisionDataBDL',
     meta: {
       title: '定点管理-决策资料-BDL',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'BDL'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/bdl'),
@@ -67,7 +72,8 @@ const nominationpages = [
     name: 'designateDecisionDrawing',
     meta: {
       title: '定点管理-决策资料-drawing',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'DRAWING'
     },
     component: () =>
       import('@/views/designate/designatedetail/drawing'),
@@ -77,7 +83,8 @@ const nominationpages = [
     name: 'designateDecisionDataMTZ',
     meta: {
       title: '定点管理-决策资料-MTZ',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'MTZ'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/mtz'),
@@ -87,7 +94,8 @@ const nominationpages = [
     name: 'designateDecisionAttachment',
     meta: {
       title: '定点管理-决策资料-attachment',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'ATTACHMENT'
     },
     component: () =>
       import('@/views/designate/designatedetail/attachment'),
@@ -97,7 +105,8 @@ const nominationpages = [
     name: 'designateDecisionTasks',
     meta: {
       title: '定点管理-决策资料-tasks',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'TASKS'
     },
     component: () => import('@/views/designate/designatedetail/tasks'),
   },
@@ -106,7 +115,8 @@ const nominationpages = [
     name: 'designateDecisionAwardingscenario',
     meta: {
       title: '定点管理-决策资料-awardingscenario',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'AWARDINGSCENARIO'
     },
     component: () =>
       import('@/views/designate/designatedetail/awardingscenario'),
@@ -116,7 +126,8 @@ const nominationpages = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-RS',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'RS'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/rs/home'),
@@ -126,7 +137,8 @@ const nominationpages = [
     name: 'designateDecisionRSexpan',
     meta: {
       title: '定点管理-决策资料-扩产能',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'RSCAPACITYEXPAN'
     },
     component: () =>
       import(
@@ -138,7 +150,8 @@ const nominationpages = [
     name: 'designateDecisionAbPrice',
     meta: {
       title: '定点管理-决策资料-abprice',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'ABPRICE'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/abPrice'),
@@ -148,7 +161,8 @@ const nominationpages = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-costanalysis',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'COSTANALYSIS'
     },
     component: () =>
       import(
@@ -160,7 +174,8 @@ const nominationpages = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-strategy',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'STRATEGY'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/strategy'),
@@ -174,7 +189,8 @@ const nominationpages_copy = [
     name: 'designateDecisionData',
     meta: {
       title: '定点管理-决策资料-title',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_TITLE'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/title'),
@@ -185,7 +201,8 @@ const nominationpages_copy = [
     meta: {
 
       title: '定点管理-决策资料-Part List',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_PARTLIST'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/partList'),
@@ -195,7 +212,8 @@ const nominationpages_copy = [
     name: 'designateDecisionDataSingleSourcing',
     meta: {
       title: '定点管理-决策资料-Single Sourcing',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_SINGLESOURCING'
     },
     component: () =>
       import(
@@ -207,7 +225,8 @@ const nominationpages_copy = [
     name: 'designateDecisionDataTimeLine',
     meta: {
       title: '定点管理-决策资料-Time Line',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_TIMELINE'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/timeLine'),
@@ -217,7 +236,8 @@ const nominationpages_copy = [
     name: 'designateDecisionDataBDL',
     meta: {
       title: '定点管理-决策资料-BDL',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_BDL'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/bdl'),
@@ -227,7 +247,8 @@ const nominationpages_copy = [
     name: 'designateDecisionDrawing',
     meta: {
       title: '定点管理-决策资料-drawing',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_DRAWING'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/drawing'),
@@ -237,7 +258,8 @@ const nominationpages_copy = [
     name: 'designateDecisionDataMTZ',
     meta: {
       title: '定点管理-决策资料-MTZ',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_MTZ'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/mtz'),
@@ -247,7 +269,8 @@ const nominationpages_copy = [
     name: 'designateDecisionAttachment',
     meta: {
       title: '定点管理-决策资料-attachment',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_ATTACHMENT'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/attachment'),
@@ -257,7 +280,8 @@ const nominationpages_copy = [
     name: 'designateDecisionTasks',
     meta: {
       title: '定点管理-决策资料-tasks',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_TASKS'
     },
     component: () => import('@/views/designate/designatedetail/previewCSC/tasks'),
   },
@@ -266,7 +290,8 @@ const nominationpages_copy = [
     name: 'designateDecisionAwardingscenario',
     meta: {
       title: '定点管理-决策资料-awardingscenario',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_AWARDINGSCENARIO'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/awardingscenario'),
@@ -276,7 +301,8 @@ const nominationpages_copy = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-RS',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_RS'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/rs/home'),
@@ -286,7 +312,8 @@ const nominationpages_copy = [
     name: 'designateDecisionRSexpan',
     meta: {
       title: '定点管理-决策资料-扩产能',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_RSCAPACITYEXPAN'
     },
     component: () =>
       import(
@@ -298,7 +325,8 @@ const nominationpages_copy = [
     name: 'designateDecisionAbPrice',
     meta: {
       title: '定点管理-决策资料-abprice',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_ABPRICE'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/abPrice'),
@@ -308,7 +336,8 @@ const nominationpages_copy = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-costanalysis',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_COSTANALYSIS'
     },
     component: () =>
       import(
@@ -320,7 +349,8 @@ const nominationpages_copy = [
     name: 'designateDecisionRS',
     meta: {
       title: '定点管理-决策资料-strategy',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_PREVIEWCSC_STRATEGY'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/strategy'),
@@ -361,7 +391,8 @@ export default [
         name: 'designateRsreviewDetails',
         meta: {
           title: '定点管理-上会RS单复核详情',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCING_NOMINATION_RSREVIEW_RSDETAILSPAGE'
         },
         component: () => import('@/views/designate/home/rsReview/details'),
       },
@@ -379,7 +410,8 @@ export default [
         name: 'designateRecordDetails',
         meta: {
           title: '定点管理-定点记录详情',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_RECORD_DETAILS'
         },
         component: () => import('@/views/designate/home/record/detail'),
       },
@@ -388,7 +420,8 @@ export default [
         name: 'designateSignSheet',
         meta: {
           title: '定点管理-签字单列表',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_SIGNSHEET'
         },
         component: () => import('@/views/designate/home/signSheet'),
       },
@@ -406,7 +439,8 @@ export default [
         name: 'addSignOverView',
         meta: {
           title: '定点管理-签字单导航',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_DETAILS_TITLE'
         },
         component: () => import('@/views/designate/home/signSheet/components/headerNav/index'),
         children: [
@@ -415,7 +449,8 @@ export default [
             name: 'designateNewSignSheet',
             meta: {
               title: '定点管理-M签字单-新建签字单',
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_DETAILS'
             },
             component: () => import('@/views/designate/home/signSheet/details'),
           },
@@ -434,7 +469,8 @@ export default [
         name: 'designateAddRfq',
         meta: {
           title: '定点管理-RFQ零件清单-新增RFQ',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION_ADDRFQ'
         },
         component: () => import('@/views/designate/designatedetail/addRfq'),
       },
@@ -443,7 +479,8 @@ export default [
         name: 'rsSingleMaintenance',
         meta: {
           title: '定点管理-RS单维护',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION_RSMAINTAIN'
         },
         component: () =>
           import('@/views/designate/designatedetail/rsSingleMaintenance'),
@@ -453,7 +490,8 @@ export default [
         name: 'defaultLogic',
         meta: {
           title: '定点申请预设逻辑',
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION_DEFAULTLOGIC'
         },
         component: () => import('@/views/designate/defaultLogic'),
       },
@@ -474,7 +512,8 @@ export default [
             meta: {
               hideTabLV3: true,
               title: '定点管理-定点管理详情',
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_PARTSNOMINATION_DETAILS'
             },
             component: () => import('@/views/designate/designatedetail/details/index'),
           },
@@ -485,7 +524,8 @@ export default [
             meta: {
               hideTabLV3: true,
               title: '定点管理-供应商&单一供应商',
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_SUPPLIER'
             },
             component: () => import('@/views/designate/supplier/index'),
           },
@@ -496,7 +536,8 @@ export default [
             meta: {
               hideTabLV3: true,
               title: '定点管理-定点建议',
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_SUGGESTION'
             },
             component: () => import('@/views/designate/suggestion/index'),
           },
@@ -506,7 +547,8 @@ export default [
             meta: {
               hideTabLV3: true,
               title: '定点管理-RFQ零件清单',
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_RFQDETAIL'
             },
             component: () =>
               import('@/views/designate/designatedetail/rfqdetail'),
@@ -517,7 +559,8 @@ export default [
             meta: {
               title: '定点管理-审批人审批记录',
               hideTabLV3: true,
-              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+              activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+              permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_APPROVALPERSONRECORD'
             },
             component: () =>
               import('@/views/designate/approvalPersonAndRecord/index'),
@@ -537,6 +580,8 @@ export default [
         children: cloneDeep(nominationpages).map(route => {
           // 复制路径
           route.meta.path = route.path
+          // 拼接权限资源点
+          route.meta.permissionKey = 'SOURCEINQUIRYPOINT_DESIGNATE_DECISIONDATA_' + route.meta.permissionKey
           return route
         })
       },
@@ -547,7 +592,8 @@ export default [
     name: 'designateSuggestion',
     meta: {
       title: '定点管理-定点建议',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey:'SOURCEINQUIRYPOINT_DESIGNATE_DESIGNATESUGGESTION'
     },
     component: () => import('@/views/designate/suggestion/index'),
   },
@@ -556,7 +602,8 @@ export default [
     name: 'designateSuggestion',
     meta: {
       title: '定点管理-rs流转',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_DESIGNATECIRCULATERS'
     },
     component: () =>
       import('@/views/designate/designatedetail/previewCSC/rs/preview'),
@@ -566,7 +613,8 @@ export default [
     name: 'designateSuggestion',
     meta: {
       title: '定点管理-singleSourcing',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_DESIGNATE_DESIGNATECIRCULATESINGLESOURCING'
     },
     component: () =>
       import('@/views/designate/designatedetail/decisionData/singleSourcing/preview'),
@@ -576,7 +624,8 @@ export default [
     name: 'designateSignSheetPreview',
     meta: {
       title: '签字单预览下载',
-      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+      activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_PARTSNOMINATION_SIGNSHEET_PREVIEW'
     },
     component: () => import('@/views/designate/home/signSheet/signPreview'),
   },
@@ -598,7 +647,8 @@ export default [
         meta: {
           title: '定点管理RS预览',
           hideTabLV3: true,
-          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
+          activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
+          permissionKey: 'SOURCEINQUIRYPOINT_RSPREVIEW_VIEW'
         },
         component: () => import('@/views/designate/designatedetail/decisionData/rs/home'),
       }
@@ -623,6 +673,8 @@ export default [
         route.meta.hideCloseButton = true
         // 复制路径
         route.meta.path = route.path
+        // 拼接权限资源点
+        route.meta.permissionKey = 'SOURCEINQUIRYPOINT_DESINATEPREVIEW_' + route.meta.permissionKey
       }
       return route
     })

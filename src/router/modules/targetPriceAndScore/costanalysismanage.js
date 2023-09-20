@@ -29,6 +29,7 @@ export default [
         name: 'costAnalysisManageRfqDetail',
         meta: {
           title: '成本分析管理-RFQ详情',
+          permissionKey: 'FINANCIALMANAGE_COSTANALYSISMANAGE_RFQDETAIL'
         },
         component: () =>
           import('@/views/costanalysismanage/components/rfqdetail'),
@@ -38,6 +39,7 @@ export default [
         name: 'costAnalysisManageCostAnalysis',
         meta: {
           title: '成本分析管理-成本分析',
+          permissionKey: 'FINANCIALMANAGE_COSTANALYSISMANAGE_COSTANALYSIS'
         },
         component: () =>
           import('@/views/costanalysismanage/components/costanalysis'),
