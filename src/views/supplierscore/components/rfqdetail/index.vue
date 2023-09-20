@@ -78,7 +78,14 @@ export default {
     // 质量评分人
     isMQRater(){
       // 质量评分类型，质量评分人
-      return this.$route.query.rateTag === 'MQ' && this.rfqInfo.raterId === this.userInfo.id
+      const MQ_List = ["ZLPFR", "ZLPFXTY"]; // 质量评分人，协调人
+      let isMQ = false;
+      (this.userInfo.roleList || []).map((item) => {
+        if (MQ_List.includes(item.code)) {
+          isMQ = true;
+        }
+      });
+      return isMQ && this.rfqInfo.raterId === this.userInfo.id
     },
   },
   provide() {
