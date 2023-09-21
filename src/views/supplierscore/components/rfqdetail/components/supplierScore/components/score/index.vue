@@ -561,7 +561,14 @@ export default {
     },
     // 质量评分人
     isMQRater(){
-      return this.$route.query.rateTag == 'MQ' && this.rfqInfo.raterId == this.userInfo.id
+      const MQ_List = ["ZLPFR", "ZLPFXTY"]; // 质量评分人，协调人
+      let isMQ = false;
+      (this.userInfo.roleList || []).map((item) => {
+        if (MQ_List.includes(item.code)) {
+          isMQ = true;
+        }
+      });
+      return isMQ && this.rfqInfo.raterId == this.userInfo.id
     },
     isMQ() {
       return this.tableListData.some((item) => item.rateTag == "MQ");

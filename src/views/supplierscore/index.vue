@@ -404,8 +404,8 @@ export default {
           isEP = true;
         }
       });
-      // 不是质量评分人，协调人 则移除质量相关字段
-      if(!isMQ) tableTitle_result = tableTitle_result.filter(item=> !['mqRater','mqCoordinator'].includes(item.props))
+      // 不是质量评分人，协调人 则移除质量和SQE相关字段
+      if(!isMQ) tableTitle_result = tableTitle_result.filter(item=> !['mqRater','mqCoordinator','sqeRater','sqeRateStatus'].includes(item.props))
       // 不是技术评分人，协调人 则移除质量相关字段
       if(!isEP) tableTitle_result = tableTitle_result.filter(item=> !['epRater','epCoordinator'].includes(item.props))
       return tableTitle_result
