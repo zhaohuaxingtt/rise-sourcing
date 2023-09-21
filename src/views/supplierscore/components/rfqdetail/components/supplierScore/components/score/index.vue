@@ -20,7 +20,8 @@
 <!--        <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>-->
 <!--        保留一个下载,使用SQE下载接口-->
         <iButton v-if="isMQRater" icon="el-icon-download" @click="exportSQE(true)" :loading="exportMQLoading">{{ language("下载质量评分表") }}</iButton>
-        <iButton v-if="isMQRater" @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分审核") }}</iButton>
+        <!--质量评分人使用这个按钮-->
+        <iButton v-if="isMQRater" @click="handleEdit('sqeApproval')">{{ language("编辑SQE评分") }}</iButton>
         <template v-if="showSQE">
           <iButton v-if="rfqInfo.hasShowSqeEdit" @click="handleEdit('sqe')">{{ language("编辑SQE评分") }}</iButton>
           <iButton v-if="rfqInfo.hasShowSqeBack" @click="back">{{ language("退回SQE评分") }}</iButton>
@@ -183,8 +184,9 @@
                 </iSelect>
                 <span>{{ getSelectLabel(scope.row, 'sqePerformance', sqeGrade) }}</span>
               </template>
+              <!--审核跟随质量评分编辑-->
               <template v-else-if="item.props === 'sqeAuditRemark'" v-slot="scope">
-                <iInput v-if="editStatus && hasEditLine(scope.row.id) && editType==='sqeApproval'"
+                <iInput v-if="editStatus && hasEditLine(scope.row.id) && !['sqeApproval','sqe'].includes(editType)"
                         v-model="scope.row[item.props]"/>
                 <span v-else>{{ hideLabel(scope.row, item.props) }}</span>
               </template>
@@ -866,6 +868,7 @@ export default {
         this.saveLoading = true;
         updateRfqBdlRatings(
           filterTableData.map((item) => ({
+            sqeAuditRemark: item.sqeAuditRemark,
             addFee: item.addFee,
             confirmCycle: item.confirmCycle,
             externalFee: item.externalFee,
@@ -968,7 +971,7 @@ export default {
             .filter((item) => list.includes(item.sqeStatus))
             .map((item) => item.id);
         console.log(this.editIdList)
-      } else if (type === 'sqeApproval') {  // 编辑SQE审核
+      } else if (type === 'sqeApproval') {  // 质量评分人编辑SQE评分
         this.editIdList = this.tableListData
             .filter((item) => ["评分完成"].includes(item.sqeStatus))
             .map((item) => item.id);
@@ -1077,7 +1080,7 @@ export default {
       updateSeqAuditBatch(filterTableData.map(item => {
         return {
           id: item.id,
-          sqeAuditRemark: item.sqeAuditRemark,
+          // sqeAuditRemark: item.sqeAuditRemark,
           sqePerformance: item.sqePerformance,
           sqeQtr: item.sqeQtr,
           sqeRemark: item.sqeRemark
