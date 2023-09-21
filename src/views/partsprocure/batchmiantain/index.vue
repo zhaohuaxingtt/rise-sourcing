@@ -71,6 +71,7 @@
             <el-option
               :value="item.code"
               :label="item.name"
+              :disabled="item.disabled"
               v-for="(item, index) in filterProjectList(
                 fromGroup.PART_PROJECT_TYPE,
                 $route.query.businessKey
@@ -463,8 +464,18 @@ export default {
     }
   },
   methods: {
-    filterProjectList(a, b) {
-      return filterProjectList(a, b);
+    filterProjectList(a=[], b) {
+      /*
+      * 不能直接过滤,因为外面行数据会携带涨价零件code进来,直接过滤会显示code
+      * 所以这里改用disabled禁用涨价零件下拉项
+      * */
+      // return filterProjectList(a, b).filter(item=>![partProjTypes.ZHANGJIALINGJIAN].includes(item.code));
+      return filterProjectList(a, b).map(item=>{
+        if([partProjTypes.ZHANGJIALINGJIAN].includes(item.code)){
+          item.disabled = true
+        }
+        return item
+      });
     },
     //获取上方group信息
     getProcureGroup() {
