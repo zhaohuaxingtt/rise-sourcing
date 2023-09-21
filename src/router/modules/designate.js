@@ -392,7 +392,7 @@ export default [
         meta: {
           title: '定点管理-上会RS单复核详情',
           activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT'],
-          permissionKey: 'SOURCING_NOMINATION_RSREVIEW_RSDETAILSPAGE'
+          permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_RSREVIEW_DETAILS'
         },
         component: () => import('@/views/designate/home/rsReview/details'),
       },
