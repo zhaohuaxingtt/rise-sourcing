@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="supplierScore">
-    <score :rfqInfo="rfqInfo" ref="score" :rfqId="rfqId" />
+    <score :rfqInfo="rfqInfo" ref="score" :rfqId="rfqId" :showSQE="showSQE" />
     <attachment class="margin-top20" ref="attachment" :rfqId="rfqId" />
   </div>
 </template>
@@ -30,7 +30,11 @@ export default {
     rfqInfo:{
       type:Object,
       default:()=>{},
-    }
+    },
+    showSQE: {
+      type: Boolean,
+      default: false
+    },
   },
   methods: {
     init() {

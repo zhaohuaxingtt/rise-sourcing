@@ -9,5 +9,6 @@ import menus from './menus'
 import rfq from "./rfq";
 import aeko from "./aeko";
 import sel from "./sel";
+import sqe from "./sqe";
 import newField from "./newField";
-export default { ...menus, ...rfq, ...aeko, ...sel, ...newField }
+export default { ...menus, ...rfq, ...aeko, ...sel, ...sqe, ...newField }

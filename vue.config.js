@@ -13,8 +13,8 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
-// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+// const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
+const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -427,28 +427,28 @@ module.exports = {
 			},
 			// -----------------ws3 供应商---------------------------
 			[process.env.VUE_APP_SUPPLIER]: {
-			  //   供应商
-			  // target: `http://${BASE_IP}:8066/supplier/overall`,
-			  target: `${BASE_IP}/supplier/overall/web`,
-			  // target:'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/supplierservice/',
-			  changeOrigin: true,
-			  pathRewrite: {
+              //   供应商
+              // target: `http://${BASE_IP}:8066/supplier/overall`,
+              target: `${BASE_IP}/supplier/overall/web`,
+              // target:'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/supplierservice/',
+              changeOrigin: true,
+              pathRewrite: {
 				['^' + process.env.VUE_APP_SUPPLIER]: ''
-			  }
+              }
 			},
 			[process.env.VUE_APP_BIDDING]: {
-			  target: `${BASE_IP}/bidding/`,
-			  changeOrigin: true,
-			  pathRewrite: {
+              target: `${BASE_IP}/bidding/`,
+              changeOrigin: true,
+              pathRewrite: {
 				['^' + process.env.VUE_APP_BIDDING]: ''
-			  }
+              }
 			},
 			[process.env.VUE_APP_PARTSPROCURE]: {
-			  target: `${BASE_IP}/parts/web`,
-			  changeOrigin: true,
-			  pathRewrite: {
+              target: `${BASE_IP}/parts/web`,
+              changeOrigin: true,
+              pathRewrite: {
 				['^' + process.env.VUE_APP_PARTSPROCURE]: ''
-			  }
+              }
 			},
 			
 		},
