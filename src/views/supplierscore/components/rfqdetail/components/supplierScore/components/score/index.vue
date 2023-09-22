@@ -638,14 +638,14 @@ export default {
     },
     // SQE评分未完成时不显示SQE信息
     hideLabel(row, props, label=''){
-      if(!this.isFromSQE){
-        // 如果不是从SQE评分进入页面，则默认是质量评分人,只展示评分完成的数据
-        if(['评分完成'].includes(row.sqeStatus)){
-          return label || row[props]
-        }else{
-          return '-'
-        }
-      }
+      // if(!this.isFromSQE){
+      //   // 如果不是从SQE评分进入页面，则默认是质量评分人,只展示评分完成的数据
+      //   if(['评分完成'].includes(row.sqeStatus)){
+      //     return label || row[props]
+      //   }else{
+      //     return '-'
+      //   }
+      // }
       return label || row[props]
     },
     getSelectLabel(row, props, options = []) {
