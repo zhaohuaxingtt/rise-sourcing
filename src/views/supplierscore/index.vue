@@ -266,13 +266,19 @@
         <iButton
           @click="handleTransfer"
           v-permission.auto="SUPPLIERSCORE_HOME_BUTTON_TRANSFER | 转派评分任务"
-          >{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton
+        >{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton
+        >
+        <iButton
+          @click="excelExport"
+          :loading="downLoading"
+        >{{ language("DAOCHU", "导出") }}</iButton
         >
       </template>
       <tableList
         class="table"
         max-height="570px"
         index
+        fixed
         :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -337,6 +343,7 @@ import { getCartypeDict } from "@/api/partsrfq/home";
 import axios from "axios";
 import { TAB } from "@/views/financialTargetPrice/components/data";
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -369,7 +376,6 @@ export default {
       cartypeProjectOptions: [],
       form: cloneDeep(queryForm),
       loading: false,
-      tableTitle,
       tableListData: [],
       multipleSelection: [],
       forwardDialogVisible: false,
@@ -377,12 +383,33 @@ export default {
         { label: "是", key: "nominationLanguage.Yes", value: true },
         { label: "否", key: "nominationLanguage.No", value: false },
       ],
+      downLoading: false
     };
   },
   computed: {
     userInfo() {
       return this.$store.state.permission?.userInfo || {};
     },
+    tableTitle(){
+      let tableTitle_result = [...tableTitle]
+      const MQ_List = ["ZLPFR", "ZLPFXTY"]; // 质量评分人，协调人
+      const EP_List = ["JZSPFR", "JSPFXTY"]; // 技术评分人，协调人
+      let isMQ = false;
+      let isEP = false;
+      (this.userInfo.roleList || []).map((item) => {
+        if (MQ_List.includes(item.code)) {
+          isMQ = true;
+        }
+        if (EP_List.includes(item.code)) {
+          isEP = true;
+        }
+      });
+      // 不是质量评分人，协调人 则移除质量和SQE相关字段
+      if(!isMQ) tableTitle_result = tableTitle_result.filter(item=> !['mqRater','mqCoordinator','sqeRater','sqeRateStatus'].includes(item.props))
+      // 不是技术评分人，协调人 则移除质量相关字段
+      if(!isEP) tableTitle_result = tableTitle_result.filter(item=> !['epRater','epCoordinator'].includes(item.props))
+      return tableTitle_result
+    }
   },
   created() {
     this.findDropDownBox();
@@ -617,10 +644,17 @@ export default {
         query: {
           rfqId: row.rfqId,
           currentTab: "supplierScore",
+          rateTag: row.hasMqRate ? 'MQ' : undefined
         },
       });
       window.open(route.href, "_blank");
     },
+    // 导出
+    excelExport(){
+      this.downLoading = true
+      excelExport(this.tableListData,this.tableTitle, '评分任务'+new Date().getTime())
+      this.downLoading = false
+    }
   },
 };
 </script>

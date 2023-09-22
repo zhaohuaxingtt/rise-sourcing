@@ -17,6 +17,13 @@ export const infos = [
   { row: 4, name: "协调人", props: "coordinator", key: "XIETIAOREN", permissionKey: "SUPPLIERSCORE_RFQDETAIL_INFOS_TEXT_COORDINATOR|协调人" }
 ]
 
+export const infosSQE = [
+  { row: 4, name: "SQE评分股", props: "sqeRateDepartNum", key: "SQE评分股" },
+  { row: 4, name: "SQE", props: "sqeRater", key: "SQE" },
+  { row: 4, name: "SQE协调", props: "sqeCoordinator", key: "SQE协调" },
+  { row: 4, name: "SQE状态", props: "sqeStatus", key: "SQE状态" }
+]
+
 export const partListTableTitle = [
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true },
   { props: "fsnrGsnrNum", name: "FS No.", key: "FSNO", tooltip: true },

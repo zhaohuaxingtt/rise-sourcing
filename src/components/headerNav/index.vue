@@ -30,7 +30,7 @@
 	</div>
 </template>
 <script>
-import { iNavMvp, iTabsList } from 'rise'
+import { iNavMvp } from 'rise'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers('sourcing')
 
@@ -47,8 +47,7 @@ export default {
 		},
 	},
 	components: {
-		iNavMvp,
-		iTabsList,
+		iNavMvp
 	},
 	created() {
 		this.group =
@@ -78,7 +77,6 @@ export default {
 			return this[`${this.type}NavListLeft`] || []
 		},
 		heaederSubMenu() {
-			console.log(this.type, this.group, this[`${this.type}ThirdMenu`])
 			return this[`${this.type}ThirdMenu`]
 				.filter((i) => i.group == this.group)
 				.map((item, index) => {

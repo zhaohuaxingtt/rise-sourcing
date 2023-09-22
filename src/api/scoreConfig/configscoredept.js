@@ -31,6 +31,15 @@ export function listUserByRoleCode(params) {
   })
 }
 
+// 根据角色code获取相关用户数据
+export function findRaterByCurrentUser() {
+  return requst({
+    url: `/rfq-sqe-ratings/findRaterByCurrentUser`,
+    method: "GET",
+  })
+}
+
+
 // 删除部门
 export function departsDelete(data) {
   return requst({
