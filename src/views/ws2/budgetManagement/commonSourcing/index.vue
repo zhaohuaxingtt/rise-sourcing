@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-loading="mainLoading" v-permission="TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET">
+    <div v-loading="mainLoading" v-permission="TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_COMMONSOURCING">
       <div class="header">
         <div>
           车型包名称

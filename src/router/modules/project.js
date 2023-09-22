@@ -233,7 +233,8 @@ export default [
         name: "reportDetails",
         meta: {
             title: "项目管理-项目进度报告-项目管理绩效分析-报告详情",
-            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT'],
+            permissionKey: '/PROJECTMGT_PERFORMANCEANALYSIS_REPORTDETAILS'
         },
         component: () => import ("@/views/project/progressreport/performanceanalysis/reportDetails"),
       },
@@ -242,7 +243,8 @@ export default [
         name: "freeDetails",
         meta: {
             title: "项目管理-项目进度报告-项目管理绩效分析-自定义配置报告",
-            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT']
+            activeMenu: ['RISE_WORKBENCH', 'PROJECTMGT'],
+            permissionKey: '/PROJECTMGT_PERFORMANCEANALYSIS_FREEDETAILS'
         },
         component: () => import ("@/views/project/progressreport/performanceanalysis/freeDetails"),
       },

@@ -33,21 +33,29 @@ export default [
           title: '模具'
         },
         component: () => import (`@/views/ws2`),
+        redirect: '/tooling/budgetManagement',
         children: [
-          {
-            path: '/',
-            redirect: 'budgetManagement/carTypeOverview',
-          },
+          // {
+          //   path: '/',
+          //   redirect: 'budgetManagement/carTypeOverview',
+          // },
           //  付款计划制定与查看
           {
             path: '/tooling/investmentAdmin',
             redirect: '/tooling/investmentAdmin/payBlock',
+            meta: {
+              title: '年度计划',
+              permissionKey: 'TOOLING_INVEST_FUKUANJIHUACHAKAN',
+              navKey: 'toolingNavList'
+            },
           },
           {
             path: '/tooling/investmentAdmin/payBlock',
             name: 'investmentAdminPayBlock',
             meta: {
-              title: '付款看板'
+              title: '付款看板',
+              permissionKey: '/TOOLING/INVESTMENTADMIN/PAYBLOCK',
+              navKey: 'toolingNavList'
             },
             component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
           },
@@ -55,7 +63,9 @@ export default [
             path: '/tooling/investmentAdmin/yearlyPlan',
             name: 'investmentAdminYearlyPlan',
             meta: {
-              title: '年度计划'
+              title: '年度计划',
+              permissionKey: 'TOOLING_PAYMENTPLAN_YEAR',
+              navKey: 'toolingNavList'
             },
             component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
           },
@@ -63,7 +73,9 @@ export default [
             path: '/tooling/investmentAdmin/monthlyPlan',
             name: 'investmentAdminMonthlyPlan',
             meta: {
-              title: '月度计划'
+              title: '月度计划',
+              permissionKey: '/TOOLING/INVESTMENTADMIN/MONTHLYPLAN',
+              navKey: 'toolingNavList'
             },
             component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
           },
@@ -71,12 +83,18 @@ export default [
           {
             path: '/tooling/budgetManagement',
             redirect: 'budgetManagement/carTypeOverview',
+            meta: {
+              permissionKey: 'TOOLING_INVEST_YUSUANGUANLI',
+              navKey: 'toolingNavList'
+            },
           },
           {
             path: '/tooling/budgetManagement/carTypeOverview',
             name: 'carTypeOverview',
             meta: {
-              title: '生成投资清单'
+              title: '生成投资清单',
+              permissionKey: 'TOOLING_BUDGET_OVERVIEW',
+              navKey: 'toolingNavList'
             },
             component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
           },
@@ -108,7 +126,9 @@ export default [
             path: '/tooling/budgetManagement/commonSourcing',
             name: 'commonSourcing',
             meta: {
-              title: 'commonSourcing'
+              title: 'commonSourcing',
+              permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_COMMONSOURCING',
+              navKey: 'toolingNavList'
             },
             component: () => import (`@/views/ws2/budgetManagement/commonSourcing/index`),
           },

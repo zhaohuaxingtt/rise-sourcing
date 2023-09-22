@@ -256,7 +256,8 @@ export default [
         name: "aekoRelatingParts",
         meta: {
           title: 'AEKO-关联零件',
-          activeMenu: ['RISE_WORKBENCH', 'AEKO']
+          activeMenu: ['RISE_WORKBENCH', 'AEKO'],
+          permissionKey: '/AEKO_RELATINGPARTS'
         },
         component: () => import("@/views/aeko/relatingParts"),
       },
@@ -373,7 +374,8 @@ export default [
     name: "aekodetailPage",
     meta: {
       title: 'AEKO详情',
-      activeMenu: ['RISE_WORKBENCH', 'AEKO']
+      activeMenu: ['RISE_WORKBENCH', 'AEKO'],
+      permissionKey: '/AEKO_AEKODETAILPAGE'
     },
     component: () => import("@/views/aeko/detail/aekodetailPage"),
   }

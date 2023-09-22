@@ -70,6 +70,7 @@ export const staticRouter = [
 				name: 'toolingModelDetails',
 				meta: {
 					title: '车型项目详情',
+					permissionKey: 'TOOLSMANAGE_FINDKEY_MODELDETAILS'
 				},
 				component: () => import(`@/views/ws2/baApply/details`),
 			},
@@ -80,10 +81,11 @@ export const staticRouter = [
 					title: '模具投资',
 				},
 				component: () => import(`@/views/ws2`),
+				redirect: '/tooling/budgetManagement',
 				children: [
-					{
-						path: '/',
-					},
+					// {
+					// 	path: '/',
+					// },
 					//  付款计划制定与查看
 					{
 						path: '/tooling/investmentAdmin',
@@ -94,7 +96,9 @@ export const staticRouter = [
 						name: 'investmentAdminPayBlock',
 						meta: {
 							title: '模具投资-付款计划制定与查看-付款看板',
-							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+							permissionKey: '/TOOLING/INVESTMENTADMIN/PAYBLOCK',
+							navKey: 'toolingNavList'
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/payBlock`),
 					},
@@ -103,7 +107,9 @@ export const staticRouter = [
 						name: 'investmentAdminYearlyPlan',
 						meta: {
 							title: '模具投资-付款计划制定与查看-年度计划',
-							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+							permissionKey: 'TOOLING_PAYMENTPLAN_YEAR',
+							navKey: 'toolingNavList'
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/yearlyPlan`),
 					},
@@ -112,7 +118,9 @@ export const staticRouter = [
 						name: 'investmentAdminMonthlyPlan',
 						meta: {
 							title: '模具投资-付款计划制定与查看-月度计划',
-							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+							permissionKey: '/TOOLING/INVESTMENTADMIN/MONTHLYPLAN',
+							navKey: 'toolingNavList'
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/monthlyPlan`),
 					},
@@ -120,13 +128,19 @@ export const staticRouter = [
 					{
 						path: '/tooling/budgetManagement',
 						redirect: 'budgetManagement/carTypeOverview',
+						meta: {
+							permissionKey: 'TOOLING_INVEST_YUSUANGUANLI',
+							navKey: 'toolingNavList'
+						},
 					},
 					{
 						path: '/tooling/budgetManagement/carTypeOverview',
 						name: 'carTypeOverview',
 						meta: {
 							title: '模具投资-预算管理-车型项目',
-							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+							permissionKey: 'TOOLING_BUDGET_OVERVIEW',
+							navKey: 'toolingNavList'
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/carTypeOverview`),
@@ -166,7 +180,9 @@ export const staticRouter = [
 						name: 'commonSourcing',
 						meta: {
 							title: '模具投资-预算管理-commonSourcing',
-							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+							permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_COMMONSOURCING',
+							navKey: 'toolingNavList'
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/commonSourcing/index`),
@@ -242,8 +258,9 @@ export const staticRouter = [
         path: '/tooling/investmentReport/rsDetails',
         name: 'investmentReportRsDetails',
         meta: {
-          title: '模具投资-RS单号详情',
-					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+			title: '模具投资-RS单号详情',
+			activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+			permissionKey: 'TOOLSMANAGE_FINDKEY_INVESTMENTREPORT_RSDETAILS'
         },
         component: () => import (`@/views/ws2/rsDetails`),
       },
@@ -266,7 +283,8 @@ export const staticRouter = [
 				name: 'addModelBag',
 				meta: {
 					title: 'addModelBag',
-					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY'],
+					permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_ADDMODELBAG'
 				},
 				component: () =>
 					import(`@/views/ws2/budgetManagement/commonSourcing/addModelBag`),
@@ -284,6 +302,7 @@ export const staticRouter = [
 				name: 'stocksheetGenerateInvestmentList',
 				meta: {
 					title: '模具-材料组清单',
+					permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_GENERATEINVESTMENTLIST'
 				},
 				component: () =>
 					import(`@/views/ws2/budgetManagement/generateInvestmentList`),
@@ -293,6 +312,7 @@ export const staticRouter = [
 				name: 'investmentListCommon',
 				meta: {
 					title: '模具-投资清单',
+					permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_INVESTMENTLISTCOMMON'
 				},
 				component: () =>
 					import(`@/views/ws2/budgetManagement/investmentListCommon`),

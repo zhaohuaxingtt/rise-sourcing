@@ -9,6 +9,7 @@
 import router from './router'
 import store from '@/store'
 import { getToken, removeToken } from '@/utils'
+import { checkPagePermission } from '@/utils/checkPagePermission'
 import { MessageBox } from 'element-ui'
 // eslint-disable-next-line no-unused-vars
 const whiteList = ['/login', '/ui', '/superLogin', '/sourceinquirypoint/designate/decisiondata/exportPdf']
@@ -113,7 +114,11 @@ router.beforeEach((to, from, next) => {
                         // })
                     })
             } else {
-                next()
+                if(to?.meta.permissionKey){ // 跳转页面需要校验权限
+                    next(checkPagePermission(to, from, store.state.permission.whiteBtnList))
+                }else{
+                    next()
+                }
             }
         }
     } else {

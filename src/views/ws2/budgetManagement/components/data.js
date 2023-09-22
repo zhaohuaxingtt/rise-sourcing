@@ -563,7 +563,7 @@ export const budgetManagement3rd = [
 		activePath: 'commonSourcing',
 		url: '/tooling/budgetManagement/commonSourcing',
 		key: 'Common Sourcing',
-		permissionKey: 'TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET',
+		permissionKey: 'TOOLSMANAGE_FINDKEY_BUDGETMANAGEMENT_COMMONSOURCING',
 	},
 	{
 		value: 3,
@@ -572,7 +572,7 @@ export const budgetManagement3rd = [
 		activePath: 'payBlock',
 		url: '/tooling/investmentAdmin/payBlock',
 		key: 'LK_FUKUANKANBAN',
-		permissionKey: 'TOOLING_PAYMENTPLAN_PAYMENTBOARD',
+		permissionKey: '/TOOLING/INVESTMENTADMIN/PAYBLOCK',
 	},
 	{
 		value: 4,
@@ -590,7 +590,7 @@ export const budgetManagement3rd = [
 		activePath: 'monthlyPlan',
 		url: '/tooling/investmentAdmin/monthlyPlan',
 		key: 'LK_YUEDUJIHUA',
-		permissionKey: 'TOOLING_PAYMENTPLAN_MONTH',
+		permissionKey: '/TOOLING/INVESTMENTADMIN/MONTHLYPLAN',
 	},
 ]
 
