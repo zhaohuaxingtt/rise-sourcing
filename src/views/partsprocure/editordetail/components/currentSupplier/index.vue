@@ -399,7 +399,7 @@ export default {
       const recordRouter = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail/priceRecord",
         query: {
-          fsnrGsnrNum: row.fsnrGsnrNum,
+          fsnrGsnrNum: this.detailData().fsnrGsnrNum, // 从基本信息中获取,bu
           partNum: row.partNum,
           partType: row.partType,
           procureFactoryId: row.procureFactoryId,
