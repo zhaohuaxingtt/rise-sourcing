@@ -28,13 +28,13 @@ router.beforeEach((to, from, next) => {
             let userNum = JSON.parse(sessionStorage.getItem('userInfo'))?.userNum
             if (userNum) {
                 _vds.push(["setUserId", userNum]);
-                _vds.push(["setTrackerHost", 'webbehavior.csvw.com/saicio']);
+                _vds.push(["setTrackerHost", 'clk.csvw.com/saicio']);
                 if (!document.getElementsByTagName("script")['saic']) {
                     var vds = document.createElement("script");
                     vds.id = 'saic'
                     vds.type = "text/javascript";
                     vds.async = true;
-                    vds.src = ("https:" == document.location.protocol ? "https://" : "http://") + "webbehavior.csvw.com/saicio/js/saic.js";
+                    vds.src = ("https:" == document.location.protocol ? "https://" : "http://") + "clk.csvw.com/saicio/js/saic.js";
                     var s = document.getElementsByTagName("script")[0];
                     s.parentNode.insertBefore(vds, s);
                 }
