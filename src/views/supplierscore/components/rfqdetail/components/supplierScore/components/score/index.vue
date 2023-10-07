@@ -117,6 +117,7 @@
     </template>
     <div class="body">
       <el-table
+          :border="true"
           v-loading="loading"
           :data="tableListData"
           :empty-text="language('ZANWUSHUJU', '暂无数据')"
