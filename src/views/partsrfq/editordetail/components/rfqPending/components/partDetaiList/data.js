@@ -118,6 +118,13 @@ export const partDetaiListTitle = [
     minWidth: 100,
   },
   {
+    props: "modelNameZh",
+    name: "车型",
+    key: "LK_CHEXING",
+    tooltip: true,
+    minWidth: 120,
+  },
+  {
     props: "carTypeProjectZh",
     name: "车型项目",
     key: "partsprocure.PARTSPROCUREMODELPROJECT",

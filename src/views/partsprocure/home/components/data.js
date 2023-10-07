@@ -116,7 +116,8 @@ export const tableTitle = [{
 	sortable: true,
 },
 {
-	props: 'carTypeCategory',
+	props: 'modelNameZh',
+	// props: 'carTypeCategory',
 	name: '车型大类',
 	key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 	tooltip: true,
