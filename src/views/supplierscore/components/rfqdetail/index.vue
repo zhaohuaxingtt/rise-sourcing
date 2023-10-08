@@ -104,8 +104,9 @@ export default {
     }
   },
   mounted() {
-    const component = this.$refs[this.currentTab][0]
-    if (typeof component.init === "function") component.init()
+    /* 与getSQERfqDetailByCurrentDept,getRfqDetailByCurrentDept方法内功能重复,导致子组件init中的接口重复调用,所以注释这段代码*/
+    // const component = this.$refs[this.currentTab][0]
+    // if (typeof component.init === "function") component.init()
   },
   methods: {
     getRfqDetailByCurrentDept(type) {
