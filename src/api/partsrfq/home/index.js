@@ -164,10 +164,11 @@ export function getAgentTasksNum(options) {
 }
 
 // 获取车型字典
-export function getCartypeDict() {
+export function getCartypeDict(params) {
     return partsRequst({
         url: '/cartypeDict',
         method: 'GET',
+        params
     })
 }
 

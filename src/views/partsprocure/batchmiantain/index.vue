@@ -384,7 +384,7 @@ import {
   getStuffByCategory,
   dictkey,
   purchasingDept,
-  purchasingLiline,
+  purchasingLiline, getCarTypeSop,
 } from "@/api/partsprocure/editordetail";
 import { selectDictByRootKeys } from "@/api/dictionary";
 import { creatFsGsNr, createNomiappBtn } from "@/components";
@@ -448,6 +448,7 @@ export default {
     this.getProcureGroup();
     this.getCartypeDict();
     this.purchasingDept();
+    this.getCarTypeSop();
     this.purchaseProjectIds = this.$route.query.ids;
     partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey
       ? (this.isDisabled = true)
@@ -482,7 +483,7 @@ export default {
       dictkey().then((res) => {
         if (res.data) {
           Object.keys(res.data).forEach((key) => {
-            if (key !== "LINIE_DEPT" && key !== "LINIE") {
+            if (!['LINIE_DEPT','LINIE','CAR_TYPE_PRO'].includes(key)) {
               this.$set(this.fromGroup, key, res.data[key]);
             }
           });
@@ -506,13 +507,26 @@ export default {
     
     // 获取车型字典
     getCartypeDict() {
-      getCartypeDict()
+      getCartypeDict({isValid: true})
         .then((res) => {
           this.fromGroup["CAR_TYPE"] = res.data || [];
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop({isValid: true}).then((res) => {
+        if (res.code == 200) {
+          this.$set(this.fromGroup, 'CAR_TYPE_PRO', Array.isArray(res.data) ? res.data.map((item) => ({
+              code: item.cartypeProCode,
+              id: item.id,
+              name: item.cartypeProName,
+            }))
+            : [])
+        }
+      });
     },
     // 查询fliter数据
     getGroupList(key) {
