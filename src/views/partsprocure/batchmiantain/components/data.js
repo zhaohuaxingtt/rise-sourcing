@@ -12,6 +12,7 @@ export const tableTitle = [
   { props: 'partNameDe', name: '零件名（德）',  key: 'LK_LINGJIANMINGDE' },
   { props: 'categoryName', name: '材料组', key: 'LK_CAILIAOZU' },
   { props: 'stuffName', name: '工艺组', key: 'LK_GONGYIZU' },
+  { props: 'modelNameZh', name: '车型',  key: 'LK_CHEXING' },
   { props: 'cartypeProjectZh', name: '车型项目',  key: 'LK_CHEXINGXIANGMU' },
   { props: 'startYear', name: '开始年份',  key: 'LK_KAISHINIANFEN' },
   { props: 'year0', name: '+0' },

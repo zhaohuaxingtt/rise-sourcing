@@ -381,18 +381,54 @@ export default {
       return columnIndex === 0 && row.selectedBorder === true ? style : ''
     },
     renewTableHeader(data) {
-      const header = data.filter(o => !o.isHidden)
+      const header = data.filter(o => !o.isHidden)  // 过滤出需要显示的
+      const hiddenHeader = data.filter(o => o.isHidden)  // 过滤出需要隐藏的
 
+      // this.header = header.map(o => ({
+      //   ...o,
+      //   prop: o.prop || o.props,
+      //   label: o.label || o.name,
+      //   i18n: o.i18n || o.key,
+      //   showTips: this.tableTitleMap[o.props].showTips || false,
+      //   tips: this.tableTitleMap[o.props].tips || ''
+      // }))
 
-
-      this.header = header.map(o => ({
-        ...o,
-        prop: o.prop || o.props,
-        label: o.label || o.name,
-        i18n: o.i18n || o.key,
-        showTips: this.tableTitleMap[o.props].showTips || false,
-        tips: this.tableTitleMap[o.props].tips || ''
-      }))
+      let props = header.map(item=>item.props||item.prop).filter(item=>item)
+      let hiddenProps = hiddenHeader.map(item=>item.props||item.prop).filter(item=>item)
+      let tableTitle = []
+      this.tableTitle.forEach(o=>{
+        if(o.prop||o.props){
+          if(!hiddenProps.includes(o.prop||o.props)){
+          // if(props.includes(o.prop||o.props)){
+            tableTitle.push({
+              ...o,
+              prop: o.prop || o.props,
+              label: o.label || o.name,
+              i18n: o.i18n || o.key,
+              showTips: this.tableTitleMap[o.props].showTips || false,
+              tips: this.tableTitleMap[o.props].tips || ''
+            })
+          }
+        }else{
+          tableTitle.push({
+            ...o,
+            prop: o.prop || o.props,
+            label: o.label || o.name,
+            i18n: o.i18n || o.key,
+            showTips: this.tableTitleMap[o.props].showTips || false,
+            tips: this.tableTitleMap[o.props].tips || ''
+          })
+        }
+      })
+      this.header = tableTitle
+      //   this.header = header.map(o => ({
+      //   ...o,
+      //   prop: o.prop || o.props,
+      //   label: o.label || o.name,
+      //   i18n: o.i18n || o.key,
+      //   showTips: this.tableTitleMap[o.props].showTips || false,
+      //   tips: this.tableTitleMap[o.props].tips || ''
+      // }))
     },
     initTableSettingColumns() {
       this.tableSettingColumns = this.tableTitle.map(o => ({
