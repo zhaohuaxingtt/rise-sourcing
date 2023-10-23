@@ -7,7 +7,7 @@
 -->
 <template>
   <iCard @handleTitle="addFile($event,9, '定点记录')"
-         :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`"
+         :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`"
          :defalutCollVal='false'
          collapse>
     <tableList id="card9"

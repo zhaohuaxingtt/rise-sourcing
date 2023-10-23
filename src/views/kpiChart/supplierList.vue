@@ -188,7 +188,7 @@ export default {
       }
       .current{
         background-color: #fff!important;
-        color: #1660F1!important;
+        color: #67C23A!important;
       }
     }
     .supplier-table-tittle{

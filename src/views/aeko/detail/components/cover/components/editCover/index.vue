@@ -820,7 +820,7 @@ export default {
       top: 6px;
       .tipsIcon {
         transform: rotate(180deg);
-        color: #1660f1;
+        color: #67C23A;
         &.grey {
           color: grey;
         }

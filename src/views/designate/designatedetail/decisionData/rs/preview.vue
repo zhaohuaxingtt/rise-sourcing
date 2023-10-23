@@ -146,7 +146,7 @@ export default {
   }
   .active {
     border-right: 1px solid #f5f6f7;
-    color: #1660f1;
+    color: #67C23A;
     background: #fff;
   }
   .dis {

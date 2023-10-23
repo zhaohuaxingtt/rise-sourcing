@@ -898,7 +898,7 @@ export default {
           > span {
             font-weight: bold;
             opacity: 1;
-            color: #1660f1;
+            color: #67C23A;
           }
         }
       }
@@ -939,7 +939,7 @@ export default {
       // opacity: 0.5;
       .log {
         font-size: 16px;
-        color: #1660f1;
+        color: #67C23A;
         margin-left: 5px;
       }
     }

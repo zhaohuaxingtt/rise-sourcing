@@ -387,7 +387,7 @@ export default {
 	}
 }
 .span-color {
-	color: #1660f1;
+	color: #67C23A;
 }
 .page-head {
 	display: flex;

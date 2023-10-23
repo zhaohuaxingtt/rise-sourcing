@@ -100,7 +100,7 @@ export default{
     },
     borderLeft({row, columnIndex}){
       if(columnIndex === 0 && row.selectedBorder === true){
-         return "border-left:2px solid #1660F1;"
+         return "border-left:2px solid #67C23A;"
       }
       else{
         return ""

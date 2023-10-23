@@ -440,7 +440,7 @@ export default {
           tooltip: {
             formatter: function (params) {
               //这里就是控制显示的样式
-              return `${params.seriesName}<br/><span style="color: #1763F7; font-weight: bold">${params.data}</span>`;
+              return `${params.seriesName}<br/><span style="color: #67C23A; font-weight: bold">${params.data}</span>`;
             },
             backgroundColor: "#ffffff",
             extraCssText:
@@ -786,7 +786,7 @@ export default {
 }
 
 .refresh-box{
-  color: #1763F7;
+  color: #67C23A;
   margin-left: 30px;
   cursor: pointer;
 }

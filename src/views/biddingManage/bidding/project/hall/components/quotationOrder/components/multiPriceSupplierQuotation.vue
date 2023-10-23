@@ -1379,10 +1379,10 @@ export default {
                 text-align: center;
               }
               .form--item--number--input__totalprice ::v-deep .el-input__inner {
-                color: #1660f1;
+                color: #67C23A;
                 background-color: #ffffff;
                 box-shadow: 0 0 0.1875rem rgb(22 96 241 / 55%);
-                border-color: #1660f1;
+                border-color: #67C23A;
               }
             }
           }
@@ -1430,7 +1430,7 @@ export default {
   background-color: #f4f5f6;
 }
 .unyingbiao {
-  background-color: #1660f1;
+  background-color: #67C23A;
   color: #fff;
 }
 </style>

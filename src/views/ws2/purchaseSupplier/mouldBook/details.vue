@@ -312,7 +312,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-link{
-  color: #1763F7;
+  color: #67C23A;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -374,7 +374,7 @@ export default {
         width: 250px;
         height: 35px;
         background: #F8F8FA;
-        border-radius: 4px;
+        border-radius: 0px;
         text-align: center;
         overflow: hidden;/*超出部分隐藏*/
         white-space: nowrap;/*不换行*/

@@ -16,7 +16,7 @@ const whiteList = ['/login', '/ui', '/superLogin', '/sourceinquirypoint/designat
 
 router.beforeEach((to, from, next) => {
     const token = getToken()
-    document.title = to.meta.title ? `PP_${to.meta.title}` : 'RiSE'
+    document.title = to.meta.title ? `PP_${to.meta.title}` : 'Deloitte'
     // eslint-disable-next-line no-debugger
     if (token) {
         if (to.path === '/login') {
@@ -125,7 +125,7 @@ router.beforeEach((to, from, next) => {
             //当前没token，并且路由满足白名单，则按照当前路由来控制。
             next()
         } else {
-            next('/login' + `?state=${encodeURIComponent(window.location.href)}`)
+            // next('/login' + `?state=${encodeURIComponent(window.location.href)}`)
         }
     }
 })

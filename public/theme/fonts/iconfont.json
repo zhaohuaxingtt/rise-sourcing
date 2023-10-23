@@ -2701,6 +2701,13 @@
       "unicode_decimal": 58895
     },
     {
+      "icon_id": "37633065",
+      "name": "database（未选中）",
+      "font_class": "databaseweixuanzhong-copy",
+      "unicode": "e78f",
+      "unicode_decimal": 59279
+    },
+    {
       "icon_id": "19990320",
       "name": "菜单（收起）",
       "font_class": "caidanshouqi",

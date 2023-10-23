@@ -857,7 +857,7 @@ h3 {
 }
 .score {
   span {
-    color: #1660f1;
+    color: #67C23A;
     font-size: 14px;
     margin-left: 15px;
     display: inline-block;

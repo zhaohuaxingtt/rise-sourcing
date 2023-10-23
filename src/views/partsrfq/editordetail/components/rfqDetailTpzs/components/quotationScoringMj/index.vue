@@ -86,7 +86,7 @@ export default {
     window["addFileMj"] = (id) => {
       this.addFile(false, 3, "报价分析汇总-模具", 2);
     };
-    // span.innerHTML = `<i onclick="addFileMj()" style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
+    // span.innerHTML = `<i onclick="addFileMj()" style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
   },
   methods: {
     hasShowDelegate() {

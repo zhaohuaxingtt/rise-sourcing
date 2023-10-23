@@ -114,7 +114,7 @@ export default {
       &.active {
         font-size: 16px;
         font-weight: bold;
-        color: #1763F7;
+        color: #67C23A;
         opacity: 1;
         position: relative;
         margin-left: 30px;
@@ -124,7 +124,7 @@ export default {
           display: block;
           width: 4px;
           height: 16px;
-          background: #1763F7;
+          background: #67C23A;
           opacity: 1;
           border-radius: 10px;
           position: absolute;
@@ -154,7 +154,7 @@ export default {
   }
 
   ::v-deep .el-radio-button__orig-radio:checked + .el-radio-button__inner {
-    color: #1660F1;
+    color: #67C23A;
     font-weight: bold;
     background-color: #ffffff;
     //border-color: #ffffff;

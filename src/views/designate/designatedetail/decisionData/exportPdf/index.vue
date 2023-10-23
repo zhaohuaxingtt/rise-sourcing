@@ -1,7 +1,7 @@
 <template> <!-- 导出RS单决策资料 -->
 <div>
   <div class="percentage-box">
-    <el-progress :percentage="percentage" type="circle" color="#1660f1" :show-text="false" stroke-width="15"></el-progress>
+    <el-progress :percentage="percentage" type="circle" color="#67C23A" :show-text="false" stroke-width="15"></el-progress>
     <div class="percentage-text">
       {{percentageText}}{{point}}
     </div>
@@ -582,6 +582,6 @@ export default {
   margin-top: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: #1660f1;
+  color: #67C23A;
 }
 </style>

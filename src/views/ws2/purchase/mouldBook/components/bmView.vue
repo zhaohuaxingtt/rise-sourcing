@@ -373,7 +373,7 @@ export default {
   margin-bottom: 20px;
 }
 .table-link{
-  color: #1763F7;
+  color: #67C23A;
   cursor: pointer;
   text-decoration: underline;
 }

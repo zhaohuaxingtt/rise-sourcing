@@ -277,7 +277,7 @@ export default {
             height: 35px;
             background: #FFFFFF;
             box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
-            border-radius: 4px;
+            border-radius: 0px;
             border: 1px solid #ACB8CF;
             font-size: 14px;
             padding-left: 10px;
@@ -289,7 +289,7 @@ export default {
             min-width: 238px;
             height: 300px;
             background-color: #fff;
-            border-radius: 4px;
+            border-radius: 0px;
             z-index: 999;
             border: 1px solid #E0E6ED;
             padding: 10px 0;

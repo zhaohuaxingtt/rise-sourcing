@@ -173,7 +173,7 @@ export function getStackBarOptions(params) {
       top: '25%',
       containLabel: true
     },
-    color: ['transparent', '#1660f1', '#bbb', 'transparent'],
+    color: ['transparent', '#67C23A', '#bbb', 'transparent'],
     tooltip: {
       show: showTooltip,
       trigger: 'axis',

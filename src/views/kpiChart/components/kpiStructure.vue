@@ -442,7 +442,7 @@ export default {
             text-align: center;
             height: 40px;
             line-height: 40px;
-            border-radius: 4px;
+            border-radius: 0px;
         }
     }
     .scoll-y{height: calc(100vh - 436px);overflow-y: auto}

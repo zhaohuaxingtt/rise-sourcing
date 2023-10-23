@@ -758,7 +758,7 @@ export default {
   font-size: 14px;
   font-weight: 400;
   .hover-stick {
-    color: #1660f1;
+    color: #67C23A;
   }
 }
 

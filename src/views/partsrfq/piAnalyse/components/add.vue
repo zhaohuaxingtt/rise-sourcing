@@ -197,7 +197,7 @@ export default {
         border: none;
         background-color: #EEF2FB;
         font-weight: bold;
-        color: #1660F1;
+        color: #67C23A;
         font-size: 16px;
       }
     }

@@ -406,7 +406,7 @@ export default {
   }
 }
 .withBorder {
-  border: 2px solid #1763F7;
+  border: 2px solid #67C23A;
 }
 .borderTop {
   border-top: 1px dashed rgba(65, 67, 74, .2);

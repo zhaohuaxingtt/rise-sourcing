@@ -10,7 +10,7 @@
 <div>
   <div class="leftLayout">
     <div class="content">
-      <img class="logo" src="../../../src/assets/images/rise.png" alt="">
+      <!-- <img class="logo" src="../../../src/assets/images/rise.png" alt=""> -->
       <div :class="iconChangeClass" class="centerBtn">
         <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
           <icon symbol :name='items.active?items.acIcon:items.icon'></icon>

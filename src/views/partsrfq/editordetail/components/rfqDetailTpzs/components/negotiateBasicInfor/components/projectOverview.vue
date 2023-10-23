@@ -10,7 +10,7 @@
   <iCard 
 
          @handleTitle="addFile($event,6, '项目概览')"
-         :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+         :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<span class='cursor' ><i style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
          :defalutCollVal='false'
          collapse>
          <div  id="card6">

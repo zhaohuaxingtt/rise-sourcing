@@ -134,15 +134,15 @@ export default {
             }
             .el-icon-plus{
                 color: #fff;
-                background: #1763F7;
+                background: #67C23A;
                 cursor: pointer;
-                border-radius: 4px;
+                border-radius: 0px;
             }
             .el-icon-minus{
                 color: #fff;
-                background: #1763F7;
+                background: #67C23A;
                 cursor: pointer;
-                border-radius: 4px;
+                border-radius: 0px;
             }
         }
         tr>td{
@@ -164,7 +164,7 @@ export default {
     .dash-left::after{
         position: absolute;
         content: '';
-        border-top:1px dashed #1660F1;
+        border-top:1px dashed #67C23A;
         width: 200px;
         top: 20%;
         transform: translateY(-50%);
@@ -173,7 +173,7 @@ export default {
     .dash-right::before{
         position: absolute;
         content: '';
-        border-top:1px dashed #1660F1;
+        border-top:1px dashed #67C23A;
         width: 50%;
         height: 1px;
         top: 50%;

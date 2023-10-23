@@ -58,7 +58,7 @@ export default {
           }
         },
         color: [
-          '#1660F1',
+          '#67C23A',
           '#5C6BC0',
           '#3949AB',
           '#ACB8CF',

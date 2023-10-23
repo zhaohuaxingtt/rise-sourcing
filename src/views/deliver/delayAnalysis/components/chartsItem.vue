@@ -93,7 +93,7 @@ import { iCard } from "rise";
               itemStyle: {
                 normal: {
                   color:(val) => {
-                    var colorList = ['#5993FF', '#1763F7', '#0040BE'];
+                    var colorList = ['#5993FF', '#67C23A', '#0040BE'];
                     return colorList[val.dataIndex]
                   },
                   barBorderRadius: [0, 5, 5, 0],

@@ -81,12 +81,12 @@ export default {
     }
     &:hover{
       span{
-        color: #1660f1; 
+        color: #67C23A; 
       } 
     }
   }
   .active {
-    background: #1660f1;
+    background: #67C23A;
     span{
       color:white
     }

@@ -8,7 +8,7 @@
 <template>
   <iCard @handleTitle="addFile($event,7, '批量供应商概览')"
          class="supplier-item"
-         :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+         :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
          :defalutCollVal='false'
          collapse>
     <batch-supplier id="card7"

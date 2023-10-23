@@ -1057,7 +1057,7 @@ export default {
         width: 250px;
         height: 35px;
         background: #F8F8FA;
-        border-radius: 4px;
+        border-radius: 0px;
         text-align: center;
         overflow: hidden;/*超出部分隐藏*/
         white-space: nowrap;/*不换行*/
@@ -1115,7 +1115,7 @@ export default {
   margin-bottom: 25px;
   .logButton{
     font-size: 14px;
-    color: #1763F7;
+    color: #67C23A;
     font-weight: bold;
     cursor: pointer;
     .icon{

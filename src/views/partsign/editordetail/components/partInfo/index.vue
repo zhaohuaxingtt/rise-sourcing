@@ -81,7 +81,7 @@
 	// 				line-height: 35px;
 	// 				text-align: center;
 	// 				background: #F8F8FA;
-	// 				border-radius: 4px;
+	// 				border-radius: 0px;
 	// 				font-size: 14px;
 	// 				color: #000000;
 	// 			}

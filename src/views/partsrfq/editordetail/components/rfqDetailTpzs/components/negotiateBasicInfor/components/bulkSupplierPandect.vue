@@ -8,7 +8,7 @@
 <template>
   <iCard id="bulkSupplierPandect"
          @handleTitle="addFile($event,8, '批量供应商工厂总览')"
-         :title="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`:language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')"
+         :title="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`:language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')"
          :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true"
          collapse>
     <div class="center"

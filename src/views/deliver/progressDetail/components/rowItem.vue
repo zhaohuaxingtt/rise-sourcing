@@ -241,7 +241,7 @@
     display: flex;
     align-items: center;
     .icon{
-      color: #1660f1;
+      color: #67C23A;
     }
     span{
       flex:1;

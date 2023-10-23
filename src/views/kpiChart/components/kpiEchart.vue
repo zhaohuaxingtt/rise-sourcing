@@ -21,7 +21,7 @@ export default {
         return {
             value:"供应商数量",
             option : {
-                color: ['#1763F7'],
+                color: ['#67C23A'],
                 tooltip: {
                     trigger: 'item',
                     backgroundColor:'#fff',
@@ -44,7 +44,7 @@ export default {
                         name:'',
                         icon:'circle',
                         textStyle: {
-                            color: '#1763F7'
+                            color: '#67C23A'
                         }
                     }],
                 },
@@ -126,7 +126,7 @@ export default {
                 this.seriesObj=this.options.series[0]
                 this.option.tooltip.formatter=function(params){
                         const str = `<div style="padding:10px">
-                            <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                            <div>该分数断下供应商数量:<span style="color:#67C23A">${params.value}家</span></div>
                             ${params.data.sArray.map(x=>{
                                return (`<div>${x.name}:${x.realScore}分</div>`)
                             }).join('')}
@@ -166,7 +166,7 @@ export default {
     .point{
         height: 12px;
         width: 12px;
-        background-color: #1763F7;
+        background-color: #67C23A;
         border-radius: 50%;
         display: inline-block;
         margin-right: 10px;

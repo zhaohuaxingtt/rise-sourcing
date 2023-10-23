@@ -462,7 +462,7 @@ export default {
 
     .log {
       font-size: 16px;
-      color: #1660f1;
+      color: #67C23A;
       margin-left: 5px;
     }
   }

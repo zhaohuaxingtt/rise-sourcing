@@ -110,7 +110,7 @@ export default{
         'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
         }
         if(row[columnIndex].style.borderRight) style = {...style,...{borderRight:'none'}}
-        if(row[columnIndex].style.underscore) style = {...style,...{borderBottom:'2px solid #1763F7'}}
+        if(row[columnIndex].style.underscore) style = {...style,...{borderBottom:'2px solid #67C23A'}}
         return style
       } catch (error) {
        return {

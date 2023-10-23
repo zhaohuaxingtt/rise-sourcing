@@ -217,7 +217,7 @@ export default {
 
   ::v-deep .el-button--primary {
     font-size: 16px;
-    color: #1660F1;
+    color: #67C23A;
     background-color: #EEF2FB;
     border-color: #EEF2FB;
   }

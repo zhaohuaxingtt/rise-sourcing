@@ -375,9 +375,9 @@ export default {
                   ::v-deep
                   .el-input__inner {
                   text-align: center;
-                  color: #1660f1;
+                  color: #67C23A;
                   box-shadow: 0 0 0.1875rem rgb(22 96 241 / 55%);
-                  border-color: #1660f1;
+                  border-color: #67C23A;
                 }
               }
             }

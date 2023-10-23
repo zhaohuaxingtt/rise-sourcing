@@ -49,7 +49,7 @@ export default {
     window["addFileMn"] = (id) => {
       this.addFile(false, 5, "业务分配模拟");
     };
-    // span.innerHTML = `<i onclick="addFileMn()" style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
+    // span.innerHTML = `<i onclick="addFileMn()" style='color:#67C23A; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
   },
 };
 </script>

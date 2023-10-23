@@ -19,7 +19,7 @@
         :stroke-dasharray="item.style === 'solid' ? '0' : '3 2'"
         :style="
           item.style === 'solid'
-            ? 'fill: none; stroke: #1660f1; stroke-width: 1'
+            ? 'fill: none; stroke: #67C23A; stroke-width: 1'
             : 'fill: none; stroke: #cbcbcb; stroke-width: 1'
         "
       ></polyline>

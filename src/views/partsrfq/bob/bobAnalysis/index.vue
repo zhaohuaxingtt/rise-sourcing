@@ -76,7 +76,7 @@
                   :ref="!item.parentId ? item.id : ''">
                 <template v-if="item.isBreakLine">
                   <span class="table-cell"
-                        style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
+                        style="width: 100%;text-align:center;font-weight: bold;background-color: #67C23A;color: #fff;">
                     {{ $t('LK_NONGROUPEDBREAKTIPS', { msg: item.title }) }}
                   </span>
                 </template>

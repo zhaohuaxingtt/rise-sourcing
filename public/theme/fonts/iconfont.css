@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1657008293799') format('woff2'),
-       url('iconfont.woff?t=1657008293799') format('woff'),
-       url('iconfont.ttf?t=1657008293799') format('truetype');
+  src: url('iconfont.woff2?t=1697005557560') format('woff2'),
+       url('iconfont.woff?t=1697005557560') format('woff'),
+       url('iconfont.ttf?t=1697005557560') format('truetype');
 }
 
 .iconfont {
@@ -1551,6 +1551,10 @@
 
 .iconhomeweixuanzhong:before {
   content: "\e60f";
+}
+
+.icondatabaseweixuanzhong-copy:before {
+  content: "\e78f";
 }
 
 .iconcaidanshouqi:before {

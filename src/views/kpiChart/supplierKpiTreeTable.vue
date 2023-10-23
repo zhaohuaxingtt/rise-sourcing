@@ -583,15 +583,15 @@ export default {
     }
     .el-icon-plus{
                 color: #fff;
-                background: #1763F7;
+                background: #67C23A;
                 cursor: pointer;
-                border-radius: 4px;
+                border-radius: 0px;
             }
             .el-icon-minus,.el-icon-plus{
                 color: #fff;
-                background: #1763F7;
+                background: #67C23A;
                 cursor: pointer;
-                border-radius: 4px;
+                border-radius: 0px;
             }
     
     .lev1dashed::after{
@@ -599,7 +599,7 @@ export default {
         content: '';
         width:100%;
         top:-25px;
-        border-top: 1px dashed #1660F1;
+        border-top: 1px dashed #67C23A;
         left: 0;
     }
     .lev1dashed::before{
@@ -607,7 +607,7 @@ export default {
         content: '';
         width:100%;
         top:-25px;
-        border-left: 1px dashed #1660F1;
+        border-left: 1px dashed #67C23A;
         height: 40px;
         left: 75px;
     }
@@ -616,7 +616,7 @@ export default {
         content: '';
         width:75px;
         top:-25px;
-        border-top: 1px dashed #1660F1;
+        border-top: 1px dashed #67C23A;
         left: 0;
     }
     .halfWidth::before{
@@ -624,7 +624,7 @@ export default {
         content: '';
         width:100%;
         top:-25px;
-        border-left: 1px dashed #1660F1;
+        border-left: 1px dashed #67C23A;
         height: 40px;
         left: 75px;
     }

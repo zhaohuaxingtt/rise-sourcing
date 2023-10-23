@@ -57,7 +57,7 @@ export default {
   height: 20px;
   margin-top: 2px;
   margin-right: 15px;
-  border: 1px solid #1763F7;
+  border: 1px solid #67C23A;
   border-radius: 5px;
   cursor: pointer;
 
@@ -74,6 +74,6 @@ export default {
 }
 
 .checkBoxStyleActive {
-  background: #1763F7;
+  background: #67C23A;
 }
 </style>

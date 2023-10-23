@@ -85,7 +85,7 @@ export default {
       ],
       downloadLoading: false,
       svgList: {
-        'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#1660F1" p-id="95302"></path></svg>',
+        'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#67C23A" p-id="95302"></path></svg>',
       }
     }
   },

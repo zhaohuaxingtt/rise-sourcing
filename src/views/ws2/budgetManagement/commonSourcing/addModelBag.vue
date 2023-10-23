@@ -514,7 +514,7 @@ export default {
                 type: 'bar',
                 barWidth: 14,
                 stack: 'total',
-                color: '#1763F7',
+                color: '#67C23A',
                 label: {
                   show: true,
                   position: 'right',
@@ -553,7 +553,7 @@ export default {
                     } else {
                       return `<div style="font-size: 12px; text-align: center">
                               <div style="color: #131523;">零件包</div>
-                              <div style="color: #1660F1;">${seriesPop[params.dataIndex]}</div>
+                              <div style="color: #67C23A;">${seriesPop[params.dataIndex]}</div>
                             </div>`
                     }
                   },

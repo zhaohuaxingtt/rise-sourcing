@@ -341,14 +341,14 @@ export default {
   .line {
     width: 40px;
     height: 4px;
-    border-radius: 4px;
+    border-radius: 0px;
     position: absolute;
     z-index: 0;
   }
   .point {
     width: 8px;
     height: 8px;
-    border-radius: 4px;
+    border-radius: 0px;
     z-index: 1;
   }
 }

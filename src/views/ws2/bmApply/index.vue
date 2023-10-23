@@ -622,7 +622,7 @@ export default {
         width: 250px;
         height: 35px;
         background: #F8F8FA;
-        border-radius: 4px;
+        border-radius: 0px;
         text-align: center;
         overflow: hidden;/*超出部分隐藏*/
         white-space: nowrap;/*不换行*/
@@ -657,7 +657,7 @@ export default {
   margin-bottom: 7px;
 
   .head-on{
-    background: linear-gradient(42deg, #1660F1 0%, #76A5FF 100%) !important;
+    background: linear-gradient(42deg, #67C23A 0%, #76A5FF 100%) !important;
 
     .title, .describe{
       color: #FFFFFF !important;

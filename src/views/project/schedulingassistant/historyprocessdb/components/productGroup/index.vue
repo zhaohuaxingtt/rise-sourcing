@@ -458,7 +458,7 @@ export default {
 
 <style lang="scss" scoped>
 .withBorder {
-  border: 2px solid #1763F7;
+  border: 2px solid #67C23A;
 }
 .fitTable {
   ::v-deep .el-table__body-wrapper{

@@ -427,7 +427,7 @@ export default {
                     extraCssText:
                       "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
               formatter: function (params) {
-                return `<span style="color: #1763F7; font-weight: bold">${params.data}</span>`
+                return `<span style="color: #67C23A; font-weight: bold">${params.data}</span>`
               },
             },
             grid: {
@@ -616,7 +616,7 @@ export default {
                         extraCssText:
                           "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
                   formatter: function (params) {
-                    return `<div>${params.name}</div><div style="color: #1763F7; font-weight: bold">${params.data}</div>`
+                    return `<div>${params.name}</div><div style="color: #67C23A; font-weight: bold">${params.data}</div>`
                   },
                 },
                 legend: {
@@ -673,7 +673,7 @@ export default {
                         extraCssText:
                           "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
                   formatter: function (params) {
-                    return `<div>${params.name}</div><div style="color: #1763F7; font-weight: bold">${params.data}</div>`
+                    return `<div>${params.name}</div><div style="color: #67C23A; font-weight: bold">${params.data}</div>`
                   },
                 },
                 legend: {
@@ -1093,7 +1093,7 @@ export default {
           .el-input__inner{
             width: 100%;
             height: 100%;
-            color: #1763F7;
+            color: #67C23A;
           }
         }
 

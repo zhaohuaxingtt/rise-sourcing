@@ -543,6 +543,6 @@ export default {
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
   opacity: 1;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 </style>

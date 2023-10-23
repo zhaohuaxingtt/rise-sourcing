@@ -74,7 +74,7 @@
         <el-table-column :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip="items.tooltip" :key="index" align="center" v-else-if="switchProps.includes(items.props)" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
           <template slot-scope="scope">
             <el-form-item>
-              <el-switch @change="switchChange($event, scope.row)" v-model="scope.row[items.props]" active-color="#1660F1" :activeText="activeText" :inactiveText="inactiveText" />
+              <el-switch @change="switchChange($event, scope.row)" v-model="scope.row[items.props]" active-color="#67C23A" :activeText="activeText" :inactiveText="inactiveText" />
             </el-form-item>
           </template>
         </el-table-column>

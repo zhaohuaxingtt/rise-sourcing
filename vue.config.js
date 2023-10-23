@@ -14,7 +14,7 @@ const postcss = px2rem({
 require('events').EventEmitter.defaultMaxListeners = 0
 
 // const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-test.csvw.com'
-const BASE_IP = 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com'
+const BASE_IP = '124.70.200.99'
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLICPATH,
@@ -188,7 +188,7 @@ module.exports = {
 			// 主数据
 			[process.env.VUE_APP_BASE_INFO]: {
 				// target: `http://rise-nginx-internal.apps.vmocp-dev.csvw.com/baseinfo`,
-				target: `${BASE_IP}/baseinfo/`,
+				target: `${BASE_IP}:31001/baseinfo/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_INFO]: '',
@@ -280,7 +280,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_APPROVAL]: {
-				target: `${BASE_IP}/approval/web`,
+				target: `${BASE_IP}:31002/approval/web`,
 				// target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/approvalApi',
 				changeOrigin: true,
 				pathRewrite: {
@@ -297,7 +297,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_MAIL]: {
-				target: `${BASE_IP}/risemessage`,
+				target: `${BASE_IP}:31006/risemessage`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_MAIL]: '',
@@ -314,7 +314,7 @@ module.exports = {
 			},
 
 			[process.env.VUE_APP_BASE_UPLOAD_API]: {
-				target: `${BASE_IP}/fileud/`,
+				target: `${BASE_IP}:31004/fileud/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_BASE_UPLOAD_API]: '',
@@ -332,7 +332,7 @@ module.exports = {
 			//------------------ 组织 start ----------------------------
 			[process.env.VUE_APP_USER_CENTER_API]: {
 				//   供应商
-				target: `${BASE_IP}/usercenter/`,
+				target: `${BASE_IP}:31009/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_USER_CENTER_API]: '',
@@ -350,7 +350,7 @@ module.exports = {
 
 			[process.env.VUE_APP_USER_CENTER]: {
 				// target: `http://10.122.17.38:8015/usercenter/`,
-				target: `${BASE_IP}/usercenter/`,
+				target: `${BASE_IP}:31009/usercenter/`,
 				changeOrigin: true,
 				pathRewrite: {
 					['^' + process.env.VUE_APP_USER_CENTER]: '',
@@ -429,7 +429,7 @@ module.exports = {
 			[process.env.VUE_APP_SUPPLIER]: {
               //   供应商
               // target: `http://${BASE_IP}:8066/supplier/overall`,
-              target: `${BASE_IP}/supplier/overall/web`,
+              target: `${BASE_IP}:31013/supplier/overall/web`,
               // target:'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/supplierservice/',
               changeOrigin: true,
               pathRewrite: {

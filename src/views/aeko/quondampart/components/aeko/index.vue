@@ -153,7 +153,7 @@ export default {
   align-items: center;
   font-size: 30px;
   font-weight: bold;
-  color: #1660f1;
+  color: #67C23A;
   text-shadow: 1px 1px 0 #ccc, 2px 2px 0 #ccc;
 }
 </style>

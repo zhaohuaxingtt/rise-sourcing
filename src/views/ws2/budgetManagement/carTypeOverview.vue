@@ -352,7 +352,7 @@ export default {
                     normal: {
                       barBorderRadius: [5, 5, 0, 0],
                       color: function (params) {
-                        let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                        let colorlist = ['#67C23A', '#73A1FA', '#B0C5F5', '#CEE1FF'];
                         return colorlist[params.dataIndex];
                       }
                     },
@@ -427,7 +427,7 @@ export default {
                         label: false,
                         barBorderRadius: [0, 0, 0, 0],
                         color: function (params) {
-                          let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                          let colorlist = ['#67C23A', '#73A1FA', '#B0C5F5', '#CEE1FF'];
                           return colorlist[params.dataIndex];
                         }
                       },
@@ -636,7 +636,7 @@ export default {
                       normal: {
                         barBorderRadius: [5, 5, 0, 0],
                         color: function (params) {
-                          let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                          let colorlist = ['#67C23A', '#73A1FA', '#B0C5F5', '#CEE1FF'];
                           return colorlist[params.dataIndex];
                         }
                       },
@@ -715,7 +715,7 @@ export default {
                           label: false,
                           barBorderRadius: [0, 0, 0, 0],
                           color: function (params) {
-                            let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                            let colorlist = ['#67C23A', '#73A1FA', '#B0C5F5', '#CEE1FF'];
                             return colorlist[params.dataIndex];
                           }
                         },
@@ -828,7 +828,7 @@ export default {
   }
   ::v-deep .el-button--primary{
     font-size: 16px;
-    color: #1660F1;
+    color: #67C23A;
     background-color: #EEF2FB;
     border-color: #EEF2FB;
     //margin-right: 10px;
@@ -956,7 +956,7 @@ export default {
           font-weight: bold;
           color: #000000;
           opacity: 1;
-          border-bottom: 3px solid #1763F7;
+          border-bottom: 3px solid #67C23A;
         }
       }
     }

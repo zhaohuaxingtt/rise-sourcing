@@ -24,7 +24,7 @@
         <span style="width: 14%;"></span>
         <span class="crown-bar-x-label"
               style="width: 86%">
-          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData[0].turn}}</a>/{{chartData[0].totalTurn}}{{language('LK_TURN','轮')}}
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #67C23A; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData[0].turn}}</a>/{{chartData[0].totalTurn}}{{language('LK_TURN','轮')}}
         </span>
       </div>
       <div style="display:flex;flex-flow:row nowrap;margin-top: 10px;">
@@ -287,7 +287,7 @@ export default {
           "#9BBEFF",
           "#72AEFF",
           "#5993FF",
-          "#1763F7",
+          "#67C23A",
           "#0040BE",
         ],
         series: this.dataArray
@@ -318,7 +318,7 @@ export default {
                 Blue: {
                   fontSize: 16,
                   fontWeight: 500,
-                  color: '#1763F7',
+                  color: '#67C23A',
                 },
                 bobChange: {
                   height: 25,

@@ -82,7 +82,7 @@ export default {
     }
 
     .tab-on{
-      color: #1660F1 !important;
+      color: #67C23A !important;
       opacity: 1 !important;
       font-weight: bold !important;
     }
@@ -120,7 +120,7 @@ export default {
       content: '';
       width: 70px;
       height: 3px;
-      background-color: #1763F7;
+      background-color: #67C23A;
       border-radius: 2px;
       position: absolute;
       bottom: -10px;

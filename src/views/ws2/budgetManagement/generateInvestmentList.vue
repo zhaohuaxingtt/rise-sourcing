@@ -557,7 +557,7 @@ export default {
       // opacity: 0.5;
       .log {
         font-size: 16px;
-        color: #1660f1;
+        color: #67C23A;
         margin-left: 5px;
       }
     }
@@ -631,7 +631,7 @@ export default {
           font-weight: bold;
           color: #000000;
           opacity: 1;
-          border-bottom: 3px solid #1763F7;
+          border-bottom: 3px solid #67C23A;
         }
       }
     }

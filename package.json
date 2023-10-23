@@ -8,8 +8,9 @@
     "build:win:dev": "npm install rise@latest && vue-cli-service build --mode dev",
     "build:win:sit": "npm install rise@latest && vue-cli-service build --mode sit",
     "build:win:vmsit": "npm install && npm install rise@latest && node --max_old_space_size=4089 node_modules/@vue/cli-service/bin/vue-cli-service.js build --mode vmsit",
-    "build:win:uat": "npm install rise@latest && node --max_old_space_size=8192 node_modules/@vue/cli-service/bin/vue-cli-service.js build --mode uat",
+    "build:win:uat": "npm link rise  && node --max_old_space_size=8192 node_modules/@vue/cli-service/bin/vue-cli-service.js build --mode uat",
     "build:win:prod": "npm install rise@latest && vue-cli-service build --mode prod",
+    "build:win:uatBuild": "npm link rise && npm install && vue-cli-service build --mode uat",
     "lint": "vue-cli-service lint",
     "report": "vue-cli-service build --mode uat --report",
     "macdev": "npm run start:win:dev",
@@ -23,7 +24,7 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
-    "rise": "^4.3.2",
+    "rise": "^4.3.3",
     "sortablejs": "^1.14.0"
   },
   "devDependencies": {

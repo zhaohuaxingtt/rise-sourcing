@@ -379,7 +379,7 @@ export default {
     align-items: center;
     .font64 {
       font-size: 64px;
-      color: #1660f1;
+      color: #67C23A;
     }
   }
   .shuttle-item {

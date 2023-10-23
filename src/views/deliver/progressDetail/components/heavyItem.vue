@@ -666,7 +666,7 @@ export default {
   .first-column-item{
     flex: none;
     width: 200px;
-    background: #1660f1;
+    background: #67C23A;
     font-size: 16px;
 
     white-space: nowrap;
@@ -698,7 +698,7 @@ export default {
   position: absolute;
   right:20px;
   top:70px;
-  // background:#1660f1;
+  // background:#67C23A;
   display: flex;
   flex-wrap: wrap;
   -webkit-pointer-events: none;
@@ -716,7 +716,7 @@ export default {
   .line-line{
     height: 100%;
     width: 2px;
-    background: #1660f1;
+    background: #67C23A;
   }
 
   .gray{

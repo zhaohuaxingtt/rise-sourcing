@@ -11,7 +11,9 @@
     <div>Loading...to redirect...</div>
   </div>
   <div v-else class="login">
-    <div class="title">RISE</div>
+    <!-- <div class="title">RISE</div> -->
+    <img src="~@/assets/images/back2.png" alt="" class="logo">
+    <div class="title">数字化采购平台</div>
     <div class="content">
       <el-form :rules="rules">
         <el-form-item :label="language('LK_YONGHUMING', '用户名')">
@@ -125,24 +127,53 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$colorpage: rgb(67, 152, 217);
+$colorpage:#67C23A;
 .login {
-  background-color: rgb(1, 5, 32);
+  background-image: url("~@/assets/images/back1.png");
+  background-repeat:round;
   height: 100%;
   width: 100%;
   border-top: 4px solid $color-blue;
   position: relative;
+  .logo{
+    position: absolute;
+    left: 100px;
+    top: 140px;
+    width: 200px;
+    height: 40px;
+  }
+  &::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);/*半透明黑色*/ 
+  }
   .title {
-    padding: 40px;
-    font-size: 40px;
-    font-weight: bold;
+    position: absolute;
+    left: 100px;
+    top: 200px;
+    width: 100%;
+    height: 80px;
+    font-size: 80px;
+    font-weight: 300;
     color: white;
   }
   .content {
-    @include centerAbsolute;
+    // @include centerAbsolute;
     //background-color: white;
+    position: absolute;
+    margin: auto;
+    padding: 60px;
+    top: 0px;
+    left: 1000px;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     width: 500px;
-    height: 500px;
+    height: 500px
   }
 }
 .el-form {

@@ -40,7 +40,7 @@
           <el-switch
             class="margin-left10 zoom075"
             v-model="isAllItem"
-            active-color="#1660F1"
+            active-color="#67C23A"
             inactive-color="#cccccc"
           ></el-switch>
         </div>

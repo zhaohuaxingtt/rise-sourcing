@@ -306,7 +306,7 @@ export default {
 .changeContent {
   padding-bottom: 30px;
   ::v-deep.el-table .blueRow{
-    color: #1763F7;
+    color: #67C23A;
   }
   ::v-deep .card {
     box-shadow: none;

@@ -3,7 +3,7 @@
   <div class='showMe'>
     <span>{{ $t('MODEL-ORDER.LK_JINKANZIJI') }}</span>
     <el-switch v-model='isOnlyMyself' @change='showOnlyMyselfData($event)'
-               active-color='#1660F1' inactive-color='#cccccc'></el-switch>
+               active-color='#67C23A' inactive-color='#cccccc'></el-switch>
   </div>
 </template>
 

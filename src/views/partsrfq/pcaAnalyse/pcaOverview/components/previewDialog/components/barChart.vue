@@ -39,7 +39,7 @@ export default {
         {name: 'Profit', data: [220, 132]},
         {name: 'Scrap', data: [220, 132]},
       ];
-      const colorArray = ['#94C8FC', '#72AEFF', '#5993FF', '#1763F7', '#0040BE', '#0E2C90', '#404FC3', '#404FC3'];
+      const colorArray = ['#94C8FC', '#72AEFF', '#5993FF', '#67C23A', '#0040BE', '#0E2C90', '#404FC3', '#404FC3'];
       this.seriesArray = data.map((item, index) => {
         return {
           name: item.name,

@@ -91,7 +91,7 @@ export default {
             response:{"result":true,"code":"200","desEn":"success","desZh":"操作成功","data":{"supplierList":[{"supplierId":11002,"nameZh":"南通冠东模塑股份有限公司","levelOneCode":"PP01000","score":"21.5000"},{"supplierId":11025,"nameZh":"上海联晟汽车配套服务有限公司","levelOneCode":"PP02000","score":"44.2000"},{"supplierId":159916,"nameZh":"（无效）宁波艾思科汽车音响通讯有限公司（无效）","levelOneCode":"PP02000","score":"42.9000"},{"supplierId":159930,"nameZh":"123","levelOneCode":"PP04000","score":"44.4000"}],"totalMap":{"between9":1,"between8":0,"between7":0,"between6":0,"between5":1,"between4":1,"between3":1,"between10":0,"between2":0,"between1":0},"oneMaps":{"PP02000":{"categoryName":"成本","oneMap":{"between9":0,"between8":0,"between7":0,"between6":0,"between5":2,"between4":0,"between3":1,"between10":0,"between2":0,"between1":0}},"PP01000":{"categoryName":"服务质量","oneMap":{"between9":0,"between8":0,"between7":0,"between6":0,"between5":0,"between4":0,"between3":1,"between10":0,"between2":0,"between1":0}},"PP04000":{"categoryName":"可持续发展","oneMap":{"between9":0,"between8":0,"between7":0,"between6":0,"between5":1,"between4":0,"between3":0,"between10":0,"between2":0,"between1":0}},"PP03000":{"categoryName":"交付","oneMap":{"between9":0,"between8":0,"between7":0,"between6":0,"between5":0,"between4":0,"between3":1,"between10":0,"between2":0,"between1":0}}}}},
             dataTotal:{},
             option : {
-                color: ['#1763F7'],
+                color: ['#67C23A'],
                 tooltip: {
                     trigger: 'item',
                     backgroundColor:'#fff',
@@ -103,7 +103,7 @@ export default {
                     },
                     // formatter:function(params){
                     //     const str = `<div style="padding:10px">
-                    //         <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                    //         <div>该分数断下供应商数量:<span style="color:#67C23A">${params.value}家</span></div>
                     //         <div>${params.seriesName}:${params.name}分</div>
                     //     </div>`
                     //     return str
@@ -118,7 +118,7 @@ export default {
                         name:'',
                         icon:'circle',
                         textStyle: {
-                            color: '#1763F7'
+                            color: '#67C23A'
                         }
                     }],
                 },
@@ -243,7 +243,7 @@ export default {
                         name:y.nameZh,
                         icon:'circle',
                         textStyle: {
-                            color: '#1763F7'
+                            color: '#67C23A'
                         }
                     })
             })

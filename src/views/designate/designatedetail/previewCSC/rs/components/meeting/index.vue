@@ -1182,7 +1182,7 @@ export default {
         font-size: 15px;
         font-weight: 400;
         color: rgba(22, 96, 241, 1);
-        border: 1px dashed #1660f1;
+        border: 1px dashed #67C23A;
       }
     }
     .header-table-box{
@@ -1256,7 +1256,7 @@ export default {
   font-size: 15px;
   font-weight: 400;
   color: rgba(22, 96, 241, 1);
-  border: 1px dashed #1660f1;
+  border: 1px dashed #67C23A;
 }
 .rsTable {
   font-size: 16px !important;

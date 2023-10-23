@@ -843,7 +843,7 @@ export default {
 	}
 }
 .color-txt {
-	color: #1660f1;
+	color: #67C23A;
 }
 .iDialog-inputItem {
 	display: inline-block;
@@ -915,7 +915,7 @@ export default {
 	margin-bottom: 7px;
 
 	.head-on {
-		background: linear-gradient(42deg, #1660f1 0%, #76a5ff 100%) !important;
+		background: linear-gradient(42deg, #67C23A 0%, #76a5ff 100%) !important;
 
 		.title,
 		.describe {

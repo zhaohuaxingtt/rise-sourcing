@@ -60,14 +60,14 @@ export default {
                         margin: 0 20px;
                     }
                     .currentTab{
-                        color:#1763F7;
+                        color:#67C23A;
                     }
                     .currentTab::after{
                         content: "";
                         display: block;
                         width: 100%;
                         height: 2px;
-                        background: #1763F7;
+                        background: #67C23A;
                         position: absolute;
                         bottom: -2px;
                         left: 0;

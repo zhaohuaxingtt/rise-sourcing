@@ -97,7 +97,7 @@
     width: 200px;
     border-right: 1px #ccc solid;
     .icon{
-      color: #1660f1;
+      color: #67C23A;
     }
   }
 }

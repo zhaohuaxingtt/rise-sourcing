@@ -1117,7 +1117,7 @@ export default {
         } else if (item === '管理费用') {
           return 'background: #5993FF';
         } else if (item === '其他费用') {
-          return 'background: #1763F7';
+          return 'background: #67C23A';
         } else if (item === '利润') {
           return 'background: #0040BE';
         }
@@ -1199,7 +1199,7 @@ export default {
   margin: 100px auto;
   & .active {
     font-weight: bold;
-    color: #1660f1 !important;
+    color: #67C23A !important;
     list-style: url("../../../../assets/images/circle.png") outside circle !important;
   }
   li {

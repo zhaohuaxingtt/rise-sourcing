@@ -316,7 +316,7 @@ export default {
   .chooseProGroup {
     width: 240px;
     box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
-    border-radius: 4px;
+    border-radius: 0px;
     padding: 0px 18px;
     font-size: 14px;
     height: 35px;

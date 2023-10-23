@@ -94,7 +94,7 @@ export default {
     }
 
     .partItemActive {
-      color: #1763F7;
+      color: #67C23A;
     }
   }
 

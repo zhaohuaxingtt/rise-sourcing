@@ -136,7 +136,7 @@ export default {
                                 text-align: center;
                                 box-shadow: 0 0 1px rgba(0,38,98,.15);
                                 border-color: 5F6F8F;
-                                border-radius: 4px;
+                                border-radius: 0px;
                             }
                             .step-tips-input{
                                 width: 100px;
@@ -157,7 +157,7 @@ export default {
                     display: block;
                     width: calc(100% - 44px - 30px);
                     height: 2px;
-                    background: #1660F1;
+                    background: #67C23A;
                     position: absolute;
                     right: 15px;
                     top: 22px;

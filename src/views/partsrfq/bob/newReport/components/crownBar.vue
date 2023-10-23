@@ -43,7 +43,7 @@
               :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"
               v-for="(row, idx) in chartData"
               :key="idx">
-          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #67C23A; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
         </span>
         <span class="crown-bar-x-label"
               :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
@@ -343,7 +343,7 @@ export default {
           "#9BBEFF",
           "#72AEFF",
           "#5993FF",
-          "#1763F7",
+          "#67C23A",
           "#0040BE",
         ],
         series: this.dataArray,
@@ -392,7 +392,7 @@ export default {
                 Blue: {
                   fontSize: 16,
                   fontWeight: 500,
-                  color: "#1763F7",
+                  color: "#67C23A",
                   fontFamily: "Arial",
                 },
                 font: {

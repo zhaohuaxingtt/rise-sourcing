@@ -161,9 +161,9 @@ export default {
                 data: priceList.newPirce||[],
                 itemStyle : {  
                     normal : {  
-                        color:'#1763F7',  
+                        color:'#67C23A',  
                         lineStyle:{  
-                            color:'#1763F7'  
+                            color:'#67C23A'  
                         }  
                     }  
                 },
@@ -402,7 +402,7 @@ export default {
           }
         }
         .footer-price{
-          color: #1763F7;
+          color: #67C23A;
           font-size: 17px;
           p{
             margin-bottom: 10px;

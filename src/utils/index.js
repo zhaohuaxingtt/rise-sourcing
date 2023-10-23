@@ -16,19 +16,25 @@ import { onlyselfProject, allitemsList, BKMROLETAGID } from '@/config'
 import JSEncrypt from 'jsencrypt'
 const publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtHWBZlZFuWCQmAqWGH5NaYimrmWHI8/BgHcorxAlq+5bCJyVe8VD9Zm4CRksP/yYPAqWB03B0wm1F1ePObs3ddhpk/MJ8GzbXJY0inj2J0n90QEzhebb/GpHt777EmfY/PuA4fGw8WtW6LHwkr+tnluKlR9f5ZgKByf3mBEge0wIDAQAB`
 
+
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
-  return Cookies.set(cookieName, cookieData, {
-    domain: process.env.VUE_APP_ROOT_DOMAIN,
-  })
+  return Cookies.set(
+    cookieName,
+    cookieData /* , {
+    domain: process.env.VUE_APP_ROOT_DOMAIN
+  } */
+  )
 }
 export function removeCookie(cookieName) {
   // eslint-disable-next-line no-undef
-  Cookies.remove(cookieName, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  Cookies.remove(cookieName /* , { domain: process.env.VUE_APP_ROOT_DOMAIN } */)
 }
 export function getCookie(cookieName) {
   // eslint-disable-next-line no-undef
-  return Cookies.get(cookieName, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  return Cookies.get(
+    cookieName /* , { domain: process.env.VUE_APP_ROOT_DOMAIN } */
+  )
 }
 //获取token
 export function getToken() {
@@ -711,7 +717,7 @@ export function watermark(text) {
       mask_div.style.height = defaultSettings.watermark_height + 'px';
       mask_div.style.display = "block";
       oTemp.appendChild(mask_div);
-    };
-  };
+    }
+  }
   document.body.appendChild(oTemp);
 }
